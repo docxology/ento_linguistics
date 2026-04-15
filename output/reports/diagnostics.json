@@ -1,0 +1,17 @@
+{
+  "project_name": "ento_linguistics",
+  "total_events": 1,
+  "errors": 0,
+  "warnings": 1,
+  "events": [
+    {
+      "severity": "WARNING",
+      "category": "MARKDOWN_LINK",
+      "message": "Bare URL found: 'https://github.com/docxology/ento_linguistics.'",
+      "file_path": "projects/ento_linguistics/manuscript/01_abstract.md",
+      "line_number": null,
+      "fix_suggestion": "Wrap the URL in a Markdown link with informative text: [link text](url)",
+      "context": {}
+    }
+  ]
+}

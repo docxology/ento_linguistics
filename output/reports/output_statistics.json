@@ -1,0 +1,258 @@
+{
+  "directories": {
+    "pdf": {
+      "exists": true,
+      "file_count": 10,
+      "size_mb": "6.09",
+      "total_size_bytes": 6384928,
+      "largest_files": [
+        {
+          "name": "ento_linguistics_combined.pdf",
+          "size_mb": "5.62",
+          "path": "pdf/ento_linguistics_combined.pdf"
+        },
+        {
+          "name": "ento_linguistics_combined.tex",
+          "size_mb": "0.16",
+          "path": "pdf/ento_linguistics_combined.tex"
+        },
+        {
+          "name": "temp_combined.md",
+          "size_mb": "0.12",
+          "path": "pdf/temp_combined.md"
+        }
+      ],
+      "extensions": {
+        ".toc": 1,
+        ".tex": 2,
+        ".bib": 1,
+        ".bbl": 1,
+        ".pdf": 1,
+        ".blg": 1,
+        ".aux": 1,
+        ".md": 1,
+        ".log": 1
+      }
+    },
+    "web": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "slides": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "figures": {
+      "exists": true,
+      "file_count": 12,
+      "size_mb": "5.25",
+      "total_size_bytes": 5506857,
+      "largest_files": [
+        {
+          "name": "terminology_network.png",
+          "size_mb": "1.19",
+          "path": "figures/terminology_network.png"
+        },
+        {
+          "name": "domain_comparison.png",
+          "size_mb": "0.77",
+          "path": "figures/domain_comparison.png"
+        },
+        {
+          "name": "domain_overview_grid.png",
+          "size_mb": "0.69",
+          "path": "figures/domain_overview_grid.png"
+        }
+      ],
+      "extensions": {
+        ".png": 11,
+        ".json": 1
+      }
+    },
+    "data": {
+      "exists": true,
+      "file_count": 4,
+      "size_mb": "0.13",
+      "total_size_bytes": 140521,
+      "largest_files": [
+        {
+          "name": "extracted_terms.json",
+          "size_mb": "0.13",
+          "path": "data/extracted_terms.json"
+        },
+        {
+          "name": "domain_statistics.json",
+          "size_mb": "0.00",
+          "path": "data/domain_statistics.json"
+        },
+        {
+          "name": "concept_map_summary.json",
+          "size_mb": "0.00",
+          "path": "data/concept_map_summary.json"
+        }
+      ],
+      "extensions": {
+        ".json": 4
+      }
+    },
+    "reports": {
+      "exists": true,
+      "file_count": 5,
+      "size_mb": "0.01",
+      "total_size_bytes": 14044,
+      "largest_files": [
+        {
+          "name": "test_results.json",
+          "size_mb": "0.01",
+          "path": "reports/test_results.json"
+        },
+        {
+          "name": "validation_report.json",
+          "size_mb": "0.00",
+          "path": "reports/validation_report.json"
+        },
+        {
+          "name": "diagnostics.json",
+          "size_mb": "0.00",
+          "path": "reports/diagnostics.json"
+        }
+      ],
+      "extensions": {
+        ".json": 3,
+        ".md": 2
+      }
+    },
+    "simulations": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "llm": {
+      "exists": true,
+      "file_count": 0,
+      "size_mb": "0.00",
+      "total_size_bytes": 0,
+      "largest_files": [],
+      "extensions": {}
+    },
+    "logs": {
+      "exists": true,
+      "file_count": 1,
+      "size_mb": "0.00",
+      "total_size_bytes": 2479,
+      "largest_files": [
+        {
+          "name": "pipeline.log",
+          "size_mb": "0.00",
+          "path": "logs/pipeline.log"
+        }
+      ],
+      "extensions": {
+        ".log": 1
+      }
+    }
+  },
+  "total_files": 32,
+  "total_size_mb": 11.4906587600708,
+  "largest_files": [
+    {
+      "name": "ento_linguistics_combined.pdf",
+      "size_mb": "5.62",
+      "category": "pdf",
+      "path": "pdf/ento_linguistics_combined.pdf"
+    },
+    {
+      "name": "terminology_network.png",
+      "size_mb": "1.19",
+      "category": "figures",
+      "path": "figures/terminology_network.png"
+    },
+    {
+      "name": "domain_comparison.png",
+      "size_mb": "0.77",
+      "category": "figures",
+      "path": "figures/domain_comparison.png"
+    },
+    {
+      "name": "domain_overview_grid.png",
+      "size_mb": "0.69",
+      "category": "figures",
+      "path": "figures/domain_overview_grid.png"
+    },
+    {
+      "name": "ento_linguistics_combined.tex",
+      "size_mb": "0.16",
+      "category": "pdf",
+      "path": "pdf/ento_linguistics_combined.tex"
+    },
+    {
+      "name": "extracted_terms.json",
+      "size_mb": "0.13",
+      "category": "data",
+      "path": "data/extracted_terms.json"
+    },
+    {
+      "name": "temp_combined.md",
+      "size_mb": "0.12",
+      "category": "pdf",
+      "path": "pdf/temp_combined.md"
+    },
+    {
+      "name": "test_results.json",
+      "size_mb": "0.01",
+      "category": "reports",
+      "path": "reports/test_results.json"
+    },
+    {
+      "name": "domain_statistics.json",
+      "size_mb": "0.00",
+      "category": "data",
+      "path": "data/domain_statistics.json"
+    },
+    {
+      "name": "concept_map_summary.json",
+      "size_mb": "0.00",
+      "category": "data",
+      "path": "data/concept_map_summary.json"
+    }
+  ],
+  "missing_expected_files": [],
+  "sizes_by_category": {
+    "pdf": 6.089141845703125,
+    "web": 0.0,
+    "slides": 0.0,
+    "figures": 5.251748085021973,
+    "data": 0.13401126861572266,
+    "reports": 0.013393402099609375,
+    "simulations": 0.0,
+    "llm": 0.0,
+    "logs": 0.0023641586303710938
+  },
+  "file_counts_by_type": {
+    ".toc": 1,
+    ".tex": 2,
+    ".bib": 1,
+    ".bbl": 1,
+    ".pdf": 1,
+    ".blg": 1,
+    ".aux": 1,
+    ".md": 3,
+    ".log": 2,
+    ".png": 11,
+    ".json": 8
+  },
+  "pdf_files": 10,
+  "figures": 12,
+  "data_files": 4
+}

@@ -1,0 +1,34 @@
+
+OUTPUT STATISTICS REPORT
+============================================================
+
+Output Directory: /Users/4d/Documents/GitHub/template/output/ento_linguistics
+
+Total Files: 32
+Total Size: 11.49 MB
+
+Files by Category:
+  • pdf: 10 files (6.09 MB)
+  • figures: 12 files (5.25 MB)
+  • data: 4 files (0.13 MB)
+  • reports: 5 files (0.01 MB)
+  • logs: 1 files (0.00 MB)
+
+Largest Files:
+  • ento_linguistics_combined.pdf: 5.62 MB (pdf)
+  • terminology_network.png: 1.19 MB (figures)
+  • domain_comparison.png: 0.77 MB (figures)
+  • domain_overview_grid.png: 0.69 MB (figures)
+  • ento_linguistics_combined.tex: 0.16 MB (pdf)
+
+File Types:
+  • .png: 11 file(s)
+  • .json: 8 file(s)
+  • .md: 3 file(s)
+  • .tex: 2 file(s)
+  • .log: 2 file(s)
+  • .toc: 1 file(s)
+  • .bib: 1 file(s)
+  • .bbl: 1 file(s)
+  • .pdf: 1 file(s)
+  • .blg: 1 file(s)

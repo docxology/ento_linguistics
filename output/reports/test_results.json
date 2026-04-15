@@ -1,0 +1,258 @@
+{
+  "timestamp": "2026-04-15T15:04:33.382796",
+  "infrastructure": {},
+  "project": {
+    "passed": 1224,
+    "failed": 0,
+    "skipped": 1,
+    "total": 1225,
+    "warnings": 2,
+    "exit_code": 0,
+    "discovery_count": 1225,
+    "collection_errors": 0,
+    "execution_phases": {
+      "setup": 253.21,
+      "collection": 253.21,
+      "execution": 253.21
+    },
+    "test_categories": {},
+    "coverage_percent": 93.19550708123067,
+    "failed_tests": []
+  },
+  "summary": {
+    "total_passed": 1224,
+    "total_failed": 0,
+    "total_skipped": 1,
+    "total_tests": 1225,
+    "all_passed": true,
+    "project_coverage": 93.19550708123067
+  },
+  "coverage_details": {
+    "project": {
+      "overall_coverage": 94.52350150927124,
+      "total_executed": 4384,
+      "total_missing": 254,
+      "total_excluded": 0,
+      "total_lines": 4638,
+      "file_coverage": {
+        "projects/ento_linguistics/src/analysis/cace_scoring.py": {
+          "coverage_percent": 95.0,
+          "executed_lines": 95,
+          "missing_lines": 5,
+          "excluded_lines": 0,
+          "total_lines": 100
+        },
+        "projects/ento_linguistics/src/analysis/conceptual_mapping.py": {
+          "coverage_percent": 93.66391184573003,
+          "executed_lines": 340,
+          "missing_lines": 23,
+          "excluded_lines": 0,
+          "total_lines": 363
+        },
+        "projects/ento_linguistics/src/analysis/discourse_analysis.py": {
+          "coverage_percent": 93.95973154362416,
+          "executed_lines": 140,
+          "missing_lines": 9,
+          "excluded_lines": 0,
+          "total_lines": 149
+        },
+        "projects/ento_linguistics/src/analysis/discourse_patterns.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 59,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 59
+        },
+        "projects/ento_linguistics/src/analysis/domain_analysis.py": {
+          "coverage_percent": 92.33333333333333,
+          "executed_lines": 277,
+          "missing_lines": 23,
+          "excluded_lines": 0,
+          "total_lines": 300
+        },
+        "projects/ento_linguistics/src/analysis/performance.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 112,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 112
+        },
+        "projects/ento_linguistics/src/analysis/persuasive_analysis.py": {
+          "coverage_percent": 96.66666666666667,
+          "executed_lines": 145,
+          "missing_lines": 5,
+          "excluded_lines": 0,
+          "total_lines": 150
+        },
+        "projects/ento_linguistics/src/analysis/rhetorical_analysis.py": {
+          "coverage_percent": 98.38709677419355,
+          "executed_lines": 122,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 124
+        },
+        "projects/ento_linguistics/src/analysis/semantic_entropy.py": {
+          "coverage_percent": 90.74074074074075,
+          "executed_lines": 49,
+          "missing_lines": 5,
+          "excluded_lines": 0,
+          "total_lines": 54
+        },
+        "projects/ento_linguistics/src/analysis/statistics.py": {
+          "coverage_percent": 95.52238805970148,
+          "executed_lines": 128,
+          "missing_lines": 6,
+          "excluded_lines": 0,
+          "total_lines": 134
+        },
+        "projects/ento_linguistics/src/analysis/term_extraction.py": {
+          "coverage_percent": 97.36842105263158,
+          "executed_lines": 185,
+          "missing_lines": 5,
+          "excluded_lines": 0,
+          "total_lines": 190
+        },
+        "projects/ento_linguistics/src/analysis/text_analysis.py": {
+          "coverage_percent": 97.65625,
+          "executed_lines": 125,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 128
+        },
+        "projects/ento_linguistics/src/core/example.py": {
+          "coverage_percent": 90.32258064516128,
+          "executed_lines": 28,
+          "missing_lines": 3,
+          "excluded_lines": 0,
+          "total_lines": 31
+        },
+        "projects/ento_linguistics/src/core/exceptions.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 12,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 12
+        },
+        "projects/ento_linguistics/src/core/logging.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 46,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 46
+        },
+        "projects/ento_linguistics/src/core/markdown_integration.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 20,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 20
+        },
+        "projects/ento_linguistics/src/core/metrics.py": {
+          "coverage_percent": 99.10714285714286,
+          "executed_lines": 111,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 112
+        },
+        "projects/ento_linguistics/src/core/parameters.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 115,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 115
+        },
+        "projects/ento_linguistics/src/core/validation.py": {
+          "coverage_percent": 91.66666666666666,
+          "executed_lines": 121,
+          "missing_lines": 11,
+          "excluded_lines": 0,
+          "total_lines": 132
+        },
+        "projects/ento_linguistics/src/core/validation_utils.py": {
+          "coverage_percent": 86.3013698630137,
+          "executed_lines": 63,
+          "missing_lines": 10,
+          "excluded_lines": 0,
+          "total_lines": 73
+        },
+        "projects/ento_linguistics/src/data/data_generator.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 29,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 29
+        },
+        "projects/ento_linguistics/src/data/data_processing.py": {
+          "coverage_percent": 98.59154929577466,
+          "executed_lines": 140,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 142
+        },
+        "projects/ento_linguistics/src/data/literature_mining.py": {
+          "coverage_percent": 90.3125,
+          "executed_lines": 289,
+          "missing_lines": 31,
+          "excluded_lines": 0,
+          "total_lines": 320
+        },
+        "projects/ento_linguistics/src/data/loader.py": {
+          "coverage_percent": 100.0,
+          "executed_lines": 36,
+          "missing_lines": 0,
+          "excluded_lines": 0,
+          "total_lines": 36
+        },
+        "projects/ento_linguistics/src/pipeline/reporting.py": {
+          "coverage_percent": 89.52380952380953,
+          "executed_lines": 188,
+          "missing_lines": 22,
+          "excluded_lines": 0,
+          "total_lines": 210
+        },
+        "projects/ento_linguistics/src/pipeline/simulation.py": {
+          "coverage_percent": 96.12903225806451,
+          "executed_lines": 149,
+          "missing_lines": 6,
+          "excluded_lines": 0,
+          "total_lines": 155
+        },
+        "projects/ento_linguistics/src/visualization/concept_visualization.py": {
+          "coverage_percent": 90.62937062937063,
+          "executed_lines": 648,
+          "missing_lines": 67,
+          "excluded_lines": 0,
+          "total_lines": 715
+        },
+        "projects/ento_linguistics/src/visualization/figure_manager.py": {
+          "coverage_percent": 98.73417721518987,
+          "executed_lines": 78,
+          "missing_lines": 1,
+          "excluded_lines": 0,
+          "total_lines": 79
+        },
+        "projects/ento_linguistics/src/visualization/plots.py": {
+          "coverage_percent": 95.8904109589041,
+          "executed_lines": 140,
+          "missing_lines": 6,
+          "excluded_lines": 0,
+          "total_lines": 146
+        },
+        "projects/ento_linguistics/src/visualization/statistical_visualization.py": {
+          "coverage_percent": 99.37888198757764,
+          "executed_lines": 320,
+          "missing_lines": 2,
+          "excluded_lines": 0,
+          "total_lines": 322
+        },
+        "projects/ento_linguistics/src/visualization/visualization.py": {
+          "coverage_percent": 92.5,
+          "executed_lines": 74,
+          "missing_lines": 6,
+          "excluded_lines": 0,
+          "total_lines": 80
+        }
+      }
+    }
+  }
+}
