@@ -16,7 +16,7 @@ Review completed per plan to ensure complete functional coherence across methods
 
 ### Manuscript–Data Linkage
 
-- **manuscript/AGENTS.md**: Updated figure list to match actual `output/figures/` contents (11 PNGs); removed non-existent per-domain figures; corrected `project/` paths to `output/` and `manuscript/`; fixed validation commands to use `scripts/_manuscript_preflight.py` and `scripts/_quality_report.py`.
+- **docs/manuscript/AGENTS.md**: Updated figure list to match actual `output/figures/` contents (11 PNGs); removed non-existent per-domain figures; corrected `project/` paths to `output/` and `docs/manuscript/`; fixed validation commands to use `scripts/_manuscript_preflight.py` and `scripts/_quality_report.py`.
 
 ### Scripts
 

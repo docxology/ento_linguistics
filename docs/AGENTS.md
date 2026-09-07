@@ -11,7 +11,7 @@ docs/
 ├── AGENTS.md                    # This file — technical overview
 ├── README.md                    # Quick-reference index with commands
 ├── development_workflow.md      # Environment setup, test/run commands, module paths
-├── manuscript_data_lineage.md   # How `src/` objects map to `manuscript/` targets
+├── manuscript_data_lineage.md   # How `src/` objects map to `docs/manuscript/` targets
 ├── manuscript_style_guide.md    # Real figure, equation, and citation examples
 ├── refactor_playbook.md         # Module dependency map, hotspots, safe-change recipes
 ├── standards_compliance.md      # Compliance matrix with actual project metrics

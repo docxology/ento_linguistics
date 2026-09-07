@@ -77,7 +77,7 @@ Figure \ref{fig:domain_comparison} illustrates the domain comparison...
 
 ## Figure Standards
 
-- **Paths**: `../output/figures/filename.png` (relative from `manuscript/`)
+- **Paths**: `../output/figures/filename.png` (relative from `docs/manuscript/`)
 - **Sizing**: `width=0.8\textwidth` or `width=0.9\textwidth`
 - **Captions**: Descriptive sentences explaining all panels and how to interpret them
 - **Labels**: `fig:` prefix matching the filename (e.g., `fig:domain_comparison`)
@@ -213,4 +213,4 @@ keywords:
 
 - [validation_guide.md](validation_guide.md) — Manuscript preflight checks
 - [`../manuscript/AGENTS.md`](../manuscript/AGENTS.md) — Manuscript structure
-- [`../manuscript/references.bib`](../manuscript/references.bib) — Full bibliography
+- [`../docs/manuscript/references.bib`](../docs/manuscript/references.bib) — Full bibliography

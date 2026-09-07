@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 __all__ = [
     "DataLoader",
+    "convert_corpus",
 ]
 
 
@@ -86,3 +87,54 @@ class DataLoader:
             
         logger.info(f"Saved {len(texts)} texts to {file_path}")
         return file_path
+
+
+def convert_corpus(
+    input_path: Optional[Union[str, Path]] = None,
+    output_path: Optional[Union[str, Path]] = None,
+) -> int:
+    """Convert a literature corpus JSON into a plain abstracts JSON list.
+
+    Each publication is formatted as ``"Title. Authors (Year). Abstract"``.
+
+    Args:
+        input_path: Path to the literature corpus JSON. Defaults to
+            ``<project_root>/output/data/literature_corpus.json``.
+        output_path: Path to write the abstracts JSON. Defaults to
+            ``<project_root>/data/corpus/abstracts.json``.
+
+    Returns:
+        Number of abstracts converted (0 if the input file is missing).
+    """
+    project_root = Path(__file__).resolve().parent.parent.parent
+    if input_path is None:
+        input_path = project_root / "output" / "data" / "literature_corpus.json"
+    if output_path is None:
+        output_path = project_root / "data" / "corpus" / "abstracts.json"
+    input_path = Path(input_path)
+    output_path = Path(output_path)
+
+    if not input_path.exists():
+        logger.error(f"Error: {input_path} does not exist.")
+        return 0
+
+    with open(input_path, "r") as f:
+        data = json.load(f)
+
+    abstracts = []
+    for pub in data.get("publications", []):
+        # Format similar to the manual one: "Title. Author (Year). Abstract"
+        title = pub.get("title", "").strip()
+        authors = ", ".join(pub.get("authors", []))
+        year = pub.get("year", "")
+        abstract = (pub.get("abstract") or "").strip()
+
+        if abstract:
+            entry = f"{title}. {authors} ({year}). {abstract}"
+            abstracts.append(entry)
+
+    with open(output_path, "w") as f:
+        json.dump(abstracts, f, indent=4, ensure_ascii=False)
+
+    logger.info(f"Converted {len(abstracts)} abstracts to {output_path}")
+    return len(abstracts)

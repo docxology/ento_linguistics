@@ -9,7 +9,7 @@ Reference materials and guides for the **Ento-Linguistic Domains** research proj
 | [AGENTS.md](AGENTS.md) | Technical overview of every doc in this directory |
 | [REVIEW_SUMMARY.md](REVIEW_SUMMARY.md) | Review summary and completed coherence edits |
 | [development_workflow.md](development_workflow.md) | Environment setup, test commands, script names, module paths |
-| [manuscript_data_lineage.md](manuscript_data_lineage.md) | Mappings of how `src/` modules populate `manuscript/` contents |
+| [manuscript_data_lineage.md](manuscript_data_lineage.md) | Mappings of how `src/` modules populate `docs/manuscript/` contents |
 | [manuscript_style_guide.md](manuscript_style_guide.md) | Figures, citations, equations, and cross-reference examples from the actual manuscript |
 | [refactor_playbook.md](refactor_playbook.md) | Module dependency map, hotspots, and safe-change recipes |
 | [standards_compliance.md](standards_compliance.md) | Compliance matrix, live corpus table (synced to `output/data/*.json`), PDF template workflow |

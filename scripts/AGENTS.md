@@ -2,73 +2,46 @@
 
 ## Purpose
 
-The `scripts/` directory contains **thin orchestrators** that integrate with `src/` modules. Scripts import and use tested methods from `src/` - they never implement business logic themselves.
+The `scripts/` directory contains **thin orchestrators** that integrate with `src/` modules. Scripts handle argparse, path bootstrap, logging, and a single delegated call into a `src/` entrypoint — they never implement business logic themselves.
 
-## Current Scripts
+## Script Inventory
 
-### Active Scripts
+| Script | Pattern | Delegates to | Output |
+|--------|---------|--------------|--------|
+| `01_build_corpus.py` | Stage 01 Thin Orchestrator | `src/data/literature_mining.py` | Corpus files under `data/corpus/` |
+| `02_generate_figures.py` | Stage 02 Thin Orchestrator | `src/visualization/manuscript_figures.py` | 11 PNGs in `output/figures/`, JSONs in `output/data/`, filled manuscript variables |
+| `_analysis_pipeline.py` | Helper | `src/pipeline/reporting.py`, `src/core/validation_utils.py` | Pipeline reports under `output/reports/` |
+| `_conceptual_mapping_script.py` | Helper | `src/analysis/conceptual_mapping.py`, `src/visualization/concept_visualization.py` | Concept map figures/data |
+| `_convert_corpus.py` | Helper | `src/data/loader.py` (`convert_corpus`) | `data/corpus/abstracts.json` |
+| `_discourse_analysis_script.py` | Helper | `src/analysis/discourse_analysis.py`, `src/visualization/concept_visualization.py` | Discourse analysis outputs |
+| `_domain_analysis_script.py` | Helper | `src/analysis/domain_analysis.py`, `src/visualization/figure_manager.py` | Domain analysis figures/data |
+| `_example_figure.py` | Helper (self-contained demo) | — | Example PNG |
+| `_fill_manuscript_variables.py` | Helper | `src/core/manuscript_variables.py` | `{{VAR}}`-substituted manuscript markdown |
+| `_generate_domain_figures.py` | Helper | `src/analysis/domain_analysis.py`, `src/visualization/figure_manager.py` | Per-domain figures |
+| `_generate_missing_figures.py` | Helper (stale import; superseded by `02_generate_figures.py`) | former `generate_research_figures` script | — |
+| `_generate_scientific_figures.py` | Helper | `src/visualization/plots.py`, `src/analysis/performance.py` | Simulation figures |
+| `_literature_analysis_pipeline.py` | Helper | `src/data/literature_mining.py`, `src/analysis/*` | Mined corpus + analysis outputs |
+| `_manuscript_preflight.py` | Helper | `src/core/validation_utils.py` | Preflight validation report |
+| `_quality_report.py` | Helper | `src/pipeline/reporting.py`, `src/core/validation_utils.py` | Quality report JSON |
+| `_register_manuscript_figures.py` | Helper | `src/visualization/figure_manager.py` | `figure_registry.json` updates |
+| `_render_pdf_override.py` | Helper | `src/pipeline/rendering.py` | `output/pdf/ento_linguistics_combined.pdf` |
+| `_scientific_simulation.py` | Helper | `src/pipeline/simulation.py`, `src/data/data_generator.py` | Simulation outputs |
 
-#### 01_build_corpus.py
+## Design Contract
 
-**Purpose**: Builds the literature corpus from entomological sources.
+- Scripts are orchestration only: path bootstrap, argparse/logging, and module entrypoint invocation.
+- Data/model/plot logic lives in `src/`.
+- All reusable script behavior must be covered by tests in `tests/`.
+- Manually-run helpers are prefixed `_` and are **not** auto-discovered by the pipeline (which runs `01_build_corpus.py` and `02_generate_figures.py`).
 
-**What it does**:
+## What Scripts Do / Don't Do
 
-- Collects entomological literature references
-- Processes and normalizes source data
-- Outputs corpus files for downstream analysis
+**Do**: import from `src/`, orchestrate data flow, handle file I/O and directory management, configure logging.
 
-#### 02_generate_figures.py
-
-**Purpose**: Generates all manuscript figures for the six Ento-Linguistic domains.
-
-**What it does**:
-
-- Imports visualization and analysis modules from `src/`
-- Generates domain-specific figures (term frequencies, ambiguity patterns, concept hierarchies)
-- Produces cross-domain comparison figures
-- Saves all figures to `output/figures/`
-
-### Manually-Run Scripts (prefixed with `_`)
-
-These scripts are **directly runnable** via `uv run python scripts/_<name>.py` but are **not auto-discovered by the pipeline orchestrator** (which only runs `01_build_corpus.py` and `02_generate_figures.py`). They are preserved for targeted analysis, validation, or debugging. Run them manually as needed:
-
-| Script | Purpose |
-|--------|---------|
-| `_analysis_pipeline.py` | Full analysis pipeline (all stages) |
-| `_conceptual_mapping_script.py` | Concept mapping and network generation |
-| `_convert_corpus.py` | Corpus format conversion |
-| `_discourse_analysis_script.py` | Discourse pattern analysis |
-| `_domain_analysis_script.py` | Domain-specific terminology analysis |
-| `_example_figure.py` | Example figure generation |
-| `_generate_domain_figures.py` | Per-domain frequency and ambiguity figures |
-| `_generate_missing_figures.py` | Regenerate any missing figures |
-| `_generate_scientific_figures.py` | Scientific simulation figures |
-| `_literature_analysis_pipeline.py` | Full literature mining + analysis |
-| `_manuscript_preflight.py` | Manuscript figure/reference validation |
-| `_quality_report.py` | Readability and integrity metrics |
-| `_register_manuscript_figures.py` | Figure registry updates |
-| `_render_pdf_override.py` | Custom PDF rendering override |
-| `_scientific_simulation.py` | Simulation workflows |
-
-## Thin Orchestrator Pattern
-
-**All business logic lives in `src/`, scripts handle orchestration only.**
-
-### What Scripts Do
-
-- Import methods from `src/` modules
-- Orchestrate data flow and execution
-- Generate visualizations and outputs
-- Handle file I/O and directory management
-
-### What Scripts Don't Do
-
-- Implement mathematical algorithms (use `src/`)
-- Duplicate business logic (import from `src/`)
-- Contain complex computations (delegate to `src/`)
+**Don't**: implement mathematical algorithms, duplicate business logic, contain complex computations.
 
 ## See Also
 
+- [`README.md`](README.md) — script inventory with commands
 - [`../src/AGENTS.md`](../src/AGENTS.md) - Available src/ modules
 - [`../AGENTS.md`](../AGENTS.md) - Project documentation

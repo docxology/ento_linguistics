@@ -20,7 +20,7 @@ This project investigates the entanglement of speech and thought in entomologica
 ├── src/                    # Ento-Linguistic analysis algorithms
 ├── tests/                  # Test suite (1198 tests, 90%+ coverage)
 ├── scripts/                # Analysis pipelines and workflows
-├── manuscript/             # Research manuscript on language in entomology
+├── docs/manuscript/             # Research manuscript on language in entomology
 ├── docs/                   # Analysis documentation and guidelines
 └── output/                 # Generated analyses, figures, and reports
 ```
@@ -70,7 +70,7 @@ Outputs in `output/reports/test_results.json` and `output/figures/figure_registr
 - Add logic in `src/`.
 - Import from `src/` in `scripts/`.
 - Add corresponding tests.
-- Update `manuscript/` sections and `config.yaml`.
+- Update `docs/manuscript/` sections and `config.yaml`.
 - Run `uv run python scripts/02_generate_figures.py` then validation.
 
 ## Scientific Contributions
@@ -131,7 +131,7 @@ graph TB
         SRC[src/<br/>Scientific Algorithms<br/>Data Processing<br/>Analysis & Visualization]
         TESTS[tests/<br/>Unit Tests<br/>Integration Tests<br/>90%+ Coverage]
         SCRIPTS[scripts/<br/>Analysis Scripts<br/>Thin Orchestrators<br/>Figure Generation]
-        MANUSCRIPT[manuscript/<br/>Research Content<br/>Markdown Sections<br/>LaTeX Preamble]
+        MANUSCRIPT[docs/manuscript/<br/>Research Content<br/>Markdown Sections<br/>LaTeX Preamble]
         OUTPUT[output/<br/>Generated Files<br/>PDFs, Figures, Data<br/>Disposable]
         DOCS[docs/<br/>Project Documentation<br/>Architecture Notes<br/>Development Guides]
     end
@@ -139,7 +139,7 @@ graph TB
     subgraph Workflow["Development Workflow"]
         DEVELOP[1. Develop<br/>src/ modules<br/>with tests]
         ORCHESTRATE[2. Create<br/>scripts/<br/>orchestrators]
-        DOCUMENT[3. Write<br/>manuscript/<br/>content]
+        DOCUMENT[3. Write<br/>docs/manuscript/<br/>content]
         BUILD[4. Run<br/>pipeline<br/>generate outputs]
     end
 
@@ -265,7 +265,7 @@ Thin orchestrators that use src/ modules.
 - Orchestrate workflows
 - Generate outputs
 
-### manuscript/
+### docs/manuscript/
 
 Research manuscript in Markdown format.
 
@@ -287,7 +287,7 @@ Research manuscript in Markdown format.
    - Orchestrate analysis
    - Generate figures/tables
 
-3. **Document in manuscript/**
+3. **Document in docs/manuscript/**
    - Update manuscript sections
    - Add figures and results
    - Update configuration
@@ -304,7 +304,7 @@ Coverage report generated in `htmlcov/index.html`.
 ### Quality Validation
 
 - `uv run python scripts/02_generate_figures.py`
-- Markdown validation: `uv run python -m infrastructure.validation.cli markdown manuscript/`
+- Markdown validation: `uv run python -m infrastructure.validation.cli markdown docs/manuscript/`
 - PDF validation after render: `uv run python -m infrastructure.validation.cli pdf output/pdf/`
 - Figure registry and integrity: see `src/core/validation.py` and `output/reports/validation_report.json`
 
@@ -364,7 +364,7 @@ See `output/reports/validation_report.json` and `docs/README.md` for details.
 - [`src/AGENTS.md`](src/AGENTS.md)
 - [`scripts/AGENTS.md`](scripts/AGENTS.md)
 - [`tests/AGENTS.md`](tests/AGENTS.md)
-- [`manuscript/AGENTS.md`](manuscript/AGENTS.md)
+- [`docs/manuscript/AGENTS.md`](docs/manuscript/AGENTS.md)
 - [`docs/AGENTS.md`](docs/AGENTS.md)
 - [`../../AGENTS.md`](../../AGENTS.md) - Template
 

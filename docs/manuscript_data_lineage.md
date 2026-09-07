@@ -1,6 +1,6 @@
-# Manuscript Data Lineage: `src/` to `manuscript/`
+# Manuscript Data Lineage: `src/` to `docs/manuscript/`
 
-This document details precisely how the components of the analytical pipeline (`src/`) structure, populate, and dictate the final contents of the academic PDF (`manuscript/`). Every figure, injected statistic, and API reference traces back directly to validated source code mechanisms.
+This document details precisely how the components of the analytical pipeline (`src/`) structure, populate, and dictate the final contents of the academic PDF (`docs/manuscript/`). Every figure, injected statistic, and API reference traces back directly to validated source code mechanisms.
 
 ## Source Code (`src/`) Components
 
@@ -19,7 +19,7 @@ The Ento-Linguistic framework organizes its operational logic into the following
 - **`src/visualization`**: Implements matplotlib/seaborn plot generators for concept mapping, statistical distributions, and network graphs.
   - *Manuscript Injection*: Writes the figure assets under `output/figures/` that the manuscript references via `\includegraphics`. Enforces manuscript requirements like 16pt font floors.
 
-## Manuscript (`manuscript/`) Linkages
+## Manuscript (`docs/manuscript/`) Linkages
 
 The rendered PDF is a compilation of the following files, populated strictly by the `src/` pipeline output:
 

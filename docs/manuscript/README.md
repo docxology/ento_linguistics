@@ -1,4 +1,4 @@
-# manuscript/ - Research Manuscript
+# docs/manuscript/ - Research Manuscript
 
 Research manuscript sections in markdown format, converted to PDFs.
 
@@ -9,8 +9,8 @@ Research manuscript sections in markdown format, converted to PDFs.
 ### Edit Manuscript
 
 ```bash
-vim manuscript/02_introduction.md
-vim manuscript/S01a_text_and_extraction.md
+vim docs/manuscript/02_introduction.md
+vim docs/manuscript/S01a_text_and_extraction.md
 ```
 
 ### Build PDFs
@@ -83,7 +83,7 @@ Numeric results that depend on the analyzed corpus (token counts, network metric
 
 **Workflow:** run the analysis pipeline (or `scripts/02_generate_figures.py` as part of it) so `output/data/` matches the run you intend to cite, then build the PDF.
 
-**CI / fail-closed builds:** set `STRICT_TEMPLATE_VARS=1` or pass `--strict-templates` to `scripts/_render_pdf_override.py` so any unresolved `{{KEY}}` after substitution exits non-zero. See `manuscript/AGENTS.md` for the variable families (`CORPUS_*`, `NETWORK_*`, `DOMAIN_*`, `TERM_FREQ_*`, `EXTRACTED_TERM_FREQ_*`, `CONCEPT_*`, etc.).
+**CI / fail-closed builds:** set `STRICT_TEMPLATE_VARS=1` or pass `--strict-templates` to `scripts/_render_pdf_override.py` so any unresolved `{{KEY}}` after substitution exits non-zero. See `docs/manuscript/AGENTS.md` for the variable families (`CORPUS_*`, `NETWORK_*`, `DOMAIN_*`, `TERM_FREQ_*`, `EXTRACTED_TERM_FREQ_*`, `CONCEPT_*`, etc.).
 
 ## File Structure
 
@@ -167,7 +167,7 @@ See \ref{fig:concept_map}...
 
 ### Method 1: Configuration File (Recommended)
 
-Edit `config.yaml` in the `manuscript/` directory:
+Edit `config.yaml` in the `docs/manuscript/` directory:
 
 ```yaml
 paper:

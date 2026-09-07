@@ -9,7 +9,7 @@ Everything needed for the research is in this folder:
 - **src/** - Ento-Linguistic analysis algorithms and text processing
 - **tests/** - Test suite (90%+ coverage)
 - **scripts/** - Analysis workflows and pipelines
-- **manuscript/** - Research manuscript on language in entomology
+- **docs/manuscript/** - Research manuscript on language in entomology
 - **output/** - Generated analyses, figures, data, and PDFs
 
 ## Research Focus
@@ -128,12 +128,12 @@ scripts/
 
 Active scripts (`01_`, `02_` prefixed) are executed by the pipeline. Scripts prefixed with `_` are inactive helpers preserved for reference.
 
-### Manuscript (manuscript/)
+### Manuscript (docs/manuscript/)
 
 Ento-Linguistic research content in Markdown:
 
 ```
-manuscript/
+docs/manuscript/
 ├── 01_abstract.md                # Research overview and contributions
 ├── 02_introduction.md            # Speech/thought entanglement motivation
 ├── 03_methods.md                 # Mixed-methodology framework
@@ -215,4 +215,4 @@ python3 scripts/execute_pipeline.py --core-only
 - Root README.md - Template overview
 - scripts/AGENTS.md - Script documentation
 - src/AGENTS.md - Source code documentation
-- manuscript/AGENTS.md - Manuscript documentation
+- docs/manuscript/AGENTS.md - Manuscript documentation

@@ -1,33 +1,22 @@
-import json
-from pathlib import Path
+#!/usr/bin/env python3
+"""Convert literature corpus JSON into a plain abstracts list — Thin Orchestrator.
 
-def convert_corpus():
-    input_path = Path("projects/ento_linguistics/output/data/literature_corpus.json")
-    output_path = Path("projects/ento_linguistics/data/corpus/abstracts.json")
+Delegates conversion logic to ``src/data/loader.py`` (``convert_corpus``).
+"""
+from __future__ import annotations
 
-    if not input_path.exists():
-        print(f"Error: {input_path} does not exist.")
-        return
+import os
+import sys
 
-    with open(input_path, "r") as f:
-        data = json.load(f)
+# ── Path setup ────────────────────────────────────────────────────────
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+repo_root = os.path.abspath(os.path.join(project_root, ".."))
+src_path = os.path.join(project_root, "src")
+for p in (project_root, src_path, repo_root):
+    if p not in sys.path:
+        sys.path.insert(0, p)
 
-    abstracts = []
-    for pub in data.get("publications", []):
-        # Format similar to the manual one: "Title. Author (Year). Abstract"
-        title = pub.get("title", "").strip()
-        authors = ", ".join(pub.get("authors", []))
-        year = pub.get("year", "")
-        abstract = (pub.get("abstract") or "").strip()
-        
-        if abstract:
-            entry = f"{title}. {authors} ({year}). {abstract}"
-            abstracts.append(entry)
-
-    with open(output_path, "w") as f:
-        json.dump(abstracts, f, indent=4, ensure_ascii=False)
-
-    print(f"Converted {len(abstracts)} abstracts to {output_path}")
+from data.loader import convert_corpus  # noqa: E402
 
 if __name__ == "__main__":
     convert_corpus()
