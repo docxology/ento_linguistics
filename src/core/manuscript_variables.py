@@ -37,12 +37,49 @@ def count_publications(corpus_dir: Path) -> int:
         return len(data["abstracts"])
     return 0
 
+def _fmt_stat(value) -> str:
+    """Format a numeric statistic with 4 decimals.
+
+    Args:
+        value: Numeric value or None when the statistic was not computed.
+
+    Returns:
+        Formatted string; empty string when the value is missing so that
+        absent data never renders as a fabricated 0.0000.
+    """
+    if value is None:
+        return ""
+    return f"{float(value):.4f}"
+
+
+def _fmt_p(value) -> str:
+    """Format a p-value with 4 decimals or the ``<0.0001`` reporting floor.
+
+    Args:
+        value: P-value or None when not computed.
+
+    Returns:
+        ``"<0.0001"`` for values below the 4-decimal reporting floor
+        (including exact 0.0), otherwise the 4-decimal rendering.
+    """
+    if value is None:
+        return ""
+    p = float(value)
+    if p < 1e-4:
+        return "<0.0001"
+    return f"{p:.4f}"
+
 
 def build_variable_map(
     output_data_dir: Path | None = None,
     corpus_dir: Path | None = None,
 ) -> dict[str, str]:
     """Build the complete variable map from pipeline outputs.
+
+    Reads the pipeline JSON artifacts from ``output_data_dir`` (including
+    the optional ``statistical_analysis.json``; when that artifact is
+    absent the ANOVA/pairwise tokens are simply not emitted, never a
+    KeyError) and maps them onto ``{{...}}`` manuscript tokens.
 
     Args:
         output_data_dir: Directory containing pipeline JSON outputs.
@@ -191,8 +228,65 @@ def build_variable_map(
     for var_name, term_key in term_freq_map.items():
         term_data = extracted_terms.get(term_key, {})
         variables[var_name] = str(term_data.get("frequency", 0))
-
+    variables.update(
+        build_statistical_tokens(
+            load_json(output_data_dir / "statistical_analysis.json")
+        )
+    )
     return variables
+
+
+def build_statistical_tokens(stats_artifact: dict) -> dict:
+    """Map the statistical-analysis artifact onto inferential template tokens.
+
+    Emits ANOVA_*, CORRECTION_METHOD, PAIRWISE_N_COMPARISONS, and
+    PAIRWISE_<SLUG_A>_<SLUG_B>_{T,P,P_BH,D,SIGNIFICANT} (SLUG = canonical
+    domain slug uppercased, A < B alphabetical). Shared by
+    :func:`build_variable_map` and the PDF renderer so both substitution
+    paths resolve the identical token set.
+
+    Args:
+        stats_artifact: Parsed ``statistical_analysis.json`` contents.
+
+    Returns:
+        Mapping of token names to formatted string values.
+    """
+    variables: dict = {}
+    if not stats_artifact:
+        return variables
+    anova = stats_artifact.get("anova") or {}
+    if anova:
+        variables["ANOVA_METRIC"] = str(anova.get("metric", ""))
+        variables["ANOVA_F"] = _fmt_stat(anova.get("F"))
+        variables["ANOVA_DF1"] = _fmt_stat(anova.get("df1"))
+        variables["ANOVA_DF2"] = _fmt_stat(anova.get("df2"))
+        variables["ANOVA_P"] = _fmt_p(anova.get("p"))
+        variables["ANOVA_ETA_SQUARED"] = _fmt_stat(anova.get("eta_squared"))
+
+    corrections = stats_artifact.get("corrections") or {}
+    if corrections:
+        variables["PAIRWISE_N_COMPARISONS"] = str(
+            corrections.get("n_comparisons", 0)
+        )
+        variables["CORRECTION_METHOD"] = str(corrections.get("method", ""))
+
+    # Pairwise tokens: PAIRWISE_<SLUG_A>_<SLUG_B>_{T,P,P_BH,D,SIGNIFICANT}
+    # with SLUG = canonical domain slug uppercased and A < B alphabetical
+    # (the artifact emits pairs in that order).
+    for pair in stats_artifact.get("pairwise") or []:
+        slug_a = str(pair.get("domain_a", "")).upper()
+        slug_b = str(pair.get("domain_b", "")).upper()
+        prefix = f"PAIRWISE_{slug_a}_{slug_b}"
+        variables[f"{prefix}_T"] = _fmt_stat(pair.get("t"))
+        variables[f"{prefix}_P"] = _fmt_p(pair.get("p"))
+        variables[f"{prefix}_P_BH"] = _fmt_p(pair.get("p_bh"))
+        variables[f"{prefix}_D"] = _fmt_stat(pair.get("cohens_d"))
+        variables[f"{prefix}_SIGNIFICANT"] = (
+            "yes" if pair.get("significant_bh") else "no"
+        )
+    return variables
+
+
 
 
 def fill_manuscript(

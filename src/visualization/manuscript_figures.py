@@ -1083,6 +1083,14 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                 "caption": "Domain POS-Composition Patterns: Vocabulary Structure by Domain",
                 "section": "experimental_results",
             },
+            "statistical_analysis.png": {
+                "label": "fig:statistical_analysis",
+                "caption": (
+                    "Statistical Analysis: Domain Semantic Entropy, Pairwise "
+                    "Effect Sizes, and Omnibus ANOVA"
+                ),
+                "section": "experimental_results",
+            },
         }
 
         # Dynamically register domain figures to ensure full coverage
@@ -1176,6 +1184,34 @@ def main(project_root: Optional[str] = None) -> None:
     # ── Generate figures ──────────────────────────────────────────────
     logger.info("▶ Generating figures...")
     figures = []
+
+    # ── Statistical analysis stage ────────────────────────────────────
+    # Runs after term/domain analysis (results["terms"] carries the
+    # extracted terms with domain assignments).  A statistics failure is
+    # logged and skipped — same convention as the manuscript fill stage
+    # below — but on the real corpus it must succeed end to end.
+    try:
+        from pipeline.statistics_pipeline import build_statistical_analysis
+        try:
+            from .statistical_visualization import plot_statistical_analysis
+        except (ImportError, ValueError):
+            from visualization.statistical_visualization import (
+                plot_statistical_analysis,
+            )
+
+        logger.info("▶ Building statistical analysis artifact...")
+        stats_artifact = build_statistical_analysis(results["terms"], REAL_ABSTRACTS)
+        stats_path = os.path.join(data_dir, "statistical_analysis.json")
+        with open(stats_path, "w") as f:
+            json.dump(stats_artifact, f, indent=2, default=str)
+        logger.info(
+            f"  ✅ statistical_analysis.json: {len(stats_artifact['pairwise'])} "
+            f"pairwise tests, {len(stats_artifact.get('skipped', []))} skipped"
+        )
+        fig_path = plot_statistical_analysis(stats_artifact, figure_dir)
+        figures.append(fig_path)
+    except Exception as exc:
+        logger.warning(f"⚠️  Statistical analysis stage warning: {exc}")
 
     fig_path = generate_concept_map(results, figure_dir)
     if fig_path:

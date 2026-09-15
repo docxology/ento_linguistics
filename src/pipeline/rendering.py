@@ -259,6 +259,31 @@ def _load_corpus_vars(project_root: Path) -> dict:
         vars_["CORPUS_TTR"] = "0.000"
         logger.warning("  ✗ %s NOT FOUND — corpus token stats unavailable", stats_path)
 
+    # ── Inferential statistics from the analysis stage ─────────────────
+    try:
+        from core.manuscript_variables import build_statistical_tokens
+
+        stats_analysis_path = project_root / "output" / "data" / "statistical_analysis.json"
+        if stats_analysis_path.exists():
+            with open(stats_analysis_path) as fh:
+                stats_artifact = json.load(fh)
+            stats_tokens = build_statistical_tokens(stats_artifact)
+            vars_.update(stats_tokens)
+            logger.info(
+                "  ✓ %s → %d variables (ANOVA_*/PAIRWISE_*/CORRECTION_*)",
+                stats_analysis_path.name,
+                len(stats_tokens),
+            )
+        else:
+            logger.warning(
+                "  ✗ %s NOT FOUND — inferential tokens unavailable; "
+                "run the statistics stage (scripts/02_generate_figures.py) first",
+                stats_analysis_path,
+            )
+    except ImportError:
+        logger.warning("  ✗ core.manuscript_variables import failed — inferential tokens unavailable")
+
+
     # ── Term extraction counts ─────────────────────────────────────────
     terms_path = project_root / "output" / "data" / "extracted_terms.json"
     if terms_path.exists():
