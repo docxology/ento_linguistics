@@ -6,7 +6,6 @@ illustrating entomological metaphors in scientific discourse.
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -17,6 +16,11 @@ import numpy as np
 # Set backend for headless operation
 matplotlib.use("Agg")
 
+try:
+    from ._style import STYLE_CONFIG as _PUBLICATION_STYLE
+except (ImportError, ValueError):
+    from visualization._style import STYLE_CONFIG as _PUBLICATION_STYLE
+
 __all__ = [
     "VisualizationEngine",
     "create_multi_panel_figure",
@@ -26,21 +30,17 @@ __all__ = [
 class VisualizationEngine:
     """Engine for generating publication-quality figures."""
 
-    # Publication-quality style settings (16pt minimum font floor)
+    # Publication-quality style settings (16pt minimum font floor throughout).
+    # Extends the shared sub-package style; applied only inside rc_context
+    # blocks — never globally.
     STYLE_CONFIG = {
+        **_PUBLICATION_STYLE,
         "figure.dpi": 300,
         "figure.figsize": (8, 6),
-        "font.size": 16,
-        "axes.labelsize": 16,
-        "axes.titlesize": 18,
-        "xtick.labelsize": 12,
-        "ytick.labelsize": 12,
-        "legend.fontsize": 12,
         "lines.linewidth": 1.5,
         "lines.markersize": 6,
         "axes.linewidth": 1.0,
         "grid.alpha": 0.3,
-        "savefig.dpi": 300,
         "savefig.bbox": "tight",
         "savefig.pad_inches": 0.1,
     }
@@ -70,17 +70,13 @@ class VisualizationEngine:
         self.output_dir = Path(output_dir) if output_dir else Path("output/figures")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Apply style
-        self._apply_style()
+        # Style is applied per-figure via rc_context in create_figure;
+        # no global rcParams mutation at construction time.
 
         # Get color palette
         self.colors = self.COLOR_PALETTES.get(
             color_palette, self.COLOR_PALETTES["default"]
         )
-
-    def _apply_style(self) -> None:
-        """Apply publication-quality style settings."""
-        plt.rcParams.update(self.STYLE_CONFIG)
 
     def create_figure(
         self,
@@ -103,7 +99,8 @@ class VisualizationEngine:
         if figsize is None:
             figsize = (8 * ncols, 6 * nrows)
 
-        fig, axes = plt.subplots(nrows, ncols, figsize=figsize, **kwargs)
+        with plt.rc_context(self.STYLE_CONFIG):
+            fig, axes = plt.subplots(nrows, ncols, figsize=figsize, **kwargs)
 
         # Handle single subplot case
         if nrows == 1 and ncols == 1:

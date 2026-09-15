@@ -6,10 +6,8 @@ effect sizes, confidence intervals, dashboards, and hypothesis testing.
 """
 from __future__ import annotations
 
-import os
 import tempfile
 from pathlib import Path
-from typing import Any, Dict, List
 
 import matplotlib
 matplotlib.use("Agg")
@@ -126,6 +124,22 @@ class TestStatisticalVisualizerInit:
         assert "significant" in visualizer.significance_colors
         assert "marginally_significant" in visualizer.significance_colors
         assert "not_significant" in visualizer.significance_colors
+        # Colorblind-safe palette: no red/green significance coding
+        assert visualizer.significance_colors["significant"] == "#D55E00"
+        assert visualizer.significance_colors["marginally_significant"] == "#E69F00"
+        assert visualizer.significance_colors["not_significant"] == "#0072B2"
+
+    def test_significance_figure_uses_colorblind_status_colors(
+        self, visualizer, significance_results
+    ):
+        fig = visualizer.visualize_statistical_significance(significance_results)
+        status_texts = [
+            t for t in fig.axes[0].texts
+            if t.get_text() in {"SIGNIFICANT", "NOT SIGNIFICANT"}
+        ]
+        assert status_texts, "expected a significance status label"
+        assert status_texts[0].get_color() in {"#D55E00", "#0072B2"}
+        plt.close(fig)
 
     def test_custom_figsize(self, visualizer_custom_size):
         assert visualizer_custom_size.figsize == (10, 6)
@@ -420,6 +434,35 @@ class TestCreateStatisticalDashboard:
     def test_empty_dashboard(self, visualizer):
         fig = visualizer.create_statistical_dashboard({})
         assert isinstance(fig, plt.Figure)
+        plt.close(fig)
+
+    def test_hidden_panels_carry_metric_labels(self, visualizer):
+        """Panels whose metric had no data are labelled, never anonymous."""
+        data = {"effect_sizes": {"comparison_1": 0.5}}
+        fig = visualizer.create_statistical_dashboard(data)
+        titles = [ax.get_title() for ax in fig.axes]
+        assert "Effect Sizes" in titles
+        labelled_no_data = [t for t in titles if "no data" in t]
+        assert labelled_no_data, "skipped metrics must be labelled 'no data'"
+        assert all(t for t in titles if "no data" in t)
+        plt.close(fig)
+
+    def test_font_floor_enforced(self, visualizer, dashboard_data):
+        """Every rendered text element is at least 16pt."""
+        fig = visualizer.create_statistical_dashboard(dashboard_data)
+        sizes = []
+        for ax in fig.axes:
+            sizes.append(ax.title.get_fontsize())
+            sizes.extend(t.get_fontsize() for t in ax.texts)
+            sizes.extend(
+                lab.get_fontsize()
+                for lab in ax.get_xticklabels() + ax.get_yticklabels()
+            )
+        suptitle = getattr(fig, "_suptitle", None)
+        if suptitle is not None:
+            sizes.append(suptitle.get_fontsize())
+        assert sizes
+        assert min(sizes) >= 16.0, f"sub-16pt text found: {min(sizes)}"
         plt.close(fig)
 
     def test_custom_title(self, visualizer, dashboard_data):

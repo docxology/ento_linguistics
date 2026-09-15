@@ -8,7 +8,7 @@ effect sizes, and confidence intervals.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
@@ -19,13 +19,14 @@ try:
 except ImportError:
     from concept_visualization import ConceptVisualizer
 
+try:
+    from ._style import MIN_FONT, publication_style
+except (ImportError, ValueError):
+    from visualization._style import MIN_FONT, publication_style
+
 __all__ = [
     "StatisticalVisualizer",
 ]
-
-
-# Publication-quality minimum font size (template standard)
-_MIN_FONT = 16
 
 
 class StatisticalVisualizer(ConceptVisualizer):
@@ -42,12 +43,15 @@ class StatisticalVisualizer(ConceptVisualizer):
             figsize: Default figure size for plots
         """
         super().__init__(figsize)
+        # Colorblind-safe significance palette (Okabe-Ito): vermillion for
+        # significant, orange for marginal, blue for not significant.
         self.significance_colors = {
-            "significant": "#d62728",  # Red
-            "marginally_significant": "#ff7f0e",  # Orange
-            "not_significant": "#2ca02c",  # Green
+            "significant": "#D55E00",  # Vermillion
+            "marginally_significant": "#E69F00",  # Orange
+            "not_significant": "#0072B2",  # Blue
         }
 
+    @publication_style
     def visualize_statistical_significance(
         self,
         significance_results: Dict[str, Any],
@@ -86,14 +90,18 @@ class StatisticalVisualizer(ConceptVisualizer):
                 alpha=0.7,
                 label=f"α = {threshold}",
             )
-            ax1.set_ylabel("Value", fontsize=_MIN_FONT - 2)
-            ax1.set_title("P-Value vs Significance Threshold", fontsize=_MIN_FONT, fontweight="bold")
-            ax1.legend(fontsize=max(10, _MIN_FONT - 4))
+            ax1.set_ylabel("Value", fontsize=MIN_FONT)
+            ax1.set_title("P-Value vs Significance Threshold", fontsize=MIN_FONT + 2, fontweight="bold")
+            ax1.legend(fontsize=MIN_FONT)
             ax1.grid(True, alpha=0.3)
 
             # Significance status
             is_significant = p_val < threshold
-            status_color = "green" if is_significant else "red"
+            status_color = (
+                self.significance_colors["significant"]
+                if is_significant
+                else self.significance_colors["not_significant"]
+            )
             status_text = "SIGNIFICANT" if is_significant else "NOT SIGNIFICANT"
 
             ax1.text(
@@ -102,7 +110,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 status_text,
                 ha="center",
                 va="center",
-                fontsize=_MIN_FONT,
+                fontsize=MIN_FONT,
                 fontweight="bold",
                 color=status_color,
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
@@ -120,22 +128,19 @@ class StatisticalVisualizer(ConceptVisualizer):
                 alpha=0.7,
                 edgecolor="black",
             )
-            ax2.set_ylabel("Value", fontsize=_MIN_FONT - 2)
-            ax2.set_title("Test Statistics", fontsize=_MIN_FONT, fontweight="bold")
+            ax2.set_ylabel("Value", fontsize=MIN_FONT)
+            ax2.set_title("Test Statistics", fontsize=MIN_FONT + 2, fontweight="bold")
             ax2.grid(True, alpha=0.3)
 
         # Significant patterns
         if "significant_patterns" in significance_results:
             patterns = significance_results["significant_patterns"]
             if patterns:
-                # Count pattern frequencies (simplified)
-                pattern_counts = {pattern: 1 for pattern in patterns}
-
                 ax3.bar(range(len(patterns)), [1] * len(patterns))
                 ax3.set_xticks(range(len(patterns)))
                 ax3.set_xticklabels(patterns, rotation=45, ha="right")
-                ax3.set_ylabel("Significance", fontsize=_MIN_FONT - 2)
-                ax3.set_title("Significant Patterns", fontsize=_MIN_FONT, fontweight="bold")
+                ax3.set_ylabel("Significance", fontsize=MIN_FONT)
+                ax3.set_title("Significant Patterns", fontsize=MIN_FONT + 2, fontweight="bold")
                 ax3.grid(True, alpha=0.3)
             else:
                 ax3.text(
@@ -145,10 +150,10 @@ class StatisticalVisualizer(ConceptVisualizer):
                     transform=ax3.transAxes,
                     ha="center",
                     va="center",
-                    fontsize=_MIN_FONT,
+                    fontsize=MIN_FONT,
                     style="italic",
                 )
-                ax3.set_title("Significant Patterns", fontsize=_MIN_FONT, fontweight="bold")
+                ax3.set_title("Significant Patterns", fontsize=MIN_FONT + 2, fontweight="bold")
                 ax3.axis("off")
 
         # Effect size interpretation
@@ -158,7 +163,7 @@ class StatisticalVisualizer(ConceptVisualizer):
             # Effect size categories
             categories = ["Negligible", "Small", "Medium", "Large"]
             thresholds = [0.1, 0.3, 0.5, float("inf")]
-            category_colors = ["lightgray", "lightblue", "orange", "red"]
+            category_colors = ["#BBBBBB", "#56B4E9", "#E69F00", "#D55E00"]
 
             # Determine category
             category_idx = 0
@@ -182,9 +187,9 @@ class StatisticalVisualizer(ConceptVisualizer):
                 alpha=0.7,
                 label=categories[category_idx],
             )
-            ax4.set_ylabel("Effect Size", fontsize=_MIN_FONT - 2)
-            ax4.set_title("Effect Size Magnitude", fontsize=_MIN_FONT, fontweight="bold")
-            ax4.legend(fontsize=max(10, _MIN_FONT - 4))
+            ax4.set_ylabel("Effect Size", fontsize=MIN_FONT)
+            ax4.set_title("Effect Size Magnitude", fontsize=MIN_FONT + 2, fontweight="bold")
+            ax4.legend(fontsize=MIN_FONT)
             ax4.grid(True, alpha=0.3)
 
             # Add interpretation text
@@ -194,11 +199,11 @@ class StatisticalVisualizer(ConceptVisualizer):
                 f"{categories[category_idx]}\n({effect_size:.3f})",
                 ha="center",
                 va="center",
-                fontsize=_MIN_FONT - 2,
+                fontsize=MIN_FONT,
                 fontweight="bold",
             )
 
-        plt.suptitle(title, fontsize=_MIN_FONT + 2, fontweight="bold")
+        plt.suptitle(title, fontsize=MIN_FONT + 4, fontweight="bold")
         plt.tight_layout()
 
         if filepath:
@@ -207,6 +212,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         return fig
 
+    @publication_style
     def create_correlation_matrix_plot(
         self,
         correlation_data: Dict[str, Dict[str, float]],
@@ -255,18 +261,17 @@ class StatisticalVisualizer(ConceptVisualizer):
         # Add correlation values as text
         for i in range(n_vars):
             for j in range(n_vars):
-                text = ax.text(
+                ax.text(
                     j,
                     i,
                     f"{corr_matrix[i, j]:.2f}",
                     ha="center",
                     va="center",
-                    color="black",
-                    fontsize=max(10, _MIN_FONT - 4),
+                    fontsize=MIN_FONT,
                     bbox=dict(boxstyle="round,pad=0.2", facecolor="white", alpha=0.8),
                 )
 
-        ax.set_title(title, fontsize=_MIN_FONT + 2, fontweight="bold")
+        ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         plt.tight_layout()
 
         if filepath:
@@ -275,6 +280,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         return fig
 
+    @publication_style
     def visualize_distribution_comparison(
         self,
         distribution_data: Dict[str, List[float]],
@@ -301,8 +307,8 @@ class StatisticalVisualizer(ConceptVisualizer):
         bp = ax1.boxplot(data_lists, tick_labels=distributions, patch_artist=True)
         for patch, color in zip(bp["boxes"], colors):
             patch.set_facecolor(color)
-        ax1.set_ylabel("Value", fontsize=_MIN_FONT - 2)
-        ax1.set_title("Box Plot Comparison", fontsize=_MIN_FONT, fontweight="bold")
+        ax1.set_ylabel("Value", fontsize=MIN_FONT)
+        ax1.set_title("Box Plot Comparison", fontsize=MIN_FONT + 2, fontweight="bold")
         ax1.grid(True, alpha=0.3)
 
         # Violin plots
@@ -312,9 +318,8 @@ class StatisticalVisualizer(ConceptVisualizer):
             pc.set_edgecolor("black")
             pc.set_alpha(0.7)
         ax2.set_xticks(range(1, len(distributions) + 1))
-        ax2.set_xticklabels(distributions)
-        ax2.set_ylabel("Value", fontsize=_MIN_FONT - 2)
-        ax2.set_title("Violin Plot Comparison", fontsize=_MIN_FONT, fontweight="bold")
+        ax2.set_ylabel("Value", fontsize=MIN_FONT)
+        ax2.set_title("Violin Plot Comparison", fontsize=MIN_FONT + 2, fontweight="bold")
         ax2.grid(True, alpha=0.3)
 
         # Histograms
@@ -322,10 +327,10 @@ class StatisticalVisualizer(ConceptVisualizer):
             ax3.hist(
                 data, bins=20, alpha=0.7, label=name, color=colors[i], edgecolor="black"
             )
-        ax3.set_xlabel("Value", fontsize=_MIN_FONT - 2)
-        ax3.set_ylabel("Frequency", fontsize=_MIN_FONT - 2)
-        ax3.set_title("Histogram Comparison", fontsize=_MIN_FONT, fontweight="bold")
-        ax3.legend(fontsize=max(10, _MIN_FONT - 4))
+        ax3.set_xlabel("Value", fontsize=MIN_FONT)
+        ax3.set_ylabel("Frequency", fontsize=MIN_FONT)
+        ax3.set_title("Histogram Comparison", fontsize=MIN_FONT + 2, fontweight="bold")
+        ax3.legend(fontsize=MIN_FONT)
         ax3.grid(True, alpha=0.3)
 
         # Cumulative distribution functions
@@ -333,13 +338,12 @@ class StatisticalVisualizer(ConceptVisualizer):
             sorted_data = np.sort(data)
             yvals = np.arange(len(sorted_data)) / float(len(sorted_data) - 1)
             ax4.plot(sorted_data, yvals, label=name, color=colors[i], linewidth=2)
-        ax4.set_xlabel("Value", fontsize=_MIN_FONT - 2)
-        ax4.set_ylabel("Cumulative Probability", fontsize=_MIN_FONT - 2)
-        ax4.set_title("CDF Comparison", fontsize=_MIN_FONT, fontweight="bold")
-        ax4.legend(fontsize=max(10, _MIN_FONT - 4))
+        ax4.set_xlabel("Value", fontsize=MIN_FONT)
+        ax4.set_ylabel("Cumulative Probability", fontsize=MIN_FONT)
+        ax4.set_title("CDF Comparison", fontsize=MIN_FONT + 2, fontweight="bold")
+        ax4.legend(fontsize=MIN_FONT)
         ax4.grid(True, alpha=0.3)
-
-        plt.suptitle(title, fontsize=_MIN_FONT + 2, fontweight="bold")
+        plt.suptitle(title, fontsize=MIN_FONT + 4, fontweight="bold")
         plt.tight_layout()
 
         if filepath:
@@ -348,6 +352,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         return fig
 
+    @publication_style
     def visualize_effect_sizes(
         self,
         effect_size_data: Dict[str, Dict[str, float]],
@@ -386,12 +391,12 @@ class StatisticalVisualizer(ConceptVisualizer):
             else:
                 categories.append("Large")
 
-        # Color mapping for categories
+        # Colorblind-safe magnitude palette (Okabe-Ito)
         category_colors = {
-            "Negligible": "lightgray",
-            "Small": "lightblue",
-            "Medium": "orange",
-            "Large": "red",
+            "Negligible": "#BBBBBB",
+            "Small": "#56B4E9",
+            "Medium": "#E69F00",
+            "Large": "#D55E00",
         }
 
         colors = [category_colors[cat] for cat in categories]
@@ -415,7 +420,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 f"{es:.2f}",
                 ha="left" if width >= 0 else "right",
                 va="center",
-                fontsize=max(10, _MIN_FONT - 4),
+                fontsize=MIN_FONT,
                 fontweight="bold",
             )
 
@@ -434,7 +439,7 @@ class StatisticalVisualizer(ConceptVisualizer):
             "Negligible",
             ha="center",
             va="center",
-            fontsize=8,
+            fontsize=MIN_FONT,
             style="italic",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="lightgray", alpha=0.7),
         )
@@ -444,7 +449,7 @@ class StatisticalVisualizer(ConceptVisualizer):
             "Small",
             ha="center",
             va="center",
-            fontsize=8,
+            fontsize=MIN_FONT,
             style="italic",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="lightblue", alpha=0.7),
         )
@@ -454,7 +459,7 @@ class StatisticalVisualizer(ConceptVisualizer):
             "Medium",
             ha="center",
             va="center",
-            fontsize=8,
+            fontsize=MIN_FONT,
             style="italic",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="orange", alpha=0.7),
         )
@@ -464,15 +469,15 @@ class StatisticalVisualizer(ConceptVisualizer):
             "Large",
             ha="center",
             va="center",
-            fontsize=8,
+            fontsize=MIN_FONT,
             style="italic",
             bbox=dict(boxstyle="round,pad=0.2", facecolor="red", alpha=0.7),
         )
 
         ax.set_yticks(range(len(labels)))
-        ax.set_yticklabels(labels, fontsize=max(10, _MIN_FONT - 4))
-        ax.set_xlabel("Effect Size (Cohen's d)", fontsize=_MIN_FONT - 2)
-        ax.set_title(title, fontsize=_MIN_FONT + 2, fontweight="bold")
+        ax.set_yticklabels(labels, fontsize=MIN_FONT)
+        ax.set_xlabel("Effect Size (Cohen's d)", fontsize=MIN_FONT)
+        ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         ax.grid(True, alpha=0.3)
 
         # Add legend
@@ -495,6 +500,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         return fig
 
+    @publication_style
     def plot_confidence_intervals(
         self,
         ci_data: Dict[str, Dict[str, float]],
@@ -566,14 +572,14 @@ class StatisticalVisualizer(ConceptVisualizer):
                     "*",
                     ha="center",
                     va="bottom",
-                    fontsize=16,
+                    fontsize=MIN_FONT,
                     fontweight="bold",
                 )
 
         ax.set_xticks(x_positions)
-        ax.set_xticklabels(groups, rotation=45, ha="right", fontsize=max(10, _MIN_FONT - 4))
-        ax.set_ylabel("Estimate", fontsize=_MIN_FONT - 2)
-        ax.set_title(title, fontsize=_MIN_FONT + 2, fontweight="bold")
+        ax.set_xticklabels(groups, rotation=45, ha="right", fontsize=MIN_FONT)
+        ax.set_ylabel("Estimate", fontsize=MIN_FONT)
+        ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         ax.grid(True, alpha=0.3)
 
         # Add legend
@@ -609,6 +615,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         return fig
 
+    @publication_style
     def create_statistical_dashboard(
         self,
         dashboard_data: Dict[str, Any],
@@ -629,6 +636,14 @@ class StatisticalVisualizer(ConceptVisualizer):
         axes = axes.flatten()
 
         plot_idx = 0
+        rendered = set()
+        panel_titles = {
+            "significance_results": "Statistical Significance",
+            "effect_sizes": "Effect Sizes",
+            "distributions": "Distribution Comparison",
+            "correlation_matrix": "Correlation Matrix",
+            "confidence_intervals": "Confidence Intervals",
+        }
 
         # Plot 1: Statistical significance (if available)
         if "significance_results" in dashboard_data and plot_idx < len(axes):
@@ -646,6 +661,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 axes[plot_idx].set_title("Statistical Significance")
                 axes[plot_idx].grid(True, alpha=0.3)
                 plot_idx += 1
+                rendered.add("significance_results")
 
         # Plot 2: Effect sizes (if available)
         if "effect_sizes" in dashboard_data and plot_idx < len(axes):
@@ -658,6 +674,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 axes[plot_idx].set_title("Effect Sizes")
                 axes[plot_idx].grid(True, alpha=0.3)
                 plot_idx += 1
+                rendered.add("effect_sizes")
 
         # Plot 3: Distribution comparison (if available)
         if "distributions" in dashboard_data and plot_idx < len(axes):
@@ -671,6 +688,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 axes[plot_idx].set_title("Distribution Comparison")
                 axes[plot_idx].grid(True, alpha=0.3)
                 plot_idx += 1
+                rendered.add("distributions")
 
         # Plot 4: Correlation heatmap (if available)
         if "correlation_matrix" in dashboard_data and plot_idx < len(axes):
@@ -692,6 +710,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 axes[plot_idx].set_title("Correlation Matrix")
                 plt.colorbar(im, ax=axes[plot_idx])
                 plot_idx += 1
+                rendered.add("correlation_matrix")
 
         # Plot 5: Confidence intervals (if available)
         if "confidence_intervals" in dashboard_data and plot_idx < len(axes):
@@ -714,12 +733,19 @@ class StatisticalVisualizer(ConceptVisualizer):
                 axes[plot_idx].set_title("Confidence Intervals")
                 axes[plot_idx].grid(True, alpha=0.3)
                 plot_idx += 1
+                rendered.add("confidence_intervals")
 
-        # Hide unused subplots
+        # Hide unused subplots; label every skipped panel with its metric so
+        # the dashboard never shows an anonymous empty panel.
+        pending = [
+            label for key, label in panel_titles.items() if key not in rendered
+        ]
         for i in range(plot_idx, len(axes)):
             axes[i].axis("off")
+            if i - plot_idx < len(pending):
+                axes[i].set_title(f"{pending[i - plot_idx]} — no data")
 
-        plt.suptitle(title, fontsize=_MIN_FONT + 2, fontweight="bold")
+        plt.suptitle(title, fontsize=MIN_FONT + 4, fontweight="bold")
         plt.tight_layout()
 
         if filepath:
@@ -728,6 +754,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         return fig
 
+    @publication_style
     def visualize_hypothesis_testing(
         self,
         hypothesis_results: List[Dict[str, Any]],
@@ -762,7 +789,7 @@ class StatisticalVisualizer(ConceptVisualizer):
         colors = ["red" if sig else "blue" for sig in significances]
         sizes = [abs(es) * 100 + 50 for es in effect_sizes]  # Size based on effect size
 
-        scatter = ax.scatter(
+        ax.scatter(
             p_values, effect_sizes, c=colors, s=sizes, alpha=0.7, edgecolors="black"
         )
 
@@ -779,13 +806,13 @@ class StatisticalVisualizer(ConceptVisualizer):
                     (p_val, es),
                     xytext=(5, 5),
                     textcoords="offset points",
-                    fontsize=8,
+                    fontsize=MIN_FONT,
                     bbox=dict(boxstyle="round,pad=0.2", facecolor="yellow", alpha=0.8),
                 )
 
-        ax.set_xlabel("P-Value", fontsize=_MIN_FONT - 2)
-        ax.set_ylabel("Effect Size", fontsize=_MIN_FONT - 2)
-        ax.set_title(title, fontsize=_MIN_FONT + 2, fontweight="bold")
+        ax.set_xlabel("P-Value", fontsize=MIN_FONT)
+        ax.set_ylabel("Effect Size", fontsize=MIN_FONT)
+        ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         ax.set_xscale("log")  # Log scale for p-values
         ax.grid(True, alpha=0.3)
 

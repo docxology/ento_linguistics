@@ -45,10 +45,15 @@ class FigureManager:
         """Initialize figure manager.
 
         Args:
-            registry_file: Path to figure registry file
+            registry_file: Path to figure registry file. Defaults to
+                ``<project_root>/output/figures/figure_registry.json`` where
+                the project root is derived from this module's location
+                (``src/visualization/``), never from the current working
+                directory.
         """
         if registry_file is None:
-            registry_file = "output/figures/figure_registry.json"
+            project_root = Path(__file__).resolve().parents[2]
+            registry_file = project_root / "output" / "figures" / "figure_registry.json"
 
         self.registry_file = Path(registry_file)
         self.registry_file.parent.mkdir(parents=True, exist_ok=True)
@@ -66,6 +71,11 @@ class FigureManager:
     ) -> FigureMetadata:
         """Register a figure.
 
+        Duplicate labels never silently overwrite a different figure: if the
+        label is already taken by another filename, a numeric suffix
+        (``_2``, ``_3``, ...) is appended and a warning is logged. Re-registering
+        the same filename under the same label updates the entry in place.
+
         Args:
             filename: Figure filename
             caption: Figure caption
@@ -75,13 +85,26 @@ class FigureManager:
             **kwargs: Additional parameters
 
         Returns:
-            FigureMetadata object
+            FigureMetadata object (with the effective, possibly suffixed, label)
         """
         # Generate label if not provided
         if label is None:
             base_name = Path(filename).stem
             label = f"fig:{base_name}"
 
+        # Duplicate-label policy: never silently clobber a different figure
+        existing = self.figures.get(label)
+        if existing is not None and existing.filename != filename:
+            suffix = 2
+            base_label = label
+            while f"{base_label}_{suffix}" in self.figures:
+                suffix += 1
+            new_label = f"{base_label}_{suffix}"
+            logger.warning(
+                f"Duplicate figure label '{label}' for different file "
+                f"({filename} vs {existing.filename}); using '{new_label}'"
+            )
+            label = new_label
         # Create metadata
         metadata = FigureMetadata(
             filename=filename,
@@ -178,18 +201,42 @@ class FigureManager:
         return results
 
     def _load_registry(self) -> None:
-        """Load figure registry from file."""
-        if self.registry_file.exists():
+        """Load figure registry from file, skipping corrupt entries.
+
+        A file-level parse failure starts an empty registry with a warning; a
+        single bad entry is skipped with a warning while every well-formed
+        entry is preserved.
+        """
+        if not self.registry_file.exists():
+            return
+        try:
+            with open(self.registry_file, "r") as f:
+                data = json.load(f)
+        except Exception:
+            self.figures = {}
+            logger.warning(
+                f"Figure registry unreadable ({self.registry_file}); "
+                "starting fresh"
+            )
+            return
+
+        skipped = 0
+        for label, fig_data in data.items():
             try:
-                with open(self.registry_file, "r") as f:
-                    data = json.load(f)
-                    for label, fig_data in data.items():
-                        self.figures[label] = FigureMetadata(**fig_data)
-                logger.debug(f"Loaded {len(self.figures)} figures from registry")
+                self.figures[label] = FigureMetadata(**fig_data)
             except Exception:
-                # Start fresh if registry is corrupted
-                self.figures = {}
-                logger.warning("Figure registry corrupted, starting fresh")
+                skipped += 1
+                logger.warning(
+                    f"Skipping corrupt registry entry '{label}': "
+                    f"{fig_data!r}"
+                )
+        if skipped:
+            logger.warning(
+                f"Skipped {skipped} corrupt registry entries; "
+                f"loaded {len(self.figures)} valid figures"
+            )
+        else:
+            logger.debug(f"Loaded {len(self.figures)} figures from registry")
 
     def _save_registry(self) -> None:
         """Save figure registry to file."""

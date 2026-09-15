@@ -6,7 +6,6 @@ import json
 import tempfile
 
 import matplotlib
-import numpy as np
 import pytest
 
 matplotlib.use("Agg")  # Use non-interactive backend for testing
@@ -14,27 +13,12 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-# Check if networkx is available (required for concept visualization)
-try:
-    import networkx as nx
+import networkx as nx
 
-    NETWORKX_AVAILABLE = True
-except ImportError:
-    NETWORKX_AVAILABLE = False
-
-# Only import visualization classes if dependencies are available
-if NETWORKX_AVAILABLE:
-    from visualization.concept_visualization import ConceptVisualizer
-    from analysis.conceptual_mapping import Concept, ConceptMap
-else:
-    ConceptVisualizer = None
-    ConceptMap = None
-    Concept = None
+from visualization.concept_visualization import ConceptVisualizer
+from analysis.conceptual_mapping import Concept, ConceptMap
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestConceptVisualizer:
     """Test ConceptVisualizer functionality."""
 
@@ -163,16 +147,79 @@ class TestConceptVisualizer:
     ) -> None:
         """Test concept color retrieval."""
         color = visualizer._get_concept_color("colony_organization", sample_concept_map)
-        # Should be one of the domain colors (power_and_labor is first in iteration)
-        assert color in [
-            "#1f77b4",
-            "#2ca02c",
-            "#7f7f7f",
-        ]  # unit_of_individuality, power_and_labor, or default
+        # Deterministic primary domain: sorted(domains)[0] == "power_and_labor"
+        assert color == visualizer.DOMAIN_COLORS["power_and_labor"]
 
         # Test unknown concept
         color = visualizer._get_concept_color("unknown_concept", sample_concept_map)
         assert color == "#7f7f7f"  # Default gray
+
+    def test_primary_domain_selection_deterministic(
+        self, sample_concept_map: ConceptMap
+    ) -> None:
+        """Primary-domain pick is stable regardless of set iteration order."""
+        viz = ConceptVisualizer()
+        cmap_a = ConceptMap()
+        c_a = Concept(
+            name="x", description="d", terms=set(),
+            domains={"unit_of_individuality", "power_and_labor"},
+        )
+        cmap_a.concepts["x"] = c_a
+        cmap_b = ConceptMap()
+        c_b = Concept(
+            name="x", description="d", terms=set(),
+            domains={"power_and_labor", "unit_of_individuality"},
+        )
+        cmap_b.concepts["x"] = c_b
+        color_a = viz._get_concept_color("x", cmap_a)
+        color_b = viz._get_concept_color("x", cmap_b)
+        assert color_a == color_b
+        # sorted({"unit_of_individuality", "power_and_labor"})[0] is power_and_labor
+        assert color_a == viz.DOMAIN_COLORS["power_and_labor"]
+
+    def test_font_floor_enforced_on_figure_text(self, tmp_path: Path) -> None:
+        """Every text element on produced figures is at least 16pt."""
+        viz = ConceptVisualizer()
+        cmap = ConceptMap()
+        c = Concept(
+            name="foraging", description="food retrieval",
+            terms={"scout", "trail"},
+            domains={"behavior_and_identity", "economics"},
+        )
+        cmap.concepts["foraging"] = c
+        cmap.add_relationship("foraging", "foraging", 0.0)
+
+        figures = [
+            viz.visualize_concept_map(cmap),
+            viz.visualize_concept_hierarchy(
+                {"centrality_scores": {"a": 2, "b": 1},
+                 "core_concepts": ["a"], "peripheral_concepts": ["b"]}
+            ),
+            viz.create_domain_patterns_grid(terms={
+                "drone": type("T", (), {
+                    "text": "drone", "frequency": 5,
+                    "domains": ["sex_and_reproduction"], "pos_tags": ["NN"],
+                })(),
+            }),
+        ]
+        for fig in figures:
+            assert isinstance(fig, plt.Figure)
+            sizes = []
+            for ax in fig.axes:
+                sizes.append(ax.title.get_fontsize())
+                sizes.append(ax.xaxis.label.get_fontsize())
+                sizes.append(ax.yaxis.label.get_fontsize())
+                sizes.extend(t.get_fontsize() for t in ax.texts)
+                sizes.extend(
+                    lab.get_fontsize()
+                    for lab in ax.get_xticklabels() + ax.get_yticklabels()
+                )
+            suptitle = getattr(fig, "_suptitle", None)
+            if suptitle is not None:
+                sizes.append(suptitle.get_fontsize())
+            assert sizes, "expected text elements on the figure"
+            assert min(sizes) >= 16.0, f"sub-16pt text found: {min(sizes)}"
+            plt.close(fig)
 
     def test_figure_saving(self, visualizer: ConceptVisualizer, tmp_path: Path) -> None:
         """Test figure saving functionality."""
@@ -377,9 +424,6 @@ def populated_concept_map():
     return concept_map
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestVisualizeConceptEvolution:
     """Tests for visualize_concept_evolution."""
 
@@ -440,9 +484,6 @@ class TestVisualizeConceptEvolution:
             plt.close(fig)
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestCreateStatisticalSummaryPlot:
     """Tests for create_statistical_summary_plot."""
 
@@ -505,9 +546,6 @@ class TestCreateStatisticalSummaryPlot:
             plt.close(fig)
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestExportVisualizationMetadataCoverage:
     """Extended tests for export_visualization_metadata."""
 
@@ -534,9 +572,6 @@ class TestExportVisualizationMetadataCoverage:
             assert metadata_file.exists()
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestCreateInteractiveConceptNetwork:
     """Tests for create_interactive_concept_network (fallback path)."""
 
@@ -552,9 +587,6 @@ class TestCreateInteractiveConceptNetwork:
         plt.close("all")
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestCreateFallbackCooccurrencePlot:
     """Tests for _create_fallback_cooccurrence_plot."""
 
@@ -573,9 +605,6 @@ class TestCreateFallbackCooccurrencePlot:
         plt.close(fig)
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestVisualizeConceptHierarchyExtended:
     """Extended tests for visualize_concept_hierarchy branches."""
 
@@ -607,7 +636,7 @@ class TestVisualizeConceptHierarchyExtended:
         }
         with tempfile.TemporaryDirectory() as tmp:
             filepath = Path(tmp) / "hierarchy.png"
-            fig = visualizer.visualize_concept_hierarchy(hierarchy, filepath=filepath)
+            visualizer.visualize_concept_hierarchy(hierarchy, filepath=filepath)
             assert filepath.exists()
 
     def test_empty_hierarchy(self):
@@ -618,9 +647,6 @@ class TestVisualizeConceptHierarchyExtended:
         plt.close(fig)
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestVisualizeTerminologyNetworkBranches:
     """Test uncovered branches in visualize_terminology_network."""
 
@@ -672,9 +698,6 @@ class TestVisualizeTerminologyNetworkBranches:
             plt.close(fig)
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestVisualizeTermCooccurrence:
     """Tests for visualize_term_cooccurrence method."""
 
@@ -730,9 +753,6 @@ class TestVisualizeTermCooccurrence:
         plt.close(fig)
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestCreateDomainOverlapHeatmap:
     """Tests for create_domain_overlap_heatmap method."""
 
@@ -774,9 +794,6 @@ class TestCreateDomainOverlapHeatmap:
         plt.close(fig)
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestAdditionalVisualizerEdgeCases:
     """Additional edge case tests for ConceptVisualizer."""
 
@@ -832,9 +849,6 @@ class TestAdditionalVisualizerEdgeCases:
             plt.close(fig)
 
 
-@pytest.mark.skipif(
-    not NETWORKX_AVAILABLE, reason="networkx not available for visualization tests"
-)
 class TestConceptVisualizerFallbackPaths:
     """Cover empty-data and fallback branches to raise coverage above 80%."""
 
@@ -920,7 +934,6 @@ class TestConceptVisualizerFallbackPaths:
         }
         viz._create_fallback_cooccurrence_plot(matrix, ax, "Pairs")
         plt.close(fig)
-
     def test_get_concept_color_3d_no_domain(self):
         """_get_concept_color_3d returns gray for concepts without domains."""
         viz = ConceptVisualizer()
@@ -982,5 +995,68 @@ class TestConceptVisualizerFallbackPaths:
             ),
         }
         fig = viz.create_domain_patterns_grid(terms=terms)
+        assert isinstance(fig, plt.Figure)
+        plt.close(fig)
+
+
+
+class TestDomainComparisonWithTerms:
+    """Cover the term-derived entropy and CACE branches of
+    create_domain_comparison_plot (previously uncovered chunks)."""
+
+    @staticmethod
+    def _term(name, domains, frequency=5, entropy=0.8, contexts=None):
+        from types import SimpleNamespace
+
+        return SimpleNamespace(
+            text=name,
+            domains=list(domains),
+            frequency=frequency,
+            semantic_entropy=entropy,
+            contexts=contexts or [f"The {name} organizes the colony."],
+            pos_tags=["NN"],
+        )
+
+    def test_domain_comparison_with_real_terms(self, tmp_path: Path) -> None:
+        """Panels 1,1 and 2,0/2,1 derive values from the terms dict."""
+        viz = ConceptVisualizer()
+        terms = {
+            "queen": self._term("queen", ["power_and_labor", "sex_and_reproduction"]),
+            "worker": self._term("worker", ["power_and_labor", "behavior_and_identity"]),
+            "colony": self._term("colony", ["unit_of_individuality"]),
+            "allocation": self._term("allocation", ["economics"]),
+            "kinship": self._term("kinship", ["kin_and_relatedness"]),
+        }
+        domain_data = {d: {"term_count": 1, "avg_confidence": 0.5,
+                           "total_frequency": 5}
+                       for d in sorted({d for t in terms.values() for d in t.domains})}
+        filepath = tmp_path / "domain_comparison.png"
+        fig = viz.create_domain_comparison_plot(
+            domain_data, filepath=filepath, terms=terms
+        )
+        assert isinstance(fig, plt.Figure)
+        assert filepath.exists()
+        plt.close(fig)
+
+    def test_domain_comparison_cace_fallback_on_import_failure(
+        self, tmp_path: Path
+    ) -> None:
+        """CACE panel falls back to confidence when scoring is unavailable."""
+        viz = ConceptVisualizer()
+        domain_data = {
+            "unit_of_individuality": {"term_count": 3, "avg_confidence": 0.7,
+                                      "total_frequency": 9},
+        }
+        fig = viz.create_domain_comparison_plot(domain_data, terms=None)
+        assert isinstance(fig, plt.Figure)
+        plt.close(fig)
+
+    def test_domain_overlap_heatmap_underscore_pairs(self) -> None:
+        """Pair keys split on the single-underscore two-part form."""
+        viz = ConceptVisualizer()
+        overlaps = {
+            "behavioral_morphological": {"overlap_percentage": 12.5},
+        }
+        fig = viz.create_domain_overlap_heatmap(overlaps)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)

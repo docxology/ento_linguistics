@@ -23,7 +23,7 @@ visualization engine for the Ento-Linguistic research pipeline.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,12 +40,29 @@ try:
 except (ImportError, ValueError):
     from analysis.conceptual_mapping import ConceptMap
 
+try:
+    from ._style import (
+        CANONICAL_DOMAINS,
+        DOMAIN_PALETTE,
+        FALLBACK_COLOR,
+        MIN_FONT,
+        primary_domain,
+        publication_style,
+    )
+except (ImportError, ValueError):
+    from visualization._style import (
+        CANONICAL_DOMAINS,
+        DOMAIN_PALETTE,
+        FALLBACK_COLOR,
+        MIN_FONT,
+        primary_domain,
+        publication_style,
+    )
+
 __all__ = [
     "ConceptVisualizer",
 ]
 
-# Publication-quality minimum font size (template standard)
-_MIN_FONT = 16
 
 class ConceptVisualizer:
     """Visualize conceptual mappings and terminology networks.
@@ -54,15 +71,8 @@ class ConceptVisualizer:
     of conceptual structures, terminology relationships, and domain interactions.
     """
 
-    # Color scheme for Ento-Linguistic domains
-    DOMAIN_COLORS = {
-        "unit_of_individuality": "#1f77b4",  # Blue
-        "behavior_and_identity": "#ff7f0e",  # Orange
-        "power_and_labor": "#2ca02c",  # Green
-        "sex_and_reproduction": "#d62728",  # Red
-        "kin_and_relatedness": "#9467bd",  # Purple
-        "economics": "#8c564b",  # Brown
-    }
+    # Single shared domain palette keyed by canonical domain names
+    DOMAIN_COLORS = DOMAIN_PALETTE
 
     def __init__(self, figsize: Tuple[int, int] = (12, 8)):
         """Initialize concept visualizer.
@@ -71,8 +81,10 @@ class ConceptVisualizer:
             figsize: Default figure size for plots
         """
         self.figsize = figsize
-        plt.style.use("default")  # Use matplotlib default style
+        # Style is applied per-figure via the publication_style decorator;
+        # no global rcParams or style mutation here.
 
+    @publication_style
     def visualize_concept_map(
         self,
         concept_map: ConceptMap,
@@ -98,14 +110,13 @@ class ConceptVisualizer:
         Returns:
             Matplotlib figure object
         """
-        _MIN_FONT = 16  # Template visualization standard
 
         fig, ax = plt.subplots(figsize=(14, 10))
 
         if not HAS_NETWORKX:
             ax.text(0.5, 0.5, "networkx not available\nInstall with: pip install networkx",
-                    ha="center", va="center", transform=ax.transAxes, fontsize=_MIN_FONT)
-            ax.set_title(title, fontsize=_MIN_FONT + 2, fontweight="bold")
+                    ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT)
+            ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
             ax.axis("off")
             if filepath:
                 fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -145,7 +156,7 @@ class ConceptVisualizer:
         if len(G.nodes()) == 0:
             ax.text(0.5, 0.5, "No concepts in map",
                     ha="center", va="center", transform=ax.transAxes,
-                    fontsize=_MIN_FONT)
+                    fontsize=MIN_FONT)
             ax.axis("off")
             return fig
 
@@ -173,7 +184,7 @@ class ConceptVisualizer:
             edge_labels = {(u, v): f"{d['weight']:.2f}" for u, v, d in G.edges(data=True)}
             nx.draw_networkx_edge_labels(
                 G, pos, edge_labels=edge_labels,
-                font_size=max(9, _MIN_FONT - 6),
+                font_size=MIN_FONT,
                 font_color="#666666", ax=ax,
             )
 
@@ -198,7 +209,7 @@ class ConceptVisualizer:
         # ── Draw labels ──────────────────────────────────────────────
         nx.draw_networkx_labels(
             G, pos, labels=display_labels,
-            font_size=max(11, _MIN_FONT - 4), font_weight="bold",
+            font_size=MIN_FONT, font_weight="bold",
             font_color="#1a1a1a", ax=ax,
         )
 
@@ -211,7 +222,7 @@ class ConceptVisualizer:
                 xy=(x, y), xytext=(0, -18),
                 textcoords="offset points",
                 ha="center", va="top",
-                fontsize=max(9, _MIN_FONT - 6),
+                fontsize=MIN_FONT,
                 fontstyle="italic",
                 color="#555555",
             )
@@ -225,7 +236,7 @@ class ConceptVisualizer:
         total_terms = sum(term_counts)
         ax.set_title(
             title,
-            fontsize=_MIN_FONT + 2, fontweight="bold", pad=20,
+            fontsize=MIN_FONT + 2, fontweight="bold", pad=20,
         )
         ax.text(
             0.5, 1.01,
@@ -233,7 +244,7 @@ class ConceptVisualizer:
             f"{total_terms} total terms",
             transform=ax.transAxes,
             ha="center", va="bottom",
-            fontsize=max(10, _MIN_FONT - 4),
+            fontsize=MIN_FONT,
             color="#666666", fontstyle="italic",
         )
 
@@ -263,11 +274,13 @@ class ConceptVisualizer:
         if concept_name in concept_map.concepts:
             domains = concept_map.concepts[concept_name].domains
             if domains:
-                # Use the first domain's color
-                primary_domain = next(iter(domains))
-                return self.DOMAIN_COLORS.get(primary_domain, "#7f7f7f")
+                # Deterministic primary domain: lexicographically smallest,
+                # independent of set iteration order and PYTHONHASHSEED.
+                domain = primary_domain(domains)
+                return self.DOMAIN_COLORS.get(domain, FALLBACK_COLOR)
 
-        return "#7f7f7f"  # Default gray
+        return FALLBACK_COLOR  # Default gray
+
 
     def _add_domain_legend(self, ax: plt.Axes) -> None:
         """Add a legend for domain colors.
@@ -291,6 +304,7 @@ class ConceptVisualizer:
             title="Ento-Linguistic Domains",
         )
 
+    @publication_style
     def visualize_terminology_network(
         self,
         terms: Dict[str, Any],
@@ -313,8 +327,8 @@ class ConceptVisualizer:
 
         if not HAS_NETWORKX:
             ax.text(0.5, 0.5, "networkx not available\nInstall with: pip install networkx",
-                    ha="center", va="center", transform=ax.transAxes, fontsize=12)
-            ax.set_title(title, fontsize=14, fontweight="bold")
+                    ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT)
+            ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
             ax.axis("off")
             if filepath:
                 fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -384,7 +398,10 @@ class ConceptVisualizer:
                 G, pos, width=edge_weights, edge_color="gray", alpha=0.5, ax=ax
             )
 
-        # Draw labels (only for important terms)
+        # Draw labels (only for important terms).
+        # Density tradeoff: large corpora yield hundreds of nodes; labelling
+        # every node would be illegible, so only the top-20 terms by corpus
+        # frequency are labelled — at the enforced 16pt publication floor.
         important_terms = sorted(
             G.nodes(), key=lambda x: G.nodes[x]["frequency"], reverse=True
         )[
@@ -393,12 +410,20 @@ class ConceptVisualizer:
 
         label_pos = {term: pos[term] for term in important_terms if term in pos}
         label_dict = {term: term for term in label_pos}
-        nx.draw_networkx_labels(G, label_pos, labels=label_dict, font_size=8, ax=ax)
+        nx.draw_networkx_labels(G, label_pos, labels=label_dict, font_size=MIN_FONT, ax=ax)
 
         # Add legend
         self._add_domain_legend(ax)
 
-        ax.set_title(title, fontsize=14, fontweight="bold")
+        ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
+        n_labelled = len(label_dict)
+        ax.text(
+            0.5, 1.005,
+            f"Labels: top-{n_labelled} terms by frequency "
+            f"(of {G.number_of_nodes()} nodes; density tradeoff for legibility)",
+            transform=ax.transAxes, ha="center", va="bottom",
+            fontsize=MIN_FONT, color="#666666", fontstyle="italic",
+        )
         ax.axis("off")
 
         plt.tight_layout()
@@ -421,12 +446,14 @@ class ConceptVisualizer:
         """
         domains = G.nodes[term].get("domains", [])
         if domains:
-            # Use primary domain color
-            primary_domain = domains[0]
-            return self.DOMAIN_COLORS.get(primary_domain, "#7f7f7f")
+            # Deterministic primary domain: lexicographically smallest,
+            # independent of set iteration order and PYTHONHASHSEED.
+            domain = primary_domain(domains)
+            return self.DOMAIN_COLORS.get(domain, FALLBACK_COLOR)
 
-        return "#7f7f7f"  # Default gray
+        return FALLBACK_COLOR  # Default gray
 
+    @publication_style
     def create_domain_comparison_plot(
         self,
         domain_data: Dict[str, Dict[str, Any]],
@@ -449,9 +476,7 @@ class ConceptVisualizer:
             terms: Full term dict (used to derive ambiguity & bridging counts)
 
         Returns:
-            Matplotlib Figure
         """
-        _MIN_FONT = 16
 
         domains = list(domain_data.keys())
         short_labels = [
@@ -463,7 +488,7 @@ class ConceptVisualizer:
         fig, axes = plt.subplots(3, 2, figsize=(16, 18))
         fig.suptitle(
             "Ento-Linguistic Domain Comparison",
-            fontsize=max(20, _MIN_FONT + 2),
+            fontsize=MIN_FONT + 4,
             fontweight="bold",
             y=1.01,
         )
@@ -475,14 +500,14 @@ class ConceptVisualizer:
             for bar, v in zip(bars, values):
                 ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(),
                         f"{v:{fmt}}", ha="center", va="bottom",
-                        fontsize=max(9, _MIN_FONT - 5), fontweight="bold")
+                        fontsize=MIN_FONT, fontweight="bold")
             ax.set_xticks(range(len(domains)))
-            ax.set_xticklabels(short_labels, fontsize=max(9, _MIN_FONT - 5), rotation=30, ha="right")
-            ax.set_ylabel(ylabel, fontsize=_MIN_FONT - 2)
-            ax.set_title(title, fontsize=_MIN_FONT, fontweight="bold", pad=6)
+            ax.set_xticklabels(short_labels, fontsize=MIN_FONT, rotation=30, ha="right")
+            ax.set_ylabel(ylabel, fontsize=MIN_FONT)
+            ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold", pad=6)
             ax.spines["top"].set_visible(False)
             ax.spines["right"].set_visible(False)
-            ax.tick_params(axis="y", labelsize=max(9, _MIN_FONT - 5))
+            ax.tick_params(axis="y", labelsize=MIN_FONT)
 
         # Panel (0,0): term counts
         term_counts = [domain_data[d].get("term_count", 0) for d in domains]
@@ -590,6 +615,7 @@ class ConceptVisualizer:
 
         return fig
 
+    @publication_style
     def create_domain_overview_grid(
         self,
         domain_data: Dict[str, Dict[str, Any]],
@@ -610,15 +636,7 @@ class ConceptVisualizer:
         Returns:
             Matplotlib Figure
         """
-        _MIN_FONT = 14
-        valid_domains = [
-            "unit_of_individuality",
-            "behavior_and_identity",
-            "power_and_labor",
-            "sex_and_reproduction",
-            "kin_and_relatedness",
-            "economics",
-        ]
+        valid_domains = list(CANONICAL_DOMAINS)
         domain_titles = [
             "Unit of Individuality",
             "Behavior & Identity",
@@ -631,7 +649,7 @@ class ConceptVisualizer:
         fig, axes = plt.subplots(3, 2, figsize=(18, 22))
         fig.suptitle(
             "Domain Terminology Overview: Top Terms by Frequency & Semantic Entropy",
-            fontsize=max(18, _MIN_FONT + 2), fontweight="bold", y=1.005,
+            fontsize=MIN_FONT + 4, fontweight="bold", y=1.005,
         )
 
         all_axes = axes.flatten()
@@ -651,7 +669,7 @@ class ConceptVisualizer:
                 )
                 global_max_entropy = max(global_max_entropy, max_e)
 
-        cmap = plt.cm.get_cmap("YlOrRd")
+        cmap = plt.colormaps["YlOrRd"]
 
         for idx, (domain, title) in enumerate(zip(valid_domains, domain_titles)):
             ax = all_axes[idx]
@@ -663,8 +681,8 @@ class ConceptVisualizer:
             ]
             if not domain_terms:
                 ax.text(0.5, 0.5, "No terms extracted", ha="center", va="center",
-                        transform=ax.transAxes, fontsize=_MIN_FONT, color="#888")
-                ax.set_title(title, fontsize=_MIN_FONT, fontweight="bold",
+                        transform=ax.transAxes, fontsize=MIN_FONT, color="#888")
+                ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold",
                              color=domain_color)
                 ax.axis("off")
                 continue
@@ -688,15 +706,15 @@ class ConceptVisualizer:
             for bar, f in zip(bars, freqs):
                 ax.text(bar.get_width() + 0.3, bar.get_y() + bar.get_height() / 2,
                         str(f), va="center", ha="left",
-                        fontsize=max(8, _MIN_FONT - 4), fontweight="bold")
+                        fontsize=MIN_FONT, fontweight="bold")
 
             ax.set_yticks(range(len(names)))
-            ax.set_yticklabels(names, fontsize=max(9, _MIN_FONT - 3))
+            ax.set_yticklabels(names, fontsize=MIN_FONT)
             ax.invert_yaxis()
-            ax.set_xlabel("Corpus Frequency", fontsize=_MIN_FONT - 2)
+            ax.set_xlabel("Corpus Frequency", fontsize=MIN_FONT)
             ax.set_title(
                 f"{title}  ({len(domain_terms)} terms)",
-                fontsize=_MIN_FONT, fontweight="bold", color=domain_color, pad=6,
+                fontsize=MIN_FONT + 2, fontweight="bold", color=domain_color, pad=6,
             )
             ax.spines["top"].set_visible(False)
             ax.spines["right"].set_visible(False)
@@ -718,6 +736,7 @@ class ConceptVisualizer:
 
         return fig
 
+    @publication_style
     def create_domain_patterns_grid(
         self,
         terms: Dict[str, Any],
@@ -736,15 +755,7 @@ class ConceptVisualizer:
         Returns:
             Matplotlib Figure
         """
-        _MIN_FONT = 14
-        valid_domains = [
-            "unit_of_individuality",
-            "behavior_and_identity",
-            "power_and_labor",
-            "sex_and_reproduction",
-            "kin_and_relatedness",
-            "economics",
-        ]
+        valid_domains = list(CANONICAL_DOMAINS)
         domain_titles = [
             "Unit of Individuality",
             "Behavior & Identity",
@@ -757,7 +768,7 @@ class ConceptVisualizer:
         fig, axes = plt.subplots(3, 2, figsize=(16, 20))
         fig.suptitle(
             "Domain Vocabulary Composition: Part-of-Speech Patterns",
-            fontsize=max(18, _MIN_FONT + 2), fontweight="bold", y=1.005,
+            fontsize=MIN_FONT + 4, fontweight="bold", y=1.005,
         )
         all_axes = axes.flatten()
 
@@ -775,8 +786,8 @@ class ConceptVisualizer:
             ]
             if not domain_terms:
                 ax.text(0.5, 0.5, "No terms", ha="center", va="center",
-                        transform=ax.transAxes, fontsize=_MIN_FONT, color="#888")
-                ax.set_title(title, fontsize=_MIN_FONT, fontweight="bold",
+                        transform=ax.transAxes, fontsize=MIN_FONT, color="#888")
+                ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold",
                              color=domain_color)
                 ax.axis("off")
                 continue
@@ -817,19 +828,19 @@ class ConceptVisualizer:
                 sizes, labels=labels, colors=colors,
                 autopct="%1.0f%%", startangle=90,
                 wedgeprops=wedge_props,
-                textprops={"fontsize": max(9, _MIN_FONT - 4)},
+                textprops={"fontsize": MIN_FONT},
             )
             for at in autotexts:
-                at.set_fontsize(max(8, _MIN_FONT - 5))
+                at.set_fontsize(MIN_FONT)
                 at.set_fontweight("bold")
 
             # Centre annotation
             n_terms = len(domain_terms)
             ax.text(0, 0, f"{n_terms}\nterms", ha="center", va="center",
-                    fontsize=max(9, _MIN_FONT - 3), fontweight="bold", color="#333")
+                    fontsize=MIN_FONT, fontweight="bold", color="#333")
 
             ax.set_title(
-                title, fontsize=_MIN_FONT, fontweight="bold",
+                title, fontsize=MIN_FONT + 2, fontweight="bold",
                 color=domain_color, pad=10,
             )
 
@@ -841,6 +852,7 @@ class ConceptVisualizer:
 
         return fig
 
+    @publication_style
     def visualize_concept_hierarchy(
         self, concept_hierarchy: Dict[str, Any], filepath: Optional[Path] = None
     ) -> plt.Figure:
@@ -861,7 +873,6 @@ class ConceptVisualizer:
         Returns:
             Matplotlib Figure
         """
-        _MIN_FONT = 16
         from matplotlib.patches import Patch
 
         hierarchy_data = concept_hierarchy.get("centrality_scores", {})
@@ -872,14 +883,14 @@ class ConceptVisualizer:
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, max(7, len(hierarchy_data) * 0.45 + 3)))
         fig.suptitle(
             "Ento-Linguistic Concept Hierarchy",
-            fontsize=max(20, _MIN_FONT + 2), fontweight="bold", y=1.02,
+            fontsize=MIN_FONT + 4, fontweight="bold", y=1.02,
         )
 
         if not hierarchy_data:
             for ax in (ax1, ax2):
                 ax.text(0.5, 0.5, "No hierarchy data available",
                         ha="center", va="center", transform=ax.transAxes,
-                        fontsize=_MIN_FONT)
+                        fontsize=MIN_FONT)
                 ax.axis("off")
             if filepath:
                 fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -909,13 +920,13 @@ class ConceptVisualizer:
             ax1.text(bar.get_width() + max(0.1, max(scores) * 0.01),
                      bar.get_y() + bar.get_height() / 2,
                      f"{score:.1f}", va="center", ha="left",
-                     fontsize=max(9, _MIN_FONT - 5), fontweight="bold")
+                     fontsize=MIN_FONT, fontweight="bold")
 
         ax1.set_yticks(y_pos)
-        ax1.set_yticklabels(concepts, fontsize=max(9, _MIN_FONT - 4))
+        ax1.set_yticklabels(concepts, fontsize=MIN_FONT)
         ax1.invert_yaxis()
-        ax1.set_xlabel("Centrality Score (Connection Count)", fontsize=_MIN_FONT - 2)
-        ax1.set_title("Concept Centrality Ranking", fontsize=_MIN_FONT,
+        ax1.set_xlabel("Centrality Score (Connection Count)", fontsize=MIN_FONT)
+        ax1.set_title("Concept Centrality Ranking", fontsize=MIN_FONT + 2,
                       fontweight="bold", pad=8)
         ax1.spines["top"].set_visible(False)
         ax1.spines["right"].set_visible(False)
@@ -926,7 +937,7 @@ class ConceptVisualizer:
             Patch(facecolor="#4e79a7", alpha=0.82, label="Other"),
         ]
         ax1.legend(handles=legend_elements, loc="lower right",
-                   fontsize=max(9, _MIN_FONT - 5))
+                   fontsize=MIN_FONT)
 
         # ── Panel 2: Centrality vs Term-count scatter ─────────────────
         sc_x = scores  # centrality on x
@@ -943,17 +954,17 @@ class ConceptVisualizer:
             ax2.annotate(
                 label, (x, y),
                 xytext=(5, 3), textcoords="offset points",
-                fontsize=max(8, _MIN_FONT - 6), color="#333",
+                fontsize=MIN_FONT, color="#333",
                 fontweight="bold",
             )
 
-        ax2.set_xlabel("Centrality Score", fontsize=_MIN_FONT - 2)
-        ax2.set_ylabel("Number of Associated Terms", fontsize=_MIN_FONT - 2)
-        ax2.set_title("Centrality vs Term Association", fontsize=_MIN_FONT,
+        ax2.set_xlabel("Centrality Score", fontsize=MIN_FONT)
+        ax2.set_ylabel("Number of Associated Terms", fontsize=MIN_FONT)
+        ax2.set_title("Centrality vs Term Association", fontsize=MIN_FONT + 2,
                       fontweight="bold", pad=8)
         ax2.spines["top"].set_visible(False)
         ax2.spines["right"].set_visible(False)
-        ax2.tick_params(labelsize=max(9, _MIN_FONT - 5))
+        ax2.tick_params(labelsize=MIN_FONT)
 
         plt.tight_layout()
 
@@ -963,6 +974,7 @@ class ConceptVisualizer:
 
         return fig
 
+    @publication_style
     def create_anthropomorphic_analysis_plot(
         self,
         anthropomorphic_data: Dict[str, List[str]],
@@ -982,20 +994,19 @@ class ConceptVisualizer:
         Returns:
             Matplotlib Figure
         """
-        _MIN_FONT = 16
 
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8),
                                         gridspec_kw={"width_ratios": [1, 1.6]})
         fig.suptitle(
             "Anthropomorphic Terminology in Entomological Discourse",
-            fontsize=max(20, _MIN_FONT + 2), fontweight="bold", y=1.02,
+            fontsize=MIN_FONT + 4, fontweight="bold", y=1.02,
         )
 
         if not anthropomorphic_data:
             for ax in (ax1, ax2):
                 ax.text(0.5, 0.5, "No anthropomorphic data available",
                         ha="center", va="center", transform=ax.transAxes,
-                        fontsize=_MIN_FONT)
+                        fontsize=MIN_FONT)
                 ax.axis("off")
             if filepath:
                 fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -1016,33 +1027,33 @@ class ConceptVisualizer:
             ax1.text(bar.get_width() + max(0.05, max(counts) * 0.02),
                      bar.get_y() + bar.get_height() / 2,
                      str(count), va="center", ha="left",
-                     fontsize=max(10, _MIN_FONT - 4), fontweight="bold")
+                     fontsize=MIN_FONT, fontweight="bold")
 
         ax1.set_yticks(y_pos)
-        ax1.set_yticklabels(categories, fontsize=max(10, _MIN_FONT - 4))
+        ax1.set_yticklabels(categories, fontsize=MIN_FONT)
         ax1.invert_yaxis()
-        ax1.set_xlabel("Number of Terms", fontsize=_MIN_FONT - 2)
+        ax1.set_xlabel("Number of Terms", fontsize=MIN_FONT)
         ax1.set_title("Terms per Anthropomorphic Category",
-                      fontsize=_MIN_FONT, fontweight="bold", pad=8)
+                      fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
         ax1.spines["top"].set_visible(False)
         ax1.spines["right"].set_visible(False)
         total = sum(counts)
         ax1.text(0.98, 0.02, f"Total: {total} terms",
                  transform=ax1.transAxes, ha="right", va="bottom",
-                 fontsize=max(10, _MIN_FONT - 5), color="#555", fontstyle="italic")
+                 fontsize=MIN_FONT, color="#555", fontstyle="italic")
 
         # ── Panel 2: Sample terms table ───────────────────────────────
         ax2.axis("off")
         ax2.set_title("Sample Terms by Category",
-                      fontsize=_MIN_FONT, fontweight="bold", pad=8)
+                      fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
 
         row_height = 1.0 / (len(categories) + 1)
         header_y = 1.0 - row_height / 2
 
         ax2.text(0.02, header_y, "Category", transform=ax2.transAxes,
-                 fontsize=max(10, _MIN_FONT - 4), fontweight="bold", va="center")
+                 fontsize=MIN_FONT, fontweight="bold", va="center")
         ax2.text(0.35, header_y, "Example Terms", transform=ax2.transAxes,
-                 fontsize=max(10, _MIN_FONT - 4), fontweight="bold", va="center")
+                 fontsize=MIN_FONT, fontweight="bold", va="center")
         # Header separator line (use plot with transform to avoid axhline restriction)
         ax2.plot([0, 1], [header_y - row_height / 2, header_y - row_height / 2],
                  color="#ccc", linewidth=0.8, transform=ax2.transAxes,
@@ -1062,14 +1073,14 @@ class ConceptVisualizer:
 
             cat_color = palette[row_idx % len(palette)]
             ax2.text(0.02, y, cat, transform=ax2.transAxes,
-                     fontsize=max(9, _MIN_FONT - 5), va="center",
+                     fontsize=MIN_FONT, va="center",
                      color=cat_color, fontweight="bold")
 
             sample = ", ".join(terms_list[:5])
             if len(terms_list) > 5:
                 sample += f" … (+{len(terms_list) - 5})"
             ax2.text(0.35, y, sample, transform=ax2.transAxes,
-                     fontsize=max(9, _MIN_FONT - 6), va="center", color="#333")
+                     fontsize=MIN_FONT, va="center", color="#333")
 
         plt.tight_layout()
 
@@ -1113,6 +1124,7 @@ class ConceptVisualizer:
         with open(metadata_file, "w", encoding="utf-8") as f:
             json.dump(metadata, f, indent=2, ensure_ascii=False)
 
+    @publication_style
     def visualize_term_cooccurrence(
         self,
         cooccurrence_matrix: Dict[str, Dict[str, int]],
@@ -1178,9 +1190,9 @@ class ConceptVisualizer:
         # Draw labels for high-degree nodes only
         high_degree_nodes = [node for node in G.nodes() if G.degree(node) > 2]
         labels = {node: node for node in high_degree_nodes}
-        nx.draw_networkx_labels(G, pos, labels, font_size=8, font_weight="bold", ax=ax)
+        nx.draw_networkx_labels(G, pos, labels, font_size=MIN_FONT, font_weight="bold", ax=ax)
 
-        ax.set_title(title, fontsize=max(18, _MIN_FONT + 2), fontweight="bold")
+        ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         ax.axis("off")
 
         plt.tight_layout()
@@ -1191,6 +1203,7 @@ class ConceptVisualizer:
 
         return fig
 
+    @publication_style
     def create_domain_overlap_heatmap(
         self,
         domain_overlaps: Dict[str, Dict[str, Any]],
@@ -1289,10 +1302,10 @@ class ConceptVisualizer:
                     ax.text(
                         j, i, f"{overlap_matrix[i, j]:.1f}",
                         ha="center", va="center", color="black",
-                        fontsize=max(10, _MIN_FONT - 4),
+                        fontsize=MIN_FONT,
                     )
 
-        ax.set_title(title, fontsize=max(18, _MIN_FONT + 2), fontweight="bold")
+        ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         plt.tight_layout()
 
         if filepath:
@@ -1301,6 +1314,7 @@ class ConceptVisualizer:
 
         return fig
 
+    @publication_style
     def visualize_concept_evolution(
         self,
         evolution_data: Dict[str, Dict[str, Any]],
@@ -1403,7 +1417,7 @@ class ConceptVisualizer:
             ax4.set_xticks(range(len(concept_names)))
             ax4.set_xticklabels(concept_names, rotation=45, ha="right")
 
-        plt.suptitle(title, fontsize=max(18, _MIN_FONT + 2), fontweight="bold")
+        plt.suptitle(title, fontsize=MIN_FONT + 4, fontweight="bold")
         plt.tight_layout()
 
         if filepath:
@@ -1412,6 +1426,7 @@ class ConceptVisualizer:
 
         return fig
 
+    @publication_style
     def create_statistical_summary_plot(
         self,
         statistical_data: Dict[str, Dict[str, Any]],
@@ -1428,7 +1443,6 @@ class ConceptVisualizer:
         Returns:
             Matplotlib figure object
         """
-        import numpy as np
 
         fig, axes = plt.subplots(2, 2, figsize=(15, 10))
 
@@ -1521,7 +1535,7 @@ class ConceptVisualizer:
                 axes[1, 1].tick_params(axis="x", rotation=45)
                 axes[1, 1].grid(True, alpha=0.3)
 
-        plt.suptitle(title, fontsize=max(18, _MIN_FONT + 2), fontweight="bold")
+        plt.suptitle(title, fontsize=MIN_FONT + 4, fontweight="bold")
         plt.tight_layout()
 
         if filepath:
@@ -1530,6 +1544,7 @@ class ConceptVisualizer:
 
         return fig
 
+    @publication_style
     def create_interactive_concept_network(
         self,
         concept_map: ConceptMap,
@@ -1658,8 +1673,9 @@ class ConceptVisualizer:
         if concept_name in concept_map.concepts:
             concept = concept_map.concepts[concept_name]
             if concept.domains:
-                # Use first domain's color
-                domain = next(iter(concept.domains))
+                # Deterministic primary domain: lexicographically smallest,
+                # independent of set iteration order and PYTHONHASHSEED.
+                domain = primary_domain(concept.domains)
                 return self.DOMAIN_COLORS.get(domain, "gray")
 
         return "gray"
@@ -1682,7 +1698,7 @@ class ConceptVisualizer:
         sorted_pairs = sorted(zip(frequencies, term_pairs), reverse=True)[:20]  # Top 20
         if not sorted_pairs:
             ax.text(0.5, 0.5, "No co-occurrence data", ha="center", va="center",
-                    transform=ax.transAxes, fontsize=12)
+                    transform=ax.transAxes, fontsize=MIN_FONT)
             ax.set_title(title)
             return
         frequencies, term_pairs = zip(*sorted_pairs)
@@ -1691,7 +1707,7 @@ class ConceptVisualizer:
             range(len(term_pairs)), frequencies, color="lightcoral", edgecolor="black"
         )
         ax.set_yticks(range(len(term_pairs)))
-        ax.set_yticklabels(term_pairs, fontsize=max(9, _MIN_FONT - 5))
-        ax.set_xlabel("Co-occurrence Frequency", fontsize=_MIN_FONT - 2)
-        ax.set_title(f"{title} (Top 20 Pairs)", fontsize=_MIN_FONT, fontweight="bold")
+        ax.set_yticklabels(term_pairs, fontsize=MIN_FONT)
+        ax.set_xlabel("Co-occurrence Frequency", fontsize=MIN_FONT)
+        ax.set_title(f"{title} (Top 20 Pairs)", fontsize=MIN_FONT + 2, fontweight="bold")
         ax.grid(True, alpha=0.3)

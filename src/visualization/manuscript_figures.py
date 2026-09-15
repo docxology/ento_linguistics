@@ -18,6 +18,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+try:
+    from ._style import MIN_FONT, publication_style
+except (ImportError, ValueError):
+    from visualization._style import MIN_FONT, publication_style
+
 # ── Project root (src/visualization/manuscript_figures.py → project) ──
 _PROJECT_ROOT = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -93,9 +98,19 @@ def _setup_directories(project_root: Optional[str] = None) -> Tuple[str, str, st
     figure_dir = os.path.join(output_dir, "figures")
 
     # ── Wipe regenerated subdirectories ──────────────────────────────────
+    # Clean slate for generated artifacts, but tracked documentation
+    # (README.md, AGENTS.md) inside output/ survives the wipe: it is
+    # versioned project content, not a regenerated artifact.
     for wipe_dir in (figure_dir, data_dir):
         if os.path.exists(wipe_dir):
-            shutil.rmtree(wipe_dir)
+            for entry in os.listdir(wipe_dir):
+                if entry.endswith(".md"):
+                    continue
+                path = os.path.join(wipe_dir, entry)
+                if os.path.isdir(path):
+                    shutil.rmtree(path)
+                else:
+                    os.remove(path)
             logger.info(f"  🗑️  Cleared stale output: {os.path.relpath(wipe_dir, project_root)}/")
 
     # ── Recreate clean directories ────────────────────────────────────────
@@ -203,8 +218,6 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
         semantic_entropy_map[_d] = float(np.mean(_entropies)) if _entropies else 0.0
 
     for domain_name, analysis in domain_analyses.items():
-        if domain_name.startswith("_"):
-            continue  # Skip cross-domain meta-analysis
         domain_data[domain_name] = {
             # Use actual extracted term count, fall back to key_terms if zero
             "term_count": actual_term_counts.get(domain_name, 0) or (
@@ -297,10 +310,10 @@ def generate_concept_map(results: Dict[str, Any], figure_dir: str) -> str:
         title="Ento-Linguistic Concept Map:\nDomain Relationships and Terminology Networks",
     )
 
-    if filepath.exists():
-        logger.info(f"  ✅ concept_map.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  concept_map.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ concept_map.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ concept_map.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
@@ -331,10 +344,10 @@ def generate_terminology_network(results: Dict[str, Any], figure_dir: str) -> st
     fig.savefig(filepath, dpi=150, bbox_inches="tight")
     plt.close(fig)
 
-    if filepath.exists():
-        logger.info(f"  ✅ terminology_network.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  terminology_network.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ terminology_network.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ terminology_network.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
@@ -365,10 +378,10 @@ def generate_domain_comparison(results: Dict[str, Any], figure_dir: str) -> str:
         terms=terms,
     )
 
-    if filepath.exists():
-        logger.info(f"  ✅ domain_comparison.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  domain_comparison.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ domain_comparison.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ domain_comparison.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
@@ -419,10 +432,10 @@ def generate_domain_overlap_heatmap(results: Dict[str, Any], figure_dir: str) ->
         title="Cross-Domain Term Overlap in Ento-Linguistic Analysis",
     )
 
-    if filepath.exists():
-        logger.info(f"  ✅ domain_overlap_heatmap.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  domain_overlap_heatmap.png was not saved (insufficient data)")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ domain_overlap_heatmap.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ domain_overlap_heatmap.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
@@ -470,10 +483,10 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
         filepath=filepath,
     )
 
-    if filepath.exists():
-        logger.info(f"  ✅ anthropomorphic_framing.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  anthropomorphic_framing.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ anthropomorphic_framing.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ anthropomorphic_framing.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
@@ -493,7 +506,6 @@ def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
     from visualization.concept_visualization import ConceptVisualizer
 
     concept_map = results["concept_map"]
-    terms = results["terms"]
     filepath = Path(figure_dir) / "concept_hierarchy.png"
 
     # Build centrality from connection count
@@ -525,13 +537,14 @@ def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
     viz = ConceptVisualizer(figsize=(18, 10))
     viz.visualize_concept_hierarchy(concept_hierarchy=hierarchy_data, filepath=filepath)
 
-    if filepath.exists():
-        logger.info(f"  ✅ concept_hierarchy.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  concept_hierarchy.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ concept_hierarchy.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ concept_hierarchy.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
+@publication_style
 def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir: str) -> str:
     """Generate unit_of_individuality_patterns.png.
 
@@ -602,11 +615,11 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
     pie_colors = plt.cm.Set2(np.linspace(0, 1, max(len(pattern_labels), 1)))
     wedges, texts, autotexts = ax1.pie(
         pattern_sizes, labels=pattern_labels, colors=pie_colors,
-        autopct="%1.1f%%", startangle=90, textprops={"fontsize": 11},
+        autopct="%1.1f%%", startangle=90, textprops={"fontsize": MIN_FONT},
     )
     for at in autotexts:
         at.set_fontweight("bold")
-    ax1.set_title("Term Formation Patterns", fontsize=13, fontweight="bold")
+    ax1.set_title("Term Formation Patterns", fontsize=MIN_FONT + 2, fontweight="bold")
 
     # Bar chart
     scales = list(scale_counts.keys())
@@ -616,28 +629,29 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
                    edgecolor="white", linewidth=0.5)
     for bar, c in zip(bars, counts):
         ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.2,
-                 str(c), ha="center", va="bottom", fontsize=10,
+                 str(c), ha="center", va="bottom", fontsize=MIN_FONT,
                  fontweight="bold")
     ax2.set_xticks(range(len(scales)))
-    ax2.set_xticklabels(scales, fontsize=9)
-    ax2.set_ylabel("Number of Terms", fontsize=11)
-    ax2.set_title("Scale-Level Distribution", fontsize=13, fontweight="bold")
+    ax2.set_xticklabels(scales, fontsize=MIN_FONT)
+    ax2.set_ylabel("Number of Terms", fontsize=MIN_FONT)
+    ax2.set_title("Scale-Level Distribution", fontsize=MIN_FONT + 2, fontweight="bold")
     ax2.spines["top"].set_visible(False)
     ax2.spines["right"].set_visible(False)
 
     fig.suptitle("Unit of Individuality — Terminology Patterns",
-                 fontsize=15, fontweight="bold", y=1.02)
+                 fontsize=MIN_FONT + 4, fontweight="bold", y=1.02)
     plt.tight_layout()
     fig.savefig(filepath, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
-    if filepath.exists():
-        logger.info(f"  ✅ unit_of_individuality_patterns.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  unit_of_individuality_patterns.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ unit_of_individuality_patterns.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ unit_of_individuality_patterns.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
+@publication_style
 def generate_power_labor_term_frequencies(results: Dict[str, Any], figure_dir: str) -> str:
     """Generate power_and_labor_term_frequencies.png.
 
@@ -676,14 +690,14 @@ def generate_power_labor_term_frequencies(results: Dict[str, Any], figure_dir: s
 
     for bar, freq in zip(bars, freqs):
         ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.3,
-                str(freq), ha="center", va="bottom", fontsize=10,
+                str(freq), ha="center", va="bottom", fontsize=MIN_FONT,
                 fontweight="bold")
 
     ax.set_xticks(range(len(names)))
-    ax.set_xticklabels(names, rotation=45, ha="right", fontsize=10)
-    ax.set_ylabel("Frequency in Corpus", fontsize=12)
+    ax.set_xticklabels(names, rotation=45, ha="right", fontsize=MIN_FONT)
+    ax.set_ylabel("Frequency in Corpus", fontsize=MIN_FONT)
     ax.set_title("Term Frequency Distribution — Power & Labor",
-                 fontsize=14, fontweight="bold")
+                 fontsize=MIN_FONT + 2, fontweight="bold")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
@@ -691,13 +705,14 @@ def generate_power_labor_term_frequencies(results: Dict[str, Any], figure_dir: s
     fig.savefig(filepath, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
-    if filepath.exists():
-        logger.info(f"  ✅ power_and_labor_term_frequencies.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  power_and_labor_term_frequencies.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ power_and_labor_term_frequencies.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ power_and_labor_term_frequencies.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
+@publication_style
 def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -> str:
     """Generate power_and_labor_ambiguities.png.
 
@@ -759,23 +774,23 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
         ax1.text(bar.get_width() + max_ent * 0.02,
                  bar.get_y() + bar.get_height() / 2,
                  f"{ent:.2f}  (n={nc})", ha="left", va="center",
-                 fontsize=12, fontweight="bold")
+                 fontsize=MIN_FONT, fontweight="bold")
 
     ax1.set_yticks(range(len(names)))
-    ax1.set_yticklabels(names, fontsize=14)
-    ax1.set_xlabel("Semantic Entropy H(t) (bits)", fontsize=14)
-    ax1.set_title("Per-Term Entropy", fontsize=15, fontweight="bold")
+    ax1.set_yticklabels(names, fontsize=MIN_FONT)
+    ax1.set_xlabel("Semantic Entropy H(t) (bits)", fontsize=MIN_FONT)
+    ax1.set_title("Per-Term Entropy", fontsize=MIN_FONT + 2, fontweight="bold")
     x_pad = max_ent * 0.25
     ax1.set_xlim(0, max_ent + x_pad)
     ax1.spines["top"].set_visible(False)
     ax1.spines["right"].set_visible(False)
-    ax1.tick_params(axis='x', labelsize=12)
+    ax1.tick_params(axis='x', labelsize=MIN_FONT)
     ax1.invert_yaxis()
 
     med_ent = float(np.median(entropies))
     ax1.axvline(med_ent, color="#888", linestyle="--", linewidth=1, alpha=0.6)
     ax1.text(med_ent, len(names) - 0.3, f"median {med_ent:.2f}",
-             fontsize=10, color="#555", ha="center")
+             fontsize=MIN_FONT, color="#555", ha="center")
 
     # ── Right panel: frequency vs entropy scatter ────────────────────
     sc_sizes = [max(40, c * 8) for c in n_ctx]
@@ -784,24 +799,24 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
                           alpha=0.85, vmin=0, vmax=max_ent)
     for name, f, e in zip(names, freqs, entropies):
         ax2.annotate(name, (f, e), xytext=(4, 3), textcoords="offset points",
-                     fontsize=9, color="#333")
+                     fontsize=MIN_FONT, color="#333")
 
-    ax2.set_xlabel("Corpus Frequency", fontsize=14)
-    ax2.set_ylabel("Semantic Entropy H(t) (bits)", fontsize=14)
-    ax2.set_title("Frequency vs Entropy", fontsize=15, fontweight="bold")
+    ax2.set_xlabel("Corpus Frequency", fontsize=MIN_FONT)
+    ax2.set_ylabel("Semantic Entropy H(t) (bits)", fontsize=MIN_FONT)
+    ax2.set_title("Frequency vs Entropy", fontsize=MIN_FONT + 2, fontweight="bold")
     ax2.spines["top"].set_visible(False)
     ax2.spines["right"].set_visible(False)
-    ax2.tick_params(labelsize=12)
+    ax2.tick_params(labelsize=MIN_FONT)
     fig.colorbar(scatter, ax=ax2, label="H(t) bits", shrink=0.75)
 
     plt.tight_layout()
     fig.savefig(filepath, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
-    if filepath.exists():
-        logger.info(f"  ✅ power_and_labor_ambiguities.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  power_and_labor_ambiguities.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ power_and_labor_ambiguities.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ power_and_labor_ambiguities.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 def generate_domain_overview_grid(results: Dict[str, Any], figure_dir: str) -> str:
@@ -830,10 +845,10 @@ def generate_domain_overview_grid(results: Dict[str, Any], figure_dir: str) -> s
         filepath=filepath,
     )
 
-    if filepath.exists():
-        logger.info(f"  ✅ domain_overview_grid.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  domain_overview_grid.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ domain_overview_grid.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ domain_overview_grid.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
@@ -861,10 +876,10 @@ def generate_domain_patterns_grid(results: Dict[str, Any], figure_dir: str) -> s
         filepath=filepath,
     )
 
-    if filepath.exists():
-        logger.info(f"  ✅ domain_patterns_grid.png ({filepath.stat().st_size / 1024:.1f} KB)")
-    else:
-        logger.warning("  ⚠️  domain_patterns_grid.png was not saved")
+    if not filepath.exists() or filepath.stat().st_size == 0:
+        logger.error("  ❌ domain_patterns_grid.png save failed; figure NOT propagated")
+        return ""
+    logger.info(f"  ✅ domain_patterns_grid.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
 
@@ -1106,6 +1121,10 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
         registered = 0
         for fig_path in figures:
             filename = os.path.basename(fig_path)
+            # Defense in depth: never register a figure that is not on disk
+            if not os.path.isfile(fig_path) or os.path.getsize(fig_path) == 0:
+                logger.warning(f"⚠️  Skipping registration of unsaved figure: {fig_path}")
+                continue
             if filename in figure_metadata:
                 meta = figure_metadata[filename]
                 fm.register_figure(
@@ -1231,11 +1250,19 @@ def main(project_root: Optional[str] = None) -> None:
             output_data_dir=Path(project_root) / "output" / "data",
             corpus_dir=Path(project_root) / "data" / "corpus",
         )
+        # Validate token coverage WITHOUT rewriting the canonical markdown:
+        # substitution happens at PDF render time (_render_pdf_override /
+        # build_pdf), so writing substituted text back into docs/manuscript
+        # would destroy the {{...}} placeholders the editing rule requires.
         results_fill = fill_manuscript(
-            variables, manuscript_dir=Path(project_root) / "docs" / "manuscript"
+            variables, manuscript_dir=Path(project_root) / "docs" / "manuscript",
+            dry_run=True,
         )
         total_subs = sum(results_fill.values())
-        logger.info(f"  ✅ {total_subs} substitutions across {len(results_fill)} files")
+        logger.info(
+            f"  ✅ {total_subs} placeholder occurrences resolvable across "
+            f"{len(results_fill)} files (dry run; canonical files unchanged)"
+        )
     except Exception as exc:
         logger.warning(f"⚠️  Manuscript variable fill warning: {exc}")
 

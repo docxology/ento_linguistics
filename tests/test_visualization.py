@@ -1,15 +1,10 @@
 """Comprehensive tests for src/visualization.py to ensure 100% coverage."""
 
-import os
-import tempfile
-from pathlib import Path
 
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
-import pytest
 from visualization.visualization import VisualizationEngine, create_multi_panel_figure
 
 
@@ -22,6 +17,29 @@ class TestVisualizationEngine:
         assert engine.output_dir == tmp_path
         assert engine.style == "publication"
         assert engine.color_palette == "default"
+
+    def test_init_does_not_mutate_global_rcparams(self, tmp_path):
+        """Engine construction must not permanently mutate global rcParams."""
+        before = plt.rcParams["font.size"]
+        VisualizationEngine(output_dir=str(tmp_path))
+        assert plt.rcParams["font.size"] == before
+
+    def test_style_config_respects_font_floor(self):
+        """Every font size in STYLE_CONFIG is at least 16pt."""
+        for key, value in VisualizationEngine.STYLE_CONFIG.items():
+            if key.endswith("size") and isinstance(value, (int, float)) \
+                    and ("labelsize" in key or key == "font.size"
+                         or "titlesize" in key):
+                assert value >= 16, f"{key}={value} below 16pt floor"
+
+    def test_create_figure_scopes_style(self, tmp_path):
+        """Tick labels created under the scoped style carry >=16pt sizes."""
+        engine = VisualizationEngine(output_dir=str(tmp_path))
+        fig, ax = engine.create_figure(nrows=1, ncols=1)
+        ax.plot([1, 2, 3], [1, 2, 3])
+        tick_sizes = [t.get_fontsize() for t in ax.get_xticklabels()]
+        assert tick_sizes and min(tick_sizes) >= 16
+        plt.close(fig)
 
     def test_create_figure(self, tmp_path):
         """Test creating figure."""

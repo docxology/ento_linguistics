@@ -5,7 +5,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-import pytest
 from visualization.plots import (plot_3d_surface, plot_bar, plot_comparison, plot_contour,
                    plot_convergence, plot_heatmap, plot_line, plot_scatter,
                    plot_term_frequency, plot_domain_distribution,
@@ -265,7 +264,6 @@ class TestPlot3DSurface:
 
     def test_3d_surface_with_existing_axes(self):
         """Test 3D surface plot on existing axes."""
-        from mpl_toolkits.mplot3d import Axes3D
 
         fig = plt.figure()
         ax = fig.add_subplot(111, projection="3d")
@@ -359,21 +357,24 @@ class TestPlotConceptNetwork:
         plt.close(fig)
 
     def test_concept_network_with_real_concept_map(self):
-        """Test concept network with a populated ConceptMap (covers lines 421-484)."""
+        """Test concept network with a populated ConceptMap (covers main body)."""
+        from matplotlib.colors import to_rgba
         from analysis.conceptual_mapping import Concept, ConceptMap
+        from visualization._style import DOMAIN_PALETTE
 
         cmap = ConceptMap()
         c1 = Concept(
             name="colony", description="Colony concept",
-            terms={"colony", "hive"}, domains={"social_hierarchy"},
+            terms={"colony", "hive"}, domains={"unit_of_individuality"},
         )
         c2 = Concept(
             name="worker", description="Worker concept",
-            terms={"worker", "laborer"}, domains={"power_and_labor"},
+            terms={"worker", "laborer"},
+            domains={"power_and_labor", "unit_of_individuality"},
         )
         c3 = Concept(
             name="queen", description="Queen concept",
-            terms={"queen", "monarch"}, domains={"reproductive_division"},
+            terms={"queen", "monarch"}, domains={"sex_and_reproduction"},
         )
         cmap.add_concept(c1)
         cmap.add_concept(c2)
@@ -383,6 +384,21 @@ class TestPlotConceptNetwork:
 
         ax = plot_concept_network(cmap)
         assert ax is not None
+        # Node fills use the shared canonical palette via deterministic
+        # primary domain (sorted(domains)[0]).
+        fills = ax.collections[0].get_facecolors()
+        expected_primary = {
+            "colony": DOMAIN_PALETTE["unit_of_individuality"],
+            "worker": DOMAIN_PALETTE["power_and_labor"],  # sorted first
+            "queen": DOMAIN_PALETTE["sex_and_reproduction"],
+        }
+        node_order = list(cmap.concepts.keys())
+        for face, name in zip(fills, node_order):
+            expected_rgb = to_rgba(expected_primary[name])[:3]
+            actual_rgb = tuple(float(c) for c in face[:3])
+            assert all(
+                abs(e - a) < 1e-6 for e, a in zip(expected_rgb, actual_rgb)
+            ), f"{name}: expected {expected_rgb}, got {actual_rgb}"
         plt.close(ax.figure)
 
     def test_concept_network_custom_title(self):
@@ -390,7 +406,8 @@ class TestPlotConceptNetwork:
         from analysis.conceptual_mapping import Concept, ConceptMap
 
         cmap = ConceptMap()
-        c = Concept(name="test", description="Test", terms={"a"}, domains={"communication"})
+        c = Concept(name="test", description="Test", terms={"a"},
+                    domains={"economics"})
         cmap.add_concept(c)
 
         ax = plot_concept_network(cmap, title="Custom Network Title")
@@ -402,7 +419,8 @@ class TestPlotConceptNetwork:
         from analysis.conceptual_mapping import Concept, ConceptMap
 
         cmap = ConceptMap()
-        c = Concept(name="orphan", description="No domain", terms={"x"})
+        c = Concept(name="orphan", description="No domain", terms={"x"},
+                    domains=set())
         cmap.add_concept(c)
 
         ax = plot_concept_network(cmap)

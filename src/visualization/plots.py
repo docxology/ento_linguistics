@@ -6,15 +6,28 @@ terminology distributions, ambiguity metrics, and discourse patterns.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.colors import LinearSegmentedColormap
+
 try:
-    from .visualization import VisualizationEngine
+    from ._style import (
+        DOMAIN_PALETTE,
+        FALLBACK_COLOR,
+        MIN_FONT,
+        primary_domain,
+        publication_style,
+    )
 except (ImportError, ValueError):
-    from visualization import VisualizationEngine
+    from visualization._style import (
+        DOMAIN_PALETTE,
+        FALLBACK_COLOR,
+        MIN_FONT,
+        primary_domain,
+        publication_style,
+    )
+
 
 __all__ = [
     "plot_line",
@@ -31,6 +44,7 @@ __all__ = [
 ]
 
 
+@publication_style
 def plot_line(
     x: np.ndarray,
     y: np.ndarray,
@@ -69,6 +83,7 @@ def plot_line(
     return ax
 
 
+@publication_style
 def plot_scatter(
     x: np.ndarray,
     y: np.ndarray,
@@ -105,6 +120,7 @@ def plot_scatter(
     return ax
 
 
+@publication_style
 def plot_bar(
     categories: List[str],
     values: np.ndarray,
@@ -137,6 +153,7 @@ def plot_bar(
     return ax
 
 
+@publication_style
 def plot_heatmap(
     data: np.ndarray,
     ax: Optional[plt.Axes] = None,
@@ -179,6 +196,7 @@ def plot_heatmap(
     return ax
 
 
+@publication_style
 def plot_contour(
     x: np.ndarray,
     y: np.ndarray,
@@ -212,11 +230,12 @@ def plot_contour(
         plt.colorbar(contour, ax=ax)
     else:
         contour = ax.contour(x, y, z, levels=levels, cmap=cmap, **kwargs)
-        ax.clabel(contour, inline=True, fontsize=8)
+        ax.clabel(contour, inline=True, fontsize=MIN_FONT)
 
     return ax
 
 
+@publication_style
 def plot_3d_surface(
     x: np.ndarray,
     y: np.ndarray,
@@ -238,7 +257,6 @@ def plot_3d_surface(
     Returns:
         3D axes object
     """
-    from mpl_toolkits.mplot3d import Axes3D
 
     if ax is None:
         fig = plt.figure(figsize=(10, 8))
@@ -250,6 +268,7 @@ def plot_3d_surface(
     return ax
 
 
+@publication_style
 def plot_convergence(
     iterations: np.ndarray,
     values: np.ndarray,
@@ -286,6 +305,7 @@ def plot_convergence(
     return ax
 
 
+@publication_style
 def plot_comparison(
     methods: List[str],
     metrics: Dict[str, List[float]],
@@ -326,6 +346,7 @@ def plot_comparison(
 
     return ax
 
+@publication_style
 def plot_term_frequency(
     terms: Dict[str, Any],
     top_n: int = 20,
@@ -361,6 +382,7 @@ def plot_term_frequency(
     )
 
 
+@publication_style
 def plot_domain_distribution(
     domain_counts: Dict[str, int],
     ax: Optional[plt.Axes] = None,
@@ -384,6 +406,7 @@ def plot_domain_distribution(
     )
 
 
+@publication_style
 def plot_concept_network(
     concept_map: Any,
     ax: Optional[plt.Axes] = None,
@@ -413,7 +436,7 @@ def plot_concept_network(
             0.5, 0.5,
             "Concept Network Visualization\n(Requires networkx)",
             ha="center", va="center", transform=ax.transAxes,
-            fontsize=16,
+            fontsize=MIN_FONT,
         )
         ax.axis("off")
         return ax
@@ -430,7 +453,7 @@ def plot_concept_network(
     if G.number_of_nodes() == 0:
         ax.text(
             0.5, 0.5, "No concepts available",
-            ha="center", va="center", transform=ax.transAxes, fontsize=16,
+            ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT,
         )
         ax.axis("off")
         return ax
@@ -438,24 +461,17 @@ def plot_concept_network(
     # Layout
     pos = nx.spring_layout(G, k=2, iterations=50, seed=42)
 
-    # Colour by primary domain
-    domain_colors = {
-        "social_hierarchy": "#2196F3",
-        "reproductive_division": "#E91E63",
-        "communication": "#4CAF50",
-        "cognitive_attribution": "#FF9800",
-        "power_and_labor": "#9C27B0",
-        "unit_of_individuality": "#00BCD4",
-    }
-
+    # Colour by primary domain — shared canonical palette
     node_colors = []
     for node in G.nodes():
-        color = "#888888"
+        color = FALLBACK_COLOR
         if hasattr(concept_map, "concepts") and node in concept_map.concepts:
             concept = concept_map.concepts[node]
             if hasattr(concept, "domains") and concept.domains:
-                primary_domain = next(iter(concept.domains))
-                color = domain_colors.get(primary_domain, "#888888")
+                # Deterministic primary domain: lexicographically smallest,
+                # independent of set iteration order and PYTHONHASHSEED.
+                domain = primary_domain(concept.domains)
+                color = DOMAIN_PALETTE.get(domain, FALLBACK_COLOR)
         node_colors.append(color)
 
     node_sizes = [max(300, G.degree(n) * 150) for n in G.nodes()]
@@ -474,11 +490,11 @@ def plot_concept_network(
     top_nodes = sorted(degrees, key=degrees.get, reverse=True)[:15]
     labels = {n: n.replace("_", " ").title() for n in top_nodes}
     nx.draw_networkx_labels(
-        G, pos, labels, font_size=10, font_weight="bold", ax=ax,
+        G, pos, labels, font_size=MIN_FONT, font_weight="bold", ax=ax,
     )
 
     title = kwargs.get("title", "Concept Network")
-    ax.set_title(title, fontsize=16, fontweight="bold")
+    ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
     ax.axis("off")
 
     return ax
