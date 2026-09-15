@@ -1,7 +1,5 @@
 """Reporting utilities - thin wrapper around infrastructure reporting."""
 
-import json
-from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
@@ -24,20 +22,19 @@ def _check_infrastructure():
 
 
 def _get_infra_generate_pipeline_report():
-    from infrastructure.reporting.pipeline_reporter import \
-        generate_pipeline_report
+    from infrastructure.reporting import generate_pipeline_report
 
     return generate_pipeline_report
 
 
 def _get_infra_save_pipeline_report():
-    from infrastructure.reporting.pipeline_reporter import save_pipeline_report
+    from infrastructure.reporting import save_pipeline_report
 
     return save_pipeline_report
 
 
 def _get_infra_ErrorAggregator():
-    from infrastructure.reporting.error_aggregator import ErrorAggregator
+    from infrastructure.reporting import ErrorAggregator
 
     return ErrorAggregator
 

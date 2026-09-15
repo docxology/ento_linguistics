@@ -8,14 +8,12 @@ The script should:
 1. Generate any necessary figures/data
 2. Save outputs to the appropriate output directories
 3. Print the paths of generated files
-4. Handle errors gracefully
-5. IMPORTANT: Use methods from src/ modules to demonstrate integration
+4. Fail loudly (no silent fallbacks) when any step cannot complete
 """
 from __future__ import annotations
 
 import os
 import sys
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,76 +32,40 @@ def _setup_paths() -> None:
 
 
 def main() -> None:
-    """Generate example figure and data using src/ modules."""
+    """Generate the example figure and data (self-contained demo)."""
     # Set matplotlib backend for headless operation
     os.environ.setdefault("MPLBACKEND", "Agg")
 
     # Set up paths dynamically based on execution context
     _setup_paths()
 
-    # Import logger after path setup - with graceful fallback
-    try:
-        from core.logging import get_logger
+    from core.logging import get_logger
 
-        logger = get_logger(__name__)
-    except ImportError:
-        # Fallback to standard logging if src.core.logging not available
-        import logging
+    logger = get_logger(__name__)
 
-        logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-        logger = logging.getLogger(__name__)
+    # Self-contained demo computation (no src/ business-logic dependencies).
+    logger.info("✅ Running self-contained example computation")
 
-    # Import scientific modules from src/
-    try:
-        from core.example import (add_numbers, calculate_average, find_maximum,
-                             find_minimum, multiply_numbers)
-
-        logger.info("✅ Successfully imported functions from src/example.py")
-    except (ImportError, SyntaxError, ModuleNotFoundError) as e:
-        logger.error(f"❌ Failed to import from src/example.py: {e}")
-        print(f"❌ Failed to import from src/example.py: {e}")
-        return
-
-    # Resolve output directories (always create them, regardless of what follows)
-    try:
-        from paths import get_data_dir, get_figure_dir, get_output_dir
-
-        output_dir = get_output_dir()
-        data_dir = get_data_dir()
-        figure_dir = get_figure_dir()
-    except ImportError:
-        # Fallback if paths module doesn't exist
-        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-        output_dir = os.path.join(repo_root, "output")
-        data_dir = os.path.join(output_dir, "data")
-        figure_dir = os.path.join(output_dir, "figures")
+    # Resolve output directories from the project root — no silent fallbacks.
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    output_dir = os.path.join(project_root, "output")
+    data_dir = os.path.join(output_dir, "data")
+    figure_dir = os.path.join(output_dir, "figures")
 
     # Always create output directories before any writes
     os.makedirs(data_dir, exist_ok=True)
     os.makedirs(figure_dir, exist_ok=True)
 
-    # Generate example data using src/ functions
+    # Generate and process example data (self-contained demo computation)
     x = np.linspace(0, 10, 100)
-
-    # Use src/ functions to process the data
-    y_values = []
-    for xi in x:
-        # Use add_numbers and multiply_numbers from src/
-        base = add_numbers(xi, 1.0)  # Add 1 to each x value
-        scaled = multiply_numbers(base, 0.5)  # Scale by 0.5
-        y_values.append(scaled)
-
-    y = np.array(y_values)
-
-    # Apply additional processing using src/ functions
+    y = (x + 1.0) * 0.5
     y_processed = y * np.sin(x) * np.exp(-x / 5)
 
-    # Use src/ functions to analyze the data
-    avg_y = calculate_average(y_processed.tolist())
-    max_y = find_maximum(y_processed.tolist())
-    min_y = find_minimum(y_processed.tolist())
+    avg_y = float(np.mean(y_processed))
+    max_y = float(np.max(y_processed))
+    min_y = float(np.min(y_processed))
 
-    logger.info(f"Data analysis using src/ functions:")
+    logger.info("Data analysis:")
     logger.info(f"  Average: {avg_y:.6f}")
     logger.info(f"  Maximum: {max_y:.6f}")
     logger.info(f"  Minimum: {min_y:.6f}")
@@ -115,7 +77,7 @@ def main() -> None:
     ax1.plot(x, y, "b-", linewidth=2, label="Processed Data")
     ax1.set_xlabel("X")
     ax1.set_ylabel("Y")
-    ax1.set_title("Data Processing with src/ Functions")
+    ax1.set_title("Data Processing Demo")
     ax1.legend()
     ax1.grid(True, alpha=0.3)
 
@@ -144,25 +106,18 @@ def main() -> None:
     fig.savefig(figure_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
-    # Register figure with FigureManager for cross-referencing
-    try:
-        from visualization.figure_manager import FigureManager
+    # Register figure with FigureManager for cross-referencing (failures raise).
+    from visualization.figure_manager import FigureManager
 
-        fm = FigureManager(
-            registry_file=os.path.join(figure_dir, "figure_registry.json")
-        )
-        fm.register_figure(
-            filename="example_figure.png",
-            caption="Example project figure showing data processing with src/ functions",
-            label="fig:example_figure",
-            section="introduction",
-            generated_by="example_figure.py",
-        )
-        logger.info(f"  Registered figure: fig:example_figure")
-    except ImportError as e:
-        logger.warning(
-            f"  ⚠️  Could not register figure (FigureManager not available): {e}"
-        )
+    fm = FigureManager(registry_file=os.path.join(figure_dir, "figure_registry.json"))
+    fm.register_figure(
+        filename="example_figure.png",
+        caption="Example project figure showing a demo data-processing pipeline",
+        label="fig:example_figure",
+        section="introduction",
+        generated_by="_example_figure.py",
+    )
+    logger.info("  Registered figure: fig:example_figure")
 
     # Save data
     data_path = os.path.join(data_dir, "example_data.npz")
@@ -187,7 +142,7 @@ def main() -> None:
     print(f"Generated: {data_path}")
     print(f"Generated: {csv_path}")
 
-    logger.info(f"✅ Generated example figure using src/ functions: {figure_path}")
+    logger.info(f"✅ Generated example figure: {figure_path}")
     logger.info(f"✅ Generated example data: {data_path}")
     logger.info(f"✅ Generated example CSV: {csv_path}")
 

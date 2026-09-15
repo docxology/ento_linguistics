@@ -142,60 +142,69 @@ class TestFullPipeline:
 
         assert scored > 0
 
-    def test_output_data_schema(self, tmp_path):
-        """Validate that saved analysis data matches expected JSON schema."""
-        # Check that real output data files have correct structure
-        data_dir = PROJECT_DIR / "output" / "data"
-        if not data_dir.exists():
-            pytest.skip("No output data directory — run pipeline first")
+    def test_output_data_schema(self, tmp_path, corpus_texts):
+        """Generate fixture data with the real analysis pipeline, then validate
+        the saved JSON schema — self-sufficient, no prior runs required."""
+        from visualization.manuscript_figures import (
+            run_analysis_pipeline,
+            save_analysis_data,
+        )
+
+        results = run_analysis_pipeline(corpus_texts)
+        save_analysis_data(results, str(tmp_path))
+        data_dir = tmp_path
 
         # corpus_statistics.json
         cs_path = data_dir / "corpus_statistics.json"
-        if cs_path.exists():
-            with open(cs_path) as f:
-                cs = json.load(f)
-            assert "total_tokens" in cs
-            assert "unique_tokens" in cs
-            assert "type_token_ratio" in cs
-            assert isinstance(cs["total_tokens"], int)
-            assert 0.0 < cs["type_token_ratio"] <= 1.0
+        assert cs_path.exists()
+        with open(cs_path) as f:
+            cs = json.load(f)
+        assert "total_tokens" in cs
+        assert "unique_tokens" in cs
+        assert "type_token_ratio" in cs
+        assert isinstance(cs["total_tokens"], int)
+        assert cs["total_tokens"] > 0
+        assert 0.0 < cs["type_token_ratio"] <= 1.0
 
-        # domain_statistics.json
+        # domain_statistics.json — only domains with extracted terms appear
         ds_path = data_dir / "domain_statistics.json"
-        if ds_path.exists():
-            with open(ds_path) as f:
-                ds = json.load(f)
-            expected_domains = {
-                "power_and_labor", "unit_of_individuality",
-                "sex_and_reproduction", "behavior_and_identity",
-                "kin_and_relatedness", "economics",
-            }
-            assert set(ds.keys()) == expected_domains
-            for domain_name, domain_data in ds.items():
-                assert "term_count" in domain_data
-                assert "total_frequency" in domain_data
-                assert "bridging_term_count" in domain_data
-                assert isinstance(domain_data["term_count"], int)
+        assert ds_path.exists()
+        with open(ds_path) as f:
+            ds = json.load(f)
+        valid_domains = {
+            "power_and_labor", "unit_of_individuality",
+            "sex_and_reproduction", "behavior_and_identity",
+            "kin_and_relatedness", "economics",
+        }
+        assert isinstance(ds, dict)
+        assert len(ds) > 0
+        assert set(ds.keys()) <= valid_domains
+        for domain_name, domain_data in ds.items():
+            assert "term_count" in domain_data
+            assert "total_frequency" in domain_data
+            assert "bridging_term_count" in domain_data
+            assert isinstance(domain_data["term_count"], int)
 
         # concept_map_summary.json
         cm_path = data_dir / "concept_map_summary.json"
-        if cm_path.exists():
-            with open(cm_path) as f:
-                cm = json.load(f)
-            assert "n_concepts" in cm
-            assert "n_relationships" in cm
-            assert "network_nodes" in cm
-            assert "concepts" in cm
+        assert cm_path.exists()
+        with open(cm_path) as f:
+            cm = json.load(f)
+        assert "n_concepts" in cm
+        assert cm["n_concepts"] > 0
+        assert "n_relationships" in cm
+        assert "network_nodes" in cm
+        assert "concepts" in cm
 
         # extracted_terms.json
         et_path = data_dir / "extracted_terms.json"
-        if et_path.exists():
-            with open(et_path) as f:
-                et = json.load(f)
-            assert isinstance(et, dict)
-            assert len(et) > 0
-            # Spot check a term entry
-            first_term = next(iter(et.values()))
-            assert "lemma" in first_term
-            assert "domains" in first_term
-            assert "frequency" in first_term
+        assert et_path.exists()
+        with open(et_path) as f:
+            et = json.load(f)
+        assert isinstance(et, dict)
+        assert len(et) > 0
+        # Spot check a term entry
+        first_term = next(iter(et.values()))
+        assert "lemma" in first_term
+        assert "domains" in first_term
+        assert "frequency" in first_term

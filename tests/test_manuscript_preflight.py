@@ -5,11 +5,26 @@ absent glossary markers, and missing references blocks.
 """
 from __future__ import annotations
 
+import json
+import subprocess
 import sys
 from pathlib import Path
 
-
 import pytest
+
+
+
+SUBPROCESS_TIMEOUT_SECONDS = 1800
+
+
+def run_subprocess(*args, **kwargs):
+    """subprocess.run with a hard timeout; raises pytest.fail.TestFailed on expiry."""
+    kwargs.setdefault("timeout", SUBPROCESS_TIMEOUT_SECONDS)
+    try:
+        return subprocess.run(*args, **kwargs)
+    except subprocess.TimeoutExpired as exc:
+        pytest.fail(f"Subprocess timed out after {SUBPROCESS_TIMEOUT_SECONDS}s: {exc.cmd}")
+
 
 # Ensure the scripts directory is importable
 PROJECT_DIR = Path(__file__).resolve().parent.parent
@@ -204,3 +219,41 @@ class TestRunChecks:
         )
         result = run_checks(tmp_path)
         assert result.missing_references_block
+
+
+# ═══════════════════════════════════════════════════════════════════════
+#  Default paths / project-root derivation
+# ═══════════════════════════════════════════════════════════════════════
+
+
+class TestDefaultPaths:
+    """Defaults must resolve from the project root, not the CWD."""
+
+    def test_default_manuscript_dir_is_docs_manuscript(self):
+        args = _preflight._parse_args([])
+        assert args.manuscript_dir == PROJECT_DIR / "docs" / "manuscript"
+
+    def test_explicit_manuscript_dir_override(self, tmp_path: Path):
+        args = _preflight._parse_args(["--manuscript-dir", str(tmp_path)])
+        assert args.manuscript_dir == tmp_path
+
+    def test_real_manuscript_run_from_foreign_cwd(self, tmp_path: Path):
+        """Running with default args from an unrelated CWD validates the real
+        docs/manuscript directory and emits parseable JSON."""
+        result = run_subprocess([
+            sys.executable,
+            str(PROJECT_DIR / "scripts" / "_manuscript_preflight.py"),
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        cwd=str(tmp_path),)
+        assert result.returncode == 0, f"stderr: {result.stderr}"
+
+        payload = json.loads(result.stdout)
+        assert set(payload) >= {
+            "missing_figures",
+            "missing_glossary_markers",
+            "missing_references_block",
+            "validation_messages",
+        }

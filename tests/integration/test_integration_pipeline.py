@@ -4,11 +4,40 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
-import numpy as np
 import pytest
+
+
+SUBPROCESS_TIMEOUT_SECONDS = 1800
+_CLI_DEPS_MISSING = False
+
+
+def run_subprocess(*args, **kwargs):
+    """subprocess.run with a hard timeout; raises pytest.fail.TestFailed on expiry."""
+    kwargs.setdefault("timeout", SUBPROCESS_TIMEOUT_SECONDS)
+    try:
+        return subprocess.run(*args, **kwargs)
+    except subprocess.TimeoutExpired as exc:
+        pytest.fail(f"Subprocess timed out after {SUBPROCESS_TIMEOUT_SECONDS}s: {exc.cmd}")
+
+
+def _find_repo_root() -> Path:
+    """Walk up from this file to the directory containing infrastructure/.
+
+    Handles both checkout layouts: the repo root itself containing
+    ``infrastructure/`` and a project checkout nested next to a ``template/``
+    directory that holds it.
+    """
+    for parent in Path(__file__).absolute().parents:
+        if (parent / "infrastructure" / "__init__.py").exists():
+            return parent
+        if (parent / "template" / "infrastructure" / "__init__.py").exists():
+            return parent / "template"
+    raise RuntimeError(
+        "Could not locate template/ repo root (no infrastructure/__init__.py "
+        "found in any parent directory)."
+    )
 
 
 def _get_infrastructure_paths():
@@ -17,13 +46,9 @@ def _get_infrastructure_paths():
     Returns:
         tuple: (repo_root, cli_script_path, glossary_script_path)
     """
-    repo_root = Path(
-        __file__
-    ).parent.parent.parent.parent.parent  # template/ (one more parent)
-    # Infrastructure CLI is now at infrastructure/validation/cli/markdown.py
-    cli_script = (
-        repo_root / "infrastructure" / "validation" / "cli" / "markdown.py"
-    )
+    repo_root = _find_repo_root()
+    # Infrastructure CLI is at infrastructure/validation/cli/markdown.py
+    cli_script = repo_root / "infrastructure" / "validation" / "cli" / "main.py"
     glossary_script = (
         repo_root / "infrastructure" / "documentation" / "generate_glossary_cli.py"
     )
@@ -47,8 +72,8 @@ def _setup_test_project_structure(tmp_path: Path, test_name: str) -> Path:
     test_root.mkdir()
 
     # Get paths
-    project_root = Path(__file__).parent.parent.parent  # project/
-    repo_root = project_root.parent  # template/
+    project_root = Path(__file__).resolve().parents[2]  # project/
+    repo_root = _find_repo_root()
 
     # Copy infrastructure/ from repo root
     infrastructure_src = repo_root / "infrastructure"
@@ -95,12 +120,41 @@ def _infrastructure_available():
     return cli_script.exists() and (repo_root / "infrastructure" / "__init__.py").exists()
 
 
+def _skip_if_cli_deps_missing(result) -> None:
+    """Skip when the infrastructure CLI's own dependencies (markdown_it, ...)
+    are not installed in the test environment — the CLI exits non-zero with an
+    import traceback on stderr and no stdout in that case.
+
+    The verdict is cached module-wide: once one real probe proves the deps
+    missing, later tests skip via ``_skip_cached_cli_deps_verdict`` without
+    spawning another subprocess.
+    """
+    global _CLI_DEPS_MISSING
+    combined = (result.stdout or "") + (result.stderr or "")
+    if result.returncode != 0 and "no module named" in combined.lower():
+        _CLI_DEPS_MISSING = True
+        pytest.skip(
+            f"infrastructure CLI dependency missing in test environment: "
+            f"{combined[:200]}"
+        )
+
+
 @pytest.mark.skipif(
     not _infrastructure_available(),
     reason="Infrastructure modules not available (project in projects_in_progress/)",
 )
 class TestFullPipelineIntegration:
     """Test the complete pipeline: scripts → outputs → validation → glossary."""
+
+    @pytest.fixture(autouse=True)
+    def _skip_cached_cli_deps_verdict(self):
+        """Skip before spawning any subprocess once the missing-deps verdict
+        has been proven by an earlier probe in this session."""
+        if _CLI_DEPS_MISSING:
+            pytest.skip(
+                "infrastructure CLI dependency missing in test environment "
+                "(cached verdict from earlier probe)"
+            )
 
     def test_complete_pipeline_execution(self, tmp_path):
         """Test the complete pipeline from scripts to validation to glossary generation."""
@@ -133,17 +187,14 @@ More content here.
         example_script = project_dir / "scripts" / "_example_figure.py"
         # Run scripts with proper PYTHONPATH
         env = os.environ.copy()
-        repo_root = str(Path(__file__).parent.parent.parent.parent.parent)  # template/
-        project_src = str(Path(__file__).parent.parent.parent / "src")
-        env["PYTHONPATH"] = f"{repo_root}:{env.get('PYTHONPATH', '')}"
+        project_src = str(Path(__file__).resolve().parents[2] / "src")
+        env["PYTHONPATH"] = f"{repo_root}:{project_src}:{env.get('PYTHONPATH', '')}"
 
-        result1 = subprocess.run(
-            [sys.executable, str(example_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result1 = run_subprocess([sys.executable, str(example_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env=env,)
 
         if result1.returncode != 0:
             print(f"STDOUT: {result1.stdout}")
@@ -160,13 +211,11 @@ More content here.
 
         # Step 2: Run generate_research_figures.py script
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result2 = subprocess.run(
-            [sys.executable, str(research_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result2 = run_subprocess([sys.executable, str(research_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env=env,)
 
         # Should succeed and generate more outputs
         assert result2.returncode == 0
@@ -186,13 +235,11 @@ More content here.
             **os.environ,
             "PYTHONPATH": f"{repo_root}:{os.environ.get('PYTHONPATH', '')}",
         }
-        result3 = subprocess.run(
-            [sys.executable, str(cli_script), str(manuscript_dir)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env=test_env,
-        )
+        result3 = run_subprocess([sys.executable, str(cli_script), "markdown", str(manuscript_dir)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env=test_env,)
 
         # Should pass validation (all references exist) - exit code 0 means success
         # If validation fails due to missing dependencies, provide helpful error message
@@ -201,29 +248,28 @@ More content here.
             and "validation passed" not in result3.stdout.lower()
         ):
             combined_output = result3.stdout + result3.stderr
-            # Check for yaml import error specifically
-            if (
-                "no module named 'yaml'" in combined_output.lower()
-                or "import yaml" in combined_output.lower()
-            ):
+            # Skip when the infrastructure CLI's own dependencies (yaml,
+            # markdown_it, ...) are not installed in this environment.
+            if "no module named" in combined_output.lower():
+                global _CLI_DEPS_MISSING
+                _CLI_DEPS_MISSING = True
                 pytest.skip(
-                    f"yaml module not available in test environment: {combined_output}"
+                    f"infrastructure CLI dependency missing in test environment: "
+                    f"{combined_output[:200]}"
                 )
         assert result3.returncode == 0 or "validation passed" in result3.stdout.lower()
 
         # Step 4: Run glossary generation using infrastructure module
-        result4 = subprocess.run(
-            [
-                sys.executable,
-                str(glossary_script),
-                str(project_dir / "src"),
-                str(manuscript_dir / "98_symbols_glossary.md"),
-            ],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env={**os.environ, "PYTHONPATH": str(repo_root)},
-        )
+        result4 = run_subprocess([
+            sys.executable,
+            str(glossary_script),
+            str(project_dir / "src"),
+            str(manuscript_dir / "98_symbols_glossary.md"),
+        ],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env={**os.environ, "PYTHONPATH": str(repo_root)},)
 
         # Should succeed and generate glossary
         assert (
@@ -248,13 +294,11 @@ More content here.
             assert "error" not in result4.stderr.lower() if result4.stderr else True
 
         # Step 5: Run markdown validation again to ensure everything still works
-        result5 = subprocess.run(
-            [sys.executable, str(cli_script), str(manuscript_dir)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env={**os.environ, "PYTHONPATH": str(repo_root)},
-        )
+        result5 = run_subprocess([sys.executable, str(cli_script), "markdown", str(manuscript_dir)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env={**os.environ, "PYTHONPATH": str(repo_root)},)
 
         # Should still pass validation
         assert result5.returncode == 0 or "validation passed" in result5.stdout.lower()
@@ -344,25 +388,22 @@ accuracy = \frac{TP}{TP + FP}
 
         # Run research figures script
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result = subprocess.run(
-            [sys.executable, str(research_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-        )
+        result = run_subprocess([sys.executable, str(research_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,)
 
         assert result.returncode == 0
 
         # Run validation on manuscript using infrastructure module
-        result2 = subprocess.run(
-            [sys.executable, str(cli_script), str(project_dir / "manuscript")],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env={**os.environ, "PYTHONPATH": str(repo_root)},
-        )
+        result2 = run_subprocess([sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env={**os.environ, "PYTHONPATH": str(repo_root)},)
 
         # Should pass validation in non-strict mode
+        _skip_if_cli_deps_missing(result2)
         assert result2.returncode == 0 or "validation" in result2.stdout.lower()
 
     def test_pipeline_error_recovery(self, tmp_path):
@@ -387,46 +428,40 @@ This is fine.
 
         # Run scripts (should succeed despite issues)
         example_script = project_dir / "scripts" / "_example_figure.py"
-        result1 = subprocess.run(
-            [sys.executable, str(example_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-        )
+        result1 = run_subprocess([sys.executable, str(example_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,)
         assert result1.returncode == 0
 
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result2 = subprocess.run(
-            [sys.executable, str(research_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-        )
+        result2 = run_subprocess([sys.executable, str(research_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,)
         assert result2.returncode == 0
 
         # Run validation in non-strict mode (should pass despite issues)
-        result3 = subprocess.run(
-            [sys.executable, str(cli_script), str(project_dir / "manuscript")],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env={**os.environ, "PYTHONPATH": str(repo_root)},
-        )
+        result3 = run_subprocess([sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        _skip_if_cli_deps_missing(result3)
         assert result3.returncode == 0 or "validation" in result3.stdout.lower()
 
         # Run glossary generation (should succeed)
-        result4 = subprocess.run(
-            [
-                sys.executable,
-                str(glossary_script),
-                str(project_dir / "src"),
-                str(project_dir / "manuscript" / "98_symbols_glossary.md"),
-            ],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env={**os.environ, "PYTHONPATH": str(repo_root)},
-        )
+        result4 = run_subprocess([
+            sys.executable,
+            str(glossary_script),
+            str(project_dir / "src"),
+            str(project_dir / "manuscript" / "98_symbols_glossary.md"),
+        ],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        _skip_if_cli_deps_missing(result4)
         assert result4.returncode == 0 or "Generated" in result4.stdout
 
     def test_pipeline_deterministic_behavior(self, tmp_path):
@@ -453,27 +488,20 @@ x^2 + y^2 = z^2
         research_script = project_dir / "scripts" / "02_generate_figures.py"
 
         env = os.environ.copy()
-        repo_root_str = str(Path(__file__).parent.parent.parent.parent.parent)
-        # We don't need project_src in PYTHONPATH because scripts handle it, 
-        # but we need dependency resolution.
-        # Actually scripts add project_root to sys.path.
-        # Ensure we don't have pythonpath issues.
-        env["PYTHONPATH"] = f"{repo_root_str}:{env.get('PYTHONPATH', '')}"
+        # PYTHONPATH only needs the repo root (for infrastructure imports);
+        # the scripts add project_root/src to sys.path themselves.
+        env["PYTHONPATH"] = f"{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        subprocess.run(
-            [sys.executable, str(example_script)],
-            cwd=str(project_dir),
-            check=True,
-            capture_output=True,
-            env=env
-        )
-        subprocess.run(
-            [sys.executable, str(research_script)],
-            cwd=str(project_dir),
-            check=True,
-            capture_output=True,
-            env=env
-        )
+        run_subprocess([sys.executable, str(example_script)],
+        cwd=str(project_dir),
+        check=True,
+        capture_output=True,
+        env=env)
+        run_subprocess([sys.executable, str(research_script)],
+        cwd=str(project_dir),
+        check=True,
+        capture_output=True,
+        env=env)
 
         # Capture output 1
         out_fig = project_dir / "output" / "figures" / "domain_comparison.png"
@@ -481,20 +509,16 @@ x^2 + y^2 = z^2
         content1 = out_fig.read_bytes()
 
         # Run 2: Execute scripts again
-        subprocess.run(
-            [sys.executable, str(example_script)],
-            cwd=str(project_dir),
-            check=True,
-            capture_output=True,
-            env=env
-        )
-        subprocess.run(
-            [sys.executable, str(research_script)],
-            cwd=str(project_dir),
-            check=True,
-            capture_output=True,
-            env=env
-        )
+        run_subprocess([sys.executable, str(example_script)],
+        cwd=str(project_dir),
+        check=True,
+        capture_output=True,
+        env=env)
+        run_subprocess([sys.executable, str(research_script)],
+        cwd=str(project_dir),
+        check=True,
+        capture_output=True,
+        env=env)
 
         # Capture output 2
         content2 = out_fig.read_bytes()
@@ -515,9 +539,7 @@ x^2 + y^2 = z^2
         test_root = tmp_path / "missing_deps"
         test_root.mkdir()
 
-        # Get repo root to copy infrastructure
-        project_root = Path(__file__).parent.parent.parent
-        repo_root = project_root.parent
+        repo_root = _find_repo_root()
 
         # Copy infrastructure for validation module
         infrastructure_src = repo_root / "infrastructure"
@@ -576,16 +598,15 @@ x^2 + y^2 = z^2
         )
 
         # Run validation using infrastructure module - should detect missing images
-        result = subprocess.run(
-            [sys.executable, str(cli_script), str(test_root / "manuscript")],
-            cwd=str(test_root),
-            capture_output=True,
-            text=True,
-            env={**os.environ, "PYTHONPATH": str(test_repo_root)},
-        )
+        result = run_subprocess([sys.executable, str(cli_script), "markdown", str(test_root / "manuscript")],
+        cwd=str(test_root),
+        capture_output=True,
+        text=True,
+        env={**os.environ, "PYTHONPATH": str(test_repo_root)},)
 
         # Should handle missing dependencies gracefully (validation still runs)
         # Either it passes with issues reported, or fails with validation errors
+        _skip_if_cli_deps_missing(result)
         assert (
             "missing" in result.stdout.lower()
             or result.returncode == 0
@@ -639,53 +660,47 @@ This demonstrates that all components work together properly.
 
         # Run example figure script
         example_script = project_dir / "scripts" / "_example_figure.py"
-        result1 = subprocess.run(
-            [sys.executable, str(example_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env=clean_env,
-        )
+        result1 = run_subprocess([sys.executable, str(example_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env=clean_env,)
         assert result1.returncode == 0, (
             f"_example_figure.py failed\nstdout: {result1.stdout[:500]}\nstderr: {result1.stderr[:500]}"
         )
 
         # Run research figures script
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result2 = subprocess.run(
-            [sys.executable, str(research_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env=clean_env,
-        )
+        result2 = run_subprocess([sys.executable, str(research_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env=clean_env,)
         assert result2.returncode == 0, (
             f"02_generate_figures.py failed\nstdout: {result2.stdout[:500]}\nstderr: {result2.stderr[:500]}"
         )
 
         # Run validation using infrastructure module
-        result3 = subprocess.run(
-            [sys.executable, str(cli_script), str(project_dir / "manuscript")],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env={**clean_env, "PYTHONPATH": str(repo_root)},
-        )
+        result3 = run_subprocess([sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env={**clean_env, "PYTHONPATH": str(repo_root)},)
+        _skip_if_cli_deps_missing(result3)
         assert result3.returncode == 0 or "validation" in result3.stdout.lower()
 
         # Run glossary generation using infrastructure module
-        result4 = subprocess.run(
-            [
-                sys.executable,
-                str(glossary_script),
-                str(project_dir / "src"),
-                str(project_dir / "manuscript" / "98_symbols_glossary.md"),
-            ],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            env={**clean_env, "PYTHONPATH": str(repo_root)},
-        )
+        result4 = run_subprocess([
+            sys.executable,
+            str(glossary_script),
+            str(project_dir / "src"),
+            str(project_dir / "manuscript" / "98_symbols_glossary.md"),
+        ],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        env={**clean_env, "PYTHONPATH": str(repo_root)},)
+        _skip_if_cli_deps_missing(result4)
         assert result4.returncode == 0 or "Generated" in result4.stdout
 
         # Verify all outputs exist (stdout fallback for edge-case coverage environments)
@@ -751,13 +766,11 @@ Reference to equation \eqref{{eq:section_{i}}}.
 
         # Run scripts (they should handle large content gracefully)
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result = subprocess.run(
-            [sys.executable, str(research_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            timeout=60,
-        )  # 60 second timeout
+        result = run_subprocess([sys.executable, str(research_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        timeout=60,)  # 60 second timeout
 
         # Handle missing analysis dependencies (e.g., nltk) that may not
         # be installed in every test environment.  The generate_figures
@@ -773,40 +786,35 @@ Reference to equation \eqref{{eq:section_{i}}}.
         assert result.returncode == 0
 
         # Run validation (should handle large files) using infrastructure module
-        result2 = subprocess.run(
-            [sys.executable, str(cli_script), str(project_dir / "manuscript")],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            timeout=60,
-            env={**os.environ, "PYTHONPATH": str(repo_root)},
-        )
+        result2 = run_subprocess([sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        timeout=60,
+        env={**os.environ, "PYTHONPATH": str(repo_root)},)
 
         # Should complete successfully
+        _skip_if_cli_deps_missing(result2)
         assert result2.returncode == 0 or "validation" in result2.stdout.lower()
 
         # Run glossary generation using infrastructure module
-        result3 = subprocess.run(
-            [
-                sys.executable,
-                str(glossary_script),
-                str(project_dir / "src"),
-                str(project_dir / "manuscript" / "98_symbols_glossary.md"),
-            ],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-            timeout=60,
-            env={**os.environ, "PYTHONPATH": str(repo_root)},
-        )
+        result3 = run_subprocess([
+            sys.executable,
+            str(glossary_script),
+            str(project_dir / "src"),
+            str(project_dir / "manuscript" / "98_symbols_glossary.md"),
+        ],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,
+        timeout=60,
+        env={**os.environ, "PYTHONPATH": str(repo_root)},)
 
+        _skip_if_cli_deps_missing(result3)
         assert result3.returncode == 0 or "Generated" in result3.stdout
 
-    @pytest.mark.skip(
-        reason="Integration test with infrastructure dependencies - run from template root"
-    )
     def test_pipeline_with_real_world_scenario(self, tmp_path):
-        """Test pipeline with a realistic academic paper scenario."""
+        """Test pipeline with a realistic academic paper scenario (runs offline)."""
         test_root = _setup_test_project_structure(tmp_path, "academic_paper")
         project_dir = test_root / "project"
         manuscript_dir = project_dir / "manuscript"
@@ -969,25 +977,23 @@ For implementation details, see the API documentation in the symbols glossary.
         for filename, content in paper_sections.items():
             (manuscript_dir / filename).write_text(content)
 
-        # Run the complete pipeline
-        # Run scripts
-        example_script = project_dir / "scripts" / "example_figure.py"
-        result1 = subprocess.run(
-            [sys.executable, str(example_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-        )
-        assert result1.returncode == 0
-
-        research_script = project_dir / "scripts" / "generate_research_figures.py"
-        result2 = subprocess.run(
-            [sys.executable, str(research_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-        )
+        # Run the complete pipeline.
+        # 02_generate_figures.py wipes output/figures and output/data for a
+        # clean-slate run, so it must run BEFORE _example_figure.py — otherwise
+        # the example figure/data generated first would be deleted.
+        research_script = project_dir / "scripts" / "02_generate_figures.py"
+        result2 = run_subprocess([sys.executable, str(research_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,)
         assert result2.returncode == 0
+
+        example_script = project_dir / "scripts" / "_example_figure.py"
+        result1 = run_subprocess([sys.executable, str(example_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,)
+        assert result1.returncode == 0
 
         # Verify all components worked together
         # (repo_utilities and infrastructure are repo-level tools,

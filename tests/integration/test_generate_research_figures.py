@@ -4,11 +4,22 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 import numpy as np
 import pytest
+
+
+SUBPROCESS_TIMEOUT_SECONDS = 1800
+
+
+def run_subprocess(*args, **kwargs):
+    """subprocess.run with a hard timeout; raises pytest.fail.TestFailed on expiry."""
+    kwargs.setdefault("timeout", SUBPROCESS_TIMEOUT_SECONDS)
+    try:
+        return subprocess.run(*args, **kwargs)
+    except subprocess.TimeoutExpired as exc:
+        pytest.fail(f"Subprocess timed out after {SUBPROCESS_TIMEOUT_SECONDS}s: {exc.cmd}")
 
 
 class TestGenerateResearchFiguresScript:
@@ -75,12 +86,10 @@ if __name__ == "__main__":
         original_path = sys.path.copy()
         try:
             # Execute the function in a subprocess to test it properly
-            result = subprocess.run(
-                [sys.executable, str(test_script)],
-                cwd=str(tmp_path),
-                capture_output=True,
-                text=True,
-            )
+            result = run_subprocess([sys.executable, str(test_script)],
+            cwd=str(tmp_path),
+            capture_output=True,
+            text=True,)
 
             assert result.returncode == 0
             # The function should execute without error
@@ -119,12 +128,10 @@ if __name__ == "__main__":
         )
 
         # Test directory creation
-        result = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(tmp_path),
-            capture_output=True,
-            text=True,
-        )
+        result = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(tmp_path),
+        capture_output=True,
+        text=True,)
 
         assert result.returncode == 0
         assert "Output:" in result.stdout
@@ -161,7 +168,7 @@ class VisualizationEngine:
         return "test_figure.png"
 """
         )
-        (core_dir / "example.py").write_text(
+        (core_dir / "math_helpers.py").write_text(
             """
 def add_numbers(a, b): return a + b
 def multiply_numbers(a, b): return a * b
@@ -186,10 +193,10 @@ def _ensure_src_on_path():
 def generate_convergence_plot(figure_dir, data_dir):
     _ensure_src_on_path()
     try:
-        from core.example import add_numbers, multiply_numbers, calculate_average
-        print("✅ Using src/ functions for convergence plot")
+        from core.math_helpers import add_numbers, multiply_numbers, calculate_average
+        print("OK Using src/ functions for convergence plot")
     except ImportError as e:
-        print(f"❌ Failed to import from src/example.py: {e}")
+        print(f"Failed to import from src/math_helpers.py: {e}")
         return ""
 
     import matplotlib.pyplot as plt
@@ -262,12 +269,10 @@ if __name__ == "__main__":
         )
 
         # Run the test script
-        result = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(project_dir),
-            capture_output=True,
-            text=True,
-        )
+        result = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(project_dir),
+        capture_output=True,
+        text=True,)
 
         # Debug: Log stdout and stderr if the script failed
         if result.returncode != 0:
@@ -321,7 +326,7 @@ class VisualizationEngine:
         return "test_figure.png"
 """
         )
-        (core_dir / "example.py").write_text(
+        (core_dir / "math_helpers.py").write_text(
             """
 def is_even(n): return n % 2 == 0
 def is_odd(n): return not is_even(n)
@@ -353,14 +358,14 @@ def _ensure_src_on_path():
 def generate_experimental_setup(figure_dir, data_dir):
     _ensure_src_on_path()
     try:
-        from core.example import is_even, is_odd
-        print("✅ Using src/ functions for experimental setup validation")
+        from core.math_helpers import is_even, is_odd
+        print("OK Using src/ functions for experimental setup validation")
         num_components = 3
         print(f"Number of components: {num_components}")
         print(f"  Is even: {is_even(num_components)}")
         print(f"  Is odd: {is_odd(num_components)}")
     except ImportError as e:
-        print(f"❌ Failed to import from src/example.py: {e}")
+        print(f"Failed to import from src/math_helpers.py: {e}")
 
     import matplotlib.pyplot as plt
 
@@ -411,12 +416,10 @@ if __name__ == "__main__":
         )
 
         # Run the test script
-        result = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(test_root),
-            capture_output=True,
-            text=True,
-        )
+        result = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(test_root),
+        capture_output=True,
+        text=True,)
 
         # Should succeed
         assert result.returncode == 0
@@ -454,13 +457,11 @@ if __name__ == "__main__":
         env = os.environ.copy()
         env["PYTHONPATH"] = f"{src_path}:{project_root}:{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        result = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(test_root),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(test_root),
+        capture_output=True,
+        text=True,
+        env=env,)
 
         # Should succeed
         assert result.returncode == 0, f"Script failed:\n{result.stderr}"
@@ -503,13 +504,11 @@ if __name__ == "__main__":
         env = os.environ.copy()
         env["PYTHONPATH"] = f"{src_path}:{project_root}:{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        result = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(test_root),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(test_root),
+        capture_output=True,
+        text=True,
+        env=env,)
 
         assert result.returncode == 0, f"Script failed:\n{result.stderr}"
 
@@ -537,13 +536,11 @@ if __name__ == "__main__":
         env = os.environ.copy()
         env["PYTHONPATH"] = str(tmp_path)  # Empty path
 
-        result = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(test_root),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(test_root),
+        capture_output=True,
+        text=True,
+        env=env,)
 
         # Script should fail because analysis modules are required for the
         # figure generation pipeline (DataLoader is handled gracefully but
@@ -577,13 +574,11 @@ if __name__ == "__main__":
         env = os.environ.copy()
         env["PYTHONPATH"] = f"{src_path}:{project_root}:{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        result = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(test_root),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(test_root),
+        capture_output=True,
+        text=True,
+        env=env,)
 
         # Should succeed — the script sets MPLBACKEND=Agg at runtime
         assert result.returncode == 0, f"Script failed:\n{result.stderr}"
@@ -607,21 +602,17 @@ if __name__ == "__main__":
         env = os.environ.copy()
         env["PYTHONPATH"] = f"{src_path}:{project_root}:{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        result1 = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(test_root),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result1 = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(test_root),
+        capture_output=True,
+        text=True,
+        env=env,)
 
-        result2 = subprocess.run(
-            [sys.executable, str(test_script)],
-            cwd=str(test_root),
-            capture_output=True,
-            text=True,
-            env=env,
-        )
+        result2 = run_subprocess([sys.executable, str(test_script)],
+        cwd=str(test_root),
+        capture_output=True,
+        text=True,
+        env=env,)
 
         # Both should succeed
         assert result1.returncode == 0, f"Run 1 failed:\n{result1.stderr}"

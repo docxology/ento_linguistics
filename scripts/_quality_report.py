@@ -47,21 +47,21 @@ from core.validation_utils import validate_markdown, verify_output_integrity
 logger = get_logger(__name__)
 
 
-def _parse_args() -> argparse.Namespace:
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate manuscript quality report.")
     parser.add_argument(
         "--manuscript-dir",
         type=Path,
-        default=Path(__file__).parent.parent / "manuscript",
-        help="Path to manuscript directory (default: project/manuscript)",
+        default=Path(__file__).resolve().parent.parent / "docs" / "manuscript",
+        help="Path to manuscript directory (default: project/docs/manuscript)",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("output/reports"),
-        help="Directory to save quality reports.",
+        default=Path(__file__).resolve().parent.parent / "output" / "reports",
+        help="Directory to save quality reports (default: project/output/reports).",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 def main() -> None:
@@ -111,7 +111,7 @@ def main() -> None:
     # Output integrity
     integrity_summary = {}
     try:
-        integrity_summary = verify_output_integrity(Path("output"))
+        integrity_summary = verify_output_integrity(project_root / "output")
         integrity_summary = json.loads(json.dumps(integrity_summary, default=str))
         log_substep("Output integrity: completed", logger)
     except Exception as exc:
@@ -132,10 +132,15 @@ def main() -> None:
         }
     else:
         try:
-            reproducibility = generate_reproducibility_report(Path("output"))
+            reproducibility = generate_reproducibility_report(project_root / "output")
             reproducibility = json.loads(json.dumps(reproducibility, default=str))
-        except Exception:
-            reproducibility = {}
+        except Exception as exc:
+            error_agg.add_error(
+                error_type="reproducibility_error",
+                message=f"Reproducibility report failed: {exc}",
+                stage="quality_report",
+                severity="warning",
+            )
 
     # Aggregate and persist
     summary = {
@@ -155,7 +160,7 @@ def main() -> None:
             {"name": "quality_report", "exit_code": 0, "duration": 0.0},
         ],
         total_duration=0.0,
-        repo_root=Path("."),
+        repo_root=project_root,
         validation_results=summary,
         error_summary=summary["errors"],
     )

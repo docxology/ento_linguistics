@@ -614,5 +614,5 @@ def build_pdf(strict_templates: bool = False) -> None:
         size_mb = output_file.stat().st_size / (1024 * 1024)
         print(f"\nPDF built successfully: {output_file} ({size_mb:.1f} MB)")
     else:
-        print(f"\nPDF build failed — output file not found")
+        print("\nPDF build failed — output file not found")
         sys.exit(1)

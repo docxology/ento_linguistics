@@ -22,15 +22,12 @@ project_root = Path(__file__).parent.parent
 repo_root = project_root.parent
 sys.path.insert(0, str(project_root / "src"))
 sys.path.insert(0, str(repo_root))  # Add repo root so we can import infrastructure.*
-import numpy as np
 
-# Add src to path
-sys.path.append(os.path.join(os.path.dirname(__file__), "../src"))
 
 from data.data_generator import generate_synthetic_data, generate_time_series
 from core.parameters import ParameterSet, ParameterSweep
 from analysis.performance import analyze_convergence
-from pipeline.reporting import generate_pipeline_report, ReportGenerator
+from pipeline.reporting import ReportGenerator
 from pipeline.simulation import SimpleSimulation
 from analysis.statistics import calculate_descriptive_stats
 from core.validation import ValidationFramework
@@ -48,8 +45,6 @@ def run_simulation_example() -> None:
     logger.info("Running Ento-Linguistic simulation example...")
 
     # Set up parameters
-    # NOTE: The original code used ParameterSet, which is removed in the new imports.
-    # For this example, we'll simulate a simple parameter dictionary.
     params = {"max_iterations": 100, "target_value": 5.0}
 
     # Create simulation
@@ -59,7 +54,7 @@ def run_simulation_example() -> None:
 
     # Run simulation
     logger.info("Running simulation...")
-    state = sim.run(max_iterations=100, verbose=True)
+    sim.run(max_iterations=100, verbose=True)
 
     # Save results
     logger.info("Saving results...")
@@ -126,8 +121,6 @@ def generate_analysis_figures() -> None:
     logger.info(f"  Mean: {stats.mean:.4f}, Std: {stats.std:.4f}")
 
     # Create figure using src/ visualization
-    from visualization.plots import plot_convergence, plot_line
-    from visualization.visualization import VisualizationEngine
 
     engine = VisualizationEngine(output_dir="output/figures")
     fig, ax = engine.create_figure()
@@ -151,6 +144,8 @@ def generate_analysis_figures() -> None:
         generated_by="scientific_simulation.py",
     )
     logger.info(f"  Registered figure: {fig_meta.label}")
+
+    import matplotlib.pyplot as plt
 
     plt.close(fig)
 
@@ -271,6 +266,5 @@ if __name__ == "__main__":
     import matplotlib
 
     matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
 
     main()

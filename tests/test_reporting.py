@@ -1,6 +1,6 @@
 """Comprehensive tests for src/reporting.py to ensure 100% coverage."""
 
-import tempfile
+import sys
 from pathlib import Path
 
 import pytest
@@ -414,4 +414,79 @@ class TestReportingModuleFunctions:
         result2 = rep_module._check_infrastructure()
         assert result1 == result2
         rep_module._HAS_INFRASTRUCTURE = original
+
+    def _infra_available(self) -> bool:
+        """Check whether the real infrastructure reporter is importable."""
+        # Walk up to the template/ repo root (conftest's TEMPLATE_ROOT is
+        # off by one level); insert it so `infrastructure` is importable.
+        for parent in Path(__file__).absolute().parents:
+            if (parent / "infrastructure" / "__init__.py").exists():
+                root = str(parent)
+                break
+            if (parent / "template" / "infrastructure" / "__init__.py").exists():
+                root = str(parent / "template")
+                break
+        else:
+            return False
+        if root not in sys.path:
+            sys.path.insert(0, root)
+        try:
+            import infrastructure.reporting  # noqa: F401
+
+            return True
+        except ImportError:
+            return False
+
+    def test_save_structured_report_with_infrastructure(self, tmp_path, monkeypatch):
+        """save_structured_report persists via the real infrastructure reporter."""
+        import pipeline.reporting as rep_module
+
+        if not self._infra_available():
+            pytest.skip("infrastructure.reporting.pipeline_reporter not importable")
+
+        monkeypatch.setattr(rep_module, "_HAS_INFRASTRUCTURE", True)
+        gen = rep_module.ReportGenerator(output_dir=str(tmp_path))
+        paths = gen.save_structured_report(
+            "infra_stage", {"metric": 1.0}, pipeline_duration=0.5
+        )
+        assert isinstance(paths, dict)
+        assert len(paths) > 0
+        for saved_path in paths.values():
+            assert Path(saved_path).exists()
+
+    def test_generate_and_save_pipeline_report_with_infrastructure(
+        self, tmp_path, monkeypatch
+    ):
+        """Module wrappers delegate to real infrastructure when available."""
+        import pipeline.reporting as rep_module
+
+        if not self._infra_available():
+            pytest.skip("infrastructure.reporting.pipeline_reporter not importable")
+
+        monkeypatch.setattr(rep_module, "_HAS_INFRASTRUCTURE", True)
+        report = rep_module.generate_pipeline_report(
+            stage_results=[{"name": "stage", "exit_code": 0, "duration": 1.0}],
+            total_duration=1.0,
+            repo_root=Path("."),
+            validation_results={"status": "ok"},
+            error_summary={"total_errors": 0},
+        )
+        # Real infrastructure returns a PipelineReport model with stages
+        assert list(report.stages)[0].name == "stage"
+
+        paths = rep_module.save_pipeline_report(report, Path(tmp_path))
+        assert isinstance(paths, dict)
+
+    def test_save_structured_report_json_fallback_content(self, tmp_path, monkeypatch):
+        """JSON fallback writes the full results payload verbatim."""
+        import json as _json
+
+        import pipeline.reporting as rep_module
+
+        monkeypatch.setattr(rep_module, "_HAS_INFRASTRUCTURE", False)
+        gen = rep_module.ReportGenerator(output_dir=str(tmp_path))
+        results = {"nested": {"a": [1, 2]}, "value": 3.5}
+        paths = gen.save_structured_report("fallback_stage", results)
+        saved = _json.loads(Path(paths["json"]).read_text())
+        assert saved == results
 

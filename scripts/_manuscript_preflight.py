@@ -83,8 +83,17 @@ def run_checks(manuscript_dir: Path) -> CheckResult:
     figure_refs = _collect_figure_paths(markdown_files)
     missing_figs: List[str] = []
     for md_file, ref in figure_refs:
-        ref_path = (md_file.parent / ref).resolve()
-        if not ref_path.exists():
+        # Figure refs are written relative to the legacy project/manuscript/
+        # location ("../output/figures/..."); resolve against the project
+        # root as well as the referencing file's directory.
+        ref_clean = ref
+        while ref_clean.startswith("../"):
+            ref_clean = ref_clean[3:]
+        candidates = [
+            (md_file.parent / ref).resolve(),
+            (project_root / ref_clean).resolve(),
+        ]
+        if not any(c.exists() for c in candidates):
             missing_figs.append(f"{md_file.name}: {ref}")
 
     glossary_path = manuscript_dir / "98_symbols_glossary.md"
@@ -108,13 +117,13 @@ def run_checks(manuscript_dir: Path) -> CheckResult:
     )
 
 
-def _parse_args() -> argparse.Namespace:
+def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run manuscript preflight checks.")
     parser.add_argument(
         "--manuscript-dir",
         type=Path,
-        default=Path(__file__).parent.parent / "manuscript",
-        help="Path to manuscript directory (default: project/manuscript)",
+        default=Path(__file__).resolve().parent.parent / "docs" / "manuscript",
+        help="Path to manuscript directory (default: project/docs/manuscript)",
     )
     parser.add_argument(
         "--strict",
@@ -126,7 +135,7 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Emit JSON output for CI consumption.",
     )
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 def main() -> None:
@@ -136,15 +145,18 @@ def main() -> None:
 
     # Run additional validation passes
     try:
-        problems, _ = validate_markdown(str(args.manuscript_dir), ".")
-        if problems:
-            validation_messages.append(f"Markdown validation issues: {len(problems)}")
+        markdown_result = validate_markdown(str(args.manuscript_dir), ".")
+        markdown_issues = markdown_result.get("issues") or []
+        if markdown_issues:
+            validation_messages.append(
+                f"Markdown validation issues: {len(markdown_issues)}"
+            )
     except Exception as exc:
         validation_messages.append(f"Markdown validation skipped: {exc}")
 
     try:
         # If combined PDF exists, validate rendering quality
-        combined_pdf = Path("output/pdf/project_combined.pdf")
+        combined_pdf = project_root / "output" / "pdf" / "ento_linguistics_combined.pdf"
         if combined_pdf.exists():
             pdf_report = validate_pdf_rendering(combined_pdf)
             if pdf_report.get("issues", {}).get("total_issues", 0) > 0:
@@ -153,7 +165,7 @@ def main() -> None:
         validation_messages.append(f"PDF validation skipped: {exc}")
 
     try:
-        verify_output_integrity(Path("output"))
+        verify_output_integrity(project_root / "output")
     except Exception as exc:
         validation_messages.append(f"Output integrity check warning: {exc}")
 

@@ -92,7 +92,7 @@ uv run pytest tests/integration/ -q --tb=no
 uv run pytest tests/ --cov=src --cov-fail-under=90 --cov-report=term-missing
 ```
 
-See `tests/README.md` and `output/reports/test_results.json` (1199 tests, ~91% coverage) for current status. Last measured via `uv run python scripts/01_run_tests.py --project ento_linguistics`.
+See `tests/README.md` and `output/reports/test_results.json` for current status (1225 tests collected, measured by `uv run pytest tests/ --collect-only -q`; the last recorded full run in `output/reports/test_results.json` reports 1224 passed / 1 skipped at ~93% coverage).
 
 ## See Also
 
