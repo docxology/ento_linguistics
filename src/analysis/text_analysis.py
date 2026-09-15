@@ -10,9 +10,8 @@ from __future__ import annotations
 import re
 import unicodedata
 from collections import Counter
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set
 
-import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -95,11 +94,20 @@ class TextProcessor:
             "genotypic",
         }
 
-    def normalize_text(self, text: str) -> str:
+        # Lowercased scientific terms, precomputed once: tokenize_words runs
+        # per text, so rebuilding the lookup set per call was wasted work.
+        self._scientific_lower = frozenset(
+            term.lower() for term in self.scientific_terms
+        )
+
+    def normalize_text(self, text: str, strip_punctuation: bool = True) -> str:
         """Normalize text for consistent processing.
 
         Args:
             text: Raw input text
+            strip_punctuation: Remove punctuation and hyphens.  Pass False
+                when the output will be word-tokenized, since punctuation
+                aids correct tokenization.
 
         Returns:
             Normalized text
@@ -113,8 +121,9 @@ class TextProcessor:
         # Convert to lowercase
         text = text.lower()
 
-        # Remove punctuation (keep alphanumeric, spaces, and hyphens)
-        text = re.sub(r"[^\w\s\-]", "", text)
+        if strip_punctuation:
+            # Remove punctuation (keep alphanumeric, spaces, and hyphens)
+            text = re.sub(r"[^\w\s\-]", "", text)
 
         # Remove extra whitespace
         text = re.sub(r"\s+", " ", text.strip())
@@ -147,9 +156,8 @@ class TextProcessor:
 
         if preserve_scientific:
             # Preserve scientific terms: O(n) set-lookup per token
-            scientific_lower = {t.lower() for t in self.scientific_terms}
             tokens = [
-                t if t.lower() not in scientific_lower else t.lower()
+                t if t.lower() not in self._scientific_lower else t.lower()
                 for t in tokens
             ]
 
@@ -158,14 +166,21 @@ class TextProcessor:
     def remove_punctuation(self, tokens: List[str]) -> List[str]:
         """Remove punctuation from tokens.
 
+        Clitic fragments produced by word-tokenizing contractions and
+        possessives (e.g. "'s" in "colony's", "n't" in "don't") are dropped
+        rather than kept as junk single-letter tokens.
+
         Args:
             tokens: Input tokens
 
         Returns:
             Tokens with punctuation removed
         """
+        clitics = {"'s", "n't", "'re", "'ve", "'ll", "'d", "'m", "'t"}
         clean_tokens = []
         for token in tokens:
+            if token.lower() in clitics:
+                continue
             # Remove punctuation from token
             clean_token = re.sub(r"[^\w\-_]", "", token)
             # Keep token if it's not empty and contains alphanumeric characters
@@ -208,8 +223,10 @@ class TextProcessor:
         Returns:
             Processed tokens
         """
-        # Normalization
-        normalized = self.normalize_text(text)
+        # Tokenize BEFORE stripping punctuation: word_tokenize needs sentence
+        # boundaries, apostrophes and quotes to split words correctly; a
+        # punctuation-free input degrades tokenization (e.g. "don't" -> "dont").
+        normalized = self.normalize_text(text, strip_punctuation=False)
 
         # Tokenization
         tokens = self.tokenize_words(normalized)

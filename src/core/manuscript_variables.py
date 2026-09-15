@@ -255,7 +255,7 @@ def main() -> None:
     ]
     missing = [p for p in required if not p.exists()]
     if missing:
-        print(f"\nERROR: Missing required data files:")
+        print("\nERROR: Missing required data files:")
         for p in missing:
             print(f"  - {p}")
         print("\nRun the analysis pipeline first (02_generate_figures.py)")
@@ -271,7 +271,7 @@ def main() -> None:
     results = fill_manuscript(variables)
 
     total = sum(results.values())
-    print(f"\nResults:")
+    print("\nResults:")
     for filename, count in sorted(results.items()):
         print(f"  {filename}: {count} substitutions")
     print(f"\n  TOTAL: {total} substitutions across {len(results)} files")

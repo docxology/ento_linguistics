@@ -10,8 +10,8 @@ signaling potential for miscommunication in scientific discourse.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from dataclasses import dataclass, field, fields as dataclass_fields
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 from scipy.stats import entropy as scipy_entropy
@@ -36,13 +36,36 @@ HIGH_ENTROPY_THRESHOLD = 2.0
 class SemanticEntropyResult:
     """Result of semantic entropy calculation for a single term.
 
+    Entropy comparability contract
+    ------------------------------
+    ``entropy_bits`` is the raw Shannon entropy H = -sum(p * log2(p)) over the
+    cluster distribution.  Because the number of semantic clusters ``k`` is
+    chosen from the number of contexts (see ``calculate_semantic_entropy``),
+    the ceiling of H is log2(k), which differs across terms.  Raw H is
+    therefore NOT directly comparable across terms with different context
+    counts.  Use ``entropy_normalized`` = H / h_max for cross-term comparison:
+    it maps to [0, 1] where 1.0 means the contexts are uniformly spread over
+    every available sense (maximum ambiguity given k) and 0.0 means a single
+    dominant sense.
+
     Attributes:
         term: The term text
-        entropy_bits: Shannon entropy in bits (H = -sum(p * log2(p)))
+        entropy_bits: Raw Shannon entropy in bits (H = -sum(p * log2(p)))
         n_clusters: Number of distinct semantic clusters found
         cluster_distribution: Probability distribution across clusters
         is_high_entropy: Whether entropy exceeds the HIGH_ENTROPY_THRESHOLD
         n_contexts: Number of contexts used in the calculation
+        entropy_normalized: H normalized by its ceiling h_max, in [0, 1].
+            Comparable across terms. 0.0 when undefined (fewer than 2
+            occupied clusters).
+        h_max: Entropy ceiling log2(k_used) in bits for this term's cluster
+            count. 0.0 when fewer than 2 clusters were used.
+        status: ``"ok"`` when entropy was computed; ``"insufficient_contexts"``
+            when fewer usable contexts than ``min_contexts`` (or too few to
+            cluster); ``"error"`` when vectorization/clustering failed.
+            Downstream consumers MUST exclude non-``"ok"`` results from
+            aggregate statistics.
+        error: Failure description when ``status == "error"``, else None.
     """
 
     term: str
@@ -51,6 +74,10 @@ class SemanticEntropyResult:
     cluster_distribution: List[float] = field(default_factory=list)
     is_high_entropy: bool = False
     n_contexts: int = 0
+    entropy_normalized: float = 0.0
+    h_max: float = 0.0
+    status: str = "ok"
+    error: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
@@ -61,12 +88,21 @@ class SemanticEntropyResult:
             "cluster_distribution": self.cluster_distribution,
             "is_high_entropy": self.is_high_entropy,
             "n_contexts": self.n_contexts,
+            "entropy_normalized": self.entropy_normalized,
+            "h_max": self.h_max,
+            "status": self.status,
+            "error": self.error,
         }
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "SemanticEntropyResult":
-        """Create from dictionary."""
-        return cls(**data)
+        """Create from dictionary.
+
+        Tolerates serialized payloads that predate the normalized-entropy
+        fields; missing keys fall back to dataclass defaults.
+        """
+        known = {f.name for f in dataclass_fields(cls)}
+        return cls(**{k: v for k, v in data.items() if k in known})
 
 
 def calculate_semantic_entropy(
@@ -106,6 +142,7 @@ def calculate_semantic_entropy(
             cluster_distribution=[1.0] if valid_contexts else [],
             is_high_entropy=False,
             n_contexts=len(valid_contexts),
+            status="insufficient_contexts",
         )
 
     try:
@@ -134,6 +171,7 @@ def calculate_semantic_entropy(
                 cluster_distribution=[1.0],
                 is_high_entropy=False,
                 n_contexts=len(valid_contexts),
+                status="insufficient_contexts",
             )
 
         kmeans = KMeans(
@@ -147,16 +185,23 @@ def calculate_semantic_entropy(
         unique_labels, counts = np.unique(labels, return_counts=True)
         probabilities = counts / len(labels)
 
-        # Step 4: Shannon entropy in bits (base 2)
+        # Step 4: Shannon entropy in bits (base 2), plus its ceiling so the
+        # normalized value is comparable across terms with different k
+        # (see SemanticEntropyResult docstring).
         H = float(scipy_entropy(probabilities, base=2))
+        k_used = len(unique_labels)
+        h_max = float(np.log2(k_used)) if k_used > 1 else 0.0
+        entropy_normalized = H / h_max if h_max > 0 else 0.0
 
         return SemanticEntropyResult(
             term=term,
             entropy_bits=H,
-            n_clusters=len(unique_labels),
+            n_clusters=k_used,
             cluster_distribution=probabilities.tolist(),
             is_high_entropy=H > threshold,
             n_contexts=len(valid_contexts),
+            entropy_normalized=entropy_normalized,
+            h_max=h_max,
         )
 
     except (ValueError, RuntimeError) as e:
@@ -177,6 +222,8 @@ def calculate_semantic_entropy(
             cluster_distribution=[],
             is_high_entropy=False,
             n_contexts=len(valid_contexts),
+            status="error",
+            error=str(e),
         )
 
 

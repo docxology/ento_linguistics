@@ -6,9 +6,7 @@ log_progress_bar (with and without zero total), log_stage.
 from __future__ import annotations
 
 import logging
-import os
 
-import pytest
 
 from core.logging import get_logger, log_progress_bar, log_stage, log_substep
 
@@ -56,11 +54,27 @@ class TestGetLogger:
         logger = get_logger("test_log_default_level")
         assert logger.level == logging.INFO
 
-    def test_invalid_level_defaults_to_info(self, monkeypatch):
-        """Test invalid LOG_LEVEL falls back to INFO."""
+    def test_invalid_level_defaults_to_info_with_warning(self, monkeypatch, caplog):
+        """Invalid LOG_LEVEL falls back to INFO and emits a warning."""
         monkeypatch.setenv("LOG_LEVEL", "invalid")
         logger = get_logger("test_log_invalid_level")
         assert logger.level == logging.INFO
+        assert any(
+            "Unknown LOG_LEVEL" in record.getMessage()
+            and record.levelno == logging.WARNING
+            for record in caplog.records
+        )
+
+    def test_non_level_logging_attribute_defaults_to_info(self, monkeypatch, caplog):
+        """A LOG_LEVEL naming a non-level logging attribute (e.g. a string
+        constant) falls back to INFO instead of setLevel blowing up."""
+        monkeypatch.setenv("LOG_LEVEL", "BASIC_FORMAT")
+        logger = get_logger("test_log_non_level_attr")
+        assert logger.level == logging.INFO
+        assert any(
+            "Unknown LOG_LEVEL" in record.getMessage()
+            for record in caplog.records
+        )
 
     def test_logger_has_handler(self):
         """Test that logger has at least one handler."""

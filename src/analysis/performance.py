@@ -6,9 +6,8 @@ of terminology extraction and discourse mapping algorithms.
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
@@ -195,9 +194,19 @@ def _estimate_complexity(sizes: List[int], times: List[float]) -> str:
     if len(sizes) < 2:
         return "unknown"
 
-    # Log-log fit to estimate exponent
-    log_sizes = np.log(sizes)
-    log_times = np.log(times)
+    # Log-log fit to estimate exponent.  Guard against non-positive problem
+    # sizes or timings (e.g. a 0.0 s timing): np.log would crash or produce
+    # meaningless fits.
+    valid = [
+        (s, t)
+        for s, t in zip(sizes, times)
+        if s > 0 and t > 0
+    ]
+    if len(valid) < 2:
+        return "unknown"
+
+    log_sizes = np.log([s for s, _ in valid])
+    log_times = np.log([t for _, t in valid])
 
     # Linear fit
     coeffs = np.polyfit(log_sizes, log_times, 1)
@@ -276,11 +285,16 @@ def benchmark_comparison(
     best_method = methods[best_idx] if best_idx < len(methods) else None
     best_value = values[best_idx] if values else None
 
-    # Calculate relative performance
-    if best_value and best_value > 0:
-        relative_performance = [best_value / v for v in values]
+    # Calculate relative performance (best_value / v, so the best method is 1.0).
+    # A best_value of exactly 0 is legitimate (e.g. a zero-duration timing);
+    # the formula extends as 0.0 for every other value rather than collapsing
+    # everything to a misleading 1.0.
+    if best_value is not None:
+        relative_performance = [
+            best_value / v if v > 0 else 1.0 for v in values
+        ]
     else:
-        relative_performance = [1.0] * len(values)
+        relative_performance = []
 
     return {
         "methods": methods,

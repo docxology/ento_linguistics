@@ -7,7 +7,6 @@ methods for analyzing how language structures scientific discourse in entomology
 from __future__ import annotations
 
 import re
-from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Set
 
@@ -15,9 +14,29 @@ __all__ = [
     "DiscoursePattern",
     "ArgumentativeStructure",
     "DISCOURSE_MARKERS",
+    "CITATION_PATTERN",
     "identify_patterns_in_text",
     "extract_argumentative_structure",
+    "find_citations",
 ]
+
+CITATION_PATTERN = re.compile(r"\(.*?20\d{2}.*?\)")
+
+
+def find_citations(text: str) -> List[str]:
+    """Find parenthetical citations containing a 20xx year.
+
+    Single source of truth for citation matching, shared by
+    ``rhetorical_analysis`` (authority strategy) and ``persuasive_analysis``
+    (authoritative citations technique).
+
+    Args:
+        text: Text to scan
+
+    Returns:
+        List of matched citation strings
+    """
+    return CITATION_PATTERN.findall(text)
 
 
 @dataclass
@@ -53,17 +72,17 @@ class ArgumentativeStructure:
     """Represents argumentative structures in scientific texts.
 
     Attributes:
-        claim: Main claim being made
+        claim: Sentences making the main claim
         evidence: Supporting evidence
-        warrant: Connection between claim and evidence
-        qualification: Limits or conditions on the claim
-        discourse_markers: Linguistic markers used
+        warrant: Sentences connecting claim and evidence
+        qualification: Sentences limiting or conditioning the claim
+        discourse_markers: Linguistic markers used (deduplicated, first-seen order)
     """
 
-    claim: str = ""
+    claim: List[str] = field(default_factory=list)
     evidence: List[str] = field(default_factory=list)
-    warrant: str = ""
-    qualification: str = ""
+    warrant: List[str] = field(default_factory=list)
+    qualification: List[str] = field(default_factory=list)
     discourse_markers: List[str] = field(default_factory=list)
 
 
@@ -200,38 +219,45 @@ def extract_argumentative_structure(
     """
     structure = ArgumentativeStructure()
 
-    # Simple pattern matching for claims and evidence
+    # \b-anchored phrase patterns: substring matching would spuriously fire
+    # on words like "maybe" (may), "butter" (but) or "sputter" (utter).
+    def _contains(sentence_lower: str, phrases: List[str]) -> bool:
+        return any(
+            re.search(r"\b" + re.escape(phrase) + r"\b", sentence_lower)
+            for phrase in phrases
+        )
+
+    claim_phrases = ["therefore", "thus", "consequently", "we conclude"]
+    evidence_phrases = ["research shows", "studies demonstrate", "data indicate"]
+    warrant_phrases = ["because", "since", "due to"]
+    qualification_phrases = ["however", "although", "but", "yet"]
+
+    seen_markers = set()
+
     for sentence in sentences:
         sentence_lower = sentence.lower()
 
-        # Look for claim indicators
-        if any(
-            word in sentence_lower
-            for word in ["therefore", "thus", "consequently", "we conclude"]
-        ):
-            structure.claim = sentence.strip()
+        # Collect each category independently; a sentence may serve several
+        # roles, and no role is overwritten by later matches.
+        if _contains(sentence_lower, claim_phrases):
+            structure.claim.append(sentence.strip())
 
-        # Look for evidence indicators
-        elif any(
-            phrase in sentence_lower
-            for phrase in ["research shows", "studies demonstrate", "data indicate"]
-        ):
+        if _contains(sentence_lower, evidence_phrases):
             structure.evidence.append(sentence.strip())
 
-        # Look for warrant indicators
-        elif any(word in sentence_lower for word in ["because", "since", "due to"]):
-            structure.warrant = sentence.strip()
+        if _contains(sentence_lower, warrant_phrases):
+            structure.warrant.append(sentence.strip())
 
-        # Look for qualification indicators
-        elif any(
-            word in sentence_lower for word in ["however", "although", "but", "yet"]
-        ):
-            structure.qualification = sentence.strip()
+        if _contains(sentence_lower, qualification_phrases):
+            structure.qualification.append(sentence.strip())
 
-        # Collect discourse markers
+        # Collect discourse markers, deduplicated in first-seen order
         for category, markers in DISCOURSE_MARKERS.items():
             for marker in markers:
-                if marker in sentence_lower:
+                if marker in seen_markers:
+                    continue
+                if _contains(sentence_lower, [marker]):
                     structure.discourse_markers.append(marker)
+                    seen_markers.add(marker)
 
     return structure

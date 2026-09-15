@@ -112,6 +112,29 @@ class TestCalculateSSIM:
         assert isinstance(ssim, float)
         assert 0 <= ssim <= 1
 
+    def test_ssim_scale_invariant(self):
+        """SSIM scales stability constants by the actual data range, so
+        uniformly rescaled image pairs score identically (regression for
+        fixed 8-bit c1/c2 constants)."""
+        image1 = np.array([[0.0, 0.1], [0.2, 0.4]])
+        image2 = np.array([[0.0, 0.1], [0.2, 0.45]])
+
+        small = calculate_ssim(image1, image2)
+        large = calculate_ssim(image1 * 255.0, image2 * 255.0)
+
+        assert large == pytest.approx(small, rel=1e-6)
+
+    def test_ssim_identical_constant_images(self):
+        """Identical constant images score 1.0 even with zero data range."""
+        image = np.full((4, 4), 7.0)
+        assert calculate_ssim(image, image) == pytest.approx(1.0)
+
+    def test_ssim_different_constant_images(self):
+        """Different constant images are not rewarded a fake perfect score."""
+        image1 = np.full((4, 4), 3.0)
+        image2 = np.full((4, 4), 9.0)
+        assert calculate_ssim(image1, image2) < 1.0
+
 
 class TestCalculateEffectSize:
     """Test effect size calculation."""
@@ -223,9 +246,6 @@ class TestCalculateAllMetrics:
 
     def test_calculate_all_metrics_with_original_reconstructed(self):
         """Test calculate_all_metrics with original and reconstructed."""
-        # calculate_all_metrics doesn't have image1/image2, but we can test other combinations
-        original = np.array([1, 2, 3, 4, 5])
-        reconstructed = np.array([1.1, 2.1, 3.1, 4.1, 5.1])
         # The function doesn't support images directly, so test with signal
         signal = np.array([1, 2, 3, 4, 5])
         metrics = calculate_all_metrics(signal=signal)
@@ -310,20 +330,39 @@ class TestCalculateConsistency:
         consistency = calculate_consistency(v1, v2)
         assert abs(consistency - 1.0) < 1e-6
 
-    def test_different_lengths(self):
-        """Test consistency with different length arrays (truncation)."""
+    def test_different_lengths_raises(self):
+        """Consistency raises ValueError on length mismatch instead of
+        silently truncating inputs."""
         from core.metrics import calculate_consistency
 
         v1 = np.array([1.0, 2.0, 3.0, 4.0])
         v2 = np.array([1.0, 2.0, 3.0])
-        consistency = calculate_consistency(v1, v2)
-        assert 0.0 <= consistency <= 1.0
+        with pytest.raises(ValueError, match="same length"):
+            calculate_consistency(v1, v2)
 
-    def test_single_element(self):
-        """Test consistency with single element returns 1.0."""
+    def test_single_element_is_nan(self):
+        """Degenerate input (fewer than two observations) yields NaN, not a
+        fake perfect score."""
         from core.metrics import calculate_consistency
 
-        assert calculate_consistency(np.array([1.0]), np.array([2.0])) == 1.0
+        result = calculate_consistency(np.array([1.0]), np.array([2.0]))
+        assert np.isnan(result)
+
+    def test_zero_variance_is_nan(self):
+        """Zero-variance input (undefined correlation) yields NaN, not 1.0."""
+        from core.metrics import calculate_consistency
+
+        v1 = np.array([2.0, 2.0, 2.0, 2.0])
+        v2 = np.array([1.0, 2.0, 3.0, 4.0])
+        assert np.isnan(calculate_consistency(v1, v2))
+
+    def test_anticorrelated_scores_zero(self):
+        """Perfectly anti-correlated sequences map to consistency 0.0."""
+        from core.metrics import calculate_consistency
+
+        v1 = np.array([1.0, 2.0, 3.0, 4.0])
+        v2 = np.array([4.0, 3.0, 2.0, 1.0])
+        assert calculate_consistency(v1, v2) == pytest.approx(0.0)
 
 
 class TestConvergenceMetricsEdgeCases:
@@ -349,6 +388,21 @@ class TestConvergenceMetricsEdgeCases:
         values = np.array([10.0, 5.0])
         metrics = calculate_convergence_metrics(values, target=None)
         assert "final_error" in metrics
-        assert "convergence_rate" in metrics
         assert not np.isnan(metrics["mean_residual"])
+
+    def test_converged_at_first_iteration_preserved(self):
+        """iterations_to_convergence of 0 is kept, not replaced by
+        len(values) (0 must not be treated as missing)."""
+        values = np.array([0.0, 0.0, 0.0, 0.0])
+        metrics = calculate_convergence_metrics(values, target=0.0)
+        assert metrics["iterations_to_convergence"] == 0
+        assert metrics["is_converged"] is True
+
+    def test_late_convergence_falls_back_to_length(self):
+        """Never-converged sequences report len(values) as the iteration
+        count fallback."""
+        values = np.array([10.0, 10.0, 10.0, 10.0])
+        metrics = calculate_convergence_metrics(values, target=0.0)
+        assert metrics["iterations_to_convergence"] == len(values)
+        assert metrics["is_converged"] is False
 

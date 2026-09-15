@@ -14,18 +14,9 @@ maintaining full API consistency:
 from __future__ import annotations
 
 import json
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 
-try:
-    from .text_analysis import LinguisticFeatureExtractor, TextProcessor
-except ImportError:
-    import sys
-    from pathlib import Path
-    # Ensure sibling modules are importable when running outside the package
-    _analysis_dir = str(Path(__file__).resolve().parent)
-    if _analysis_dir not in sys.path:
-        sys.path.insert(0, _analysis_dir)
-    from text_analysis import LinguisticFeatureExtractor, TextProcessor  # type: ignore[no-redef]
+from .text_analysis import LinguisticFeatureExtractor, TextProcessor
 
 __all__ = [
     "DiscourseAnalyzer",
@@ -352,65 +343,3 @@ class DiscourseAnalyzer:
             rhetorical_analyzer=self.analyze_rhetorical_strategies,
             argumentative_analyzer=self.analyze_argumentative_structures,
         )
-
-    # --- Private helper proxies for API consistency ---
-
-    @staticmethod
-    def _calculate_persuasiveness(pattern_data):
-        from .rhetorical_analysis import _calculate_persuasiveness
-        return _calculate_persuasiveness(pattern_data)
-
-    @staticmethod
-    def _evaluate_claim_strength(claim):
-        from .rhetorical_analysis import _evaluate_claim_strength
-        return _evaluate_claim_strength(claim)
-
-    @staticmethod
-    def _evaluate_evidence_quality(evidence):
-        from .rhetorical_analysis import _evaluate_evidence_quality
-        return _evaluate_evidence_quality(evidence)
-
-    @staticmethod
-    def _evaluate_reasoning_coherence(reasoning):
-        from .rhetorical_analysis import _evaluate_reasoning_coherence
-        return _evaluate_reasoning_coherence(reasoning)
-
-    @staticmethod
-    def _calculate_structure_confidence(structure):
-        from .rhetorical_analysis import _calculate_structure_confidence
-        return _calculate_structure_confidence(structure)
-
-    @staticmethod
-    def _calculate_framework_consistency(framework_texts):
-        from .rhetorical_analysis import _calculate_framework_consistency
-        return _calculate_framework_consistency(framework_texts)
-
-    @staticmethod
-    def _rate_technique_effectiveness(technique_data):
-        from .persuasive_analysis import _rate_technique_effectiveness
-        return _rate_technique_effectiveness(technique_data)
-
-    @staticmethod
-    def _calculate_technique_impact(technique_data):
-        from .persuasive_analysis import _calculate_technique_impact
-        return _calculate_technique_impact(technique_data)
-
-    @staticmethod
-    def _classify_context_type(sentence, term):
-        from .persuasive_analysis import _classify_context_type
-        return _classify_context_type(sentence, term)
-
-    @staticmethod
-    def _calculate_usage_consistency(contexts):
-        from .persuasive_analysis import _calculate_usage_consistency
-        return _calculate_usage_consistency(contexts)
-
-    @staticmethod
-    def _get_framing_indicators(framing_concept):
-        from .persuasive_analysis import _get_framing_indicators
-        return _get_framing_indicators(framing_concept)
-
-    @staticmethod
-    def _calculate_framing_consistency(framed_texts, indicators):
-        from .persuasive_analysis import _calculate_framing_consistency
-        return _calculate_framing_consistency(framed_texts, indicators)

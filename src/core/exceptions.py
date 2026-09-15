@@ -1,15 +1,26 @@
 """Custom exceptions for the Ento-Linguistic Research Project."""
 
+from typing import Any, Dict, List, Optional
+
 __all__ = [
     "ValidationError",
     "EntoLinguisticsError",
 ]
 
 
-class ValidationError(Exception):
+class EntoLinguisticsError(Exception):
+    """Base class for Ento-Linguistic exceptions."""
+
+
+class ValidationError(EntoLinguisticsError):
     """Raised when validation fails."""
 
-    def __init__(self, message: str, context: dict = None, suggestions: list = None):
+    def __init__(
+        self,
+        message: str,
+        context: Optional[Dict[str, Any]] = None,
+        suggestions: Optional[List[str]] = None,
+    ):
         """Initialize validation error.
 
         Args:
@@ -22,7 +33,3 @@ class ValidationError(Exception):
         self.suggestions = suggestions or []
 
         super().__init__(message)
-
-class EntoLinguisticsError(Exception):
-    """Base class for Ento-Linguistic exceptions."""
-    pass

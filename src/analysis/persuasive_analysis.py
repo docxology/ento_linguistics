@@ -2,12 +2,19 @@
 
 This module provides methods for analyzing persuasive techniques, framing effects,
 conceptual shifts, and context-dependent term usage in entomological literature.
+
+HEURISTIC SCORING NOTICE: impact/rating outputs of this module are simple
+lexical heuristics (fixed offsets such as /20).  They are raw indices for
+ranking and comparison, NOT validated measures of persuasive effectiveness.
 """
 
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional
+
+from .discourse_patterns import find_citations
+from .text_analysis import TextProcessor
 
 __all__ = [
     "analyze_persuasive_techniques",
@@ -49,9 +56,8 @@ def analyze_persuasive_techniques(texts: List[str]) -> Dict[str, Dict[str, Any]]
             r"\b(\d+(?:\.\d+)?\%|\d+(?:\.\d+)?\s+times?)\b", text
         )
         techniques["quantitative_emphasis"]["count"] += len(quantitative)
-
-        # Authoritative citations
-        citations = re.findall(r"\(.*?20\d{2}.*?\)", text)
+        # Authoritative citations (shared matcher with rhetorical_analysis)
+        citations = find_citations(text)
         techniques["authoritative_citations"]["count"] += len(citations)
 
     return techniques
@@ -75,15 +81,15 @@ def measure_persuasive_effectiveness(
         # Calculate effectiveness metrics
         usage_frequency = technique_data.get("count", 0)
         context_relevance = len(technique_data.get("examples", []))
-
-        # Impact score based on usage and context relevance
         impact_score = min((usage_frequency + context_relevance) / 20, 1.0)
 
         effectiveness_analysis[technique_name] = {
             "usage_frequency": usage_frequency,
             "context_relevance": context_relevance,
-            "impact_score": impact_score,
-            "effectiveness_rating": _rate_technique_effectiveness(technique_data),
+            "heuristic_impact_index": impact_score,
+            "heuristic_effectiveness_band": _rate_technique_effectiveness(
+                technique_data
+            ),
             "success_examples": technique_data.get("examples", [])[:3],
             "usage_distribution": technique_data.get("distribution", {}),
         }
@@ -109,9 +115,8 @@ def analyze_term_usage_context(
         term_contexts = []
         term_positions = []
 
-        # Find all contexts where term appears
         for i, text in enumerate(texts):
-            sentences = text.split(".")
+            sentences = TextProcessor().tokenize_sentences(text)
             for j, sentence in enumerate(sentences):
                 if term.lower() in sentence.lower():
                     term_contexts.append(
@@ -160,7 +165,9 @@ def analyze_term_usage_context(
 def track_conceptual_shifts(
     texts: List[str],
     time_periods: Optional[List[str]] = None,
-    rhetorical_analyzer=None,
+    rhetorical_analyzer: Optional[
+        Callable[[List[str]], Dict[str, Dict[str, Any]]]
+    ] = None,
 ) -> Dict[str, Dict[str, Any]]:
     """Track how concepts shift in discourse over time or contexts.
 
@@ -194,7 +201,9 @@ def track_conceptual_shifts(
         period_groups[period].append(text)
 
     # Analyze conceptual evolution
-    periods_list = sorted(period_groups.keys())
+    # Natural sort so "period_10" follows "period_9" (lexicographic order
+    # would place "period_10" before "period_2").
+    periods_list = sorted(period_groups.keys(), key=_natural_sort_key)
     for i in range(len(periods_list) - 1):
         current_period = periods_list[i]
         next_period = periods_list[i + 1]
@@ -255,8 +264,10 @@ def track_conceptual_shifts(
 def quantify_framing_effects(
     texts: List[str],
     framing_concepts: Optional[List[str]] = None,
-    rhetorical_analyzer=None,
-    argumentative_analyzer=None,
+    rhetorical_analyzer: Optional[
+        Callable[[List[str]], Dict[str, Dict[str, Any]]]
+    ] = None,
+    argumentative_analyzer: Optional[Callable[[List[str]], list]] = None,
 ) -> Dict[str, Dict[str, Any]]:
     """Quantify the impact of framing assumptions on discourse.
 
@@ -321,10 +332,21 @@ def quantify_framing_effects(
                 "downstream_rhetorical_patterns": len(downstream_patterns),
                 "argumentation_structures": argumentation_count,
                 "framing_indicators_used": framing_indicators,
-                "impact_score": framing_strength * consistency_score,
+                "heuristic_impact_index": framing_strength * consistency_score,
             }
 
     return framing_analysis
+
+
+def _natural_sort_key(value: str) -> list:
+    """Sort key that orders embedded numbers numerically.
+
+    "period_2" < "period_10", unlike plain lexicographic ordering.
+    """
+    return [
+        int(part) if part.isdigit() else part
+        for part in re.split(r"(\d+)", value)
+    ]
 
 
 # --- Helper functions ---
@@ -447,7 +469,7 @@ def _calculate_framing_consistency(
 
 
 def _rate_technique_effectiveness(technique_data: Dict[str, Any]) -> str:
-    """Rate the effectiveness of a persuasive technique."""
+    """Map the heuristic impact index to a categorical band."""
     impact = _calculate_technique_impact(technique_data)
 
     if impact > 0.8:
@@ -463,9 +485,12 @@ def _rate_technique_effectiveness(technique_data: Dict[str, Any]) -> str:
 
 
 def _calculate_technique_impact(technique_data: Dict[str, Any]) -> float:
-    """Calculate impact score for persuasive technique."""
-    frequency = technique_data.get("frequency", 0)
-    # Use "examples" key to match rhetorical_analysis output (key alignment fix)
+    """Heuristic impact index: (count + capped examples) / 20.
+
+    ``technique_data`` dicts produced by ``analyze_persuasive_techniques``
+    carry their usage total under the "count" key.
+    """
+    frequency = technique_data.get("count", 0)
     example_count = len(technique_data.get("examples", []))
 
     # Impact based on usage and context relevance

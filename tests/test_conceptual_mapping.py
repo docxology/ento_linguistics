@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 import tempfile
 from pathlib import Path
-from typing import Dict, List, Set
+from typing import Dict
 
 import pytest
 
@@ -26,14 +26,14 @@ class TestConcept:
             name="test_concept",
             description="A test concept",
             terms={"term1", "term2"},
-            domains={"domain1"},
+            domains=["domain1"],
             confidence=0.8,
         )
 
         assert concept.name == "test_concept"
         assert concept.description == "A test concept"
         assert concept.terms == {"term1", "term2"}
-        assert concept.domains == {"domain1"}
+        assert concept.domains == ["domain1"]
         assert concept.confidence == 0.8
         assert concept.parent_concepts == set()
         assert concept.child_concepts == set()
@@ -56,7 +56,7 @@ class TestConcept:
         concept.add_domain("domain2")
         concept.add_domain("domain1")  # Duplicate should be ignored
 
-        assert concept.domains == {"domain1", "domain2"}
+        assert concept.domains == ["domain1", "domain2"]  # sorted, deduplicated list
 
     def test_concept_to_dict(self) -> None:
         """Test converting concept to dictionary."""
@@ -64,7 +64,7 @@ class TestConcept:
             name="test_concept",
             description="A test concept",
             terms={"term1", "term2"},
-            domains={"domain1"},
+            domains=["domain1"],
             confidence=0.8,
         )
 
@@ -85,7 +85,7 @@ class TestConcept:
             name="test_concept",
             description="A test concept",
             terms={"term1", "term2"},
-            domains={"domain1"},
+            domains=["domain1"],
             confidence=0.8,
         )
 
@@ -95,7 +95,7 @@ class TestConcept:
         assert data["name"] == "test_concept"
         assert data["description"] == "A test concept"
         assert set(data["terms"]) == {"term1", "term2"}  # Order may vary
-        assert set(data["domains"]) == {"domain1"}
+        assert data["domains"] == ["domain1"]
         assert data["confidence"] == 0.8
 
 
@@ -229,15 +229,15 @@ class TestConceptualMapper:
 
         # Create sample terms
         term1 = Term("colony", "colony", {"colony"}, 5)
-        term1.domains = {"unit_of_individuality"}
+        term1.domains = ["unit_of_individuality"]
         terms["colony"] = term1
 
         term2 = Term("queen", "queen", {"queen"}, 3)
-        term2.domains = {"power_and_labor", "sex_and_reproduction"}
+        term2.domains = ["power_and_labor", "sex_and_reproduction"]
         terms["queen"] = term2
 
         term3 = Term("worker", "worker", {"worker"}, 8)
-        term3.domains = {"behavior_and_identity", "power_and_labor"}
+        term3.domains = ["behavior_and_identity", "power_and_labor"]
         terms["worker"] = term3
 
         return terms
@@ -366,7 +366,7 @@ class TestConceptualMapper:
         self, mapper: ConceptualMapper, sample_terms: Dict[str, Term], tmp_path: Path
     ) -> None:
         """Test JSON export of concept map."""
-        concept_map = mapper.build_concept_map(sample_terms)
+        mapper.build_concept_map(sample_terms)
 
         filepath = tmp_path / "concept_map.json"
         mapper.export_concept_map_json(str(filepath))

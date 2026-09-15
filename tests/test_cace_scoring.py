@@ -15,7 +15,7 @@ from analysis.cace_scoring import (
     evaluate_term_cace,
     score_appropriateness,
     score_clarity,
-    score_consistency,
+    mean_context_similarity,
     score_evolvability,
 )
 
@@ -143,22 +143,22 @@ class TestScoreAppropriateness:
         assert score < 1.0
 
 
-class TestScoreConsistency:
-    """Test consistency scoring."""
+class TestMeanContextSimilarity:
+    """Test mean pairwise cosine context similarity (CACE consistency)."""
 
-    def test_identical_contexts_high_consistency(self):
-        """Nearly identical contexts should yield high consistency."""
+    def test_identical_contexts_high_similarity(self):
+        """Nearly identical contexts should yield high mean similarity."""
         contexts = [
             "The queen ant lays eggs in the brood chamber.",
             "The queen ant produces eggs for the colony brood.",
             "Colony queen ants lay their eggs in chambers.",
             "Queens lay eggs that develop into colony workers.",
         ]
-        score = score_consistency("queen", contexts, min_contexts=3)
-        assert score > 0.2  # Should be reasonably consistent
+        score = mean_context_similarity("queen", contexts, min_contexts=3)
+        assert score > 0.2  # Should be reasonably similar
 
-    def test_diverse_contexts_lower_consistency(self):
-        """Very different contexts should yield lower consistency."""
+    def test_diverse_contexts_lower_similarity(self):
+        """Very different contexts should yield lower mean similarity."""
         diverse = [
             "The ant colony forages for food in the surrounding forest area.",
             "Stock market colony of traders operates on Wall Street near banks.",
@@ -169,20 +169,20 @@ class TestScoreConsistency:
             "The ant colony collects food resources from nearby plants and trees.",
             "Colony workers forage along trails from the nest to food sources.",
         ]
-        score_diverse = score_consistency("colony", diverse, min_contexts=3)
-        score_uniform = score_consistency("colony", uniform, min_contexts=3)
-        # Uniform should be at least as consistent as diverse
+        score_diverse = mean_context_similarity("colony", diverse, min_contexts=3)
+        score_uniform = mean_context_similarity("colony", uniform, min_contexts=3)
+        # Uniform should be at least as similar as diverse
         assert score_uniform >= score_diverse or abs(score_uniform - score_diverse) < 0.2
 
     def test_insufficient_contexts_neutral(self):
         """Too few contexts should return neutral score of 0.5."""
-        score = score_consistency("test", ["short"], min_contexts=5)
+        score = mean_context_similarity("test", ["short"], min_contexts=5)
         assert score == 0.5
 
     def test_bounded_zero_one(self):
         """Score must be in [0, 1]."""
         contexts = [f"Context number {i} about colony behavior." for i in range(10)]
-        score = score_consistency("colony", contexts, min_contexts=3)
+        score = mean_context_similarity("colony", contexts, min_contexts=3)
         assert 0.0 <= score <= 1.0
 
 
@@ -412,3 +412,20 @@ class TestCACEParametrized:
         if n_domains > 1:
             score_fewer = score_appropriateness("queen", domains=ALL_DOMAINS[:n_domains - 1])
             assert score <= score_fewer
+
+
+class TestScaleWordBoundary:
+    """Scale detection must match whole words only."""
+
+    def test_word_boundary_scale_matching(self):
+        # "general" contains "gene" as substring but is not the gene level
+        single = score_evolvability(
+            "colony", domains=["economics"],
+            contexts=["In general, colony economics follow market models widely."],
+        )
+        multi = score_evolvability(
+            "colony", domains=["economics"],
+            contexts=["In general, colony economics follow market models.",
+                      "The gene regulates colony behavior across organisms."],
+        )
+        assert multi > single

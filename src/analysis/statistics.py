@@ -7,7 +7,7 @@ ambiguity distributions, and cross-domain significance in scientific discourse.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 from scipy.stats import t as t_dist, f as f_dist
@@ -102,6 +102,18 @@ def t_test(
             mu = 0.0
 
         n = len(sample1)
+        if n < 2:
+            # t is undefined for a single observation (std with ddof=1
+            # divides by zero); return NaN with an explicit flag instead of
+            # an unguarded NaN t-statistic.
+            return {
+                "t_statistic": float("nan"),
+                "p_value": float("nan"),
+                "degrees_of_freedom": 0.0,
+                "alternative": alternative,
+                "warning": "one-sample t-test requires at least 2 observations",
+            }
+
         mean = np.mean(sample1)
         std = np.std(sample1, ddof=1)
         # Guard: zero std means all values identical → t is 0 when mean==mu
@@ -174,8 +186,16 @@ def calculate_correlation(
 
     if method == "pearson":
         # Pearson correlation with guard for constant inputs (which produce NaN)
-        if np.std(x) == 0 or np.std(y) == 0:
-            correlation = 0.0  # No variation = no correlation
+        if np.std(x, ddof=1) == 0 or np.std(y, ddof=1) == 0:
+            # Zero variance: correlation is mathematically undefined, not 0.
+            # Return NaN with an explicit flag so downstream code cannot
+            # mistake the result for a genuine "no correlation" finding.
+            return {
+                "correlation": float("nan"),
+                "p_value": float("nan"),
+                "method": method,
+                "warning": "constant input; correlation undefined",
+            }
         else:
             correlation = np.corrcoef(x, y)[0, 1]
     elif method == "spearman":

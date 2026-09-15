@@ -5,7 +5,6 @@ identify_patterns_in_text, extract_argumentative_structure.
 """
 from __future__ import annotations
 
-import pytest
 
 from analysis.discourse_patterns import (
     DISCOURSE_MARKERS,
@@ -60,24 +59,24 @@ class TestArgumentativeStructure:
     def test_creation_defaults(self):
         """Test ArgumentativeStructure with default fields."""
         structure = ArgumentativeStructure()
-        assert structure.claim == ""
+        assert structure.claim == []
         assert structure.evidence == []
-        assert structure.warrant == ""
-        assert structure.qualification == ""
+        assert structure.warrant == []
+        assert structure.qualification == []
         assert structure.discourse_markers == []
 
     def test_creation_full(self):
         """Test ArgumentativeStructure with all fields."""
         structure = ArgumentativeStructure(
-            claim="Therefore ants cooperate",
+            claim=["Therefore ants cooperate"],
             evidence=["Research shows colonies thrive"],
-            warrant="Because cooperation improves fitness",
-            qualification="However this varies by species",
+            warrant=["Because cooperation improves fitness"],
+            qualification=["However this varies by species"],
             discourse_markers=["therefore", "because", "however"],
         )
-        assert structure.claim == "Therefore ants cooperate"
+        assert structure.claim == ["Therefore ants cooperate"]
         assert len(structure.evidence) == 1
-        assert structure.warrant.startswith("Because")
+        assert structure.warrant[0].startswith("Because")
         assert len(structure.discourse_markers) == 3
 
 
@@ -155,10 +154,10 @@ class TestExtractArgumentativeStructure:
     def test_empty_sentences(self):
         """Test with empty sentence list."""
         result = extract_argumentative_structure([])
-        assert result.claim == ""
+        assert result.claim == []
         assert result.evidence == []
-        assert result.warrant == ""
-        assert result.qualification == ""
+        assert result.warrant == []
+        assert result.qualification == []
 
     def test_claim_detection(self):
         """Test claim detection via 'therefore'."""
@@ -167,7 +166,16 @@ class TestExtractArgumentativeStructure:
             "Therefore ants exhibit eusocial behavior.",
         ]
         result = extract_argumentative_structure(sentences)
-        assert "therefore" in result.claim.lower()
+        assert any("therefore" in claim.lower() for claim in result.claim)
+
+    def test_claim_accumulates_multiple_sentences(self):
+        """Multiple claim sentences should all be collected, not last-wins."""
+        sentences = [
+            "Therefore ants are eusocial.",
+            "Thus colony-level selection operates.",
+        ]
+        result = extract_argumentative_structure(sentences)
+        assert len(result.claim) == 2
 
     def test_evidence_detection(self):
         """Test evidence detection via 'research shows'."""
@@ -184,7 +192,7 @@ class TestExtractArgumentativeStructure:
             "Because cooperation improves colony fitness.",
         ]
         result = extract_argumentative_structure(sentences)
-        assert "because" in result.warrant.lower()
+        assert any("because" in warrant.lower() for warrant in result.warrant)
 
     def test_qualification_detection(self):
         """Test qualification detection via 'however'."""
@@ -192,7 +200,19 @@ class TestExtractArgumentativeStructure:
             "However this varies among different species.",
         ]
         result = extract_argumentative_structure(sentences)
-        assert "however" in result.qualification.lower()
+        assert any(
+            "however" in qualification.lower()
+            for qualification in result.qualification
+        )
+
+    def test_word_boundary_marker_matching(self):
+        """Markers must match whole words only: 'maybe' is not 'may'."""
+        sentences = [
+            "Maybe the butter melts at noon.",
+        ]
+        result = extract_argumentative_structure(sentences)
+        assert "may" not in result.discourse_markers
+        assert "but" not in result.discourse_markers
 
     def test_discourse_markers_collected(self):
         """Test that discourse markers are collected from sentences."""
@@ -214,6 +234,6 @@ class TestExtractArgumentativeStructure:
         ]
         result = extract_argumentative_structure(sentences)
         assert len(result.evidence) >= 1
-        assert result.warrant != ""
-        assert result.claim != ""
-        assert result.qualification != ""
+        assert result.warrant
+        assert result.claim
+        assert result.qualification

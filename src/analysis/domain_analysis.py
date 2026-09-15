@@ -10,21 +10,25 @@ from __future__ import annotations
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
-try:
-    from .term_extraction import Term
-    from .text_analysis import LinguisticFeatureExtractor, TextProcessor
-except ImportError:
-    from term_extraction import Term
-    from text_analysis import LinguisticFeatureExtractor, TextProcessor
+from .term_extraction import Term, filter_matching_sentences
+from .text_analysis import LinguisticFeatureExtractor, TextProcessor
 
 __all__ = [
     "DomainAnalysis",
     "DomainAnalyzer",
 ]
+
+# Function words excluded from lexical keyword-support computation so that
+# stop-word overlap cannot inflate support ratios.
+_CONTENT_STOP_WORDS = {
+    "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in",
+    "is", "it", "of", "on", "or", "that", "the", "to", "was", "were",
+    "which", "with", "rather", "than", "into", "over", "not", "no",
+}
 
 
 @dataclass
@@ -42,8 +46,8 @@ class DomainAnalysis:
         frequency_stats: Statistical analysis of term frequencies
         cooccurrence_analysis: Term co-occurrence patterns
         ambiguity_metrics: Quantified ambiguity metrics
-        confidence_scores: Confidence scores for framing assumptions
-        conceptual_metrics: Quantitative metrics for conceptual structure
+        confidence_scores: Lexical keyword-support ratios for framing
+            assumptions (NOT statistical confidence)
         statistical_significance: Statistical significance of term patterns
     """
 
@@ -84,7 +88,11 @@ class DomainAnalyzer:
             texts: Source texts for context
 
         Returns:
-            Dictionary mapping domain names to analysis results
+            Dictionary mapping domain names to DomainAnalysis results.  The
+            cross-domain overlap analysis is deliberately NOT mixed into this
+            mapping (a plain dict under a magic key broke ``compare_domains``
+            and every consumer expecting DomainAnalysis values); callers who
+            need it invoke ``analyze_cross_domain_overlap(terms)`` separately.
 
         Raises:
             ValueError: If inputs are invalid
@@ -137,14 +145,6 @@ class DomainAnalyzer:
                 )
 
                 domain_analyses[domain_name] = analysis
-
-        # Add cross-domain analysis
-        if len(domain_analyses) > 1:
-            cross_domain_analysis = self.analyze_cross_domain_overlap(
-                domain_terms, terms
-            )
-            # Store in a special key
-            domain_analyses["_cross_domain"] = cross_domain_analysis
 
         return domain_analyses
 
@@ -694,7 +694,9 @@ class DomainAnalyzer:
                 name: len(analysis.key_terms) for name, analysis in analyses.items()
             },
             "shared_assumptions": self._find_shared_assumptions(analyses),
-            "cross_domain_ambiguities": self._find_cross_domain_issues(analyses),
+            "heuristic_cross_domain_notes": self._heuristic_cross_domain_notes(
+                analyses
+            ),
         }
 
         return comparison
@@ -721,22 +723,25 @@ class DomainAnalyzer:
 
         return shared
 
-    def _find_cross_domain_issues(
+    def _heuristic_cross_domain_notes(
         self, analyses: Dict[str, DomainAnalysis]
     ) -> List[Dict[str, Any]]:
-        """Find issues that span multiple domains.
+        """Return fixed editorial notes about cross-domain framing.
+
+        IMPORTANT — NON-EMPIRICAL OUTPUT: the returned list is a hardcoded
+        set of methodological commentary items.  It is NOT derived from the
+        analyzed data in any way and must not be reported as an empirical
+        finding.  Consumers should present it as background notes at most.
 
         Args:
-            analyses: Domain analyses
+            analyses: Domain analyses (ignored; accepted for API stability)
 
         Returns:
-            List of cross-domain issues
+            List of non-empirical editorial note dictionaries
         """
-        # This would identify terms or concepts that appear in multiple domains
-        # with conflicting meanings - simplified implementation
-        cross_domain_issues = [
+        heuristic_notes = [
             {
-                "issue": "Anthropomorphic framing across domains",
+                "note": "Anthropomorphic framing across domains",
                 "affected_domains": [
                     "power_and_labor",
                     "behavior_and_identity",
@@ -746,7 +751,7 @@ class DomainAnalyzer:
             }
         ]
 
-        return cross_domain_issues
+        return heuristic_notes
 
     def analyze_term_frequency_distribution(
         self, terms: List[Term], texts: List[str]
@@ -760,7 +765,6 @@ class DomainAnalyzer:
         Returns:
             Statistical analysis of term frequencies
         """
-        from collections import Counter
 
         import numpy as np
 
@@ -773,7 +777,7 @@ class DomainAnalyzer:
             stats = {
                 "mean_frequency": np.mean(term_freqs),
                 "median_frequency": np.median(term_freqs),
-                "std_frequency": np.std(term_freqs),
+                "std_frequency": np.std(term_freqs, ddof=1) if len(term_freqs) > 1 else 0.0,
                 "min_frequency": min(term_freqs),
                 "max_frequency": max(term_freqs),
                 "total_occurrences": sum(term_freqs),
@@ -805,52 +809,56 @@ class DomainAnalyzer:
     ) -> Dict[str, Any]:
         """Analyze co-occurrence patterns between terms.
 
+        Each unordered term pair co-occurring within ``window_size`` tokens is
+        counted exactly once (canonical pair keys), so
+        ``total_cooccurrences`` equals the number of co-occurring pairs, not
+        double the number as in earlier implementations that recorded both
+        (i, j) and (j, i).
+
         Args:
             terms: List of terms to analyze
             texts: Source texts for context
             window_size: Size of co-occurrence window
 
         Returns:
-            Co-occurrence analysis results
+            Co-occurrence analysis results.  ``cooccurrence_matrix`` is a
+            symmetric nested dict of per-pair counts.
         """
         from collections import defaultdict
 
-        import numpy as np
+        term_set = {term.text.lower() for term in terms}
+        n_terms = len(term_set)
+        pair_counts: Dict[tuple, int] = defaultdict(int)
+        half_window = window_size // 2
 
-        term_texts = [term.text.lower() for term in terms]
-        cooccurrence_matrix = defaultdict(lambda: defaultdict(int))
-
-        # Build co-occurrence matrix
+        # Build canonical (unordered) pair counts with set membership lookups
         for text in texts:
             words = text.lower().split()
             for i, word1 in enumerate(words):
-                if word1 in term_texts:
-                    # Look for co-occurring terms within window
-                    start = max(0, i - window_size // 2)
-                    end = min(len(words), i + window_size // 2 + 1)
+                if word1 not in term_set:
+                    continue
+                start = i + 1
+                end = min(len(words), i + half_window + 1)
+                for j in range(start, end):
+                    word2 = words[j]
+                    if word2 in term_set and word2 != word1:
+                        pair = tuple(sorted((word1, word2)))
+                        pair_counts[pair] += 1
 
-                    for j in range(start, end):
-                        if i != j:
-                            word2 = words[j]
-                            if word2 in term_texts:
-                                cooccurrence_matrix[word1][word2] += 1
+        # Rebuild the symmetric matrix for JSON serialization
+        cooccurrence_matrix: Dict[str, Dict[str, int]] = defaultdict(dict)
+        for (term1, term2), count in pair_counts.items():
+            cooccurrence_matrix[term1][term2] = count
+            cooccurrence_matrix[term2][term1] = count
 
-        # Convert to regular dict for JSON serialization
-        cooccurrence_dict = {}
-        for term1, cooccurs in cooccurrence_matrix.items():
-            cooccurrence_dict[term1] = dict(cooccurs)
-
-        # Calculate co-occurrence statistics
-        total_cooccurrences = sum(
-            sum(counts.values()) for counts in cooccurrence_matrix.values()
-        )
+        total_cooccurrences = sum(pair_counts.values())
 
         return {
-            "cooccurrence_matrix": cooccurrence_dict,
+            "cooccurrence_matrix": dict(cooccurrence_matrix),
             "total_cooccurrences": total_cooccurrences,
-            "unique_term_pairs": len(cooccurrence_dict),
+            "unique_term_pairs": len(pair_counts),
             "average_cooccurrences_per_term": (
-                total_cooccurrences / len(term_texts) if term_texts else 0
+                total_cooccurrences / n_terms if n_terms else 0
             ),
         }
 
@@ -860,16 +868,19 @@ class DomainAnalyzer:
         """Quantify ambiguity metrics for terms using Shannon Entropy.
 
         Delegates to the canonical ``semantic_entropy`` module for the core
-        TF-IDF → KMeans → Shannon-entropy pipeline.  This method handles
-        context extraction from raw texts, then calls
-        ``calculate_semantic_entropy()`` for each term.
+        TF-IDF → KMeans → Shannon-entropy pipeline.  Sentences are tokenized
+        once for all terms and contexts are matched with the shared
+        word-boundary helper ``filter_matching_sentences``.  Results whose
+        entropy could not be computed (``status != "ok"``) are flagged and
+        excluded from the aggregate domain statistics.
 
         Args:
             terms: List of terms to analyze
             texts: Source texts for context
 
         Returns:
-            Ambiguity quantification metrics (Entropy in bits)
+            Ambiguity quantification metrics (raw entropy in bits plus the
+            normalized entropy fields from ``semantic_entropy``)
         """
         from nltk.tokenize import sent_tokenize
 
@@ -877,18 +888,19 @@ class DomainAnalyzer:
 
         ambiguity_scores: Dict[str, Any] = {}
 
+        # Tokenize every text once; reuse the sentence lists for all terms
+        tokenized_texts = [sent_tokenize(text) for text in texts]
+
         for term in terms:
             term_text = term.text.lower()
             contexts: List[str] = []
 
-            # Extract contexts where term appears
-            for text in texts:
-                sentences = sent_tokenize(text)
-                for sentence in sentences:
-                    if term_text in sentence.lower():
-                        clean_context = sentence.strip()
-                        if len(clean_context.split()) > 3:
-                            contexts.append(clean_context)
+            # Extract contexts where the term appears (whole-word match)
+            for sentences in tokenized_texts:
+                for sentence in filter_matching_sentences(sentences, term_text):
+                    clean_context = sentence.strip()
+                    if len(clean_context.split()) > 3:
+                        contexts.append(clean_context)
 
             # Delegate to canonical semantic entropy module
             result = calculate_semantic_entropy(term=term_text, contexts=contexts)
@@ -898,21 +910,36 @@ class DomainAnalyzer:
                 "entropy_bits": result.entropy_bits,
                 "ambiguity_score": result.entropy_bits,
                 "is_high_entropy": result.is_high_entropy,
+                "entropy_normalized": result.entropy_normalized,
+                "h_max": result.h_max,
+                "status": result.status,
+                "error": result.error,
             }
 
-        # Overall domain ambiguity metrics
+        # Overall domain ambiguity metrics, excluding failed/unusable results
         if ambiguity_scores:
             domain_scores = list(ambiguity_scores.values())
-            valid_scores = [s["entropy_bits"] for s in domain_scores if "entropy_bits" in s]
+            valid_scores = [
+                s["entropy_bits"] for s in domain_scores if s["status"] == "ok"
+            ]
 
             if valid_scores:
+                valid_normalized = [
+                    s["entropy_normalized"] for s in domain_scores
+                    if s["status"] == "ok"
+                ]
                 overall_metrics = {
                     "average_entropy": np.mean(valid_scores),
                     "max_entropy": np.max(valid_scores),
+                    "average_entropy_normalized": float(np.mean(valid_normalized)),
+                    "n_excluded_failures": sum(
+                        1 for s in domain_scores if s["status"] != "ok"
+                    ),
                     "total_information_loss_bits": np.sum(valid_scores),
                     "highly_ambiguous_terms": [
                         term for term, score in ambiguity_scores.items()
-                        if score.get("entropy_bits", 0) > HIGH_ENTROPY_THRESHOLD
+                        if score["status"] == "ok"
+                        and score["entropy_bits"] > HIGH_ENTROPY_THRESHOLD
                     ],
                 }
             else:
@@ -920,34 +947,34 @@ class DomainAnalyzer:
         else:
             overall_metrics = {"error": "No terms found for ambiguity analysis"}
 
+
         return {
             "term_ambiguity_scores": ambiguity_scores,
             "domain_metrics": overall_metrics,
         }
 
     def analyze_cross_domain_overlap(
-        self, domain_terms: Dict[str, List[Term]], all_terms: Dict[str, Term]
+        self, terms: Dict[str, Term]
     ) -> Dict[str, Any]:
         """Analyze overlap between terms across different domains.
 
         Args:
-            domain_terms: Terms grouped by domain
-            all_terms: All terms with their domain classifications
+            terms: All terms with their domain classifications
 
         Returns:
             Cross-domain overlap analysis
         """
+        domain_terms = self._group_terms_by_domain(terms)
         from collections import defaultdict
 
         # Build term-to-domains mapping
         term_domains = defaultdict(set)
-        for term_text, term_obj in all_terms.items():
+        for term_text, term_obj in terms.items():
             if hasattr(term_obj, "domains") and term_obj.domains:
                 term_domains[term_text] = set(term_obj.domains)
 
         # Calculate overlap statistics
         overlap_stats = defaultdict(dict)
-        domain_pairs = []
 
         domain_names = list(domain_terms.keys())
         for i, domain1 in enumerate(domain_names):
@@ -1034,6 +1061,8 @@ class DomainAnalyzer:
             expected_patterns.get(pattern, 0) for pattern in term_patterns.keys()
         ]
 
+        n_total = sum(observed)
+        k = len(observed)
         try:
             chi2_stat, p_value = stats.chisquare(observed, expected)
             significant_patterns = [
@@ -1048,9 +1077,17 @@ class DomainAnalyzer:
                 "significant_patterns": significant_patterns,
                 "significance_threshold": 0.05,
                 "is_significant": p_value < 0.05,
-                "effect_size": chi2_stat / sum(observed),  # Cramer's V approximation
+                # Cramer's V for the goodness-of-fit case:
+                # V = sqrt(chi2 / (N * (k - 1))), k = number of categories
+                "effect_size": float(
+                    np.sqrt(chi2_stat / (n_total * (k - 1)))
+                )
+                if n_total > 0 and k > 1
+                else 0.0,
             }
-        except Exception as e:
+        except ValueError as e:
+            # scipy raises ValueError for degenerate contingency input
+            # (e.g. zero totals or non-positive expected frequencies)
             return {
                 "error": f"Statistical analysis failed: {str(e)}",
                 "observed_patterns": term_patterns,
@@ -1059,33 +1096,44 @@ class DomainAnalyzer:
     def generate_confidence_scores(
         self, framing_assumptions: List[str], terms: List[Term], texts: List[str]
     ) -> Dict[str, float]:
-        """Generate confidence scores for framing assumptions.
+        """Generate lexical keyword-support ratios for framing assumptions.
+
+        IMPORTANT — NOT STATISTICAL CONFIDENCE: the returned values are the
+        fraction of an assumption's content words (stop words excluded) that
+        occur lexically in the domain's term vocabulary.  They quantify
+        lexical overlap only and must not be reported as confidence levels.
 
         Args:
             framing_assumptions: List of framing assumptions
             terms: Terms in the domain
-            texts: Source texts
+            texts: Source texts (unused; kept for API stability)
 
         Returns:
-            Confidence scores for each assumption
+            Mapping from assumption to keyword-support ratio in [0, 1]
         """
         confidence_scores = {}
 
         for assumption in framing_assumptions:
-            # Simplified confidence scoring based on term relevance
-            # In a full implementation, this would use NLP models
-            assumption_keywords = assumption.lower().split()
-            supporting_terms = 0
+            # Content words only: function words must not inflate support
+            assumption_keywords = [
+                word
+                for word in assumption.lower().split()
+                if word.isalpha() and word not in _CONTENT_STOP_WORDS
+            ]
+            if not assumption_keywords or not terms:
+                confidence_scores[assumption] = 0.0
+                continue
 
+            term_vocab = set()
             for term in terms:
-                term_words = term.text.lower().split()
-                # Check for keyword overlap
-                if any(keyword in term_words for keyword in assumption_keywords):
-                    supporting_terms += 1
+                term_vocab.update(term.text.lower().replace("_", " ").replace("-", " ").split())
 
-            # Confidence based on supporting evidence
-            confidence = min(supporting_terms / len(terms) * 100, 100) if terms else 0
-            confidence_scores[assumption] = confidence
+            supported_keywords = sum(
+                1 for keyword in assumption_keywords if keyword in term_vocab
+            )
+            confidence_scores[assumption] = supported_keywords / len(
+                assumption_keywords
+            )
 
         return confidence_scores
 

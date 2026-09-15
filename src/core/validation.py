@@ -11,12 +11,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
-try:
-    from .validation_utils import (validate_figure_registry, validate_markdown,
-                                   verify_output_integrity)
-except ImportError:
-    from validation_utils import (validate_figure_registry, validate_markdown,
-                                  verify_output_integrity)
+
+from .validation_utils import (validate_figure_registry, validate_markdown,
+                               verify_output_integrity)
 
 __all__ = [
     "ValidationResult",
@@ -43,6 +40,64 @@ class ValidationResult:
             "details": self.details,
             "severity": self.severity,
         }
+
+
+def _detect_outliers(
+    values: np.ndarray, method: str = "iqr", threshold: float = 1.5
+) -> Tuple[np.ndarray, Dict[str, Any]]:
+    """Detect outliers without up-layer imports.
+
+    Relocated down-layer from ``data.data_processing.detect_outliers`` so that
+    core does not depend on the data package (layering: data imports core,
+    never the reverse).
+
+    Args:
+        values: Input data
+        method: Detection method (``"iqr"`` or ``"z_score"``)
+        threshold: Threshold for outlier detection
+
+    Returns:
+        Tuple of (outlier_mask, detection_info)
+
+    Raises:
+        ValueError: If an unknown method is requested
+    """
+    data_flat = values.flatten()
+
+    if method == "iqr":
+        q25 = np.percentile(data_flat, 25)
+        q75 = np.percentile(data_flat, 75)
+        iqr = q75 - q25
+
+        lower_bound = q25 - threshold * iqr
+        upper_bound = q75 + threshold * iqr
+
+        outlier_mask = (data_flat < lower_bound) | (data_flat > upper_bound)
+        info = {
+            "method": method,
+            "threshold": threshold,
+            "lower_bound": float(lower_bound),
+            "upper_bound": float(upper_bound),
+            "q25": float(q25),
+            "q75": float(q75),
+            "iqr": float(iqr),
+        }
+    elif method == "z_score":
+        mean = np.mean(data_flat)
+        std = np.std(data_flat)
+
+        z_scores = np.abs((data_flat - mean) / (std + 1e-10))
+        outlier_mask = z_scores > threshold
+        info = {
+            "method": method,
+            "threshold": threshold,
+            "mean": float(mean),
+            "std": float(std),
+        }
+    else:
+        raise ValueError(f"Unknown outlier detection method: {method}")
+
+    return outlier_mask.reshape(values.shape), info
 
 
 class ValidationFramework:
@@ -97,8 +152,10 @@ class ValidationFramework:
                 "name": name,
                 "min_value": min_value,
                 "max_value": max_value,
-                "actual_min": float(np.min(values)),
-                "actual_max": float(np.max(values)),
+                # Empty arrays have no actual min/max; report None instead of
+                # crashing on np.min/np.max of an empty sequence
+                "actual_min": float(np.min(values)) if values.size else None,
+                "actual_max": float(np.max(values)) if values.size else None,
             },
         )
 
@@ -154,7 +211,7 @@ class ValidationFramework:
                 "value": value,
                 "expected_order_of_magnitude": expected_order_of_magnitude,
             },
-            severity="warning" if issues else "info",
+            severity="error" if issues else "info",
         )
 
         self.validation_results.append(result)
@@ -177,6 +234,8 @@ class ValidationFramework:
             ValidationResult
         """
         differences = []
+        ignored_keys = []
+        one_sided_keys = sorted(set(run1_results) ^ set(run2_results))
 
         # Compare numeric values
         for key in set(run1_results.keys()) & set(run2_results.keys()):
@@ -187,8 +246,12 @@ class ValidationFramework:
                 diff = abs(val1 - val2)
                 if diff > tolerance:
                     differences.append(f"{key}: difference = {diff:.2e}")
+            else:
+                ignored_keys.append(key)
 
+        ignored_keys.sort()
         is_valid = len(differences) == 0
+
         message = (
             "Runs are reproducible"
             if is_valid
@@ -199,7 +262,12 @@ class ValidationFramework:
             is_valid=is_valid,
             check_name="reproducibility_check",
             message=message,
-            details={"tolerance": tolerance, "differences": differences},
+            details={
+                "tolerance": tolerance,
+                "differences": differences,
+                "ignored_keys": ignored_keys,
+                "one_sided_keys": one_sided_keys,
+            },
         )
 
         self.validation_results.append(result)
@@ -218,12 +286,7 @@ class ValidationFramework:
         Returns:
             ValidationResult
         """
-        try:
-            from ..data.data_processing import detect_outliers
-        except (ImportError, ValueError):
-            from data.data_processing import detect_outliers
-
-        outlier_mask, info = detect_outliers(values, method, threshold)
+        outlier_mask, info = _detect_outliers(values, method, threshold)
         n_anomalies = np.sum(outlier_mask)
         anomaly_percentage = 100 * n_anomalies / len(values) if len(values) > 0 else 0
 

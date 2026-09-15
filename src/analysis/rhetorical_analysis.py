@@ -2,12 +2,19 @@
 
 This module provides methods for analyzing rhetorical strategies, narrative
 frameworks, and argumentative structure scoring in entomological literature.
+
+HEURISTIC SCORING NOTICE: all index/rating outputs of this module are simple
+lexical heuristics (fixed offsets such as /10, /20, base 0.5).  They are raw
+indices intended for ranking and comparison, NOT validated measures of
+effectiveness or confidence, and must not be reported as such.
 """
 
 from __future__ import annotations
 
 import re
 from typing import Any, Dict, List
+
+from .discourse_patterns import find_citations
 
 __all__ = [
     "analyze_rhetorical_strategies",
@@ -25,27 +32,31 @@ def analyze_rhetorical_strategies(texts: List[str]) -> Dict[str, Dict[str, Any]]
         texts: Texts to analyze
 
     Returns:
-        Dictionary of rhetorical strategy analysis
+        Dictionary of rhetorical strategy analysis.  Each entry records
+        ``frequency`` (total matches), ``examples`` (capped) and
+        ``text_count`` (number of distinct texts containing the pattern).
     """
     strategies = {
-        "authority": {"frequency": 0, "examples": []},
-        "analogy": {"frequency": 0, "examples": []},
-        "generalization": {"frequency": 0, "examples": []},
-        "anecdotal": {"frequency": 0, "examples": []},
+        "authority": {"frequency": 0, "examples": [], "text_count": 0},
+        "analogy": {"frequency": 0, "examples": [], "text_count": 0},
+        "generalization": {"frequency": 0, "examples": [], "text_count": 0},
+        "anecdotal": {"frequency": 0, "examples": [], "text_count": 0},
     }
 
     for text in texts:
-        # Authority citations
-        citations = re.findall(r"\(.*?20\d{2}.*?\)", text)
+        # Authority citations (shared citation matcher; see persuasive_analysis)
+        citations = find_citations(text)
         strategies["authority"]["frequency"] += len(citations)
         if citations:
             strategies["authority"]["examples"].extend(citations[:2])
+            strategies["authority"]["text_count"] += 1
 
         # Analogies
         analogies = re.findall(r"\blike\s+.*?\bant|ant.*?\blike\s+", text.lower())
         strategies["analogy"]["frequency"] += len(analogies)
         if analogies:
             strategies["analogy"]["examples"].extend(analogies[:2])
+            strategies["analogy"]["text_count"] += 1
 
         # Generalizations
         generalizations = re.findall(
@@ -54,6 +65,7 @@ def analyze_rhetorical_strategies(texts: List[str]) -> Dict[str, Dict[str, Any]]
         strategies["generalization"]["frequency"] += len(generalizations)
         if generalizations:
             strategies["generalization"]["examples"].extend(generalizations[:2])
+            strategies["generalization"]["text_count"] += 1
 
         # Anecdotal evidence
         anecdotal = re.findall(
@@ -62,6 +74,7 @@ def analyze_rhetorical_strategies(texts: List[str]) -> Dict[str, Dict[str, Any]]
         strategies["anecdotal"]["frequency"] += len(anecdotal)
         if anecdotal:
             strategies["anecdotal"]["examples"].extend(anecdotal[:2])
+            strategies["anecdotal"]["text_count"] += 1
 
     return strategies
 
@@ -116,7 +129,12 @@ def identify_narrative_frameworks(texts: List[str]) -> Dict[str, List[str]]:
 
 
 def quantify_rhetorical_patterns(texts: List[str]) -> Dict[str, Dict[str, Any]]:
-    """Quantify rhetorical patterns with frequency and effectiveness metrics.
+    """Quantify rhetorical patterns with frequency metrics.
+
+    ``text_coverage`` is the fraction of input texts in which the pattern
+    occurs at least once (distinct-text coverage, not example counts, which
+    are capped per text and would saturate).  The ``heuristic_*`` outputs are
+    simple lexical indices — see the module heuristic-scoring notice.
 
     Args:
         texts: Texts to analyze
@@ -135,23 +153,25 @@ def quantify_rhetorical_patterns(texts: List[str]) -> Dict[str, Dict[str, Any]]:
         else:
             total_occurrences = freq_data
         text_coverage = (
-            len(pattern_data.get("examples", [])) / len(texts) if texts else 0
+            pattern_data.get("text_count", 0) / len(texts) if texts else 0
         )
 
-        # Calculate effectiveness metrics (simplified)
-        effectiveness_score = (
+        # Occurrences-per-text index (heuristic, capped at 1)
+        heuristic_frequency_index = (
             min(total_occurrences / len(texts), 1.0) if texts else 0
         )
 
         quantified_patterns[pattern_name] = {
             "total_occurrences": total_occurrences,
             "text_coverage": text_coverage,
-            "effectiveness_score": effectiveness_score,
+            "heuristic_frequency_index": heuristic_frequency_index,
             "frequency_distribution": pattern_data.get("frequency", {}),
             "context_examples": pattern_data.get("examples", [])[
                 :5
             ],  # Limit examples
-            "persuasiveness_rating": _calculate_persuasiveness(pattern_data),
+            "heuristic_persuasiveness_index": _calculate_persuasiveness(
+                pattern_data
+            ),
         }
 
     return quantified_patterns
@@ -162,8 +182,12 @@ def score_argumentative_structures(
 ) -> Dict[str, Dict[str, Any]]:
     """Score argumentative structures for strength and coherence.
 
+    All returned indices are simple lexical heuristics (see the module
+    heuristic-scoring notice), not validated strength or confidence measures.
+
     Args:
-        structures: List of ArgumentativeStructure objects
+        structures: List of ArgumentativeStructure objects (claim/warrant/
+            qualification are lists of sentences)
         texts: Source texts (for context)
 
     Returns:
@@ -172,10 +196,21 @@ def score_argumentative_structures(
     scored_structures = {}
 
     for structure in structures:
-        # Calculate structure strength
-        claim_strength = _evaluate_claim_strength(structure.claim)
+        # Mean heuristic strength over all collected claims/warrants; a
+        # structure with no claims/warrants scores 0 for that component
+        claim_strength = (
+            sum(_evaluate_claim_strength(c) for c in structure.claim)
+            / len(structure.claim)
+            if structure.claim
+            else 0.0
+        )
         evidence_quality = _evaluate_evidence_quality(structure.evidence)
-        reasoning_coherence = _evaluate_reasoning_coherence(structure.warrant)
+        reasoning_coherence = (
+            sum(_evaluate_reasoning_coherence(w) for w in structure.warrant)
+            / len(structure.warrant)
+            if structure.warrant
+            else 0.0
+        )
 
         overall_strength = (
             claim_strength + evidence_quality + reasoning_coherence
@@ -190,7 +225,9 @@ def score_argumentative_structures(
             "reasoning_coherence": reasoning_coherence,
             "overall_strength": overall_strength,
             "qualification": structure.qualification,
-            "confidence_score": _calculate_structure_confidence(structure),
+            "heuristic_confidence_index": _calculate_structure_confidence(
+                structure
+            ),
         }
 
     return scored_structures
@@ -232,7 +269,9 @@ def analyze_narrative_frequency(texts: List[str]) -> Dict[str, Dict[str, Any]]:
             "average_text_length": avg_length,
             "unique_phrase_count": len(unique_phrases),
             "examples": framework_texts[:3],  # Limit examples
-            "consistency_score": _calculate_framework_consistency(framework_texts),
+            "heuristic_consistency_index": _calculate_framework_consistency(
+                framework_texts
+            ),
         }
 
     return framework_analysis
@@ -242,7 +281,10 @@ def analyze_narrative_frequency(texts: List[str]) -> Dict[str, Dict[str, Any]]:
 
 
 def _calculate_persuasiveness(pattern_data: Dict[str, Any]) -> float:
-    """Calculate persuasiveness rating for a rhetorical pattern."""
+    """Heuristic persuasiveness index: (frequency + capped examples) / 10.
+
+    Simple lexical heuristic — see the module heuristic-scoring notice.
+    """
     freq_data = pattern_data.get("frequency", 0)
     if isinstance(freq_data, dict):
         frequency = sum(freq_data.values())
@@ -253,7 +295,7 @@ def _calculate_persuasiveness(pattern_data: Dict[str, Any]) -> float:
 
 
 def _evaluate_claim_strength(claim: str) -> float:
-    """Evaluate the strength of a claim."""
+    """Heuristic claim-strength index (base 0.5 plus lexical bonuses)."""
     score = 0.5  # Base score
 
     if len(claim.split()) > 5:  # Substantial claims
@@ -269,7 +311,7 @@ def _evaluate_claim_strength(claim: str) -> float:
 
 
 def _evaluate_evidence_quality(evidence: List[str]) -> float:
-    """Evaluate the quality of evidence."""
+    """Heuristic evidence-quality index (base 0.5 plus lexical bonuses)."""
     if not evidence:
         return 0.0
 
@@ -289,7 +331,7 @@ def _evaluate_evidence_quality(evidence: List[str]) -> float:
 
 
 def _evaluate_reasoning_coherence(reasoning: str) -> float:
-    """Evaluate reasoning coherence."""
+    """Heuristic reasoning-coherence index (base 0.3 plus connector bonus)."""
     coherence_indicators = [
         "because",
         "therefore",
@@ -309,21 +351,25 @@ def _evaluate_reasoning_coherence(reasoning: str) -> float:
 
 
 def _calculate_structure_confidence(structure) -> float:
-    """Calculate confidence score for argumentative structure."""
+    """Heuristic structure index (base 0.5 plus presence bonuses).
+
+    NOT a statistical confidence.  ``claim``/``warrant`` are lists of
+    sentences; the first sentence of each is measured.
+    """
     confidence = 0.5
 
-    if structure.claim and len(structure.claim.split()) > 3:
+    if structure.claim and len(structure.claim[0].split()) > 3:
         confidence += 0.2
-    if structure.evidence and len(structure.evidence) > 0:
+    if structure.evidence:
         confidence += 0.2
-    if structure.warrant and len(structure.warrant.split()) > 5:
+    if structure.warrant and len(structure.warrant[0].split()) > 5:
         confidence += 0.1
 
     return min(confidence, 1.0)
 
 
 def _calculate_framework_consistency(framework_texts: List[str]) -> float:
-    """Calculate consistency score for narrative framework."""
+    """Heuristic framework-consistency index from length variance."""
     if len(framework_texts) < 2:
         return 1.0
 

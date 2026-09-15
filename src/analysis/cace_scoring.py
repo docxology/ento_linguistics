@@ -3,7 +3,8 @@
 Implements the four-dimension CACE scoring system:
 - **C**larity: Inverse of semantic entropy (low ambiguity = high clarity)
 - **A**ppropriateness: Penalizes anthropomorphic terms (queen, slave, worker, etc.)
-- **C**onsistency: Low variance in TF-IDF context vectors = high consistency
+- **C**onsistency: Mean pairwise cosine similarity of TF-IDF context vectors
+  (computed by ``mean_context_similarity``; high similarity = consistent usage)
 - **E**volvability: Scale-invariance across biological levels (gene/organism/colony)
 
 Each dimension score is bounded [0, 1]. Aggregate = mean of four dimensions.
@@ -11,7 +12,8 @@ Each dimension score is bounded [0, 1]. Aggregate = mean of four dimensions.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+import re
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Set
 
 import numpy as np
@@ -23,7 +25,7 @@ __all__ = [
     "SCALE_LEVELS",
     "score_clarity",
     "score_appropriateness",
-    "score_consistency",
+    "mean_context_similarity",
     "score_evolvability",
     "evaluate_term_cace",
     "compare_terms_cace",
@@ -38,7 +40,8 @@ class CACEScore:
         term: The term being evaluated
         clarity: 1 - (H / H_max), where H is semantic entropy
         appropriateness: Penalty for anthropomorphic connotations
-        consistency: Low variance of context vectors
+        consistency: Mean pairwise cosine context similarity (via
+            ``mean_context_similarity``)
         evolvability: Scale-invariance across biological levels
         aggregate: Mean of four dimension scores
     """
@@ -179,23 +182,29 @@ def score_appropriateness(
     return float(max(0.0, min(1.0, score)))
 
 
-def score_consistency(
+def mean_context_similarity(
     term: str,
     contexts: List[str],
     min_contexts: int = 3,
 ) -> float:
-    """Score term consistency via TF-IDF context vector variance.
+    """Compute the mean pairwise cosine similarity of TF-IDF context vectors.
 
-    Low variance across context vectors = term used consistently.
-    High variance = term meaning shifts across contexts.
+    This is what the CACE "Consistency" dimension actually measures: how
+    similar the term's usage contexts are to each other in TF-IDF space.
+    A high mean similarity means the term is used in comparable ways across
+    contexts; a low mean similarity means its usage varies widely.  Note this
+    is a vector-space dispersion measure, NOT a statistical variance and not a
+    validated psycholinguistic consistency score.
 
     Args:
         term: The term to evaluate
         contexts: Usage contexts for the term
-        min_contexts: Minimum contexts for meaningful analysis
+        min_contexts: Minimum contexts for meaningful analysis; below this a
+            neutral 0.5 is returned
 
     Returns:
-        Consistency score in [0, 1] (1 = highly consistent, 0 = highly variable)
+        Mean pairwise cosine similarity clamped to [0, 1]
+        (1 = maximally similar usage, 0 = maximally dispersed usage)
     """
     valid_contexts = [c.strip() for c in contexts if len(c.strip().split()) >= 3]
 
@@ -210,25 +219,21 @@ def score_consistency(
         )
         X = vectorizer.fit_transform(valid_contexts)
 
-        # Calculate pairwise cosine similarity variance
-        # Low variance = consistent usage
         X_dense = X.toarray()
         norms = np.linalg.norm(X_dense, axis=1, keepdims=True)
         norms = np.where(norms == 0, 1, norms)
         X_normed = X_dense / norms
 
-        # Mean pairwise cosine similarity
         similarity_matrix = X_normed @ X_normed.T
         n = similarity_matrix.shape[0]
 
-        # Extract upper triangle (exclude diagonal)
+        # Extract upper triangle (exclude diagonal): every unordered pair once
         upper_indices = np.triu_indices(n, k=1)
         pairwise_similarities = similarity_matrix[upper_indices]
 
         if len(pairwise_similarities) == 0:
             return 0.5
 
-        # Mean similarity maps to consistency: high mean sim = consistent
         mean_similarity = float(np.mean(pairwise_similarities))
 
         # Clamp to [0, 1]
@@ -237,7 +242,7 @@ def score_consistency(
     except (ValueError, np.linalg.LinAlgError) as exc:
         import logging
         logging.getLogger(__name__).debug(
-            "score_consistency fallback for '%s': %s", term, exc
+            "mean_context_similarity fallback for '%s': %s", term, exc
         )
         return 0.5
 
@@ -268,12 +273,15 @@ def score_evolvability(
     n_domains = len(domains)
     domain_score = min(1.0, n_domains / DEFAULT_SCALE_DIVISOR)  # Caps at 3+ domains
 
-    # Context-based scale detection
-    scale_count = 0
+    # Context-based scale detection with word boundaries so "gene" does not
+    # match "general" or "organism" a prefix of "microorganism".
     context_text = " ".join(contexts).lower()
-    for level in SCALE_LEVELS:
-        if level in context_text:
-            scale_count += 1
+    context_patterns = [
+        re.compile(r"\b" + re.escape(level) + r"\b") for level in SCALE_LEVELS
+    ]
+    scale_count = sum(
+        1 for pattern in context_patterns if pattern.search(context_text)
+    )
 
     # Scale breadth score
     scale_score = min(1.0, scale_count / DEFAULT_SCALE_DIVISOR) if contexts else 0.0
@@ -311,7 +319,7 @@ def evaluate_term_cace(
 
     c = score_clarity(semantic_entropy, max_entropy)
     a = score_appropriateness(term, domains)
-    co = score_consistency(term, contexts)
+    co = mean_context_similarity(term, contexts)
     e = score_evolvability(term, domains, contexts)
 
     aggregate = float(np.mean([c, a, co, e]))

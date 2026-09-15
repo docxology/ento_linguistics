@@ -6,7 +6,7 @@ used in Ento-Linguistic research.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Dict, List
 
 import pytest
 from analysis.domain_analysis import DomainAnalysis, DomainAnalyzer
@@ -555,3 +555,54 @@ class TestQuantifyAmbiguityDelegation:
         score = result["term_ambiguity_scores"].get("rare_term", {})
         assert score.get("entropy_bits", -1) == 0.0
         assert score.get("is_high_entropy") is False
+
+
+class TestCooccurrenceAndSignificanceContract:
+    """Canonical pair counting, effect size, and separated cross-domain output."""
+
+    def test_cooccurrence_counts_unordered_pairs_once(self):
+        analyzer = DomainAnalyzer()
+        terms = [
+            Term(text="queen", lemma="queen", domains=["power_and_labor"], frequency=2),
+            Term(text="colony", lemma="colony", domains=["unit_of_individuality"], frequency=2),
+        ]
+        result = analyzer.analyze_term_cooccurrence(
+            terms, ["queen colony queen colony queen colony"]
+        )
+        # All alternating positions lie within the default window: 9
+        # co-occurring (queen, colony) pairs, each unordered pair counted
+        # exactly once (the old double-counting implementation reported 18).
+        assert result["total_cooccurrences"] == 9
+        assert result["unique_term_pairs"] == 1
+        assert result["cooccurrence_matrix"]["queen"]["colony"] == 9
+
+    def test_effect_size_is_cramers_v(self):
+        analyzer = DomainAnalyzer()
+        result = analyzer.calculate_statistical_significance({"a": 10, "b": 2})
+        import math
+        n, k, chi2 = 12, 2, result["chi_square_statistic"]
+        assert result["effect_size"] == pytest.approx(math.sqrt(chi2 / (n * (k - 1))))
+
+    def test_analyze_all_domains_has_no_cross_domain_key(self):
+        analyzer = DomainAnalyzer()
+        terms = {
+            "colony": Term(text="colony", lemma="colony",
+                           domains=["unit_of_individuality"], frequency=5),
+            "queen": Term(text="queen", lemma="queen",
+                          domains=["power_and_labor"], frequency=5),
+        }
+        texts = ["The queen ant lays eggs in the colony. The colony is a superorganism. "
+                 "Queens control workers. " * 3]
+        analyses = analyzer.analyze_all_domains(terms, texts)
+        assert "_cross_domain" not in analyses
+        assert all(isinstance(a, DomainAnalysis) for a in analyses.values())
+
+    def test_confidence_scores_are_content_word_ratios(self):
+        analyzer = DomainAnalyzer()
+        terms = [Term(text="queen", lemma="queen", domains=["power_and_labor"],
+                      frequency=5)]
+        scores = analyzer.generate_confidence_scores(
+            ["Queen dominance implies worker subordination"], terms, ["texts"]
+        )
+        for value in scores.values():
+            assert 0.0 <= value <= 1.0

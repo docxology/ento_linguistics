@@ -6,11 +6,11 @@ used in Ento-Linguistic research.
 
 from __future__ import annotations
 
-from typing import Dict, List
+from pathlib import Path
+from typing import List
 
 import pytest
 from analysis.term_extraction import Term, TerminologyExtractor
-from analysis.text_analysis import TextProcessor
 
 
 class TestTerm:
@@ -269,16 +269,19 @@ class TestTerminologyExtractor:
             rows = list(reader)
         assert len(rows) == 2
 
-    def test_context_extraction(self, extractor: TerminologyExtractor) -> None:
-        """Test term context extraction."""
+    def test_context_extraction_efficient(self, extractor: TerminologyExtractor) -> None:
+        """Test term context extraction via pre-computed positions."""
         texts = ["The ant colony exhibits complex behavior patterns."]
         tokens_list = [
             ["the", "ant", "colony", "exhibits", "complex", "behavior", "patterns"]
         ]
 
         term = Term(text="colony", lemma="colony")
-        extractor._extract_term_contexts(
-            term, list(zip(texts, tokens_list)), window_size=3
+        extractor._extract_term_contexts_efficient(
+            term,
+            list(zip(texts, tokens_list)),
+            positions=[(0, 2)],
+            window_size=3,
         )
 
         assert len(term.contexts) > 0
@@ -346,7 +349,7 @@ class TestTerminologyExtractor:
         self, extractor: TerminologyExtractor, sample_texts: List[str], tmp_path: Path
     ) -> None:
         """Test CSV export functionality."""
-        terms = extractor.extract_terms(sample_texts, min_frequency=1)
+        extractor.extract_terms(sample_texts, min_frequency=1)
 
         csv_file = tmp_path / "test_terms.csv"
         extractor.export_terms_csv(str(csv_file))
@@ -573,3 +576,37 @@ class TestTerminologyExtractionIntegration:
         assert expected_domain in domains, (
             f"'{domain_term}' not classified into {expected_domain}, got {domains}"
         )
+
+
+class TestExtractionIsolationAndBoundaries:
+    """Regression: fresh term dict per call and word-boundary classification."""
+
+    def test_second_extraction_does_not_inherit_first_corpus(self):
+        extractor = TerminologyExtractor()
+        first = extractor.extract_terms(
+            ["The queen ant lays eggs in the colony. The colony forages. "
+             "Queens reproduce. Worker ants forage for the colony. "
+             "The queen controls workers in the colony."],
+            min_frequency=2,
+        )
+        assert "queen" in first
+        second = extractor.extract_terms(
+            ["Bacterial colony grows on the plate. The colony invests resources. "
+             "Resource allocation matters. The colony trades resources. "
+             "Bacteria optimize investment."],
+            min_frequency=2,
+        )
+        assert "queen" not in second
+        assert "colony" in second
+
+    def test_word_boundary_pattern_classification(self):
+        extractor = TerminologyExtractor()
+        # "kin" must not match inside "kindergarten" or "kingdom"
+        assert "kin_and_relatedness" not in extractor.classify_term_domains("kindergarten")
+        assert "kin_and_relatedness" in extractor.classify_term_domains("kin")
+        assert "kin_and_relatedness" in extractor._classify_by_pattern("kin_relatedness")
+
+    def test_classify_term_domains_deterministic_order(self):
+        extractor = TerminologyExtractor()
+        domains = extractor.classify_term_domains("queen")
+        assert domains == sorted(domains)

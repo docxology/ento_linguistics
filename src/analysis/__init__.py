@@ -47,7 +47,7 @@ from .cace_scoring import (
     compare_terms_cace,
     score_clarity,
     score_appropriateness,
-    score_consistency,
+    mean_context_similarity,
     score_evolvability,
     ANTHROPOMORPHIC_TERMS,
 )
@@ -101,7 +101,7 @@ __all__ = [
     "compare_terms_cace",
     "score_clarity",
     "score_appropriateness",
-    "score_consistency",
+    "mean_context_similarity",
     "score_evolvability",
     "ANTHROPOMORPHIC_TERMS",
     # performance

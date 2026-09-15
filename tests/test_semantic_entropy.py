@@ -9,7 +9,6 @@ from __future__ import annotations
 import numpy as np
 import pytest
 from analysis.semantic_entropy import (
-    HIGH_ENTROPY_THRESHOLD,
     SemanticEntropyResult,
     calculate_corpus_entropy,
     calculate_semantic_entropy,
@@ -279,3 +278,45 @@ class TestGetHighEntropyTerms:
         }
         high = get_high_entropy_terms(results)
         assert high == []
+
+
+class TestEntropyNormalizationContract:
+    """entropy_normalized / h_max contract consumed by the manuscript agent."""
+
+    def test_normalized_fields_present_and_bounded(self):
+        contexts = [
+            "The ant colony is a complex superorganism.",
+            "Colony genetics determine worker relatedness.",
+            "A bacterial colony grew on the agar plate.",
+            "Colony economics model resource allocation.",
+            "The bird colony nested on the ocean cliff.",
+            "Colony defense uses chemical weapons.",
+        ]
+        r = calculate_semantic_entropy("colony", contexts, random_state=42)
+        assert r.status == "ok"
+        assert r.n_clusters >= 2
+        assert r.h_max > 0
+        assert 0.0 <= r.entropy_normalized <= 1.0
+        assert r.entropy_normalized == pytest.approx(
+            r.entropy_bits / r.h_max, rel=1e-9
+        )
+
+    def test_insufficient_contexts_flagged_not_ok(self):
+        r = calculate_semantic_entropy("queen", ["The queen ant"], min_contexts=5)
+        assert r.status == "insufficient_contexts"
+        assert r.entropy_bits == 0.0
+        assert r.entropy_normalized == 0.0
+
+    def test_to_dict_roundtrip_includes_new_fields(self):
+        r = calculate_semantic_entropy(
+            "queen",
+            ["The queen lays eggs.", "Queens reproduce.", "A queen mates once.",
+             "The queen dominates workers.", "Queen pheromones regulate workers."],
+            random_state=42,
+        )
+        d = r.to_dict()
+        assert {"entropy_normalized", "h_max", "status", "error"} <= set(d)
+        r2 = SemanticEntropyResult.from_dict(d)
+        assert r2.entropy_normalized == r.entropy_normalized
+        assert r2.h_max == r.h_max
+        assert r2.status == r.status

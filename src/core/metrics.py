@@ -6,7 +6,8 @@ indicators for validating terminology extraction and discourse analysis models.
 
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from dataclasses import dataclass
+from typing import Callable, Dict, Optional
 
 import numpy as np
 
@@ -88,12 +89,8 @@ def calculate_convergence_metrics(
     Returns:
         Dictionary with convergence metrics
     """
-    try:
-        from ..analysis.performance import analyze_convergence
-    except (ImportError, ValueError):
-        from analysis.performance import analyze_convergence
-
-    convergence = analyze_convergence(values, target)
+    convergence = _analyze_convergence(values, target)
+    iterations = convergence.iterations_to_convergence
 
     # Calculate residuals
     if target is not None:
@@ -109,13 +106,89 @@ def calculate_convergence_metrics(
     return {
         "final_error": convergence.error,
         "convergence_rate": convergence.convergence_rate or 0.0,
-        "iterations_to_convergence": convergence.iterations_to_convergence
-        or len(values),
+        "iterations_to_convergence": (
+            iterations if iterations is not None else len(values)
+        ),
         "is_converged": convergence.is_converged,
         "mean_residual": float(np.mean(residuals)),
         "max_residual": float(np.max(residuals)),
         "final_residual": float(residuals[-1]),
     }
+
+
+@dataclass
+class _ConvergenceSummary:
+    """Core-native convergence summary (relocated down-layer)."""
+
+    error: float
+    convergence_rate: Optional[float]
+    iterations_to_convergence: Optional[int]
+    is_converged: bool
+
+
+def _analyze_convergence(
+    values: np.ndarray,
+    target: Optional[float] = None,
+    tolerance: float = 1e-6,
+    window_size: int = 10,
+) -> _ConvergenceSummary:
+    """Analyze convergence of a sequence without up-layer imports.
+
+    Relocated down-layer from ``analysis.performance.analyze_convergence`` so
+    that core does not depend on the analysis package (layering: analysis
+    imports core, never the reverse). Mirrors the original semantics for the
+    fields consumed by :func:`calculate_convergence_metrics`.
+
+    Args:
+        values: Sequence of values
+        target: Target value (if known)
+        tolerance: Convergence tolerance
+        window_size: Window size for drift-based error estimation
+
+    Returns:
+        _ConvergenceSummary with error, convergence_rate,
+        iterations_to_convergence, and is_converged
+
+    Raises:
+        ValueError: If ``values`` is empty
+    """
+    if len(values) == 0:
+        raise ValueError("Values array is empty")
+
+    if target is not None:
+        error = abs(float(values[-1]) - target)
+    elif len(values) > window_size:
+        recent_mean = np.mean(values[-window_size:])
+        earlier_mean = np.mean(values[-2 * window_size : -window_size])
+        error = abs(recent_mean - earlier_mean) / (abs(earlier_mean) + 1e-10)
+    else:
+        error = abs(values[-1] - values[0]) if len(values) > 1 else 0.0
+
+    is_converged = bool(error < tolerance)
+
+    iterations_to_convergence = None
+    if target is not None:
+        for i, val in enumerate(values):
+            if abs(val - target) < tolerance:
+                iterations_to_convergence = i
+                break
+
+    convergence_rate = None
+    if len(values) > 1 and target is not None:
+        errors = np.abs(values - target)
+        if np.all(errors > 0):
+            log_errors = np.log(errors)
+            iterations = np.arange(len(errors))
+            if len(iterations) > 1:
+                coeffs = np.polyfit(iterations, log_errors, 1)
+                convergence_rate = -coeffs[0]
+
+    return _ConvergenceSummary(
+        error=float(error),
+        convergence_rate=convergence_rate,
+        iterations_to_convergence=iterations_to_convergence,
+        is_converged=is_converged,
+    )
 
 
 def calculate_snr(signal: np.ndarray, noise: Optional[np.ndarray] = None) -> float:
@@ -194,8 +267,19 @@ def calculate_ssim(
     sigma2_sq = np.var(image2)
     sigma12 = np.mean((image1 - mu1) * (image2 - mu2))
 
-    c1 = 0.01**2
-    c2 = 0.03**2
+    # Scale stability constants by the actual data range L (standard SSIM:
+    # C1 = (K1 * L)^2, C2 = (K2 * L)^2 with K1 = 0.01, K2 = 0.03)
+    data_range = max(
+        float(np.max(image1) - np.min(image1)),
+        float(np.max(image2) - np.min(image2)),
+    )
+    if data_range == 0:
+        # Both images constant: fall back to a unit range so the stability
+        # constants stay meaningful instead of collapsing to zero
+        data_range = 1.0
+
+    c1 = (0.01 * data_range) ** 2
+    c2 = (0.03 * data_range) ** 2
 
     ssim = ((2 * mu1 * mu2 + c1) * (2 * sigma12 + c2)) / (
         (mu1**2 + mu2**2 + c1) * (sigma1_sq + sigma2_sq + c2) + 1e-10
@@ -355,18 +439,21 @@ def calculate_consistency(values1: np.ndarray, values2: np.ndarray) -> float:
         values2: Second sequence (e.g. term scores from corpus B)
 
     Returns:
-        Consistency score in [0, 1] (1 = perfectly consistent)
+        Consistency score in [0, 1], or NaN when the input is degenerate
+        (fewer than two paired observations, or zero variance in either
+        sequence so the correlation is undefined)
+
+    Raises:
+        ValueError: If the sequences have different lengths
     """
     if len(values1) != len(values2):
-        min_len = min(len(values1), len(values2))
-        values1 = values1[:min_len]
-        values2 = values2[:min_len]
+        raise ValueError(
+            f"values1 and values2 must have the same length "
+            f"({len(values1)} != {len(values2)})"
+        )
 
-    # Correlation as consistency proxy
     if len(values1) < 2:
-        return 1.0
+        return float("nan")
 
     correlation = np.corrcoef(values1, values2)[0, 1]
-    if np.isnan(correlation):
-        return 1.0
     return float((correlation + 1) / 2)

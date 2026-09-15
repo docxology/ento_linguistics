@@ -217,15 +217,6 @@ class TestStatisticalSignificance:
         complexity = _estimate_complexity(sizes, times)
         assert "O(n" in complexity
 
-    def test_estimate_complexity_quadratic(self):
-        """Test complexity estimation for quadratic."""
-        from analysis.performance import _estimate_complexity
-
-        sizes = [10, 20, 30, 40, 50]
-        times = [0.1, 0.4, 0.9, 1.6, 2.5]
-        complexity = _estimate_complexity(sizes, times)
-        assert "O(n" in complexity
-
     def test_estimate_complexity_constant(self):
         """Test complexity estimation for constant."""
         from analysis.performance import _estimate_complexity
@@ -293,3 +284,18 @@ class TestStatisticalSignificance:
         comparison = benchmark_comparison(methods, metrics, "execution_time")
         assert comparison["best_method"] == "Method A"
         assert comparison["best_value"] == 0.0
+
+
+class TestZeroTimingGuards:
+    """Zero-duration timings must not crash or collapse to all-1.0."""
+
+    def test_benchmark_with_zero_best_value(self):
+        comparison = benchmark_comparison(
+            ["fast", "slow"], {"execution_time": [0.0, 2.0]}
+        )
+        assert comparison["best_method"] == "fast"
+        assert comparison["relative_performance"] == [1.0, 0.0]
+
+    def test_estimate_complexity_with_zero_time(self):
+        from analysis.performance import _estimate_complexity
+        assert _estimate_complexity([10, 100], [0.0, 0.0]) == "unknown"

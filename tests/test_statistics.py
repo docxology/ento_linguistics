@@ -1,5 +1,7 @@
 """Comprehensive tests for src/statistics.py to ensure 100% coverage."""
 
+import importlib.util
+
 import numpy as np
 import pytest
 
@@ -151,9 +153,7 @@ class TestCalculateCorrelation:
 
     def test_spearman_correlation(self):
         """Test Spearman correlation with value assertions."""
-        try:
-            from scipy.stats import spearmanr
-        except ImportError:
+        if importlib.util.find_spec("scipy") is None:
             pytest.skip("scipy not available")
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([2, 4, 6, 8, 10])
@@ -404,3 +404,21 @@ class TestTTestEdgeCases:
         assert stats.std == pytest.approx(expected_sample_std, rel=1e-10)
         # Ensure it's NOT the population std
         assert stats.std != pytest.approx(population_std, rel=1e-10)
+
+
+class TestDegenerateInputFlags:
+    """Constant inputs and n=1 must yield NaN plus an explicit flag."""
+
+    def test_constant_input_correlation_nan_and_flagged(self):
+        x = np.array([1.0, 1.0, 1.0])
+        y = np.array([1.0, 2.0, 3.0])
+        result = calculate_correlation(x, y)
+        assert np.isnan(result["correlation"])
+        assert np.isnan(result["p_value"])
+        assert result["warning"] == "constant input; correlation undefined"
+
+    def test_one_sample_n_one_nan_and_flagged(self):
+        result = t_test(np.array([5.0]))
+        assert np.isnan(result["t_statistic"])
+        assert np.isnan(result["p_value"])
+        assert "warning" in result

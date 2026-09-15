@@ -15,7 +15,6 @@ Functions:
 
 import logging
 import os
-import time
 from typing import Dict, Optional
 
 __all__ = [
@@ -59,11 +58,17 @@ def get_logger(name: str) -> logging.Logger:
             "3": logging.ERROR,
         }
 
+        unknown_level = False
         if level_str in numeric_map:
             level = numeric_map[level_str]
         else:
-            # Standard Python level name (DEBUG, INFO, WARNING, ERROR)
-            level = getattr(logging, level_str, logging.INFO)
+            # Standard Python level name (DEBUG, INFO, WARNING, ERROR, ...)
+            candidate = getattr(logging, level_str, None)
+            if isinstance(candidate, int):
+                level = candidate
+            else:
+                level = logging.INFO
+                unknown_level = True
 
         logger.setLevel(level)
 
@@ -76,6 +81,11 @@ def get_logger(name: str) -> logging.Logger:
         handler.setFormatter(formatter)
 
         logger.addHandler(handler)
+
+        if unknown_level:
+            logger.warning(
+                "Unknown LOG_LEVEL %r; defaulting to INFO", level_str
+            )
 
     return logger
 

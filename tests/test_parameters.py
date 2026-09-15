@@ -1,10 +1,6 @@
 """Comprehensive tests for src/parameters.py to ensure 100% coverage."""
 
-import json
-import tempfile
-from pathlib import Path
 
-import pytest
 from core.parameters import ParameterConstraint, ParameterSet, ParameterSweep
 
 
@@ -161,6 +157,45 @@ class TestParameterSet:
         loaded = ParameterSet.load(filepath)
         assert loaded.parameters["param1"] == 1.0
 
+    def test_save_and_load_round_trips_constraints(self, tmp_path):
+        """Test save/load preserves constraints (real round-trip through JSON)."""
+        params = ParameterSet()
+        params.add_parameter(
+            "learning_rate",
+            0.1,
+            constraint=ParameterConstraint(min_value=0.0, max_value=1.0),
+        )
+        params.add_parameter(
+            "optimizer",
+            "adam",
+            constraint=ParameterConstraint(
+                allowed_values=["adam", "sgd"], param_type=str
+            ),
+        )
+
+        filepath = tmp_path / "params.json"
+        params.save(filepath)
+        loaded = ParameterSet.load(filepath)
+
+        assert set(loaded.constraints) == {"learning_rate", "optimizer"}
+
+        rate_constraint = loaded.constraints["learning_rate"]
+        assert rate_constraint.min_value == 0.0
+        assert rate_constraint.max_value == 1.0
+        # Restored constraints still enforce validation
+        loaded.parameters["learning_rate"] = 5.0
+        is_valid, errors = loaded.validate()
+        assert is_valid is False
+        assert any("learning_rate" in e for e in errors)
+
+        optimizer_constraint = loaded.constraints["optimizer"]
+        assert optimizer_constraint.allowed_values == ["adam", "sgd"]
+        assert optimizer_constraint.param_type is str
+        loaded.parameters["optimizer"] = "rmsprop"
+        is_valid, errors = loaded.validate()
+        assert is_valid is False
+        assert any("optimizer" in e for e in errors)
+
 
 class TestParameterSweep:
     """Test ParameterSweep class."""
@@ -210,6 +245,29 @@ class TestParameterSweep:
         sweep = ParameterSweep(base_params)
         # No sweep configs added
         assert sweep.get_sweep_size() == 1
+
+    def test_generate_combinations_empty_returns_base(self):
+        """Test generate_combinations returns [base] when no sweeps configured."""
+        base_params = ParameterSet()
+        base_params.add_parameter("param1", 1.0)
+        base_params.add_parameter("param2", 2.0)
+        sweep = ParameterSweep(base_params)
+
+        combinations = sweep.generate_combinations()
+
+        # Consistent with get_sweep_size() == 1 for the empty case
+        assert len(combinations) == 1
+        assert combinations[0] == {"param1": 1.0, "param2": 2.0}
+        assert sweep.get_sweep_size() == len(combinations)
+
+    def test_generate_combinations_matches_sweep_size(self):
+        """Test generate_combinations length always matches get_sweep_size."""
+        base_params = ParameterSet()
+        base_params.add_parameter("param1", 0.0)
+        sweep = ParameterSweep(base_params)
+        sweep.add_sweep("param1", [0.1, 0.2, 0.3])
+
+        assert sweep.get_sweep_size() == len(sweep.generate_combinations())
 
 
 class TestSimulationParameters:

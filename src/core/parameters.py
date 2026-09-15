@@ -6,6 +6,8 @@ and configuration sets to ensure reproducible research findings.
 
 from __future__ import annotations
 
+import builtins
+import itertools
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -54,6 +56,49 @@ class ParameterConstraint:
                 return False, f"Value {value} above maximum {self.max_value}"
 
         return True, None
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to a JSON-serializable dictionary.
+
+        Returns:
+            Dictionary with min_value, max_value, allowed_values, and the
+            name of param_type (if set).
+        """
+        return {
+            "min_value": self.min_value,
+            "max_value": self.max_value,
+            "allowed_values": self.allowed_values,
+            "param_type": self.param_type.__name__ if self.param_type else None,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> ParameterConstraint:
+        """Restore a constraint from its dictionary form.
+
+        Args:
+            data: Dictionary as produced by :meth:`to_dict`
+
+        Returns:
+            ParameterConstraint instance
+
+        Raises:
+            ValueError: If param_type names a type that is not a builtin
+        """
+        param_type_name = data.get("param_type")
+        param_type = None
+        if param_type_name is not None:
+            param_type = getattr(builtins, param_type_name, None)
+            if not isinstance(param_type, type):
+                raise ValueError(
+                    f"Cannot restore param_type {param_type_name!r}: "
+                    "only builtin types are supported for serialization"
+                )
+        return cls(
+            min_value=data.get("min_value"),
+            max_value=data.get("max_value"),
+            allowed_values=data.get("allowed_values"),
+            param_type=param_type,
+        )
 
 
 @dataclass
@@ -129,6 +174,10 @@ class ParameterSet:
         """Convert to dictionary."""
         return {
             "parameters": self.parameters,
+            "constraints": {
+                name: constraint.to_dict()
+                for name, constraint in self.constraints.items()
+            },
             "defaults": self.defaults,
             "metadata": self.metadata,
         }
@@ -138,6 +187,10 @@ class ParameterSet:
         """Create from dictionary."""
         return cls(
             parameters=data.get("parameters", {}),
+            constraints={
+                name: ParameterConstraint.from_dict(constraint_data)
+                for name, constraint_data in data.get("constraints", {}).items()
+            },
             defaults=data.get("defaults", {}),
             metadata=data.get("metadata", {}),
         )
@@ -195,11 +248,14 @@ class ParameterSweep:
         Returns:
             List of parameter dictionaries
         """
-        import itertools
-
         # Get all parameter names to sweep
         sweep_params = list(self.sweep_configs.keys())
         sweep_values = [self.sweep_configs[p] for p in sweep_params]
+
+        if not sweep_params:
+            # No sweeps configured: a single combination with the base
+            # parameters, consistent with get_sweep_size()
+            return [self.base_parameters.parameters.copy()]
 
         # Generate all combinations
         combinations = []

@@ -11,16 +11,32 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-try:
-    from .text_analysis import TextProcessor
-except ImportError:
-    from text_analysis import TextProcessor
+from .text_analysis import TextProcessor
 
 __all__ = [
     "Term",
     "TerminologyExtractor",
     "create_domain_seed_expansion",
+    "filter_matching_sentences",
 ]
+
+
+def filter_matching_sentences(sentences: List[str], term: str) -> List[str]:
+    """Return sentences containing ``term`` as whole word(s).
+
+    Shared context-extraction helper: matching is word-boundary anchored and
+    case-insensitive, so "kin" does not match "kind" or "kingdom".  Multi-word
+    terms (e.g. "kin selection") match their full phrase.
+
+    Args:
+        sentences: Sentences to scan
+        term: Term to look for
+
+    Returns:
+        Sentences containing the term as a whole word or phrase
+    """
+    pattern = re.compile(r"\b" + re.escape(term) + r"\b", re.IGNORECASE)
+    return [sentence for sentence in sentences if pattern.search(sentence)]
 
 
 @dataclass
@@ -282,6 +298,10 @@ class TerminologyExtractor:
         Raises:
             ValueError: If inputs are invalid
         """
+        # Fresh result dict per call: a second extraction over a different
+        # corpus must not inherit terms from the first one.
+        self.extracted_terms = {}
+
         # Input validation
         if not texts:
             return {}
@@ -447,7 +467,7 @@ class TerminologyExtractor:
         if not domains:  # Only if no direct matches
             domains.extend(self._classify_by_pattern(term_lower))
 
-        return list(set(domains))  # Remove duplicates
+        return sorted(set(domains))
 
     def _classify_by_pattern(self, term: str) -> List[str]:
         """Classify term based on linguistic patterns.
@@ -460,74 +480,51 @@ class TerminologyExtractor:
         """
         domains = []
 
+        # Word-boundary matching: "kin" must not match "kind" or "kingdom".
+        # Compound separators (_ and -) are treated as word boundaries by
+        # extending the token pattern to those characters' neighbours.
+        def _matches(word: str) -> bool:
+            return re.search(
+                rf"\b{re.escape(word)}\b", term.replace("_", " ").replace("-", " ")
+            ) is not None
+
         # Individuality patterns
-        if any(
-            word in term for word in ["individual", "collective", "organism", "unit"]
-        ):
+        if any(_matches(w) for w in ["individual", "collective", "organism", "unit"]):
             domains.append("unit_of_individuality")
 
         # Behavior patterns
         if any(
-            word in term
-            for word in ["behavior", "task", "role", "foraging", "specialization"]
+            _matches(w)
+            for w in ["behavior", "task", "role", "foraging", "specialization"]
         ):
             domains.append("behavior_and_identity")
 
         # Power patterns
         if any(
-            word in term
-            for word in ["caste", "hierarchy", "control", "dominant", "subordinate"]
+            _matches(w)
+            for w in ["caste", "hierarchy", "control", "dominant", "subordinate"]
         ):
             domains.append("power_and_labor")
 
         # Reproduction patterns
         if any(
-            word in term for word in ["sex", "reproduction", "mating", "fertilization"]
+            _matches(w)
+            for w in ["sex", "reproduction", "mating", "fertilization"]
         ):
             domains.append("sex_and_reproduction")
 
         # Kin patterns
-        if any(word in term for word in ["kin", "relatedness", "family", "altruism"]):
+        if any(_matches(w) for w in ["kin", "relatedness", "family", "altruism"]):
             domains.append("kin_and_relatedness")
 
         # Economic patterns
         if any(
-            word in term
-            for word in ["resource", "allocation", "cost", "benefit", "trade"]
+            _matches(w)
+            for w in ["resource", "allocation", "cost", "benefit", "trade"]
         ):
             domains.append("economics")
 
         return domains
-
-    def _extract_term_contexts(
-        self,
-        term: Term,
-        text_contexts: List[Tuple[str, List[str]]],
-        window_size: int = 3,
-    ) -> None:
-        """Extract contextual usage examples for a term.
-
-        Args:
-            term: Term to extract contexts for
-            text_contexts: List of (text, tokens) pairs
-            window_size: Context window size in words
-        """
-        for text, tokens in text_contexts:
-            for i, token in enumerate(tokens):
-                if token == term.text:
-                    # Extract context window
-                    start = max(0, i - window_size)
-                    end = min(len(tokens), i + window_size + 1)
-                    context_tokens = tokens[start:end]
-                    context = " ".join(context_tokens)
-
-                    # Highlight the term
-                    highlighted_context = context.replace(term.text, f"**{term.text}**")
-
-                    term.add_context(highlighted_context)
-
-                    if len(term.contexts) >= 30:
-                        break
 
     def _extract_term_contexts_efficient(
         self,

@@ -26,7 +26,6 @@ Infrastructure Modules:
     core.validation: Result validation and quality assurance
     core.metrics: Quality and performance metrics
     core.parameters: Parameter management for reproducible analyses
-    core.example: Basic utility functions
     pipeline.simulation: Simulation framework for sensitivity analysis
     pipeline.reporting: Automated report generation
 

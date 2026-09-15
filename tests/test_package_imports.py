@@ -6,6 +6,8 @@ exposed through the __init__.py file and that package metadata is correct.
 
 from __future__ import annotations
 
+import importlib
+
 import pytest
 
 
@@ -13,13 +15,16 @@ class TestPackageLevelImports:
     """Test package-level API exposure through __init__.py."""
 
     def test_core_function_imports(self) -> None:
-        """Test that core functions are accessible from package level."""
-        # Import from package level (tests __init__.py)
-        from core.example import add_numbers, calculate_average
+        """Test that core functions are accessible from explicit subpackage imports."""
+        from core.metrics import calculate_impact_score
+        from core.parameters import ParameterSet
 
         # Verify functions work
-        assert add_numbers(2, 3) == 5
-        assert calculate_average([1, 2, 3]) == 2.0
+        assert calculate_impact_score(5.0) == 5.0
+
+        params = ParameterSet()
+        params.add_parameter("alpha", 0.5)
+        assert params.get("alpha") == 0.5
 
     def test_class_imports(self) -> None:
         """Test that core classes are accessible from explicit subpackage imports."""
@@ -84,9 +89,7 @@ class TestPackageLevelImports:
     def test_package_imports_without_errors(self) -> None:
         """Test that importing package doesn't produce import errors."""
         try:
-            import src
-
-            assert True
+            importlib.import_module("src")
         except ImportError as e:
             pytest.fail(f"Failed to import src: {e}")
 

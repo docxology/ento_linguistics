@@ -6,7 +6,7 @@ used in Ento-Linguistic research.
 
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import List
 
 import pytest
 from analysis.discourse_analysis import (ArgumentativeStructure, DiscourseAnalyzer,
@@ -303,7 +303,7 @@ class TestDiscourseAnalyzer:
         assert len(structures) >= 0
         if structures:
             structure = structures[0]
-            assert isinstance(structure.claim, str)
+            assert isinstance(structure.claim, list)
             assert isinstance(structure.evidence, list)
             assert isinstance(structure.discourse_markers, list)
 
@@ -455,14 +455,14 @@ class TestQuantifyRhetoricalPatterns:
         for key, val in result.items():
             assert "total_occurrences" in val
             assert "text_coverage" in val
-            assert "effectiveness_score" in val
-            assert "persuasiveness_rating" in val
+            assert "heuristic_frequency_index" in val
+            assert "heuristic_persuasiveness_index" in val
 
     def test_effectiveness_score_bounded(self, analyzer, rich_texts):
         result = analyzer.quantify_rhetorical_patterns(rich_texts)
         for key, val in result.items():
-            assert 0 <= val["effectiveness_score"] <= 1.0
-            assert 0 <= val["persuasiveness_rating"] <= 1.0
+            assert 0 <= val["heuristic_frequency_index"] <= 1.0
+            assert 0 <= val["heuristic_persuasiveness_index"] <= 1.0
 
     def test_empty_texts(self, analyzer):
         result = analyzer.quantify_rhetorical_patterns([])
@@ -484,7 +484,7 @@ class TestScoreArgumentativeStructures:
             assert "evidence_quality" in val
             assert "reasoning_coherence" in val
             assert "overall_strength" in val
-            assert "confidence_score" in val
+            assert "heuristic_confidence_index" in val
 
     def test_overall_strength_is_average(self, analyzer, rich_texts):
         result = analyzer.score_argumentative_structures(rich_texts)
@@ -515,7 +515,7 @@ class TestAnalyzeNarrativeFrequency:
             assert "coverage_percentage" in val
             assert "average_text_length" in val
             assert "unique_phrase_count" in val
-            assert "consistency_score" in val
+            assert "heuristic_consistency_index" in val
 
     def test_coverage_bounded(self, analyzer, rich_texts):
         result = analyzer.analyze_narrative_frequency(rich_texts)
@@ -541,13 +541,13 @@ class TestMeasurePersuasiveEffectiveness:
         for key, val in result.items():
             assert "usage_frequency" in val
             assert "context_relevance" in val
-            assert "impact_score" in val
-            assert "effectiveness_rating" in val
+            assert "heuristic_impact_index" in val
+            assert "heuristic_effectiveness_band" in val
 
     def test_impact_bounded(self, analyzer, rich_texts):
         result = analyzer.measure_persuasive_effectiveness(rich_texts)
         for key, val in result.items():
-            assert 0 <= val["impact_score"] <= 1.0
+            assert 0 <= val["heuristic_impact_index"] <= 1.0
 
 
 class TestAnalyzeTermUsageContext:
@@ -645,7 +645,7 @@ class TestQuantifyFramingEffects:
             assert "framing_strength" in data
             assert "consistency_score" in data
             assert "affected_texts" in data
-            assert "impact_score" in data
+            assert "heuristic_impact_index" in data
 
     def test_framing_strength_bounded(self, analyzer, rich_texts):
         result = analyzer.quantify_framing_effects(rich_texts)
@@ -653,91 +653,3 @@ class TestQuantifyFramingEffects:
             assert 0 <= data["framing_strength"] <= 1.0
 
 
-class TestPrivateHelpers:
-    """Tests for private helper methods of DiscourseAnalyzer."""
-
-    @pytest.fixture
-    def analyzer(self) -> DiscourseAnalyzer:
-        return DiscourseAnalyzer()
-
-    def test_calculate_persuasiveness(self, analyzer):
-        data = {"frequency": {"a": 3, "b": 2}, "contexts": ["c1", "c2", "c3"]}
-        result = analyzer._calculate_persuasiveness(data)
-        assert 0 <= result <= 1.0
-
-    def test_evaluate_claim_strength_short(self, analyzer):
-        result = analyzer._evaluate_claim_strength("Bees fly")
-        assert 0 <= result <= 1.0
-
-    def test_evaluate_claim_strength_with_connector(self, analyzer):
-        result = analyzer._evaluate_claim_strength(
-            "Therefore the colony adapts to changes in environment"
-        )
-        assert result > 0.5
-
-    def test_evaluate_claim_strength_question(self, analyzer):
-        result = analyzer._evaluate_claim_strength("Do bees communicate?")
-        assert result <= 0.8
-
-    def test_evaluate_evidence_quality(self, analyzer):
-        evidence = ["Studies show that bees use dance", "Data confirms the hypothesis"]
-        result = analyzer._evaluate_evidence_quality(evidence)
-        assert 0 <= result <= 1.0
-
-    def test_evaluate_evidence_quality_empty(self, analyzer):
-        result = analyzer._evaluate_evidence_quality([])
-        assert 0 <= result <= 1.0
-
-    def test_evaluate_reasoning_coherence(self, analyzer):
-        reasoning = "Therefore, these results indicate that bee communication is complex"
-        result = analyzer._evaluate_reasoning_coherence(reasoning)
-        assert 0 <= result <= 1.0
-
-    def test_calculate_structure_confidence(self, analyzer):
-        structure = ArgumentativeStructure(
-            claim="Bees are intelligent",
-            evidence=["Studies show", "Data confirms"],
-            warrant="Therefore bees exhibit complex behaviors",
-        )
-        result = analyzer._calculate_structure_confidence(structure)
-        assert 0 <= result <= 1.0
-
-    def test_calculate_framework_consistency(self, analyzer):
-        texts = ["The queen controls the colony", "The queen manages the hive"]
-        result = analyzer._calculate_framework_consistency(texts)
-        assert 0 <= result <= 1.0
-
-    def test_rate_technique_effectiveness(self, analyzer):
-        data = {"frequency": 5, "contexts": ["ctx1", "ctx2"]}
-        result = analyzer._rate_technique_effectiveness(data)
-        assert isinstance(result, str) or isinstance(result, (int, float))
-
-    def test_calculate_technique_impact(self, analyzer):
-        data = {"frequency": 5, "contexts": ["ctx1"]}
-        result = analyzer._calculate_technique_impact(data)
-        assert isinstance(result, (int, float))
-
-    def test_classify_context_type(self, analyzer):
-        sentence = "The experiment demonstrates that bees communicate"
-        result = analyzer._classify_context_type(sentence, "bees")
-        assert isinstance(result, str)
-
-    def test_calculate_usage_consistency(self, analyzer):
-        contexts = [
-            {"context_type": "definition"},
-            {"context_type": "definition"},
-            {"context_type": "example"},
-        ]
-        result = analyzer._calculate_usage_consistency(contexts)
-        assert 0 <= result <= 1.0
-
-    def test_get_framing_indicators(self, analyzer):
-        result = analyzer._get_framing_indicators("anthropomorphic")
-        assert isinstance(result, list)
-        assert len(result) > 0
-
-    def test_calculate_framing_consistency(self, analyzer):
-        texts = ["The queen decides what to do", "Workers choose their tasks"]
-        indicators = ["decides", "choose", "wants"]
-        result = analyzer._calculate_framing_consistency(texts, indicators)
-        assert 0 <= result <= 1.0

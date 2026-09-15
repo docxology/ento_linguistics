@@ -2,13 +2,10 @@
 
 import logging
 import os
-from pathlib import Path
 
-import pytest
-from core.exceptions import ValidationError
+from core.exceptions import EntoLinguisticsError, ValidationError
 from core.logging import (get_logger, log_progress_bar, log_stage,
                                log_substep)
-from core.markdown_integration import ImageManager, MarkdownIntegration
 
 
 class TestValidationError:
@@ -46,9 +43,10 @@ class TestValidationError:
         assert error.suggestions == suggestions
 
     def test_validation_error_inheritance(self):
-        """Test that ValidationError inherits from Exception."""
+        """Test that ValidationError inherits from EntoLinguisticsError."""
         error = ValidationError("Test")
         assert isinstance(error, Exception)
+        assert isinstance(error, EntoLinguisticsError)
 
 
 class TestLogging:
@@ -132,79 +130,3 @@ class TestLogging:
         assert "Stage 2/5: Processing" in caplog.text
 
 
-class TestMarkdownIntegration:
-    """Test markdown integration utilities."""
-
-    def test_markdown_integration_init(self, tmp_path):
-        """Test MarkdownIntegration initialization."""
-        manuscript_dir = tmp_path / "manuscript"
-        manuscript_dir.mkdir()
-        integration = MarkdownIntegration(manuscript_dir)
-        assert integration.manuscript_dir == manuscript_dir
-
-    def test_detect_sections(self, tmp_path):
-        """Test section detection (returns empty list for minimal implementation)."""
-        manuscript_dir = tmp_path / "manuscript"
-        manuscript_dir.mkdir()
-        integration = MarkdownIntegration(manuscript_dir)
-
-        test_file = manuscript_dir / "test.md"
-        test_file.write_text("# Test\n\nSome content")
-
-        sections = integration.detect_sections(test_file)
-        assert sections == []  # Minimal implementation returns empty list
-
-    def test_insert_figure_in_section(self, tmp_path):
-        """Test figure insertion (returns False for minimal implementation)."""
-        manuscript_dir = tmp_path / "manuscript"
-        manuscript_dir.mkdir()
-        integration = MarkdownIntegration(manuscript_dir)
-
-        test_file = manuscript_dir / "test.md"
-        test_file.write_text("# Test\n\nSome content")
-
-        result = integration.insert_figure_in_section(
-            test_file, "fig:test", "introduction"
-        )
-        assert result is False  # Minimal implementation returns False
-
-
-class TestImageManager:
-    """Test image manager utilities."""
-
-    def test_image_manager_init(self):
-        """Test ImageManager initialization."""
-        manager = ImageManager()
-        assert manager.images == {}
-
-    def test_register_image_basic(self):
-        """Test basic image registration."""
-        manager = ImageManager()
-        manager.register_image("test.png", "Test caption")
-
-        assert "test.png" in manager.images
-        assert manager.images["test.png"]["caption"] == "Test caption"
-        assert manager.images["test.png"]["alt_text"] is None
-
-    def test_register_image_with_alt_text(self):
-        """Test image registration with alt text."""
-        manager = ImageManager()
-        manager.register_image("test.png", "Test caption", "Alt text")
-
-        assert manager.images["test.png"]["alt_text"] == "Alt text"
-
-    def test_get_image_info_existing(self):
-        """Test getting info for existing image."""
-        manager = ImageManager()
-        manager.register_image("test.png", "Test caption")
-
-        info = manager.get_image_info("test.png")
-        assert info is not None
-        assert info["caption"] == "Test caption"
-
-    def test_get_image_info_nonexistent(self):
-        """Test getting info for nonexistent image."""
-        manager = ImageManager()
-
-        info = manager.get_image_info("nonexistent.png")
-        assert info is None

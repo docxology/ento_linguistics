@@ -1,7 +1,6 @@
 """Comprehensive tests for src/validation.py to ensure 100% coverage."""
 
 import numpy as np
-import pytest
 
 from core.validation import ValidationFramework, ValidationResult
 
@@ -216,7 +215,11 @@ Use equation environment instead of $$: $$x = y + z$$
         else:
             problems = result.details.get("problems", [])
             assert len(problems) > 0
-            assert any("equation environment instead of $$" in error for error in problems)
+            assert any(
+                problem["code"] == "MARKDOWN.MATH_DOLLAR_DISPLAY"
+                and str(problem["file_path"]).endswith("invalid.md")
+                for problem in problems
+            )
 
     def test_validate_outputs(self, tmp_path):
         """Test output directory validation."""
@@ -275,3 +278,132 @@ Use equation environment instead of $$: $$x = y + z$$
         result = framework.validate_outputs(str(tmp_path / "nonexistent"))
 
         assert isinstance(result, ValidationResult)
+
+    def test_validate_bounds_empty_array(self):
+        """Bounds validation on an empty array does not crash and reports
+        None for the actual min/max."""
+        validator = ValidationFramework()
+        result = validator.validate_bounds(np.array([]), "empty", min_value=0)
+        assert result.is_valid is True
+        assert result.details["actual_min"] is None
+        assert result.details["actual_max"] is None
+
+    def test_validate_sanity_failure_is_error_severity(self):
+        """A failed sanity check is an error, not a warning."""
+        validator = ValidationFramework()
+        result = validator.validate_sanity(0.0, "x", allow_zero=False)
+        assert result.is_valid is False
+        assert result.severity == "error"
+
+    def test_validate_sanity_success_is_info_severity(self):
+        """A passing sanity check stays informational."""
+        validator = ValidationFramework()
+        result = validator.validate_sanity(5.0, "x")
+        assert result.is_valid is True
+        assert result.severity == "info"
+
+    def test_validate_reproducibility_flags_ignored_keys(self):
+        """Non-numeric and one-sided keys are surfaced in the result details
+        instead of being silently ignored."""
+        validator = ValidationFramework()
+        run1 = {"value1": 1.0, "text": "a", "only_in_run1": 2.0}
+        run2 = {"value1": 1.0, "text": "b", "only_in_run2": 3.0}
+        result = validator.validate_reproducibility(run1, run2)
+
+        # Numeric comparison is unaffected
+        assert result.is_valid is True
+        assert sorted(result.details["ignored_keys"]) == ["text"]
+        assert result.details["one_sided_keys"] == [
+            "only_in_run1",
+            "only_in_run2",
+        ]
+
+
+class TestInfrastructureValidationUtils:
+    """Behavioral tests for the validation_utils wrappers (consolidated from
+    the former test_core_validation.py)."""
+
+    def test_validate_figure_registry_error(self, tmp_path):
+        """validate_figure_registry returns an error dict on an unreadable
+        registry path instead of raising."""
+        from core.validation_utils import validate_figure_registry
+
+        result = validate_figure_registry(
+            tmp_path / "nonexistent.json", tmp_path / "also_missing"
+        )
+        assert result["status"] == "error"
+        assert "error" in result
+        assert result["success"] is False
+
+    def test_verify_output_integrity_error(self, tmp_path):
+        """verify_output_integrity returns an error dict when it cannot run
+        instead of raising."""
+        from core.validation_utils import verify_output_integrity
+
+        result = verify_output_integrity(tmp_path / "nonexistent")
+        assert result["status"] in ["validated", "issues_found", "error"]
+        assert "path" in result
+
+    def test_validate_pdf_rendering_error_handling(self):
+        """validate_pdf_rendering reports an error for a missing PDF instead
+        of raising."""
+        from core.validation_utils import validate_pdf_rendering
+
+        result = validate_pdf_rendering("nonexistent.pdf")
+        assert result["status"] in ["validated", "issues_found", "error"]
+
+    def test_ensure_path_when_infrastructure_missing(self, monkeypatch):
+        """Force the ImportError branch inside _ensure_infrastructure_path."""
+        import sys
+
+        from core.validation_utils import _ensure_infrastructure_path
+
+        real_import = __builtins__.__import__ if hasattr(__builtins__, "__import__") else __import__
+
+        def _import(name, *args, **kwargs):
+            if name == "infrastructure":
+                raise ImportError("Simulated missing infrastructure")
+            return real_import(name, *args, **kwargs)
+
+        saved = sys.modules.get("infrastructure")
+        monkeypatch.delitem(sys.modules, "infrastructure", raising=False)
+        monkeypatch.setattr("builtins.__import__", _import)
+        _ensure_infrastructure_path()
+        if saved is not None:
+            sys.modules["infrastructure"] = saved
+
+
+class TestIntegrityReport:
+    """Test IntegrityReport wrapper class."""
+
+    def test_integrity_report_with_results(self):
+        """Test creating integrity report with results."""
+        from core.validation_utils import IntegrityReport
+
+        results = {"status": "passed", "summary": "All checks passed", "issues": []}
+        report = IntegrityReport(results)
+
+        assert report.status == "passed"
+        assert report.summary == "All checks passed"
+        assert len(report.issues) == 0
+
+    def test_integrity_report_without_results(self):
+        """Test creating integrity report without results."""
+        from core.validation_utils import IntegrityReport
+
+        report = IntegrityReport()
+
+        assert report.status == "not_validated"
+        assert report.summary == "No validation performed"
+        assert len(report.issues) == 0
+
+    def test_integrity_report_string_representation(self):
+        """Test string representation of integrity report."""
+        from core.validation_utils import IntegrityReport
+
+        results = {"status": "passed", "issues": []}
+        report = IntegrityReport(results)
+
+        str_repr = str(report)
+        assert "IntegrityReport" in str_repr
+        assert "passed" in str_repr

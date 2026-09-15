@@ -4,3 +4,5 @@ __pycache__/
 
 # Virtual environments
 .venv/
+.coverage
+output/simulations/

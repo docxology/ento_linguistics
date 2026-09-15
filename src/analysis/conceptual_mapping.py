@@ -6,14 +6,16 @@ identifying conceptual overlaps, and analyzing how terms structure scientific un
 
 from __future__ import annotations
 
-from collections import Counter, defaultdict
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set, Tuple
+import logging
 
-try:
-    from .term_extraction import Term
-except ImportError:
-    from term_extraction import Term
+from bisect import insort
+from collections import defaultdict
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Set, Tuple
+
+import numpy as np
+
+from .term_extraction import Term
 
 __all__ = [
     "Concept",
@@ -30,7 +32,7 @@ class Concept:
         name: Concept name
         description: Human-readable description
         terms: Set of associated terms
-        domains: Ento-Linguistic domains this concept spans
+        domains: Sorted list of Ento-Linguistic domains this concept spans
         parent_concepts: Higher-level concepts this belongs to
         child_concepts: Lower-level concepts under this one
         confidence: Mapping confidence score
@@ -39,7 +41,7 @@ class Concept:
     name: str
     description: str
     terms: Set[str] = field(default_factory=set)
-    domains: Set[str] = field(default_factory=set)
+    domains: List[str] = field(default_factory=list)
     parent_concepts: Set[str] = field(default_factory=set)
     child_concepts: Set[str] = field(default_factory=set)
     confidence: float = 0.0
@@ -53,12 +55,13 @@ class Concept:
         self.terms.add(term)
 
     def add_domain(self, domain: str) -> None:
-        """Add a domain to this concept.
+        """Add a domain to this concept, keeping the list sorted and unique.
 
         Args:
             domain: Domain to add
         """
-        self.domains.add(domain)
+        if domain not in self.domains:
+            insort(self.domains, domain)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
@@ -643,7 +646,7 @@ class ConceptualMapper:
         jaccard_similarity = intersection / union
 
         # Domain overlap bonus
-        domain_overlap = len(concept1.domains & concept2.domains)
+        domain_overlap = len(set(concept1.domains) & set(concept2.domains))
         domain_bonus = min(domain_overlap * 0.1, 0.3)  # Max 30% bonus
 
         return min(jaccard_similarity + domain_bonus, 1.0)
@@ -736,8 +739,8 @@ class ConceptualMapper:
             term_overlap_ratio = term_overlap / max_terms if max_terms > 0 else 0
 
             # Domain overlap strength
-            domain_overlap = len(c1.domains & c2.domains)
-            all_domains = c1.domains | c2.domains
+            domain_overlap = len(set(c1.domains) & set(c2.domains))
+            all_domains = set(c1.domains) | set(c2.domains)
             total_domains = max(len(all_domains), 1)
             domain_overlap_ratio = domain_overlap / total_domains
 
@@ -795,7 +798,7 @@ class ConceptualMapper:
                 for connected_concept_name, _ in connected_concepts:
                     connected_concept = concept_map.concepts[connected_concept_name]
                     # Count connections to different domains
-                    if not (connected_concept.domains & concept.domains):
+                    if not (set(connected_concept.domains) & set(concept.domains)):
                         cross_domain_connections += 1
 
                 bridge_concepts[concept_name] = {
@@ -848,7 +851,7 @@ class ConceptualMapper:
             current_relationships = len(
                 concept_map.get_connected_concepts(concept_name)
             )
-            current_domains = current_concept.domains.copy()
+            current_domains = set(current_concept.domains)
 
             evolution["term_count_evolution"].append(len(current_terms))
             evolution["relationship_count_evolution"].append(current_relationships)
@@ -863,7 +866,7 @@ class ConceptualMapper:
                     hist_relationships = len(
                         historical_map.get_connected_concepts(concept_name)
                     )
-                    hist_domains = hist_concept.domains
+                    hist_domains = set(hist_concept.domains)
 
                     # Term evolution
                     term_intersection = len(current_terms & hist_terms)
@@ -964,20 +967,26 @@ class ConceptualMapper:
             cluster_labels = fcluster(
                 linkage_matrix, similarity_threshold, criterion="distance"
             )
-
-            # Group concepts by cluster
-            clusters = {}
-            for concept_name, cluster_id in zip(concept_names, cluster_labels):
-                cluster_key = f"cluster_{cluster_id}"
-                if cluster_key not in clusters:
-                    clusters[cluster_key] = []
-                clusters[cluster_key].append(concept_name)
-
-            return clusters
-
-        except Exception:
-            # Fallback to simple clustering
+        except ValueError as exc:
+            # Degenerate distance matrix (e.g. asymmetric or zero diagonal after
+            # float rounding) cannot form a valid linkage; fall back to the
+            # simple similarity clustering.
+            logging.getLogger(__name__).debug(
+                "Hierarchical clustering failed (%s); using simple similarity "
+                "clustering fallback.",
+                exc,
+            )
             return self._simple_similarity_clustering(concept_map, similarity_threshold)
+
+        # Group concepts by cluster
+        clusters = {}
+        for concept_name, cluster_id in zip(concept_names, cluster_labels):
+            cluster_key = f"cluster_{cluster_id}"
+            if cluster_key not in clusters:
+                clusters[cluster_key] = []
+            clusters[cluster_key].append(concept_name)
+
+        return clusters
 
     def _simple_similarity_clustering(
         self, concept_map: ConceptMap, similarity_threshold: float
