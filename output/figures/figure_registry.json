@@ -1,4 +1,12 @@
 {
+  "fig:statistical_analysis": {
+    "filename": "statistical_analysis.png",
+    "caption": "Statistical Analysis: Domain Semantic Entropy, Pairwise Effect Sizes, and Omnibus ANOVA",
+    "label": "fig:statistical_analysis",
+    "section": "experimental_results",
+    "generated_by": null,
+    "metadata": null
+  },
   "fig:concept_map": {
     "filename": "concept_map.png",
     "caption": "Ento-Linguistic Concept Map",

@@ -28,7 +28,7 @@
 \contentsline {subsection}{\numberline {5.1}Unit of Individuality}{16}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Power \& Labor}{16}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}Behavior \& Identity}{16}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Sex \& Reproduction}{16}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.4}Sex \& Reproduction}{17}{subsection.5.4}%
 \contentsline {subsection}{\numberline {5.5}Kin \& Relatedness}{17}{subsection.5.5}%
 \contentsline {subsection}{\numberline {5.6}Economics}{17}{subsection.5.6}%
 \contentsline {subsection}{\numberline {5.7}Longitudinal Case Studies}{18}{subsection.5.7}%
@@ -100,17 +100,17 @@
 \contentsline {subsection}{\numberline {14.2}CACE Scoring for Key Terms}{45}{subsection.14.2}%
 \contentsline {subsection}{\numberline {14.3}Semantic Entropy Distribution}{45}{subsection.14.3}%
 \contentsline {subsection}{\numberline {14.4}Confidence Intervals for Domain Metrics}{45}{subsection.14.4}%
-\contentsline {section}{\numberline {15}Supplemental Analysis: Theoretical Extensions}{46}{section.15}%
-\contentsline {subsection}{\numberline {15.1}Theoretical Extensions}{46}{subsection.15.1}%
-\contentsline {subsubsection}{\numberline {15.1.1}Formalism of Individuality: Markov Blankets}{46}{subsubsection.15.1.1}%
+\contentsline {section}{\numberline {15}Supplemental Analysis: Theoretical Extensions}{47}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Theoretical Extensions}{47}{subsection.15.1}%
+\contentsline {subsubsection}{\numberline {15.1.1}Formalism of Individuality: Markov Blankets}{47}{subsubsection.15.1.1}%
 \contentsline {subsubsection}{\numberline {15.1.2}Discourse Analysis Frameworks}{47}{subsubsection.15.1.2}%
-\contentsline {subsubsection}{\numberline {15.1.3}Ambiguity Classification Systems}{47}{subsubsection.15.1.3}%
+\contentsline {subsubsection}{\numberline {15.1.3}Ambiguity Classification Systems}{48}{subsubsection.15.1.3}%
 \contentsline {subsubsection}{\numberline {15.1.4}Cross-Domain Conceptual Mapping}{48}{subsubsection.15.1.4}%
 \contentsline {subsection}{\numberline {15.2}Framing Analysis Methods}{48}{subsection.15.2}%
 \contentsline {subsubsection}{\numberline {15.2.1}Anthropomorphic Framing Detection}{48}{subsubsection.15.2.1}%
-\contentsline {subsubsection}{\numberline {15.2.2}Hierarchical Framing Analysis}{48}{subsubsection.15.2.2}%
-\contentsline {subsection}{\numberline {15.3}Network Analysis}{48}{subsection.15.3}%
-\contentsline {subsubsection}{\numberline {15.3.1}Temporal Network Evolution}{48}{subsubsection.15.3.1}%
+\contentsline {subsubsection}{\numberline {15.2.2}Hierarchical Framing Analysis}{49}{subsubsection.15.2.2}%
+\contentsline {subsection}{\numberline {15.3}Network Analysis}{49}{subsection.15.3}%
+\contentsline {subsubsection}{\numberline {15.3.1}Temporal Network Evolution}{49}{subsubsection.15.3.1}%
 \contentsline {subsubsection}{\numberline {15.3.2}Multi-Scale Network Analysis}{49}{subsubsection.15.3.2}%
 \contentsline {section}{\numberline {16}Supplemental Analysis: Case Studies and Validation}{50}{section.16}%
 \contentsline {subsection}{\numberline {16.1}Validation Frameworks}{50}{subsection.16.1}%
@@ -119,5 +119,5 @@
 \contentsline {subsection}{\numberline {16.2}Case Study Analysis}{50}{subsection.16.2}%
 \contentsline {subsubsection}{\numberline {16.2.1}Caste Terminology Evolution: 1850-2024}{50}{subsubsection.16.2.1}%
 \contentsline {subsubsection}{\numberline {16.2.2}Superorganism Concept Evolution}{50}{subsubsection.16.2.2}%
-\contentsline {subsection}{\numberline {16.3}Methodological Reflections}{50}{subsection.16.3}%
-\contentsline {subsubsection}{\numberline {16.3.1}Mixed-Methodology Integration}{50}{subsubsection.16.3.1}%
+\contentsline {subsection}{\numberline {16.3}Methodological Reflections}{51}{subsection.16.3}%
+\contentsline {subsubsection}{\numberline {16.3.1}Mixed-Methodology Integration}{51}{subsubsection.16.3.1}%
