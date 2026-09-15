@@ -13,9 +13,10 @@ manager), so the font floor is genuinely enforced rather than merely claimed.
 """
 
 from __future__ import annotations
+from contextlib import contextmanager
+from pathlib import Path
 
 import functools
-from contextlib import contextmanager
 from typing import Any, Dict, Iterable, List, Optional
 
 import matplotlib.pyplot as plt
@@ -26,9 +27,8 @@ __all__ = [
     "DOMAIN_PALETTE",
     "FALLBACK_COLOR",
     "STYLE_CONFIG",
-    "primary_domain",
-    "publication_rc",
     "publication_style",
+    "save_and_verify",
 ]
 
 # Publication-quality minimum font size in points (template standard).
@@ -122,3 +122,29 @@ def publication_style(func):
             return func(*args, **kwargs)
 
     return wrapper
+
+
+def save_and_verify(fig: "plt.Figure", filepath, dpi: int = 300) -> int:
+    """Save *fig* to *filepath* and verify the write landed.
+
+    Shared save-and-verify pattern: the file must exist and be non-empty
+    after ``savefig``, otherwise a :class:`RuntimeError` is raised so a
+    silently corrupt figure never propagates downstream.
+
+    Args:
+        fig: Matplotlib figure to save.
+        filepath: Destination path (``str`` or ``Path``).
+        dpi: Resolution for raster output.
+
+    Returns:
+        Size of the written file in bytes.
+
+    Raises:
+        RuntimeError: If the file is missing or empty after saving.
+    """
+    path = Path(filepath)
+    fig.savefig(path, dpi=dpi, bbox_inches="tight")
+    size = path.stat().st_size if path.exists() else 0
+    if size == 0:
+        raise RuntimeError(f"Figure save failed for {path}")
+    return size

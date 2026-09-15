@@ -20,12 +20,27 @@ except ImportError:
     from concept_visualization import ConceptVisualizer
 
 try:
-    from ._style import MIN_FONT, publication_style
+    from ._style import (
+        CANONICAL_DOMAINS,
+        DOMAIN_PALETTE,
+        FALLBACK_COLOR,
+        MIN_FONT,
+        publication_style,
+        save_and_verify,
+    )
 except (ImportError, ValueError):
-    from visualization._style import MIN_FONT, publication_style
+    from visualization._style import (
+        CANONICAL_DOMAINS,
+        DOMAIN_PALETTE,
+        FALLBACK_COLOR,
+        MIN_FONT,
+        publication_style,
+        save_and_verify,
+    )
 
 __all__ = [
     "StatisticalVisualizer",
+    "plot_statistical_analysis",
 ]
 
 
@@ -849,3 +864,241 @@ class StatisticalVisualizer(ConceptVisualizer):
             plt.close(fig)
 
         return fig
+
+
+# ── Frozen statistics-artifact figure (consumed by the pipeline wave) ──
+
+# Colorblind-safe (Okabe-Ito) coding for BH significance on the effect
+# panel — consistent with StatisticalVisualizer.significance_colors.
+_SIGNIFICANT_COLOR = "#D55E00"  # Vermillion
+_NOT_SIGNIFICANT_COLOR = "#0072B2"  # Blue
+
+
+def _format_p(p: float) -> str:
+    """Format a p-value for annotation, rendering tiny values as ``p < 0.001``.
+
+    Args:
+        p: P-value from the statistics artifact.
+
+    Returns:
+        Human-readable p-value string.
+    """
+    if p < 0.001:
+        return "p < 0.001"
+    return f"p = {p:.3f}"
+
+
+def _domain_order(descriptives: Dict[str, Any]) -> List[str]:
+    """Order domains canonically first, then any extras lexicographically.
+
+    Deterministic regardless of JSON key order or set iteration.
+
+    Args:
+        descriptives: Per-domain descriptive statistics mapping.
+
+    Returns:
+        Ordered list of domain names.
+    """
+    canonical = [d for d in CANONICAL_DOMAINS if d in descriptives]
+    extras = sorted(d for d in descriptives if d not in CANONICAL_DOMAINS)
+    return canonical + extras
+
+
+def _fallback_text(ax: plt.Axes, message: str) -> None:
+    """Render a centered fallback message on a panel.
+
+    Args:
+        ax: Axes to draw the message on.
+        message: Explanation shown in place of the missing data.
+    """
+    ax.text(
+        0.5,
+        0.5,
+        message,
+        ha="center",
+        va="center",
+        transform=ax.transAxes,
+        fontsize=MIN_FONT,
+        style="italic",
+    )
+    ax.axis("off")
+
+
+@publication_style
+def plot_statistical_analysis(
+    stats: dict,
+    output_dir: str,
+    filename: str = "statistical_analysis.png",
+) -> str:
+    """Render the frozen statistics artifact as a multi-panel figure.
+
+    Consumes the frozen ``statistical_analysis.json`` schema:
+
+    - ``descriptives``: per-domain ``n_terms``, ``entropy_mean``, ``entropy_sd``
+    - ``pairwise``: pairwise t-tests with ``cohens_d`` and BH significance
+    - ``anova``: omnibus F-test with ``eta_squared``
+    - ``corrections``: multiple-comparison metadata
+
+    Panels: (a) per-domain entropy mean ± SD bars with n annotations;
+    (b) diverging Cohen's d bars, colourblind-safe coding for BH-significant
+    vs non-significant comparisons; (c) compact ANOVA summary text panel.
+
+    Missing/empty sections degrade to labelled fallback panels; ``p`` values
+    below 0.001 (including exact 0.0) are annotated as ``p < 0.001``.
+
+    Args:
+        stats: Statistics artifact dict matching the frozen schema.
+        output_dir: Directory the figure is written to (created if absent).
+        filename: Output filename.
+
+    Returns:
+        Absolute path to the saved figure.
+
+    Raises:
+        RuntimeError: If the saved file is missing or empty.
+    """
+    out_path = Path(output_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+
+    descriptives: Dict[str, Any] = stats.get("descriptives") or {}
+    pairwise: List[Dict[str, Any]] = stats.get("pairwise") or []
+    anova: Dict[str, Any] = stats.get("anova") or {}
+    corrections: Dict[str, Any] = stats.get("corrections") or {}
+
+    fig = plt.figure(figsize=(16, 12))
+    gs = fig.add_gridspec(2, 2, height_ratios=[2, 1], hspace=0.45, wspace=0.55)
+    ax_entropy = fig.add_subplot(gs[0, 0])
+    ax_effects = fig.add_subplot(gs[0, 1])
+    ax_summary = fig.add_subplot(gs[1, :])
+
+    # ── Panel (a): per-domain entropy mean ± SD ──
+    order = _domain_order(descriptives)
+    if order:
+        means = [float(descriptives[d]["entropy_mean"]) for d in order]
+        sds = [float(descriptives[d].get("entropy_sd", 0.0)) for d in order]
+        colors = [DOMAIN_PALETTE.get(d, FALLBACK_COLOR) for d in order]
+        bars = ax_entropy.bar(
+            range(len(order)),
+            means,
+            yerr=sds,
+            capsize=4,
+            color=colors,
+            edgecolor="black",
+            alpha=0.85,
+        )
+        ax_entropy.set_xticks(range(len(order)))
+        ax_entropy.set_xticklabels(
+            [d.replace("_", " ").title() for d in order],
+            rotation=30,
+            ha="right",
+        )
+        top = max(m + s for m, s in zip(means, sds))
+        ax_entropy.set_ylim(0, top * 1.25)
+        for bar, domain in zip(bars, order):
+            n_terms = descriptives[domain].get("n_terms", 0)
+            ax_entropy.annotate(
+                f"n={n_terms}",
+                xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                xytext=(0, 3),
+                textcoords="offset points",
+                ha="center",
+                fontsize=MIN_FONT,
+            )
+        ax_entropy.set_ylabel("Semantic Entropy (mean ± SD)", fontsize=MIN_FONT)
+        ax_entropy.set_title("Domain Entropy", fontsize=MIN_FONT + 2, fontweight="bold")
+        ax_entropy.grid(True, axis="y", alpha=0.3)
+    else:
+        _fallback_text(ax_entropy, "No domain descriptives available")
+
+    # ── Panel (b): Cohen's d diverging bars, BH significance coding ──
+    if pairwise:
+        labels = [
+            f"{row.get('domain_a', '?')} vs\n{row.get('domain_b', '?')}"
+            for row in pairwise
+        ]
+        ds = [float(row.get("cohens_d", 0.0)) for row in pairwise]
+        colors = [
+            _SIGNIFICANT_COLOR if row.get("significant_bh") else _NOT_SIGNIFICANT_COLOR
+            for row in pairwise
+        ]
+        ypos = np.arange(len(pairwise))
+        ax_effects.barh(
+            ypos,
+            ds,
+            color=colors,
+            edgecolor="black",
+            alpha=0.85,
+        )
+        ax_effects.axvline(0.0, color="black", linewidth=0.8)
+        ax_effects.set_yticks(ypos)
+        ax_effects.set_yticklabels(labels)
+        ax_effects.invert_yaxis()
+        span = max(0.1, max(abs(d) for d in ds))
+        ax_effects.set_xlim(-span * 1.45, span * 1.45)
+        for y, d in zip(ypos, ds):
+            ax_effects.text(
+                d + (span * 0.04 if d >= 0 else -span * 0.04),
+                y,
+                f"{d:+.2f}",
+                va="center",
+                ha="left" if d >= 0 else "right",
+                fontsize=MIN_FONT,
+            )
+        ax_effects.set_xlabel("Cohen's d", fontsize=MIN_FONT)
+        ax_effects.set_title(
+            "Pairwise Effect Sizes", fontsize=MIN_FONT + 2, fontweight="bold"
+        )
+        ax_effects.grid(True, axis="x", alpha=0.3)
+        legend_elements = [
+            patches.Patch(
+                facecolor=_SIGNIFICANT_COLOR, edgecolor="black",
+                label="BH-significant", alpha=0.85,
+            ),
+            patches.Patch(
+                facecolor=_NOT_SIGNIFICANT_COLOR, edgecolor="black",
+                label="Not significant", alpha=0.85,
+            ),
+        ]
+        ax_effects.legend(handles=legend_elements, loc="upper right")
+    else:
+        _fallback_text(ax_effects, "No pairwise comparisons available")
+
+    # ── Panel (c): compact ANOVA summary text ──
+    if anova:
+        metric = anova.get("metric", "")
+        lines = ["ANOVA Summary", ""]
+        if metric:
+            lines[0] = f"ANOVA Summary — {metric.replace('_', ' ').title()}"
+        lines.append(
+            "F({},{}) = {:.2f}, {}".format(
+                anova.get("df1", "?"),
+                anova.get("df2", "?"),
+                float(anova.get("F", float("nan"))),
+                _format_p(float(anova.get("p", 1.0))),
+            )
+        )
+        lines.append(f"η² = {float(anova.get('eta_squared', 0.0)):.3f}")
+        if corrections:
+            lines.append(
+                "{} corrections over {} comparisons".format(
+                    str(corrections.get("method", "unknown")).replace("_", " ").title(),
+                    corrections.get("n_comparisons", "?"),
+                )
+            )
+        ax_summary.text(
+            0.5,
+            0.5,
+            "\n".join(lines),
+            ha="center",
+            va="center",
+            transform=ax_summary.transAxes,
+            fontsize=MIN_FONT,
+        )
+        ax_summary.axis("off")
+    else:
+        _fallback_text(ax_summary, "No ANOVA results available")
+
+    filepath = out_path / filename
+    save_and_verify(fig, filepath, dpi=300)
+    plt.close(fig)
+    return str(filepath)

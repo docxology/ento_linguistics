@@ -529,3 +529,32 @@ class TestVisualizeHypothesisTesting:
         fig = visualizer.visualize_hypothesis_testing(results)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
+
+
+class TestStandaloneModuleImport:
+    """statistical_visualization's absolute-import fallback branches."""
+
+    def test_module_loads_without_package_context(self, monkeypatch):
+        """Loading the module standalone (no parent package) exercises the
+        fallback import branches for ConceptVisualizer and _style."""
+        import importlib.util
+        from pathlib import Path
+
+        import visualization.statistical_visualization as pkg_svv
+
+        # The bare `from concept_visualization import ...` fallback expects
+        # the visualization directory itself on sys.path.
+        vis_dir = Path(pkg_svv.__file__).parent
+        monkeypatch.syspath_prepend(str(vis_dir))
+
+        source = Path(pkg_svv.__file__)
+        spec = importlib.util.spec_from_file_location(
+            "_svv_standalone_probe", source
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        assert hasattr(module, "StatisticalVisualizer")
+        assert hasattr(module, "plot_statistical_analysis")
+        assert module.MIN_FONT >= 16
+        plt.close("all")

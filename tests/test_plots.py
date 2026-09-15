@@ -427,3 +427,75 @@ class TestPlotConceptNetwork:
         assert ax is not None
         plt.close(ax.figure)
 
+
+class TestPlotConceptNetworkFallbacks:
+    """Degraded-environment and dangling-edge branches of plot_concept_network."""
+
+    def test_networkx_missing_renders_placeholder(self, monkeypatch):
+        """Without networkx, a labelled placeholder axes is returned (no raise)."""
+        import sys
+
+        from visualization.plots import MIN_FONT
+        from analysis.conceptual_mapping import Concept, ConceptMap
+
+        cmap = ConceptMap()
+        cmap.add_concept(
+            Concept(name="colony", description="c", terms={"colony"},
+                    domains={"economics"})
+        )
+
+        # None in sys.modules makes `import networkx` raise ImportError.
+        monkeypatch.setitem(sys.modules, "networkx", None)
+        ax = plot_concept_network(cmap)
+        texts = [t.get_text() for t in ax.texts]
+        assert any("Requires networkx" in t for t in texts)
+        assert all(t.get_fontsize() >= MIN_FONT for t in ax.texts if t.get_text())
+        assert not ax.axison
+        plt.close(ax.figure)
+
+    def test_relationship_edge_to_unknown_node_gets_fallback_color(self):
+        """An edge naming a node absent from ``concepts`` still renders; the
+        unknown node keeps the neutral fallback colour."""
+        from matplotlib.colors import to_rgba
+
+        from visualization._style import FALLBACK_COLOR, DOMAIN_PALETTE
+        from analysis.conceptual_mapping import Concept, ConceptMap
+
+        cmap = ConceptMap()
+        cmap.add_concept(
+            Concept(name="queen", description="q", terms={"queen"},
+                    domains={"sex_and_reproduction"})
+        )
+        # "ghost" is never added as a concept, only referenced by an edge.
+        cmap.add_relationship("queen", "ghost", 0.7)
+
+        ax = plot_concept_network(cmap)
+        fills = ax.collections[0].get_facecolors()
+        rgb = {tuple(f[:3]) for f in fills}
+        assert to_rgba(DOMAIN_PALETTE["sex_and_reproduction"])[:3] in rgb
+        assert to_rgba(FALLBACK_COLOR)[:3] in rgb
+        plt.close(ax.figure)
+
+
+class TestStandaloneModuleImport:
+    """plots.py's absolute-import fallback for packageless loading."""
+
+    def test_module_loads_without_package_context(self):
+        """Loading plots.py standalone (no parent package) exercises the
+        ``from visualization._style import ...`` fallback branch."""
+        import importlib.util
+        from pathlib import Path
+
+        import visualization.plots as pkg_plots
+
+        source = Path(pkg_plots.__file__)
+        spec = importlib.util.spec_from_file_location(
+            "_plots_standalone_probe", source
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        assert hasattr(module, "plot_line")
+        assert module.MIN_FONT >= 16
+        plt.close("all")
+

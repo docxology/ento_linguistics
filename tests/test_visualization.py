@@ -1,5 +1,6 @@
 """Comprehensive tests for src/visualization.py to ensure 100% coverage."""
 
+import pytest
 
 import matplotlib
 
@@ -220,4 +221,47 @@ class TestCreateMultiPanelFigure:
         )  # 4 subplots, only 3 used
         assert len(axes) == 3
         # The 4th subplot should be hidden
+        plt.close(fig)
+
+
+class TestFigureMetadata:
+    """Test figure_metadata reporting."""
+
+    def test_metadata_reports_saved_files(self, tmp_path):
+        """figure_metadata returns path and size for each saved format."""
+        engine = VisualizationEngine(output_dir=str(tmp_path))
+        fig, ax = engine.create_figure()
+        ax.plot([1, 2, 3], [1, 4, 9])
+        saved = engine.save_figure(fig, "meta_test")
+        meta = engine.figure_metadata(saved)
+
+        assert set(meta) == {"png", "pdf"}
+        for fmt, info in meta.items():
+            assert info["path"] == str(tmp_path / f"meta_test.{fmt}")
+            assert info["size_kb"] > 0
+        plt.close(fig)
+
+    def test_metadata_missing_file_reports_zero_size(self, tmp_path):
+        """A path that no longer exists is reported with size_kb 0."""
+        engine = VisualizationEngine(output_dir=str(tmp_path))
+        meta = engine.figure_metadata({"png": tmp_path / "ghost.png"})
+        assert meta["png"]["size_kb"] == 0
+        assert meta["png"]["path"] == str(tmp_path / "ghost.png")
+
+
+class TestSaveFigureFailure:
+    """save_figure must raise when a written figure file is missing/empty."""
+
+    def test_save_failure_raises_runtime_error(self, tmp_path, monkeypatch):
+        """A save that produces no file is detected and raised as RuntimeError."""
+        from matplotlib.figure import Figure
+
+        engine = VisualizationEngine(output_dir=str(tmp_path))
+        fig, ax = engine.create_figure()
+        ax.plot([1, 2], [3, 4])
+
+        # Simulate a disk-level failure: savefig completes but writes nothing.
+        monkeypatch.setattr(Figure, "savefig", lambda self, *a, **k: None)
+        with pytest.raises(RuntimeError, match="Figure save failed"):
+            engine.save_figure(fig, "broken")
         plt.close(fig)
