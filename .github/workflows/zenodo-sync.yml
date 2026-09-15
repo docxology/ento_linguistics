@@ -1,0 +1,64 @@
+# Ensures the Zenodo version deposit for v1.1.0 is minted.
+#
+# The GitHub -> Zenodo webhook fired on release creation but Zenodo's
+# platform was returning 5xx (documented outage, 2026-09-15). This
+# workflow replays the release event until the concept record lists
+# version 1.1.0, then stops doing work (guard exits early).
+#
+# Payload: .github/zenodo_v1.1.0_payload.json (the GitHub release event
+# for v1.1.0, public data, no secrets). The receiver URL is stored in
+# the repo secret ZENODO_HOOK_URL.
+name: zenodo-sync
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  ensure-version-deposit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check whether Zenodo lists version 1.1.0
+        id: check
+        run: |
+          for attempt in 1 2 3 4 5; do
+            code=$(curl -s --max-time 60 -o /tmp/record.json -w "%{http_code}" \
+              "https://zenodo.org/api/records/19574118")
+            echo "record attempt $attempt: HTTP $code"
+            if [ "$code" = "200" ]; then break; fi
+            sleep 30
+          done
+          if [ "$code" != "200" ]; then
+            echo "Zenodo API unreachable; will retry on next schedule."
+            echo "minted=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          version=$(python3 -c "import json; print(json.load(open('/tmp/record.json')).get('metadata', {}).get('version', ''))")
+          echo "record version: $version"
+          if [ "$version" = "1.1.0" ]; then
+            echo "minted=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "minted=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Replay release event to Zenodo receiver
+        if: steps.check.outputs.minted == 'false'
+        run: |
+          for attempt in 1 2 3 4 5; do
+            code=$(curl -s --max-time 120 -o /tmp/replay.json -w "%{http_code}" \
+              -X POST "${{ secrets.ZENODO_HOOK_URL }}" \
+              -H "Content-Type: application/json" \
+              -H "X-GitHub-Event: release" \
+              -d @.github/zenodo_v1.1.0_payload.json)
+            echo "replay attempt $attempt: HTTP $code"
+            if [ "$code" = "200" ] || [ "$code" = "202" ]; then
+              echo "Zenodo accepted the release event."
+              exit 0
+            fi
+            sleep 60
+          done
+          echo "::warning::Zenodo still returning errors; will retry on next schedule."
+          exit 0
