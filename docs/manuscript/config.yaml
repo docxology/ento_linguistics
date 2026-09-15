@@ -4,8 +4,8 @@
 paper:
   title: "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology"
   subtitle: "How Terminology Networks Shape Understanding of Insect Biology (And Vice-Versa)"
-  version: "1.0" # Paper version
-  date: "" # Auto-generated if empty (uses current date)
+  version: "1.1.0" # Paper version
+  date: "2026-09-15" # Release date
 
 # Author information
 authors:

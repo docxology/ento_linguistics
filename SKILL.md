@@ -29,9 +29,9 @@ Research project examining the entanglement of speech and thought in entomology.
 ## Current Status
 
 - **Location**: `template/projects/ongoing/EntoTech/ento_linguistics/` (active project)
-- **Tests**: 1225 collected (measured by `uv run pytest tests/ --collect-only -q`; the last recorded full run in `output/reports/test_results.json` reports 1224 passed / 1 skipped)
+- **Tests**: count via `uv run pytest tests/ --collect-only -q` (the last recorded full run in `output/reports/test_results.json` reports 1224 passed / 1 skipped)
 - **Coverage**: measured by `uv run pytest tests/ --cov=src` (project enforces 90%+)
-- **Figures**: 11 generated
+- **Figures**: 12 generated (including `statistical_analysis.png`)
 
 ## Promotion to Active
 

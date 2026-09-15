@@ -8,7 +8,7 @@ The `docs/manuscript/` directory contains research manuscript sections in markdo
 
 The Ento-Linguistics PDF build uses **`scripts/_render_pdf_override.py`** (not the generic infrastructure renderer alone). Before Pandoc runs, **`_load_corpus_vars(project_root)`** reads JSON under `data/corpus/` and `output/data/` and returns a flat mapping; **`_apply_corpus_vars(content, vars_, strict=...)`** replaces every double-brace variable token in the concatenated markdown with the corresponding string.
 
-**Sources of truth:** `abstracts.json` (publication count), `output/data/corpus_statistics.json`, `extracted_terms.json`, `domain_statistics.json`, `concept_map_summary.json`. Extended keys include per-domain `DOMAIN_<SLUG>_ENTROPY`, `_HIGH_ENTROPY_PCT`, `_ANTHROPOMORPHIC_PROPORTION_PCT`, per-concept `CONCEPT_<CONCEPT_SLUG>_TERMS`, network `NETWORK_*`, `CORPUS_TOP_TERM_1`…`5` and `CORPUS_TOP_FREQ_1`…`5` (corpus-level token frequencies), and `TERM_FREQ_<TOKEN_SLUG>` (extraction-local candidate-term frequencies from `extracted_terms.json`).
+**Sources of truth:** `abstracts.json` (publication count), `output/data/corpus_statistics.json`, `extracted_terms.json`, `domain_statistics.json`, `concept_map_summary.json`, and `statistical_analysis.json` (inferential stage). Extended keys include per-domain `DOMAIN_<SLUG>_ENTROPY`, `_HIGH_ENTROPY_PCT`, `_ANTHROPOMORPHIC_PROPORTION_PCT`, per-concept `CONCEPT_<CONCEPT_SLUG>_TERMS`, network `NETWORK_*`, `CORPUS_TOP_TERM_1`…`5` and `CORPUS_TOP_FREQ_1`…`5` (corpus-level token frequencies), and `TERM_FREQ_<TOKEN_SLUG>` (extraction-local candidate-term frequencies from `extracted_terms.json`). The inferential family from `statistical_analysis.json` comprises `ANOVA_METRIC`, `ANOVA_F`, `ANOVA_DF1`, `ANOVA_DF2`, `ANOVA_P`, `ANOVA_ETA_SQUARED`, `CORRECTION_METHOD`, `PAIRWISE_N_COMPARISONS`, and per-pair `PAIRWISE_<SLUG_A>_<SLUG_B>_T`, `_P`, `_P_BH`, `_D`, `_SIGNIFICANT` for all 15 domain pairs ordered with `SLUG_A` < `SLUG_B` alphabetically; `_SIGNIFICANT` renders as `yes`/`no`, and p-values render with four decimals or `<0.0001` below the 1e-4 threshold.
 
 **Strict mode:** `build_pdf(strict_templates=True)`, the CLI flag `--strict-templates`, or environment variable `STRICT_TEMPLATE_VARS=1`/`true`/`yes` causes an unresolved placeholder after substitution to print to stderr and **`sys.exit(1)`** (use in CI to catch missing keys).
 
@@ -227,6 +227,7 @@ As shown in \ref{fig:terminology_network}...
 - `unit_of_individuality_patterns.png` - Unit of Individuality domain analysis
 - `power_and_labor_term_frequencies.png` - Term frequencies (Power & Labor)
 - `power_and_labor_ambiguities.png` - Ambiguity patterns (Power & Labor)
+- `statistical_analysis.png` - Inferential statistics summary (per-domain entropy descriptives, pairwise Welch $t$-tests with Cohen's $d$, ANOVA)
 
 **Figure Registry:**
 

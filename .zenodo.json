@@ -1,0 +1,41 @@
+{
+  "title": "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology",
+  "version": "1.1.0",
+  "doi": "10.5281/zenodo.19574118",
+  "license": "Apache-2.0",
+  "creators": [
+    {
+      "name": "Friedman, Daniel Ari",
+      "orcid": "0000-0001-6232-9096",
+      "affiliation": "Active Inference Institute, APOIDEAS"
+    },
+    {
+      "name": "Cahill Chambers, Tucker",
+      "orcid": "0009-0008-3793-7872",
+      "affiliation": "APOIDEAS"
+    }
+  ],
+  "keywords": [
+    "entomology",
+    "scientific terminology",
+    "language analysis",
+    "discourse analysis",
+    "ant biology",
+    "eusociality",
+    "conceptual frameworks",
+    "active inference",
+    "terminology networks",
+    "computational linguistics"
+  ],
+  "description": "Self-contained research project examining how language shapes scientific understanding in entomology through systematic analysis of terminology networks across six Ento-Linguistic domains. Version 1.1.0 adds an inferential statistics stage (Welch pairwise tests with Benjamini-Hochberg correction, Cohen's d, one-way ANOVA), a real per-term semantic-ambiguity computation, the statistical_analysis.json artifact and figure, a thin-orchestrator pipeline, and a token-driven manuscript whose inferential tables resolve from measured data at render time.",
+  "access_right": "open",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/docxology/ento_linguistics",
+      "relation": "isSupplementTo",
+      "resource_type": "repo"
+    }
+  ]
+}

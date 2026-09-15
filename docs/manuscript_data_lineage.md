@@ -15,6 +15,7 @@ The Ento-Linguistic framework organizes its operational logic into the following
   - *Manuscript Injection*: Together, these generate `output/data/corpus_statistics.json`, which pushes raw baseline metrics (e.g., token counts, document counts) into the abstract, methodology, and results via `{{CORPUS_*}}` template variables.
 - **`src/analysis`**: Performs term extraction, semantic entropy calculation, CACE scoring, and discourse pattern identification.
   - *Manuscript Injection*: Powers the domain metrics and analytical relationships. It outputs metrics like `term_frequencies`, `domain_assignments`, and `entropy` to JSON files, dynamically injecting the values `{{CORPUS_CANDIDATE_TERMS}}` and `{{CORPUS_DOMAIN_TERMS}}` into the manuscript text.
+- **`src/pipeline/statistics_pipeline.py`** (statistics stage): orchestrated by `src/visualization/manuscript_figures.py::main()` between the analysis pipeline and figure generation; computes Welch $t$-tests (Benjamini–Hochberg corrected, Cohen's $d$) and a one-way ANOVA from per-term domain entropies and writes `output/data/statistical_analysis.json` (frozen schema: `descriptives`, `pairwise`, `anova`, `corrections`).
 - **`src/core`**: Supplies centralized logging, metric definitions, and exception handling. Serves as the backbone ensuring deterministic runs, meaning figures and counts generated for the manuscript are reproducible.
 - **`src/visualization`**: Implements matplotlib/seaborn plot generators for concept mapping, statistical distributions, and network graphs.
   - *Manuscript Injection*: Writes the figure assets under `output/figures/` that the manuscript references via `\includegraphics`. Enforces manuscript requirements like 16pt font floors.
@@ -36,7 +37,7 @@ The rendered PDF is a compilation of the following files, populated strictly by 
 
 - **`S01a_text_and_extraction.md`**: Bridges the paper and the code for text processing, term extraction, and semantic entropy. Maps equations to exact Python files and classes (e.g., `src/analysis/semantic_entropy.py::calculate_semantic_entropy`).
 - **`S01b_analysis_infrastructure.md`**: Documents statistical, scoring (CACE), rhetorical analysis, visualization, and core infrastructure modules.
-- **`S02_supplemental_results.md`**: Provides the deep-dive statistics, ANOVA derivations, and granular CACE scoring distributions that overflow the core results section. All metrics trace to `src/analysis` outputs.
+- **`S02_supplemental_results.md`**: Provides the deep-dive statistics, ANOVA derivations, and granular CACE scoring distributions that overflow the core results section. All metrics trace to `src/analysis` outputs. The inferential tables (pairwise Welch $t$-tests, ANOVA) are produced by the statistics stage (`src/pipeline/statistics_pipeline.py`) from per-term entropies into `output/data/statistical_analysis.json`; that artifact is consumed both by the `statistical_analysis.png` figure and by the `ANOVA_*`/`PAIRWISE_*`/`CORRECTION_METHOD`/`PAIRWISE_N_COMPARISONS` manuscript tokens substituted into the S02 tables.
 - **`S03a_theoretical_extensions.md`**: Theoretical extensions (Markov Blankets, discourse frameworks, ambiguity classification, network analysis).
 - **`S03b_case_studies.md` & `S04_supplemental_applications.md`**: Case studies, validation frameworks, and worked examples of the pipeline applied to outside fields.
 
@@ -50,7 +51,7 @@ The rendered PDF is a compilation of the following files, populated strictly by 
 
 ## Template injection (`_render_pdf_override.py`)
 
-The combined markdown is built by `projects/ento_linguistics/scripts/_render_pdf_override.py`. **`_load_corpus_vars()`** reads JSON from `data/corpus/` and `output/data/` and returns a dict of `{{KEY}}` → string value. **`_apply_corpus_vars()`** substitutes those placeholders into each manuscript section before Pandoc runs. Optional **strict** mode (`--strict-templates` or `STRICT_TEMPLATE_VARS=1`) fails the build if any `{{KEY}}` remains after substitution, preventing silent drift in CI.
+The combined markdown is built by `projects/ento_linguistics/scripts/_render_pdf_override.py`. **`_load_corpus_vars()`** reads JSON from `data/corpus/` and `output/data/` and returns a dict of `{{KEY}}` → string value. **`_apply_corpus_vars()`** substitutes those placeholders into each manuscript section before Pandoc runs. Optional **strict** mode (`--strict-templates` or `STRICT_TEMPLATE_VARS=1`) fails the build if any `{{KEY}}` remains after substitution, preventing silent drift in CI. The inferential tokens (`ANOVA_METRIC`, `ANOVA_F`, `ANOVA_DF1`, `ANOVA_DF2`, `ANOVA_P`, `ANOVA_ETA_SQUARED`, `CORRECTION_METHOD`, `PAIRWISE_N_COMPARISONS`, and per-pair `PAIRWISE_<SLUG_A>_<SLUG_B>_{T,P,P_BH,D,SIGNIFICANT}`) are populated from `output/data/statistical_analysis.json`.
 
 ## Validation Guarantee
 

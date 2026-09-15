@@ -18,7 +18,7 @@ Current project quality metrics and compliance status. Corpus figures below matc
 | `visualization/` | `test_concept_visualization.py`, `test_statistical_visualization.py`, `test_visualization.py`, `test_plots.py` + expanded/coverage variants | All 5 visualization modules |
 | `core/` | `test_exceptions.py`, `test_metrics.py`, `test_parameters.py`, `test_validation.py`, `test_core_validation.py` | All 7 core modules |
 | `data/` | `test_literature_mining.py`, `test_data_generator.py`, `test_data_processing.py` + expanded/coverage variants | All 4 data modules |
-| `pipeline/` | `test_simulation.py`, `test_reporting.py`, `test_pipeline_init.py` | All 3 pipeline modules |
+| `pipeline/` | `test_simulation.py`, `test_reporting.py`, `test_pipeline_init.py`, `test_statistics_pipeline.py` | All 4 pipeline modules |
 | Integration | `tests/integration/` (4 files) | Cross-module workflows |
 
 ## Code Quality
@@ -38,7 +38,7 @@ Current project quality metrics and compliance status. Corpus figures below matc
 | Standard | Status | Notes |
 |----------|--------|-------|
 | **Figure references** | ✅ | `\ref{fig:...}` with matching `\label{fig:...}` |
-| **Figure captions** | ✅ | Descriptive, multi-sentence captions on all 11 generated figures |
+| **Figure captions** | ✅ | Descriptive, multi-sentence captions on all 12 generated figures |
 | **16pt font floor** | ✅ | Enforced by a shared matplotlib style applied across all visualization modules at figure-creation time (not per-module comments) |
 | **Figure registry** | ✅ | `output/figures/figure_registry.json` tracks all generated figures |
 | **Section numbering** | ✅ | 01–06 main, S01–S04 supplemental, 98–99 references |
@@ -47,7 +47,7 @@ Current project quality metrics and compliance status. Corpus figures below matc
 
 ## Figure Generation
 
-Current pipeline run generates **11 figures** (all sourced from real data):
+Current pipeline run generates **12 figures** (all sourced from real data):
 
 | Figure | File | Size | Status |
 |--------|------|------|--------|
@@ -62,6 +62,7 @@ Current pipeline run generates **11 figures** (all sourced from real data):
 | Power & Labor ambiguities | `power_and_labor_ambiguities.png` | 159 KB | ✅ Real ambiguity metrics |
 | Power & Labor frequencies | `power_and_labor_term_frequencies.png` | 206 KB | ✅ Real term frequencies |
 | Unit of Individuality patterns | `unit_of_individuality_patterns.png` | 166 KB | ✅ Real pattern data |
+| Statistical analysis | `statistical_analysis.png` | — | ✅ Real entropy descriptives, pairwise Welch $t$-tests (BH-corrected, Cohen's $d$), ANOVA |
 
 ## Live Corpus Statistics
 
@@ -77,13 +78,16 @@ Current pipeline run generates **11 figures** (all sourced from real data):
 | Domain-assigned terms | `extracted_terms.json` | 261 |
 | Concept map | `concept_map_summary.json` | 6 concepts, 9 relationships |
 | Terminology network | `concept_map_summary.json` | 894 nodes, 514 edges |
+| Inferential statistics | `output/data/statistical_analysis.json` | Welch t-tests (BH-corrected, Cohen's $d$) + one-way ANOVA; rendered into the manuscript via `ANOVA_*`/`PAIRWISE_*` tokens (see `manuscript/S02_supplemental_results.md`) |
 
 ## Validation Commands
 
 Command lists below reference `scripts/01_build_corpus.py`, `scripts/02_generate_figures.py`, and the `_`-prefixed helper scripts. Helpers are subject to consolidation — if one is missing, consult `scripts/README.md` for its current replacement before treating the command as stale.
 
 ```bash
-# Full test suite (pipeline entry point — also clears and regenerates output/)
+# Full pipeline (entry point — also clears and regenerates output/; runs the
+# statistics stage via src/visualization/manuscript_figures.py::main(), writing
+# output/data/statistical_analysis.json and output/figures/statistical_analysis.png)
 uv run python scripts/02_generate_figures.py
 
 # Tests
@@ -115,9 +119,7 @@ uv run python scripts/_quality_report.py
 
 ---
 
-**Last Verified:** 2026-09-14 (corpus table synced to `output/data/*.json`; test count 1225 via `uv run pytest tests/ --collect-only -q`; coverage via `uv run pytest tests/ --cov=src`)
-
-## See Also
+**Last Verified:** 2026-09-15 (corpus table synced to `output/data/*.json`; test counts via `uv run pytest tests/ --collect-only -q`; coverage via `uv run pytest tests/ --cov=src`; inferential-statistics stage added, see `CHANGELOG.md` 1.1.0)
 
 - [development_workflow.md](development_workflow.md) — Environment and commands
 - [validation_guide.md](validation_guide.md) — Validation pipeline details

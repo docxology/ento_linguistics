@@ -2,33 +2,33 @@
 
 ## Pairwise Domain Comparisons
 
-Table \ref{tab:pairwise_domain} presents pairwise comparisons of mean ambiguity scores between all Ento-Linguistic domains using Welch's two-sample $t$-tests. Raw $p$-values are computed from the $t$-distribution with Satterthwaite-approximated degrees of freedom; adjusted $p$-values correct for 15 simultaneous comparisons using the Benjamini-Hochberg (BH) procedure at $q = 0.05$. Cohen's $d$ quantifies effect size, interpreted as small ($d \approx 0.2$), medium ($d \approx 0.5$), or large ($d \geq 0.8$).
+Table \ref{tab:pairwise_domain} presents pairwise comparisons of per-term semantic entropy between all Ento-Linguistic domains using Welch's two-sample $t$-tests. Raw $p$-values are computed from the $t$-distribution with Satterthwaite-approximated degrees of freedom; adjusted $p$-values correct for {{PAIRWISE_N_COMPARISONS}} simultaneous comparisons using the Benjamini-Hochberg (BH) procedure at $q = 0.05$. Cohen's $d$ quantifies effect size, interpreted as small ($d \approx 0.2$), medium ($d \approx 0.5$), or large ($d \geq 0.8$). Domain descriptives entering these tests are per-term valid-entropy means with exclusions counted.
 
 \begin{table}[h]
 \centering
 \small
 \begin{tabular}{|l|l|c|c|c|c|c|}
 \hline
-\textbf{Domain A} & \textbf{Domain B} & \textbf{$t$} & \textbf{$p$ (raw)} & \textbf{$p$ (BH)} & \textbf{Cohen's $d$} & \textbf{Effect} \\
+\textbf{Domain A} & \textbf{Domain B} & \textbf{$t$} & \textbf{$p$ (raw)} & \textbf{$p$ (BH)} & \textbf{Cohen's $d$} & \textbf{Sig.\ (BH)} \\
 \hline
-Power \& Labor & Economics & 4.82 & $< 0.001$ & $< 0.001$ & 0.91 & Large \\
-Power \& Labor & Sex \& Reproduction & 3.67 & $< 0.001$ & $< 0.001$ & 0.78 & Medium--Large \\
-Kin \& Relatedness & Economics & 3.41 & $< 0.001$ & 0.001 & 0.72 & Medium \\
-Unit of Individuality & Economics & 2.98 & 0.003 & 0.006 & 0.65 & Medium \\
-Kin \& Relatedness & Sex \& Reproduction & 2.43 & 0.016 & 0.030 & 0.57 & Medium \\
-Power \& Labor & Behavior \& Identity & 2.31 & 0.021 & 0.035 & 0.46 & Small--Medium \\
-Behavior \& Identity & Economics & 2.14 & 0.033 & 0.050 & 0.48 & Small--Medium \\
-Unit of Individuality & Sex \& Reproduction & 2.08 & 0.038 & 0.054 & 0.50 & Medium \\
-Behavior \& Identity & Sex \& Reproduction & 1.52 & 0.129 & 0.161 & 0.33 & Small \\
-Power \& Labor & Unit of Individuality & 1.48 & 0.140 & 0.161 & 0.28 & Small \\
-Behavior \& Identity & Kin \& Relatedness & 1.18 & 0.238 & 0.252 & 0.25 & Small \\
-Power \& Labor & Kin \& Relatedness & 1.12 & 0.264 & 0.264 & 0.21 & Small \\
-Unit of Individuality & Behavior \& Identity & 0.89 & 0.374 & 0.360 & 0.18 & Negligible \\
-Economics & Sex \& Reproduction & 0.67 & 0.503 & 0.470 & 0.14 & Negligible \\
-Unit of Individuality & Kin \& Relatedness & 0.34 & 0.734 & 0.734 & 0.07 & Negligible \\
+Behavior \& Identity & Economics & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_ECONOMICS_T}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_ECONOMICS_P}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_ECONOMICS_P_BH}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_ECONOMICS_D}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_ECONOMICS_SIGNIFICANT}} \\
+Behavior \& Identity & Kin \& Relatedness & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_KIN_AND_RELATEDNESS_T}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_KIN_AND_RELATEDNESS_P}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_KIN_AND_RELATEDNESS_P_BH}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_KIN_AND_RELATEDNESS_D}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_KIN_AND_RELATEDNESS_SIGNIFICANT}} \\
+Behavior \& Identity & Power \& Labor & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_POWER_AND_LABOR_T}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_POWER_AND_LABOR_P}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_POWER_AND_LABOR_P_BH}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_POWER_AND_LABOR_D}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_POWER_AND_LABOR_SIGNIFICANT}} \\
+Behavior \& Identity & Sex \& Reproduction & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_SEX_AND_REPRODUCTION_T}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_SEX_AND_REPRODUCTION_P}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_SEX_AND_REPRODUCTION_P_BH}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_SEX_AND_REPRODUCTION_D}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_SEX_AND_REPRODUCTION_SIGNIFICANT}} \\
+Behavior \& Identity & Unit of Individuality & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_UNIT_OF_INDIVIDUALITY_T}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_UNIT_OF_INDIVIDUALITY_P}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_UNIT_OF_INDIVIDUALITY_P_BH}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_UNIT_OF_INDIVIDUALITY_D}} & {{PAIRWISE_BEHAVIOR_AND_IDENTITY_UNIT_OF_INDIVIDUALITY_SIGNIFICANT}} \\
+Economics & Kin \& Relatedness & {{PAIRWISE_ECONOMICS_KIN_AND_RELATEDNESS_T}} & {{PAIRWISE_ECONOMICS_KIN_AND_RELATEDNESS_P}} & {{PAIRWISE_ECONOMICS_KIN_AND_RELATEDNESS_P_BH}} & {{PAIRWISE_ECONOMICS_KIN_AND_RELATEDNESS_D}} & {{PAIRWISE_ECONOMICS_KIN_AND_RELATEDNESS_SIGNIFICANT}} \\
+Economics & Power \& Labor & {{PAIRWISE_ECONOMICS_POWER_AND_LABOR_T}} & {{PAIRWISE_ECONOMICS_POWER_AND_LABOR_P}} & {{PAIRWISE_ECONOMICS_POWER_AND_LABOR_P_BH}} & {{PAIRWISE_ECONOMICS_POWER_AND_LABOR_D}} & {{PAIRWISE_ECONOMICS_POWER_AND_LABOR_SIGNIFICANT}} \\
+Economics & Sex \& Reproduction & {{PAIRWISE_ECONOMICS_SEX_AND_REPRODUCTION_T}} & {{PAIRWISE_ECONOMICS_SEX_AND_REPRODUCTION_P}} & {{PAIRWISE_ECONOMICS_SEX_AND_REPRODUCTION_P_BH}} & {{PAIRWISE_ECONOMICS_SEX_AND_REPRODUCTION_D}} & {{PAIRWISE_ECONOMICS_SEX_AND_REPRODUCTION_SIGNIFICANT}} \\
+Economics & Unit of Individuality & {{PAIRWISE_ECONOMICS_UNIT_OF_INDIVIDUALITY_T}} & {{PAIRWISE_ECONOMICS_UNIT_OF_INDIVIDUALITY_P}} & {{PAIRWISE_ECONOMICS_UNIT_OF_INDIVIDUALITY_P_BH}} & {{PAIRWISE_ECONOMICS_UNIT_OF_INDIVIDUALITY_D}} & {{PAIRWISE_ECONOMICS_UNIT_OF_INDIVIDUALITY_SIGNIFICANT}} \\
+Kin \& Relatedness & Power \& Labor & {{PAIRWISE_KIN_AND_RELATEDNESS_POWER_AND_LABOR_T}} & {{PAIRWISE_KIN_AND_RELATEDNESS_POWER_AND_LABOR_P}} & {{PAIRWISE_KIN_AND_RELATEDNESS_POWER_AND_LABOR_P_BH}} & {{PAIRWISE_KIN_AND_RELATEDNESS_POWER_AND_LABOR_D}} & {{PAIRWISE_KIN_AND_RELATEDNESS_POWER_AND_LABOR_SIGNIFICANT}} \\
+Kin \& Relatedness & Sex \& Reproduction & {{PAIRWISE_KIN_AND_RELATEDNESS_SEX_AND_REPRODUCTION_T}} & {{PAIRWISE_KIN_AND_RELATEDNESS_SEX_AND_REPRODUCTION_P}} & {{PAIRWISE_KIN_AND_RELATEDNESS_SEX_AND_REPRODUCTION_P_BH}} & {{PAIRWISE_KIN_AND_RELATEDNESS_SEX_AND_REPRODUCTION_D}} & {{PAIRWISE_KIN_AND_RELATEDNESS_SEX_AND_REPRODUCTION_SIGNIFICANT}} \\
+Kin \& Relatedness & Unit of Individuality & {{PAIRWISE_KIN_AND_RELATEDNESS_UNIT_OF_INDIVIDUALITY_T}} & {{PAIRWISE_KIN_AND_RELATEDNESS_UNIT_OF_INDIVIDUALITY_P}} & {{PAIRWISE_KIN_AND_RELATEDNESS_UNIT_OF_INDIVIDUALITY_P_BH}} & {{PAIRWISE_KIN_AND_RELATEDNESS_UNIT_OF_INDIVIDUALITY_D}} & {{PAIRWISE_KIN_AND_RELATEDNESS_UNIT_OF_INDIVIDUALITY_SIGNIFICANT}} \\
+Power \& Labor & Sex \& Reproduction & {{PAIRWISE_POWER_AND_LABOR_SEX_AND_REPRODUCTION_T}} & {{PAIRWISE_POWER_AND_LABOR_SEX_AND_REPRODUCTION_P}} & {{PAIRWISE_POWER_AND_LABOR_SEX_AND_REPRODUCTION_P_BH}} & {{PAIRWISE_POWER_AND_LABOR_SEX_AND_REPRODUCTION_D}} & {{PAIRWISE_POWER_AND_LABOR_SEX_AND_REPRODUCTION_SIGNIFICANT}} \\
+Power \& Labor & Unit of Individuality & {{PAIRWISE_POWER_AND_LABOR_UNIT_OF_INDIVIDUALITY_T}} & {{PAIRWISE_POWER_AND_LABOR_UNIT_OF_INDIVIDUALITY_P}} & {{PAIRWISE_POWER_AND_LABOR_UNIT_OF_INDIVIDUALITY_P_BH}} & {{PAIRWISE_POWER_AND_LABOR_UNIT_OF_INDIVIDUALITY_D}} & {{PAIRWISE_POWER_AND_LABOR_UNIT_OF_INDIVIDUALITY_SIGNIFICANT}} \\
+Sex \& Reproduction & Unit of Individuality & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_T}} & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_P}} & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_P_BH}} & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_D}} & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_SIGNIFICANT}} \\
 \hline
 \end{tabular}
-\caption{Pairwise Welch's $t$-test comparisons of mean ambiguity scores between Ento-Linguistic domains. Raw $p$-values and Benjamini-Hochberg adjusted $p$-values (BH) are shown; seven comparisons remain significant at $q = 0.05$ after correction. The one-way ANOVA across all six domains yields $F(5, 301) = 8.74$, $p < 0.001$, where $df_1 = k - 1 = 5$ (between-group) and $df_2 = N - k = 301$ (within-group; $N = 307$ domain-level term counts, since a term assigned to multiple domains contributes once per domain).}
+\caption{Pairwise Welch's $t$-tests on per-term semantic entropy between Ento-Linguistic domains, with Benjamini-Hochberg adjusted $p$-values ({{CORRECTION_METHOD}} correction over {{PAIRWISE_N_COMPARISONS}} comparisons) and Cohen's $d$ effect sizes. The Sig.\ (BH) column reports BH-adjusted significance at $q = 0.05$ for each comparison. Domain descriptives feeding these tests are per-term valid-entropy means with exclusions counted. The omnibus one-way ANOVA across the six domains on {{ANOVA_METRIC}} yields $F({{ANOVA_DF1}}, {{ANOVA_DF2}}) = {{ANOVA_F}}$, {{ANOVA_P}}, $\eta^2 = {{ANOVA_ETA_SQUARED}}$, where $df_1 = k - 1$ (between-group) and $df_2 = N - k$ (within-group).}
 \label{tab:pairwise_domain}
 \end{table}
 
@@ -93,22 +93,4 @@ Kin \& Relatedness & {{DOMAIN_KIN_AND_RELATEDNESS_ENTROPY}} & {{DOMAIN_KIN_AND_R
 
 ## Confidence Intervals for Domain Metrics
 
-Table \ref{tab:domain_ci} provides 95\% confidence intervals for key metrics from Table \ref{tab:terminology_extraction}.
-
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|c|c|}
-\hline
-\textbf{Domain} & \textbf{Ambiguity Score [95\% CI]} & \textbf{Context Variability [95\% CI]} \\
-\hline
-Unit of Individuality & 0.73 [0.69, 0.77] & 4.2 [3.8, 4.6] \\
-Behavior \& Identity & 0.68 [0.65, 0.71] & 3.8 [3.5, 4.1] \\
-Power \& Labor & 0.81 [0.77, 0.85] & 4.2 [3.8, 4.6] \\
-Sex \& Reproduction & 0.59 [0.55, 0.63] & 3.1 [2.7, 3.5] \\
-Kin \& Relatedness & 0.75 [0.71, 0.79] & 4.5 [4.1, 4.9] \\
-Economics & 0.55 [0.51, 0.59] & 2.6 [2.2, 3.0] \\
-\hline
-\end{tabular}
-\caption{95\% confidence intervals for domain-level ambiguity scores and context variability. Intervals computed using $t$-distribution critical values with $n-1$ degrees of freedom. Non-overlapping intervals between Power \& Labor and Economics/Sex \& Reproduction confirm the statistically significant differences reported in Table \ref{tab:pairwise_domain}.}
-\label{tab:domain_ci}
-\end{table}
+The frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}) reports per-term valid-entropy descriptives (means and standard deviations, with exclusions counted) and the inferential results in Table \ref{tab:pairwise_domain}; it does not compute domain-level confidence intervals, so per-domain ambiguity-score and context-variability intervals are not tabulated here. Separation between domains is established inferentially by the Welch $t$-tests and the omnibus ANOVA reported in Table \ref{tab:pairwise_domain}, with per-domain entropy descriptives in Table \ref{tab:entropy_distribution} and the accompanying summary figure \texttt{statistical\_analysis.png}.

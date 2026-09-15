@@ -27,8 +27,8 @@ Review completed per plan to ensure complete functional coherence across methods
 
 - **Test count**: 1225 tests collected (measured by `uv run pytest tests/ --collect-only -q`, 2026-09-14); the last recorded full run in `output/reports/test_results.json` reports 1224 passed, 1 skipped (integration test), ~93% coverage.
 - **Coverage**: Run `uv run pytest tests/ --cov=src --cov-report=term-missing` for current coverage. Remove stale `.coverage` and `.coverage.*` files before runs if coverage reporting fails with "Can't combine statement coverage data with branch data" (e.g. after using pytest-xdist).
-- **Figures**: 11 PNGs in `output/figures/` match manuscript references.
-- **Placeholders**: `{{CORPUS_*}}`, `{{DOMAIN_*}}`, `{{NETWORK_*}}`, `{{TERM_FREQ_*}}` are populated by `_render_pdf_override.py` from `output/data/*.json` and `data/corpus/abstracts.json`.
+- **Figures**: 12 PNGs in `output/figures/` match manuscript references, including the inferential-statistics summary `statistical_analysis.png`.
+- **Placeholders**: `{{CORPUS_*}}`, `{{DOMAIN_*}}`, `{{NETWORK_*}}`, `{{TERM_FREQ_*}}` are populated by `_render_pdf_override.py` from `output/data/*.json` and `data/corpus/abstracts.json`; `{{ANOVA_*}}`, `{{PAIRWISE_*}}`, `{{CORRECTION_METHOD}}`, and `{{PAIRWISE_N_COMPARISONS}}` are populated from `output/data/statistical_analysis.json`.
 
 ## Module–Test Mapping
 
@@ -37,11 +37,11 @@ Review completed per plan to ensure complete functional coherence across methods
 | analysis/*.py | test_*.py (12 modules) |
 | core/*.py | test_*.py (8 modules) |
 | data/*.py | test_*.py (4 modules) |
-| pipeline/*.py | test_*.py (3 modules) |
+| pipeline/*.py | test_*.py (4 modules) |
 | visualization/*.py | test_*.py (5 modules) |
 
 ## Remaining Notes
 
 - No root `coverage.json` is maintained; coverage is reported inline via `uv run pytest tests/ --cov=src` (branch coverage is enabled in `pyproject.toml`).
 - `98_symbols_glossary.md` has an empty `<!-- BEGIN: AUTO-API-GLOSSARY -->` block; the hand-maintained Pipeline Modules table remains the source of truth.
-- Scripts follow thin orchestrator pattern; business logic lives in `src/`.
+- Figure registry (`output/figures/figure_registry.json`) tracks 12 figures: the 11 analysis figures plus the inferential-statistics summary `statistical_analysis.png` (see `CHANGELOG.md` 1.1.0).

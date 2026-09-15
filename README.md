@@ -18,7 +18,7 @@ This project investigates the entanglement of speech and thought in entomologica
 ```text
 ./
 ├── src/                    # Ento-Linguistic analysis algorithms
-├── tests/                  # Test suite (1225 tests, 90%+ coverage; measured by `uv run pytest --collect-only -q`)
+├── tests/                  # Test suite (90%+ coverage; count via `uv run pytest tests/ --collect-only -q`)
 ├── scripts/                # Analysis pipelines and workflows
 ├── docs/manuscript/             # Research manuscript on language in entomology
 ├── docs/                   # Analysis documentation and guidelines
@@ -96,7 +96,7 @@ Outputs in `output/reports/test_results.json` and `output/figures/figure_registr
 **Reproducible Analysis:**
 
 - All computational methods include seeded randomness for deterministic results
-- codebase with test suite (1225 tests; measured by `uv run pytest tests/ --collect-only -q` (2026-09-14))
+- codebase with test suite (count via `uv run pytest tests/ --collect-only -q`)
 - Detailed documentation of algorithms and methodological choices
 - Version-controlled environment specifications
 
@@ -122,6 +122,7 @@ Outputs in `output/reports/test_results.json` and `output/figures/figure_registr
 - Input validation and error handling returning `ValidationResult` objects.
 - Reproducible corpus loading from `data/corpus/abstracts.json` and synthetic data via `DataGenerator`.
 - Figures registered in `output/figures/figure_registry.json`.
+- Inferential statistics stage: pairwise Welch $t$-tests with Benjamini–Hochberg correction and Cohen's $d$, plus one-way ANOVA (`src/pipeline/statistics_pipeline.py`), writing `output/data/statistical_analysis.json` and the `statistical_analysis.png` figure.
 
 ## Project Architecture
 
@@ -255,7 +256,7 @@ test suite covering src/ modules.
 - data testing (no mocks)
 - Integration tests
 - Performance validation
-- 1225 tests passing (measured by `uv run pytest tests/ --collect-only -q` (2026-09-14))
+- test count via `uv run pytest tests/ --collect-only -q`
 
 ### scripts/
 
