@@ -14,7 +14,7 @@ import time
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
@@ -313,7 +313,7 @@ class PubMedMiner:
         except json.JSONDecodeError as e:
             logger.error(f"Invalid JSON response from PubMed: {e}")
             return []
-        except Exception as e:
+        except (UnicodeDecodeError, OSError) as e:
             logger.error(f"Unexpected error searching PubMed: {e}")
             return []
 
@@ -518,7 +518,7 @@ class PubMedMiner:
                 journal=journal,
             )
 
-        except Exception as e:
+        except (AttributeError, TypeError) as e:
             logger.error(f"Error parsing PubMed data: {e}")
             return None
 
@@ -630,7 +630,7 @@ class ArXivMiner:
                 journal="arXiv",
             )
 
-        except Exception as e:
+        except (AttributeError, TypeError) as e:
             logger.error(f"Error parsing arXiv entry: {e}")
             return None
 

@@ -2,7 +2,6 @@
 
 import json
 import pytest
-from pathlib import Path
 from data.loader import DataLoader
 
 @pytest.fixture
@@ -70,3 +69,85 @@ def test_load_corpus_invalid_format(tmp_path):
 
     with pytest.raises(ValueError, match="Invalid corpus format"):
         loader.load_corpus("bad_corpus.json")
+
+
+class TestConvertCorpus:
+    """Tests for the convert_corpus fallback/external-source paths."""
+
+    def test_convert_corpus_missing_input_returns_zero(self, tmp_path):
+        """convert_corpus returns 0 when the input file does not exist."""
+        from data.loader import convert_corpus
+
+        missing_input = tmp_path / "does_not_exist.json"
+        output = tmp_path / "out.json"
+
+        count = convert_corpus(input_path=missing_input, output_path=output)
+
+        assert count == 0
+        assert not output.exists()
+
+    def test_convert_corpus_writes_formatted_abstracts(self, tmp_path):
+        """convert_corpus formats each publication as 'Title. Authors (Year). Abstract'."""
+        from data.loader import convert_corpus
+
+        corpus = {
+            "publications": [
+                {
+                    "title": "Ant Colony Organization",
+                    "authors": ["Wilson, E.O.", "Hölldobler, B."],
+                    "year": 1990,
+                    "abstract": "A study of ant colony structure.",
+                },
+                {
+                    "title": "No Abstract Paper",
+                    "authors": ["Doe, J."],
+                    "year": 2001,
+                    "abstract": "",
+                },
+                {
+                    "title": "Whitespace Abstract Paper",
+                    "authors": [],
+                    "year": "",
+                    "abstract": "   ",
+                },
+            ]
+        }
+        input_file = tmp_path / "literature_corpus.json"
+        input_file.write_text(json.dumps(corpus, ensure_ascii=False), encoding="utf-8")
+        output_file = tmp_path / "abstracts.json"
+
+        count = convert_corpus(input_path=input_file, output_path=output_file)
+
+        assert count == 1
+        written = json.loads(output_file.read_text(encoding="utf-8"))
+        assert written == [
+            "Ant Colony Organization. Wilson, E.O., Hölldobler, B. (1990). "
+            "A study of ant colony structure."
+        ]
+
+    def test_convert_corpus_without_publications_key(self, tmp_path):
+        """convert_corpus writes an empty list when the input has no publications."""
+        from data.loader import convert_corpus
+
+        input_file = tmp_path / "empty_corpus.json"
+        input_file.write_text(json.dumps({"metadata": "no publications here"}))
+        output_file = tmp_path / "abstracts.json"
+
+        count = convert_corpus(input_path=input_file, output_path=output_file)
+
+        assert count == 0
+        assert json.loads(output_file.read_text(encoding="utf-8")) == []
+
+    def test_convert_corpus_abstract_fallback_when_none(self, tmp_path):
+        """convert_corpus skips publications whose abstract is None."""
+        from data.loader import convert_corpus
+
+        corpus = {"publications": [{"title": "T", "authors": [], "abstract": None}]}
+        input_file = tmp_path / "null_abstract.json"
+        input_file.write_text(json.dumps(corpus))
+        output_file = tmp_path / "abstracts.json"
+
+        count = convert_corpus(input_path=input_file, output_path=output_file)
+
+        assert count == 0
+        assert json.loads(output_file.read_text(encoding="utf-8")) == []

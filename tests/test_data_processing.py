@@ -11,10 +11,10 @@ class TestCleanData:
     """Test data cleaning functions."""
 
     def test_remove_nan(self):
-        """Test removing NaN values."""
-        data = np.array([1, 2, np.nan, 4, 5])
-        cleaned = clean_data(data, remove_nan=True, fill_method=None)
-        assert np.all(np.isfinite(cleaned))
+        """remove_nan=True drops only NaN; infinities are kept unless remove_inf."""
+        data = np.array([1.0, np.nan, np.inf, 4.0])
+        cleaned = clean_data(data, remove_nan=True, remove_inf=False, fill_method=None)
+        np.testing.assert_array_equal(cleaned, np.array([1.0, np.inf, 4.0]))
 
     def test_clean_data_no_invalid_values(self):
         """Test clean_data when there are no invalid values to remove."""
@@ -23,23 +23,12 @@ class TestCleanData:
         cleaned = clean_data(data, remove_nan=True, remove_inf=True, fill_method=None)
         assert np.array_equal(cleaned, data)
 
-    def test_clean_data_remove_nan_only(self):
-        """Test clean_data with only remove_nan=True (branch 35->37)."""
-        data = np.array([1, 2, np.nan, 4, 5])
-        cleaned = clean_data(data, remove_nan=True, remove_inf=False, fill_method=None)
-        assert np.all(np.isfinite(cleaned))
-
-    def test_clean_data_remove_inf_only(self):
-        """Test clean_data with only remove_inf=True (branch 37->40)."""
-        data = np.array([1, 2, np.inf, 4, 5])
-        cleaned = clean_data(data, remove_nan=False, remove_inf=True, fill_method=None)
-        assert np.all(np.isfinite(cleaned))
-
     def test_remove_inf(self):
-        """Test removing infinite values."""
-        data = np.array([1, 2, np.inf, 4, 5])
-        cleaned = clean_data(data, remove_inf=True, fill_method=None)
-        assert np.all(np.isfinite(cleaned))
+        """remove_inf=True drops only infinities; NaNs are kept unless remove_nan."""
+        data = np.array([1.0, np.nan, np.inf, 4.0])
+        cleaned = clean_data(data, remove_nan=False, remove_inf=True, fill_method=None)
+        assert np.isnan(cleaned[1])
+        np.testing.assert_array_equal(cleaned[[0, 2]], np.array([1.0, 4.0]))
 
     def test_remove_nan_and_inf(self):
         """Test removing both NaN and infinite values."""
@@ -81,6 +70,14 @@ class TestCleanData:
         # Should fill NaN with zero
         assert np.all(np.isfinite(cleaned))
         assert cleaned.shape == data.shape
+
+    def test_remove_nan_2d_drops_affected_rows(self):
+        """Without a fill method, rows containing invalid values are removed."""
+        data = np.array(
+            [[1.0, 2.0], [np.nan, 5.0], [3.0, 4.0], [np.inf, 6.0]]
+        )
+        cleaned = clean_data(data, remove_nan=True, remove_inf=True, fill_method=None)
+        np.testing.assert_array_equal(cleaned, np.array([[1.0, 2.0], [3.0, 4.0]]))
 
 
 class TestNormalizeData:
@@ -367,6 +364,16 @@ class TestValidationPipeline:
         is_valid, errors = pipeline(data)
         assert is_valid is False
         assert any("Too many outliers" in err for err in errors)
+
+    def test_pipeline_unknown_step_is_ignored(self):
+        """An unrecognized step name neither fails the pipeline nor records errors."""
+        steps = [("definitely_not_a_step", {}), ("check_finite", {})]
+        pipeline = create_validation_pipeline(steps)
+
+        is_valid, errors = pipeline(np.array([1.0, 2.0, 3.0]))
+
+        assert is_valid is True
+        assert errors == []
 
     def test_pipeline_exception_handling(self):
         """Test pipeline exception handling."""

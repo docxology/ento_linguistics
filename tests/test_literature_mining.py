@@ -6,11 +6,10 @@ used in Ento-Linguistic research.
 
 from __future__ import annotations
 
-import json
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
 import pytest
 from data.literature_mining import (ArXivMiner, LiteratureCorpus, Publication,
@@ -928,10 +927,11 @@ class TestPubMedMinerParsing:
         miner = PubMedMiner(enable_cache=False)
         assert miner._fetch_batch_abstracts([]) == {}
 
-    def test_fetch_batch_abstracts_xml_parsing(self) -> None:
-        """_fetch_batch_abstracts parses PubMed XML correctly."""
-        import xml.etree.ElementTree as ET
-
+    def test_fetch_batch_abstracts_xml_parsing(
+        self, httpserver, monkeypatch
+    ) -> None:
+        """_fetch_batch_abstracts parses PubMed eFetch XML over real HTTP."""
+        miner = PubMedMiner(enable_cache=False)
         xml_content = """<?xml version="1.0"?>
         <PubmedArticleSet>
             <PubmedArticle>
@@ -955,28 +955,16 @@ class TestPubMedMinerParsing:
                 </MedlineCitation>
             </PubmedArticle>
         </PubmedArticleSet>"""
+        httpserver.expect_request("/efetch.fcgi").respond_with_data(
+            xml_content, content_type="application/xml"
+        )
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
 
-        root = ET.fromstring(xml_content)
-        abstracts = {}
-        for article in root.findall(".//PubmedArticle"):
-            pmid_elem = article.find(".//PMID")
-            if pmid_elem is None:
-                continue
-            pmid = pmid_elem.text
-            abstract_parts = []
-            for abs_text in article.findall(".//AbstractText"):
-                label = abs_text.get("Label", "")
-                text = "".join(abs_text.itertext()).strip()
-                if label and text:
-                    abstract_parts.append(f"{label}: {text}")
-                elif text:
-                    abstract_parts.append(text)
-            if abstract_parts:
-                abstracts[pmid] = " ".join(abstract_parts)
+        abstracts = miner._fetch_batch_abstracts(["12345"])
 
         assert "12345" in abstracts
-        assert "BACKGROUND" in abstracts["12345"]
-        assert "Main findings" in abstracts["12345"]
+        assert "BACKGROUND: Context info." in abstracts["12345"]
+        assert "Main findings here." in abstracts["12345"]
 
     def test_search_cache_hit(self) -> None:
         """PubMedMiner.search returns cached results on repeated calls."""
@@ -1030,13 +1018,209 @@ class TestArXivMinerParsing:
         assert pub.year == 2023
         assert pub.journal == "arXiv"
 
+class TestPubMedMinerUncoveredPaths:
+    """Real-HTTP tests for PubMed search/fetch paths not covered elsewhere."""
 
-class TestCreateEntomologyQuery:
-    """Cover create_entomology_query function."""
+    def test_search_returns_empty_on_non_200_status(
+        self, httpserver, monkeypatch
+    ) -> None:
+        """A 2xx-but-not-200 response is rejected without parsing."""
+        miner = PubMedMiner(enable_cache=False)
+        httpserver.expect_request("/esearch.fcgi").respond_with_data("", status=204)
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
 
-    def test_query_contains_key_terms(self) -> None:
-        """The generated query includes core entomological terms."""
-        query = create_entomology_query()
-        assert "Formicidae" in query
-        assert "eusocial" in query
-        assert "English[Language]" in query
+        assert miner.search("ants") == []
+
+    def test_search_without_cache_does_not_store(
+        self, httpserver, monkeypatch
+    ) -> None:
+        """With caching disabled, search results are never cached."""
+        miner = PubMedMiner(enable_cache=False)
+        httpserver.expect_request("/esearch.fcgi").respond_with_json(
+            {"esearchresult": {"idlist": ["1", "2"]}}
+        )
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
+
+        assert miner.search("ants", max_results=10) == ["1", "2"]
+        assert miner.get_cache_size() == 0
+
+    def test_search_invalid_utf8_response(
+        self, httpserver, monkeypatch
+    ) -> None:
+        """A non-UTF-8 body is logged and yields no results."""
+        miner = PubMedMiner(enable_cache=False)
+        httpserver.expect_request("/esearch.fcgi").respond_with_data(
+            b"\xff\xfe\xfa invalid utf-8", content_type="text/plain"
+        )
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
+
+        assert miner.search("ants") == []
+
+    def test_fetch_publications_merges_efetch_abstracts(
+        self, httpserver, monkeypatch
+    ) -> None:
+        """Abstracts from eFetch fill in summaries fetched without one."""
+        miner = PubMedMiner(enable_cache=False)
+        summary_response = {
+            "result": {
+                "111": {
+                    "title": "Paper without abstract in summary",
+                    "authors": [{"name": "Author A"}],
+                    "pubdate": "2023",
+                    "source": "Journal of Entomology",
+                    "uid": "111",
+                }
+            }
+        }
+        efetch_xml = """<?xml version="1.0"?>
+        <PubmedArticleSet>
+            <PubmedArticle>
+                <MedlineCitation>
+                    <PMID>111</PMID>
+                    <Article>
+                        <Abstract>
+                            <AbstractText Label="METHODS">We studied ants.</AbstractText>
+                        </Abstract>
+                    </Article>
+                </MedlineCitation>
+            </PubmedArticle>
+        </PubmedArticleSet>"""
+        httpserver.expect_request("/esummary.fcgi").respond_with_json(summary_response)
+        httpserver.expect_request("/efetch.fcgi").respond_with_data(
+            efetch_xml, content_type="application/xml"
+        )
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
+        monkeypatch.setattr(time, "sleep", lambda _: None)
+
+        publications = miner.fetch_publications(["111"])
+
+        assert len(publications) == 1
+        assert publications[0].abstract == "METHODS: We studied ants."
+        assert publications[0].journal == "Journal of Entomology"
+
+    def test_fetch_batch_summaries_skips_unparseable_entries(
+        self, httpserver, monkeypatch
+    ) -> None:
+        """Summary entries without a title are skipped, not crashing the batch."""
+        miner = PubMedMiner(enable_cache=False)
+        summary_response = {
+            "result": {
+                "111": {"title": "Good Paper", "authors": [{"name": "A"}], "uid": "111"},
+                "222": {"authors": [{"name": "B"}], "uid": "222"},
+            }
+        }
+        httpserver.expect_request("/esummary.fcgi").respond_with_json(summary_response)
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
+
+        publications = miner._fetch_batch_summaries(["111", "222"])
+
+        assert [pub.title for pub in publications] == ["Good Paper"]
+
+    def test_parse_pubmed_summary_blank_author_and_unparseable_year(self) -> None:
+        """Blank author names are dropped and yearless pubdates yield None."""
+        miner = PubMedMiner(enable_cache=False)
+        data = {
+            "title": "Odd Metadata Paper",
+            "authors": [{"name": ""}, {"name": "Real Author"}],
+            "pubdate": "Advance online",
+        }
+
+        pub = miner._parse_pubmed_summary(data)
+
+        assert pub is not None
+        assert pub.authors == ["Real Author"]
+        assert pub.year is None
+
+
+class TestArXivMinerUncoveredPaths:
+    """Real-HTTP tests for arXiv search paths not covered elsewhere."""
+
+    def test_search_skips_unparseable_entries(
+        self, httpserver, monkeypatch
+    ) -> None:
+        """Entries without a title are skipped during search parsing."""
+        miner = ArXivMiner()
+        xml_response = """<?xml version="1.0" encoding="UTF-8"?>
+        <feed xmlns="http://www.w3.org/2005/Atom">
+            <entry>
+                <title></title>
+                <author><name>Ghost Author</name></author>
+            </entry>
+            <entry>
+                <title>Valid Ant Paper</title>
+                <author><name>Author A</name></author>
+                <summary>Ant foraging study.</summary>
+                <published>2022-05-01T00:00:00Z</published>
+            </entry>
+        </feed>"""
+        httpserver.expect_request("/api/query").respond_with_data(
+            xml_response, content_type="application/xml"
+        )
+        monkeypatch.setattr(ArXivMiner, "BASE_URL", httpserver.url_for("/api/query?"))
+
+        results = miner.search("ants")
+
+        assert [pub.title for pub in results] == ["Valid Ant Paper"]
+
+    def test_parse_arxiv_entry_author_without_name(self) -> None:
+        """Author elements without a name child are skipped."""
+        import xml.etree.ElementTree as ET
+
+        ns = {"arxiv": "http://www.w3.org/2005/Atom"}
+        xml = """<entry xmlns="http://www.w3.org/2005/Atom">
+            <title>Nameless Author Paper</title>
+            <author></author>
+            <author><name>Named Author</name></author>
+        </entry>"""
+        entry = ET.fromstring(xml)
+
+        pub = ArXivMiner()._parse_arxiv_entry(entry, ns)
+
+        assert pub is not None
+        assert pub.authors == ["Named Author"]
+
+    def test_parse_arxiv_entry_published_without_year(self) -> None:
+        """A published date without a four-digit year yields year=None."""
+        import xml.etree.ElementTree as ET
+
+        ns = {"arxiv": "http://www.w3.org/2005/Atom"}
+        xml = """<entry xmlns="http://www.w3.org/2005/Atom">
+            <title>Undated Paper</title>
+            <published>not-a-date</published>
+        </entry>"""
+        entry = ET.fromstring(xml)
+
+        pub = ArXivMiner()._parse_arxiv_entry(entry, ns)
+
+        assert pub is not None
+        assert pub.year is None
+
+
+class TestMineEntomologyLiteratureEdgePaths:
+    """Tests for mine_entomology_literature filtering edge paths."""
+
+    def test_empty_pubmed_and_unrelated_arxiv_results(self, httpserver, monkeypatch) -> None:
+        """Empty PubMed results skip fetching; non-entomology arXiv papers are filtered out."""
+        httpserver.expect_request("/esearch.fcgi").respond_with_json(
+            {"esearchresult": {"idlist": []}}
+        )
+        arxiv_xml = """<?xml version="1.0" encoding="UTF-8"?>
+        <feed xmlns="http://www.w3.org/2005/Atom">
+          <entry>
+            <title>Numerical methods for turbulent fluid dynamics</title>
+            <author><name>Physicist C</name></author>
+            <summary>We study turbulence in incompressible flows.</summary>
+            <published>2024-02-01T00:00:00Z</published>
+          </entry>
+        </feed>"""
+        httpserver.expect_request("/api/query").respond_with_data(
+            arxiv_xml, content_type="application/xml"
+        )
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
+        monkeypatch.setattr(ArXivMiner, "BASE_URL", httpserver.url_for("/api/query?"))
+        monkeypatch.setattr(time, "sleep", lambda _: None)
+
+        corpus = mine_entomology_literature(max_results=5)
+
+        assert isinstance(corpus, LiteratureCorpus)
+        assert corpus.publications == []

@@ -6,7 +6,7 @@ discourse analysis models.
 """
 
 import numpy as np
-from typing import Tuple, List, Optional, Union
+from typing import Tuple, Optional
 
 __all__ = [
     "generate_synthetic_data",
