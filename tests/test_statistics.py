@@ -9,7 +9,7 @@ from analysis.statistics import (DescriptiveStats, anova_test,
                             benjamini_hochberg_correction,
                             calculate_confidence_interval,
                             calculate_correlation, calculate_descriptive_stats,
-                            fit_distribution, t_test)
+                            cohens_d, fit_distribution, t_test)
 
 
 class TestDescriptiveStats:
@@ -422,3 +422,121 @@ class TestDegenerateInputFlags:
         assert np.isnan(result["t_statistic"])
         assert np.isnan(result["p_value"])
         assert "warning" in result
+
+
+class TestCohensD:
+    """Pooled-SD Cohen's d with Hedges-style small-sample correction."""
+
+    def test_known_value_uncorrected(self) -> None:
+        """Exact d on deterministic arrays with unit pooled variance."""
+        x = np.array([4.0, 5.0, 6.0])
+        y = np.array([1.0, 2.0, 3.0])
+        # means differ by 3; each sample has variance 1 (ddof=1);
+        # pooled SD = 1 → d = 3.0
+        assert cohens_d(x, y, correction=False) == pytest.approx(3.0)
+
+    def test_known_value_corrected(self) -> None:
+        """Hedges correction J = 1 - 3/(4n - 9) applied to d."""
+        x = np.array([4.0, 5.0, 6.0])
+        y = np.array([1.0, 2.0, 3.0])
+        n = len(x) + len(y)
+        J = 1.0 - 3.0 / (4.0 * n - 9.0)
+        assert cohens_d(x, y, correction=True) == pytest.approx(3.0 * J)
+
+    @pytest.mark.parametrize("target_d", [0.2, 0.5, 0.8])
+    def test_standard_effect_sizes(self, target_d: float) -> None:
+        """Small/medium/large benchmarks recovered exactly (no randomness).
+
+        Two-point symmetric samples x = [a + s, a - s] have variance
+        2*s^2 (ddof=1), so offsets of 1/sqrt(2) give pooled SD exactly 1
+        and d equals the mean difference exactly.
+        """
+        s = 1.0 / np.sqrt(2.0)
+        x = np.array([target_d / 2.0 + s, target_d / 2.0 - s])
+        y = np.array([-target_d / 2.0 + s, -target_d / 2.0 - s])
+        assert cohens_d(x, y, correction=False) == pytest.approx(target_d)
+
+    def test_correction_negligible_for_large_samples(self) -> None:
+        """J -> 1: corrected and uncorrected converge for large n."""
+        x = np.linspace(0.0, 1.0, 500)
+        y = np.linspace(0.5, 1.5, 500)
+        uncorrected = cohens_d(x, y, correction=False)
+        corrected = cohens_d(x, y, correction=True)
+        assert corrected == pytest.approx(uncorrected, rel=1e-3)
+        assert abs(corrected) < abs(uncorrected)  # correction shrinks d
+
+    def test_zero_pooled_sd_returns_zero(self) -> None:
+        """Constant samples → undefined effect size, guarded to 0.0."""
+        assert cohens_d(np.array([1.0, 1.0, 1.0]), np.array([2.0, 2.0, 2.0])) == 0.0
+        assert cohens_d(
+            np.array([1.0, 1.0, 1.0]), np.array([2.0, 2.0, 2.0]), correction=False
+        ) == 0.0
+
+    def test_sign_follows_mean_difference(self) -> None:
+        """d is negative when the first sample has the smaller mean."""
+        x = np.array([1.0, 2.0, 3.0])
+        y = np.array([4.0, 5.0, 6.0])
+        assert cohens_d(x, y, correction=False) == pytest.approx(-3.0)
+
+    def test_unequal_group_sizes(self) -> None:
+        """Pooled SD weights groups by their degrees of freedom."""
+        x = np.array([1.0, 2.0, 3.0])           # var = 1, n = 3
+        y = np.array([10.0, 12.0, 14.0, 16.0])  # var = 6.666..., n = 4
+        expected_pooled_sd = np.sqrt(
+            (2 * 1.0 + 3 * (20.0 / 3.0)) / (3 + 4 - 2)
+        )
+        expected_d = (2.0 - 13.0) / expected_pooled_sd
+        assert cohens_d(x, y, correction=False) == pytest.approx(expected_d)
+
+    def test_empty_sample_raises(self) -> None:
+        """Empty inputs are a caller error, not a silent 0.0."""
+        with pytest.raises(ValueError):
+            cohens_d(np.array([]), np.array([1.0, 2.0]))
+        with pytest.raises(ValueError):
+            cohens_d(np.array([1.0]), np.array([]))
+
+
+class TestTTestEqualVar:
+    """Student (pooled) vs Welch (default) two-sample t-test variants."""
+
+    def test_default_is_welch(self) -> None:
+        """Default df follows Welch–Satterthwaite, not n1 + n2 - 2."""
+        x = np.array([1.0, 2.0, 3.0, 30.0])
+        y = np.array([10.0, 10.1, 10.2, 10.3])
+        result = t_test(x, y)
+        assert result["degrees_of_freedom"] != pytest.approx(len(x) + len(y) - 2)
+        assert result["degrees_of_freedom"] < len(x) + len(y) - 2
+
+    def test_equal_var_matches_scipy_pooled(self) -> None:
+        """equal_var=True reproduces scipy's Student two-sample t-test."""
+        from scipy.stats import ttest_ind
+
+        x = np.array([2.1, 3.4, 2.9, 3.8, 3.2, 4.0])
+        y = np.array([5.3, 4.8, 5.9, 6.1, 5.0])
+        expected = ttest_ind(x, y, equal_var=True)
+        result = t_test(x, y, equal_var=True)
+        assert result["t_statistic"] == pytest.approx(expected.statistic)
+        assert result["p_value"] == pytest.approx(expected.pvalue)
+        assert result["degrees_of_freedom"] == pytest.approx(len(x) + len(y) - 2)
+
+    def test_welch_matches_scipy_unequal(self) -> None:
+        """Default path reproduces scipy's Welch t-test."""
+        from scipy.stats import ttest_ind
+
+        x = np.array([2.1, 3.4, 2.9, 3.8, 3.2, 4.0])
+        y = np.array([5.3, 4.8, 5.9, 6.1, 5.0])
+        expected = ttest_ind(x, y, equal_var=False)
+        result = t_test(x, y)
+        assert result["t_statistic"] == pytest.approx(expected.statistic)
+        assert result["p_value"] == pytest.approx(expected.pvalue)
+
+    def test_equal_var_and_welch_agree_on_equal_variance(self) -> None:
+        """With equal variances and equal n, both variants coincide."""
+        x = np.array([1.0, 2.0, 3.0, 4.0])
+        y = np.array([3.0, 4.0, 5.0, 6.0])
+        r_pooled = t_test(x, y, equal_var=True)
+        r_welch = t_test(x, y, equal_var=False)
+        assert r_pooled["t_statistic"] == pytest.approx(r_welch["t_statistic"])
+        assert r_pooled["degrees_of_freedom"] == pytest.approx(
+            r_welch["degrees_of_freedom"]
+        )

@@ -5,10 +5,13 @@ used in Ento-Linguistic research.
 """
 
 from __future__ import annotations
-
+import json
+from pathlib import Path
 from typing import Dict, List
 
+import numpy as np
 import pytest
+
 from analysis.domain_analysis import DomainAnalysis, DomainAnalyzer
 from analysis.term_extraction import Term
 
@@ -606,3 +609,231 @@ class TestCooccurrenceAndSignificanceContract:
         )
         for value in scores.values():
             assert 0.0 <= value <= 1.0
+
+
+CORPUS_PATH = Path(__file__).resolve().parent.parent / "data" / "corpus" / "abstracts.json"
+
+
+class TestIterDomainTermEntropies:
+    """Public accessor grouping valid per-term entropies by canonical domain."""
+
+    @staticmethod
+    def _polysemous_texts(term: str) -> List[str]:
+        """Six deterministic sentences giving the term two distinct senses."""
+        return [
+            f"The {term} functions as a reproductive unit in the colony.",
+            f"Colony-level selection shapes the {term} across generations.",
+            f"The {term} coordinates foraging through chemical signals.",
+            f"Researchers modeled the {term} as a genealogical lineage.",
+            f"Each {term} maintains hereditary continuity with the queen.",
+            f"The {term} transmits maternal genes to descendant workers.",
+        ]
+
+    def test_groups_valid_entropies_by_domain(self) -> None:
+        """Valid entropies land under every canonical domain of the term."""
+        analyzer = DomainAnalyzer()
+        terms = [
+            Term(text="lineage", lemma="lineage", frequency=6,
+                 domains=["kin_and_relatedness", "unit_of_individuality"]),
+        ]
+        texts = self._polysemous_texts("lineage")
+
+        entropies = analyzer.iter_domain_term_entropies(terms, texts)
+
+        assert set(entropies) == {"kin_and_relatedness", "unit_of_individuality"}
+        for values in entropies.values():
+            assert len(values) == 1
+            assert values[0] > 0.0
+        # A multi-domain term contributes the same entropy to each domain
+        assert entropies["kin_and_relatedness"] == entropies["unit_of_individuality"]
+
+    def test_accepts_dict_of_terms(self) -> None:
+        """The accessor tolerates the mapping form used by analyze_all_domains."""
+        analyzer = DomainAnalyzer()
+        terms = {
+            "lineage": Term(text="lineage", lemma="lineage", frequency=6,
+                            domains=["kin_and_relatedness"]),
+        }
+        texts = self._polysemous_texts("lineage")
+
+        entropies = analyzer.iter_domain_term_entropies(terms, texts)
+        assert list(entropies) == ["kin_and_relatedness"]
+        assert entropies["kin_and_relatedness"] and \
+            entropies["kin_and_relatedness"][0] > 0.0
+
+    def test_excludes_terms_with_too_few_contexts(self) -> None:
+        """Terms below min_contexts are excluded, never folded in as 0.0."""
+        analyzer = DomainAnalyzer()
+        terms = [
+            Term(text="lineage", lemma="lineage", frequency=6,
+                 domains=["kin_and_relatedness"]),
+            Term(text="haplotype", lemma="haplotype", frequency=1,
+                 domains=["kin_and_relatedness"]),
+        ]
+        texts = self._polysemous_texts("lineage") + ["One stray haplotype mention."]
+
+        entropies = analyzer.iter_domain_term_entropies(terms, texts)
+
+        values = entropies["kin_and_relatedness"]
+        assert len(values) == 1  # only "lineage"; "haplotype" excluded
+        assert all(v > 0.0 for v in values)
+
+    def test_quantify_mean_equals_accessor_values(self) -> None:
+        """quantify_ambiguity_metrics and the accessor share one implementation."""
+        analyzer = DomainAnalyzer()
+        terms = [
+            Term(text="lineage", lemma="lineage", frequency=6,
+                 domains=["kin_and_relatedness"]),
+            Term(text="haplotype", lemma="haplotype", frequency=1,
+                 domains=["kin_and_relatedness"]),
+        ]
+        texts = self._polysemous_texts("lineage") + ["One stray haplotype mention."]
+
+        entropies = analyzer.iter_domain_term_entropies(terms, texts)
+        result = analyzer.quantify_ambiguity_metrics(terms, texts)
+        metrics = result["domain_metrics"]
+
+        assert metrics["n_valid_terms"] == 1
+        assert metrics["n_excluded_insufficient_contexts"] == 1
+        assert metrics["average_ambiguity_score"] == pytest.approx(
+            float(np.mean(entropies["kin_and_relatedness"]))
+        )
+        assert metrics["average_ambiguity_score"] > 0.0
+
+    def test_no_valid_terms_reports_no_fake_average(self) -> None:
+        """When nothing qualifies, no fabricated 0.0 average is emitted."""
+        analyzer = DomainAnalyzer()
+        terms = [
+            Term(text="haplotype", lemma="haplotype", frequency=1,
+                 domains=["economics"]),
+        ]
+        texts = ["One stray haplotype mention."]
+
+        result = analyzer.quantify_ambiguity_metrics(terms, texts)
+        metrics = result["domain_metrics"]
+
+        assert "average_entropy" not in metrics
+        assert "average_ambiguity_score" not in metrics
+        assert metrics["n_valid_terms"] == 0
+        assert metrics["n_excluded_insufficient_contexts"] == 1
+        assert "warning" in metrics
+
+
+class TestDomainAmbiguityRealData:
+    """End-to-end ambiguity fix proven on a real slice of the corpus.
+
+    Terms come from the pipeline artifact ``output/data/extracted_terms.json``
+    (real extraction output over the full corpus), filtered to the terms
+    that actually occur in the corpus slice under test.  This keeps the
+    end-to-end run fast while using only real data — no mocks, no
+    synthetic terms.
+    """
+
+    SLICE_SIZE = 60
+
+    @pytest.fixture(scope="class")
+    @classmethod
+    def real_texts(cls) -> List[str]:
+        """Load a real slice of data/corpus/abstracts.json."""
+        if not CORPUS_PATH.exists():
+            pytest.skip("real corpus data/corpus/abstracts.json not available")
+        texts = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
+        assert isinstance(texts, list) and len(texts) >= cls.SLICE_SIZE
+        return texts[: cls.SLICE_SIZE]
+
+    @pytest.fixture(scope="class")
+    @classmethod
+    def real_terms(cls, real_texts: List[str]) -> Dict[str, Term]:
+        """Reconstruct real pipeline-extracted terms occurring in the slice."""
+        terms_path = CORPUS_PATH.parent.parent.parent / "output" / "data" / (
+            "extracted_terms.json"
+        )
+        if not terms_path.exists():
+            pytest.skip("real extracted terms output/data/extracted_terms.json not available")
+
+        raw = json.loads(terms_path.read_text(encoding="utf-8"))
+        assert raw, "extracted_terms.json must contain real pipeline output"
+
+        import re
+
+        slice_text = " ".join(real_texts).lower()
+        terms: Dict[str, Term] = {}
+        for name, data in raw.items():
+            if not re.search(rf"\b{re.escape(name)}\b", slice_text):
+                continue
+            domains = [d for d in data.get("domains", []) if d]
+            if not domains:
+                continue
+            terms[name] = Term(
+                text=name,
+                lemma=data.get("lemma", name),
+                domains=domains,
+                frequency=int(data.get("frequency", 0)),
+                confidence=float(data.get("confidence", 0.0)),
+            )
+        assert terms, "no extracted terms occur in the corpus slice"
+        return terms
+
+    @pytest.fixture(scope="class")
+    @classmethod
+    def analyzer(cls) -> DomainAnalyzer:
+        """Shared analyzer for the end-to-end run."""
+        return DomainAnalyzer()
+
+    @pytest.fixture(scope="class")
+    @classmethod
+    def analyses(
+        cls, analyzer: DomainAnalyzer,
+        real_terms: Dict[str, Term], real_texts: List[str],
+    ) -> Dict[str, DomainAnalysis]:
+        """One end-to-end domain_analysis run over the real slice."""
+        return analyzer.analyze_all_domains(real_terms, real_texts)
+
+    def test_domain_ambiguity_mean_nonzero_and_consistent(
+        self, analyzer: DomainAnalyzer, real_texts: List[str],
+        real_terms: Dict[str, Term],
+    ) -> None:
+        """Domain ambiguity means are non-zero and equal the accessor's means."""
+        entropies = analyzer.iter_domain_term_entropies(real_terms, real_texts)
+
+        domains_with_valid_terms = 0
+        for domain, terms_list in analyzer._group_terms_by_domain(real_terms).items():
+            domain_values = entropies.get(domain, [])
+            result = analyzer.quantify_ambiguity_metrics(terms_list, real_texts)
+            metrics = result["domain_metrics"]
+
+            if not domain_values:
+                # No term in this domain had enough contexts: the writer
+                # must see missing data, never a folded-in 0.0 mean.
+                assert metrics.get("n_valid_terms", 0) == 0
+                assert "average_ambiguity_score" not in metrics
+                continue
+
+            expected_mean = float(np.mean(domain_values))
+            assert expected_mean > 0.0, (
+                f"{domain}: real per-term entropies should be non-zero"
+            )
+            assert metrics["n_valid_terms"] == len(domain_values)
+            assert metrics["average_ambiguity_score"] == pytest.approx(expected_mean)
+            assert metrics["average_entropy"] == pytest.approx(expected_mean)
+            domains_with_valid_terms += 1
+
+        assert domains_with_valid_terms > 0, (
+            "at least one domain must have terms with >= min_contexts "
+            "on the real corpus slice"
+        )
+
+    def test_quantify_matches_analyze_all_domains_output(
+        self, analyses: Dict[str, DomainAnalysis],
+    ) -> None:
+        """analyze_all_domains propagates the fixed ambiguity score."""
+        assert analyses and all(
+            isinstance(a, DomainAnalysis) for a in analyses.values()
+        )
+        non_zero = [
+            name for name, analysis in analyses.items()
+            if analysis.ambiguity_metrics.get("domain_metrics", {}).get(
+                "average_ambiguity_score", 0.0
+            ) > 0.0
+        ]
+        assert non_zero, "no domain reported a non-zero ambiguity score"

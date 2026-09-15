@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 import numpy as np
 
@@ -21,6 +21,9 @@ __all__ = [
     "DomainAnalysis",
     "DomainAnalyzer",
 ]
+
+if TYPE_CHECKING:  # pragma: no cover
+    from .semantic_entropy import SemanticEntropyResult
 
 # Function words excluded from lexical keyword-support computation so that
 # stop-word overlap cannot inflate support ratios.
@@ -862,35 +865,40 @@ class DomainAnalyzer:
             ),
         }
 
-    def quantify_ambiguity_metrics(
+    def _compute_term_entropy_results(
         self, terms: List[Term], texts: List[str]
-    ) -> Dict[str, Any]:
-        """Quantify ambiguity metrics for terms using Shannon Entropy.
+    ) -> Dict[str, "SemanticEntropyResult"]:
+        """Compute per-term semantic entropy (single shared implementation).
 
-        Delegates to the canonical ``semantic_entropy`` module for the core
-        TF-IDF → KMeans → Shannon-entropy pipeline.  Sentences are tokenized
-        once for all terms and contexts are matched with the shared
-        word-boundary helper ``filter_matching_sentences``.  Results whose
-        entropy could not be computed (``status != "ok"``) are flagged and
-        excluded from the aggregate domain statistics.
+        Tokenizes every text once, matches whole-word sentence contexts
+        for each term with ``filter_matching_sentences``, and delegates to
+        the canonical ``semantic_entropy.calculate_semantic_entropy``
+        (TF-IDF → KMeans → Shannon entropy).  Both
+        ``quantify_ambiguity_metrics`` and ``iter_domain_term_entropies``
+        build on this method so there is exactly one per-term entropy
+        implementation.
 
         Args:
-            terms: List of terms to analyze
+            terms: Terms to analyze
             texts: Source texts for context
 
         Returns:
-            Ambiguity quantification metrics (raw entropy in bits plus the
-            normalized entropy fields from ``semantic_entropy``)
+            Mapping from lower-cased term text to its
+            ``SemanticEntropyResult``.  Terms with fewer usable contexts
+            than the canonical module's ``min_contexts`` (or too few to
+            cluster) carry ``status == "insufficient_contexts"`` and a
+            placeholder ``entropy_bits == 0.0``; callers MUST exclude
+            such results from aggregate statistics instead of folding
+            the placeholder into means.
         """
         from nltk.tokenize import sent_tokenize
 
-        from .semantic_entropy import HIGH_ENTROPY_THRESHOLD, calculate_semantic_entropy
-
-        ambiguity_scores: Dict[str, Any] = {}
+        from .semantic_entropy import calculate_semantic_entropy
 
         # Tokenize every text once; reuse the sentence lists for all terms
         tokenized_texts = [sent_tokenize(text) for text in texts]
 
+        results: Dict[str, "SemanticEntropyResult"] = {}
         for term in terms:
             term_text = term.text.lower()
             contexts: List[str] = []
@@ -902,9 +910,82 @@ class DomainAnalyzer:
                     if len(clean_context.split()) > 3:
                         contexts.append(clean_context)
 
-            # Delegate to canonical semantic entropy module
-            result = calculate_semantic_entropy(term=term_text, contexts=contexts)
+            results[term_text] = calculate_semantic_entropy(
+                term=term_text, contexts=contexts
+            )
 
+        return results
+
+    def iter_domain_term_entropies(
+        self,
+        terms: Union[List[Term], Dict[str, Term]],
+        texts: List[str],
+    ) -> Dict[str, List[float]]:
+        """Return valid per-term semantic entropies grouped by domain.
+
+        Shares the per-term implementation with
+        ``quantify_ambiguity_metrics`` via
+        ``_compute_term_entropy_results``.  Only terms whose entropy was
+        actually computed (``status == "ok"``, i.e. at least
+        ``min_contexts`` usable sentence contexts) contribute a value;
+        terms with fewer contexts are EXCLUDED, never folded in as 0.0.
+        A term belonging to several domains contributes its entropy to
+        each of them.
+
+        Args:
+            terms: Terms to analyze (list of ``Term`` or mapping of
+                name → ``Term``)
+            texts: Source texts for context
+
+        Returns:
+            Mapping from canonical domain name to the list of valid
+            per-term entropy values in bits.  Domains with no valid
+            terms map to an empty list.
+        """
+        term_list = list(terms.values()) if isinstance(terms, dict) else list(terms)
+        results = self._compute_term_entropy_results(term_list, texts)
+
+        domain_entropies: Dict[str, List[float]] = defaultdict(list)
+        for term in term_list:
+            result = results.get(term.text.lower())
+            if result is None or result.status != "ok":
+                continue
+            for domain in term.domains:
+                domain_entropies[domain].append(result.entropy_bits)
+
+        return dict(domain_entropies)
+
+    def quantify_ambiguity_metrics(
+        self, terms: List[Term], texts: List[str]
+    ) -> Dict[str, Any]:
+        """Quantify ambiguity metrics for terms using Shannon Entropy.
+
+        Delegates per-term entropy computation to the shared
+        ``_compute_term_entropy_results`` (canonical ``semantic_entropy``
+        module: TF-IDF → KMeans → Shannon-entropy).  Only results with
+        ``status == "ok"`` contribute to the domain aggregate; results
+        flagged ``insufficient_contexts`` (fewer usable contexts than the
+        canonical ``min_contexts``) or ``error`` are excluded and
+        counted, never folded into the mean as 0.0.
+
+        Args:
+            terms: List of terms to analyze
+            texts: Source texts for context
+
+        Returns:
+            Ambiguity quantification metrics.  ``domain_metrics`` carries
+            ``average_ambiguity_score`` (the mean of valid per-term
+            entropies — the key consumed by the pipeline/visualization
+            writers of ``domain_statistics.json``) alongside the raw
+            ``average_entropy``, the normalized entropy fields from
+            ``semantic_entropy``, and exclusion counts.
+        """
+        from .semantic_entropy import HIGH_ENTROPY_THRESHOLD
+
+        entropy_results = self._compute_term_entropy_results(terms, texts)
+
+        ambiguity_scores: Dict[str, Any] = {}
+        for term_text, result in entropy_results.items():
             ambiguity_scores[term_text] = {
                 "total_occurrences": result.n_contexts,
                 "entropy_bits": result.entropy_bits,
@@ -923,19 +1004,34 @@ class DomainAnalyzer:
                 s["entropy_bits"] for s in domain_scores if s["status"] == "ok"
             ]
 
+            n_insufficient = sum(
+                1 for s in domain_scores if s["status"] == "insufficient_contexts"
+            )
+            n_errors = sum(1 for s in domain_scores if s["status"] == "error")
+
             if valid_scores:
                 valid_normalized = [
                     s["entropy_normalized"] for s in domain_scores
                     if s["status"] == "ok"
                 ]
+                average_entropy = float(np.mean(valid_scores))
                 overall_metrics = {
-                    "average_entropy": np.mean(valid_scores),
-                    "max_entropy": np.max(valid_scores),
+                    "average_entropy": average_entropy,
+                    # Canonical key for the ``domain_statistics.json``
+                    # writers (pipeline/visualization read this name);
+                    # aliases ``average_entropy`` so the reported domain
+                    # ambiguity score reflects real per-term entropies.
+                    "average_ambiguity_score": average_entropy,
+                    "max_entropy": float(np.max(valid_scores)),
+                    # Alias for consumers reading ``max_ambiguity_score``
+                    # (same key-mismatch family as average_ambiguity_score)
+                    "max_ambiguity_score": float(np.max(valid_scores)),
                     "average_entropy_normalized": float(np.mean(valid_normalized)),
-                    "n_excluded_failures": sum(
-                        1 for s in domain_scores if s["status"] != "ok"
-                    ),
-                    "total_information_loss_bits": np.sum(valid_scores),
+                    "n_valid_terms": len(valid_scores),
+                    "n_excluded_failures": n_insufficient + n_errors,
+                    "n_excluded_insufficient_contexts": n_insufficient,
+                    "n_excluded_errors": n_errors,
+                    "total_information_loss_bits": float(np.sum(valid_scores)),
                     "highly_ambiguous_terms": [
                         term for term, score in ambiguity_scores.items()
                         if score["status"] == "ok"
@@ -943,10 +1039,21 @@ class DomainAnalyzer:
                     ],
                 }
             else:
-                overall_metrics = {"average_entropy": 0.0}
+                # No term had enough contexts to compute entropy.  Report
+                # exclusion counts honestly instead of fabricating a 0.0
+                # average (consumers apply their missing-data default).
+                overall_metrics = {
+                    "n_valid_terms": 0,
+                    "n_excluded_failures": n_insufficient + n_errors,
+                    "n_excluded_insufficient_contexts": n_insufficient,
+                    "n_excluded_errors": n_errors,
+                    "warning": (
+                        "No term had enough contexts to compute semantic "
+                        "entropy; average entropy is undefined."
+                    ),
+                }
         else:
             overall_metrics = {"error": "No terms found for ambiguity analysis"}
-
 
         return {
             "term_ambiguity_scores": ambiguity_scores,

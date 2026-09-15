@@ -16,6 +16,7 @@ __all__ = [
     "DescriptiveStats",
     "calculate_descriptive_stats",
     "t_test",
+    "cohens_d",
     "calculate_correlation",
     "calculate_confidence_interval",
     "fit_distribution",
@@ -79,19 +80,83 @@ def calculate_descriptive_stats(data: np.ndarray) -> DescriptiveStats:
     )
 
 
+def cohens_d(
+    x: np.ndarray, y: np.ndarray, correction: bool = True
+) -> float:
+    """Compute Cohen's d effect size from the pooled standard deviation.
+
+    d = (mean(x) - mean(y)) / s_pooled where
+    s_pooled = sqrt(((n_x - 1) * var_x + (n_y - 1) * var_y) / (n_x + n_y - 2))
+    uses unbiased (ddof=1) sample variances.
+
+    When ``correction`` is True (default), the Hedges-style small-sample
+    correction factor J = 1 - 3 / (4 * (n_x + n_y) - 9) is applied,
+    yielding Hedges' g.  J -> 1 as sample size grows, so the correction
+    is negligible for large samples and material for small ones (it
+    removes the slight downward bias of d when n < ~20).
+
+    Args:
+        x: First sample
+        y: Second sample
+        correction: Apply the Hedges-style small-sample correction
+            (Hedges' g); False returns raw Cohen's d.
+
+    Returns:
+        Cohen's d (Hedges' g when ``correction=True``).  Returns 0.0 when
+        the pooled standard deviation is zero (both samples constant):
+        the effect size is mathematically undefined there, and 0.0 is a
+        "no measurable effect" sentinel — callers comparing constant
+        groups should treat the value as undefined, not as evidence of
+        equality of means.
+
+    Raises:
+        ValueError: If either sample is empty.
+    """
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    n1, n2 = len(x), len(y)
+    if n1 == 0 or n2 == 0:
+        raise ValueError("cohens_d requires at least one observation per sample")
+
+    df = n1 + n2 - 2
+    var1 = np.var(x, ddof=1) if n1 > 1 else 0.0
+    var2 = np.var(y, ddof=1) if n2 > 1 else 0.0
+    pooled_var = ((n1 - 1) * var1 + (n2 - 1) * var2) / df if df > 0 else 0.0
+    pooled_sd = float(np.sqrt(pooled_var))
+
+    if pooled_sd == 0:
+        return 0.0
+
+    d = (float(np.mean(x)) - float(np.mean(y))) / pooled_sd
+    if correction:
+        d *= 1.0 - 3.0 / (4.0 * (n1 + n2) - 9.0)
+    return float(d)
+
+
 def t_test(
     sample1: np.ndarray,
     sample2: Optional[np.ndarray] = None,
     mu: Optional[float] = None,
     alternative: str = "two-sided",
+    equal_var: bool = False,
 ) -> Dict[str, float]:
     """Perform t-test.
+
+    The two-sample test defaults to Welch's unequal-variances t-test: the
+    standard error is the unpooled ``sqrt(var1/n1 + var2/n2)`` and the
+    degrees of freedom use the Welch–Satterthwaite approximation.  Pass
+    ``equal_var=True`` for Student's pooled-variance t-test (pooled
+    standard deviation, ``df = n1 + n2 - 2``), appropriate when the two
+    populations are assumed to have equal variance.
 
     Args:
         sample1: First sample
         sample2: Second sample (for two-sample test) or None (for one-sample)
         mu: Population mean (for one-sample test)
         alternative: Alternative hypothesis (two-sided, greater, less)
+        equal_var: If True, use the pooled-variance (Student) two-sample
+            t-test; if False (default), use Welch's unequal-variances
+            t-test.  Ignored for the one-sample test.
 
     Returns:
         Dictionary with t-statistic, p-value, and degrees of freedom
@@ -132,23 +197,35 @@ def t_test(
             var1 = np.var(sample1, ddof=1) if n1 > 1 else 0.0
             var2 = np.var(sample2, ddof=1) if n2 > 1 else 0.0
 
-        # Pooled standard error
-        pooled_std = np.sqrt((var1 / n1) + (var2 / n2))
-        # Guard: zero pooled_std means both groups have zero variance
+        if equal_var:
+            # Student's pooled-variance t-test
+            df = n1 + n2 - 2
+            if df <= 0:
+                # Fewer than two total observations: no variance estimate
+                pooled_std = 0.0
+            else:
+                pooled_var = (
+                    (n1 - 1) * var1 + (n2 - 1) * var2
+                ) / df
+                pooled_std = np.sqrt(pooled_var * (1 / n1 + 1 / n2))
+        else:
+            # Welch standard error (unpooled) — default
+            pooled_std = np.sqrt((var1 / n1) + (var2 / n2))
+            # Degrees of freedom (Welch's approximation)
+            # Guard: n=1 causes division by zero in Welch-Satterthwaite df
+            denom1 = (var1 / n1) ** 2 / (n1 - 1) if n1 > 1 else 0.0
+            denom2 = (var2 / n2) ** 2 / (n2 - 1) if n2 > 1 else 0.0
+            denom = denom1 + denom2
+            if denom == 0:
+                df = max(n1 - 1, 1) + max(n2 - 1, 1)
+            else:
+                df = ((var1 / n1 + var2 / n2) ** 2) / denom
+
+        # Guard: zero standard error means both groups have zero variance
         if pooled_std == 0:
             t_stat = 0.0 if np.isclose(mean1, mean2) else np.inf * np.sign(mean1 - mean2)
         else:
             t_stat = (mean1 - mean2) / pooled_std
-
-        # Degrees of freedom (Welch's approximation)
-        # Guard: n=1 causes division by zero in Welch-Satterthwaite df
-        denom1 = (var1 / n1) ** 2 / (n1 - 1) if n1 > 1 else 0.0
-        denom2 = (var2 / n2) ** 2 / (n2 - 1) if n2 > 1 else 0.0
-        denom = denom1 + denom2
-        if denom == 0:
-            df = max(n1 - 1, 1) + max(n2 - 1, 1)
-        else:
-            df = ((var1 / n1 + var2 / n2) ** 2) / denom
 
     # Calculate p-value using scipy t-distribution
     if alternative == "two-sided":
