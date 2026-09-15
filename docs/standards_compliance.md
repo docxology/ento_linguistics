@@ -8,17 +8,18 @@ Current project quality metrics and compliance status. Corpus figures below matc
 |--------|-------|
 | **Total tests** | Run `uv run pytest tests/ --collect-only -q` from `projects/ento_linguistics/` for the current count |
 | **Mock usage** | None — all tests use real data |
+| **Coverage method** | Branch coverage (enabled in `pyproject.toml`, `[tool.coverage.run] branch = true`); measure with `uv run pytest tests/ --cov=src` |
 
 ### Test File Coverage
 
 | Subpackage | Test Files | Modules Covered |
 |------------|-----------|-----------------|
-| `analysis/` | `test_term_extraction.py`, `test_text_analysis.py`, `test_discourse_analysis.py`, `test_domain_analysis.py`, `test_conceptual_mapping.py`, `test_semantic_entropy.py`, `test_cace_scoring.py` + expanded/coverage variants | All 12 analysis modules |
+| `analysis/` | `test_term_extraction.py`, `test_text_analysis.py`, `test_discourse_analysis.py`, `test_domain_analysis.py`, `test_conceptual_mapping.py`, `test_semantic_entropy.py`, `test_cace_scoring.py`, `test_performance.py` (tests `analysis/performance.py`) + expanded/coverage variants | All 12 analysis modules |
 | `visualization/` | `test_concept_visualization.py`, `test_statistical_visualization.py`, `test_visualization.py`, `test_plots.py` + expanded/coverage variants | All 5 visualization modules |
 | `core/` | `test_exceptions.py`, `test_metrics.py`, `test_parameters.py`, `test_validation.py`, `test_core_validation.py` | All 7 core modules |
 | `data/` | `test_literature_mining.py`, `test_data_generator.py`, `test_data_processing.py` + expanded/coverage variants | All 4 data modules |
-| `pipeline/` | `test_simulation.py`, `test_reporting.py`, `test_performance.py` + coverage variants | All 2 pipeline modules |
-| Integration | `tests/integration/` (5 files) | Cross-module workflows |
+| `pipeline/` | `test_simulation.py`, `test_reporting.py`, `test_pipeline_init.py` | All 3 pipeline modules |
+| Integration | `tests/integration/` (4 files) | Cross-module workflows |
 
 ## Code Quality
 
@@ -38,7 +39,7 @@ Current project quality metrics and compliance status. Corpus figures below matc
 |----------|--------|-------|
 | **Figure references** | ✅ | `\ref{fig:...}` with matching `\label{fig:...}` |
 | **Figure captions** | ✅ | Descriptive, multi-sentence captions on all 11 generated figures |
-| **16pt font floor** | ✅ | Enforced in `concept_visualization.py` and `statistical_visualization.py` |
+| **16pt font floor** | ✅ | Enforced by a shared matplotlib style applied across all visualization modules at figure-creation time (not per-module comments) |
 | **Figure registry** | ✅ | `output/figures/figure_registry.json` tracks all generated figures |
 | **Section numbering** | ✅ | 01–06 main, S01–S04 supplemental, 98–99 references |
 | **Config metadata** | ✅ | `config.yaml` with title, author, ORCID, keywords |
@@ -75,9 +76,11 @@ Current pipeline run generates **11 figures** (all sourced from real data):
 | Extracted candidate terms | `extracted_terms.json` (key count) | 888 |
 | Domain-assigned terms | `extracted_terms.json` | 261 |
 | Concept map | `concept_map_summary.json` | 6 concepts, 9 relationships |
-| Terminology network | `concept_map_summary.json` | 894 nodes, 563 edges |
+| Terminology network | `concept_map_summary.json` | 894 nodes, 514 edges |
 
 ## Validation Commands
+
+Command lists below reference `scripts/01_build_corpus.py`, `scripts/02_generate_figures.py`, and the `_`-prefixed helper scripts. Helpers are subject to consolidation — if one is missing, consult `scripts/README.md` for its current replacement before treating the command as stale.
 
 ```bash
 # Full test suite (pipeline entry point — also clears and regenerates output/)
@@ -106,13 +109,13 @@ uv run python scripts/_quality_report.py
 | `infrastructure.*` imports | ✅ Removed | All imports use local `src/` modules |
 | Mock/fake data in scripts | ✅ Removed | Real Jaccard co-occurrence, real entropy scores |
 | Hardcoded corpus statistics | ✅ | Manuscript markdown uses `{{KEY}}`; values are not edited as literals in prose |
-| Font size compliance | ✅ | 16pt floor on all visualization modules |
+| Font size compliance | ✅ | 16pt floor enforced via shared style application across visualization modules |
 | Clean-slate execution | ✅ | `_setup_directories()` wipes output before rebuild |
 | Stale figures | ✅ | No stale artefacts — wiped on every run |
 
 ---
 
-**Last Verified:** 2026-04-15 (corpus table synced to `output/data/*.json`; test counts may change—run `uv run pytest tests/ --cov=src -q` for live numbers)
+**Last Verified:** 2026-09-14 (corpus table synced to `output/data/*.json`; test count 1225 via `uv run pytest tests/ --collect-only -q`; coverage via `uv run pytest tests/ --cov=src`)
 
 ## See Also
 

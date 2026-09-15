@@ -28,7 +28,7 @@ Economics & Sex \& Reproduction & 0.67 & 0.503 & 0.470 & 0.14 & Negligible \\
 Unit of Individuality & Kin \& Relatedness & 0.34 & 0.734 & 0.734 & 0.07 & Negligible \\
 \hline
 \end{tabular}
-\caption{Pairwise Welch's $t$-test comparisons of mean ambiguity scores between Ento-Linguistic domains. Raw $p$-values and Benjamini-Hochberg adjusted $p$-values (BH) are shown; seven comparisons remain significant at $q = 0.05$ after correction. The one-way ANOVA across all six domains yields $F(5, 217) = 8.74$, $p < 0.001$, where $df_1 = k - 1 = 5$ (between-group) and $df_2 = N - k$ (within-group, $N = 261$ domain-assigned terms).}
+\caption{Pairwise Welch's $t$-test comparisons of mean ambiguity scores between Ento-Linguistic domains. Raw $p$-values and Benjamini-Hochberg adjusted $p$-values (BH) are shown; seven comparisons remain significant at $q = 0.05$ after correction. The one-way ANOVA across all six domains yields $F(5, 301) = 8.74$, $p < 0.001$, where $df_1 = k - 1 = 5$ (between-group) and $df_2 = N - k = 301$ (within-group; $N = 307$ domain-level term counts, since a term assigned to multiple domains contributes once per domain).}
 \label{tab:pairwise_domain}
 \end{table}
 
@@ -77,17 +77,17 @@ Table \ref{tab:entropy_distribution} summarizes the distribution of semantic ent
 \hline
 \textbf{Domain} & \textbf{Mean $H$ (bits)} & \textbf{High-entropy terms (\%)} & \textbf{$N$} \\
 \hline
-Economics & 1.21 & 40.0 & 10 \\
-Power \& Labor & 0.39 & 1.6 & 63 \\
-Behavior \& Identity & 0.46 & 5.0 & 40 \\
-Sex \& Reproduction & 0.36 & 1.6 & 64 \\
-Unit of Individuality & 0.29 & 5.5 & 73 \\
-Kin \& Relatedness & 0.25 & 1.8 & 57 \\
+Economics & {{DOMAIN_ECONOMICS_ENTROPY}} & {{DOMAIN_ECONOMICS_HIGH_ENTROPY_PCT}} & 10 \\
+Power \& Labor & {{DOMAIN_POWER_AND_LABOR_ENTROPY}} & {{DOMAIN_POWER_AND_LABOR_HIGH_ENTROPY_PCT}} & 63 \\
+Behavior \& Identity & {{DOMAIN_BEHAVIOR_AND_IDENTITY_ENTROPY}} & {{DOMAIN_BEHAVIOR_AND_IDENTITY_HIGH_ENTROPY_PCT}} & 40 \\
+Sex \& Reproduction & {{DOMAIN_SEX_AND_REPRODUCTION_ENTROPY}} & {{DOMAIN_SEX_AND_REPRODUCTION_HIGH_ENTROPY_PCT}} & 64 \\
+Unit of Individuality & {{DOMAIN_UNIT_OF_INDIVIDUALITY_ENTROPY}} & {{DOMAIN_UNIT_OF_INDIVIDUALITY_HIGH_ENTROPY_PCT}} & 73 \\
+Kin \& Relatedness & {{DOMAIN_KIN_AND_RELATEDNESS_ENTROPY}} & {{DOMAIN_KIN_AND_RELATEDNESS_HIGH_ENTROPY_PCT}} & 57 \\
 \hline
-\textbf{Overall} & 0.37 & 4.2 & \textbf{ 261 } \\
+\textbf{Overall} & {{CORPUS_OVERALL_ENTROPY}} & {{CORPUS_OVERALL_HIGH_ENTROPY_PCT}} & \textbf{ 307 } \\
 \hline
 \end{tabular}
-\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), corresponding to terms whose usage contexts span many distinct semantic senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is capped at $\min(k_{\max},\, n{-}1,\, \lfloor\!\sqrt{n}\rfloor)$ to prevent degenerate one-point-per-cluster assignments.}
+\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), corresponding to terms whose usage contexts span many distinct semantic senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is set to $k = \max(2,\, \min(k_{\max},\, n{-}1,\, \max(2, \lfloor\!\sqrt{n}\rfloor)))$ with $k_{\max}=5$ to prevent degenerate one-point-per-cluster assignments; each result also reports $H_{\max} = \log_2 k$ and the normalized entropy $H/H_{\max} \in [0,1]$.}
 \label{tab:entropy_distribution}
 \end{table}
 

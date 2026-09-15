@@ -6,13 +6,13 @@ The `docs/manuscript/` directory contains research manuscript sections in markdo
 
 ## Template variables (corpus statistics)
 
-The Ento-Linguistics PDF build uses **`scripts/_render_pdf_override.py`** (not the generic infrastructure renderer alone). Before Pandoc runs, **`_load_corpus_vars(project_root)`** reads JSON under `data/corpus/` and `output/data/` and returns a flat mapping; **`_apply_corpus_vars(content, vars_, strict=...)`** replaces every `{{KEY}}` in the concatenated markdown with the corresponding string.
+The Ento-Linguistics PDF build uses **`scripts/_render_pdf_override.py`** (not the generic infrastructure renderer alone). Before Pandoc runs, **`_load_corpus_vars(project_root)`** reads JSON under `data/corpus/` and `output/data/` and returns a flat mapping; **`_apply_corpus_vars(content, vars_, strict=...)`** replaces every double-brace variable token in the concatenated markdown with the corresponding string.
 
-**Sources of truth:** `abstracts.json` (publication count), `output/data/corpus_statistics.json`, `extracted_terms.json`, `domain_statistics.json`, `concept_map_summary.json`. Extended keys include per-domain `DOMAIN_<SLUG>_ENTROPY`, `_HIGH_ENTROPY_PCT`, `_ANTHROPOMORPHIC_PROPORTION_PCT`, per-concept `CONCEPT_<CONCEPT_SLUG>_TERMS`, network `NETWORK_*`, `CORPUS_TOP_TERM_1`…`5`, `TERM_FREQ_<TOKEN_SLUG>` (corpus top-token frequencies), and `EXTRACTED_TERM_FREQ_<SLUG>` for extraction-local lemma counts.
+**Sources of truth:** `abstracts.json` (publication count), `output/data/corpus_statistics.json`, `extracted_terms.json`, `domain_statistics.json`, `concept_map_summary.json`. Extended keys include per-domain `DOMAIN_<SLUG>_ENTROPY`, `_HIGH_ENTROPY_PCT`, `_ANTHROPOMORPHIC_PROPORTION_PCT`, per-concept `CONCEPT_<CONCEPT_SLUG>_TERMS`, network `NETWORK_*`, `CORPUS_TOP_TERM_1`…`5` and `CORPUS_TOP_FREQ_1`…`5` (corpus-level token frequencies), and `TERM_FREQ_<TOKEN_SLUG>` (extraction-local candidate-term frequencies from `extracted_terms.json`).
 
 **Strict mode:** `build_pdf(strict_templates=True)`, the CLI flag `--strict-templates`, or environment variable `STRICT_TEMPLATE_VARS=1`/`true`/`yes` causes an unresolved placeholder after substitution to print to stderr and **`sys.exit(1)`** (use in CI to catch missing keys).
 
-**Editing rule:** any number that should track the latest pipeline run must be a `{{KEY}}` present in `_load_corpus_vars`; do not duplicate corpus statistics as literals in markdown.
+**Editing rule:** any number that should track the latest pipeline run must be a double-brace variable token present in `_load_corpus_vars`; do not duplicate corpus statistics as literals in markdown.
 
 ## File Structure
 
@@ -147,7 +147,7 @@ The citation system uses **BibTeX with plainnat style** for robust bibliography 
 
 - Citation keys are **case-sensitive** (use exact keys from `references.bib`)
 - All cited entries must exist in `references.bib`
-- The References section uses `\bibliography{references}` and `\nocite{*}` commands in `99_references.md`
+- The References section uses `\bibliography{references}` in `99_references.md` and prints only cited entries
 - Bibliography style is `plainnat` (natbib author--year in the reference list; in-text form depends on `\cite` vs `\citep` / Pandoc `[@key]` vs `@key`)
 
 **Bibliography Security:**

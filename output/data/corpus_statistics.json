@@ -1,8 +1,8 @@
 {
-  "total_tokens": 48787,
-  "unique_tokens": 7105,
+  "total_tokens": 48804,
+  "unique_tokens": 7102,
   "total_characters": 537133,
-  "avg_token_length": 7.32410273228524,
+  "avg_token_length": 7.321100729448406,
   "most_common_tokens": [
     [
       "ant",
@@ -85,5 +85,5 @@
       161
     ]
   ],
-  "type_token_ratio": 0.14563305798675877
+  "type_token_ratio": 0.14552085894598804
 }

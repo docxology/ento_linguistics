@@ -142,7 +142,7 @@ class TestQuantifyRhetoricalPatterns:
         """Test with empty list."""
         result = quantify_rhetorical_patterns([])
         for pattern in result.values():
-            assert pattern["effectiveness_score"] == 0
+            assert pattern["heuristic_frequency_index"] == 0
 
     def test_returns_quantified_data(self, sample_texts):
         """Test that quantified patterns have expected keys."""
@@ -150,21 +150,35 @@ class TestQuantifyRhetoricalPatterns:
         for pattern_name, data in result.items():
             assert "total_occurrences" in data
             assert "text_coverage" in data
-            assert "effectiveness_score" in data
-            assert "persuasiveness_rating" in data
+            assert "heuristic_frequency_index" in data
+            assert "heuristic_persuasiveness_index" in data
             assert "context_examples" in data
 
-    def test_effectiveness_bounded(self, sample_texts):
-        """Test effectiveness scores are between 0 and 1."""
+    def test_heuristic_frequency_index_bounded(self, sample_texts):
+        """Test heuristic frequency indices are between 0 and 1."""
         result = quantify_rhetorical_patterns(sample_texts)
         for data in result.values():
-            assert 0 <= data["effectiveness_score"] <= 1
+            assert 0 <= data["heuristic_frequency_index"] <= 1
 
-    def test_persuasiveness_bounded(self, sample_texts):
-        """Test persuasiveness ratings are between 0 and 1."""
+    def test_text_coverage_counts_distinct_texts(self):
+        """Coverage must be fraction of distinct texts, not capped examples."""
+        # One text with several matches: examples cap at 2, but the pattern
+        # occurs in exactly 1 of the 5 texts
+        texts = [
+            "For example, ants cooperate. Consider the leafcutters too.",
+            "No matches here at all.",
+            "Nothing rhetorical in this text either.",
+            "Still nothing relevant.",
+            "Plain text number five.",
+        ]
+        result = quantify_rhetorical_patterns(texts)
+        assert result["anecdotal"]["text_coverage"] == pytest.approx(1 / 5)
+
+    def test_heuristic_persuasiveness_bounded(self, sample_texts):
+        """Test heuristic persuasiveness indices are between 0 and 1."""
         result = quantify_rhetorical_patterns(sample_texts)
         for data in result.values():
-            assert 0 <= data["persuasiveness_rating"] <= 1
+            assert 0 <= data["heuristic_persuasiveness_index"] <= 1
 
 
 class TestScoreArgumentativeStructures:
@@ -178,10 +192,10 @@ class TestScoreArgumentativeStructures:
     def test_single_structure(self):
         """Test scoring a single structure."""
         structure = ArgumentativeStructure(
-            claim="Therefore ants cooperate in foraging activities.",
+            claim=["Therefore ants cooperate in foraging activities."],
             evidence=["Research shows colony-level coordination of foraging behavior."],
-            warrant="Because cooperation improves colony fitness over time.",
-            qualification="However variation exists among species.",
+            warrant=["Because cooperation improves colony fitness over time."],
+            qualification=["However variation exists among species."],
         )
         result = score_argumentative_structures([structure], ["text"])
         assert "structure_0" in result
@@ -190,14 +204,14 @@ class TestScoreArgumentativeStructures:
         assert "evidence_quality" in scored
         assert "reasoning_coherence" in scored
         assert "overall_strength" in scored
-        assert "confidence_score" in scored
+        assert "heuristic_confidence_index" in scored
 
     def test_scores_bounded(self):
         """Test all scores are between 0 and 1."""
         structure = ArgumentativeStructure(
-            claim="Therefore the hypothesis is supported by data.",
+            claim=["Therefore the hypothesis is supported by data."],
             evidence=["The data clearly support this observation."],
-            warrant="Because the evidence aligns with predictions.",
+            warrant=["Because the evidence aligns with predictions."],
         )
         result = score_argumentative_structures([structure], ["text"])
         scored = result["structure_0"]
@@ -205,15 +219,15 @@ class TestScoreArgumentativeStructures:
         assert 0 <= scored["evidence_quality"] <= 1
         assert 0 <= scored["reasoning_coherence"] <= 1
         assert 0 <= scored["overall_strength"] <= 1
-        assert 0 <= scored["confidence_score"] <= 1
+        assert 0 <= scored["heuristic_confidence_index"] <= 1
 
     def test_empty_claim_lower_strength(self):
         """Test that empty claim yields lower strength."""
-        weak = ArgumentativeStructure(claim="", evidence=[], warrant="")
+        weak = ArgumentativeStructure(claim=[], evidence=[], warrant=[])
         strong = ArgumentativeStructure(
-            claim="Therefore this result is significant in context.",
+            claim=["Therefore this result is significant in context."],
             evidence=["The study data confirms the prediction."],
-            warrant="Because the model predicts this outcome precisely.",
+            warrant=["Because the model predicts this outcome precisely."],
         )
         weak_result = score_argumentative_structures([weak], ["text"])
         strong_result = score_argumentative_structures([strong], ["text"])
@@ -222,8 +236,8 @@ class TestScoreArgumentativeStructures:
     def test_multiple_structures(self):
         """Test scoring multiple structures."""
         structures = [
-            ArgumentativeStructure(claim="Thus ants cooperate."),
-            ArgumentativeStructure(claim="Hence colonies thrive."),
+            ArgumentativeStructure(claim=["Thus ants cooperate."]),
+            ArgumentativeStructure(claim=["Hence colonies thrive."]),
         ]
         result = score_argumentative_structures(structures, ["text"])
         assert "structure_0" in result
@@ -249,7 +263,7 @@ class TestAnalyzeNarrativeFrequency:
             assert "average_text_length" in data
             assert "unique_phrase_count" in data
             assert "examples" in data
-            assert "consistency_score" in data
+            assert "heuristic_consistency_index" in data
 
     def test_coverage_bounded(self, sample_texts):
         """Test coverage percentage is between 0 and 100."""
@@ -266,8 +280,8 @@ class TestAnalyzeNarrativeFrequency:
         for data in result.values():
             assert len(data["examples"]) <= 3
 
-    def test_consistency_score_bounded(self, sample_texts):
-        """Test consistency scores are between 0 and 1."""
+    def test_heuristic_consistency_index_bounded(self, sample_texts):
+        """Test heuristic consistency indices are between 0 and 1."""
         result = analyze_narrative_frequency(sample_texts)
         for data in result.values():
-            assert 0 <= data["consistency_score"] <= 1
+            assert 0 <= data["heuristic_consistency_index"] <= 1

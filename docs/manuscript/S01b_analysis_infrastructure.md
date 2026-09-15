@@ -73,13 +73,13 @@ Term pattern counting (`_analyze_term_patterns`): compound (contains `_`/`-`), m
 
 | Concept | Terms | Domains |
 |---------|-------|---------|
-| `biological_individuality` | 75 | Unit of Individuality |
-| `social_organization` | 98 | Power & Labor; Behavior & Identity |
-| `reproductive_biology` | 67 | Sex & Reproduction |
-| `kinship_systems` | 64 | Kin & Relatedness |
-| `resource_economics` | 15 | Economics |
-| `behavioral_ecology` | 56 | Behavior & Identity; Economics |
-| **Concept relationships** | **9** | |
+| `biological_individuality` | {{CONCEPT_BIOLOGICAL_INDIVIDUALITY_TERMS}} | Unit of Individuality |
+| `social_organization` | {{CONCEPT_SOCIAL_ORGANIZATION_TERMS}} | Power & Labor; Behavior & Identity |
+| `reproductive_biology` | {{CONCEPT_REPRODUCTIVE_BIOLOGY_TERMS}} | Sex & Reproduction |
+| `kinship_systems` | {{CONCEPT_KINSHIP_SYSTEMS_TERMS}} | Kin & Relatedness |
+| `resource_economics` | {{CONCEPT_RESOURCE_ECONOMICS_TERMS}} | Economics |
+| `behavioral_ecology` | {{CONCEPT_BEHAVIORAL_ECOLOGY_TERMS}} | Behavior & Identity; Economics |
+| **Concept relationships** | **{{CORPUS_RELATIONSHIP_COUNT}}** | |
 
 ---
 
@@ -116,7 +116,7 @@ Term pattern counting (`_analyze_term_patterns`): compound (contains `_`/`-`), m
 
 ## Core Infrastructure (`src/core/`)
 
-`parameters.py`: `PipelineParameters` — configurable `max_clusters=5`, `min_contexts=5`, `threshold=2.0`, `random_state=42`, `window_size=5`, `max_features=1000`. `validation.py`/`validation_utils.py`: type checks and domain membership guards on all public API entry points. `metrics.py`: wall-clock, memory, throughput per stage. `markdown_integration.py`: `\ref{}` resolution and cross-reference validation.
+`parameters.py`: `ParameterSet`/`ParameterSweep` infrastructure plus `AnalysisParameters` defaults (`min_term_freq=5`, `cooccurrence_threshold=2`). The semantic-entropy parameters (`max_clusters=5`, `min_contexts=5`, `threshold=2.0`, `random_state=42`) are function defaults of `calculate_semantic_entropy`; TF-IDF `max_features=1000` is set in the vectorizer. Context windows are per-call arguments: 3-token context-extraction windows in `term_extraction.py`, 10-word term co-occurrence windows (`TerminologyExtractor.find_term_cooccurrences`), and 50-word domain co-occurrence windows (`DomainAnalyzer.analyze_term_cooccurrence`). `validation.py`/`validation_utils.py`: type checks and domain membership guards on all public API entry points. `metrics.py`: wall-clock, memory, throughput per stage. `markdown_integration.py`: `\ref{}` resolution and cross-reference validation.
 
 ---
 
@@ -124,6 +124,6 @@ Term pattern counting (`_analyze_term_patterns`): compound (contains `_`/`-`), m
 
 - **Deterministic**: `random_state=42` in all KMeans calls.
 - **Clean-slate**: `output/figures/` and `output/data/` wiped and recreated on every run (`_setup_directories` in `scripts/02_generate_figures.py`).
-- **Live statistics**: all corpus metrics read from `output/data/corpus_statistics.json`, `domain_statistics.json`, `concept_map_summary.json` — not hardcoded anywhere in the manuscript.
+- **Live statistics**: all corpus metrics are read from `output/data/corpus_statistics.json`, `domain_statistics.json`, and `concept_map_summary.json` and substituted into the manuscript prose at PDF build time via template placeholders (`scripts/_render_pdf_override.py`) — no corpus statistic appears as a hardcoded literal in the manuscript.
 - **Dependency pinning**: all Python dependencies pinned in `pyproject.toml`.
 - **Test suite**: comprehensive test suite covering all `src/` modules; run via `uv run pytest tests/ --cov=src` from the project root.

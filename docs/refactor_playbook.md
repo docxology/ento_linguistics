@@ -78,7 +78,7 @@ Scripts compute `PROJECT_ROOT` at import time using `Path(__file__).parent.paren
 
 1. **Scope**: Identify which modules are affected using the dependency map above
 2. **API contract**: Check function signatures and docstrings before modifying public APIs
-3. **Tests**: Run `uv run pytest tests/ -x -q` before and after changes (983 tests)
+3. **Tests**: Run `uv run pytest tests/ -x -q` before and after changes (1225 tests; measured by `uv run pytest tests/ --collect-only -q`)
 4. **Figures**: After touching visualization code, run `uv run python scripts/02_generate_figures.py` and verify all 11 outputs
 5. **Font floor**: If modifying any visualization, verify 16pt minimum font size is preserved
 6. **Preflight**: Run `uv run python scripts/_manuscript_preflight.py --strict` to verify figure references

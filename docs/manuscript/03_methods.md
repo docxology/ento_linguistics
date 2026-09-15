@@ -34,11 +34,11 @@ The assembled `LiteratureCorpus` stores `Publication` dataclass objects with the
 
 | Metric | Value |
 |--------|-------|
-| Documents | **369** |
-| Total processed tokens | **48787** |
-| Unique token types | **7105** |
-| Candidate terms extracted | **888** |
-| Domain-assigned terms | **261** |
+| Documents | **{{CORPUS_PUBLICATIONS}}** |
+| Total processed tokens | **{{CORPUS_TOTAL_TOKENS}}** |
+| Unique token types | **{{CORPUS_UNIQUE_TOKENS}}** |
+| Candidate terms extracted | **{{CORPUS_CANDIDATE_TERMS}}** |
+| Domain-assigned terms | **{{CORPUS_DOMAIN_TERMS}}** |
 
 These statistics are computed at runtime by `TextProcessor.get_vocabulary_stats()` and serialized to `output/data/corpus_statistics.json`; the values reported here are read directly from that file and are therefore always current with the last pipeline run.
 
@@ -57,7 +57,7 @@ To verify that the search strategy captured all six target Ento-Linguistic domai
 | Kin & Relatedness | kin selection, inclusive fitness, relatedness, altruism |
 | Economics | foraging, cost, benefit, resource allocation, trade-off |
 
-The current pipeline run extracted **888 terms distributed across all six domains**, of which **261 receive specific domain assignments**, sourced from `output/data/domain_statistics.json`. Domain-specific acquisition details, bridging term frequencies, and per-domain confidence statistics are reported in Supplemental Results \ref{sec:supplemental_results}.
+The current pipeline run extracted **{{CORPUS_CANDIDATE_TERMS}} terms distributed across all six domains**, of which **{{CORPUS_DOMAIN_TERMS}} receive specific domain assignments**, sourced from `output/data/domain_statistics.json`. Domain-specific acquisition details, bridging term frequencies, and per-domain confidence statistics are reported in Supplemental Results \ref{sec:supplemental_results}.
 
 ---
 
@@ -69,7 +69,7 @@ The statistical pipeline comprises six interdependent analytical layers applied 
 
 ### Term Extraction and Classification
 
-`TerminologyExtractor` (`src/analysis/term_extraction.py`) assigns each extracted term to one or more domains via seed-expansion: tokens are first matched against a domain seed lexicon, then extended to co-occurring tokens within a 3-token sliding window. Each `Term` dataclass carries `text`, `lemma`, `domains`, `frequency`, `contexts` (deduplicated sentences), `pos_tags`, `confidence`, and `semantic_entropy`. N-gram extraction (`TextProcessor.extract_ngrams`) captures compound terms (e.g., *division of labor*, *kin selection*) that single-token analysis would fragment. Full API documentation is in Section S3 of Supplemental Methods \ref{sec:supplemental_methods}.
+`TerminologyExtractor` (`src/analysis/term_extraction.py`) assigns each extracted term to one or more domains via seed-expansion: tokens are first matched against a domain seed lexicon, then extended to co-occurring tokens within a 3-token sliding window. Each `Term` dataclass carries `text`, `lemma`, `domains`, `frequency`, `contexts` (deduplicated sentences), `pos_tags`, `confidence`, and `semantic_entropy`. N-gram extraction (`TextProcessor.extract_ngrams`) captures compound terms (e.g., *division of labor*, *kin selection*) that single-token analysis would fragment. Full API documentation is in Supplemental Methods \ref{sec:supplemental_methods}.
 
 ### Semantic Entropy
 
@@ -79,7 +79,7 @@ To quantify terminological ambiguity, we compute **Semantic Entropy** $H(t)$ for
 H(t) = -\sum_{i=1}^{k} p_i \log_2 p_i \qquad \text{(bits)}
 \end{equation}
 
-where $p_i$ is the empirical proportion of usage contexts assigned to semantic cluster $i$ by $k$-means (scikit-learn, `random_state=42`) over TF-IDF context vectors. The number of clusters is set to $k = \max\!\bigl(2,\;\min(k_{\max},\; n-1,\; \lfloor\!\sqrt{n}\rfloor)\bigr)$ with $k_{\max}=5$ and $n = |C_t| \geq 3$, ensuring $k < n$ so that at least some clusters contain multiple contexts and the resulting entropy reflects genuine semantic spread rather than a degenerate uniform assignment. Terms with $H(t) > H^* = 2.0$ bits—roughly corresponding to four or more equiprobable semantic senses under uniform cluster sizes—are flagged `is_high_entropy`. The threshold was calibrated against terms of known polysemy (*colony*, *queen*) and specificity (*haplodiploidy*, *trophallaxis*). Implementation: `src/analysis/semantic_entropy.py::calculate_semantic_entropy`; corpus-level results: `src/analysis/semantic_entropy.py::calculate_corpus_entropy`.
+where $p_i$ is the empirical proportion of usage contexts assigned to semantic cluster $i$ by $k$-means (scikit-learn, `random_state=42`) over TF-IDF context vectors. The number of clusters is set to $k = \max\!\bigl(2,\;\min(k_{\max},\; n-1,\; \max(2, \lfloor\!\sqrt{n}\rfloor))\bigr)$ with $k_{\max}=5$ and $n = |C_t|$, ensuring $k < n$ so that at least some clusters contain multiple contexts and the resulting entropy reflects genuine semantic spread rather than a degenerate uniform assignment. Each result additionally reports the maximum attainable entropy $H_{\max} = \log_2 k$ and the normalized entropy $\hat{H}(t) = H(t)/H_{\max} \in [0,1]$, which rescales semantic spread independently of the cluster count. Terms with $H(t) > H^* = 2.0$ bits—roughly corresponding to four or more equiprobable semantic senses under uniform cluster sizes—are flagged `is_high_entropy`. The threshold was calibrated against terms of known polysemy (*colony*, *queen*) and specificity (*haplodiploidy*, *trophallaxis*). Implementation: `src/analysis/semantic_entropy.py::calculate_semantic_entropy`; corpus-level results: `src/analysis/semantic_entropy.py::calculate_corpus_entropy`.
 
 ### Domain-Level Statistical Tests
 
@@ -99,7 +99,7 @@ A four-level **multi-scale ambiguity classification** is applied to high-entropy
 
 ### Conceptual Network Analysis
 
-`ConceptualMapper` (`src/analysis/conceptual_mapping.py`) constructs a `ConceptMap` of **6 concepts** (biological_individuality, social_organization, reproductive_biology, kinship_systems, resource_economics, behavioral_ecology) linked by **9 weighted edges**. Edge weights are overlap coefficients (Szymkiewicz--Simpson):
+`ConceptualMapper` (`src/analysis/conceptual_mapping.py`) constructs a `ConceptMap` of **{{CORPUS_CONCEPT_COUNT}} concepts** (biological_individuality, social_organization, reproductive_biology, kinship_systems, resource_economics, behavioral_ecology) linked by **{{CORPUS_RELATIONSHIP_COUNT}} weighted edges**. Edge weights are overlap coefficients (Szymkiewicz--Simpson):
 
 \begin{equation}\label{eq:overlap_coefficient}
 w_{AB} = \frac{|A \cap B|}{\min(|A|, |B|)}
@@ -107,7 +107,7 @@ w_{AB} = \frac{|A \cap B|}{\min(|A|, |B|)}
 
 Composite relationship strength decomposes as: $\text{strength} = 0.4\,w_\text{base} + 0.3\,r_\text{term} + 0.2\,r_\text{domain} + 0.1\,\mathbb{1}_\text{hierarchical}$.
 
-Centrality analysis uses NetworkX: degree centrality, betweenness centrality, closeness centrality, and eigenvector centrality (`max_iter=1000`; `PowerIterationFailedConvergence` fallback $\to$ 0). Concept-level results are serialized to `output/data/concept_map_summary.json`. Cross-domain bridging terms — appearing in $\geq 2$ domains — are identified with `identify_cross_domain_bridges`; the current run yields 43 bridging terms in Power \& Labor and 26 in Sex \& Reproduction.
+Centrality analysis uses NetworkX: degree centrality, betweenness centrality, closeness centrality, and eigenvector centrality (`max_iter=1000`; `PowerIterationFailedConvergence` fallback $\to$ 0). Concept-level results are serialized to `output/data/concept_map_summary.json`. Cross-domain bridging terms — appearing in $\geq 2$ domains — are identified with `identify_cross_domain_bridges`; the current run yields {{DOMAIN_POWER_AND_LABOR_BRIDGING}} bridging terms in Power \& Labor and {{DOMAIN_SEX_AND_REPRODUCTION_BRIDGING}} in Sex \& Reproduction.
 
 ### Rhetorical and Discourse Analysis
 

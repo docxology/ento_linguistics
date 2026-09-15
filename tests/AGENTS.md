@@ -21,20 +21,17 @@ tests/
 ├── test_cace_scoring.py           # CACE scoring framework
 ├── test_concept_visualization.py  # Concept visualization
 ├── test_conceptual_mapping.py     # Conceptual mapping
-├── test_core_validation.py        # Validation (extended coverage)
 ├── test_data_generator.py         # Data generation validation
 ├── test_data_processing.py        # Data preprocessing tests
 ├── test_discourse_analysis.py     # Discourse analysis
 ├── test_discourse_patterns.py     # Discourse patterns
 ├── test_domain_analysis.py        # Domain analysis
-├── test_example.py                # Core example functionality
 ├── test_exceptions.py             # Exception hierarchy
 ├── test_figure_manager.py         # Figure manager
 ├── test_literature_mining.py      # Literature mining
 ├── test_loader.py                 # Data loader
 ├── test_logging.py                # Logging utilities
 ├── test_manuscript_preflight.py   # Manuscript preflight
-├── test_markdown_integration.py   # Markdown integration
 ├── test_metrics.py                # Performance metrics validation
 ├── test_package_imports.py        # Import and packaging tests
 ├── test_parameters.py             # Parameter management tests
@@ -61,7 +58,6 @@ tests/
 
 Individual function and method validation:
 
-- **`test_example.py`** - Core utility functions (add_numbers, calculate_average, etc.)
 - **`test_data_generator.py`** - Synthetic data generation algorithms
 - **`test_data_processing.py`** - Data cleaning and preprocessing pipelines
 - **`test_metrics.py`** - Performance measurement and evaluation metrics
@@ -155,10 +151,10 @@ uv run pytest tests/ -k "not integration"
 uv run pytest tests/integration/
 
 # Single test file
-uv run pytest tests/test_example.py -v
+uv run pytest tests/test_parameters.py -v
 
 # Single test function
-uv run pytest tests/test_example.py::test_add_numbers -v
+uv run pytest tests/test_parameters.py::TestParameterSet::test_save_and_load -v
 ```
 
 ### Coverage Analysis
@@ -304,13 +300,13 @@ def test_figure_generation(tmp_path):
 
 ```bash
 # Show test execution details
-uv run pytest tests/test_example.py -v
+uv run pytest tests/test_parameters.py -v
 
 # Show print statements and logs
-uv run pytest tests/test_example.py -s
+uv run pytest tests/test_parameters.py -s
 
 # Stop on first failure
-uv run pytest tests/test_example.py -x
+uv run pytest tests/test_parameters.py -x
 ```
 
 ### Coverage Analysis
@@ -358,12 +354,6 @@ uv run pytest tests/ --ff
 ## Module Test Details
 
 ### Core Modules
-
-**example.py** (`test_example.py`)
-- Basic arithmetic operations (add_numbers, multiply_numbers)
-- Statistical calculations (calculate_average, find_maximum/find_minimum)
-- Validation functions (is_even, is_odd)
-- Error handling for invalid inputs
 
 **data_generator.py** (`test_data_generator.py`)
 - Synthetic data generation algorithms

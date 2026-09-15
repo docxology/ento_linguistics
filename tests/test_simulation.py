@@ -1,12 +1,6 @@
 """Comprehensive tests for src/simulation.py to ensure 100% coverage."""
 
-import json
-import os
-import tempfile
-from pathlib import Path
 
-import numpy as np
-import pytest
 from pipeline.simulation import SimpleSimulation, SimulationBase, SimulationState
 
 
@@ -233,7 +227,7 @@ class TestSimulationBase:
                 return iteration < 20
 
         sim = TestSimulation(seed=42, output_dir=str(tmp_path))
-        state = sim.run(save_checkpoints=True, verbose=False)
+        sim.run(save_checkpoints=True, verbose=False)
         # Checkpoints should be created at iterations 0, 5, 10, 15
         assert (tmp_path / "checkpoint_000000.json").exists()
         assert (tmp_path / "checkpoint_000005.json").exists()
@@ -254,7 +248,7 @@ class TestSimulationBase:
 
         sim = TestSimulation(seed=42, output_dir=str(tmp_path))
         with caplog.at_level(logging.INFO):
-            state = sim.run(verbose=True)
+            sim.run(verbose=True)
         # Should log progress every 10 iterations via logger.info
         assert "Iteration" in caplog.text
 

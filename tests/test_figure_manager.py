@@ -1,10 +1,8 @@
 """Tests for src/utils/figure_manager.py to improve coverage."""
 
 import json
-import tempfile
 from pathlib import Path
 
-import pytest
 from visualization.figure_manager import FigureManager, FigureMetadata
 
 
@@ -275,4 +273,55 @@ class TestFigureManager:
         manager2 = FigureManager(str(registry_file))
         assert len(manager2.figures) == 0
 
+
+    def test_load_registry_skips_corrupt_entry_and_keeps_rest(self, tmp_path):
+        """A single corrupt registry entry must not wipe the whole registry."""
+        registry_file = tmp_path / "registry.json"
+        data = {
+            "fig:good": {
+                "filename": "good.png", "caption": "Good", "label": "fig:good",
+            },
+            "fig:bad": {"filename": 12345, "caption": None, "bogus_field": True},
+        }
+        registry_file.write_text(json.dumps(data))
+
+        manager = FigureManager(str(registry_file))
+        assert "fig:good" in manager.figures
+        assert manager.figures["fig:good"].filename == "good.png"
+        assert "fig:bad" not in manager.figures
+
+    def test_duplicate_label_gets_suffixed(self, tmp_path):
+        """Registering a different figure under a taken label must not clobber."""
+        registry_file = tmp_path / "registry.json"
+        manager = FigureManager(str(registry_file))
+
+        first = manager.register_figure(
+            filename="a.png", caption="A", label="fig:x"
+        )
+        second = manager.register_figure(
+            filename="b.png", caption="B", label="fig:x"
+        )
+
+        assert first.label == "fig:x"
+        assert second.label == "fig:x_2"
+        assert manager.get_figure("fig:x").filename == "a.png"
+        assert manager.get_figure("fig:x_2").filename == "b.png"
+
+    def test_reregister_same_filename_updates_in_place(self, tmp_path):
+        """Same label + same filename is an idempotent re-registration."""
+        registry_file = tmp_path / "registry.json"
+        manager = FigureManager(str(registry_file))
+        manager.register_figure(filename="a.png", caption="A", label="fig:x")
+        again = manager.register_figure(
+            filename="a.png", caption="A (updated)", label="fig:x"
+        )
+        assert again.label == "fig:x"
+        assert manager.get_figure("fig:x").caption == "A (updated)"
+
+    def test_default_registry_path_derived_from_project_root(self):
+        """Default registry path must not depend on the working directory."""
+        project_root = Path(__file__).resolve().parents[1]
+        expected = project_root / "output" / "figures" / "figure_registry.json"
+        manager = FigureManager()
+        assert manager.registry_file.resolve() == expected.resolve()
 

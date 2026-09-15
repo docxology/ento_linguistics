@@ -80,10 +80,10 @@ Scientific term protection vocabulary (preserved against tokenization splitting)
 
 | Metric | Value |
 |--------|-------|
-| Total tokens | **48787** |
-| Unique token types | **7105** |
-| Type–token ratio | **0.1456** |
-| Top 5 tokens | ant (1033), colony (850), worker (831), queen (602), social (583) |
+| Total tokens | **{{CORPUS_TOTAL_TOKENS}}** |
+| Unique token types | **{{CORPUS_UNIQUE_TOKENS}}** |
+| Type–token ratio | **{{CORPUS_TTR}}** |
+| Top 5 tokens | {{CORPUS_TOP_TERM_1}} ({{CORPUS_TOP_FREQ_1}}), {{CORPUS_TOP_TERM_2}} ({{CORPUS_TOP_FREQ_2}}), {{CORPUS_TOP_TERM_3}} ({{CORPUS_TOP_FREQ_3}}), {{CORPUS_TOP_TERM_4}} ({{CORPUS_TOP_FREQ_4}}), {{CORPUS_TOP_TERM_5}} ({{CORPUS_TOP_FREQ_5}}) |
 
 ### `LinguisticFeatureExtractor`
 
@@ -137,13 +137,13 @@ Extraction: normalize → tokenize → match against domain seed sets → extend
 
 | Domain | Term Count | Total Frequency | Bridging Terms |
 |--------|------------|-----------------|----------------|
-| Power & Labor | 63 | 905 | 43 |
-| Unit of Individuality | 73 | 769 | 2 |
-| Sex & Reproduction | 64 | 605 | 26 |
-| Behavior & Identity | 40 | 948 | 19 |
-| Kin & Relatedness | 57 | 459 | 0 |
-| Economics | 10 | 201 | 0 |
-| **Total (all domains)** | **261** | — | — |
+| Power & Labor | {{DOMAIN_POWER_AND_LABOR_TERMS}} | {{DOMAIN_POWER_AND_LABOR_FREQ}} | {{DOMAIN_POWER_AND_LABOR_BRIDGING}} |
+| Unit of Individuality | {{DOMAIN_UNIT_OF_INDIVIDUALITY_TERMS}} | {{DOMAIN_UNIT_OF_INDIVIDUALITY_FREQ}} | {{DOMAIN_UNIT_OF_INDIVIDUALITY_BRIDGING}} |
+| Sex & Reproduction | {{DOMAIN_SEX_AND_REPRODUCTION_TERMS}} | {{DOMAIN_SEX_AND_REPRODUCTION_FREQ}} | {{DOMAIN_SEX_AND_REPRODUCTION_BRIDGING}} |
+| Behavior & Identity | {{DOMAIN_BEHAVIOR_AND_IDENTITY_TERMS}} | {{DOMAIN_BEHAVIOR_AND_IDENTITY_FREQ}} | {{DOMAIN_BEHAVIOR_AND_IDENTITY_BRIDGING}} |
+| Kin & Relatedness | {{DOMAIN_KIN_AND_RELATEDNESS_TERMS}} | {{DOMAIN_KIN_AND_RELATEDNESS_FREQ}} | {{DOMAIN_KIN_AND_RELATEDNESS_BRIDGING}} |
+| Economics | {{DOMAIN_ECONOMICS_TERMS}} | {{DOMAIN_ECONOMICS_FREQ}} | {{DOMAIN_ECONOMICS_BRIDGING}} |
+| **Total (all domains)** | **{{CORPUS_DOMAIN_TERMS}}** | — | — |
 
 ---
 
@@ -166,6 +166,8 @@ class SemanticEntropyResult:
     cluster_distribution: List[float]  # Empirical p(c_i) per cluster
     is_high_entropy: bool          # True if entropy_bits > 2.0
     n_contexts: int                # Valid contexts used
+    h_max: float                   # log2(k): maximum attainable entropy for k clusters
+    entropy_normalized: float      # H / h_max, normalized to [0, 1]
 ```
 
 ### `calculate_semantic_entropy`
@@ -186,11 +188,12 @@ def calculate_semantic_entropy(
 1. Filter to contexts with ≥3 whitespace-delimited words.
 2. If valid contexts < `min_contexts`: return H=0.0, n_clusters=1 (or 0 if empty).
 3. TF-IDF: `TfidfVectorizer(stop_words="english", min_df=1, max_features=1000)`.
-4. KMeans: `k = min(max_clusters, len(valid_contexts))`; if k < 2 return H=0.0.
+4. Cluster count: `k_upper = min(max_clusters, n - 1, max(2, int(np.sqrt(n))))`; `k = max(2, k_upper)` with `n = len(valid_contexts)` — guarantees `k < n` and caps `k` at the data-driven `sqrt(n)` bound; if `k < 2` return H=0.0.
 5. `KMeans(n_clusters=k, random_state=42, n_init=10)` → labels.
 6. Empirical distribution: $p_i = n_i / N$.
 7. $H =$ `scipy.stats.entropy(probabilities, base=2)`.
-8. Exception guard: any sklearn/scipy failure → H=0.0.
+8. Normalization: `h_max = log2(k)`; `entropy_normalized = entropy_bits / h_max` (0.0 when `k < 2`).
+9. Exception guard: any sklearn/scipy failure → H=0.0.
 
 ### Corpus-Level Functions
 

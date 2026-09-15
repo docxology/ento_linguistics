@@ -45,8 +45,8 @@ dev = [
 pythonpath = ["src"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-python_functions = ["test_*"]
 addopts = "-v --tb=short --strict-markers"
+faulthandler_timeout = 900
 markers = [
     "slow: marks tests as slow-running (deselect with '-m not slow')",
     "ollama: marks tests requiring a live Ollama service",
@@ -70,6 +70,19 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "raise NotImplementedError",
 ]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint.per-file-ignores]
+# Scripts bootstrap sys.path before importing project modules, so imports
+# deliberately sit below module-level path setup.
+"scripts/*.py" = ["E402"]
+"tests/*.py" = ["E402"]
+# Package __init__ files re-export the public API; unused-import there is
+# intentional surface, not dead code.
+"**/__init__.py" = ["F401"]
 
 [tool.uv]
 # Inherits workspace settings from root pyproject.toml

@@ -6,7 +6,6 @@ are accessible through the package namespace.
 
 from __future__ import annotations
 
-import pytest
 
 
 class TestPipelineImports:

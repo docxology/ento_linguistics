@@ -1,6 +1,6 @@
 # Testing Expansion Plan — Ento-Linguistics
 
-Targeted additions to strengthen regression, integration, and performance coverage across the 983-test suite (982 passing, 35 test files as of 2026-03-12).
+Targeted additions to strengthen regression, integration, and performance coverage across the 1225-test suite (measured by `uv run pytest tests/ --collect-only -q`; 39 test files — 35 unit + 4 integration — as of 2026-09-14).
 
 ## Current Coverage
 
@@ -18,7 +18,7 @@ Targeted additions to strengthen regression, integration, and performance covera
 | Literature mining | 3 files | ~50 | `literature_mining.py` |
 | Core utilities | 5 files | ~90 | `exceptions`, `metrics`, `parameters`, `validation`, `validation_utils` |
 | Data/Pipeline | 5 files | ~110 | `data_generator`, `data_processing`, `loader`, `simulation`, `reporting`, `performance` |
-| Integration | 5 files | ~50 | Cross-module workflows |
+| Integration | 4 files | ~37 | Cross-module workflows |
 | Other | 4 files | ~88 | `plots`, `visualization`, `example`, `package_imports` |
 
 ## Proposed Additions

@@ -94,8 +94,8 @@ class TestMeasurePersuasiveEffectiveness:
         """Test with empty list."""
         result = measure_persuasive_effectiveness([])
         for technique in result.values():
-            assert "impact_score" in technique
-            assert "effectiveness_rating" in technique
+            assert "heuristic_impact_index" in technique
+            assert "heuristic_effectiveness_band" in technique
 
     def test_returns_expected_keys(self, sample_texts):
         """Test output has expected structure."""
@@ -103,15 +103,15 @@ class TestMeasurePersuasiveEffectiveness:
         for technique_name, data in result.items():
             assert "usage_frequency" in data
             assert "context_relevance" in data
-            assert "impact_score" in data
-            assert "effectiveness_rating" in data
+            assert "heuristic_impact_index" in data
+            assert "heuristic_effectiveness_band" in data
             assert "success_examples" in data
 
     def test_impact_score_bounded(self, sample_texts):
         """Test impact scores are between 0 and 1."""
         result = measure_persuasive_effectiveness(sample_texts)
         for data in result.values():
-            assert 0 <= data["impact_score"] <= 1
+            assert 0 <= data["heuristic_impact_index"] <= 1
 
     def test_nonzero_impact_for_persuasive_content(self):
         """Texts with clear persuasive content should produce non-zero impact scores."""
@@ -123,7 +123,7 @@ class TestMeasurePersuasiveEffectiveness:
         ]
         result = measure_persuasive_effectiveness(texts)
         # At least some techniques should have non-zero impact
-        impact_scores = [data["impact_score"] for data in result.values()]
+        impact_scores = [data["heuristic_impact_index"] for data in result.values()]
         assert any(score > 0 for score in impact_scores), (
             "At least one persuasive technique should have non-zero impact score"
         )
@@ -139,7 +139,7 @@ class TestMeasurePersuasiveEffectiveness:
         }
         result = measure_persuasive_effectiveness(sample_texts)
         for data in result.values():
-            assert data["effectiveness_rating"] in valid_ratings
+            assert data["heuristic_effectiveness_band"] in valid_ratings
 
 
 class TestAnalyzeTermUsageContext:
@@ -311,7 +311,7 @@ class TestQuantifyFramingEffects:
             data = result["anthropomorphic"]
             assert "framing_strength" in data
             assert "consistency_score" in data
-            assert "impact_score" in data
+            assert "heuristic_impact_index" in data
 
     def test_framing_strength_bounded(self):
         """Test framing strength is between 0 and 1."""
@@ -352,4 +352,20 @@ class TestQuantifyFramingEffects:
             assert "affected_texts" in data
             assert "downstream_rhetorical_patterns" in data
             assert "framing_indicators_used" in data
-            assert "impact_score" in data
+            assert "heuristic_impact_index" in data
+
+
+class TestConceptualShiftsNaturalOrder:
+    """Period ordering must be natural: period_2 before period_10."""
+
+    def test_periods_sorted_numerically(self):
+        texts = ["Ants cooperate.", "Ants forage.", "Ants fight.", "Ants farm."]
+        periods = ["period_10", "period_2", "period_1", "period_11"]
+        shifts = track_conceptual_shifts(texts, periods)
+        first_pair = next(iter(shifts))
+        assert first_pair == "period_1_to_period_2"
+
+    def test_technique_impact_reads_count_key(self):
+        from analysis.persuasive_analysis import _calculate_technique_impact
+        data = {"count": 18, "examples": []}
+        assert _calculate_technique_impact(data) == pytest.approx(0.9)

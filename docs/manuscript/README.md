@@ -79,11 +79,11 @@ View detailed rendering logs to see which sections were included.
 
 ## Template variables (corpus-driven numbers)
 
-Numeric results that depend on the analyzed corpus (token counts, network metrics, domain statistics, per-term frequencies, concept map counts) are **not** written as literals in the manuscript. They use `{{KEY}}` placeholders substituted at PDF build time by `scripts/_render_pdf_override.py` (`_load_corpus_vars` reads `data/corpus/` and `output/data/*.json`; `_apply_corpus_vars` performs the replacement).
+Numeric results that depend on the analyzed corpus (token counts, network metrics, domain statistics, per-term frequencies, concept map counts) are **not** written as literals in the manuscript. They use double-brace variable placeholders substituted at PDF build time by `scripts/_render_pdf_override.py` (`_load_corpus_vars` reads `data/corpus/` and `output/data/*.json`; `_apply_corpus_vars` performs the replacement).
 
 **Workflow:** run the analysis pipeline (or `scripts/02_generate_figures.py` as part of it) so `output/data/` matches the run you intend to cite, then build the PDF.
 
-**CI / fail-closed builds:** set `STRICT_TEMPLATE_VARS=1` or pass `--strict-templates` to `scripts/_render_pdf_override.py` so any unresolved `{{KEY}}` after substitution exits non-zero. See `docs/manuscript/AGENTS.md` for the variable families (`CORPUS_*`, `NETWORK_*`, `DOMAIN_*`, `TERM_FREQ_*`, `EXTRACTED_TERM_FREQ_*`, `CONCEPT_*`, etc.).
+**CI / fail-closed builds:** set `STRICT_TEMPLATE_VARS=1` or pass `--strict-templates` to `scripts/_render_pdf_override.py` so any unresolved double-brace variable token after substitution exits non-zero. See `docs/manuscript/AGENTS.md` for the variable families (`CORPUS_*`, `NETWORK_*`, `DOMAIN_*`, `TERM_FREQ_*`, `CONCEPT_*`, etc.).
 
 ## File Structure
 
@@ -250,7 +250,7 @@ According to recent research \cite{mykey2024}, this technique...
 - Citations are processed using **BibTeX** with the `plainnat` style (author--year reference list; use Pandoc `[@key]` for parenthetical in-text form where appropriate)
 - The bibliography file (`references.bib`) is copied into the build directory to satisfy BibTeX security constraints
 - In-text citations are resolved by **natbib** during PDF compilation
-- The References section lists entries from `references.bib` (plus `\nocite{*}` in `99_references.md` for completeness)
+- The References section lists only entries cited in the manuscript from `references.bib`
 
 ## Figure Management
 

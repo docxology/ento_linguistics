@@ -18,7 +18,7 @@ This project investigates the entanglement of speech and thought in entomologica
 ```text
 ./
 ├── src/                    # Ento-Linguistic analysis algorithms
-├── tests/                  # Test suite (1198 tests, 90%+ coverage)
+├── tests/                  # Test suite (1225 tests, 90%+ coverage; measured by `uv run pytest --collect-only -q`)
 ├── scripts/                # Analysis pipelines and workflows
 ├── docs/manuscript/             # Research manuscript on language in entomology
 ├── docs/                   # Analysis documentation and guidelines
@@ -96,7 +96,7 @@ Outputs in `output/reports/test_results.json` and `output/figures/figure_registr
 **Reproducible Analysis:**
 
 - All computational methods include seeded randomness for deterministic results
-- codebase with test suite (1198 tests)
+- codebase with test suite (1225 tests; measured by `uv run pytest tests/ --collect-only -q` (2026-09-14))
 - Detailed documentation of algorithms and methodological choices
 - Version-controlled environment specifications
 
@@ -255,7 +255,7 @@ test suite covering src/ modules.
 - data testing (no mocks)
 - Integration tests
 - Performance validation
-- 1198 tests passing
+- 1225 tests passing (measured by `uv run pytest tests/ --collect-only -q` (2026-09-14))
 
 ### scripts/
 

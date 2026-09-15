@@ -1,10 +1,10 @@
 {
   "n_concepts": 6,
   "n_relationships": 9,
-  "network_nodes": 894,
-  "network_edges": 514,
-  "network_clustering": 0.1948,
-  "network_avg_degree": 1.15,
+  "network_nodes": 890,
+  "network_edges": 378,
+  "network_clustering": 0.1232,
+  "network_avg_degree": 0.85,
   "concepts": {
     "biological_individuality": {
       "description": "Concepts related to what constitutes a biological individual",
@@ -16,16 +16,16 @@
     },
     "social_organization": {
       "description": "Principles of social organization and structure",
-      "n_terms": 98,
+      "n_terms": 85,
       "domains": [
-        "power_and_labor",
-        "behavior_and_identity"
+        "behavior_and_identity",
+        "power_and_labor"
       ],
       "confidence": 0.0
     },
     "reproductive_biology": {
       "description": "Reproductive systems and sex determination",
-      "n_terms": 67,
+      "n_terms": 66,
       "domains": [
         "sex_and_reproduction"
       ],
@@ -49,7 +49,7 @@
     },
     "behavioral_ecology": {
       "description": "Behavioral adaptations and ecological contexts",
-      "n_terms": 56,
+      "n_terms": 55,
       "domains": [
         "behavior_and_identity",
         "economics"

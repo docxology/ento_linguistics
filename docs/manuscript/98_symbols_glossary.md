@@ -6,25 +6,21 @@ This glossary defines the mathematical notation and domain-specific terminology 
 
 | Symbol | Description | First Use |
 |--------|-------------|-----------|
-| $T$ | Raw text corpus (collection of scientific documents) | Sec. \ref{sec:methodology} |
-| $T_{\text{normalized}}$ | Text after normalization preprocessing | Sec. \ref{sec:methodology} |
-| $T_{\text{tokenized}}$ | Text after domain-aware tokenization | Sec. \ref{sec:methodology} |
-| $T_{\text{lemmatized}}$ | Text after lemmatization | Sec. \ref{sec:methodology} |
-| $\mathcal{T}_d$ | Set of terms classified in domain $d$ | Sec. \ref{sec:methodology} |
-| $\theta$ | Relevance threshold for term inclusion | Sec. \ref{sec:methodology} |
 | $G = (V, E)$ | Terminology network (graph with vertices and edges) | Eq. \ref{eq:network_edge_weight} |
-| $\phi$ | Relationship threshold for edge inclusion | Sec. \ref{sec:methodology} |
-| $w(u,v)$ | Edge weight between terms $u$ and $v$ (normalized co-occurrence) | Eq. \ref{eq:network_edge_weight} |
-| $n$ | Corpus size (total words or documents) | Sec. \ref{sec:methodology} |
-| $m$ | Number of identified terms after extraction | Sec. \ref{sec:methodology} |
-| $d$ | Number of Ento-Linguistic domains (fixed at 6) | Sec. \ref{sec:methodology} |
-| $S(t)$ | Term extraction score combining TF-IDF, domain relevance, and linguistic features | Sec. \ref{sec:methodology} |
+| $D(t)$ | Set of Ento-Linguistic domains term $t$ is assigned to | Eq. \ref{eq:network_edge_weight} |
+| $w(u,v)$ | Edge weight between terms $u$ and $v$: shared-domain overlap $|D(u) \cap D(v)| / \max(|D(u)|, |D(v)|)$ | Eq. \ref{eq:network_edge_weight} |
 | $H(t)$ | Semantic entropy of term $t$ in bits (Shannon entropy over usage-context clusters) | Eq. \ref{eq:semantic_entropy} |
 | $H^*$ | High-entropy threshold (2.0 bits, $\geq 4$ equiprobable senses) | Eq. \ref{eq:semantic_entropy} |
+| $H_{\max}$ | Maximum attainable entropy for $k$ clusters, $\log_2 k$ | Eq. \ref{eq:semantic_entropy} |
+| $\hat{H}(t)$ | Normalized semantic entropy $H(t) / H_{\max} \in [0,1]$ | Eq. \ref{eq:semantic_entropy} |
 | $p_i$ | Empirical proportion of contexts assigned to semantic cluster $i$ | Eq. \ref{eq:semantic_entropy} |
-| $k$ | Number of semantic sense clusters ($k$-means, $k = \max(2,\min(k_{\max}, n{-}1, \lfloor\!\sqrt{n}\rfloor))$; $k_{\max}=5$, $n=|C_t|\geq 3$; $k < n$) | Eq. \ref{eq:semantic_entropy} |
-| $A(t)$ | Ambiguity score based on contextual entropy and meaning dispersion | Eq. \ref{eq:semantic_entropy} |
+| $k$ | Number of semantic sense clusters ($k$-means, $k = \max(2,\ \min(k_{\max},\ n{-}1,\ \max(2, \lfloor\!\sqrt{n}\rfloor)))$; $k_{\max}=5$, $n=|C_t|$; $k < n$) | Eq. \ref{eq:semantic_entropy} |
+| $C_t$ | Set of valid usage contexts of term $t$ (sentences with $\geq 3$ words) | Eq. \ref{eq:semantic_entropy} |
+| $S_t$ | Set of biological scale levels expressed in term $t$'s contexts | Eq. \ref{eq:cace_evolvability} |
 | $w_{AB}$ | Overlap coefficient (Szymkiewicz--Simpson) between concept sets $A$ and $B$ | Eq. \ref{eq:overlap_coefficient} |
+| $w_\text{base}$ | Base overlap-coefficient weight in composite relationship strength | Sec. \ref{sec:methodology} |
+| $r_\text{term}$ | Term-overlap ratio component of composite relationship strength | Sec. \ref{sec:methodology} |
+| $r_\text{domain}$ | Domain-overlap ratio component of composite relationship strength | Sec. \ref{sec:methodology} |
 | $\text{Clarity}(t)$ | CACE Clarity score: $\max(0, 1 - H(t)/\log_2 10)$ | Eq. \ref{eq:cace_clarity} |
 | $\text{Appropriateness}(t)$ | CACE Appropriateness score (penalizes anthropomorphic terms) | Eq. \ref{eq:cace_appropriateness} |
 | $\text{Consistency}(t)$ | CACE Consistency score: mean pairwise cosine similarity of context vectors | Eq. \ref{eq:cace_consistency} |
@@ -51,6 +47,7 @@ This glossary defines the mathematical notation and domain-specific terminology 
 | **Variational Free Energy** | An information-theoretic quantity that bounds the surprise of a model; biological systems minimize this to maintain integrity. | Sec. \ref{sec:discussion} |
 
 ## Pipeline Modules
+<!-- BEGIN: AUTO-API-GLOSSARY -->
 
 | Module | File | Function |
 |---|---|---|
@@ -64,5 +61,6 @@ This glossary defines the mathematical notation and domain-specific terminology 
 | Discourse Analysis | `src/analysis/discourse_analysis.py` | Discourse pattern classification |
 | Statistics | `src/analysis/statistics.py` | Statistical validation utilities |
 | Visualization | `src/visualization/concept_visualization.py` | Network and domain-specific figure generation |
+<!-- END: AUTO-API-GLOSSARY -->
 
 

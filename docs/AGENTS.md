@@ -67,7 +67,7 @@ Compliance matrix mapping project practices to quality standards:
 
 ### [testing_expansion_plan.md](testing_expansion_plan.md)
 
-Planned test coverage improvements across 38 existing test files:
+Planned test coverage improvements across 39 existing test files (35 unit + 4 integration; measured by `ls tests/test_*.py tests/integration/test_*.py | wc -l`):
 
 - **Integration tests**: Pipeline script end-to-end validation
 - **Property tests**: Shape/NaN guards for data generation and term extraction

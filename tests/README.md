@@ -1,6 +1,6 @@
 # tests/ — Ento-Linguistic Test Suite
 
-Test suite for `src/` scientific code. **1013 tests**, **90%+ coverage**, **no mocks**.
+Test suite for `src/` scientific code. **1225 tests** (measured by `uv run pytest tests/ --collect-only -q`), **90%+ coverage**, **no mocks**.
 
 ## Quick Start
 
@@ -13,7 +13,7 @@ uv run pytest tests/ --cov=src --cov-report=html
 uv run pytest tests/integration/ -v
 ```
 
-## Test Files (36 unit + 3 integration)
+## Test Files (35 unit + 4 integration; 39 test files total, measured by `ls tests/test_*.py tests/integration/test_*.py | wc -l`)
 
 ### analysis/
 
@@ -50,10 +50,7 @@ uv run pytest tests/integration/ -v
 | `test_logging.py` | `core/logging.py` |
 | `test_metrics.py` | `core/metrics.py` |
 | `test_parameters.py` | `core/parameters.py` |
-| `test_validation.py` | `core/validation.py` |
-| `test_core_validation.py` | `core/validation.py` (extended coverage) |
-| `test_markdown_integration.py` | `core/markdown_integration.py` |
-| `test_example.py` | `core/example.py` |
+| `test_validation.py` | `core/validation.py` and `core/validation_utils.py` |
 
 ### data/
 
@@ -78,11 +75,12 @@ uv run pytest tests/integration/ -v
 |------|---------|
 | `test_package_imports.py` | Import smoke tests for all modules |
 
-### integration/ (3 files)
+### integration/ (4 files)
 
 | File | Purpose |
 |------|---------|
 | `test_integration_pipeline.py` | Full analysis pipeline end-to-end |
+| `test_full_pipeline.py` | Pipeline end-to-end with figure generation |
 | `test_example_figure.py` | Figure generation and file output |
 | `test_generate_research_figures.py` | Multi-figure pipeline |
 
