@@ -1,6 +1,6 @@
 # tests/ — Ento-Linguistic Test Suite
 
-Test suite for `src/` scientific code. **1225 tests** (measured by `uv run pytest tests/ --collect-only -q`), **90%+ coverage**, **no mocks**.
+Test suite for `src/` scientific code. Test count: `uv run pytest tests/ --collect-only -q`. **90%+ coverage** (measure: `uv run pytest tests/ --cov=src`), **no mocks**.
 
 ## Quick Start
 
@@ -13,7 +13,7 @@ uv run pytest tests/ --cov=src --cov-report=html
 uv run pytest tests/integration/ -v
 ```
 
-## Test Files (35 unit + 4 integration; 39 test files total, measured by `ls tests/test_*.py tests/integration/test_*.py | wc -l`)
+## Test Files (count via `ls tests/test_*.py tests/integration/test_*.py | wc -l`)
 
 ### analysis/
 
@@ -67,6 +67,7 @@ uv run pytest tests/integration/ -v
 |------|--------|
 | `test_simulation.py` | `pipeline/simulation.py` |
 | `test_reporting.py` | `pipeline/reporting.py` |
+| `test_statistics_pipeline.py` | `pipeline/statistics_pipeline.py` |
 | `test_pipeline_init.py` | `pipeline/__init__.py` |
 
 ### other
