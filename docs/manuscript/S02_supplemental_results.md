@@ -43,27 +43,27 @@ Table \ref{tab:cace_full} presents full CACE evaluations for a representative se
 \hline
 \textbf{Term} & \textbf{Clarity} & \textbf{Appropriateness} & \textbf{Consistency} & \textbf{Evolvability} & \textbf{Aggregate} \\
 \hline
-queen & 0.40 & 0.50 & 0.45 & 0.33 & 0.42 \\
-\textit{primary reproductive} & 0.85 & 1.00 & 0.78 & 0.67 & 0.83 \\
+queen & {{CACE_TERM_QUEEN_CLARITY}} & {{CACE_TERM_QUEEN_APPROPRIATENESS}} & {{CACE_TERM_QUEEN_CONSISTENCY}} & {{CACE_TERM_QUEEN_EVOLVABILITY}} & {{CACE_TERM_QUEEN_AGGREGATE}} \\
+\textit{primary reproductive} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_CLARITY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_APPROPRIATENESS}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_CONSISTENCY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_EVOLVABILITY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_AGGREGATE}} \\
 \hline
-worker & 0.55 & 0.50 & 0.52 & 0.33 & 0.48 \\
-\textit{non-reproductive helper} & 0.82 & 1.00 & 0.70 & 0.67 & 0.80 \\
+worker & {{CACE_TERM_WORKER_CLARITY}} & {{CACE_TERM_WORKER_APPROPRIATENESS}} & {{CACE_TERM_WORKER_CONSISTENCY}} & {{CACE_TERM_WORKER_EVOLVABILITY}} & {{CACE_TERM_WORKER_AGGREGATE}} \\
+\textit{non-reproductive helper} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_CLARITY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_APPROPRIATENESS}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_CONSISTENCY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_EVOLVABILITY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_AGGREGATE}} \\
 \hline
-slave & 0.40 & 0.40 & 0.38 & 0.33 & 0.38 \\
-\textit{host worker} & 0.85 & 1.00 & 0.72 & 0.67 & 0.81 \\
+slave & {{CACE_TERM_SLAVE_CLARITY}} & {{CACE_TERM_SLAVE_APPROPRIATENESS}} & {{CACE_TERM_SLAVE_CONSISTENCY}} & {{CACE_TERM_SLAVE_EVOLVABILITY}} & {{CACE_TERM_SLAVE_AGGREGATE}} \\
+\textit{host worker} & {{CACE_TERM_HOST_WORKER_CLARITY}} & {{CACE_TERM_HOST_WORKER_APPROPRIATENESS}} & {{CACE_TERM_HOST_WORKER_CONSISTENCY}} & {{CACE_TERM_HOST_WORKER_EVOLVABILITY}} & {{CACE_TERM_HOST_WORKER_AGGREGATE}} \\
 \hline
-caste & 0.34 & 0.50 & 0.40 & 0.33 & 0.39 \\
-\textit{task group} & 0.85 & 1.00 & 0.75 & 0.67 & 0.82 \\
+caste & {{CACE_TERM_CASTE_CLARITY}} & {{CACE_TERM_CASTE_APPROPRIATENESS}} & {{CACE_TERM_CASTE_CONSISTENCY}} & {{CACE_TERM_CASTE_EVOLVABILITY}} & {{CACE_TERM_CASTE_AGGREGATE}} \\
+\textit{task group} & {{CACE_TERM_TASK_GROUP_CLARITY}} & {{CACE_TERM_TASK_GROUP_APPROPRIATENESS}} & {{CACE_TERM_TASK_GROUP_CONSISTENCY}} & {{CACE_TERM_TASK_GROUP_EVOLVABILITY}} & {{CACE_TERM_TASK_GROUP_AGGREGATE}} \\
 \hline
-soldier & 0.52 & 0.50 & 0.55 & 0.33 & 0.48 \\
-\textit{major worker} & 0.80 & 1.00 & 0.72 & 0.67 & 0.80 \\
+soldier & {{CACE_TERM_SOLDIER_CLARITY}} & {{CACE_TERM_SOLDIER_APPROPRIATENESS}} & {{CACE_TERM_SOLDIER_CONSISTENCY}} & {{CACE_TERM_SOLDIER_EVOLVABILITY}} & {{CACE_TERM_SOLDIER_AGGREGATE}} \\
+\textit{major worker} & {{CACE_TERM_MAJOR_WORKER_CLARITY}} & {{CACE_TERM_MAJOR_WORKER_APPROPRIATENESS}} & {{CACE_TERM_MAJOR_WORKER_CONSISTENCY}} & {{CACE_TERM_MAJOR_WORKER_EVOLVABILITY}} & {{CACE_TERM_MAJOR_WORKER_AGGREGATE}} \\
 \hline
-colony & 0.49 & 1.00 & 0.55 & 0.83 & 0.72 \\
-haplodiploidy & 0.94 & 1.00 & 0.88 & 0.33 & 0.79 \\
-trophallaxis & 0.97 & 1.00 & 0.92 & 0.33 & 0.81 \\
+colony & {{CACE_TERM_COLONY_CLARITY}} & {{CACE_TERM_COLONY_APPROPRIATENESS}} & {{CACE_TERM_COLONY_CONSISTENCY}} & {{CACE_TERM_COLONY_EVOLVABILITY}} & {{CACE_TERM_COLONY_AGGREGATE}} \\
+haplodiploidy & {{CACE_TERM_HAPLODIPLOIDY_CLARITY}} & {{CACE_TERM_HAPLODIPLOIDY_APPROPRIATENESS}} & {{CACE_TERM_HAPLODIPLOIDY_CONSISTENCY}} & {{CACE_TERM_HAPLODIPLOIDY_EVOLVABILITY}} & {{CACE_TERM_HAPLODIPLOIDY_AGGREGATE}} \\
+trophallaxis & {{CACE_TERM_TROPHALLAXIS_CLARITY}} & {{CACE_TERM_TROPHALLAXIS_APPROPRIATENESS}} & {{CACE_TERM_TROPHALLAXIS_CONSISTENCY}} & {{CACE_TERM_TROPHALLAXIS_EVOLVABILITY}} & {{CACE_TERM_TROPHALLAXIS_AGGREGATE}} \\
 \hline
 \end{tabular}
-\caption{CACE dimension scores for representative entomological terms. Anthropomorphic terms (queen, worker, slave, caste, soldier) consistently score lower than functional alternatives (italicized). The largest improvements arise in Appropriateness (no anthropomorphic penalty) and Clarity (reduced semantic entropy). Non-anthropomorphic technical terms (haplodiploidy, trophallaxis) score highest on Clarity due to unambiguous, single-sense usage. Note: ``colony'' receives Appropriateness $= 1.00$ because it falls outside the \texttt{ANTHROPOMORPHIC\_TERMS} set used for automated scoring; its colonial and settler-historical connotations are analyzed qualitatively in Section~\ref{sec:discussion}.}
+\caption{CACE dimension scores for representative entomological terms. Anthropomorphic terms (queen, worker, slave, caste, soldier) consistently score lower than functional alternatives (italicized). The largest improvements arise in Appropriateness (no anthropomorphic penalty) and Clarity (reduced semantic entropy). Non-anthropomorphic technical terms (haplodiploidy, trophallaxis) score highest on Clarity due to unambiguous, single-sense usage. Note: ``colony'' receives Appropriateness $= {{CACE_TERM_COLONY_APPROPRIATENESS}}$ because it falls outside the \texttt{ANTHROPOMORPHIC\_TERMS} set used for automated scoring; its colonial and settler-historical connotations are analyzed qualitatively in Section~\ref{sec:discussion}. All values resolve at render time from the frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}).}
 \label{tab:cace_full}
 \end{table}
 
@@ -77,17 +77,17 @@ Table \ref{tab:entropy_distribution} summarizes the distribution of semantic ent
 \hline
 \textbf{Domain} & \textbf{Mean $H$ (bits)} & \textbf{High-entropy terms (\%)} & \textbf{$N$} \\
 \hline
-Economics & {{DOMAIN_ECONOMICS_ENTROPY}} & {{DOMAIN_ECONOMICS_HIGH_ENTROPY_PCT}} & 10 \\
-Power \& Labor & {{DOMAIN_POWER_AND_LABOR_ENTROPY}} & {{DOMAIN_POWER_AND_LABOR_HIGH_ENTROPY_PCT}} & 63 \\
-Behavior \& Identity & {{DOMAIN_BEHAVIOR_AND_IDENTITY_ENTROPY}} & {{DOMAIN_BEHAVIOR_AND_IDENTITY_HIGH_ENTROPY_PCT}} & 40 \\
-Sex \& Reproduction & {{DOMAIN_SEX_AND_REPRODUCTION_ENTROPY}} & {{DOMAIN_SEX_AND_REPRODUCTION_HIGH_ENTROPY_PCT}} & 64 \\
-Unit of Individuality & {{DOMAIN_UNIT_OF_INDIVIDUALITY_ENTROPY}} & {{DOMAIN_UNIT_OF_INDIVIDUALITY_HIGH_ENTROPY_PCT}} & 73 \\
-Kin \& Relatedness & {{DOMAIN_KIN_AND_RELATEDNESS_ENTROPY}} & {{DOMAIN_KIN_AND_RELATEDNESS_HIGH_ENTROPY_PCT}} & 57 \\
+Economics & {{DOMAIN_ECONOMICS_ENTROPY}} & {{DOMAIN_ECONOMICS_HIGH_ENTROPY_PCT}} & {{DOMAIN_ECONOMICS_N_TERMS}} \\
+Power \& Labor & {{DOMAIN_POWER_AND_LABOR_ENTROPY}} & {{DOMAIN_POWER_AND_LABOR_HIGH_ENTROPY_PCT}} & {{DOMAIN_POWER_AND_LABOR_N_TERMS}} \\
+Behavior \& Identity & {{DOMAIN_BEHAVIOR_AND_IDENTITY_ENTROPY}} & {{DOMAIN_BEHAVIOR_AND_IDENTITY_HIGH_ENTROPY_PCT}} & {{DOMAIN_BEHAVIOR_AND_IDENTITY_N_TERMS}} \\
+Sex \& Reproduction & {{DOMAIN_SEX_AND_REPRODUCTION_ENTROPY}} & {{DOMAIN_SEX_AND_REPRODUCTION_HIGH_ENTROPY_PCT}} & {{DOMAIN_SEX_AND_REPRODUCTION_N_TERMS}} \\
+Unit of Individuality & {{DOMAIN_UNIT_OF_INDIVIDUALITY_ENTROPY}} & {{DOMAIN_UNIT_OF_INDIVIDUALITY_HIGH_ENTROPY_PCT}} & {{DOMAIN_UNIT_OF_INDIVIDUALITY_N_TERMS}} \\
+Kin \& Relatedness & {{DOMAIN_KIN_AND_RELATEDNESS_ENTROPY}} & {{DOMAIN_KIN_AND_RELATEDNESS_HIGH_ENTROPY_PCT}} & {{DOMAIN_KIN_AND_RELATEDNESS_N_TERMS}} \\
 \hline
-\textbf{Overall} & {{CORPUS_OVERALL_ENTROPY}} & {{CORPUS_OVERALL_HIGH_ENTROPY_PCT}} & \textbf{ 307 } \\
+\textbf{Overall} & {{CORPUS_OVERALL_ENTROPY}} & {{CORPUS_OVERALL_HIGH_ENTROPY_PCT}} & \textbf{ {{CORPUS_OVERALL_N_TERMS}} } \\
 \hline
 \end{tabular}
-\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), corresponding to terms whose usage contexts span many distinct semantic senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is set to $k = \max(2,\, \min(k_{\max},\, n{-}1,\, \max(2, \lfloor\!\sqrt{n}\rfloor)))$ with $k_{\max}=5$ to prevent degenerate one-point-per-cluster assignments; each result also reports $H_{\max} = \log_2 k$ and the normalized entropy $H/H_{\max} \in [0,1]$.}
+\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), corresponding to terms whose usage contexts span many distinct semantic senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is set to $k = \max(2,\, \min(k_{\max},\, n{-}1,\, \max(2, \lfloor\!\sqrt{n}\rfloor)))$ with $k_{\max}=5$ to prevent degenerate one-point-per-cluster assignments; each result also reports $H_{\max} = \log_2 k$ and the normalized entropy $H/H_{\max} \in [0,1]$. The $N$ column is each domain's term count in the same artifact, and the Overall row is their exact sum; every table value resolves at render time from the artifact.}
 \label{tab:entropy_distribution}
 \end{table}
 
