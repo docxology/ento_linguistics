@@ -1091,6 +1091,16 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                 ),
                 "section": "experimental_results",
             },
+            "fulltext_analysis.png": {
+                "label": "fig:fulltext_analysis",
+                "caption": (
+                    "Full-Text Parallel Layer: Domain Semantic Entropy, "
+                    "Pairwise Effect Sizes, and Omnibus ANOVA over the PMC "
+                    "Open Access full-text corpus (shared statistical "
+                    "machinery with the abstract layer)"
+                ),
+                "section": "supplemental_results",
+            },
         }
 
         # Dynamically register domain figures to ensure full coverage
@@ -1212,6 +1222,53 @@ def main(project_root: Optional[str] = None) -> None:
         figures.append(fig_path)
     except Exception as exc:
         logger.warning(f"⚠️  Statistical analysis stage warning: {exc}")
+
+    # ── Full-text parallel layer stage ────────────────────────────────
+    # Builds output/data/fulltext_analysis.json from the PMC full-text
+    # corpus (data/fulltexts/fulltexts.json) when available, mirroring the
+    # abstract-layer statistics schema, and renders the parallel figure.
+    # Failure warns and continues — same convention as the stats stage.
+    fulltexts_path = os.path.join(project_root, "data", "fulltexts", "fulltexts.json")
+    if not os.path.isfile(fulltexts_path):
+        logger.warning(
+            "⚠️  %s not found — full-text layer stage skipped "
+            "(run the full-text harvest first)",
+            fulltexts_path,
+        )
+    else:
+        try:
+            from pipeline.fulltext_pipeline import build_fulltext_analysis
+
+            with open(fulltexts_path) as f:
+                fulltexts = json.load(f)
+            # Bounded subset for runtime: the full 500-document corpus is
+            # the default; override with FULLTEXT_ANALYSIS_LIMIT when a
+            # smaller run is needed.
+            limit = int(os.environ.get("FULLTEXT_ANALYSIS_LIMIT", "500"))
+            if limit and 0 < limit < len(fulltexts):
+                logger.info(
+                    "  FULLTEXT_ANALYSIS_LIMIT=%s: analyzing first %d of %d documents",
+                    limit,
+                    limit,
+                    len(fulltexts),
+                )
+                fulltexts = fulltexts[:limit]
+            logger.info("▶ Building full-text analysis artifact...")
+            fulltext_artifact = build_fulltext_analysis(fulltexts)
+            fulltext_path = os.path.join(data_dir, "fulltext_analysis.json")
+            with open(fulltext_path, "w") as f:
+                json.dump(fulltext_artifact, f, indent=2, default=str)
+            logger.info(
+                f"  ✅ fulltext_analysis.json: {fulltext_artifact['n_documents']} "
+                f"documents, {len(fulltext_artifact['pairwise'])} pairwise tests, "
+                f"{len(fulltext_artifact.get('skipped', []))} skipped"
+            )
+            fig_path = plot_statistical_analysis(
+                fulltext_artifact, figure_dir, filename="fulltext_analysis.png"
+            )
+            figures.append(fig_path)
+        except Exception as exc:
+            logger.warning(f"⚠️  Full-text analysis stage warning: {exc}")
 
     fig_path = generate_concept_map(results, figure_dir)
     if fig_path:

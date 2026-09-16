@@ -16,6 +16,7 @@ import pytest
 
 import core.manuscript_variables as manuscript_variables_module
 from core.manuscript_variables import (
+    build_statistical_tokens,
     build_variable_map,
     count_publications,
     fill_manuscript,
@@ -372,6 +373,80 @@ class TestCaceStatisticalTokens:
         variables = build_variable_map(output_data_dir=output_data, corpus_dir=corpus_dir)
         cace_tokens = [k for k in variables if k.startswith("CACE_")]
         assert cace_tokens == []
+
+
+class TestFulltextStatisticalTokens:
+    """FULLTEXT_* tokens resolve from fulltext_analysis.json alongside the
+    abstract-layer inferential tokens (parallel layer, shared machinery)."""
+
+    FULLTEXT_ARTIFACT = {
+        "layer": "fulltext",
+        "n_documents": 3,
+        "min_term_frequency": 20,
+        "documents": [
+            {"pmcid": "PMC1", "token_count": 100},
+            {"pmcid": "PMC2", "token_count": 200},
+            {"pmcid": "PMC3", "token_count": 301},
+        ],
+        "domain_term_counts": {},
+        "descriptives": {
+            "economics": {
+                "n_terms": 6,
+                "entropy_mean": 2.1685123,
+            },
+            "power_and_labor": {
+                "n_terms": 15,
+                "entropy_mean": 1.99965,
+            },
+        },
+        "pairwise": [{"domain_a": "a", "domain_b": "b"}] * 2,
+        "anova": {"metric": "entropy_mean", "F": 0.69523, "p": 0.62861},
+    }
+
+    def test_fulltext_tokens_render_from_artifact(self, data_dirs) -> None:
+        """FULLTEXT_* tokens resolve through build_variable_map."""
+        output_data, corpus_dir = data_dirs
+        _write_json(
+            output_data / "statistical_analysis.json",
+            {"pairwise": [], "anova": {}, "corrections": {}, "skipped": []},
+        )
+        _write_json(
+            output_data / "fulltext_analysis.json", self.FULLTEXT_ARTIFACT
+        )
+        variables = build_variable_map(output_data_dir=output_data, corpus_dir=corpus_dir)
+
+        assert variables["FULLTEXT_DOCUMENTS"] == "3"
+        assert variables["FULLTEXT_TOTAL_TOKENS"] == "601"
+        assert variables["FULLTEXT_MEDIAN_TOKENS"] == "200.0000"
+        assert variables["FULLTEXT_DOMAIN_ECONOMICS_TERMS"] == "6"
+        assert variables["FULLTEXT_DOMAIN_ECONOMICS_ENTROPY"] == "2.1685"
+        assert variables["FULLTEXT_DOMAIN_POWER_AND_LABOR_TERMS"] == "15"
+        assert variables["FULLTEXT_DOMAIN_POWER_AND_LABOR_ENTROPY"] == "1.9996"
+        assert variables["FULLTEXT_ANOVA_F"] == "0.6952"
+        assert variables["FULLTEXT_ANOVA_P"] == "0.6286"
+
+    def test_fulltext_tokens_direct_call(self) -> None:
+        """build_statistical_tokens emits the family for an explicit artifact."""
+        tokens = build_statistical_tokens(
+            {}, fulltext_artifact=self.FULLTEXT_ARTIFACT
+        )
+        assert tokens["FULLTEXT_DOCUMENTS"] == "3"
+        assert tokens["FULLTEXT_ANOVA_P"] == "0.6286"
+
+    def test_absent_fulltext_artifact_omits_tokens(self, data_dirs) -> None:
+        """No fulltext_analysis.json → no FULLTEXT_* tokens, no KeyError."""
+        output_data, corpus_dir = data_dirs
+        _write_json(
+            output_data / "statistical_analysis.json",
+            {"pairwise": [], "anova": {}, "corrections": {}, "skipped": []},
+        )
+        variables = build_variable_map(output_data_dir=output_data, corpus_dir=corpus_dir)
+        assert [k for k in variables if k.startswith("FULLTEXT_")] == []
+
+    def test_empty_fulltext_artifact_omits_tokens(self) -> None:
+        """Empty artifact dict → no FULLTEXT_* tokens."""
+        tokens = build_statistical_tokens({}, fulltext_artifact={})
+        assert [k for k in tokens if k.startswith("FULLTEXT_")] == []
 
 
 class TestFillManuscript:

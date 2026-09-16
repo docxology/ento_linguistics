@@ -94,3 +94,41 @@ Kin \& Relatedness & {{DOMAIN_KIN_AND_RELATEDNESS_ENTROPY}} & {{DOMAIN_KIN_AND_R
 ## Confidence Intervals for Domain Metrics
 
 The frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}) reports per-term valid-entropy descriptives (means and standard deviations, with exclusions counted) and the inferential results in Table \ref{tab:pairwise_domain}; it does not compute domain-level confidence intervals, so per-domain ambiguity-score and context-variability intervals are not tabulated here. Separation between domains is established inferentially by the Welch $t$-tests and the omnibus ANOVA reported in Table \ref{tab:pairwise_domain}, with per-domain entropy descriptives in Table \ref{tab:entropy_distribution} and the accompanying summary figure \texttt{statistical\_analysis.png}.
+
+## Full-Text Parallel Layer
+
+To test whether the ento-linguistic patterns reported above survive beyond
+abstracts, a parallel analysis layer was run over {{FULLTEXT_DOCUMENTS}} open
+access full texts harvested from PubMed Central (PMC). The abstract corpus
+remains the headline corpus of this study; the full-text layer is reported
+here as a robustness check. The analysis machinery is shared: the same
+terminology extraction, domain assignment, semantic-entropy, and CACE
+scoring implementations are applied to full texts, with the frozen artifact
+written to \texttt{output/data/fulltext\_analysis.json} and rendered in
+figure \texttt{fulltext\_analysis.png}.
+
+The layer comprises {{FULLTEXT_TOTAL_TOKENS}} tokens of running text, with a
+per-document median of {{FULLTEXT_MEDIAN_TOKENS}} tokens. Table
+\ref{tab:fulltext_domain} reports per-domain term counts and mean semantic
+entropy over the full texts; {{FULLTEXT_PAIRWISE_N}} pairwise Welch
+$t$-tests (Benjamini-Hochberg corrected, as in Table
+\ref{tab:pairwise_domain}) accompany the omnibus one-way ANOVA on per-term
+semantic entropy, $F = {{FULLTEXT_ANOVA_F}}$, {{FULLTEXT_ANOVA_P}}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Domain} & \textbf{Terms extracted} & \textbf{Mean $H$ (bits)} \\
+\hline
+Behavior \& Identity & {{FULLTEXT_DOMAIN_BEHAVIOR_AND_IDENTITY_TERMS}} & {{FULLTEXT_DOMAIN_BEHAVIOR_AND_IDENTITY_ENTROPY}} \\
+Economics & {{FULLTEXT_DOMAIN_ECONOMICS_TERMS}} & {{FULLTEXT_DOMAIN_ECONOMICS_ENTROPY}} \\
+Kin \& Relatedness & {{FULLTEXT_DOMAIN_KIN_AND_RELATEDNESS_TERMS}} & {{FULLTEXT_DOMAIN_KIN_AND_RELATEDNESS_ENTROPY}} \\
+Power \& Labor & {{FULLTEXT_DOMAIN_POWER_AND_LABOR_TERMS}} & {{FULLTEXT_DOMAIN_POWER_AND_LABOR_ENTROPY}} \\
+Sex \& Reproduction & {{FULLTEXT_DOMAIN_SEX_AND_REPRODUCTION_TERMS}} & {{FULLTEXT_DOMAIN_SEX_AND_REPRODUCTION_ENTROPY}} \\
+Unit of Individuality & {{FULLTEXT_DOMAIN_UNIT_OF_INDIVIDUALITY_TERMS}} & {{FULLTEXT_DOMAIN_UNIT_OF_INDIVIDUALITY_ENTROPY}} \\
+\hline
+\end{tabular}
+\caption{Per-domain terminology in the PMC full-text parallel layer: extracted-term counts and mean semantic entropy $H(t)$, computed with the same pipeline as the abstract layer (\texttt{output/data/fulltext\_analysis.json}, \texttt{descriptives} section). Term extraction uses a higher minimum token frequency than the abstract layer because full texts are substantially longer.}
+\label{tab:fulltext_domain}
+\end{table}

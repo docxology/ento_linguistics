@@ -120,7 +120,9 @@ Outputs in `output/reports/test_results.json` and `output/figures/figure_registr
 - Modules in `src/analysis/`, `src/core/`, `src/data/`, `src/pipeline/`, `src/visualization/` with corresponding tests.
 - Deterministic outputs (fixed seeds, e.g. `random_state=42` in KMeans and generators).
 - Input validation and error handling returning `ValidationResult` objects.
-- Reproducible corpus loading from `data/corpus/abstracts.json` and synthetic data via `DataGenerator`.
+- Reproducible corpus loading from `data/corpus/abstracts.json` (grown idempotently via `scripts/01_build_corpus.py --grow`, with provenance sidecars) and synthetic data via `DataGenerator`.
+- Full-text parallel layer: PMC Open Access full texts (`data/fulltexts/fulltexts.json`) analyzed with the same statistics machinery (`src/pipeline/fulltext_pipeline.py`), writing `output/data/fulltext_analysis.json` and the `fulltext_analysis.png` figure.
+- arXiv preprint layer (`src/data/arxiv_corpus.py`) and OpenAlex citation enrichment (`src/data/openalex_enrichment.py`) as separate, documented source layers.
 - Figures registered in `output/figures/figure_registry.json`.
 - Inferential statistics stage: pairwise Welch $t$-tests with Benjamini–Hochberg correction and Cohen's $d$, plus one-way ANOVA (`src/pipeline/statistics_pipeline.py`), writing `output/data/statistical_analysis.json` and the `statistical_analysis.png` figure.
 

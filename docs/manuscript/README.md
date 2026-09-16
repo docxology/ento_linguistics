@@ -83,7 +83,7 @@ Numeric results that depend on the analyzed corpus (token counts, network metric
 
 **Workflow:** run the analysis pipeline (or `scripts/02_generate_figures.py` as part of it) so `output/data/` matches the run you intend to cite, then build the PDF.
 
-**CI / fail-closed builds:** set `STRICT_TEMPLATE_VARS=1` or pass `--strict-templates` to `scripts/_render_pdf_override.py` so any unresolved double-brace variable token after substitution exits non-zero. See `docs/manuscript/AGENTS.md` for the variable families (`CORPUS_*`, `NETWORK_*`, `DOMAIN_*`, `TERM_FREQ_*`, `CONCEPT_*`, and the inferential `ANOVA_*`, `PAIRWISE_*`, `CORRECTION_METHOD`, `PAIRWISE_N_COMPARISONS` from `output/data/statistical_analysis.json`).
+**CI / fail-closed builds:** set `STRICT_TEMPLATE_VARS=1` or pass `--strict-templates` to `scripts/_render_pdf_override.py` so any unresolved double-brace variable token after substitution exits non-zero. See `docs/manuscript/AGENTS.md` for the variable families (`CORPUS_*`, `NETWORK_*`, `DOMAIN_*`, `TERM_FREQ_*`, `CONCEPT_*`, the inferential `ANOVA_*`, `PAIRWISE_*`, `CORRECTION_METHOD`, `PAIRWISE_N_COMPARISONS` from `output/data/statistical_analysis.json`, and the full-text parallel `FULLTEXT_*` family from `output/data/fulltext_analysis.json` — optional; absent artifact omits the family).
 
 ## File Structure
 

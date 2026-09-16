@@ -8,7 +8,9 @@ from __future__ import annotations
 
 import json
 import re
+import statistics
 from pathlib import Path
+from typing import Optional
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent.parent
 MANUSCRIPT_DIR = PROJECT_DIR / "docs" / "manuscript"
@@ -251,13 +253,16 @@ def build_variable_map(
         variables[var_name] = str(term_data.get("frequency", 0))
     variables.update(
         build_statistical_tokens(
-            load_json(output_data_dir / "statistical_analysis.json")
+            load_json(output_data_dir / "statistical_analysis.json"),
+            load_json(output_data_dir / "fulltext_analysis.json"),
         )
     )
     return variables
 
 
-def build_statistical_tokens(stats_artifact: dict) -> dict:
+def build_statistical_tokens(
+    stats_artifact: dict, fulltext_artifact: Optional[dict] = None
+) -> dict:
     """Map the statistical-analysis artifact onto inferential template tokens.
 
     Emits ANOVA_*, CORRECTION_METHOD, PAIRWISE_N_COMPARISONS,
@@ -270,13 +275,20 @@ def build_statistical_tokens(stats_artifact: dict) -> dict:
     underscores).  Shared by :func:`build_variable_map` and the PDF
     renderer so both substitution paths resolve the identical token set.
 
+    When the parallel full-text layer artifact is available, the additional
+    FULLTEXT_* token family is emitted (see :func:`_build_fulltext_tokens`).
+
     Args:
         stats_artifact: Parsed ``statistical_analysis.json`` contents.
+        fulltext_artifact: Parsed ``fulltext_analysis.json`` contents, or
+            ``None`` to load it from the default output-data location
+            (missing file resolves to no FULLTEXT_* tokens, never KeyError).
 
     Returns:
         Mapping of token names to formatted string values.
     """
     variables: dict = {}
+    variables.update(_build_fulltext_tokens(fulltext_artifact))
     if not stats_artifact:
         return variables
     anova = stats_artifact.get("anova") or {}
@@ -339,6 +351,60 @@ def build_statistical_tokens(stats_artifact: dict) -> dict:
             entry.get("evolvability")
         )
         variables[f"CACE_TERM_{slug}_AGGREGATE"] = _fmt_cace(entry.get("aggregate"))
+
+    return variables
+
+
+def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
+    """Map the full-text-layer artifact onto the FULLTEXT_* token family.
+
+    Emits (all omitted when the artifact is absent/empty, never KeyError):
+
+    - ``FULLTEXT_DOCUMENTS``: number of analyzed full texts.
+    - ``FULLTEXT_TOTAL_TOKENS`` / ``FULLTEXT_MEDIAN_TOKENS``: corpus token
+      volume and per-document median token count.
+    - ``FULLTEXT_DOMAIN_<SLUG>_TERMS`` / ``FULLTEXT_DOMAIN_<SLUG>_ENTROPY``:
+      per-domain extracted-term count and mean semantic entropy from the
+      artifact's ``descriptives`` section (SLUG = canonical domain slug
+      uppercased).
+    - ``FULLTEXT_PAIRWISE_N``: number of pairwise comparisons.
+    - ``FULLTEXT_ANOVA_F`` / ``FULLTEXT_ANOVA_P``: omnibus ANOVA statistic
+      and p-value (formatted with the shared ``_fmt_stat``/``_fmt_p``
+      helpers).
+
+    Args:
+        fulltext_artifact: Parsed ``fulltext_analysis.json`` contents, or
+            ``None`` to load from ``OUTPUT_DATA_DIR/fulltext_analysis.json``.
+
+    Returns:
+        Mapping of FULLTEXT_* token names to formatted string values.
+    """
+    if fulltext_artifact is None:
+        fulltext_artifact = load_json(OUTPUT_DATA_DIR / "fulltext_analysis.json")
+    variables: dict = {}
+    if not fulltext_artifact:
+        return variables
+    variables["FULLTEXT_DOCUMENTS"] = str(fulltext_artifact.get("n_documents", 0))
+    token_counts = [
+        int(doc.get("token_count", 0))
+        for doc in fulltext_artifact.get("documents") or []
+    ]
+    if token_counts:
+        variables["FULLTEXT_TOTAL_TOKENS"] = str(sum(token_counts))
+        variables["FULLTEXT_MEDIAN_TOKENS"] = _fmt_stat(statistics.median(token_counts))
+    for domain, entry in (fulltext_artifact.get("descriptives") or {}).items():
+        slug = str(domain).upper()
+        variables[f"FULLTEXT_DOMAIN_{slug}_TERMS"] = str(entry.get("n_terms", 0))
+        variables[f"FULLTEXT_DOMAIN_{slug}_ENTROPY"] = _fmt_stat(
+            entry.get("entropy_mean")
+        )
+    variables["FULLTEXT_PAIRWISE_N"] = str(
+        len(fulltext_artifact.get("pairwise") or [])
+    )
+    anova = fulltext_artifact.get("anova") or {}
+    if anova:
+        variables["FULLTEXT_ANOVA_F"] = _fmt_stat(anova.get("F"))
+        variables["FULLTEXT_ANOVA_P"] = _fmt_p(anova.get("p"))
     return variables
 
 

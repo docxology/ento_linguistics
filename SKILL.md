@@ -11,7 +11,8 @@ Research project examining the entanglement of speech and thought in entomology.
 - **Concept Mapping**: Build and visualize concept networks with similarity analysis and centrality metrics
 - **Discourse Analysis**: Quantitative rhetorical pattern analysis and framing effect measurement
 - **CACE Scoring**: Evaluate terminology using Clarity, Appropriateness, Consistency, Evolvability framework
-- **Literature Mining**: Collect and process scientific literature from PubMed
+- **Literature Mining**: Collect and process scientific literature from PubMed; arXiv preprint harvesting (`src/data/arxiv_corpus.py`) and OpenAlex citation enrichment (`src/data/openalex_enrichment.py`) as separate source layers
+- **Full-Text Analysis**: Parallel PMC Open Access full-text layer (`src/pipeline/fulltext_pipeline.py`) reusing the abstract-layer statistics machinery
 
 ## Use Cases
 
@@ -31,7 +32,7 @@ Research project examining the entanglement of speech and thought in entomology.
 - **Location**: `template/projects/ongoing/EntoTech/ento_linguistics/` (active project)
 - **Tests**: count via `uv run pytest tests/ --collect-only -q` (the last recorded full run in `output/reports/test_results.json` reports 1224 passed / 1 skipped)
 - **Coverage**: measured by `uv run pytest tests/ --cov=src` (project enforces 90%+)
-- **Figures**: 12 generated (including `statistical_analysis.png`)
+- **Figures**: 13 generated (including `statistical_analysis.png` and `fulltext_analysis.png`)
 
 ## Promotion to Active
 
