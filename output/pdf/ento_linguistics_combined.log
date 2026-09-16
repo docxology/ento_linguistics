@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  15 SEP 2026 10:50
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  15 SEP 2026 15:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1575,7 +1575,7 @@ equently than with [][][][][][]policing,’’
  []
 
 [17] [18] [19] [20] [21] [22] [23]
-Underfull \hbox (badness 1009) in paragraph at lines 1816--1827
+Underfull \hbox (badness 1009) in paragraph at lines 1817--1828
 \TU/lmr/m/n/10 This work establishes Ento-Linguistic analysis as a methodology 
 for examining how scientific language
  []
@@ -1583,42 +1583,42 @@ for examining how scientific language
 [24] [25] [26] [27] [28] [29]
 ignored: Infinite glue shrinkage found in box being split [
 30]
-Overfull \hbox (2.45494pt too wide) in paragraph at lines 2357--2357
+Overfull \hbox (2.45494pt too wide) in paragraph at lines 2358--2358
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (12.95494pt too wide) in paragraph at lines 2359--2359
+Overfull \hbox (12.95494pt too wide) in paragraph at lines 2360--2360
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (18.20494pt too wide) in paragraph at lines 2361--2361
+Overfull \hbox (18.20494pt too wide) in paragraph at lines 2362--2362
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (12.95494pt too wide) in paragraph at lines 2365--2365
+Overfull \hbox (12.95494pt too wide) in paragraph at lines 2366--2366
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (28.70494pt too wide) in paragraph at lines 2367--2367
+Overfull \hbox (28.70494pt too wide) in paragraph at lines 2368--2368
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (33.95494pt too wide) in paragraph at lines 2369--2369
+Overfull \hbox (33.95494pt too wide) in paragraph at lines 2370--2370
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (28.70494pt too wide) in paragraph at lines 2371--2371
+Overfull \hbox (28.70494pt too wide) in paragraph at lines 2372--2372
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (70.70494pt too wide) in paragraph at lines 2375--2375
+Overfull \hbox (70.70494pt too wide) in paragraph at lines 2376--2376
 []|[][][][][][]|  
  []
 
@@ -1754,11 +1754,11 @@ Missing character: There is no └ (U+2514) in font [lmmono8-regular]:!
 Missing character: There is no ─ (U+2500) in font [lmmono8-regular]:!
 Missing character: There is no ─ (U+2500) in font [lmmono8-regular]:!
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 2445.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 2446.
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 2447.
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 2448.
 
-Overfull \hbox (30.45712pt too wide) in paragraph at lines 2473--2473
+Overfull \hbox (30.45712pt too wide) in paragraph at lines 2474--2474
 []|[][][][][][]|  
  []
 
@@ -1766,112 +1766,112 @@ Overfull \hbox (30.45712pt too wide) in paragraph at lines 2473--2473
 Missing character: There is no ∪ (U+222A) in font [lmroman10-regular]:mapping=t
 ex-text;!
 
-Overfull \hbox (130.1065pt too wide) in paragraph at lines 2518--2518
+Overfull \hbox (130.1065pt too wide) in paragraph at lines 2519--2519
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (30.3565pt too wide) in paragraph at lines 2522--2522
+Overfull \hbox (30.3565pt too wide) in paragraph at lines 2523--2523
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (30.3565pt too wide) in paragraph at lines 2526--2526
+Overfull \hbox (30.3565pt too wide) in paragraph at lines 2527--2527
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (30.3565pt too wide) in paragraph at lines 2529--2529
+Overfull \hbox (30.3565pt too wide) in paragraph at lines 2530--2530
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (56.66437pt too wide) in paragraph at lines 2530--2531
+Overfull \hbox (56.66437pt too wide) in paragraph at lines 2531--2532
 [][][][][][]|  
  []
 
 
-Overfull \hbox (172.1065pt too wide) in paragraph at lines 2532--2533
+Overfull \hbox (172.1065pt too wide) in paragraph at lines 2533--2534
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (82.8565pt too wide) in paragraph at lines 2536--2536
+Overfull \hbox (82.8565pt too wide) in paragraph at lines 2537--2537
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (6.88426pt too wide) in paragraph at lines 2538--2538
+Overfull \hbox (6.88426pt too wide) in paragraph at lines 2539--2539
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (9.56438pt too wide) in paragraph at lines 2539--2542
+Overfull \hbox (9.56438pt too wide) in paragraph at lines 2540--2543
 \TU/lmr/m/n/10 most_common_tokens 
  []
 
 
 ignored: Infinite glue shrinkage found in box being split [37]
-Overfull \hbox (83.3493pt too wide) in paragraph at lines 2578--2584
+Overfull \hbox (83.3493pt too wide) in paragraph at lines 2579--2585
 []\TU/lmr/bx/n/10 Anthropomorphic \TU/lmr/m/n/10 (4 patterns): [][][][][][], []
 [][][][][],
  []
 
 
-Overfull \hbox (91.16931pt too wide) in paragraph at lines 2584--2590
+Overfull \hbox (91.16931pt too wide) in paragraph at lines 2585--2591
 []\TU/lmr/bx/n/10 Hierarchical \TU/lmr/m/n/10 (4 patterns): [][][][][][], [][][
 ][][][],
  []
 
 
-Overfull \hbox (31.5693pt too wide) in paragraph at lines 2590--2595
+Overfull \hbox (31.5693pt too wide) in paragraph at lines 2591--2596
 []\TU/lmr/bx/n/10 Economic \TU/lmr/m/n/10 (4 patterns): [][][][][][], [][][][][
 ][],
  []
 
 [38]
-Overfull \hbox (67.34149pt too wide) in paragraph at lines 2666--2671
+Overfull \hbox (67.34149pt too wide) in paragraph at lines 2667--2672
 \TU/lmr/m/n/10 token window) $[]$ deduplicate contexts $[]$ assign confidence. 
 [][][][][][]
  []
 
 [39]
-Overfull \hbox (23.21042pt too wide) in paragraph at lines 2753--2760
+Overfull \hbox (23.21042pt too wide) in paragraph at lines 2754--2761
 []\TU/lmr/m/n/10 Cluster count: [][][][][][]; [][][][][][]
  []
 
 
-Overfull \hbox (96.17653pt too wide) in paragraph at lines 2793--2793
+Overfull \hbox (96.17653pt too wide) in paragraph at lines 2794--2794
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (42.55527pt too wide) in paragraph at lines 2794--2794
+Overfull \hbox (42.55527pt too wide) in paragraph at lines 2795--2795
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (22.67653pt too wide) in paragraph at lines 2796--2796
+Overfull \hbox (22.67653pt too wide) in paragraph at lines 2797--2797
 []|[][][][][][]|  
  []
 
 
-Overfull \hbox (16.30527pt too wide) in paragraph at lines 2797--2797
+Overfull \hbox (16.30527pt too wide) in paragraph at lines 2798--2798
 []|[][][][][][]|  
  []
 
 [40]
-Overfull \hbox (97.58487pt too wide) in paragraph at lines 2816--2818
+Overfull \hbox (97.58487pt too wide) in paragraph at lines 2817--2819
 [][][][][][] $[]$ [][][][][][]\TU/lmr/m/n/10 . 
  []
 
 
-Underfull \hbox (badness 4120) in paragraph at lines 2842--2845
+Underfull \hbox (badness 4120) in paragraph at lines 2843--2846
 [][][][][][] $[]$ [][][][][][]\TU/lmr/m/n/10 . From-
  []
 
 
-Overfull \hbox (9.67815pt too wide) in paragraph at lines 2848--2850
+Overfull \hbox (9.67815pt too wide) in paragraph at lines 2849--2851
 [][][][][][]\TU/lmr/m/n/10 : [][][][][][] + t-distribution p-value. [][][][][][
 ]: [][][][][][]. 
  []
@@ -1883,42 +1883,42 @@ ex-text;!
 Missing character: There is no λ (U+03BB) in font [lmroman10-regular]:mapping=t
 ex-text;!
 
-Overfull \hbox (95.18044pt too wide) in paragraph at lines 2869--2878
+Overfull \hbox (95.18044pt too wide) in paragraph at lines 2870--2879
 \TU/lmr/m/n/10 Fields: [][][][][][], [][][][][][] (top-10 by frequency), [][][]
 [][][] (compound/multi_word/capitalized/abbreviation/numeric
  []
 
 
-Overfull \hbox (11.25822pt too wide) in paragraph at lines 2869--2878
+Overfull \hbox (11.25822pt too wide) in paragraph at lines 2870--2879
 \TU/lmr/m/n/10 counts), [][][][][][], [][][][][][] (domain ontology), [][][][][
 ][] (term/contexts/issue
  []
 
 [41]
-Underfull \hbox (badness 1852) in paragraph at lines 2913--2918
+Underfull \hbox (badness 1852) in paragraph at lines 2914--2919
 [][][][][][]\TU/lmr/m/n/10 : name, description, terms (Set), domains (Set), par
 ent_concepts, child_concepts, confidence.
  []
 
 
-Overfull \hbox (204.65042pt too wide) in paragraph at lines 2913--2918
+Overfull \hbox (204.65042pt too wide) in paragraph at lines 2914--2919
 [][][][][][]\TU/lmr/m/n/10 : [][][][][][], [][][][][][], [][][][][][]. 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 2925--2933
+Underfull \hbox (badness 10000) in paragraph at lines 2926--2934
 [][][][][][][]\TU/lmr/m/n/10 : NetworkX degree/betweenness/closeness/eigenvecto
 r centrality (pure-
  []
 
 
-Underfull \hbox (badness 3009) in paragraph at lines 2925--2933
+Underfull \hbox (badness 3009) in paragraph at lines 2926--2934
 \TU/lmr/m/n/10 Python fallback). [][][][][][]: composite = base×0.4 + term_over
 lap×0.3 +
  []
 
 
-Overfull \hbox (24.7548pt too wide) in paragraph at lines 2925--2933
+Overfull \hbox (24.7548pt too wide) in paragraph at lines 2926--2934
 [][][][][][]\TU/lmr/m/n/10 : Jaccard + domain overlap bonus (max 0.3). [][][][]
 [][]:
  []
@@ -1928,65 +1928,65 @@ Missing character: There is no 𝟙 (U+1D7D9) in font [lmmono10-regular]:!
 Missing character: There is no ∩ (U+2229) in font [lmmono10-regular]:!
 Missing character: There is no 𝒜 (U+1D49C) in font [lmmono10-regular]:!
 
-Overfull \hbox (118.04454pt too wide) in paragraph at lines 2982--2984
+Overfull \hbox (118.04454pt too wide) in paragraph at lines 2983--2985
 []|[][][][][][] 
  []
 
 
-Overfull \hbox (125.39453pt too wide) in paragraph at lines 2987--2988
+Overfull \hbox (125.39453pt too wide) in paragraph at lines 2988--2989
 []|[][][][][][]|  
  []
 
 [42]
-Overfull \hbox (4.41592pt too wide) in paragraph at lines 3002--3013
+Overfull \hbox (4.41592pt too wide) in paragraph at lines 3003--3014
 \TU/lmr/m/n/10 tion, anecdotal). [][][][][][]: 4 framework types (progress/conf
 lict/discovery/complexity),
  []
 
 
-Underfull \hbox (badness 5548) in paragraph at lines 3034--3052
+Underfull \hbox (badness 5548) in paragraph at lines 3035--3053
 [][][][][][]\TU/lmr/m/n/10 : [][][][][][]/[][][][][][] infrastructure plus [][]
 [][][][] defaults
  []
 
 
-Underfull \hbox (badness 1571) in paragraph at lines 3034--3052
+Underfull \hbox (badness 1571) in paragraph at lines 3035--3053
 \TU/lmr/m/n/10 ([][][][][][], [][][][][][]). The semantic-entropy parameters ([
 ][][][][][],
  []
 
 
-Overfull \hbox (7.4471pt too wide) in paragraph at lines 3034--3052
+Overfull \hbox (7.4471pt too wide) in paragraph at lines 3035--3053
 [][][][][][]\TU/lmr/m/n/10 , [][][][][][], [][][][][][]) are function defaults 
 of [][][][][][];
  []
 
 
-Overfull \hbox (116.85599pt too wide) in paragraph at lines 3034--3052
+Overfull \hbox (116.85599pt too wide) in paragraph at lines 3035--3053
 \TU/lmr/m/n/10 extraction windows in [][][][][][], 10-word term co-occurrence w
 indows ([][][][][][]),
  []
 
 
-Overfull \hbox (114.15149pt too wide) in paragraph at lines 3034--3052
+Overfull \hbox (114.15149pt too wide) in paragraph at lines 3035--3053
 \TU/lmr/m/n/10 and 50-word domain co-occurrence windows ([][][][][][]). [][][][
 ][][]/[][][][][][]:
  []
 
 [43]
-Overfull \hbox (19.13818pt too wide) in paragraph at lines 3062--3067
+Overfull \hbox (19.13818pt too wide) in paragraph at lines 3063--3068
 []\TU/lmr/bx/n/10 Clean-slate\TU/lmr/m/n/10 : [][][][][][] and [][][][][][] wip
 ed and recreated on every run ([][][][][][]
  []
 
 
-Overfull \hbox (55.38266pt too wide) in paragraph at lines 3067--3075
+Overfull \hbox (55.38266pt too wide) in paragraph at lines 3068--3076
 []\TU/lmr/bx/n/10 Live statistics\TU/lmr/m/n/10 : all corpus metrics are read f
 rom [][][][][][], [][][][][][],
  []
 
 
-Overfull \hbox (10.15378pt too wide) in paragraph at lines 3078--3081
+Overfull \hbox (10.15378pt too wide) in paragraph at lines 3079--3082
 []\TU/lmr/bx/n/10 Test suite\TU/lmr/m/n/10 : comprehensive test suite covering 
 all [][][][][][] modules; run via [][][][][][]
  []
@@ -1995,7 +1995,7 @@ all [][][][][][] modules; run via [][][][][][]
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.3125 ...oup) and $df_2 = N - k$ (within-group).}
+l.3126 ...oup) and $df_2 = N - k$ (within-group).}
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2005,7 +2005,7 @@ ex-text;!
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.3125 ...oup) and $df_2 = N - k$ (within-group).}
+l.3126 ...oup) and $df_2 = N - k$ (within-group).}
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2013,7 +2013,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.3125 ...oup) and $df_2 = N - k$ (within-group).}
+l.3126 ...oup) and $df_2 = N - k$ (within-group).}
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2023,7 +2023,7 @@ ex-text;!
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.3125 ...oup) and $df_2 = N - k$ (within-group).}
+l.3126 ...oup) and $df_2 = N - k$ (within-group).}
                                                   
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -2035,7 +2035,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [45] [46] [47] [48] [49]
-Overfull \hbox (55.44495pt too wide) in paragraph at lines 3465--3478
+Overfull \hbox (55.44495pt too wide) in paragraph at lines 3466--3479
  [][] 
  []
 
@@ -2048,10 +2048,10 @@ L3 programming layer <2026-01-19>
 Here is how much of TeX's memory you used:
  26170 strings out of 468168
  497646 string characters out of 5432815
- 1180899 words of memory out of 5000000
+ 1181899 words of memory out of 5000000
  54517 multiletter control sequences out of 15000+600000
  655849 words of font info for 122 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,9n,114p,1057b,728s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,9n,114p,1223b,728s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on ento_linguistics_combined.pdf (57 pages).

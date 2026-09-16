@@ -8,7 +8,7 @@ title: 'Ento-Linguistics: Language, Ambiguity, and Scientific Communication in E
 ---
 # Abstract {#sec:abstract}
 
-Scientific language does not merely describe biological phenomena; it actively constitutes the generative models through which researchers parse complex systems. This paper makes three core contributions to understanding—and correcting—the epistemic consequences of this constitutive role. First, we introduce a six-domain Ento-Linguistic framework that decomposes the terminological landscape of insect research into analytically tractable themes, isolating domains where anthropomorphic language most severely distorts causal modeling. Second, we develop an open-source computational pipeline that integrates automated term extraction, co-occurrence network construction, and information-theoretic ambiguity scoring with principles from Active Inference and Complex Systems Theory. Third, we propose and validate four evidence-based meta-standards—Clarity, Appropriateness, Consistency, and Evolvability (CACE)—as a formalized protocol for lexical engineering. Analysis of a corpus encompassing 369 entomological publications (48804 tokens; 7102 unique token types; Type–Token Ratio 0.1455) extracts 884 candidate terms (with 198 assigned to specific semantic domains across 6 conceptual clusters linked by 9 weighted relationships). The resulting terminology networks display strong modularity alongside systematic cross-domain bridging—most prominently in the Power and Labor domain, where 43 bridging terms generate extensive semantic bleed-over into adjacent domains. Terms such as "queen" (602 occurrences), "worker" (831), and "caste" (200) implicitly impose hierarchical control topologies onto biological structures that are fundamentally stigmergic and decentralized. Across all 198 domain-assigned terms, 22.2% exhibit context-dependent semantic drift, demonstrating how conceptual constructs like "individuality" span multiple biological scales and consequently blur the formal systemic boundaries (Markov Blankets) required for mathematically rigorous modeling. The accompanying fully reproducible computational pipeline provides the quantitative analytical tools necessary for a more self-aware and epistemically rigorous scientific practice. All code and data are available at https://github.com/docxology/ento_linguistics.
+Scientific language does not merely describe biological phenomena; it actively constitutes the generative models through which researchers parse complex systems. This paper makes three core contributions to understanding—and correcting—the epistemic consequences of this constitutive role. First, we introduce a six-domain Ento-Linguistic framework that decomposes the terminological landscape of insect research into analytically tractable themes, isolating domains where anthropomorphic language most severely distorts causal modeling. Second, we develop an open-source computational pipeline that integrates automated term extraction, co-occurrence network construction, and information-theoretic ambiguity scoring with principles from Active Inference and Complex Systems Theory. Third, we propose and validate four evidence-based meta-standards—Clarity, Appropriateness, Consistency, and Evolvability (CACE)—as a formalized protocol for lexical engineering. Analysis of a corpus encompassing 907 entomological publications (120561 tokens; 11587 unique token types; Type–Token Ratio 0.0961) extracts 1898 candidate terms (with 356 assigned to specific semantic domains across 6 conceptual clusters linked by 13 weighted relationships). The resulting terminology networks display strong modularity alongside systematic cross-domain bridging—most prominently in the Power and Labor domain, where 66 bridging terms generate extensive semantic bleed-over into adjacent domains. Terms such as "queen" (1071 occurrences), "worker" (1451), and "caste" (181) implicitly impose hierarchical control topologies onto biological structures that are fundamentally stigmergic and decentralized. Across all 356 domain-assigned terms, 19.9% exhibit context-dependent semantic drift, demonstrating how conceptual constructs like "individuality" span multiple biological scales and consequently blur the formal systemic boundaries (Markov Blankets) required for mathematically rigorous modeling. The accompanying fully reproducible computational pipeline provides the quantitative analytical tools necessary for a more self-aware and epistemically rigorous scientific practice. All code and data are available at https://github.com/docxology/ento_linguistics.
 
 
 \newpage
@@ -57,7 +57,7 @@ We organize our analysis around six domains where entomological language creates
 
 ## Research Approach
 
-This work employs a mixed-methodology framework combining computational text analysis with theoretical discourse examination. The computational component processes a **corpus of 369 entomological publications** (48804 tokens; 7102 unique token types; 884 extracted candidate terms, 198 domain-assigned) using automated term extraction, co-occurrence network construction, and information-theoretic ambiguity scoring. The theoretical component, informed by \citeauthor{foucault1972archaeology}'s archaeological method \citeyearpar{foucault1972archaeology}, conceptual metaphor theory \cite{lakoff1980metaphors}, and \citeauthor{gordon2023ecology}'s \citeyearpar{gordon2023ecology} ecological framework for collective behavior, examines how the statistical patterns reflect deeper conceptual structures. Longitudinal case studies of "caste" and "superorganism" vocabularies (Section \ref{sec:experimental_results}) track terminological evolution alongside empirical discoveries over five decades, providing diachronic evidence for the framework's claims. All data and analysis code are reproducible and available for validation.
+This work employs a mixed-methodology framework combining computational text analysis with theoretical discourse examination. The computational component processes a **corpus of 907 entomological publications** (120561 tokens; 11587 unique token types; 1898 extracted candidate terms, 356 domain-assigned) using automated term extraction, co-occurrence network construction, and information-theoretic ambiguity scoring. The theoretical component, informed by \citeauthor{foucault1972archaeology}'s archaeological method \citeyearpar{foucault1972archaeology}, conceptual metaphor theory \cite{lakoff1980metaphors}, and \citeauthor{gordon2023ecology}'s \citeyearpar{gordon2023ecology} ecological framework for collective behavior, examines how the statistical patterns reflect deeper conceptual structures. Longitudinal case studies of "caste" and "superorganism" vocabularies (Section \ref{sec:experimental_results}) track terminological evolution alongside empirical discoveries over five decades, providing diachronic evidence for the framework's claims. All data and analysis code are reproducible and available for validation.
 
 ## Terminology Network Visualization
 
@@ -109,11 +109,11 @@ The assembled `LiteratureCorpus` stores `Publication` dataclass objects with the
 
 | Metric | Value |
 |--------|-------|
-| Documents | **369** |
-| Total processed tokens | **48804** |
-| Unique token types | **7102** |
-| Candidate terms extracted | **884** |
-| Domain-assigned terms | **198** |
+| Documents | **907** |
+| Total processed tokens | **120561** |
+| Unique token types | **11587** |
+| Candidate terms extracted | **1898** |
+| Domain-assigned terms | **356** |
 
 These statistics are computed at runtime by `TextProcessor.get_vocabulary_stats()` and serialized to `output/data/corpus_statistics.json`; the values reported here are read directly from that file and are therefore always current with the last pipeline run.
 
@@ -132,7 +132,7 @@ To verify that the search strategy captured all six target Ento-Linguistic domai
 | Kin & Relatedness | kin selection, inclusive fitness, relatedness, altruism |
 | Economics | foraging, cost, benefit, resource allocation, trade-off |
 
-The current pipeline run extracted **884 terms distributed across all six domains**, of which **198 receive specific domain assignments**, sourced from `output/data/domain_statistics.json`. Domain-specific acquisition details, bridging term frequencies, and per-domain confidence statistics are reported in Supplemental Results \ref{sec:supplemental_results}.
+The current pipeline run extracted **1898 terms distributed across all six domains**, of which **356 receive specific domain assignments**, sourced from `output/data/domain_statistics.json`. Domain-specific acquisition details, bridging term frequencies, and per-domain confidence statistics are reported in Supplemental Results \ref{sec:supplemental_results}.
 
 ---
 
@@ -174,7 +174,7 @@ A four-level **multi-scale ambiguity classification** is applied to high-entropy
 
 ### Conceptual Network Analysis
 
-`ConceptualMapper` (`src/analysis/conceptual_mapping.py`) constructs a `ConceptMap` of **6 concepts** (biological_individuality, social_organization, reproductive_biology, kinship_systems, resource_economics, behavioral_ecology) linked by **9 weighted edges**. Edge weights are overlap coefficients (Szymkiewicz--Simpson):
+`ConceptualMapper` (`src/analysis/conceptual_mapping.py`) constructs a `ConceptMap` of **6 concepts** (biological_individuality, social_organization, reproductive_biology, kinship_systems, resource_economics, behavioral_ecology) linked by **13 weighted edges**. Edge weights are overlap coefficients (Szymkiewicz--Simpson):
 
 \begin{equation}\label{eq:overlap_coefficient}
 w_{AB} = \frac{|A \cap B|}{\min(|A|, |B|)}
@@ -182,7 +182,7 @@ w_{AB} = \frac{|A \cap B|}{\min(|A|, |B|)}
 
 Composite relationship strength decomposes as: $\text{strength} = 0.4\,w_\text{base} + 0.3\,r_\text{term} + 0.2\,r_\text{domain} + 0.1\,\mathbb{1}_\text{hierarchical}$.
 
-Centrality analysis uses NetworkX: degree centrality, betweenness centrality, closeness centrality, and eigenvector centrality (`max_iter=1000`; `PowerIterationFailedConvergence` fallback $\to$ 0). Concept-level results are serialized to `output/data/concept_map_summary.json`. Cross-domain bridging terms — appearing in $\geq 2$ domains — are identified with `identify_cross_domain_bridges`; the current run yields 43 bridging terms in Power \& Labor and 26 in Sex \& Reproduction.
+Centrality analysis uses NetworkX: degree centrality, betweenness centrality, closeness centrality, and eigenvector centrality (`max_iter=1000`; `PowerIterationFailedConvergence` fallback $\to$ 0). Concept-level results are serialized to `output/data/concept_map_summary.json`. Cross-domain bridging terms — appearing in $\geq 2$ domains — are identified with `identify_cross_domain_bridges`; the current run yields 66 bridging terms in Power \& Labor and 37 in Sex \& Reproduction.
 
 ### Rhetorical and Discourse Analysis
 
@@ -237,7 +237,7 @@ The pipeline is fully deterministic and clean-slate: output directories are wipe
 
 Our analysis applies the mixed-methodology framework described in Section \ref{sec:methodology} to a corpus of entomological literature. The dataset includes abstracts from foundational works by Hölldobler, Wilson, and Gordon, incorporating terminology patterns characteristic of journals including *Behavioral Ecology*, *Journal of Insect Behavior*, and *Insectes Sociaux*.
 
-Domain-specific extraction from **369 publications** (48804 tokens) identified **884 candidate terms** total, of which **198 receive domain assignments** spanning all six domains, with substantial variation in usage patterns:
+Domain-specific extraction from **907 publications** (120561 tokens) identified **1898 candidate terms** total, of which **356 receive domain assignments** spanning all six domains, with substantial variation in usage patterns:
 
 \begin{table}[h]
 \centering
@@ -245,21 +245,21 @@ Domain-specific extraction from **369 publications** (48804 tokens) identified *
 \hline
 \textbf{Domain} & \textbf{Term Count} & \textbf{Total Frequency} & \textbf{Bridging Terms} \\
 \hline
-Unit of Individuality & 64 & 721 & 2 \\
-Behavior \& Identity & 34 & 809 & 19 \\
-Power \& Labor & 56 & 823 & 43 \\
-Sex \& Reproduction & 60 & 609 & 26 \\
-Kin \& Relatedness & 21 & 372 & 0 \\
-Economics & 9 & 170 & 0 \\
+Unit of Individuality & 120 & 2093 & 6 \\
+Behavior \& Identity & 71 & 1415 & 34 \\
+Power \& Labor & 92 & 1452 & 66 \\
+Sex \& Reproduction & 93 & 1206 & 37 \\
+Kin \& Relatedness & 39 & 1018 & 2 \\
+Economics & 16 & 306 & 1 \\
 \hline
 \end{tabular}
-\caption{Domain-assigned terminology extracted from the 369-publication corpus. Terms are assigned by seed-expansion matching against domain-specific seed vocabularies; a single term may appear in multiple domains, so per-domain Term Counts sum to more than the 198 distinct domain-assigned terms. Total Freq counts all occurrences across the corpus for domain-assigned terms. Bridging Terms indicate terms that co-occur across multiple domain vocabularies. Full per-domain breakdowns are in \texttt{output/data/domain\_statistics.json}.}
+\caption{Domain-assigned terminology extracted from the 907-publication corpus. Terms are assigned by seed-expansion matching against domain-specific seed vocabularies; a single term may appear in multiple domains, so per-domain Term Counts sum to more than the 356 distinct domain-assigned terms. Total Freq counts all occurrences across the corpus for domain-assigned terms. Bridging Terms indicate terms that co-occur across multiple domain vocabularies. Full per-domain breakdowns are in \texttt{output/data/domain\_statistics.json}.}
 \label{tab:terminology_extraction}
 \end{table}
 
-Of 884 total extracted candidate terms, 198 receive domain assignments. The global corpus vocabulary possesses a Type-Token Ratio (TTR) of **0.1455**, reflecting the dense, highly specialized nature of the discourse. The absolute highest frequency terms across all contexts empirically anchor the investigation: **ant** (1033 occurrences), **colony** (850 occurrences), and **worker** (831 occurrences) dominate the conceptual landscape.
+Of 1898 total extracted candidate terms, 356 receive domain assignments. The global corpus vocabulary possesses a Type-Token Ratio (TTR) of **0.0961**, reflecting the dense, highly specialized nature of the discourse. The absolute highest frequency terms across all contexts empirically anchor the investigation: **colony** (1933 occurrences), **ant** (1634 occurrences), and **social** (1614 occurrences) dominate the conceptual landscape.
 
-Among domains, Behavior \& Identity possesses the highest absolute occurrence frequency (809 total occurrences), while Power \& Labor exhibits the most extensive bridging capacity (43 bridging terms). Conversely, Economics maintains the most tightly constrained vocabulary (9 terms) with zero bridging bleed-over (0 bridging terms), reflecting strict, insular deployment of economic metaphors.
+Among domains, Behavior \& Identity possesses the highest absolute occurrence frequency (1415 total occurrences), while Power \& Labor exhibits the most extensive bridging capacity (66 bridging terms). Conversely, Economics maintains the most tightly constrained vocabulary (16 terms) with zero bridging bleed-over (1 bridging terms), reflecting strict, insular deployment of economic metaphors.
 
 ## Terminology Network Structure
 
@@ -278,7 +278,7 @@ Figure \ref{fig:terminology_network} illustrates the resulting network.
 \label{fig:terminology_network}
 \end{figure}
 
-The network exhibits strong modularity: 890 nodes (884 extracted terms plus the 6 conceptual cluster nodes) connected by 384 edges, with a clustering coefficient of 0.1277 and average degree of 0.86. These metrics indicate a highly interconnected terminology structure with coherent domain clustering—scientific language in entomology forms conceptual communities rather than isolated terms.
+The network exhibits strong modularity: 1904 nodes (1898 extracted terms plus the 6 conceptual cluster nodes) connected by 564 edges, with a clustering coefficient of 0.1058 and average degree of 0.59. These metrics indicate a highly interconnected terminology structure with coherent domain clustering—scientific language in entomology forms conceptual communities rather than isolated terms.
 
 Domain-level network analysis reveals distinct architectures across the six core themes. As visualized in the aggregate network topology, dense identity clusters characterize Behavior & Identity terminology, while Power & Labor terminology forms hierarchical, chain-like structures. Conversely, Sex & Reproduction terms tend to organize into rigid binary oppositions, and Economics terms cluster tightly around transactional frameworks with few bridges to biological mechanism descriptions.
 
@@ -328,7 +328,7 @@ Our ambiguity detection algorithm classifies four distinct ambiguity types—lex
 
 ## Unit of Individuality
 
-Frequency and ambiguity analyses show that the highest-frequency terms (``colony,'' ``individual'') anchor the domain. Its mean semantic entropy (0.28 bits) sits in the lower half of the six-domain range (Table \ref{tab:entropy_distribution}). Figure \ref{fig:unit_individuality_patterns} details the scale-dependent terminology patterns within this domain, while per-domain top-term frequency distributions and part-of-speech composition breakdowns for all six domains are visualized in Figure \ref{fig:domain_overview_grid} and Figure \ref{fig:domain_patterns_grid} respectively.
+Frequency and ambiguity analyses show that the highest-frequency terms (``colony,'' ``individual'') anchor the domain. Its mean semantic entropy (0.29 bits) sits in the lower half of the six-domain range (Table \ref{tab:entropy_distribution}). Figure \ref{fig:unit_individuality_patterns} details the scale-dependent terminology patterns within this domain, while per-domain top-term frequency distributions and part-of-speech composition breakdowns for all six domains are visualized in Figure \ref{fig:domain_overview_grid} and Figure \ref{fig:domain_patterns_grid} respectively.
 
 \begin{figure}[h]
 \centering
@@ -353,7 +353,7 @@ Frequency and ambiguity analyses show that the highest-frequency terms (``colony
 
 ## Power \& Labor
 
-The most structurally rigid domain shows clear hierarchical patterns derived from human social systems \cite{herbers2007, boomsma2018superorganismality}. Recent molecular approaches to caste \cite{heinze2017molecular} and epigenetic evidence that caste determination is a labile developmental process \cite{warner2024caste} further underscore the need for reform. 78.6\% of Power \& Labor terms score above baseline on the pipeline's anthropomorphic-framing proportion for this domain (see \texttt{domain\_statistics.json}), consistent with pervasive hierarchical metaphor. Figure \ref{fig:concept_hierarchy} visualizes the resulting conceptual hierarchy; Figures \ref{fig:power_labor_frequencies} and \ref{fig:power_labor_ambiguities} profile the domain's term frequencies and semantic-entropy distribution. "Caste" and "queen" form central hub terms with the highest betweenness centrality; "worker" and "slave" show parasitic terminology influence \cite{herbers2006}. The chain-like network structure reflects the linear hierarchies assumed by this vocabulary rather than the distributed organization documented in behavioral studies (Figures \ref{fig:concept_hierarchy}, \ref{fig:power_labor_frequencies}, \ref{fig:power_labor_ambiguities}).
+The most structurally rigid domain shows clear hierarchical patterns derived from human social systems \cite{herbers2007, boomsma2018superorganismality}. Recent molecular approaches to caste \cite{heinze2017molecular} and epigenetic evidence that caste determination is a labile developmental process \cite{warner2024caste} further underscore the need for reform. 78.3\% of Power \& Labor terms score above baseline on the pipeline's anthropomorphic-framing proportion for this domain (see \texttt{domain\_statistics.json}), consistent with pervasive hierarchical metaphor. Figure \ref{fig:concept_hierarchy} visualizes the resulting conceptual hierarchy; Figures \ref{fig:power_labor_frequencies} and \ref{fig:power_labor_ambiguities} profile the domain's term frequencies and semantic-entropy distribution. "Caste" and "queen" form central hub terms with the highest betweenness centrality; "worker" and "slave" show parasitic terminology influence \cite{herbers2006}. The chain-like network structure reflects the linear hierarchies assumed by this vocabulary rather than the distributed organization documented in behavioral studies (Figures \ref{fig:concept_hierarchy}, \ref{fig:power_labor_frequencies}, \ref{fig:power_labor_ambiguities}).
 
 \begin{figure}[h]
 \centering
@@ -382,7 +382,7 @@ The transition from Power \& Labor to Behavior \& Identity reveals how hierarchi
 
 Behavioral descriptions create categorical identities that may obscure the biological fluidity documented in ant task-switching research \cite{ravary2007, gordon2010}. As \citet{gordon1992wittgenstein} argues—drawing on Wittgenstein's analysis of category boundaries—the act of classifying a nestmate as a "forager" or a "nurse" is not a neutral observation but an imposition of discrete categories onto continuous behavioral variation. Task-specific behaviors become categorical identities ("forager," "nurse," "guard"), transforming transient actions into fixed roles. Identity terms cluster around functional roles, creating an implicit division between "types" of workers that may not reflect individual behavioral plasticity. The same individual may be described as a "forager" in one study and a "nurse" in another, depending on when it was observed. \citeauthor{gordon2023ecology}'s \citeyearpar{gordon2023ecology} recent synthesis demonstrates that task allocation in harvester ant colonies operates entirely through local interaction networks—brief antennal contacts modulated by cuticular hydrocarbon profiles—without any centralized assignment. Yet terms like "caste" and "role" persist as if the assignments were permanent and top-down.
 
-Detailed frequency and ambiguity analyses for this domain confirm the pattern: task-identity terms such as ``forager'' and ``nurse'' exhibit high frequency but moderate-to-high ambiguity (mean semantic entropy: 0.44 bits), reflecting the gap between categorical labels and fluid biological reality. Per-domain breakdowns are shown in Figures \ref{fig:domain_overview_grid} and \ref{fig:domain_patterns_grid}.
+Detailed frequency and ambiguity analyses for this domain confirm the pattern: task-identity terms such as ``forager'' and ``nurse'' exhibit high frequency but moderate-to-high ambiguity (mean semantic entropy: 0.27 bits), reflecting the gap between categorical labels and fluid biological reality. Per-domain breakdowns are shown in Figures \ref{fig:domain_overview_grid} and \ref{fig:domain_patterns_grid}.
 
 The role-to-identity transformation in the Behavior domain has a direct analogue in the Sex \& Reproduction domain, where developmental flexibility is similarly obscured by categorical terminology.
 
@@ -394,17 +394,17 @@ Frequency and ambiguity analyses confirm the domain's distinctive binary structu
 
 ## Kin \& Relatedness
 
-Kin and Relatedness terminology exhibits the lowest mean semantic entropy (0.38 bits) and a web-like network architecture reflecting the complex, non-intuitive relatedness structures of haplodiploid societies (Figure \ref{fig:domain_overview_grid}). The central tension is between human bilateral kinship models—where siblings share $r = 0.5$—and the haplodiploidy-specific asymmetry where full sisters share $r = 0.75$ but sisters relate to brothers at only $r = 0.25$. When researchers describe colony members as "sisters," the term imports an assumption of symmetry that masks the very asymmetry on which inclusive fitness theory depends.
+Kin and Relatedness terminology exhibits the lowest mean semantic entropy (0.30 bits) and a web-like network architecture reflecting the complex, non-intuitive relatedness structures of haplodiploid societies (Figure \ref{fig:domain_overview_grid}). The central tension is between human bilateral kinship models—where siblings share $r = 0.5$—and the haplodiploidy-specific asymmetry where full sisters share $r = 0.75$ but sisters relate to brothers at only $r = 0.25$. When researchers describe colony members as "sisters," the term imports an assumption of symmetry that masks the very asymmetry on which inclusive fitness theory depends.
 
 Hub terms such as ``kin,'' ``relatedness,'' and ``inclusive fitness'' bridge multiple sub-domains. Network analysis reveals that Hamilton's-rule-adjacent vocabulary dominates the discourse, often at the expense of alternative frameworks such as multilevel selection. Analysis of kinship terminology shows that ``kin selection'' co-occurs with ``altruism'' and ``cooperation'' far more frequently than with ``conflict'' or ``policing,'' suggesting a framing bias toward cooperative explanations that may underrepresent intra-colony conflict dynamics. Per-domain frequency and pattern breakdowns are provided in Figures \ref{fig:domain_overview_grid} and \ref{fig:domain_patterns_grid}.
 
 ## Economics
 
-The Economics domain contains the smallest vocabulary (9 terms) and zero bridging terms (0)—the most insular domain by a substantial margin. For comparison, Power \& Labor contributes 43 bridging terms to adjacent domains, whereas Economics shares vocabulary with none. The complete term inventory reveals the character of this insularity: \textbf{allocation} (64 occurrences), \textbf{investment} (33), \textbf{resources} (31), \textbf{resource} (25), and additional low-frequency terms including \textbf{trade-off}, \textbf{trade-offs}, \textbf{jack-of-all-trades}, and \textbf{gamma-distribution}. The final two are anomalies—terms pattern-matched to economics seed vocabulary that are, in practice, statistical and ecological constructs co-opted by economic framing, yet their presence reflects how pervasively the economic paradigm has colonized foraging ecology's conceptual substrate.
+The Economics domain contains the smallest vocabulary (16 terms) and zero bridging terms (1)—the most insular domain by a substantial margin. For comparison, Power \& Labor contributes 66 bridging terms to adjacent domains, whereas Economics shares vocabulary with none. The complete term inventory reveals the character of this insularity: \textbf{allocation} (87 occurrences), \textbf{investment} (85), \textbf{resources} (62), \textbf{resource} (46), and additional low-frequency terms including \textbf{trade-off}, \textbf{trade-offs}, \textbf{jack-of-all-trades}, and \textbf{gamma-distribution}. The final two are anomalies—terms pattern-matched to economics seed vocabulary that are, in practice, statistical and ecological constructs co-opted by economic framing, yet their presence reflects how pervasively the economic paradigm has colonized foraging ecology's conceptual substrate.
 
-The semantically active core terms conflate two fundamentally different levels of explanation. "Cost" may refer to proximate energetic expenditure (measurable in joules) or to ultimate fitness reduction (requiring population-level inference); these distinct meanings are routinely treated as interchangeable. The same proximate–ultimate conflation operates across "investment," "resource allocation," and "trade-off." The resulting network architecture is self-contained: transaction-like term pairs ("cost–benefit," "allocation–resource") form tight clusters with 0 bridging edges to biological-mechanism clusters—indicating that economic terminology operates as a closed conceptual subsystem that resists integration with process-level descriptions.
+The semantically active core terms conflate two fundamentally different levels of explanation. "Cost" may refer to proximate energetic expenditure (measurable in joules) or to ultimate fitness reduction (requiring population-level inference); these distinct meanings are routinely treated as interchangeable. The same proximate–ultimate conflation operates across "investment," "resource allocation," and "trade-off." The resulting network architecture is self-contained: transaction-like term pairs ("cost–benefit," "allocation–resource") form tight clusters with 1 bridging edges to biological-mechanism clusters—indicating that economic terminology operates as a closed conceptual subsystem that resists integration with process-level descriptions.
 
-Notably, Economics terms exhibit the highest mean semantic entropy (1.12 bits) of all domains despite zero bridging terms, confirming that economic metaphors form a self-contained but highly polysemous subsystem. The average extraction confidence is also the highest, indicating stable deployment within this insular vocabulary. This monoculture trades explanatory integration across domains for internal semantic precision. These patterns are shown across all domains in Figures \ref{fig:domain_overview_grid} and \ref{fig:domain_patterns_grid}.
+Notably, Economics terms exhibit the highest mean semantic entropy (0.72 bits) of all domains despite zero bridging terms, confirming that economic metaphors form a self-contained but highly polysemous subsystem. The average extraction confidence is also the highest, indicating stable deployment within this insular vocabulary. This monoculture trades explanatory integration across domains for internal semantic precision. These patterns are shown across all domains in Figures \ref{fig:domain_overview_grid} and \ref{fig:domain_patterns_grid}.
 
 ## Longitudinal Case Studies
 
@@ -441,7 +441,7 @@ At the level of *conceptual framing*, terms carry implicit theoretical commitmen
 
 At the level of *cross-domain transfer*, terminology borrowed from human social organization creates systematic biases in how biological phenomena are interpreted. The chain-like network architecture of Power \& Labor terminology (Figure \ref{fig:terminology_network}) mirrors the linear hierarchies of human institutions rather than the distributed, flexible patterns that behavioral data reveal \cite{ravary2007, gordon2010}. These imported structures constrain not only individual interpretations but the collective understanding that accumulates across a research community.
 
-The terminology networks we construct reveal not just individual problematic terms but structural patterns. The high clustering coefficient (0.1277) indicates that terms reinforce each other within conceptual clusters, creating self-sustaining frameworks that resist piecemeal reform. This network-level effect connects to \citeauthor{foucault1972archaeology}'s \citeyearpar{foucault1972archaeology} analysis of how discursive formations constrain what can be said and thought within a field, and extends \citeauthor{lakoff1980metaphors}'s \citeyearpar{lakoff1980metaphors} demonstration of pervasive metaphorical reasoning into formal scientific discourse. Moreover, as recent accounts of collective behavior \cite{gordon2019ecology, gordon2023ecology} gain traction, the need for precise language to distinguish between metaphorical mapping and functional identity becomes even more critical.
+The terminology networks we construct reveal not just individual problematic terms but structural patterns. The high clustering coefficient (0.1058) indicates that terms reinforce each other within conceptual clusters, creating self-sustaining frameworks that resist piecemeal reform. This network-level effect connects to \citeauthor{foucault1972archaeology}'s \citeyearpar{foucault1972archaeology} analysis of how discursive formations constrain what can be said and thought within a field, and extends \citeauthor{lakoff1980metaphors}'s \citeyearpar{lakoff1980metaphors} demonstration of pervasive metaphorical reasoning into formal scientific discourse. Moreover, as recent accounts of collective behavior \cite{gordon2019ecology, gordon2023ecology} gain traction, the need for precise language to distinguish between metaphorical mapping and functional identity becomes even more critical.
 
 ## From Metaphor to Mechanism: An Active Inference Perspective
 
@@ -477,7 +477,7 @@ Third, the CACE meta-standards (Section \ref{sec:methodology}) offer a concrete 
 
 Our findings yield concrete recommendations for researchers working with ant biology and, by extension, social insect research more broadly.
 
-Researchers should become intensely aware of how their terminological choices import assumptions. The domain contrasts that the statistical battery supports—the elevated semantic entropy of Economics terminology and the dense bridging vocabulary of Power \& Labor (43 bridging terms)—trace exactly the contours where linguistic precision would most improve scientific communication. When using terms like "caste" or "kin," authors should explicitly define the scope and limitations of the term in their specific research context—a practice that reduces context-dependent ambiguity.
+Researchers should become intensely aware of how their terminological choices import assumptions. The domain contrasts that the statistical battery supports—the elevated semantic entropy of Economics terminology and the dense bridging vocabulary of Power \& Labor (66 bridging terms)—trace exactly the contours where linguistic precision would most improve scientific communication. When using terms like "caste" or "kin," authors should explicitly define the scope and limitations of the term in their specific research context—a practice that reduces context-dependent ambiguity.
 
 Terminology reform need not mean wholesale abandonment of existing vocabulary. Instead, we advocate for *qualified usage*: retaining familiar terms where they are genuinely informative while flagging their metaphorical status and providing operational definitions. "Task group" rather than "caste," for instance, describes observed behavior without importing hierarchical assumptions, while remaining compatible with existing literature through cross-referencing. Recent community efforts such as the ESA Better Common Names Project \cite{betternamesproject2024} and \citeauthor{herbers2007}'s \citeyearpar{herbers2007} call for language reform provide models for systematic terminology revision.
 
@@ -485,7 +485,7 @@ Terminology reform need not mean wholesale abandonment of existing vocabulary. I
 
 The terminology networks we identified reveal both barriers and bridges for interdisciplinary communication. Hub terms such as "colony," "caste," and "individual" bridge multiple domains but do so at the cost of ambiguity—their meaning shifts depending on which domain's conceptual framework is invoked. Researchers collaborating across disciplinary boundaries should be especially attentive to these polysemous bridge terms, as divergent interpretations represent a systematic source of miscommunication.
 
-Conversely, the strong domain clustering (clustering coefficient 0.1277) indicates that within-domain communication is relatively coherent. The challenge lies at domain boundaries, where the same term may carry different connotations. Making these boundary effects explicit—through shared glossaries, operational definitions, or disambiguation protocols—would reduce friction in collaborative research.
+Conversely, the strong domain clustering (clustering coefficient 0.1058) indicates that within-domain communication is relatively coherent. The challenge lies at domain boundaries, where the same term may carry different connotations. Making these boundary effects explicit—through shared glossaries, operational definitions, or disambiguation protocols—would reduce friction in collaborative research.
 
 ## The "Slave" Terminology Debate: A Case Study in Reform
 
@@ -500,7 +500,7 @@ For over a century, species such as *Polyergus* and *Formica sanguinea* were des
 
 The shift to "social parasitism," "dulosis," and "host worker" in journals including *Insectes Sociaux* and *Behavioral Ecology* demonstrates that terminological reform need not sever continuity with the literature: systematic cross-referencing and the indexing capacity of modern databases ensure discoverability. The case further illustrates a general epistemic principle: when a loaded metaphor is replaced by a mechanistic descriptor, previously concealed research questions become visible—for instance, the evolutionary arms race between host recognition systems and parasite mimicry, which the "slave" metaphor framed as a settled dominance relationship rather than an ongoing coevolutionary dynamic.
 
-Quantitative CACE scoring confirms this qualitative assessment. Aggregate scores rise from 0.38 ("slave") to 0.81 ("host worker"), with Appropriateness increasing from 0.40 to 1.00 (severing the anthropomorphic linkage eliminates the penalty entirely) and Clarity from 0.40 to 0.85 (reduced semantic entropy reflecting a mechanistically specific dulosis descriptor). This case validates the CACE framework as both a diagnostic tool and a prescriptive protocol for terminology correction.
+Quantitative CACE scoring confirms this qualitative assessment. Aggregate scores rise from 0.50 ("slave") to 0.47 ("host worker"), with Appropriateness increasing from 0.50 to 0.40 (severing the anthropomorphic linkage eliminates the penalty entirely) and Clarity from 1.00 to 1.00 (reduced semantic entropy reflecting a mechanistically specific dulosis descriptor). All values are rendered from the frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}) at build time. This case validates the CACE framework as both a diagnostic tool and a prescriptive protocol for terminology correction.
 
 ## Limitations
 
@@ -521,7 +521,7 @@ Future research directions—including multilingual comparative analysis, longit
 
 # Conclusion {#sec:conclusion}
 
-This work establishes Ento-Linguistic analysis as a methodology for examining how scientific language constitutes—rather than merely represents—knowledge about insect biology. Through computational analysis of terminology networks across **369 entomological publications** (48804 tokens; 884 extracted candidate terms, 198 domain-assigned) and six analytically distinct domains, we demonstrate that entomological terminology carries systematic patterns of ambiguity, anthropomorphic framing, and conceptual structure that actively shape research practice. The accompanying open-source computational pipeline provides a reproducible toolkit for extending this analysis to new corpora and domains.
+This work establishes Ento-Linguistic analysis as a methodology for examining how scientific language constitutes—rather than merely represents—knowledge about insect biology. Through computational analysis of terminology networks across **907 entomological publications** (120561 tokens; 1898 extracted candidate terms, 356 domain-assigned) and six analytically distinct domains, we demonstrate that entomological terminology carries systematic patterns of ambiguity, anthropomorphic framing, and conceptual structure that actively shape research practice. The accompanying open-source computational pipeline provides a reproducible toolkit for extending this analysis to new corpora and domains.
 
 ## Core Contributions
 
@@ -534,7 +534,7 @@ The work makes three primary contributions. First, the six-domain analytical fra
 
 These standards move beyond critique toward constructive reform, providing concrete criteria that researchers, editors, and institutions can apply to improve scientific communication. 
 
-The quantitative reach of these findings underscores their significance. Across the 198 domain-assigned terms extracted from 369 publications, 22.2\% exhibit highly context-dependent meanings. The 6 conceptual clusters identified in the concept map (linked by 9 weighted relationships) confirm that the terminological landscape is both deeply interconnected and systematically biased. The Power \& Labor domain—containing the most entrenched anthropomorphic vocabulary—generates the strongest cross-domain interference, with 43 bridging terms propagating hierarchical framing into adjacent domains. The Economics domain, despite its tightly constrained 9-term vocabulary with 0 bridging terms, exhibits both the highest mean semantic entropy and the greatest proportion of high-entropy terms, indicating that economic metaphors form a self-contained but intensely polysemous subsystem. Crucially, CACE validation on the "slave" $\rightarrow$ "host worker" terminological reform demonstrates significant overarching score improvement, confirming that the framework functions as both an analytical diagnostic and a prescriptive template for actionable reform.
+The quantitative reach of these findings underscores their significance. Across the 356 domain-assigned terms extracted from 907 publications, 19.9\% exhibit highly context-dependent meanings. The 6 conceptual clusters identified in the concept map (linked by 13 weighted relationships) confirm that the terminological landscape is both deeply interconnected and systematically biased. The Power \& Labor domain—containing the most entrenched anthropomorphic vocabulary—generates the strongest cross-domain interference, with 66 bridging terms propagating hierarchical framing into adjacent domains. The Economics domain, despite its tightly constrained 16-term vocabulary with 1 bridging terms, exhibits both the highest mean semantic entropy and the greatest proportion of high-entropy terms, indicating that economic metaphors form a self-contained but intensely polysemous subsystem. Crucially, CACE validation on the "slave" $\rightarrow$ "host worker" terminological reform demonstrates significant overarching score improvement, confirming that the framework functions as both an analytical diagnostic and a prescriptive template for actionable reform.
 
 ## Future Directions
 
@@ -796,10 +796,10 @@ Scientific term protection vocabulary (preserved against tokenization splitting)
 
 | Metric | Value |
 |--------|-------|
-| Total tokens | **48804** |
-| Unique token types | **7102** |
-| Type–token ratio | **0.1455** |
-| Top 5 tokens | ant (1033), colony (850), worker (831), queen (602), social (583) |
+| Total tokens | **120561** |
+| Unique token types | **11587** |
+| Type–token ratio | **0.0961** |
+| Top 5 tokens | colony (1933), ant (1634), social (1614), worker (1451), queen (1071) |
 
 ### `LinguisticFeatureExtractor`
 
@@ -853,13 +853,13 @@ Extraction: normalize → tokenize → match against domain seed sets → extend
 
 | Domain | Term Count | Total Frequency | Bridging Terms |
 |--------|------------|-----------------|----------------|
-| Power & Labor | 56 | 823 | 43 |
-| Unit of Individuality | 64 | 721 | 2 |
-| Sex & Reproduction | 60 | 609 | 26 |
-| Behavior & Identity | 34 | 809 | 19 |
-| Kin & Relatedness | 21 | 372 | 0 |
-| Economics | 9 | 170 | 0 |
-| **Total (all domains)** | **198** | — | — |
+| Power & Labor | 92 | 1452 | 66 |
+| Unit of Individuality | 120 | 2093 | 6 |
+| Sex & Reproduction | 93 | 1206 | 37 |
+| Behavior & Identity | 71 | 1415 | 34 |
+| Kin & Relatedness | 39 | 1018 | 2 |
+| Economics | 16 | 306 | 1 |
+| **Total (all domains)** | **356** | — | — |
 
 ---
 
@@ -996,13 +996,13 @@ Term pattern counting (`_analyze_term_patterns`): compound (contains `_`/`-`), m
 
 | Concept | Terms | Domains |
 |---------|-------|---------|
-| `biological_individuality` | 75 | Unit of Individuality |
-| `social_organization` | 85 | Power & Labor; Behavior & Identity |
-| `reproductive_biology` | 66 | Sex & Reproduction |
-| `kinship_systems` | 64 | Kin & Relatedness |
-| `resource_economics` | 15 | Economics |
-| `behavioral_ecology` | 55 | Behavior & Identity; Economics |
-| **Concept relationships** | **9** | |
+| `biological_individuality` | 138 | Unit of Individuality |
+| `social_organization` | 160 | Power & Labor; Behavior & Identity |
+| `reproductive_biology` | 101 | Sex & Reproduction |
+| `kinship_systems` | 110 | Kin & Relatedness |
+| `resource_economics` | 25 | Economics |
+| `behavioral_ecology` | 110 | Behavior & Identity; Economics |
+| **Concept relationships** | **13** | |
 
 ---
 
@@ -1067,24 +1067,24 @@ Table \ref{tab:pairwise_domain} presents pairwise comparisons of per-term semant
 \hline
 \textbf{Domain A} & \textbf{Domain B} & \textbf{$t$} & \textbf{$p$ (raw)} & \textbf{$p$ (BH)} & \textbf{Cohen's $d$} & \textbf{Sig.\ (BH)} \\
 \hline
-Behavior \& Identity & Economics & -1.1113 & 0.2998 & 0.5482 & -0.5555 & no \\
-Behavior \& Identity & Kin \& Relatedness & -3.3323 & 0.0050 & 0.0246 & -1.1205 & yes \\
-Behavior \& Identity & Power \& Labor & 0.6390 & 0.5292 & 0.7216 & 0.2370 & no \\
-Behavior \& Identity & Sex \& Reproduction & -0.0864 & 0.9320 & 0.9320 & -0.0335 & no \\
-Behavior \& Identity & Unit of Individuality & 0.2073 & 0.8377 & 0.8976 & 0.0817 & no \\
-Economics & Kin \& Relatedness & -1.0493 & 0.3446 & 0.5482 & -0.5616 & no \\
-Economics & Power \& Labor & 1.6593 & 0.1455 & 0.4366 & 0.8327 & no \\
-Economics & Sex \& Reproduction & 1.1734 & 0.2900 & 0.5482 & 0.6789 & no \\
-Economics & Unit of Individuality & 1.2254 & 0.2518 & 0.5482 & 0.5756 & no \\
-Kin \& Relatedness & Power \& Labor & 4.9183 & 0.0001 & 0.0018 & 1.4392 & yes \\
-Kin \& Relatedness & Sex \& Reproduction & 4.6581 & 0.0004 & 0.0026 & 1.4671 & yes \\
-Kin \& Relatedness & Unit of Individuality & 3.2070 & 0.0066 & 0.0246 & 1.0568 & yes \\
-Power \& Labor & Sex \& Reproduction & -0.9188 & 0.3655 & 0.5482 & -0.3077 & no \\
-Power \& Labor & Unit of Individuality & -0.3551 & 0.7261 & 0.8687 & -0.1351 & no \\
-Sex \& Reproduction & Unit of Individuality & 0.3200 & 0.7529 & 0.8687 & 0.1267 & no \\
+Behavior \& Identity & Economics & -1.1703 & 0.2610 & 0.6524 & -0.4634 & no \\
+Behavior \& Identity & Kin \& Relatedness & -0.3908 & 0.7048 & 0.7551 & -0.1855 & no \\
+Behavior \& Identity & Power \& Labor & 0.7254 & 0.4742 & 0.7112 & 0.2412 & no \\
+Behavior \& Identity & Sex \& Reproduction & 1.2408 & 0.2257 & 0.6524 & 0.4146 & no \\
+Behavior \& Identity & Unit of Individuality & 0.8474 & 0.4042 & 0.6737 & 0.2827 & no \\
+Economics & Kin \& Relatedness & 0.4952 & 0.6330 & 0.7551 & 0.2639 & no \\
+Economics & Power \& Labor & 2.0021 & 0.0676 & 0.3380 & 0.6991 & no \\
+Economics & Sex \& Reproduction & 2.5725 & 0.0262 & 0.3380 & 0.9203 & no \\
+Economics & Unit of Individuality & 2.1575 & 0.0530 & 0.3380 & 0.7652 & no \\
+Kin \& Relatedness & Power \& Labor & 0.9361 & 0.3770 & 0.6737 & 0.4219 & no \\
+Kin \& Relatedness & Sex \& Reproduction & 1.2995 & 0.2337 & 0.6524 & 0.6108 & no \\
+Kin \& Relatedness & Unit of Individuality & 1.0224 & 0.3385 & 0.6737 & 0.4727 & no \\
+Power \& Labor & Sex \& Reproduction & 0.5451 & 0.5885 & 0.7551 & 0.1587 & no \\
+Power \& Labor & Unit of Individuality & 0.1151 & 0.9089 & 0.9089 & 0.0338 & no \\
+Sex \& Reproduction & Unit of Individuality & -0.4438 & 0.6594 & 0.7551 & -0.1274 & no \\
 \hline
 \end{tabular}
-\caption{Pairwise Welch's $t$-tests on per-term semantic entropy between Ento-Linguistic domains, with Benjamini-Hochberg adjusted $p$-values (benjamini_hochberg correction over 15 comparisons) and Cohen's $d$ effect sizes. The Sig.\ (BH) column reports BH-adjusted significance at $q = 0.05$ for each comparison. Domain descriptives feeding these tests are per-term valid-entropy means with exclusions counted. The omnibus one-way ANOVA across the six domains on semantic_entropy yields $F(5.0000, 61.0000) = 1.6730$, 0.1547, $\eta^2 = 0.1206$, where $df_1 = k - 1$ (between-group) and $df_2 = N - k$ (within-group).}
+\caption{Pairwise Welch's $t$-tests on per-term semantic entropy between Ento-Linguistic domains, with Benjamini-Hochberg adjusted $p$-values (benjamini_hochberg correction over 15 comparisons) and Cohen's $d$ effect sizes. The Sig.\ (BH) column reports BH-adjusted significance at $q = 0.05$ for each comparison. Domain descriptives feeding these tests are per-term valid-entropy means with exclusions counted. The omnibus one-way ANOVA across the six domains on semantic_entropy yields $F(5.0000, 89.0000) = 1.1108$, 0.3604, $\eta^2 = 0.0587$, where $df_1 = k - 1$ (between-group) and $df_2 = N - k$ (within-group).}
 \label{tab:pairwise_domain}
 \end{table}
 
@@ -1099,27 +1099,27 @@ Table \ref{tab:cace_full} presents full CACE evaluations for a representative se
 \hline
 \textbf{Term} & \textbf{Clarity} & \textbf{Appropriateness} & \textbf{Consistency} & \textbf{Evolvability} & \textbf{Aggregate} \\
 \hline
-queen & 0.40 & 0.50 & 0.45 & 0.33 & 0.42 \\
-\textit{primary reproductive} & 0.85 & 1.00 & 0.78 & 0.67 & 0.83 \\
+queen & 0.37 & 0.45 & 0.04 & 0.33 & 0.30 \\
+\textit{primary reproductive} & 1.00 & 1.00 & 0.50 & 0.00 & 0.62 \\
 \hline
-worker & 0.55 & 0.50 & 0.52 & 0.33 & 0.48 \\
-\textit{non-reproductive helper} & 0.82 & 1.00 & 0.70 & 0.67 & 0.80 \\
+worker & 0.39 & 0.45 & 0.05 & 0.33 & 0.31 \\
+\textit{non-reproductive helper} & 1.00 & 1.00 & 0.50 & 0.00 & 0.62 \\
 \hline
-slave & 0.40 & 0.40 & 0.38 & 0.33 & 0.38 \\
-\textit{host worker} & 0.85 & 1.00 & 0.72 & 0.67 & 0.81 \\
+slave & 1.00 & 0.50 & 0.50 & 0.00 & 0.50 \\
+\textit{host worker} & 1.00 & 0.40 & 0.50 & 0.00 & 0.47 \\
 \hline
-caste & 0.34 & 0.50 & 0.40 & 0.33 & 0.39 \\
-\textit{task group} & 0.85 & 1.00 & 0.75 & 0.67 & 0.82 \\
+caste & 0.32 & 1.00 & 0.06 & 0.50 & 0.47 \\
+\textit{task group} & 1.00 & 1.00 & 0.50 & 0.00 & 0.62 \\
 \hline
-soldier & 0.52 & 0.50 & 0.55 & 0.33 & 0.48 \\
-\textit{major worker} & 0.80 & 1.00 & 0.72 & 0.67 & 0.80 \\
+soldier & 0.33 & 0.50 & 0.10 & 0.17 & 0.28 \\
+\textit{major worker} & 1.00 & 0.50 & 0.50 & 0.00 & 0.50 \\
 \hline
-colony & 0.49 & 1.00 & 0.55 & 0.83 & 0.72 \\
-haplodiploidy & 0.94 & 1.00 & 0.88 & 0.33 & 0.79 \\
-trophallaxis & 0.97 & 1.00 & 0.92 & 0.33 & 0.81 \\
+colony & 0.39 & 1.00 & 0.04 & 0.33 & 0.44 \\
+haplodiploidy & 0.44 & 1.00 & 0.05 & 0.17 & 0.41 \\
+trophallaxis & 1.00 & 1.00 & 0.50 & 0.00 & 0.62 \\
 \hline
 \end{tabular}
-\caption{CACE dimension scores for representative entomological terms. Anthropomorphic terms (queen, worker, slave, caste, soldier) consistently score lower than functional alternatives (italicized). The largest improvements arise in Appropriateness (no anthropomorphic penalty) and Clarity (reduced semantic entropy). Non-anthropomorphic technical terms (haplodiploidy, trophallaxis) score highest on Clarity due to unambiguous, single-sense usage. Note: ``colony'' receives Appropriateness $= 1.00$ because it falls outside the \texttt{ANTHROPOMORPHIC\_TERMS} set used for automated scoring; its colonial and settler-historical connotations are analyzed qualitatively in Section~\ref{sec:discussion}.}
+\caption{CACE dimension scores for representative entomological terms. Anthropomorphic terms (queen, worker, slave, caste, soldier) consistently score lower than functional alternatives (italicized). The largest improvements arise in Appropriateness (no anthropomorphic penalty) and Clarity (reduced semantic entropy). Non-anthropomorphic technical terms (haplodiploidy, trophallaxis) score highest on Clarity due to unambiguous, single-sense usage. Note: ``colony'' receives Appropriateness $= 1.00$ because it falls outside the \texttt{ANTHROPOMORPHIC\_TERMS} set used for automated scoring; its colonial and settler-historical connotations are analyzed qualitatively in Section~\ref{sec:discussion}. All values resolve at render time from the frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}).}
 \label{tab:cace_full}
 \end{table}
 
@@ -1133,17 +1133,17 @@ Table \ref{tab:entropy_distribution} summarizes the distribution of semantic ent
 \hline
 \textbf{Domain} & \textbf{Mean $H$ (bits)} & \textbf{High-entropy terms (\%)} & \textbf{$N$} \\
 \hline
-Economics & 1.12 & 33.3 & 10 \\
-Power \& Labor & 0.39 & 5.4 & 63 \\
-Behavior \& Identity & 0.44 & 8.8 & 40 \\
-Sex \& Reproduction & 0.39 & 3.3 & 64 \\
-Unit of Individuality & 0.28 & 7.8 & 73 \\
-Kin \& Relatedness & 0.38 & 4.8 & 57 \\
+Economics & 0.72 & 18.8 & 16 \\
+Power \& Labor & 0.34 & 4.3 & 92 \\
+Behavior \& Identity & 0.27 & 5.6 & 71 \\
+Sex \& Reproduction & 0.36 & 3.2 & 93 \\
+Unit of Individuality & 0.29 & 5.8 & 120 \\
+Kin \& Relatedness & 0.30 & 5.1 & 39 \\
 \hline
-\textbf{Overall} & 0.39 & 7.0 & \textbf{ 307 } \\
+\textbf{Overall} & 0.33 & 5.3 & \textbf{ 431 } \\
 \hline
 \end{tabular}
-\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), corresponding to terms whose usage contexts span many distinct semantic senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is set to $k = \max(2,\, \min(k_{\max},\, n{-}1,\, \max(2, \lfloor\!\sqrt{n}\rfloor)))$ with $k_{\max}=5$ to prevent degenerate one-point-per-cluster assignments; each result also reports $H_{\max} = \log_2 k$ and the normalized entropy $H/H_{\max} \in [0,1]$.}
+\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), corresponding to terms whose usage contexts span many distinct semantic senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is set to $k = \max(2,\, \min(k_{\max},\, n{-}1,\, \max(2, \lfloor\!\sqrt{n}\rfloor)))$ with $k_{\max}=5$ to prevent degenerate one-point-per-cluster assignments; each result also reports $H_{\max} = \log_2 k$ and the normalized entropy $H/H_{\max} \in [0,1]$. The $N$ column is each domain's term count in the same artifact, and the Overall row is their exact sum; every table value resolves at render time from the artifact.}
 \label{tab:entropy_distribution}
 \end{table}
 
