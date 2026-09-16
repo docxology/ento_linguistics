@@ -1,0 +1,4467 @@
+{
+  "layer": "fulltext",
+  "n_documents": 500,
+  "min_term_frequency": 20,
+  "documents": [
+    {
+      "pmcid": "PMC13411904",
+      "doi": "10.1371/journal.pone.0323988",
+      "year": 2026,
+      "journal": "PLOS One",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3737
+    },
+    {
+      "pmcid": "PMC3730098",
+      "doi": "10.1101/gr.155408.113",
+      "year": 2013,
+      "journal": "Genome Research",
+      "license": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "token_count": 8987
+    },
+    {
+      "pmcid": "PMC9314018",
+      "doi": "10.1111/gcb.16140",
+      "year": 2022,
+      "journal": "Global Change Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 11010
+    },
+    {
+      "pmcid": "PMC12465672",
+      "doi": "10.1186/s13059-025-03777-2",
+      "year": 2025,
+      "journal": "Genome Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 11437
+    },
+    {
+      "pmcid": "PMC9827630",
+      "doi": "10.1186/s12915-022-01507-9",
+      "year": 2023,
+      "journal": "BMC Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 11022
+    },
+    {
+      "pmcid": "PMC5469875",
+      "doi": "10.3389/fnana.2017.00048",
+      "year": 2017,
+      "journal": "Frontiers in Neuroanatomy",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6185
+    },
+    {
+      "pmcid": "PMC4200514",
+      "doi": "10.1038/ncomms5943",
+      "year": 2014,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "token_count": 8838
+    },
+    {
+      "pmcid": "PMC4965065",
+      "doi": "10.1371/journal.pone.0151059",
+      "year": 2016,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "token_count": 5829
+    },
+    {
+      "pmcid": "PMC4728552",
+      "doi": "10.3390/toxins8010030",
+      "year": 2016,
+      "journal": "Toxins",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10115
+    },
+    {
+      "pmcid": "PMC10095046",
+      "doi": "10.3390/ijms24076624",
+      "year": 2023,
+      "journal": "International Journal of Molecular Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5522
+    },
+    {
+      "pmcid": "PMC10454067",
+      "doi": "10.3390/genes14081528",
+      "year": 2023,
+      "journal": "Genes",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3811
+    },
+    {
+      "pmcid": "PMC3873401",
+      "doi": "10.1371/journal.pone.0084012",
+      "year": 2013,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4393
+    },
+    {
+      "pmcid": "PMC4558866",
+      "doi": "10.1093/gbe/evv149",
+      "year": 2015,
+      "journal": "Genome Biology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5860
+    },
+    {
+      "pmcid": "PMC3226657",
+      "doi": "10.1186/1471-2156-12-95",
+      "year": 2011,
+      "journal": "BMC Genetics",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 3730
+    },
+    {
+      "pmcid": "PMC7343836",
+      "doi": "10.1038/s41597-020-0556-x",
+      "year": 2020,
+      "journal": "Scientific Data",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4490
+    },
+    {
+      "pmcid": "PMC10054563",
+      "doi": "10.3390/insects14030219",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4011
+    },
+    {
+      "pmcid": "PMC10848766",
+      "doi": "10.3897/BDJ.12.e99555",
+      "year": 2024,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7834
+    },
+    {
+      "pmcid": "PMC2268675",
+      "doi": "10.1186/1471-2148-8-64",
+      "year": 2008,
+      "journal": "BMC Evolutionary Biology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 3817
+    },
+    {
+      "pmcid": "PMC3308954",
+      "doi": "10.1371/journal.pone.0032559",
+      "year": 2012,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6786
+    },
+    {
+      "pmcid": "PMC7018970",
+      "doi": "10.1038/s41598-020-59422-4",
+      "year": 2020,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6313
+    },
+    {
+      "pmcid": "PMC11818392",
+      "doi": "10.1093/jee/toae279",
+      "year": 2025,
+      "journal": "Journal of Economic Entomology",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 7160
+    },
+    {
+      "pmcid": "PMC6570765",
+      "doi": "10.1038/s41467-019-10546-w",
+      "year": 2019,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7947
+    },
+    {
+      "pmcid": "PMC3088365",
+      "doi": "10.3897/zookeys.62.430",
+      "year": 2010,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 20277
+    },
+    {
+      "pmcid": "PMC11683303",
+      "doi": "10.1016/j.ncrna.2024.10.007",
+      "year": 2025,
+      "journal": "Non-coding RNA Research",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8143
+    },
+    {
+      "pmcid": "PMC12294360",
+      "doi": "10.3390/genes16070749",
+      "year": 2025,
+      "journal": "Genes",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4843
+    },
+    {
+      "pmcid": "PMC2676274",
+      "doi": "10.1186/1472-6785-9-7",
+      "year": 2009,
+      "journal": "BMC Ecology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 4763
+    },
+    {
+      "pmcid": "PMC8358438",
+      "doi": "10.3389/fmicb.2021.673445",
+      "year": 2021,
+      "journal": "Frontiers in Microbiology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9976
+    },
+    {
+      "pmcid": "PMC4684679",
+      "doi": "10.1093/jisesa/ieu096",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 4875
+    },
+    {
+      "pmcid": "PMC11195475",
+      "doi": "10.1093/jisesa/ieae064",
+      "year": 2024,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 11402
+    },
+    {
+      "pmcid": "PMC6482461",
+      "doi": "10.1038/s41559-017-0459-1",
+      "year": 2018,
+      "journal": "Nature ecology & evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5573
+    },
+    {
+      "pmcid": "PMC3127389",
+      "doi": "10.1673/031.008.7101",
+      "year": 2008,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 1817
+    },
+    {
+      "pmcid": "PMC6901679",
+      "doi": "10.3389/fpsyg.2019.02653",
+      "year": 2019,
+      "journal": "Frontiers in Psychology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8171
+    },
+    {
+      "pmcid": "PMC5634064",
+      "doi": "10.1093/jisesa/ieu004",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2074
+    },
+    {
+      "pmcid": "PMC8211869",
+      "doi": "10.1093/ee/nvab021",
+      "year": 2021,
+      "journal": "Environmental Entomology",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 4929
+    },
+    {
+      "pmcid": "PMC9744248",
+      "doi": "10.1093/jisesa/ieac068",
+      "year": 2022,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 4830
+    },
+    {
+      "pmcid": "PMC9652420",
+      "doi": "10.1038/s41598-022-21507-7",
+      "year": 2022,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3075
+    },
+    {
+      "pmcid": "PMC6278355",
+      "doi": "10.3390/molecules23112838",
+      "year": 2018,
+      "journal": "Molecules",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4191
+    },
+    {
+      "pmcid": "PMC8225145",
+      "doi": "10.3390/insects12060487",
+      "year": 2021,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6295
+    },
+    {
+      "pmcid": "PMC11508729",
+      "doi": "10.3390/insects15100813",
+      "year": 2024,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7285
+    },
+    {
+      "pmcid": "PMC10608118",
+      "doi": "10.3390/life13102068",
+      "year": 2023,
+      "journal": "Life",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4825
+    },
+    {
+      "pmcid": "PMC12386980",
+      "doi": "10.3390/insects16080766",
+      "year": 2025,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4742
+    },
+    {
+      "pmcid": "PMC12459118",
+      "doi": "10.3389/finsc.2025.1613264",
+      "year": 2025,
+      "journal": "Frontiers in Insect Science",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5549
+    },
+    {
+      "pmcid": "PMC13411263",
+      "doi": "10.3390/insects17070701",
+      "year": 2026,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3433
+    },
+    {
+      "pmcid": "PMC12617334",
+      "doi": "10.1111/mec.70076",
+      "year": 2025,
+      "journal": "Molecular Ecology",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 6574
+    },
+    {
+      "pmcid": "PMC10689775",
+      "doi": "10.1038/s42003-023-05577-5",
+      "year": 2023,
+      "journal": "Communications Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8383
+    },
+    {
+      "pmcid": "PMC8128849",
+      "doi": "10.3897/BDJ.9.e65768",
+      "year": 2021,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2569
+    },
+    {
+      "pmcid": "PMC3689042",
+      "doi": "10.3897/zookeys.306.4898",
+      "year": 2013,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 2242
+    },
+    {
+      "pmcid": "PMC8008173",
+      "doi": "10.1016/j.heliyon.2021.e06546",
+      "year": 2021,
+      "journal": "Heliyon",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 3766
+    },
+    {
+      "pmcid": "PMC2728836",
+      "doi": "10.1371/journal.pone.0006781",
+      "year": 2009,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6818
+    },
+    {
+      "pmcid": "PMC5774302",
+      "doi": "10.7717/peerj.4242",
+      "year": 2018,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 12778
+    },
+    {
+      "pmcid": "PMC7508952",
+      "doi": "10.3897/zookeys.967.54432",
+      "year": 2020,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 31914
+    },
+    {
+      "pmcid": "PMC6894410",
+      "doi": "10.1093/ee/nvz127",
+      "year": 2019,
+      "journal": "Environmental Entomology",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 5832
+    },
+    {
+      "pmcid": "PMC13104863",
+      "doi": "10.1101/2025.03.25.645350",
+      "year": 2026,
+      "journal": "bioRxiv",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8298
+    },
+    {
+      "pmcid": "PMC3378090",
+      "doi": "10.3897/zookeys.200.2447",
+      "year": 2012,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 14749
+    },
+    {
+      "pmcid": "PMC7772284",
+      "doi": "10.3897/zookeys.1006.58808",
+      "year": 2020,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6130
+    },
+    {
+      "pmcid": "PMC10848671",
+      "doi": "10.3897/BDJ.11.e102897",
+      "year": 2023,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3270
+    },
+    {
+      "pmcid": "PMC4267860",
+      "doi": "10.1002/ece3.1291",
+      "year": 2014,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5962
+    },
+    {
+      "pmcid": "PMC6731735",
+      "doi": "10.1098/rsos.190283",
+      "year": 2019,
+      "journal": "Royal Society Open Science",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3152
+    },
+    {
+      "pmcid": "PMC10492783",
+      "doi": "10.1038/s41598-023-42129-7",
+      "year": 2023,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5143
+    },
+    {
+      "pmcid": "PMC7585320",
+      "doi": "10.1093/jisesa/ieaa118",
+      "year": 2020,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8186
+    },
+    {
+      "pmcid": "PMC6897957",
+      "doi": "10.1038/s41598-019-54966-6",
+      "year": 2019,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5508
+    },
+    {
+      "pmcid": "PMC3904993",
+      "doi": "10.1371/journal.pone.0087473",
+      "year": 2014,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4763
+    },
+    {
+      "pmcid": "PMC11525404",
+      "doi": "10.1007/s12024-023-00714-2",
+      "year": 2023,
+      "journal": "Forensic Science, Medicine, and Pathology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 1652
+    },
+    {
+      "pmcid": "PMC12941155",
+      "doi": "10.3390/insects17020180",
+      "year": 2026,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2379
+    },
+    {
+      "pmcid": "PMC11421905",
+      "doi": "10.1098/rspb.2024.1280",
+      "year": 2024,
+      "journal": "Proceedings of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5999
+    },
+    {
+      "pmcid": "PMC9961005",
+      "doi": "10.3390/toxins15020106",
+      "year": 2023,
+      "journal": "Toxins",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2442
+    },
+    {
+      "pmcid": "PMC12921479",
+      "doi": "10.3389/finsc.2026.1762540",
+      "year": 2026,
+      "journal": "Frontiers in Insect Science",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2252
+    },
+    {
+      "pmcid": "PMC13287217",
+      "doi": "10.1007/s10886-026-01732-4",
+      "year": 2026,
+      "journal": "Journal of Chemical Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8396
+    },
+    {
+      "pmcid": "PMC3974876",
+      "doi": "10.1371/journal.pone.0093627",
+      "year": 2014,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 11294
+    },
+    {
+      "pmcid": "PMC4206238",
+      "doi": "10.1093/jis/14.1.48",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 4234
+    },
+    {
+      "pmcid": "PMC12386699",
+      "doi": "10.3390/insects16080794",
+      "year": 2025,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5701
+    },
+    {
+      "pmcid": "PMC10146602",
+      "doi": "10.3390/insects14040372",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3352
+    },
+    {
+      "pmcid": "PMC13171927",
+      "doi": "10.1007/s10886-026-01710-w",
+      "year": 2026,
+      "journal": "Journal of Chemical Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5283
+    },
+    {
+      "pmcid": "PMC5087078",
+      "doi": "10.1038/srep36166",
+      "year": 2016,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6635
+    },
+    {
+      "pmcid": "PMC3481468",
+      "doi": "10.1673/031.012.5701",
+      "year": 2012,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 2545
+    },
+    {
+      "pmcid": "PMC3014660",
+      "doi": "10.1673/031.010.0101",
+      "year": 2010,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 3661
+    },
+    {
+      "pmcid": "PMC2950157",
+      "doi": "10.1371/journal.pone.0013222",
+      "year": 2010,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4367
+    },
+    {
+      "pmcid": "PMC6467565",
+      "doi": "10.7554/eLife.44985",
+      "year": 2019,
+      "journal": "eLife",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5484
+    },
+    {
+      "pmcid": "PMC10577024",
+      "doi": "10.1098/rstb.2022.0556",
+      "year": 2023,
+      "journal": "Philosophical Transactions of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7093
+    },
+    {
+      "pmcid": "PMC10206162",
+      "doi": "10.1038/s41467-023-38839-1",
+      "year": 2023,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9238
+    },
+    {
+      "pmcid": "PMC12304171",
+      "doi": "10.1038/s41598-025-01281-y",
+      "year": 2025,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 5349
+    },
+    {
+      "pmcid": "PMC13048905",
+      "doi": "10.1093/molbev/msag058",
+      "year": 2026,
+      "journal": "Molecular Biology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10617
+    },
+    {
+      "pmcid": "PMC2958920",
+      "doi": "10.1186/1471-2148-10-300",
+      "year": 2010,
+      "journal": "BMC Evolutionary Biology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 5146
+    },
+    {
+      "pmcid": "PMC12809152",
+      "doi": "10.3897/BDJ.14.e163267",
+      "year": 2026,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3642
+    },
+    {
+      "pmcid": "PMC10467088",
+      "doi": "10.3390/toxins15070439",
+      "year": 2023,
+      "journal": "Toxins",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6709
+    },
+    {
+      "pmcid": "PMC3113908",
+      "doi": "10.1371/journal.pone.0021086",
+      "year": 2011,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5010
+    },
+    {
+      "pmcid": "PMC8154996",
+      "doi": "10.1038/s41598-021-89993-9",
+      "year": 2021,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6748
+    },
+    {
+      "pmcid": "PMC3029284",
+      "doi": "10.1371/journal.pone.0014601",
+      "year": 2011,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6411
+    },
+    {
+      "pmcid": "PMC5561057",
+      "doi": "10.1038/s41467-017-00099-1",
+      "year": 2017,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8299
+    },
+    {
+      "pmcid": "PMC9441231",
+      "doi": "10.1098/rstb.2021.0291",
+      "year": 2022,
+      "journal": "Philosophical Transactions of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4878
+    },
+    {
+      "pmcid": "PMC12602152",
+      "doi": "10.1093/jee/toaf127",
+      "year": 2025,
+      "journal": "Journal of Economic Entomology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5859
+    },
+    {
+      "pmcid": "PMC10084388",
+      "doi": "10.1111/1365-2435.14135",
+      "year": 2022,
+      "journal": "Functional Ecology",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 6107
+    },
+    {
+      "pmcid": "PMC11177930",
+      "doi": "10.1126/sciadv.adp3623",
+      "year": 2024,
+      "journal": "Science Advances",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2983
+    },
+    {
+      "pmcid": "PMC3709892",
+      "doi": "10.1371/journal.pone.0068200",
+      "year": 2013,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8597
+    },
+    {
+      "pmcid": "PMC6795625",
+      "doi": "10.3897/zookeys.879.29705",
+      "year": 2019,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4275
+    },
+    {
+      "pmcid": "PMC12598628",
+      "doi": "10.1093/jisesa/ieaf076",
+      "year": 2025,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 2973
+    },
+    {
+      "pmcid": "PMC10105727",
+      "doi": "10.1038/s41598-023-32796-x",
+      "year": 2023,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3251
+    },
+    {
+      "pmcid": "PMC3658278",
+      "doi": "10.1673/031.012.13501",
+      "year": 2012,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 11021
+    },
+    {
+      "pmcid": "PMC12418030",
+      "doi": "10.3897/zookeys.1250.151740",
+      "year": 2025,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "token_count": 5459
+    },
+    {
+      "pmcid": "PMC8707472",
+      "doi": "10.3390/insects12121128",
+      "year": 2021,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3883
+    },
+    {
+      "pmcid": "PMC8128848",
+      "doi": "10.3897/BDJ.9.e60630",
+      "year": 2021,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6404
+    },
+    {
+      "pmcid": "PMC8229963",
+      "doi": "10.3390/insects12060520",
+      "year": 2021,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5833
+    },
+    {
+      "pmcid": "PMC8289489",
+      "doi": "10.1002/mbo3.1201",
+      "year": 2021,
+      "journal": "MicrobiologyOpen",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 5788
+    },
+    {
+      "pmcid": "PMC4328152",
+      "doi": "10.1111/jeb.12543",
+      "year": 2015,
+      "journal": "Journal of Evolutionary Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6673
+    },
+    {
+      "pmcid": "PMC7022549",
+      "doi": "10.3390/insects11010005",
+      "year": 2019,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3855
+    },
+    {
+      "pmcid": "PMC12698227",
+      "doi": "10.1093/jee/toaf250",
+      "year": 2025,
+      "journal": "Journal of Economic Entomology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3856
+    },
+    {
+      "pmcid": "PMC8707115",
+      "doi": "10.3390/insects12121084",
+      "year": 2021,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5165
+    },
+    {
+      "pmcid": "PMC12564884",
+      "doi": "10.3390/insects16101002",
+      "year": 2025,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3666
+    },
+    {
+      "pmcid": "PMC3601267",
+      "doi": "10.1007/s13744-012-0096-y",
+      "year": 2012,
+      "journal": "Neotropical Entomology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5001
+    },
+    {
+      "pmcid": "PMC4232418",
+      "doi": "10.1371/journal.pone.0112756",
+      "year": 2014,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5267
+    },
+    {
+      "pmcid": "PMC13260901",
+      "doi": "10.1038/s41597-026-07235-x",
+      "year": 2026,
+      "journal": "Scientific Data",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3086
+    },
+    {
+      "pmcid": "PMC12277563",
+      "doi": "10.1002/jez.b.23296",
+      "year": 2025,
+      "journal": "Journal of Experimental Zoology. Part B, Molecular and Developmental Evolution",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 9705
+    },
+    {
+      "pmcid": "PMC4375972",
+      "doi": "10.7717/peerj.848",
+      "year": 2015,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4289
+    },
+    {
+      "pmcid": "PMC3677370",
+      "doi": "10.3897/zookeys.277.4684",
+      "year": 2013,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 2305
+    },
+    {
+      "pmcid": "PMC4714338",
+      "doi": "10.3897/zookeys.547.6098",
+      "year": 2015,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7008
+    },
+    {
+      "pmcid": "PMC4053794",
+      "doi": "10.1186/gb-2013-14-2-r20",
+      "year": 2013,
+      "journal": "Genome Biology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 7322
+    },
+    {
+      "pmcid": "PMC7671114",
+      "doi": "10.1093/iob/obz033",
+      "year": 2020,
+      "journal": "Integrative Organismal Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5038
+    },
+    {
+      "pmcid": "PMC11677497",
+      "doi": "10.3390/insects15120961",
+      "year": 2024,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3150
+    },
+    {
+      "pmcid": "PMC9814961",
+      "doi": "10.1038/s41598-022-26515-1",
+      "year": 2023,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8064
+    },
+    {
+      "pmcid": "PMC5371300",
+      "doi": "10.1371/journal.pone.0173642",
+      "year": 2017,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3192
+    },
+    {
+      "pmcid": "PMC3738106",
+      "doi": "10.1673/031.013.3801",
+      "year": 2013,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 6341
+    },
+    {
+      "pmcid": "PMC8760941",
+      "doi": "10.1093/molbev/msab305",
+      "year": 2022,
+      "journal": "Molecular Biology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7271
+    },
+    {
+      "pmcid": "PMC4780134",
+      "doi": "10.1186/s13059-016-0902-7",
+      "year": 2016,
+      "journal": "Genome Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9708
+    },
+    {
+      "pmcid": "PMC4161878",
+      "doi": "10.1186/1471-2164-15-718",
+      "year": 2014,
+      "journal": "BMC Genomics",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8015
+    },
+    {
+      "pmcid": "PMC5270401",
+      "doi": "10.1093/jisesa/iew103",
+      "year": 2017,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 3186
+    },
+    {
+      "pmcid": "PMC7889116",
+      "doi": "10.1080/23802359.2021.1872435",
+      "year": 2021,
+      "journal": "Mitochondrial DNA. Part B, Resources",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 909
+    },
+    {
+      "pmcid": "PMC11354274",
+      "doi": "10.3390/insects15080582",
+      "year": 2024,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6963
+    },
+    {
+      "pmcid": "PMC4125159",
+      "doi": "10.1371/journal.pone.0103800",
+      "year": 2014,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4661
+    },
+    {
+      "pmcid": "PMC6397150",
+      "doi": "10.1038/s41598-019-39756-4",
+      "year": 2019,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7117
+    },
+    {
+      "pmcid": "PMC9584433",
+      "doi": "10.1371/journal.pone.0276428",
+      "year": 2022,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4941
+    },
+    {
+      "pmcid": "PMC13216785",
+      "doi": "10.3897/zookeys.1280.176598",
+      "year": 2026,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9691
+    },
+    {
+      "pmcid": "PMC7889108",
+      "doi": "10.1080/23802359.2021.1875922",
+      "year": 2021,
+      "journal": "Mitochondrial DNA. Part B, Resources",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 1013
+    },
+    {
+      "pmcid": "PMC12167229",
+      "doi": "10.1093/dnares/dsaf012",
+      "year": 2025,
+      "journal": "DNA Research: An International Journal for Rapid Publication of Reports on Genes and Genomes",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2647
+    },
+    {
+      "pmcid": "PMC4615751",
+      "doi": "10.1093/molbev/msv039",
+      "year": 2015,
+      "journal": "Molecular Biology and Evolution",
+      "license": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "token_count": 7403
+    },
+    {
+      "pmcid": "PMC4304029",
+      "doi": "10.3897/zookeys.472.8441",
+      "year": 2015,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3814
+    },
+    {
+      "pmcid": "PMC5770485",
+      "doi": "10.1007/s10905-017-9647-8",
+      "year": 2017,
+      "journal": "Journal of Insect Behavior",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5337
+    },
+    {
+      "pmcid": "PMC5845590",
+      "doi": "10.1007/s00265-018-2475-9",
+      "year": 2018,
+      "journal": "Behavioral Ecology and Sociobiology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7900
+    },
+    {
+      "pmcid": "PMC6235997",
+      "doi": "10.3897/BDJ.6.e29278",
+      "year": 2018,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2380
+    },
+    {
+      "pmcid": "PMC7714773",
+      "doi": "10.3897/zookeys.998.54902",
+      "year": 2020,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 37664
+    },
+    {
+      "pmcid": "PMC1081568",
+      "doi": "10.1093/jis/4.1.27",
+      "year": 2004,
+      "journal": "Journal of Insect Science",
+      "license": "unknown",
+      "token_count": 2386
+    },
+    {
+      "pmcid": "PMC3047535",
+      "doi": "10.1371/journal.pone.0017024",
+      "year": 2011,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3944
+    },
+    {
+      "pmcid": "PMC6329524",
+      "doi": "10.1371/journal.pone.0210524",
+      "year": 2019,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5138
+    },
+    {
+      "pmcid": "PMC10671866",
+      "doi": "10.3390/insects14110852",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4007
+    },
+    {
+      "pmcid": "PMC4444961",
+      "doi": "10.3389/fgene.2015.00193",
+      "year": 2015,
+      "journal": "Frontiers in Genetics",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4607
+    },
+    {
+      "pmcid": "PMC9836455",
+      "doi": "10.3897/BDJ.10.e95599",
+      "year": 2022,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4163
+    },
+    {
+      "pmcid": "PMC7578445",
+      "doi": "10.3897/zookeys.970.54958",
+      "year": 2020,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8060
+    },
+    {
+      "pmcid": "PMC11543716",
+      "doi": "10.1007/s10886-024-01519-5",
+      "year": 2024,
+      "journal": "Journal of Chemical Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6966
+    },
+    {
+      "pmcid": "PMC9756460",
+      "doi": "10.1186/s12862-022-02099-2",
+      "year": 2022,
+      "journal": "BMC Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4813
+    },
+    {
+      "pmcid": "PMC2999503",
+      "doi": "10.1673/031.007.4101",
+      "year": 2007,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 3293
+    },
+    {
+      "pmcid": "PMC8526450",
+      "doi": "10.1007/s10329-021-00946-2",
+      "year": 2021,
+      "journal": "Primates; Journal of Primatology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3544
+    },
+    {
+      "pmcid": "PMC6194137",
+      "doi": "10.1038/s41467-018-06824-8",
+      "year": 2018,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5113
+    },
+    {
+      "pmcid": "PMC6398374",
+      "doi": "10.7717/peerj.6512",
+      "year": 2019,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4440
+    },
+    {
+      "pmcid": "PMC5657375",
+      "doi": "10.1093/jis/14.1.38",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 7392
+    },
+    {
+      "pmcid": "PMC3476954",
+      "doi": "10.1673/031.012.4801",
+      "year": 2012,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 2621
+    },
+    {
+      "pmcid": "PMC9784689",
+      "doi": "10.3390/toxins14120846",
+      "year": 2022,
+      "journal": "Toxins",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5094
+    },
+    {
+      "pmcid": "PMC10361077",
+      "doi": "10.7717/peerj.15679",
+      "year": 2023,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3566
+    },
+    {
+      "pmcid": "PMC10207259",
+      "doi": "10.3897/zookeys.1154.97578",
+      "year": 2023,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "token_count": 3893
+    },
+    {
+      "pmcid": "PMC7693960",
+      "doi": "10.3390/toxins12110679",
+      "year": 2020,
+      "journal": "Toxins",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6315
+    },
+    {
+      "pmcid": "PMC6208632",
+      "doi": "10.1007/s00040-018-0642-7",
+      "year": 2018,
+      "journal": "Insectes Sociaux",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7052
+    },
+    {
+      "pmcid": "PMC3792987",
+      "doi": "10.1371/journal.pone.0075843",
+      "year": 2013,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5825
+    },
+    {
+      "pmcid": "PMC6105092",
+      "doi": "10.1093/jisesa/iey078",
+      "year": 2018,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 3091
+    },
+    {
+      "pmcid": "PMC5634046",
+      "doi": "10.1093/jisesa/ieu074",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 3988
+    },
+    {
+      "pmcid": "PMC3447822",
+      "doi": "10.1371/journal.pone.0045016",
+      "year": 2012,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5579
+    },
+    {
+      "pmcid": "PMC11512105",
+      "doi": "10.3897/BDJ.12.e132915",
+      "year": 2024,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3028
+    },
+    {
+      "pmcid": "PMC1081558",
+      "doi": "10.1093/jis/4.1.30",
+      "year": 2004,
+      "journal": "Journal of Insect Science",
+      "license": "unknown",
+      "token_count": 4852
+    },
+    {
+      "pmcid": "PMC6955860",
+      "doi": "10.3390/insects10120451",
+      "year": 2019,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3197
+    },
+    {
+      "pmcid": "PMC9940637",
+      "doi": "10.3389/fncel.2023.1084803",
+      "year": 2023,
+      "journal": "Frontiers in Cellular Neuroscience",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8162
+    },
+    {
+      "pmcid": "PMC8651729",
+      "doi": "10.1038/s41598-021-02817-8",
+      "year": 2021,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7940
+    },
+    {
+      "pmcid": "PMC9750870",
+      "doi": "10.1038/s41586-022-05480-9",
+      "year": 2022,
+      "journal": "Nature",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9709
+    },
+    {
+      "pmcid": "PMC3281391",
+      "doi": "10.1673/031.011.0119",
+      "year": 2011,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 6112
+    },
+    {
+      "pmcid": "PMC7073655",
+      "doi": "10.3390/insects11020107",
+      "year": 2020,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3340
+    },
+    {
+      "pmcid": "PMC7601173",
+      "doi": "10.3390/insects11100678",
+      "year": 2020,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4999
+    },
+    {
+      "pmcid": "PMC12131832",
+      "doi": "10.1128/spectrum.02189-24",
+      "year": 2025,
+      "journal": "Microbiology Spectrum",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4862
+    },
+    {
+      "pmcid": "PMC6052855",
+      "doi": "10.7717/peerj.5319",
+      "year": 2018,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3356
+    },
+    {
+      "pmcid": "PMC12920765",
+      "doi": "10.1007/s10646-026-03053-4",
+      "year": 2026,
+      "journal": "Ecotoxicology (London, England)",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6711
+    },
+    {
+      "pmcid": "PMC5345023",
+      "doi": "10.3897/BDJ.5.e11277",
+      "year": 2017,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 1568
+    },
+    {
+      "pmcid": "PMC5112767",
+      "doi": "10.1051/parasite/2016060",
+      "year": 2016,
+      "journal": "Parasite",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2841
+    },
+    {
+      "pmcid": "PMC5851585",
+      "doi": "10.1371/journal.pone.0193305",
+      "year": 2018,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "token_count": 4281
+    },
+    {
+      "pmcid": "PMC3591739",
+      "doi": "10.3897/zookeys.257.4156",
+      "year": 2013,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 5254
+    },
+    {
+      "pmcid": "PMC3229211",
+      "doi": "10.3897/zookeys.134.1653",
+      "year": 2011,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 4085
+    },
+    {
+      "pmcid": "PMC8002415",
+      "doi": "10.3390/insects12030252",
+      "year": 2021,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6848
+    },
+    {
+      "pmcid": "PMC12495137",
+      "doi": "10.1002/ece3.72251",
+      "year": 2025,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6632
+    },
+    {
+      "pmcid": "PMC12281086",
+      "doi": "10.1002/jmor.70064",
+      "year": 2025,
+      "journal": "Journal of Morphology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 12205
+    },
+    {
+      "pmcid": "PMC8492575",
+      "doi": "10.1007/s10071-021-01516-1",
+      "year": 2021,
+      "journal": "Animal Cognition",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5902
+    },
+    {
+      "pmcid": "PMC3281390",
+      "doi": "10.1673/031.011.12001",
+      "year": 2011,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 3981
+    },
+    {
+      "pmcid": "PMC10450750",
+      "doi": "10.21769/BioProtoc.4770",
+      "year": 2023,
+      "journal": "Bio-protocol",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 4376
+    },
+    {
+      "pmcid": "PMC6921441",
+      "doi": "10.1186/s13002-019-0347-7",
+      "year": 2019,
+      "journal": "Journal of Ethnobiology and Ethnomedicine",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3063
+    },
+    {
+      "pmcid": "PMC12775550",
+      "doi": "10.1111/1365-2656.70171",
+      "year": 2025,
+      "journal": "The Journal of Animal Ecology",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 6971
+    },
+    {
+      "pmcid": "PMC9967414",
+      "doi": "10.3390/insects14020097",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2571
+    },
+    {
+      "pmcid": "PMC6007449",
+      "doi": "10.1093/jisesa/iey050",
+      "year": 2018,
+      "journal": "Journal of Insect Science",
+      "license": "us-gov",
+      "token_count": 4436
+    },
+    {
+      "pmcid": "PMC3462402",
+      "doi": "10.1673/031.011.17101",
+      "year": 2011,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 5503
+    },
+    {
+      "pmcid": "PMC8062660",
+      "doi": "10.1038/s41598-021-88005-0",
+      "year": 2021,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4380
+    },
+    {
+      "pmcid": "PMC13001701",
+      "doi": "10.1002/jez.b.23278",
+      "year": 2024,
+      "journal": "Journal of Experimental Zoology. Part B, Molecular and Developmental Evolution",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 13207
+    },
+    {
+      "pmcid": "PMC7829701",
+      "doi": "10.3390/insects12010078",
+      "year": 2021,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3546
+    },
+    {
+      "pmcid": "PMC7410318",
+      "doi": "10.1371/journal.pone.0237157",
+      "year": 2020,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5185
+    },
+    {
+      "pmcid": "PMC7142932",
+      "doi": "10.3390/insects11030180",
+      "year": 2020,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4290
+    },
+    {
+      "pmcid": "PMC5509369",
+      "doi": "10.1371/journal.pone.0181737",
+      "year": 2017,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 146
+    },
+    {
+      "pmcid": "PMC10231122",
+      "doi": "10.3390/insects14050444",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6892
+    },
+    {
+      "pmcid": "PMC4401700",
+      "doi": "10.1371/journal.pone.0123885",
+      "year": 2015,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3617
+    },
+    {
+      "pmcid": "PMC11943275",
+      "doi": "10.3390/insects16030292",
+      "year": 2025,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5773
+    },
+    {
+      "pmcid": "PMC4717527",
+      "doi": "10.1186/s12862-015-0573-0",
+      "year": 2016,
+      "journal": "BMC Evolutionary Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7012
+    },
+    {
+      "pmcid": "PMC11781628",
+      "doi": "10.1099/acmi.0.000832.v4",
+      "year": 2025,
+      "journal": "Access Microbiology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5408
+    },
+    {
+      "pmcid": "PMC12674574",
+      "doi": "10.1371/journal.pone.0337230",
+      "year": 2025,
+      "journal": "PLOS One",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6437
+    },
+    {
+      "pmcid": "PMC3596933",
+      "doi": "10.1673/031.012.9301",
+      "year": 2012,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 4656
+    },
+    {
+      "pmcid": "PMC5830292",
+      "doi": "10.1371/journal.pone.0192144",
+      "year": 2018,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5685
+    },
+    {
+      "pmcid": "PMC8919206",
+      "doi": "10.3389/fphys.2022.852357",
+      "year": 2022,
+      "journal": "Frontiers in Physiology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4033
+    },
+    {
+      "pmcid": "PMC12548425",
+      "doi": "10.1128/jvi.01178-25",
+      "year": 2025,
+      "journal": "Journal of Virology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7530
+    },
+    {
+      "pmcid": "PMC9260618",
+      "doi": "10.1016/j.heliyon.2022.e09882",
+      "year": 2022,
+      "journal": "Heliyon",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5516
+    },
+    {
+      "pmcid": "PMC9723695",
+      "doi": "10.1038/s43705-021-00061-9",
+      "year": 2021,
+      "journal": "ISME Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6535
+    },
+    {
+      "pmcid": "PMC4519732",
+      "doi": "10.1038/srep12496",
+      "year": 2015,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5125
+    },
+    {
+      "pmcid": "PMC3150818",
+      "doi": "10.1007/s10211-010-0069-2",
+      "year": 2010,
+      "journal": "Acta Ethologica",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 3837
+    },
+    {
+      "pmcid": "PMC4207567",
+      "doi": "10.1093/jis/14.1.53",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 3757
+    },
+    {
+      "pmcid": "PMC10880040",
+      "doi": "10.1002/ece3.10923",
+      "year": 2024,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6673
+    },
+    {
+      "pmcid": "PMC6348091",
+      "doi": "10.7717/peerj.6271",
+      "year": 2019,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7022
+    },
+    {
+      "pmcid": "PMC3016927",
+      "doi": "10.1673/031.010.11101",
+      "year": 2010,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 8710
+    },
+    {
+      "pmcid": "PMC5634051",
+      "doi": "10.1093/jisesa/ieu099",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 3457
+    },
+    {
+      "pmcid": "PMC9906935",
+      "doi": "10.1186/s12915-022-01488-9",
+      "year": 2023,
+      "journal": "BMC Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6332
+    },
+    {
+      "pmcid": "PMC3585944",
+      "doi": "10.1371/journal.pone.0055159",
+      "year": 2013,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5878
+    },
+    {
+      "pmcid": "PMC4199536",
+      "doi": "10.1093/jis/14.1.21",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 4504
+    },
+    {
+      "pmcid": "PMC4520711",
+      "doi": "10.1371/journal.pone.0134502",
+      "year": 2015,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4217
+    },
+    {
+      "pmcid": "PMC7808388",
+      "doi": "10.1080/23802359.2020.1845581",
+      "year": 2021,
+      "journal": "Mitochondrial DNA. Part B, Resources",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 1052
+    },
+    {
+      "pmcid": "PMC6309011",
+      "doi": "10.1002/ece3.4737",
+      "year": 2018,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7302
+    },
+    {
+      "pmcid": "PMC9424252",
+      "doi": "10.1038/s41598-022-17595-0",
+      "year": 2022,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5774
+    },
+    {
+      "pmcid": "PMC4535474",
+      "doi": "10.1093/jisesa/iev022",
+      "year": 2015,
+      "journal": "Journal of Insect Science",
+      "license": "unknown",
+      "token_count": 2301
+    },
+    {
+      "pmcid": "PMC10142254",
+      "doi": "10.3390/insects14040386",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6713
+    },
+    {
+      "pmcid": "PMC6950161",
+      "doi": "10.3390/toxins11120732",
+      "year": 2019,
+      "journal": "Toxins",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4456
+    },
+    {
+      "pmcid": "PMC13153384",
+      "doi": "10.1038/s41598-026-44622-1",
+      "year": 2026,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 3716
+    },
+    {
+      "pmcid": "PMC7923345",
+      "doi": "10.1186/s13227-021-00173-2",
+      "year": 2021,
+      "journal": "EvoDevo",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10121
+    },
+    {
+      "pmcid": "PMC5134035",
+      "doi": "10.1098/rsbl.2016.0542",
+      "year": 2016,
+      "journal": "Biology Letters",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2246
+    },
+    {
+      "pmcid": "PMC13039442",
+      "doi": "10.1038/s41598-026-44089-0",
+      "year": 2026,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8433
+    },
+    {
+      "pmcid": "PMC4537870",
+      "doi": "10.1016/j.sjbs.2015.05.011",
+      "year": 2015,
+      "journal": "Saudi Journal of Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 2055
+    },
+    {
+      "pmcid": "PMC10880111",
+      "doi": "10.3897/zookeys.1191.107324",
+      "year": 2024,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9542
+    },
+    {
+      "pmcid": "PMC4535135",
+      "doi": "10.1093/jisesa/ieu176",
+      "year": 2015,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 5466
+    },
+    {
+      "pmcid": "PMC5267548",
+      "doi": "10.3897/BDJ.4.e10464",
+      "year": 2016,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3866
+    },
+    {
+      "pmcid": "PMC3177866",
+      "doi": "10.1186/1742-9994-8-20",
+      "year": 2011,
+      "journal": "Frontiers in Zoology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 5669
+    },
+    {
+      "pmcid": "PMC4152836",
+      "doi": "10.3897/BDJ.2.e1136",
+      "year": 2014,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2291
+    },
+    {
+      "pmcid": "PMC8239293",
+      "doi": "10.3389/fcell.2021.673172",
+      "year": 2021,
+      "journal": "Frontiers in Cell and Developmental Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4262
+    },
+    {
+      "pmcid": "PMC8210469",
+      "doi": "10.1093/jisesa/ieab039",
+      "year": 2021,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 5276
+    },
+    {
+      "pmcid": "PMC10696605",
+      "doi": "10.3897/compcytogen.17.100945",
+      "year": 2023,
+      "journal": "Comparative Cytogenetics",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3193
+    },
+    {
+      "pmcid": "PMC10287540",
+      "doi": "10.1093/gbe/evad095",
+      "year": 2023,
+      "journal": "Genome Biology and Evolution",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 8603
+    },
+    {
+      "pmcid": "PMC3016983",
+      "doi": "10.1673/031.010.13701",
+      "year": 2010,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 5963
+    },
+    {
+      "pmcid": "PMC9232565",
+      "doi": "10.1038/s41598-022-14915-2",
+      "year": 2022,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8853
+    },
+    {
+      "pmcid": "PMC3957085",
+      "doi": "10.7150/ijbs.6847",
+      "year": 2014,
+      "journal": "International Journal of Biological Sciences",
+      "license": "unknown",
+      "token_count": 6081
+    },
+    {
+      "pmcid": "PMC9732050",
+      "doi": "10.1038/s41598-022-25675-4",
+      "year": 2022,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4305
+    },
+    {
+      "pmcid": "PMC6316631",
+      "doi": "10.3390/insects9040191",
+      "year": 2018,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3978
+    },
+    {
+      "pmcid": "PMC10113331",
+      "doi": "10.1038/s41467-023-37945-4",
+      "year": 2023,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6594
+    },
+    {
+      "pmcid": "PMC8404329",
+      "doi": "10.1186/s12862-021-01890-x",
+      "year": 2021,
+      "journal": "BMC Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5861
+    },
+    {
+      "pmcid": "PMC4334651",
+      "doi": "10.1371/journal.pone.0116602",
+      "year": 2015,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4308
+    },
+    {
+      "pmcid": "PMC7748472",
+      "doi": "10.1080/23802359.2019.1698992",
+      "year": 2020,
+      "journal": "Mitochondrial DNA. Part B, Resources",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 817
+    },
+    {
+      "pmcid": "PMC8517206",
+      "doi": "10.1016/j.isci.2021.103175",
+      "year": 2021,
+      "journal": "iScience",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 11527
+    },
+    {
+      "pmcid": "PMC6546855",
+      "doi": "10.1007/s11356-019-04811-0",
+      "year": 2019,
+      "journal": "Environmental Science and Pollution Research International",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3299
+    },
+    {
+      "pmcid": "PMC3589537",
+      "doi": "10.1101/gr.148361.112",
+      "year": 2013,
+      "journal": "Genome Research",
+      "license": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "token_count": 7816
+    },
+    {
+      "pmcid": "PMC3499094",
+      "doi": "10.1673/031.012.5901",
+      "year": 2012,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 2856
+    },
+    {
+      "pmcid": "PMC6491587",
+      "doi": "10.1038/s41598-019-43175-w",
+      "year": 2019,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4173
+    },
+    {
+      "pmcid": "PMC6780858",
+      "doi": "10.3390/insects10090271",
+      "year": 2019,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4167
+    },
+    {
+      "pmcid": "PMC355916",
+      "doi": "10.1093/jis/2.1.18",
+      "year": 2002,
+      "journal": "Journal of Insect Science",
+      "license": "unknown",
+      "token_count": 4684
+    },
+    {
+      "pmcid": "PMC11782494",
+      "doi": "10.1038/s41598-025-88116-y",
+      "year": 2025,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 4104
+    },
+    {
+      "pmcid": "PMC4939635",
+      "doi": "10.1186/s12866-016-0721-8",
+      "year": 2016,
+      "journal": "BMC Microbiology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10482
+    },
+    {
+      "pmcid": "PMC12522066",
+      "doi": "10.1002/ece3.72253",
+      "year": 2025,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2270
+    },
+    {
+      "pmcid": "PMC3016900",
+      "doi": "10.1673/031.010.14132",
+      "year": 2010,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 1990
+    },
+    {
+      "pmcid": "PMC5362212",
+      "doi": "10.1371/journal.pone.0172641",
+      "year": 2017,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 12780
+    },
+    {
+      "pmcid": "PMC7175090",
+      "doi": "10.1128/mBio.00408-20",
+      "year": 2020,
+      "journal": "mBio",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2649
+    },
+    {
+      "pmcid": "PMC9689775",
+      "doi": "10.3390/genes13111948",
+      "year": 2022,
+      "journal": "Genes",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5370
+    },
+    {
+      "pmcid": "PMC3619097",
+      "doi": "10.7150/ijbs.5781",
+      "year": 2013,
+      "journal": "International Journal of Biological Sciences",
+      "license": "unknown",
+      "token_count": 4277
+    },
+    {
+      "pmcid": "PMC12890811",
+      "doi": "10.1073/pnas.2520139123",
+      "year": 2026,
+      "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5452
+    },
+    {
+      "pmcid": "PMC11285798",
+      "doi": "10.1098/rspb.2023.2439",
+      "year": 2024,
+      "journal": "Proceedings of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6752
+    },
+    {
+      "pmcid": "PMC13320088",
+      "doi": "10.1007/s00248-026-02776-5",
+      "year": 2026,
+      "journal": "Microbial Ecology",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 4718
+    },
+    {
+      "pmcid": "PMC7911655",
+      "doi": "10.3390/insects12020099",
+      "year": 2021,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5139
+    },
+    {
+      "pmcid": "PMC5666370",
+      "doi": "10.3390/toxins9100323",
+      "year": 2017,
+      "journal": "Toxins",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3741
+    },
+    {
+      "pmcid": "PMC3590893",
+      "doi": "10.1093/gbe/evt009",
+      "year": 2013,
+      "journal": "Genome Biology and Evolution",
+      "license": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "token_count": 11711
+    },
+    {
+      "pmcid": "PMC6526729",
+      "doi": "10.1051/parasite/2019028",
+      "year": 2019,
+      "journal": "Parasite",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8108
+    },
+    {
+      "pmcid": "PMC3016966",
+      "doi": "10.1673/031.010.13601",
+      "year": 2010,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 4687
+    },
+    {
+      "pmcid": "PMC10179490",
+      "doi": "10.3390/ijms24098353",
+      "year": 2023,
+      "journal": "International Journal of Molecular Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4533
+    },
+    {
+      "pmcid": "PMC4896424",
+      "doi": "10.1371/journal.pone.0156681",
+      "year": 2016,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4612
+    },
+    {
+      "pmcid": "PMC7452775",
+      "doi": "10.1002/ece3.6582",
+      "year": 2020,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4488
+    },
+    {
+      "pmcid": "PMC13535510",
+      "doi": "10.3897/zookeys.1290.192534",
+      "year": 2026,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10437
+    },
+    {
+      "pmcid": "PMC12592265",
+      "doi": "10.1007/s00359-025-01750-9",
+      "year": 2025,
+      "journal": "Journal of Comparative Physiology. A, Neuroethology, Sensory, Neural, and Behavioral Physiology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8063
+    },
+    {
+      "pmcid": "PMC5904506",
+      "doi": "10.3897/BDJ.6.e24375",
+      "year": 2018,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2628
+    },
+    {
+      "pmcid": "PMC12743250",
+      "doi": "10.3897/zookeys.1264.173399",
+      "year": 2025,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "token_count": 7695
+    },
+    {
+      "pmcid": "PMC3679061",
+      "doi": "10.1371/journal.pone.0066912",
+      "year": 2013,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5067
+    },
+    {
+      "pmcid": "PMC11033553",
+      "doi": "10.3897/zookeys.1197.114072",
+      "year": 2024,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3234
+    },
+    {
+      "pmcid": "PMC4495521",
+      "doi": "10.3390/ani3010063",
+      "year": 2013,
+      "journal": "Animals : an Open Access Journal from MDPI",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 5831
+    },
+    {
+      "pmcid": "PMC11251112",
+      "doi": "10.1186/s12863-024-01253-7",
+      "year": 2024,
+      "journal": "BMC Genomic Data",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2097
+    },
+    {
+      "pmcid": "PMC11594892",
+      "doi": "10.3390/insects15110828",
+      "year": 2024,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3188
+    },
+    {
+      "pmcid": "PMC12606073",
+      "doi": "10.3897/BDJ.13.e168586",
+      "year": 2025,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3174
+    },
+    {
+      "pmcid": "PMC11452741",
+      "doi": "10.3897/zookeys.1213.120531",
+      "year": 2024,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 20513
+    },
+    {
+      "pmcid": "PMC10743500",
+      "doi": "10.3390/insects14120901",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3505
+    },
+    {
+      "pmcid": "PMC6336009",
+      "doi": "10.7717/peerj.6255",
+      "year": 2019,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7911
+    },
+    {
+      "pmcid": "PMC7419493",
+      "doi": "10.1038/s41598-020-70497-x",
+      "year": 2020,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3749
+    },
+    {
+      "pmcid": "PMC12796941",
+      "doi": "10.3897/compcytogen.20.162616",
+      "year": 2026,
+      "journal": "Comparative Cytogenetics",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5484
+    },
+    {
+      "pmcid": "PMC3059815",
+      "doi": "10.1007/s00040-010-0127-9",
+      "year": 2010,
+      "journal": "Insectes Sociaux",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 4148
+    },
+    {
+      "pmcid": "PMC7306772",
+      "doi": "10.1073/pnas.2000344117",
+      "year": 2020,
+      "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 6777
+    },
+    {
+      "pmcid": "PMC4007805",
+      "doi": "10.1186/1471-2148-14-45",
+      "year": 2014,
+      "journal": "BMC Evolutionary Biology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 7874
+    },
+    {
+      "pmcid": "PMC7240756",
+      "doi": "10.3390/insects11040237",
+      "year": 2020,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5633
+    },
+    {
+      "pmcid": "PMC3800781",
+      "doi": "10.3897/zookeys.336.5719",
+      "year": 2013,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 6564
+    },
+    {
+      "pmcid": "PMC4700978",
+      "doi": "10.1093/jis/14.1.108",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 2813
+    },
+    {
+      "pmcid": "PMC7210941",
+      "doi": "10.1038/s41598-020-64269-w",
+      "year": 2020,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4094
+    },
+    {
+      "pmcid": "PMC11932148",
+      "doi": "10.1093/beheco/arae104",
+      "year": 2025,
+      "journal": "Behavioral Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5068
+    },
+    {
+      "pmcid": "PMC4276265",
+      "doi": "10.1186/s12862-014-0260-6",
+      "year": 2014,
+      "journal": "BMC Evolutionary Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5905
+    },
+    {
+      "pmcid": "PMC6453924",
+      "doi": "10.1038/s41467-019-09567-2",
+      "year": 2019,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8171
+    },
+    {
+      "pmcid": "PMC8962746",
+      "doi": "10.1093/cz/zoab052",
+      "year": 2022,
+      "journal": "Current Zoology",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 6269
+    },
+    {
+      "pmcid": "PMC5523882",
+      "doi": "10.3897/zookeys.681.13187",
+      "year": 2017,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7428
+    },
+    {
+      "pmcid": "PMC5492053",
+      "doi": "10.3390/insects8020039",
+      "year": 2017,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3371
+    },
+    {
+      "pmcid": "PMC13014136",
+      "doi": "10.3897/BDJ.14.e188364",
+      "year": 2026,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3717
+    },
+    {
+      "pmcid": "PMC11830030",
+      "doi": "10.1038/s41598-025-89870-9",
+      "year": 2025,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 8366
+    },
+    {
+      "pmcid": "PMC3909803",
+      "doi": "10.3897/zookeys.372.6039",
+      "year": 2014,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 15501
+    },
+    {
+      "pmcid": "PMC355912",
+      "doi": "10.1093/jis/2.1.12",
+      "year": 2002,
+      "journal": "Journal of Insect Science",
+      "license": "unknown",
+      "token_count": 11024
+    },
+    {
+      "pmcid": "PMC9586883",
+      "doi": "10.1016/j.cois.2022.100951",
+      "year": 2022,
+      "journal": "Current Opinion in Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 3450
+    },
+    {
+      "pmcid": "PMC4741291",
+      "doi": "10.3897/zookeys.551.6767",
+      "year": 2016,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2832
+    },
+    {
+      "pmcid": "PMC4414376",
+      "doi": "10.1186/s13059-015-0623-3",
+      "year": 2015,
+      "journal": "Genome Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 18238
+    },
+    {
+      "pmcid": "PMC8480187",
+      "doi": "10.1093/molbev/msaa297",
+      "year": 2021,
+      "journal": "Molecular Biology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7580
+    },
+    {
+      "pmcid": "PMC13513694",
+      "doi": "10.3390/insects17080853",
+      "year": 2026,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5700
+    },
+    {
+      "pmcid": "PMC3059818",
+      "doi": "10.1007/s00040-010-0135-9",
+      "year": 2010,
+      "journal": "Insectes Sociaux",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 2579
+    },
+    {
+      "pmcid": "PMC5155144",
+      "doi": "10.1038/ncomms13658",
+      "year": 2016,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4580
+    },
+    {
+      "pmcid": "PMC10270196",
+      "doi": "10.1101/gad.350250.122",
+      "year": 2023,
+      "journal": "Genes & Development",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 13839
+    },
+    {
+      "pmcid": "PMC4878371",
+      "doi": "10.7717/peerj.2049",
+      "year": 2016,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5693
+    },
+    {
+      "pmcid": "PMC5450968",
+      "doi": "10.3347/kjp.2017.55.2.225",
+      "year": 2017,
+      "journal": "The Korean Journal of Parasitology",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 1666
+    },
+    {
+      "pmcid": "PMC11331107",
+      "doi": "10.1073/pnas.2402179121",
+      "year": 2024,
+      "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 5117
+    },
+    {
+      "pmcid": "PMC10486794",
+      "doi": "10.3390/ani13172734",
+      "year": 2023,
+      "journal": "Animals : an Open Access Journal from MDPI",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 11321
+    },
+    {
+      "pmcid": "PMC6107056",
+      "doi": "10.1093/molbev/msy124",
+      "year": 2018,
+      "journal": "Molecular Biology and Evolution",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 7700
+    },
+    {
+      "pmcid": "PMC3751492",
+      "doi": "10.1186/1756-0500-6-328",
+      "year": 2013,
+      "journal": "BMC Research Notes",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 1287
+    },
+    {
+      "pmcid": "PMC5604966",
+      "doi": "10.1371/journal.pone.0184614",
+      "year": 2017,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3706
+    },
+    {
+      "pmcid": "PMC9258856",
+      "doi": "10.1371/journal.pone.0271040",
+      "year": 2022,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4606
+    },
+    {
+      "pmcid": "PMC3016985",
+      "doi": "10.1673/031.010.14118",
+      "year": 2010,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 5215
+    },
+    {
+      "pmcid": "PMC6003908",
+      "doi": "10.1038/s41598-018-27628-2",
+      "year": 2018,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5013
+    },
+    {
+      "pmcid": "PMC3029285",
+      "doi": "10.1673/031.010.19501",
+      "year": 2010,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 2167
+    },
+    {
+      "pmcid": "PMC10384828",
+      "doi": "10.3390/molecules28145584",
+      "year": 2023,
+      "journal": "Molecules",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3858
+    },
+    {
+      "pmcid": "PMC6559321",
+      "doi": "10.1111/1365-2745.13135",
+      "year": 2019,
+      "journal": "The Journal of Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8311
+    },
+    {
+      "pmcid": "PMC6961925",
+      "doi": "10.1371/journal.pone.0227628",
+      "year": 2020,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4403
+    },
+    {
+      "pmcid": "PMC10926462",
+      "doi": "10.3389/finsc.2023.1145761",
+      "year": 2023,
+      "journal": "Frontiers in Insect Science",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6384
+    },
+    {
+      "pmcid": "PMC9495655",
+      "doi": "10.3390/bioengineering9090434",
+      "year": 2022,
+      "journal": "Bioengineering",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3575
+    },
+    {
+      "pmcid": "PMC5804204",
+      "doi": "10.1093/cz/zow101",
+      "year": 2017,
+      "journal": "Current Zoology",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 4506
+    },
+    {
+      "pmcid": "PMC12084366",
+      "doi": "10.1038/s41598-025-02058-z",
+      "year": 2025,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5368
+    },
+    {
+      "pmcid": "PMC5770561",
+      "doi": "10.3897/CompCytogen.v12i1.21799",
+      "year": 2018,
+      "journal": "Comparative Cytogenetics",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3662
+    },
+    {
+      "pmcid": "PMC9841434",
+      "doi": "10.1093/nar/gkac510",
+      "year": 2023,
+      "journal": "Nucleic Acids Research",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 6863
+    },
+    {
+      "pmcid": "PMC2949867",
+      "doi": "10.1186/1471-2148-10-273",
+      "year": 2010,
+      "journal": "BMC Evolutionary Biology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 4450
+    },
+    {
+      "pmcid": "PMC7143209",
+      "doi": "10.3390/insects11030200",
+      "year": 2020,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5343
+    },
+    {
+      "pmcid": "PMC3728952",
+      "doi": "10.1002/ece3.623",
+      "year": 2013,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 4792
+    },
+    {
+      "pmcid": "PMC12001234",
+      "doi": "10.1093/jisesa/ieaf023",
+      "year": 2025,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 4799
+    },
+    {
+      "pmcid": "PMC5425087",
+      "doi": "10.1371/journal.pone.0176498",
+      "year": 2017,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "token_count": 8284
+    },
+    {
+      "pmcid": "PMC4173680",
+      "doi": "10.1098/rspb.2014.1411",
+      "year": 2014,
+      "journal": "Proceedings of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5172
+    },
+    {
+      "pmcid": "PMC3014808",
+      "doi": "10.1673/031.010.6401",
+      "year": 2010,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 3680
+    },
+    {
+      "pmcid": "PMC7762752",
+      "doi": "10.3897/zookeys.1005.57629",
+      "year": 2020,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8964
+    },
+    {
+      "pmcid": "PMC12913003",
+      "doi": "10.1073/pnas.2517458123",
+      "year": 2026,
+      "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 5863
+    },
+    {
+      "pmcid": "PMC5490048",
+      "doi": "10.1038/ncomms15920",
+      "year": 2017,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8595
+    },
+    {
+      "pmcid": "PMC2999504",
+      "doi": "10.1673/031.007.4201",
+      "year": 2007,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 4418
+    },
+    {
+      "pmcid": "PMC8463886",
+      "doi": "10.1073/pnas.2026029118",
+      "year": 2021,
+      "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 5567
+    },
+    {
+      "pmcid": "PMC4204385",
+      "doi": "10.1093/jis/14.1.25",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 6652
+    },
+    {
+      "pmcid": "PMC9905419",
+      "doi": "10.1002/ece3.9760",
+      "year": 2023,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7801
+    },
+    {
+      "pmcid": "PMC3426875",
+      "doi": "10.3897/zookeys.213.3552",
+      "year": 2012,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 3564
+    },
+    {
+      "pmcid": "PMC7788728",
+      "doi": "10.1186/s12985-020-01469-w",
+      "year": 2021,
+      "journal": "Virology Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8492
+    },
+    {
+      "pmcid": "PMC10731316",
+      "doi": "10.1098/rsbl.2023.0399",
+      "year": 2023,
+      "journal": "Biology Letters",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3450
+    },
+    {
+      "pmcid": "PMC4390302",
+      "doi": "10.1371/journal.pone.0120652",
+      "year": 2015,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5754
+    },
+    {
+      "pmcid": "PMC3041649",
+      "doi": "10.1186/1472-6785-11-6",
+      "year": 2011,
+      "journal": "BMC Ecology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 4113
+    },
+    {
+      "pmcid": "PMC11293551",
+      "doi": "10.1101/gr.278392.123",
+      "year": 2024,
+      "journal": "Genome Research",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 8316
+    },
+    {
+      "pmcid": "PMC6315350",
+      "doi": "10.3390/insects9040171",
+      "year": 2018,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5182
+    },
+    {
+      "pmcid": "PMC5701548",
+      "doi": "10.7717/peerj.3998",
+      "year": 2017,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7580
+    },
+    {
+      "pmcid": "PMC3646609",
+      "doi": "10.1673/031.012.14601",
+      "year": 2012,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 2556
+    },
+    {
+      "pmcid": "PMC4740849",
+      "doi": "10.3897/zookeys.552.6475",
+      "year": 2016,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5921
+    },
+    {
+      "pmcid": "PMC3962336",
+      "doi": "10.1371/journal.pone.0090902",
+      "year": 2014,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3421
+    },
+    {
+      "pmcid": "PMC7424750",
+      "doi": "10.1093/aob/mcaa058",
+      "year": 2020,
+      "journal": "Annals of Botany",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5859
+    },
+    {
+      "pmcid": "PMC10541265",
+      "doi": "10.1002/ece3.10569",
+      "year": 2023,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6457
+    },
+    {
+      "pmcid": "PMC12107273",
+      "doi": "10.3897/BDJ.13.e151722",
+      "year": 2025,
+      "journal": "Biodiversity Data Journal",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2879
+    },
+    {
+      "pmcid": "PMC10115899",
+      "doi": "10.1002/ece3.10000",
+      "year": 2023,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5418
+    },
+    {
+      "pmcid": "PMC10532128",
+      "doi": "10.3390/insects14090724",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5463
+    },
+    {
+      "pmcid": "PMC4320217",
+      "doi": "10.1186/2193-1801-3-712",
+      "year": 2014,
+      "journal": "SpringerPlus",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5399
+    },
+    {
+      "pmcid": "PMC5073229",
+      "doi": "10.1038/srep35452",
+      "year": 2016,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7603
+    },
+    {
+      "pmcid": "PMC13094243",
+      "doi": "10.1080/19768354.2026.2657636",
+      "year": 2026,
+      "journal": "Animal Cells and Systems",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6438
+    },
+    {
+      "pmcid": "PMC11678100",
+      "doi": "10.3390/insects15121019",
+      "year": 2024,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3596
+    },
+    {
+      "pmcid": "PMC5256898",
+      "doi": "10.1371/journal.pone.0170570",
+      "year": 2017,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10238
+    },
+    {
+      "pmcid": "PMC6469114",
+      "doi": "10.1186/s12864-019-5665-6",
+      "year": 2019,
+      "journal": "BMC Genomics",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8112
+    },
+    {
+      "pmcid": "PMC6776258",
+      "doi": "10.1371/journal.pcbi.1007323",
+      "year": 2019,
+      "journal": "PLoS Computational Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6099
+    },
+    {
+      "pmcid": "PMC3869688",
+      "doi": "10.1371/journal.pone.0082265",
+      "year": 2013,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10847
+    },
+    {
+      "pmcid": "PMC2999416",
+      "doi": "10.1673/031.007.1101",
+      "year": 2007,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 1663
+    },
+    {
+      "pmcid": "PMC8838720",
+      "doi": "10.3390/molecules27031107",
+      "year": 2022,
+      "journal": "Molecules",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4106
+    },
+    {
+      "pmcid": "PMC11488711",
+      "doi": "10.1371/journal.pone.0308712",
+      "year": 2024,
+      "journal": "PLOS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 12084
+    },
+    {
+      "pmcid": "PMC7246197",
+      "doi": "10.1002/ece3.6196",
+      "year": 2020,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5029
+    },
+    {
+      "pmcid": "PMC4592995",
+      "doi": "10.1534/g3.115.021261",
+      "year": 2015,
+      "journal": "G3: Genes|Genomes|Genetics",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5674
+    },
+    {
+      "pmcid": "PMC10467070",
+      "doi": "10.3390/toxins15080489",
+      "year": 2023,
+      "journal": "Toxins",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5295
+    },
+    {
+      "pmcid": "PMC3011848",
+      "doi": "10.1673/031.009.0201",
+      "year": 2009,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 9641
+    },
+    {
+      "pmcid": "PMC3094537",
+      "doi": "10.1007/s00442-010-1851-6",
+      "year": 2010,
+      "journal": "Oecologia",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 5732
+    },
+    {
+      "pmcid": "PMC6925143",
+      "doi": "10.1038/s41598-019-56189-1",
+      "year": 2019,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4797
+    },
+    {
+      "pmcid": "PMC8523712",
+      "doi": "10.1038/s41598-021-00099-8",
+      "year": 2021,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2085
+    },
+    {
+      "pmcid": "PMC3391925",
+      "doi": "10.1673/031.011.0126",
+      "year": 2011,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 13986
+    },
+    {
+      "pmcid": "PMC10087202",
+      "doi": "10.1111/imb.12809",
+      "year": 2022,
+      "journal": "Insect Molecular Biology",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 12026
+    },
+    {
+      "pmcid": "PMC8059605",
+      "doi": "10.1098/rspb.2021.0386",
+      "year": 2021,
+      "journal": "Proceedings of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6527
+    },
+    {
+      "pmcid": "PMC3925429",
+      "doi": "10.1002/ece3.930",
+      "year": 2014,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 4158
+    },
+    {
+      "pmcid": "PMC10189538",
+      "doi": "10.3897/zookeys.1160.95694",
+      "year": 2023,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5408
+    },
+    {
+      "pmcid": "PMC4390358",
+      "doi": "10.1371/journal.pone.0122533",
+      "year": 2015,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3594
+    },
+    {
+      "pmcid": "PMC4242560",
+      "doi": "10.1002/ece3.1277",
+      "year": 2014,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 7309
+    },
+    {
+      "pmcid": "PMC7012894",
+      "doi": "10.1038/s41598-020-59202-0",
+      "year": 2020,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3785
+    },
+    {
+      "pmcid": "PMC7696054",
+      "doi": "10.3390/v12111309",
+      "year": 2020,
+      "journal": "Viruses",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4007
+    },
+    {
+      "pmcid": "PMC10960152",
+      "doi": "10.3897/zookeys.1195.115889",
+      "year": 2024,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3951
+    },
+    {
+      "pmcid": "PMC6389644",
+      "doi": "10.3897/mycokeys.46.30951",
+      "year": 2019,
+      "journal": "MycoKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5533
+    },
+    {
+      "pmcid": "PMC13419209",
+      "doi": "10.1371/journal.pone.0327957",
+      "year": 2026,
+      "journal": "PLOS One",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6577
+    },
+    {
+      "pmcid": "PMC9145412",
+      "doi": "10.3390/insects13050444",
+      "year": 2022,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6157
+    },
+    {
+      "pmcid": "PMC6102506",
+      "doi": "10.3389/fpls.2018.01093",
+      "year": 2018,
+      "journal": "Frontiers in Plant Science",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7325
+    },
+    {
+      "pmcid": "PMC6330944",
+      "doi": "10.7717/peerj.6226",
+      "year": 2019,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5435
+    },
+    {
+      "pmcid": "PMC3338844",
+      "doi": "10.1371/journal.pone.0035468",
+      "year": 2012,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4100
+    },
+    {
+      "pmcid": "PMC8434696",
+      "doi": "10.1186/s12983-021-00429-6",
+      "year": 2021,
+      "journal": "Frontiers in Zoology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10269
+    },
+    {
+      "pmcid": "PMC6704090",
+      "doi": "10.1007/s00442-019-04426-9",
+      "year": 2019,
+      "journal": "Oecologia",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6710
+    },
+    {
+      "pmcid": "PMC4011369",
+      "doi": "10.1673/031.013.11501",
+      "year": 2013,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 3201
+    },
+    {
+      "pmcid": "PMC6849798",
+      "doi": "10.1111/1365-2656.12728",
+      "year": 2017,
+      "journal": "The Journal of Animal Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4792
+    },
+    {
+      "pmcid": "PMC4496082",
+      "doi": "10.1371/journal.pone.0130541",
+      "year": 2015,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5881
+    },
+    {
+      "pmcid": "PMC11122653",
+      "doi": "10.3390/insects15050333",
+      "year": 2024,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5262
+    },
+    {
+      "pmcid": "PMC4963041",
+      "doi": "10.1371/journal.pone.0158544",
+      "year": 2016,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 15018
+    },
+    {
+      "pmcid": "PMC6135544",
+      "doi": "10.1126/sciadv.aau4640",
+      "year": 2018,
+      "journal": "Science Advances",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 7610
+    },
+    {
+      "pmcid": "PMC7349007",
+      "doi": "10.3390/insects11060356",
+      "year": 2020,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4151
+    },
+    {
+      "pmcid": "PMC8179172",
+      "doi": "10.1073/pnas.2026534118",
+      "year": 2021,
+      "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 9625
+    },
+    {
+      "pmcid": "PMC3072959",
+      "doi": "10.1186/1471-2164-12-164",
+      "year": 2011,
+      "journal": "BMC Genomics",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 5666
+    },
+    {
+      "pmcid": "PMC12194536",
+      "doi": "10.3390/insects16060630",
+      "year": 2025,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3703
+    },
+    {
+      "pmcid": "PMC12640086",
+      "doi": "10.1093/sysbio/syaf022",
+      "year": 2025,
+      "journal": "Systematic Biology",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 9319
+    },
+    {
+      "pmcid": "PMC3393114",
+      "doi": "10.1673/031.009.0901",
+      "year": 2009,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 5974
+    },
+    {
+      "pmcid": "PMC3735075",
+      "doi": "10.1673/031.013.2701",
+      "year": 2013,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 3549
+    },
+    {
+      "pmcid": "PMC4041774",
+      "doi": "10.1371/journal.pone.0098975",
+      "year": 2014,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4081
+    },
+    {
+      "pmcid": "PMC12676465",
+      "doi": "10.1093/evlett/qraf033",
+      "year": 2025,
+      "journal": "Evolution Letters",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7114
+    },
+    {
+      "pmcid": "PMC11582037",
+      "doi": "10.3389/fmicb.2024.1479934",
+      "year": 2024,
+      "journal": "Frontiers in Microbiology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3374
+    },
+    {
+      "pmcid": "PMC8084850",
+      "doi": "10.3897/zookeys.1033.59880",
+      "year": 2021,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7862
+    },
+    {
+      "pmcid": "PMC8837658",
+      "doi": "10.1038/s41598-022-05879-4",
+      "year": 2022,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6651
+    },
+    {
+      "pmcid": "PMC3735050",
+      "doi": "10.1673/031.013.2901",
+      "year": 2013,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 3130
+    },
+    {
+      "pmcid": "PMC11581030",
+      "doi": "10.1101/2024.11.07.622473",
+      "year": 2024,
+      "journal": "bioRxiv",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "token_count": 13573
+    },
+    {
+      "pmcid": "PMC8742042",
+      "doi": "10.1038/s41598-021-04051-8",
+      "year": 2022,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5063
+    },
+    {
+      "pmcid": "PMC12427476",
+      "doi": "10.3390/ani15172633",
+      "year": 2025,
+      "journal": "Animals : an Open Access Journal from MDPI",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6072
+    },
+    {
+      "pmcid": "PMC7970987",
+      "doi": "10.1038/s41598-021-84925-z",
+      "year": 2021,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6852
+    },
+    {
+      "pmcid": "PMC12092512",
+      "doi": "10.1007/s00114-025-01990-4",
+      "year": 2025,
+      "journal": "Die Naturwissenschaften",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4566
+    },
+    {
+      "pmcid": "PMC5852968",
+      "doi": "10.1186/s13071-018-2712-0",
+      "year": 2018,
+      "journal": "Parasites & Vectors",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5412
+    },
+    {
+      "pmcid": "PMC5462381",
+      "doi": "10.1371/journal.pone.0178813",
+      "year": 2017,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8151
+    },
+    {
+      "pmcid": "PMC5872286",
+      "doi": "10.3390/insects9010021",
+      "year": 2018,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3558
+    },
+    {
+      "pmcid": "PMC12106350",
+      "doi": "10.1002/ece3.71133",
+      "year": 2025,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5150
+    },
+    {
+      "pmcid": "PMC4569026",
+      "doi": "10.1002/ece3.1555",
+      "year": 2015,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5874
+    },
+    {
+      "pmcid": "PMC9951735",
+      "doi": "10.3390/ani13040630",
+      "year": 2023,
+      "journal": "Animals : an Open Access Journal from MDPI",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5352
+    },
+    {
+      "pmcid": "PMC5382690",
+      "doi": "10.1038/srep07112",
+      "year": 2014,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 4044
+    },
+    {
+      "pmcid": "PMC5524490",
+      "doi": "10.1098/rspb.2017.0380",
+      "year": 2017,
+      "journal": "Proceedings of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6333
+    },
+    {
+      "pmcid": "PMC3281374",
+      "doi": "10.1673/031.011.10501",
+      "year": 2011,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 7653
+    },
+    {
+      "pmcid": "PMC11664207",
+      "doi": "10.1002/ece3.70694",
+      "year": 2024,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5539
+    },
+    {
+      "pmcid": "PMC12841854",
+      "doi": "10.3390/insects17010032",
+      "year": 2025,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3549
+    },
+    {
+      "pmcid": "PMC5469383",
+      "doi": "10.1093/jisesa/iex002",
+      "year": 2017,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 5271
+    },
+    {
+      "pmcid": "PMC7031503",
+      "doi": "10.1038/s41598-020-59712-x",
+      "year": 2020,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4957
+    },
+    {
+      "pmcid": "PMC11923616",
+      "doi": "10.1098/rstb.2023.0265",
+      "year": 2025,
+      "journal": "Philosophical Transactions of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5171
+    },
+    {
+      "pmcid": "PMC10786876",
+      "doi": "10.1038/s42003-023-05729-7",
+      "year": 2024,
+      "journal": "Communications Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9124
+    },
+    {
+      "pmcid": "PMC8689564",
+      "doi": "10.1128/mBio.01885-21",
+      "year": 2021,
+      "journal": "mBio",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6335
+    },
+    {
+      "pmcid": "PMC5658437",
+      "doi": "10.1038/s41598-017-14036-1",
+      "year": 2017,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5271
+    },
+    {
+      "pmcid": "PMC4621601",
+      "doi": "10.1038/srep15691",
+      "year": 2015,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2805
+    },
+    {
+      "pmcid": "PMC12238959",
+      "doi": "10.3897/zookeys.1243.145744",
+      "year": 2025,
+      "journal": "ZooKeys",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3466
+    },
+    {
+      "pmcid": "PMC5449148",
+      "doi": "10.1091/mbc.E17-03-0195",
+      "year": 2017,
+      "journal": "Molecular Biology of the Cell",
+      "license": "creative-commons",
+      "token_count": 11021
+    },
+    {
+      "pmcid": "PMC3656849",
+      "doi": "10.1371/journal.pone.0064185",
+      "year": 2013,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 2968
+    },
+    {
+      "pmcid": "PMC5016648",
+      "doi": "10.1002/ece3.2355",
+      "year": 2016,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4871
+    },
+    {
+      "pmcid": "PMC5822835",
+      "doi": "10.7717/peerj.4369",
+      "year": 2018,
+      "journal": "PeerJ",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5248
+    },
+    {
+      "pmcid": "PMC10532688",
+      "doi": "10.3390/insects14090723",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4779
+    },
+    {
+      "pmcid": "PMC13102390",
+      "doi": "10.7554/eLife.100706",
+      "year": 2026,
+      "journal": "eLife",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8168
+    },
+    {
+      "pmcid": "PMC3281428",
+      "doi": "10.1673/031.011.7101",
+      "year": 2011,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/2.5/",
+      "token_count": 2272
+    },
+    {
+      "pmcid": "PMC10577302",
+      "doi": "10.3389/ffunb.2023.1213997",
+      "year": 2023,
+      "journal": "Frontiers in Fungal Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7958
+    },
+    {
+      "pmcid": "PMC7898649",
+      "doi": "10.1111/mec.15752",
+      "year": 2021,
+      "journal": "Molecular Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9868
+    },
+    {
+      "pmcid": "PMC4510857",
+      "doi": "10.1371/journal.pone.0133677",
+      "year": 2015,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3789
+    },
+    {
+      "pmcid": "PMC8955869",
+      "doi": "10.3390/insects13030287",
+      "year": 2022,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3255
+    },
+    {
+      "pmcid": "PMC6804081",
+      "doi": "10.3390/molecules24193468",
+      "year": 2019,
+      "journal": "Molecules",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5656
+    },
+    {
+      "pmcid": "PMC4587374",
+      "doi": "10.1371/journal.pone.0139365",
+      "year": 2015,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6180
+    },
+    {
+      "pmcid": "PMC12798844",
+      "doi": "10.3114/persoonia.2025.55.06",
+      "year": 2025,
+      "journal": "Persoonia : Molecular Phylogeny and Evolution of Fungi",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 12818
+    },
+    {
+      "pmcid": "PMC8038084",
+      "doi": "10.3390/s21072393",
+      "year": 2021,
+      "journal": "Sensors (Basel, Switzerland)",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 11748
+    },
+    {
+      "pmcid": "PMC4053393",
+      "doi": "10.1371/journal.pone.0099838",
+      "year": 2014,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5369
+    },
+    {
+      "pmcid": "PMC13513199",
+      "doi": "10.3390/insects17080785",
+      "year": 2026,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5532
+    },
+    {
+      "pmcid": "PMC12058647",
+      "doi": "10.1002/ece3.71326",
+      "year": 2025,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6070
+    },
+    {
+      "pmcid": "PMC6180628",
+      "doi": "10.1186/s12866-018-1265-x",
+      "year": 2018,
+      "journal": "BMC Microbiology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7261
+    },
+    {
+      "pmcid": "PMC4553619",
+      "doi": "10.3390/insects3010120",
+      "year": 2012,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 3217
+    },
+    {
+      "pmcid": "PMC9024485",
+      "doi": "10.3390/insects13040386",
+      "year": 2022,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3465
+    },
+    {
+      "pmcid": "PMC11489274",
+      "doi": "10.1007/s00442-024-05628-6",
+      "year": 2024,
+      "journal": "Oecologia",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6050
+    },
+    {
+      "pmcid": "PMC5857133",
+      "doi": "10.1186/s12983-018-0249-x",
+      "year": 2018,
+      "journal": "Frontiers in Zoology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8745
+    },
+    {
+      "pmcid": "PMC13350404",
+      "doi": "10.1111/mec.70464",
+      "year": 2026,
+      "journal": "Molecular Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 8131
+    },
+    {
+      "pmcid": "PMC4105532",
+      "doi": "10.1371/journal.pone.0102604",
+      "year": 2014,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5628
+    },
+    {
+      "pmcid": "PMC9283449",
+      "doi": "10.1038/s41598-022-16243-x",
+      "year": 2022,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6135
+    },
+    {
+      "pmcid": "PMC3541327",
+      "doi": "10.4161/cib.21421",
+      "year": 2012,
+      "journal": "Communicative & Integrative Biology",
+      "license": "https://creativecommons.org/licenses/by-nc/3.0/",
+      "token_count": 5664
+    },
+    {
+      "pmcid": "PMC5207748",
+      "doi": "10.1371/journal.pone.0169492",
+      "year": 2017,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3885
+    },
+    {
+      "pmcid": "PMC13500164",
+      "doi": "10.1093/cz/zoaf071",
+      "year": 2026,
+      "journal": "Current Zoology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5819
+    },
+    {
+      "pmcid": "PMC11942697",
+      "doi": "10.3390/insects16030326",
+      "year": 2025,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3795
+    },
+    {
+      "pmcid": "PMC12940866",
+      "doi": "10.3390/insects17020129",
+      "year": 2026,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5110
+    },
+    {
+      "pmcid": "PMC11739460",
+      "doi": "10.1002/ece3.70750",
+      "year": 2025,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9483
+    },
+    {
+      "pmcid": "PMC6921000",
+      "doi": "10.3390/insects10110383",
+      "year": 2019,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3326
+    },
+    {
+      "pmcid": "PMC3008678",
+      "doi": "10.1371/journal.pone.0014308",
+      "year": 2010,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6229
+    },
+    {
+      "pmcid": "PMC9176350",
+      "doi": "10.1080/23802359.2022.2079105",
+      "year": 2022,
+      "journal": "Mitochondrial DNA. Part B, Resources",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 721
+    },
+    {
+      "pmcid": "PMC4262973",
+      "doi": "10.1186/s12862-014-0244-6",
+      "year": 2014,
+      "journal": "BMC Evolutionary Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6087
+    },
+    {
+      "pmcid": "PMC10455420",
+      "doi": "10.3390/insects14080675",
+      "year": 2023,
+      "journal": "Insects",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 10074
+    },
+    {
+      "pmcid": "PMC6744467",
+      "doi": "10.1038/s41598-019-49655-3",
+      "year": 2019,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6846
+    },
+    {
+      "pmcid": "PMC12742699",
+      "doi": "10.1002/ece3.72674",
+      "year": 2025,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 7456
+    },
+    {
+      "pmcid": "PMC4217262",
+      "doi": "10.1093/jis/14.1.84",
+      "year": 2014,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 2904
+    },
+    {
+      "pmcid": "PMC5416825",
+      "doi": "10.1093/jisesa/iex006",
+      "year": 2017,
+      "journal": "Journal of Insect Science",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 2694
+    },
+    {
+      "pmcid": "PMC3036881",
+      "doi": "10.1590/S1415-47572009005000073",
+      "year": 2009,
+      "journal": "Genetics and Molecular Biology",
+      "license": "https://creativecommons.org/licenses/by/2.0/",
+      "token_count": 3491
+    },
+    {
+      "pmcid": "PMC3402455",
+      "doi": "10.1371/journal.pone.0041856",
+      "year": 2012,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6624
+    },
+    {
+      "pmcid": "PMC9543898",
+      "doi": "10.1111/evo.14518",
+      "year": 2022,
+      "journal": "Evolution; International Journal of Organic Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 5749
+    },
+    {
+      "pmcid": "PMC5829439",
+      "doi": "10.1093/cz/zow041",
+      "year": 2016,
+      "journal": "Current Zoology",
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "token_count": 5014
+    },
+    {
+      "pmcid": "PMC5735199",
+      "doi": "10.1007/s10886-017-0901-5",
+      "year": 2017,
+      "journal": "Journal of Chemical Ecology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 3748
+    },
+    {
+      "pmcid": "PMC4071554",
+      "doi": "10.1098/rspb.2014.0737",
+      "year": 2014,
+      "journal": "Proceedings of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/3.0/",
+      "token_count": 5071
+    },
+    {
+      "pmcid": "PMC9272207",
+      "doi": "10.1002/ece3.9073",
+      "year": 2022,
+      "journal": "Ecology and Evolution",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6175
+    },
+    {
+      "pmcid": "PMC6306168",
+      "doi": "10.1371/journal.pone.0209047",
+      "year": 2018,
+      "journal": "PLoS ONE",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4522
+    },
+    {
+      "pmcid": "PMC9547751",
+      "doi": "10.1007/s13355-022-00800-x",
+      "year": 2022,
+      "journal": "Applied Entomology and Zoology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4610
+    },
+    {
+      "pmcid": "PMC4426612",
+      "doi": "10.1098/rspb.2014.2838",
+      "year": 2015,
+      "journal": "Proceedings of the Royal Society B: Biological Sciences",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6404
+    },
+    {
+      "pmcid": "PMC8241487",
+      "doi": "10.1098/rsif.2021.0213",
+      "year": 2021,
+      "journal": "Journal of the Royal Society Interface",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 9522
+    },
+    {
+      "pmcid": "PMC12749245",
+      "doi": "10.1038/s42003-025-09387-9",
+      "year": 2025,
+      "journal": "Communications Biology",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6132
+    },
+    {
+      "pmcid": "PMC8854485",
+      "doi": "10.1007/s13369-022-06579-x",
+      "year": 2022,
+      "journal": "Arabian Journal for Science and Engineering",
+      "license": "This article is made available via the PMC Open Access Subset for unrestricted research re-use and secondary analysis in any form or by any means with acknowledgement of the original source. These per",
+      "token_count": 11201
+    },
+    {
+      "pmcid": "PMC10762436",
+      "doi": "10.1098/rsos.231355",
+      "year": 2024,
+      "journal": "Royal Society Open Science",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 6109
+    },
+    {
+      "pmcid": "PMC13350700",
+      "doi": "10.1038/s41467-026-72626-y",
+      "year": 2026,
+      "journal": "Nature Communications",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 7761
+    }
+  ],
+  "domain_term_counts": {
+    "behavior_and_identity": {
+      "term_count": 15,
+      "bridging_term_count": 8,
+      "total_frequency": 9884
+    },
+    "economics": {
+      "term_count": 6,
+      "bridging_term_count": 0,
+      "total_frequency": 1182
+    },
+    "kin_and_relatedness": {
+      "term_count": 4,
+      "bridging_term_count": 0,
+      "total_frequency": 1685
+    },
+    "power_and_labor": {
+      "term_count": 15,
+      "bridging_term_count": 10,
+      "total_frequency": 7488
+    },
+    "sex_and_reproduction": {
+      "term_count": 12,
+      "bridging_term_count": 3,
+      "total_frequency": 3536
+    },
+    "unit_of_individuality": {
+      "term_count": 35,
+      "bridging_term_count": 0,
+      "total_frequency": 10056
+    }
+  },
+  "descriptives": {
+    "behavior_and_identity": {
+      "n_terms": 15,
+      "bridging_count": 8,
+      "entropy_mean": 2.0310123601330634,
+      "entropy_sd": 0.22068229077900392,
+      "ambiguity_mean": 2.0310123601330634,
+      "cace_mean": 0.5768198196174071
+    },
+    "economics": {
+      "n_terms": 6,
+      "bridging_count": 0,
+      "entropy_mean": 2.1684605355176436,
+      "entropy_sd": 0.0974884407737637,
+      "ambiguity_mean": 2.1684605355176436,
+      "cace_mean": 0.5684046486690226
+    },
+    "kin_and_relatedness": {
+      "n_terms": 4,
+      "bridging_count": 0,
+      "entropy_mean": 2.1325488619962543,
+      "entropy_sd": 0.10866159997553781,
+      "ambiguity_mean": 2.1325488619962543,
+      "cace_mean": 0.5789847697491557
+    },
+    "power_and_labor": {
+      "n_terms": 15,
+      "bridging_count": 10,
+      "entropy_mean": 1.9997074520244325,
+      "entropy_sd": 0.26551167129967673,
+      "ambiguity_mean": 1.9997074520244325,
+      "cace_mean": 0.5629893967970091
+    },
+    "sex_and_reproduction": {
+      "n_terms": 12,
+      "bridging_count": 3,
+      "entropy_mean": 2.0000170417556977,
+      "entropy_sd": 0.24056319215505176,
+      "ambiguity_mean": 2.0000170417556977,
+      "cace_mean": 0.5720269207568845
+    },
+    "unit_of_individuality": {
+      "n_terms": 35,
+      "bridging_count": 0,
+      "entropy_mean": 2.040166189607823,
+      "entropy_sd": 0.22744253066567546,
+      "ambiguity_mean": 2.040166189607823,
+      "cace_mean": 0.5854862904548084
+    }
+  },
+  "cace": {
+    "behavior_and_identity": {
+      "mean": 0.5768198196174071,
+      "min": 0.4481426258963142,
+      "max": 0.661252735156887,
+      "clarity": 1.0,
+      "appropriateness": 0.8133333333333332,
+      "consistency": 0.1272792784696289,
+      "evolvability": 0.3666666666666666,
+      "n_terms": 15
+    },
+    "economics": {
+      "mean": 0.5684046486690226,
+      "min": 0.5490185412019736,
+      "max": 0.596191436725304,
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.051396372453868265,
+      "evolvability": 0.2222222222222222,
+      "n_terms": 6
+    },
+    "kin_and_relatedness": {
+      "mean": 0.5789847697491557,
+      "min": 0.5533733411760207,
+      "max": 0.6032317509404149,
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.0659390789966231,
+      "evolvability": 0.25,
+      "n_terms": 4
+    },
+    "power_and_labor": {
+      "mean": 0.5629893967970091,
+      "min": 0.4413018570895736,
+      "max": 0.661252735156887,
+      "clarity": 1.0,
+      "appropriateness": 0.7400000000000001,
+      "consistency": 0.11195758718803688,
+      "evolvability": 0.39999999999999997,
+      "n_terms": 15
+    },
+    "sex_and_reproduction": {
+      "mean": 0.5720269207568845,
+      "min": 0.4849196559584471,
+      "max": 0.6365103411566412,
+      "clarity": 1.0,
+      "appropriateness": 0.85,
+      "consistency": 0.09088546080531619,
+      "evolvability": 0.34722222222222215,
+      "n_terms": 12
+    },
+    "unit_of_individuality": {
+      "mean": 0.5854862904548084,
+      "min": 0.5525528355805495,
+      "max": 0.639057211088995,
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.09432611420018622,
+      "evolvability": 0.24761904761904754,
+      "n_terms": 35
+    }
+  },
+  "cace_terms": {
+    "queen": {
+      "clarity": 1.0,
+      "appropriateness": 0.45,
+      "consistency": 0.06111467567740265,
+      "evolvability": 0.5,
+      "aggregate": 0.5027786689193506,
+      "in_corpus": true
+    },
+    "primary reproductive": {
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.5,
+      "evolvability": 0.0,
+      "aggregate": 0.625,
+      "in_corpus": false
+    },
+    "worker": {
+      "clarity": 1.0,
+      "appropriateness": 0.45,
+      "consistency": 0.11100318939773059,
+      "evolvability": 0.5,
+      "aggregate": 0.5152507973494327,
+      "in_corpus": true
+    },
+    "non-reproductive helper": {
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.5,
+      "evolvability": 0.0,
+      "aggregate": 0.625,
+      "in_corpus": false
+    },
+    "slave": {
+      "clarity": 1.0,
+      "appropriateness": 0.5,
+      "consistency": 0.5,
+      "evolvability": 0.0,
+      "aggregate": 0.5,
+      "in_corpus": false
+    },
+    "host worker": {
+      "clarity": 1.0,
+      "appropriateness": 0.39999999999999997,
+      "consistency": 0.5,
+      "evolvability": 0.0,
+      "aggregate": 0.475,
+      "in_corpus": false
+    },
+    "caste": {
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.03669796092981145,
+      "evolvability": 0.5,
+      "aggregate": 0.6341744902324529,
+      "in_corpus": true
+    },
+    "task group": {
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.5,
+      "evolvability": 0.0,
+      "aggregate": 0.625,
+      "in_corpus": false
+    },
+    "soldier": {
+      "clarity": 1.0,
+      "appropriateness": 0.5,
+      "consistency": 0.10932056676874126,
+      "evolvability": 0.3333333333333333,
+      "aggregate": 0.48566347502551865,
+      "in_corpus": true
+    },
+    "major worker": {
+      "clarity": 1.0,
+      "appropriateness": 0.5,
+      "consistency": 0.5,
+      "evolvability": 0.0,
+      "aggregate": 0.5,
+      "in_corpus": false
+    },
+    "colony": {
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.0698554896032293,
+      "evolvability": 0.3333333333333333,
+      "aggregate": 0.6007972057341407,
+      "in_corpus": true
+    },
+    "haplodiploidy": {
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.05696942091601647,
+      "evolvability": 0.16666666666666666,
+      "aggregate": 0.5559090218956707,
+      "in_corpus": true
+    },
+    "trophallaxis": {
+      "clarity": 1.0,
+      "appropriateness": 1.0,
+      "consistency": 0.5,
+      "evolvability": 0.0,
+      "aggregate": 0.625,
+      "in_corpus": false
+    }
+  },
+  "pairwise": [
+    {
+      "domain_a": "behavior_and_identity",
+      "domain_b": "economics",
+      "metric": "semantic_entropy",
+      "t": -1.9775772384261545,
+      "df": 18.59795592048099,
+      "p": 0.06298892851863669,
+      "p_bh": 0.23620848194488758,
+      "cohens_d": -0.6734806920131029,
+      "n_a": 15,
+      "n_b": 6,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "behavior_and_identity",
+      "domain_b": "kin_and_relatedness",
+      "metric": "semantic_entropy",
+      "t": -1.2896659510337074,
+      "df": 10.505322425419923,
+      "p": 0.224835235545211,
+      "p_bh": 0.42156606664727064,
+      "cohens_d": -0.47219584803029513,
+      "n_a": 15,
+      "n_b": 4,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "behavior_and_identity",
+      "domain_b": "power_and_labor",
+      "metric": "semantic_entropy",
+      "t": 0.3511762846293554,
+      "df": 27.09408479122064,
+      "p": 0.7281722740624559,
+      "p_bh": 0.8460391459469583,
+      "cohens_d": 0.1247657336772018,
+      "n_a": 15,
+      "n_b": 15,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "behavior_and_identity",
+      "domain_b": "sex_and_reproduction",
+      "metric": "semantic_entropy",
+      "t": 0.3450476661218489,
+      "df": 22.70952159510575,
+      "p": 0.7332339264873639,
+      "p_bh": 0.8460391459469583,
+      "cohens_d": 0.13088225198564377,
+      "n_a": 15,
+      "n_b": 12,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "behavior_and_identity",
+      "domain_b": "unit_of_individuality",
+      "metric": "semantic_entropy",
+      "t": -0.13317264632220113,
+      "df": 27.31675651847425,
+      "p": 0.8950330549151863,
+      "p_bh": 0.9589639874091281,
+      "cohens_d": -0.03995735018391177,
+      "n_a": 15,
+      "n_b": 35,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "economics",
+      "domain_b": "kin_and_relatedness",
+      "metric": "semantic_entropy",
+      "t": 0.5332207137506367,
+      "df": 6.040004780092404,
+      "p": 0.6129214996864569,
+      "p_bh": 0.8441653523723626,
+      "cohens_d": 0.31855886577035275,
+      "n_a": 6,
+      "n_b": 4,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "economics",
+      "domain_b": "power_and_labor",
+      "metric": "semantic_entropy",
+      "t": 2.128834183892615,
+      "df": 18.987978851523184,
+      "p": 0.04657871336775992,
+      "p_bh": 0.23620848194488758,
+      "cohens_d": 0.6942897418171449,
+      "n_a": 6,
+      "n_b": 15,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "economics",
+      "domain_b": "sex_and_reproduction",
+      "metric": "semantic_entropy",
+      "t": 2.1044664829438537,
+      "df": 15.689058410194825,
+      "p": 0.051829417066434055,
+      "p_bh": 0.23620848194488758,
+      "cohens_d": 0.775829074049702,
+      "n_a": 6,
+      "n_b": 12,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "economics",
+      "domain_b": "unit_of_individuality",
+      "metric": "semantic_entropy",
+      "t": 2.3184874945693608,
+      "df": 16.563348036995055,
+      "p": 0.0334959469383746,
+      "p_bh": 0.23620848194488758,
+      "cohens_d": 0.5845902056315144,
+      "n_a": 6,
+      "n_b": 35,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "kin_and_relatedness",
+      "domain_b": "power_and_labor",
+      "metric": "semantic_entropy",
+      "t": 1.5186488851226083,
+      "df": 13.062271013749058,
+      "p": 0.1526781396798261,
+      "p_bh": 0.3964408059576241,
+      "cohens_d": 0.5174383009171457,
+      "n_a": 4,
+      "n_b": 15,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "kin_and_relatedness",
+      "domain_b": "sex_and_reproduction",
+      "metric": "semantic_entropy",
+      "t": 1.503096981784053,
+      "df": 12.043137791078236,
+      "p": 0.15857632238304964,
+      "p_bh": 0.3964408059576241,
+      "cohens_d": 0.5719268231619689,
+      "n_a": 4,
+      "n_b": 12,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "kin_and_relatedness",
+      "domain_b": "unit_of_individuality",
+      "metric": "semantic_entropy",
+      "t": 1.3880226681149581,
+      "df": 6.610134726686001,
+      "p": 0.21011004436841255,
+      "p_bh": 0.42156606664727064,
+      "cohens_d": 0.41095625640606237,
+      "n_a": 4,
+      "n_b": 35,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "power_and_labor",
+      "domain_b": "sex_and_reproduction",
+      "metric": "semantic_entropy",
+      "t": -0.003172599292070099,
+      "df": 24.5599076960156,
+      "p": 0.9974942659262376,
+      "p_bh": 0.9974942659262376,
+      "cohens_d": -0.0011780474332852738,
+      "n_a": 15,
+      "n_b": 12,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "power_and_labor",
+      "domain_b": "unit_of_individuality",
+      "metric": "semantic_entropy",
+      "t": -0.5147502836650715,
+      "df": 23.24360854692612,
+      "p": 0.6115879791654972,
+      "p_bh": 0.8441653523723626,
+      "cohens_d": -0.16650414433176808,
+      "n_a": 15,
+      "n_b": 35,
+      "significant_bh": false
+    },
+    {
+      "domain_a": "sex_and_reproduction",
+      "domain_b": "unit_of_individuality",
+      "metric": "semantic_entropy",
+      "t": -0.5058093530300031,
+      "df": 18.221970556091456,
+      "p": 0.6190545917397325,
+      "p_bh": 0.8441653523723626,
+      "cohens_d": -0.17110123299524901,
+      "n_a": 12,
+      "n_b": 35,
+      "significant_bh": false
+    }
+  ],
+  "anova": {
+    "metric": "semantic_entropy",
+    "F": 0.6951823081635993,
+    "df1": 5.0,
+    "df2": 81.0,
+    "p": 0.6285750495698001,
+    "eta_squared": 0.04114677755372274
+  },
+  "corrections": {
+    "method": "benjamini_hochberg",
+    "n_comparisons": 15
+  },
+  "skipped": []
+}

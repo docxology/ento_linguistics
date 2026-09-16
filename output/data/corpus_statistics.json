@@ -1,89 +1,89 @@
 {
-  "total_tokens": 120561,
-  "unique_tokens": 11587,
-  "total_characters": 1337242,
-  "avg_token_length": 7.377468667313642,
+  "total_tokens": 250937,
+  "unique_tokens": 17624,
+  "total_characters": 2783177,
+  "avg_token_length": 7.36558976954375,
   "most_common_tokens": [
     [
       "colony",
-      1933
-    ],
-    [
-      "ant",
-      1634
+      2997
     ],
     [
       "social",
-      1614
+      2852
     ],
     [
       "worker",
-      1451
+      2849
+    ],
+    [
+      "ant",
+      2560
     ],
     [
       "queen",
-      1071
+      2108
     ],
     [
       "specie",
-      940
+      1832
     ],
     [
       "insect",
-      694
-    ],
-    [
-      "individual",
-      660
-    ],
-    [
-      "study",
-      616
-    ],
-    [
-      "nest",
-      591
+      1585
     ],
     [
       "bee",
-      569
+      1576
     ],
     [
-      "recognition",
-      549
-    ],
-    [
-      "reproductive",
-      502
-    ],
-    [
-      "behavior",
-      487
-    ],
-    [
-      "group",
-      483
-    ],
-    [
-      "may",
-      446
-    ],
-    [
-      "result",
-      438
+      "study",
+      1185
     ],
     [
       "gene",
-      434
+      1180
     ],
     [
-      "male",
-      424
+      "individual",
+      1154
     ],
     [
-      "genetic",
-      398
+      "nest",
+      1150
+    ],
+    [
+      "behavior",
+      995
+    ],
+    [
+      "reproductive",
+      929
+    ],
+    [
+      "result",
+      878
+    ],
+    [
+      "group",
+      869
+    ],
+    [
+      "may",
+      868
+    ],
+    [
+      "recognition",
+      765
+    ],
+    [
+      "different",
+      756
+    ],
+    [
+      "also",
+      750
     ]
   ],
-  "type_token_ratio": 0.09610902364777996
+  "type_token_ratio": 0.0702327675870836
 }

@@ -100,14 +100,15 @@
 \contentsline {subsection}{\numberline {14.2}CACE Scoring for Key Terms}{45}{subsection.14.2}%
 \contentsline {subsection}{\numberline {14.3}Semantic Entropy Distribution}{45}{subsection.14.3}%
 \contentsline {subsection}{\numberline {14.4}Confidence Intervals for Domain Metrics}{45}{subsection.14.4}%
+\contentsline {subsection}{\numberline {14.5}Full-Text Parallel Layer}{46}{subsection.14.5}%
 \contentsline {section}{\numberline {15}Supplemental Analysis: Theoretical Extensions}{47}{section.15}%
 \contentsline {subsection}{\numberline {15.1}Theoretical Extensions}{47}{subsection.15.1}%
 \contentsline {subsubsection}{\numberline {15.1.1}Formalism of Individuality: Markov Blankets}{47}{subsubsection.15.1.1}%
-\contentsline {subsubsection}{\numberline {15.1.2}Discourse Analysis Frameworks}{47}{subsubsection.15.1.2}%
+\contentsline {subsubsection}{\numberline {15.1.2}Discourse Analysis Frameworks}{48}{subsubsection.15.1.2}%
 \contentsline {subsubsection}{\numberline {15.1.3}Ambiguity Classification Systems}{48}{subsubsection.15.1.3}%
 \contentsline {subsubsection}{\numberline {15.1.4}Cross-Domain Conceptual Mapping}{48}{subsubsection.15.1.4}%
-\contentsline {subsection}{\numberline {15.2}Framing Analysis Methods}{48}{subsection.15.2}%
-\contentsline {subsubsection}{\numberline {15.2.1}Anthropomorphic Framing Detection}{48}{subsubsection.15.2.1}%
+\contentsline {subsection}{\numberline {15.2}Framing Analysis Methods}{49}{subsection.15.2}%
+\contentsline {subsubsection}{\numberline {15.2.1}Anthropomorphic Framing Detection}{49}{subsubsection.15.2.1}%
 \contentsline {subsubsection}{\numberline {15.2.2}Hierarchical Framing Analysis}{49}{subsubsection.15.2.2}%
 \contentsline {subsection}{\numberline {15.3}Network Analysis}{49}{subsection.15.3}%
 \contentsline {subsubsection}{\numberline {15.3.1}Temporal Network Evolution}{49}{subsubsection.15.3.1}%

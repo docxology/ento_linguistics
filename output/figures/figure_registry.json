@@ -7,6 +7,14 @@
     "generated_by": null,
     "metadata": null
   },
+  "fig:fulltext_analysis": {
+    "filename": "fulltext_analysis.png",
+    "caption": "Full-Text Parallel Layer: Domain Semantic Entropy, Pairwise Effect Sizes, and Omnibus ANOVA over the PMC Open Access full-text corpus (shared statistical machinery with the abstract layer)",
+    "label": "fig:fulltext_analysis",
+    "section": "supplemental_results",
+    "generated_by": null,
+    "metadata": null
+  },
   "fig:concept_map": {
     "filename": "concept_map.png",
     "caption": "Ento-Linguistic Concept Map",
