@@ -69,6 +69,22 @@ def _fmt_p(value) -> str:
         return "<0.0001"
     return f"{p:.4f}"
 
+def _fmt_cace(value) -> str:
+    """Format a CACE dimension score with 2 decimals.
+
+    CACE scores are reported in manuscript tables at 2-decimal precision.
+
+    Args:
+        value: Numeric score or None when not computed.
+
+    Returns:
+        Formatted string; empty string when the value is missing so that
+        absent data never renders as a fabricated 0.00.
+    """
+    if value is None:
+        return ""
+    return f"{float(value):.2f}"
+
 
 def build_variable_map(
     output_data_dir: Path | None = None,
@@ -161,6 +177,7 @@ def build_variable_map(
     for var_prefix, json_key in domain_key_map.items():
         domain = domain_stats.get(json_key, {})
         variables[f"DOMAIN_{var_prefix}_TERMS"] = str(domain.get("term_count", 0))
+        variables[f"DOMAIN_{var_prefix}_N_TERMS"] = str(domain.get("term_count", 0))
         variables[f"DOMAIN_{var_prefix}_FREQ"] = str(domain.get("total_frequency", 0))
         variables[f"DOMAIN_{var_prefix}_BRIDGING"] = str(
             domain.get("bridging_term_count", 0)
@@ -198,6 +215,10 @@ def build_variable_map(
         )
     else:
         variables["CORPUS_OVERALL_HIGH_ENTROPY_PCT"] = "0.0"
+
+    # Per-domain entropy-table N: sum of the per-domain term counts, so the
+    # S02 Overall row is the exact total of the rows above it.
+    variables["CORPUS_OVERALL_N_TERMS"] = str(sum(all_term_counts))
 
     # --- Concept-level variables ---
     concepts = concept_map.get("concepts", {})
@@ -239,11 +260,15 @@ def build_variable_map(
 def build_statistical_tokens(stats_artifact: dict) -> dict:
     """Map the statistical-analysis artifact onto inferential template tokens.
 
-    Emits ANOVA_*, CORRECTION_METHOD, PAIRWISE_N_COMPARISONS, and
+    Emits ANOVA_*, CORRECTION_METHOD, PAIRWISE_N_COMPARISONS,
     PAIRWISE_<SLUG_A>_<SLUG_B>_{T,P,P_BH,D,SIGNIFICANT} (SLUG = canonical
-    domain slug uppercased, A < B alphabetical). Shared by
-    :func:`build_variable_map` and the PDF renderer so both substitution
-    paths resolve the identical token set.
+    domain slug uppercased, A < B alphabetical), the per-domain CACE
+    aggregates CACE_<SLUG>_{MEAN,MIN,MAX,CLARITY,APPROPRIATENESS,CONSISTENCY,
+    EVOLVABILITY,N}, and the per-term CACE evaluations
+    CACE_TERM_<SLUG>_{CLARITY,APPROPRIATENESS,CONSISTENCY,EVOLVABILITY,
+    AGGREGATE} (SLUG = term uppercased, spaces/hyphens mapped to
+    underscores).  Shared by :func:`build_variable_map` and the PDF
+    renderer so both substitution paths resolve the identical token set.
 
     Args:
         stats_artifact: Parsed ``statistical_analysis.json`` contents.
@@ -284,6 +309,36 @@ def build_statistical_tokens(stats_artifact: dict) -> dict:
         variables[f"{prefix}_SIGNIFICANT"] = (
             "yes" if pair.get("significant_bh") else "no"
         )
+
+    # Per-domain CACE aggregate tokens.  Domains with no sampled CACE
+    # terms are absent from the ``cace`` section and emit no tokens.
+    for domain, entry in (stats_artifact.get("cace") or {}).items():
+        slug = str(domain).upper()
+        variables[f"CACE_{slug}_MEAN"] = _fmt_cace(entry.get("mean"))
+        variables[f"CACE_{slug}_MIN"] = _fmt_cace(entry.get("min"))
+        variables[f"CACE_{slug}_MAX"] = _fmt_cace(entry.get("max"))
+        variables[f"CACE_{slug}_CLARITY"] = _fmt_cace(entry.get("clarity"))
+        variables[f"CACE_{slug}_APPROPRIATENESS"] = _fmt_cace(
+            entry.get("appropriateness")
+        )
+        variables[f"CACE_{slug}_CONSISTENCY"] = _fmt_cace(entry.get("consistency"))
+        variables[f"CACE_{slug}_EVOLVABILITY"] = _fmt_cace(entry.get("evolvability"))
+        variables[f"CACE_{slug}_N"] = str(entry.get("n_terms", 0))
+
+    # Per-term CACE tokens for the representative-term supplement table.
+    for term, entry in (stats_artifact.get("cace_terms") or {}).items():
+        slug = str(term).upper().replace("-", "_").replace(" ", "_")
+        variables[f"CACE_TERM_{slug}_CLARITY"] = _fmt_cace(entry.get("clarity"))
+        variables[f"CACE_TERM_{slug}_APPROPRIATENESS"] = _fmt_cace(
+            entry.get("appropriateness")
+        )
+        variables[f"CACE_TERM_{slug}_CONSISTENCY"] = _fmt_cace(
+            entry.get("consistency")
+        )
+        variables[f"CACE_TERM_{slug}_EVOLVABILITY"] = _fmt_cace(
+            entry.get("evolvability")
+        )
+        variables[f"CACE_TERM_{slug}_AGGREGATE"] = _fmt_cace(entry.get("aggregate"))
     return variables
 
 

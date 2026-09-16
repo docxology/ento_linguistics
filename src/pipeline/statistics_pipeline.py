@@ -18,11 +18,11 @@ artifact's ``skipped`` list instead of being fabricated as 0.0.
 from __future__ import annotations
 
 from itertools import combinations
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
 
-from analysis.cace_scoring import evaluate_term_cace
+from analysis.cace_scoring import CACEScore, evaluate_term_cace
 from analysis.domain_analysis import DomainAnalyzer
 from analysis.statistics import (
     anova_test,
@@ -35,6 +35,7 @@ from analysis.term_extraction import Term
 __all__ = [
     "CANONICAL_DOMAINS",
     "CACE_SAMPLE_SIZE",
+    "CACE_TABLE_TERMS",
     "build_statistical_analysis",
 ]
 
@@ -57,6 +58,28 @@ CACE_SAMPLE_SIZE = 50
 
 # BH significance threshold applied to the corrected pairwise p-values.
 BH_ALPHA = 0.05
+
+# Representative terms evaluated per-term in the CACE section of the frozen
+# artifact (the S02 ``tab:cace_full`` supplement table).  Terms present in
+# the extraction are scored from their real entropy/contexts/domains;
+# proposed replacement terms absent from the corpus are still scored
+# deterministically from their text features (empty contexts, zero
+# entropy) and recorded with ``in_corpus: false``.
+CACE_TABLE_TERMS: tuple = (
+    "queen",
+    "primary reproductive",
+    "worker",
+    "non-reproductive helper",
+    "slave",
+    "host worker",
+    "caste",
+    "task group",
+    "soldier",
+    "major worker",
+    "colony",
+    "haplodiploidy",
+    "trophallaxis",
+)
 
 
 def _as_term_list(
@@ -114,6 +137,7 @@ def _format_domain_descriptives(
     domain_terms: List[Term],
     analyzer: DomainAnalyzer,
     texts: List[str],
+    cace_scores: Optional[List[CACEScore]] = None,
 ) -> Dict[str, Any]:
     """Build one domain's entry of the ``descriptives`` section.
 
@@ -124,6 +148,9 @@ def _format_domain_descriptives(
         domain_terms: All terms assigned to the domain.
         analyzer: Shared ``DomainAnalyzer`` (used for ambiguity metrics).
         texts: Source texts for context.
+        cace_scores: Precomputed per-term CACE scores for the domain's
+            bounded sample (from :func:`_domain_cace_scores`).  Computed
+            here when omitted.
 
     Returns:
         Frozen-schema descriptive entry.  ``entropy_mean``/``entropy_sd``/
@@ -148,19 +175,97 @@ def _format_domain_descriptives(
         if ambiguity is not None:
             entry["ambiguity_mean"] = float(ambiguity)
 
-    sample = _cace_sample(domain_terms)
-    if sample:
-        cace_scores = [
-            evaluate_term_cace(
-                term=t.text,
-                semantic_entropy=float(getattr(t, "semantic_entropy", 0.0)),
-                contexts=list(getattr(t, "contexts", []))[:10],
-                domains=list(t.domains),
-            ).aggregate
-            for t in sample
-        ]
-        entry["cace_mean"] = float(np.mean(cace_scores))
+    scores = (
+        cace_scores
+        if cace_scores is not None
+        else _domain_cace_scores(domain_terms)
+    )
+    if scores:
+        entry["cace_mean"] = float(np.mean([s.aggregate for s in scores]))
     return entry
+
+
+def _domain_cace_scores(domain_terms: List[Term]) -> List[CACEScore]:
+    """Score the bounded, deterministic CACE sample for one domain.
+
+    Shared by the ``descriptives`` CACE mean and the per-domain ``cace``
+    aggregates so both artifacts report values computed from one scoring
+    pass.
+    """
+    return [
+        evaluate_term_cace(
+            term=t.text,
+            semantic_entropy=float(getattr(t, "semantic_entropy", 0.0)),
+            contexts=list(getattr(t, "contexts", []))[:10],
+            domains=list(t.domains),
+        )
+        for t in _cace_sample(domain_terms)
+    ]
+
+
+def _format_domain_cace_entry(scores: List[CACEScore]) -> Dict[str, Any]:
+    """Build one domain's entry of the ``cace`` section.
+
+    Args:
+        scores: Per-term CACE scores for the domain's bounded sample
+            (from :func:`_domain_cace_scores`).
+
+    Returns:
+        Frozen-schema entry with the aggregate mean/min/max over the
+        sample, the per-dimension means, and the sampled term count.
+        Domains with no sampled terms map to an empty dict — the key is
+        omitted entirely rather than reported as fabricated zeros.
+    """
+    if not scores:
+        return {}
+    aggregates = [s.aggregate for s in scores]
+    return {
+        "mean": float(np.mean(aggregates)),
+        "min": float(np.min(aggregates)),
+        "max": float(np.max(aggregates)),
+        "clarity": float(np.mean([s.clarity for s in scores])),
+        "appropriateness": float(np.mean([s.appropriateness for s in scores])),
+        "consistency": float(np.mean([s.consistency for s in scores])),
+        "evolvability": float(np.mean([s.evolvability for s in scores])),
+        "n_terms": len(scores),
+    }
+
+
+def _format_cace_term_entry(term: str, term_data: Optional[Term]) -> Dict[str, Any]:
+    """Build one entry of the ``cace_terms`` section.
+
+    Args:
+        term: Representative term name.
+        term_data: The extracted ``Term`` for ``term`` when it occurs in
+            the current extraction, else ``None``.
+
+    Returns:
+        Frozen-schema entry with all four CACE dimensions, the aggregate,
+        and an ``in_corpus`` flag.  Terms absent from the corpus are scored
+        deterministically from their text features (zero entropy, empty
+        contexts), never fabricated from hard-coded numbers.
+    """
+    if term_data is not None:
+        score = evaluate_term_cace(
+            term=term_data.text,
+            semantic_entropy=float(getattr(term_data, "semantic_entropy", 0.0)),
+            contexts=list(getattr(term_data, "contexts", []))[:10],
+            domains=list(term_data.domains),
+        )
+        in_corpus = True
+    else:
+        score = evaluate_term_cace(
+            term=term, semantic_entropy=0.0, contexts=[], domains=[]
+        )
+        in_corpus = False
+    return {
+        "clarity": score.clarity,
+        "appropriateness": score.appropriateness,
+        "consistency": score.consistency,
+        "evolvability": score.evolvability,
+        "aggregate": score.aggregate,
+        "in_corpus": in_corpus,
+    }
 
 
 def build_statistical_analysis(
@@ -176,6 +281,14 @@ def build_statistical_analysis(
       ambiguity mean (wave-1 ambiguity metrics; omitted when no valid
       terms), CACE mean over a bounded deterministic term sample, and the
       bridging-term count from domain assignments.
+    - ``cace``: per-domain CACE aggregates over the same bounded sample —
+      aggregate mean/min/max, per-dimension means (clarity/appropriateness/
+      consistency/evolvability), and the sampled term count.  Domains with
+      no sampled terms are omitted, never fabricated.
+    - ``cace_terms``: per-term CACE evaluations for the frozen
+      representative-term list (``CACE_TABLE_TERMS``) with an ``in_corpus``
+      flag; terms absent from the extraction are scored deterministically
+      from their text features.
     - ``pairwise``: every canonical-domain pair tested with Welch's
       t-test and Cohen's d (Hedges-corrected) on the per-term entropies;
       raw p-values are Benjamini-Hochberg corrected across all computed
@@ -222,15 +335,19 @@ def build_statistical_analysis(
     domain_entropies = analyzer.iter_domain_term_entropies(term_list, texts)
 
     descriptives: Dict[str, Any] = {}
+    cace: Dict[str, Any] = {}
     entropy_groups: Dict[str, np.ndarray] = {}
     skipped: List[Dict[str, str]] = []
 
     for domain in sorted(CANONICAL_DOMAINS):
         domain_terms = grouped.get(domain, [])
         values = domain_entropies.get(domain, [])
+        domain_cace = _domain_cace_scores(domain_terms)
         descriptives[domain] = _format_domain_descriptives(
-            domain, values, domain_terms, analyzer, texts
+            domain, values, domain_terms, analyzer, texts, cace_scores=domain_cace
         )
+        if domain_cace:
+            cace[domain] = _format_domain_cace_entry(domain_cace)
         if len(values) >= 2:
             entropy_groups[domain] = np.asarray(values, dtype=float)
         else:
@@ -305,8 +422,17 @@ def build_statistical_analysis(
             }
         )
 
+    # ── Representative-term CACE evaluations (S02 table) ───────────────
+    term_lookup = {t.text.lower().strip(): t for t in term_list}
+    cace_terms: Dict[str, Any] = {
+        name: _format_cace_term_entry(name, term_lookup.get(name))
+        for name in CACE_TABLE_TERMS
+    }
+
     return {
         "descriptives": descriptives,
+        "cace": cace,
+        "cace_terms": cace_terms,
         "pairwise": pairwise,
         "anova": anova,
         "corrections": {

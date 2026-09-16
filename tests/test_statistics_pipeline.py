@@ -14,12 +14,14 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any, Dict, List
 
+import numpy as np
 import pytest
 
 from analysis.term_extraction import Term
 from core.manuscript_variables import build_variable_map
 from pipeline.statistics_pipeline import (
     CANONICAL_DOMAINS,
+    CACE_TABLE_TERMS,
     build_statistical_analysis,
 )
 
@@ -27,7 +29,32 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CORPUS_PATH = PROJECT_ROOT / "data" / "corpus" / "abstracts.json"
 TERMS_PATH = PROJECT_ROOT / "output" / "data" / "extracted_terms.json"
 
-FROZEN_TOP_LEVEL_KEYS = {"descriptives", "pairwise", "anova", "corrections"}
+FROZEN_TOP_LEVEL_KEYS = {
+    "descriptives",
+    "cace",
+    "cace_terms",
+    "pairwise",
+    "anova",
+    "corrections",
+}
+FROZEN_CACE_KEYS = {
+    "mean",
+    "min",
+    "max",
+    "clarity",
+    "appropriateness",
+    "consistency",
+    "evolvability",
+    "n_terms",
+}
+FROZEN_CACE_TERM_KEYS = {
+    "clarity",
+    "appropriateness",
+    "consistency",
+    "evolvability",
+    "aggregate",
+    "in_corpus",
+}
 FROZEN_PAIRWISE_KEYS = {
     "domain_a",
     "domain_b",
@@ -165,6 +192,49 @@ class TestFullPairwiseArtifact:
             assert 0.0 <= entry["cace_mean"] <= 1.0
             assert entry["bridging_count"] >= 0
 
+    def test_cace_domain_aggregates(self, artifact: Dict[str, Any]) -> None:
+        """Per-domain CACE aggregates cover every domain with frozen keys."""
+        cace = artifact["cace"]
+        assert set(cace) == set(CANONICAL_DOMAINS)
+        for domain, entry in cace.items():
+            assert FROZEN_CACE_KEYS <= set(entry)
+            assert entry["n_terms"] >= 1
+            assert 0.0 <= entry["min"] <= entry["max"] <= 1.0
+            # Float summation can put the mean an epsilon outside [min, max].
+            assert entry["min"] - 1e-9 <= entry["mean"] <= entry["max"] + 1e-9
+            for dimension in (
+                "clarity",
+                "appropriateness",
+                "consistency",
+                "evolvability",
+            ):
+                assert 0.0 <= entry[dimension] <= 1.0
+
+    def test_cace_mean_matches_descriptives(self, artifact: Dict[str, Any]) -> None:
+        """The ``cace`` mean and ``descriptives`` CACE mean share one scoring pass."""
+        for domain, entry in artifact["cace"].items():
+            assert entry["mean"] == pytest.approx(
+                artifact["descriptives"][domain]["cace_mean"]
+            )
+
+    def test_cace_terms_schema(self, artifact: Dict[str, Any]) -> None:
+        """Every representative term is evaluated with the frozen entry keys."""
+        cace_terms = artifact["cace_terms"]
+        assert set(cace_terms) == set(CACE_TABLE_TERMS)
+        for entry in cace_terms.values():
+            assert FROZEN_CACE_TERM_KEYS <= set(entry)
+            assert isinstance(entry["in_corpus"], bool)
+            dimensions = [
+                entry["clarity"],
+                entry["appropriateness"],
+                entry["consistency"],
+                entry["evolvability"],
+            ]
+            for value in dimensions:
+                assert 0.0 <= value <= 1.0
+            # Aggregate is exactly the mean of the four dimensions.
+            assert entry["aggregate"] == pytest.approx(float(np.mean(dimensions)))
+
     def test_pairwise_n_matches_descriptives(self, artifact: Dict[str, Any]) -> None:
         """Pairwise group sizes are the per-domain valid-term counts."""
         descriptives = artifact["descriptives"]
@@ -259,6 +329,36 @@ class TestManuscriptVariableTokens:
                     "bridging_count": 2,
                 },
             },
+            "cace": {
+                "economics": {
+                    "mean": 0.5167,
+                    "min": 0.3712,
+                    "max": 0.6731,
+                    "clarity": 0.5937,
+                    "appropriateness": 0.4062,
+                    "consistency": 0.5013,
+                    "evolvability": 0.5656,
+                    "n_terms": 3,
+                },
+            },
+            "cace_terms": {
+                "slave": {
+                    "clarity": 0.40,
+                    "appropriateness": 0.40,
+                    "consistency": 0.38,
+                    "evolvability": 0.33,
+                    "aggregate": 0.38,
+                    "in_corpus": True,
+                },
+                "host worker": {
+                    "clarity": 0.85,
+                    "appropriateness": 1.00,
+                    "consistency": 0.72,
+                    "evolvability": 0.67,
+                    "aggregate": 0.81,
+                    "in_corpus": False,
+                },
+            },
             "pairwise": [
                 {
                     "domain_a": "behavior_and_identity",
@@ -341,12 +441,36 @@ class TestManuscriptVariableTokens:
         assert stat_tokens[f"{prefix}_D"] == "2.4000"
         assert stat_tokens[f"{prefix}_SIGNIFICANT"] == "yes"
 
+    def test_cace_domain_tokens(self, stat_tokens: Dict[str, str]) -> None:
+        """CACE_<SLUG>_* tokens render 2-decimal values and the sampled N."""
+        assert stat_tokens["CACE_ECONOMICS_MEAN"] == "0.52"
+        assert stat_tokens["CACE_ECONOMICS_MIN"] == "0.37"
+        assert stat_tokens["CACE_ECONOMICS_MAX"] == "0.67"
+        assert stat_tokens["CACE_ECONOMICS_CLARITY"] == "0.59"
+        assert stat_tokens["CACE_ECONOMICS_APPROPRIATENESS"] == "0.41"
+        assert stat_tokens["CACE_ECONOMICS_CONSISTENCY"] == "0.50"
+        assert stat_tokens["CACE_ECONOMICS_EVOLVABILITY"] == "0.57"
+        assert stat_tokens["CACE_ECONOMICS_N"] == "3"
+
+    def test_cace_term_tokens(self, stat_tokens: Dict[str, str]) -> None:
+        """CACE_TERM_<SLUG>_* tokens map spaces to underscores in slugs."""
+        assert stat_tokens["CACE_TERM_SLAVE_CLARITY"] == "0.40"
+        assert stat_tokens["CACE_TERM_SLAVE_APPROPRIATENESS"] == "0.40"
+        assert stat_tokens["CACE_TERM_SLAVE_CONSISTENCY"] == "0.38"
+        assert stat_tokens["CACE_TERM_SLAVE_EVOLVABILITY"] == "0.33"
+        assert stat_tokens["CACE_TERM_SLAVE_AGGREGATE"] == "0.38"
+        assert stat_tokens["CACE_TERM_HOST_WORKER_CLARITY"] == "0.85"
+        assert stat_tokens["CACE_TERM_HOST_WORKER_APPROPRIATENESS"] == "1.00"
+        assert stat_tokens["CACE_TERM_HOST_WORKER_AGGREGATE"] == "0.81"
+
     def test_absent_artifact_omits_tokens(self, tmp_path: Path) -> None:
         """Missing statistical_analysis.json omits the token family, no KeyError."""
         variables = build_variable_map(output_data_dir=tmp_path, corpus_dir=tmp_path)
         stat_tokens = {
             k
             for k in variables
-            if k.startswith(("ANOVA_", "PAIRWISE_", "CORRECTION_METHOD"))
+            if k.startswith(
+                ("ANOVA_", "PAIRWISE_", "CORRECTION_METHOD", "CACE_")
+            )
         }
         assert stat_tokens == set()

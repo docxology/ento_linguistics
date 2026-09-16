@@ -335,12 +335,16 @@ def _load_corpus_vars(project_root: Path) -> dict:
             dstats = json.load(fh)
         
         n_domain_vars = 0
+        total_domain_terms = sum(v.get("term_count", 0) for v in dstats.values())
         for dom, v in dstats.items():
             slug = dom.upper()
             vars_[f"DOMAIN_{slug}_TERMS"] = str(v.get("term_count", 0))
+            vars_[f"DOMAIN_{slug}_N_TERMS"] = str(v.get("term_count", 0))
             vars_[f"DOMAIN_{slug}_FREQ"] = str(v.get("total_frequency", 0))
             vars_[f"DOMAIN_{slug}_BRIDGING"] = str(v.get("bridging_term_count", 0))
-            n_domain_vars += 3
+            n_domain_vars += 4
+        vars_["CORPUS_OVERALL_N_TERMS"] = str(total_domain_terms)
+        n_domain_vars += 1
         logger.info("  ✓ %s → %d variables (%d domains)",
                      domain_path.name, n_domain_vars, len(dstats))
     else:

@@ -91,12 +91,20 @@ def validate_corpus(abstracts: list[str]) -> dict:
         }
 
     word_counts = Counter(words)
+    # Contract schema consumed by the manuscript variable producers
+    # (core.manuscript_variables and the PDF renderer): type_token_ratio
+    # and most_common_tokens are load-bearing template inputs. The
+    # extra diagnostic fields below are additive.
     stats = {
         "total_abstracts": len(abstracts),
         "total_tokens": len(words),
         "unique_tokens": len(word_counts),
+        "total_characters": len(all_text),
+        "avg_token_length": (len(all_text) / len(words)) if words else 0.0,
+        "type_token_ratio": (len(word_counts) / len(words)) if words else 0.0,
         "avg_abstract_length_tokens": len(words) / len(abstracts) if abstracts else 0,
         "domain_coverage": domain_coverage,
+        "most_common_tokens": word_counts.most_common(30),
         "top_tokens": word_counts.most_common(30),
     }
 
@@ -173,8 +181,12 @@ def main(project_root: Path | None = None, argv: list[str] | None = None) -> int
             all_abstracts = existing
             stats = validate_corpus(all_abstracts)
             stats_path.parent.mkdir(parents=True, exist_ok=True)
-            stats["top_tokens"] = [
+            serializable_tokens = [
                 {"token": t, "count": c} for t, c in stats["top_tokens"]
+            ]
+            stats["top_tokens"] = serializable_tokens
+            stats["most_common_tokens"] = [
+                [token["token"], token["count"]] for token in serializable_tokens
             ]
             for domain_info in stats["domain_coverage"].values():
                 domain_info["coverage"] = round(domain_info["coverage"], 3)
@@ -240,6 +252,9 @@ def main(project_root: Path | None = None, argv: list[str] | None = None) -> int
     stats_path.parent.mkdir(parents=True, exist_ok=True)
     # Convert Counter most_common tuples to serializable format
     stats["top_tokens"] = [{"token": t, "count": c} for t, c in stats["top_tokens"]]
+    stats["most_common_tokens"] = [
+        [entry["token"], entry["count"]] for entry in stats["top_tokens"]
+    ]
     for domain_info in stats["domain_coverage"].values():
         domain_info["coverage"] = round(domain_info["coverage"], 3)
 

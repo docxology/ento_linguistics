@@ -228,12 +228,14 @@ class TestBuildVariableMap:
 
         # Domain-level variables
         assert variables["DOMAIN_POWER_AND_LABOR_TERMS"] == "63"
+        assert variables["DOMAIN_POWER_AND_LABOR_N_TERMS"] == "63"
         assert variables["DOMAIN_POWER_AND_LABOR_FREQ"] == "905"
         assert variables["DOMAIN_POWER_AND_LABOR_BRIDGING"] == "43"
         assert variables["DOMAIN_POWER_AND_LABOR_ENTROPY"] == "0.36"
         assert variables["DOMAIN_POWER_AND_LABOR_ANTHROPOMORPHIC_PROPORTION_PCT"] == "40.6"
         assert variables["DOMAIN_POWER_AND_LABOR_HIGH_ENTROPY_PCT"] == "1.6"
         assert variables["DOMAIN_ECONOMICS_TERMS"] == "37"
+        assert variables["DOMAIN_ECONOMICS_N_TERMS"] == "37"
         assert variables["DOMAIN_ECONOMICS_ENTROPY"] == "0.64"
         assert variables["DOMAIN_ECONOMICS_ANTHROPOMORPHIC_PROPORTION_PCT"] == "25.0"
         assert variables["DOMAIN_ECONOMICS_HIGH_ENTROPY_PCT"] == "8.1"
@@ -242,6 +244,8 @@ class TestBuildVariableMap:
         expected_entropy = (0.36 * 63 + 0.64 * 37) / (63 + 37)
         assert variables["CORPUS_OVERALL_ENTROPY"] == f"{expected_entropy:.2f}"
         assert variables["CORPUS_OVERALL_HIGH_ENTROPY_PCT"] == "4.0"
+        # Overall N is the exact sum of the per-domain N column.
+        assert variables["CORPUS_OVERALL_N_TERMS"] == "100"
 
         # Concept-level variables (missing concepts default to 0)
         assert variables["CONCEPT_BIOLOGICAL_INDIVIDUALITY_TERMS"] == "75"
@@ -258,8 +262,8 @@ class TestBuildVariableMap:
     def test_empty_outputs_fall_back_to_defaults(self, tmp_path) -> None:
         """Missing/empty JSON inputs produce zero-valued defaults."""
         output_data = tmp_path / "output" / "data"
-        output_data.mkdir(parents=True)
         corpus_dir = tmp_path / "data" / "corpus"
+        output_data.mkdir(parents=True)
         corpus_dir.mkdir(parents=True)
 
         variables = build_variable_map(output_data_dir=output_data, corpus_dir=corpus_dir)
@@ -274,7 +278,9 @@ class TestBuildVariableMap:
         assert variables["CORPUS_CONCEPT_COUNT"] == "0"
         assert variables["CORPUS_OVERALL_ENTROPY"] == "0.00"
         assert variables["CORPUS_OVERALL_HIGH_ENTROPY_PCT"] == "0.0"
+        assert variables["CORPUS_OVERALL_N_TERMS"] == "0"
         assert variables["DOMAIN_ECONOMICS_TERMS"] == "0"
+        assert variables["DOMAIN_ECONOMICS_N_TERMS"] == "0"
         assert variables["DOMAIN_ECONOMICS_FREQ"] == "0"
         assert variables["CONCEPT_KINSHIP_SYSTEMS_TERMS"] == "0"
         assert variables["TERM_FREQ_QUEEN"] == "0"
@@ -287,7 +293,85 @@ class TestBuildVariableMap:
         assert variables["CORPUS_PUBLICATIONS"] == expected_pubs
         # The real project output exists and is non-trivial
         assert int(variables["CORPUS_PUBLICATIONS"]) > 0
-        assert variables["CORPUS_TOP_TERM_1"] == "ant"
+        live_top = json.load(
+            open(manuscript_variables_module.OUTPUT_DATA_DIR / "corpus_statistics.json")
+        ).get("most_common_tokens", [[None, 0]])[0][0]
+        assert variables["CORPUS_TOP_TERM_1"] == str(live_top)
+
+class TestCaceStatisticalTokens:
+    """CACE tokens resolve from statistical_analysis.json through build_variable_map."""
+
+    ARTIFACT = {
+        "descriptives": {},
+        "cace": {
+            "economics": {
+                "mean": 0.5167,
+                "min": 0.3712,
+                "max": 0.6731,
+                "clarity": 0.5937,
+                "appropriateness": 0.4062,
+                "consistency": 0.5013,
+                "evolvability": 0.5656,
+                "n_terms": 9,
+            },
+        },
+        "cace_terms": {
+            "slave": {
+                "clarity": 0.40,
+                "appropriateness": 0.40,
+                "consistency": 0.38,
+                "evolvability": 0.33,
+                "aggregate": 0.38,
+                "in_corpus": True,
+            },
+            "host worker": {
+                "clarity": 0.85,
+                "appropriateness": 1.00,
+                "consistency": 0.72,
+                "evolvability": 0.67,
+                "aggregate": 0.81,
+                "in_corpus": False,
+            },
+            "non-reproductive helper": {
+                "clarity": 0.82,
+                "appropriateness": 1.00,
+                "consistency": 0.70,
+                "evolvability": 0.67,
+                "aggregate": 0.80,
+                "in_corpus": False,
+            },
+        },
+        "pairwise": [],
+        "anova": {},
+        "corrections": {},
+        "skipped": [],
+    }
+
+    def test_cace_tokens_render_from_artifact(self, data_dirs) -> None:
+        """Domain and term CACE tokens render 2-decimal values via slugs."""
+        output_data, corpus_dir = data_dirs
+        _write_json(output_data / "statistical_analysis.json", self.ARTIFACT)
+        variables = build_variable_map(output_data_dir=output_data, corpus_dir=corpus_dir)
+
+        assert variables["CACE_ECONOMICS_MEAN"] == "0.52"
+        assert variables["CACE_ECONOMICS_MIN"] == "0.37"
+        assert variables["CACE_ECONOMICS_MAX"] == "0.67"
+        assert variables["CACE_ECONOMICS_CLARITY"] == "0.59"
+        assert variables["CACE_ECONOMICS_APPROPRIATENESS"] == "0.41"
+        assert variables["CACE_ECONOMICS_CONSISTENCY"] == "0.50"
+        assert variables["CACE_ECONOMICS_EVOLVABILITY"] == "0.57"
+        assert variables["CACE_ECONOMICS_N"] == "9"
+        assert variables["CACE_TERM_SLAVE_AGGREGATE"] == "0.38"
+        assert variables["CACE_TERM_HOST_WORKER_CLARITY"] == "0.85"
+        assert variables["CACE_TERM_HOST_WORKER_APPROPRIATENESS"] == "1.00"
+        assert variables["CACE_TERM_NON_REPRODUCTIVE_HELPER_CONSISTENCY"] == "0.70"
+
+    def test_absent_artifact_omits_cace_tokens(self, data_dirs) -> None:
+        """No statistical_analysis.json → no CACE tokens, no KeyError."""
+        output_data, corpus_dir = data_dirs
+        variables = build_variable_map(output_data_dir=output_data, corpus_dir=corpus_dir)
+        cace_tokens = [k for k in variables if k.startswith("CACE_")]
+        assert cace_tokens == []
 
 
 class TestFillManuscript:
