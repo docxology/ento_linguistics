@@ -42,6 +42,9 @@ __all__ = [
     "ArXivMiner",
     "create_entomology_query",
     "mine_entomology_literature",
+    "CORPUS_GROWTH_QUERIES",
+    "is_relevant_social_insect_text",
+    "mine_corpus_growth",
 ]
 
 
@@ -713,3 +716,204 @@ def mine_entomology_literature(max_results: int = 1000) -> LiteratureCorpus:
         corpus.add_publication(pub)
 
     return corpus
+
+
+# ── Corpus growth (2026-09 broadening) ────────────────────────────────
+# Complementary PubMed queries covering the six analysis domains
+# (unit of individuality, behavior & identity, power & labor,
+# sex & reproduction, kin & relatedness, economics) while staying on
+# topic for ant biology / eusocial insects / entomological terminology.
+# Each query is English-restricted and limited to journal articles and
+# reviews so that abstracts are linguistically usable.
+CORPUS_GROWTH_QUERIES = [
+    (
+        "reproductive_skew",
+        '"reproductive skew" AND (insect OR ant OR bee OR wasp OR termite) '
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "kin_recognition",
+        '"kin recognition" AND (insect OR ant OR colony OR bee) '
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "superorganism",
+        "superorganism AND (ant OR insect OR colony) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "nestmate_recognition",
+        '("nestmate recognition" OR "nest odour" OR "nest odor") '
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "colony_organization",
+        '("colony organization" OR "social organization") '
+        "AND (insect OR ant OR bee OR wasp OR termite) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "eusocial_communication",
+        "eusocial AND (communication OR signaling OR pheromone) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "sociobiology",
+        "sociobiology AND (insect OR ant OR bee OR colony) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "kin_selection",
+        '("kin selection" OR "inclusive fitness") '
+        "AND (insect OR ant OR bee OR wasp OR colony) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "division_of_labor",
+        '"division of labor" '
+        "AND (ant OR insect OR colony OR bee OR wasp OR termite) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "foraging_economics",
+        "foraging AND (ant OR insect OR bee OR wasp OR colony) "
+        "AND (cost OR efficiency OR optimal) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "caste_queen_worker",
+        "(caste AND (queen OR worker)) AND (ant OR bee OR termite OR wasp) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+    (
+        "myrmecology_core",
+        "myrmecology OR (Formicidae AND (behavior OR ecology)) "
+        "AND English[Language] "
+        "AND (journal article[pt] OR review[pt])",
+    ),
+]
+
+# A new abstract must mention at least one of these tokens (word-boundary
+# match, case-insensitive) to count as topically relevant for the corpus.
+_RELEVANCE_TOKENS = (
+    "ant",
+    "ants",
+    "formicidae",
+    "hymenoptera",
+    "insect",
+    "insects",
+    "eusocial",
+    "wasps",
+    "bee",
+    "bees",
+    "apis",
+    "colony",
+    "colonies",
+    "superorganism",
+    "sociobiology",
+    "myrmecology",
+    "nestmate",
+    "nest",
+    "nests",
+    "caste",
+    "queen",
+    "worker",
+    "foraging",
+    "kin",
+    "relatedness",
+)
+
+
+def is_relevant_social_insect_text(text: str) -> bool:
+    """Check whether ``text`` mentions a core social-insect domain token.
+
+    Args:
+        text: Abstract or title text.
+
+    Returns:
+        True when at least one relevance token matches on a word boundary.
+    """
+    lowered = text.lower()
+    for token in _RELEVANCE_TOKENS:
+        if re.search(rf"\b{re.escape(token)}\b", lowered):
+            return True
+    return False
+
+
+def mine_corpus_growth(
+    max_per_query: int = 150,
+    target_new: int = 500,
+    email: Optional[str] = None,
+) -> tuple[List[Publication], Dict[str, int], Dict[str, str]]:
+    """Search and fetch publications for the broadened corpus-growth queries.
+
+    Queries ``CORPUS_GROWTH_QUERIES`` in order, fetching metadata and
+    abstracts through :class:`PubMedMiner` (search + fetch_publications).
+    Results are filtered to publications with a non-empty abstract that
+    pass the social-insect relevance check, and deduplicated internally
+    by PMID and by the first 100 lowercased abstract characters.
+
+    Args:
+        max_per_query: Maximum PMIDs searched per query.
+        target_new: Stop fetching further queries once this many unique
+            relevant publications have been collected.
+        email: Optional email override for the PubMed miner.
+
+    Returns:
+        Tuple of (publications, per-query hit counts, PMID→query mapping).
+    """
+    miner = PubMedMiner(email=email)
+    collected: List[Publication] = []
+    seen_pmids: set = set()
+    seen_text_keys: set = set()
+    hit_counts: Dict[str, int] = {}
+    pmid_to_query: Dict[str, str] = {}
+
+    for i, (name, query) in enumerate(CORPUS_GROWTH_QUERIES, 1):
+        pmids = miner.search(query, max_results=max_per_query)
+        hit_counts[name] = len(pmids)
+        logger.info(f"[{i}/{len(CORPUS_GROWTH_QUERIES)}] {name}: {len(pmids)} hits")
+
+        new_pmids = [p for p in pmids if p not in seen_pmids]
+        if new_pmids:
+            pubs = miner.fetch_publications(new_pmids)
+            for pub in pubs:
+                if not pub.abstract or not pub.abstract.strip():
+                    continue
+                if pub.pmid and pub.pmid in seen_pmids:
+                    continue
+                abstract = pub.abstract.strip()
+                text_key = re.sub(r"\s+", " ", abstract[:100].lower())
+                if text_key in seen_text_keys:
+                    continue
+                combined = f"{pub.title or ''} {abstract}"
+                if not is_relevant_social_insect_text(combined):
+                    continue
+                if pub.pmid:
+                    seen_pmids.add(pub.pmid)
+                    pmid_to_query[pub.pmid] = name
+                seen_text_keys.add(text_key)
+                pub.abstract = abstract
+                collected.append(pub)
+
+        logger.info(
+            f"  collected so far: {len(collected)} unique relevant publications"
+        )
+        if i < len(CORPUS_GROWTH_QUERIES):
+            time.sleep(1.0)
+        if len(collected) >= target_new:
+            logger.info(f"Reached target of {target_new}; stopping early.")
+            break
+
+    return collected, hit_counts, pmid_to_query
