@@ -289,7 +289,8 @@ class PubMedMiner:
 
         try:
             with urlopen(
-                Request(search_url, headers={"User-Agent": "Python-EntoLinguistic"})
+                Request(search_url, headers={"User-Agent": "Python-EntoLinguistic"}),
+                timeout=60,
             ) as response:
                 if response.status != 200:
                     logger.warning(f"PubMed API returned status {response.status}")
@@ -387,7 +388,8 @@ class PubMedMiner:
 
         try:
             with urlopen(
-                Request(summary_url, headers={"User-Agent": "Python-EntoLinguistic"})
+                Request(summary_url, headers={"User-Agent": "Python-EntoLinguistic"}),
+                timeout=60,
             ) as response:
                 data = json.loads(response.read().decode("utf-8"))
 
@@ -428,7 +430,8 @@ class PubMedMiner:
 
         try:
             with urlopen(
-                Request(fetch_url, headers={"User-Agent": "Python-EntoLinguistic"})
+                Request(fetch_url, headers={"User-Agent": "Python-EntoLinguistic"}),
+                timeout=60,
             ) as response:
                 content = response.read().decode("utf-8")
 
@@ -855,6 +858,9 @@ def mine_corpus_growth(
     max_per_query: int = 150,
     target_new: int = 500,
     email: Optional[str] = None,
+    since_pdat: Optional[str] = None,
+    exclude_pmids: Optional[set] = None,
+    exclude_text_keys: Optional[set] = None,
 ) -> tuple[List[Publication], Dict[str, int], Dict[str, str]]:
     """Search and fetch publications for the broadened corpus-growth queries.
 
@@ -869,51 +875,78 @@ def mine_corpus_growth(
         target_new: Stop fetching further queries once this many unique
             relevant publications have been collected.
         email: Optional email override for the PubMed miner.
+        since_pdat: Optional PubMed date window lower bound (e.g.
+            ``"2020/01/01"``). When set, `` AND ("<since>"[PDAT] : "3000")``
+            is appended to every query so each run catches newly published
+            work instead of re-fetching the same back catalog.
+        exclude_pmids: Optional set of PMIDs already held elsewhere (e.g.
+            in the on-disk corpus). Matching publications are neither
+            fetched nor counted toward ``target_new``.
+        exclude_text_keys: Optional set of text keys (first 100 lowercased,
+            whitespace-collapsed abstract characters, as produced by
+            :func:`pipeline.corpus_build._text_key`) already held elsewhere.
+            Matching publications are not collected or counted toward
+            ``target_new``.
 
     Returns:
         Tuple of (publications, per-query hit counts, PMID→query mapping).
+        The mapping covers every PMID surfaced by the searches — collected
+        or not — so callers can persist it as a seen-PMID ledger and keep
+        repeated runs idempotent.
     """
     miner = PubMedMiner(email=email)
     collected: List[Publication] = []
-    seen_pmids: set = set()
-    seen_text_keys: set = set()
+    seen_pmids: set = set(exclude_pmids) if exclude_pmids else set()
+    seen_text_keys: set = set(exclude_text_keys) if exclude_text_keys else set()
     hit_counts: Dict[str, int] = {}
     pmid_to_query: Dict[str, str] = {}
 
-    for i, (name, query) in enumerate(CORPUS_GROWTH_QUERIES, 1):
+    for i, (name, raw_query) in enumerate(CORPUS_GROWTH_QUERIES, 1):
+        query = raw_query
+        if since_pdat:
+            query = f'{query} AND ("{since_pdat}"[PDAT] : "3000")'
+        # Every query is always searched so the caller's PMID ledger covers
+        # the full search surface of the run; only fetching/collecting is
+        # bounded by target_new. This is what makes repeated runs
+        # idempotent: a second run sees the same PMIDs, all excluded.
         pmids = miner.search(query, max_results=max_per_query)
         hit_counts[name] = len(pmids)
+        for pmid in pmids:
+            pmid_to_query.setdefault(pmid, name)
         logger.info(f"[{i}/{len(CORPUS_GROWTH_QUERIES)}] {name}: {len(pmids)} hits")
 
-        new_pmids = [p for p in pmids if p not in seen_pmids]
-        if new_pmids:
-            pubs = miner.fetch_publications(new_pmids)
-            for pub in pubs:
-                if not pub.abstract or not pub.abstract.strip():
-                    continue
-                if pub.pmid and pub.pmid in seen_pmids:
-                    continue
-                abstract = pub.abstract.strip()
-                text_key = re.sub(r"\s+", " ", abstract[:100].lower())
-                if text_key in seen_text_keys:
-                    continue
-                combined = f"{pub.title or ''} {abstract}"
-                if not is_relevant_social_insect_text(combined):
-                    continue
-                if pub.pmid:
-                    seen_pmids.add(pub.pmid)
-                    pmid_to_query[pub.pmid] = name
-                seen_text_keys.add(text_key)
-                pub.abstract = abstract
-                collected.append(pub)
+        if len(collected) < target_new:
+            new_pmids = [p for p in pmids if p not in seen_pmids]
+            if new_pmids:
+                pubs = miner.fetch_publications(new_pmids)
+                for pub in pubs:
+                    if not pub.abstract or not pub.abstract.strip():
+                        continue
+                    if pub.pmid and pub.pmid in seen_pmids:
+                        continue
+                    abstract = pub.abstract.strip()
+                    text_key = re.sub(r"\s+", " ", abstract[:100].lower())
+                    if text_key in seen_text_keys:
+                        continue
+                    combined = f"{pub.title or ''} {abstract}"
+                    if not is_relevant_social_insect_text(combined):
+                        continue
+                    if pub.pmid:
+                        seen_pmids.add(pub.pmid)
+                    seen_text_keys.add(text_key)
+                    pub.abstract = abstract
+                    collected.append(pub)
+                    # Exact-target stop: do not overshoot target_new within
+                    # a large query's fetched batch.
+                    if len(collected) >= target_new:
+                        break
+        else:
+            logger.info("  target reached; search-only pass (no fetch)")
 
         logger.info(
             f"  collected so far: {len(collected)} unique relevant publications"
         )
         if i < len(CORPUS_GROWTH_QUERIES):
             time.sleep(1.0)
-        if len(collected) >= target_new:
-            logger.info(f"Reached target of {target_new}; stopping early.")
-            break
 
     return collected, hit_counts, pmid_to_query

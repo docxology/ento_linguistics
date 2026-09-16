@@ -6,14 +6,18 @@ used in Ento-Linguistic research.
 
 from __future__ import annotations
 
+import json
+import re
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import List
 
 import pytest
-from data.literature_mining import (ArXivMiner, LiteratureCorpus, Publication,
-                                   PubMedMiner, create_entomology_query,
+from data.literature_mining import (ArXivMiner, CORPUS_GROWTH_QUERIES,
+                                   LiteratureCorpus, Publication, PubMedMiner,
+                                   create_entomology_query,
+                                   mine_corpus_growth,
                                    mine_entomology_literature)
 
 
@@ -1224,3 +1228,105 @@ class TestMineEntomologyLiteratureEdgePaths:
 
         assert isinstance(corpus, LiteratureCorpus)
         assert corpus.publications == []
+
+
+class TestMineCorpusGrowth:
+    """Tests for mine_corpus_growth: date windows and exclusion sets."""
+
+    ABSTRACT_A = (
+        "The queen ant regulates colony reproduction while workers perform "
+        "foraging and brood care tasks within the nest."
+    )
+    ABSTRACT_B = (
+        "Task allocation among workers emerges from local interactions rather "
+        "than centralized control by the queen."
+    )
+
+    def _serve_pubmed(self, httpserver, pmids: List[str]) -> None:
+        """Serve real eutils-format responses for the growth queries."""
+        httpserver.expect_request("/esearch.fcgi").respond_with_json(
+            {"esearchresult": {"idlist": pmids}}
+        )
+        httpserver.expect_request("/esummary.fcgi").respond_with_json(
+            {
+                "result": {
+                    "111": {
+                        "uid": "111",
+                        "title": "Queen control of colony reproduction in ants",
+                        "authors": [{"name": "Alice Author"}],
+                        "pubdate": "2021 Mar",
+                        "fulljournalname": "Insectes Sociaux",
+                    },
+                    "222": {
+                        "uid": "222",
+                        "title": "Worker task allocation in social insects",
+                        "authors": [{"name": "Bob Builder"}],
+                        "pubdate": "2019 Jun",
+                        "fulljournalname": "Journal of Insect Behavior",
+                    },
+                }
+            }
+        )
+        efetch_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<PubmedArticleSet>
+<PubmedArticle>
+  <MedlineCitation>
+    <PMID>111</PMID>
+    <Article><Abstract><AbstractText>{self.ABSTRACT_A}</AbstractText></Abstract></Article>
+  </MedlineCitation>
+</PubmedArticle>
+<PubmedArticle>
+  <MedlineCitation>
+    <PMID>222</PMID>
+    <Article><Abstract><AbstractText>{self.ABSTRACT_B}</AbstractText></Abstract></Article>
+  </MedlineCitation>
+</PubmedArticle>
+</PubmedArticleSet>"""
+        httpserver.expect_request("/efetch.fcgi").respond_with_data(
+            efetch_xml, content_type="text/xml"
+        )
+
+    def test_since_pdat_appends_date_window_to_every_query(
+        self, httpserver, monkeypatch
+    ) -> None:
+        """Every esearch request carries the PDAT date-window clause."""
+        terms = []
+
+        def record(request):
+            terms.append(request.args.get("term"))
+            return json.dumps({"esearchresult": {"idlist": []}})
+
+        httpserver.expect_request("/esearch.fcgi").respond_with_handler(record)
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
+        monkeypatch.setattr(time, "sleep", lambda _: None)
+
+        pubs, hits, mapping = mine_corpus_growth(
+            since_pdat="2020/01/01", max_per_query=10
+        )
+
+        assert pubs == []
+        assert mapping == {}
+        assert len(hits) == len(CORPUS_GROWTH_QUERIES) == 12
+        assert len(terms) == 12
+        for term in terms:
+            assert term.endswith(' AND ("2020/01/01"[PDAT] : "3000")')
+
+    def test_exclude_sets_skip_known_records(self, httpserver, monkeypatch) -> None:
+        """Excluded PMIDs/text keys are neither fetched nor counted."""
+        self._serve_pubmed(httpserver, ["111", "222"])
+        monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
+        monkeypatch.setattr(time, "sleep", lambda _: None)
+
+        pubs, hits, mapping = mine_corpus_growth(max_per_query=10, target_new=5)
+        assert [p.pmid for p in pubs] == ["111", "222"]
+        assert mapping["111"] == next(iter(hits))
+
+        key_a = re.sub(r"\s+", " ", self.ABSTRACT_A[:100].lower())
+        key_b = re.sub(r"\s+", " ", self.ABSTRACT_B[:100].lower())
+        pubs2, _, _ = mine_corpus_growth(
+            max_per_query=10,
+            target_new=5,
+            exclude_pmids={"111"},
+            exclude_text_keys={key_a, key_b},
+        )
+        assert pubs2 == []

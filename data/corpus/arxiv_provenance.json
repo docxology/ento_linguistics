@@ -1,0 +1,539 @@
+{
+  "_note": "Provenance for the arXiv preprint layer. Keys are SHA-256 of the exact abstract string in arxiv_records.json. arXiv records are a separate source layer and are NOT merged into abstracts.json.",
+  "retrieved_at": "2026-09-16T17:27:11+00:00",
+  "queries": {
+    "ant_colonies": "(cat:q-bio.PE OR cat:nlin.AO) AND all:\"ant colonies\"",
+    "eusociality": "(cat:q-bio.PE OR cat:nlin.AO) AND all:\"eusociality\"",
+    "superorganisms": "(cat:q-bio.PE OR cat:nlin.AO) AND all:\"superorganisms\"",
+    "collective_behavior": "(cat:q-bio.PE OR cat:nlin.AO) AND all:\"collective behavior\"",
+    "stigmergy": "(cat:q-bio.PE OR cat:nlin.AO) AND all:\"stigmergy\""
+  },
+  "query_stats": {
+    "ant_colonies": {
+      "kept": 21,
+      "duplicates": 0
+    },
+    "eusociality": {
+      "kept": 18,
+      "duplicates": 4
+    },
+    "superorganisms": {
+      "kept": 1,
+      "duplicates": 2
+    },
+    "collective_behavior": {
+      "kept": 14,
+      "duplicates": 5
+    },
+    "stigmergy": {
+      "kept": 2,
+      "duplicates": 1
+    }
+  },
+  "records": {
+    "8e633d38f12f62621414d971b20aaa042d9652ff79aaf58ad49221b258be6b98": {
+      "arxiv_id": "2510.06011",
+      "doi": null,
+      "title": "How many more is different?",
+      "primary_category": "q-bio.PE",
+      "published": "2025-10-07T15:10:13Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "933137960509654460edf167a8fb2daf8b75ec90002b506b66939ca8768abffe": {
+      "arxiv_id": "2504.01199",
+      "doi": "10.1016/j.physa.2025.130990",
+      "title": "Spatial Dynamics of Synchronized Ants: A Mobile Oscillator Model Analysis",
+      "primary_category": "physics.bio-ph",
+      "published": "2025-04-01T21:26:22Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "fdc8605c3c1aa2283451f3ea3e05908500a23986ac76a142df3ee32e2cd4cfba": {
+      "arxiv_id": "2411.09169",
+      "doi": null,
+      "title": "Artificial Theory of Mind and Self-Guided Social Organisation",
+      "primary_category": "cs.MA",
+      "published": "2024-11-14T04:06:26Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "5c3d66b43db1eb372732a24b25960a477fdb5dbf7ebbe9715542e7f6f83d8af7": {
+      "arxiv_id": "2406.13147",
+      "doi": "10.1162/isal_a_00713",
+      "title": "A Simulation Environment for the Neuroevolution of Ant Colony Dynamics",
+      "primary_category": "cs.MA",
+      "published": "2024-06-19T01:51:15Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "0702d051e3153e8efc45fadea523d3ab6479e413c59c3e825c3f595f46fdb483": {
+      "arxiv_id": "2402.11391",
+      "doi": "10.1016/j.mbs.2024.109245",
+      "title": "A soluble model for synchronized rhythmic activity in ant colonies",
+      "primary_category": "nlin.AO",
+      "published": "2024-02-17T21:58:28Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "5c7c6fc0b359246636b4fada1028a65b5013d2d3b3b6b38170bf90e82cc377a3": {
+      "arxiv_id": "2401.15046",
+      "doi": null,
+      "title": "Lane formation and aggregation spots in a model of ants",
+      "primary_category": "math.AP",
+      "published": "2024-01-26T18:18:51Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "d03d56c808874340e9cadece745e532b0276b90abeb31716b2be77c680968ba3": {
+      "arxiv_id": "2107.11075",
+      "doi": "10.7554/eLife.31730",
+      "title": "Individual crop loads provide local control for collective food intake in ant colonies",
+      "primary_category": "q-bio.PE",
+      "published": "2021-07-23T08:35:48Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "ca5d22fb2bb508552fd7f1389ae6deb2b6782d8e2a2817f97d4501f5d17032ef": {
+      "arxiv_id": "2105.00883",
+      "doi": null,
+      "title": "Decentralized decision making by an ant colony: drift-diffusion model of individual choice, quorum and collective decision",
+      "primary_category": "nlin.AO",
+      "published": "2021-05-03T14:08:55Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "1b5e8f114598ace3de4081bf9ead9d4425c8ea3f2324ae4c1cac40efee1cb0f5": {
+      "arxiv_id": "2012.11508",
+      "doi": null,
+      "title": "The genomic architecture and evolutionary fates of supergenes",
+      "primary_category": "q-bio.PE",
+      "published": "2020-12-21T17:26:07Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "075d8bdbf6c7cf7e65ada3f8a92f3edba8bc1be211d02c60d0870d538a237899": {
+      "arxiv_id": "2009.10563",
+      "doi": null,
+      "title": "From Ants to Fishing Vessels: A Simple Model for Herding and Exploitation of Finite Resources",
+      "primary_category": "physics.soc-ph",
+      "published": "2020-09-22T14:05:37Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "2b16930bae30e7e0dbae6d691b86330b4fe2f6bb951913f09eb9e59180dae27f": {
+      "arxiv_id": "1811.00590",
+      "doi": null,
+      "title": "Modeling tropotaxis in ant colonies: recruitment and trail formation",
+      "primary_category": "q-bio.PE",
+      "published": "2018-11-01T18:57:49Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "d1eda468f182e5f6c985c90640c874728f3ecd86934c0a615a8a6c211ea29dba": {
+      "arxiv_id": "1709.08343",
+      "doi": "10.1098/rsif.2017.0413",
+      "title": "Spatial organization and interactions of harvester ants during foraging activity",
+      "primary_category": "physics.bio-ph",
+      "published": "2017-09-25T06:44:32Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "5792fb9a17b5ebd19a5f2addf246236acf30747de01682496dfae30efc75ae3b": {
+      "arxiv_id": "1401.1321",
+      "doi": null,
+      "title": "Utility Rate Equations of Group Population Dynamics in Biological and Social Systems",
+      "primary_category": "physics.soc-ph",
+      "published": "2014-01-07T09:33:30Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "253917804411d9a738e8e0d765bfcad40e397f0f0079701f4e80484e5c9e00a3": {
+      "arxiv_id": "1102.2296",
+      "doi": null,
+      "title": "Mathematical Modeling on Obligate Mutualism: Interactions between leaf-cutter ants and their fungus garden",
+      "primary_category": "math.DS",
+      "published": "2011-02-11T07:33:34Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "60318dc28321775a89aa85cc2fa2ca1c9af36c4e3b7d8b24481ca1699d0a54f5": {
+      "arxiv_id": "1001.5244",
+      "doi": "10.2478/s13230-010-0015-z",
+      "title": "Computing Networks: A General Framework to Contrast Neural and Swarm Cognitions",
+      "primary_category": "cs.NE",
+      "published": "2010-01-28T18:55:53Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "e2ad72b12325e4fcdbf60afa7edca496030c26ef1c5c958e9c9031654158686f": {
+      "arxiv_id": "0912.2563",
+      "doi": null,
+      "title": "A Model-Based Approach to Predicting Predator-Prey & Friend-Foe Relationships in Ant Colonies",
+      "primary_category": "cs.AI",
+      "published": "2009-12-14T01:53:25Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "820e246238a035c21b4d20a873204ae8f4ec27eb9d4912e88cc8ace32399f34c": {
+      "arxiv_id": "0810.4583",
+      "doi": null,
+      "title": "Analytical and Numerical Investigation of Ant Behavior Under Crowded Conditions",
+      "primary_category": "physics.soc-ph",
+      "published": "2008-10-25T08:43:48Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "7640f66b0fcfa0541347d1587a24140187765cb282c9fba59bcab2883963230c": {
+      "arxiv_id": "0712.0744",
+      "doi": "10.1109/CEC.2007.4424594",
+      "title": "Computational Chemotaxis in Ants and Bacteria over Dynamic Environments",
+      "primary_category": "cs.MA",
+      "published": "2007-12-05T15:02:19Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "e62c947dd8ed511e15c63ae1573c48963b76ecf4ca7b1809ffa4537b1bc2fc3a": {
+      "arxiv_id": "0706.0171",
+      "doi": null,
+      "title": "Persistent pods of the tree Acacia caven: a natural refuge for diverse insects including Bruchid beetles and the parasitoids Trichogrammatidae, Pteromalidae and Eulophidae",
+      "primary_category": "q-bio.PE",
+      "published": "2007-06-01T15:04:59Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "ecc30373f3ce6388b3b0e6ee01fb619e2b19bec13a4503055cdc43cd744a9d7b": {
+      "arxiv_id": "nlin/0507045",
+      "doi": null,
+      "title": "An ant-based algorithm for annular sorting",
+      "primary_category": "nlin.AO",
+      "published": "2005-07-22T12:35:12Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "b648533843516d3068bd6730c6a8b354c6254b9bb8beb44b29a390442287dcf9": {
+      "arxiv_id": "nlin/0304006",
+      "doi": null,
+      "title": "Determining possible avenues of approach using ANTS",
+      "primary_category": "nlin.AO",
+      "published": "2003-04-04T15:25:51Z",
+      "query": "ant_colonies",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "deec9d4e221695d9756eef3fbd6e988bd601cdef469fbeb0c9b1376c351321ad": {
+      "arxiv_id": "2609.16316",
+      "doi": null,
+      "title": "Navigating the Delicate Geometry of Beehive Mite Infestation with Optimal Control",
+      "primary_category": "q-bio.PE",
+      "published": "2026-09-14T20:29:48Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "3914ed5540fd71609bef50c66911e2fae7ec3430d67625fdff19c5cba4637e1c": {
+      "arxiv_id": "2604.23408",
+      "doi": null,
+      "title": "Messaging strategies and the emergence of echo chambers in collective decision-making",
+      "primary_category": "q-bio.QM",
+      "published": "2026-04-25T18:59:53Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "58a61ddf39d7bf41f13edcb75e1ab07c08da108a04d0b298f7add7dfa293ab38": {
+      "arxiv_id": "2603.26226",
+      "doi": null,
+      "title": "Braess's paradox in tandem-running ants: When shortest path is not the quickest",
+      "primary_category": "physics.bio-ph",
+      "published": "2026-03-27T09:49:43Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "4e9f97392c58a406a9f9d5e3404f95f67376b83ca2f93656e6238e6d4134c309": {
+      "arxiv_id": "2507.17923",
+      "doi": null,
+      "title": "Altruism and energy flow in dynamic beehive models",
+      "primary_category": "q-bio.PE",
+      "published": "2025-07-23T20:39:34Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "94e908bed3d2096c3582584dd7d82430c8eaeacb19b77dc6992fc2273196a5bf": {
+      "arxiv_id": "2502.09475",
+      "doi": null,
+      "title": "Extinction and Metastability of Pheromone-Roads in Stochastic Models for Foraging Walks of Ants",
+      "primary_category": "cond-mat.stat-mech",
+      "published": "2025-02-13T16:39:07Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "ed8d874cd8311fa4b410ffa595620a2f4b7086b9e036e08861b5a7c59cc8ab6c": {
+      "arxiv_id": "2411.09168",
+      "doi": null,
+      "title": "An AI Theory of Mind Will Enhance Our Collective Intelligence",
+      "primary_category": "cs.MA",
+      "published": "2024-11-14T03:58:50Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "a2849732790d501ec8e2f99df4f7eb140c3db0eb8faf4445dac9c24661977991": {
+      "arxiv_id": "2308.00298",
+      "doi": null,
+      "title": "Finite population effects on optimal communication for social foragers",
+      "primary_category": "q-bio.PE",
+      "published": "2023-08-01T05:39:49Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "010b13332cd3d452c5822a002a65aafb32d4407855f48ce6ffb6649ef5c5a3a5": {
+      "arxiv_id": "2208.12373",
+      "doi": null,
+      "title": "Collective phototactic robotectonics",
+      "primary_category": "cs.RO",
+      "published": "2022-08-25T23:19:36Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "cde45acd7a93fdb69537cab33682f857827e16d52f278e054fec893cd2daa17f": {
+      "arxiv_id": "2206.11129",
+      "doi": null,
+      "title": "Social Insects and Beyond: The Physics of Soft, Dense Invertebrate Aggregations",
+      "primary_category": "q-bio.PE",
+      "published": "2022-06-22T14:21:53Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "b87f9304b4e8dce0b95dd92eaa982dcf1cdc68c1f0589101aecf882790127fb3": {
+      "arxiv_id": "2206.00116",
+      "doi": null,
+      "title": "Towards Eusociality Using an Inverse Agent Based Model",
+      "primary_category": "physics.soc-ph",
+      "published": "2022-05-31T20:55:19Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "43aa830b7be45c82a7ce6e7dc1d7ca074ab3964211222fa3f739e8a62df37dad": {
+      "arxiv_id": "2104.10081",
+      "doi": "10.3389/fevo.2022.750837",
+      "title": "Exploring Evolved Multicellular Life Histories in a Open-Ended Digital Evolution System",
+      "primary_category": "q-bio.PE",
+      "published": "2021-04-20T16:03:09Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "0d183a65a100610bca8d8c135dc98c1a118ecafa8202430748d3ed8a412de630": {
+      "arxiv_id": "1703.00389",
+      "doi": null,
+      "title": "The impact of species-neutral stage structure on macroecological patterns",
+      "primary_category": "q-bio.PE",
+      "published": "2017-03-01T17:04:57Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "b56c503d77086fffee39cd16dfb4c42909bf40047f295855a15689069c4ba6d1": {
+      "arxiv_id": "1607.06055",
+      "doi": "10.1103/PhysRevE.96.022111",
+      "title": "A trophallaxis inspired model for distributed transport between randomly interacting agents",
+      "primary_category": "physics.bio-ph",
+      "published": "2016-07-20T18:31:30Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "793641732838aad3ca836cc276a4de89fda91df50ebaa0f2e12994cdc9a8a08c": {
+      "arxiv_id": "1604.07109",
+      "doi": null,
+      "title": "Finding a Mate With Eusocial Skills",
+      "primary_category": "q-bio.PE",
+      "published": "2016-04-25T02:22:03Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "72b3021bd5199433138bf5ad2443bd152e27c091ce60be5a56c9c27d537615b0": {
+      "arxiv_id": "1510.08831",
+      "doi": "10.1098/rspb.2015.1975",
+      "title": "Antisocial pool rewarding does not deter public cooperation",
+      "primary_category": "q-bio.PE",
+      "published": "2015-10-29T19:27:27Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "392be981504284e526313039383df8c2083a7876f11f33ca143eeda13ff153f2": {
+      "arxiv_id": "1407.0290",
+      "doi": null,
+      "title": "Risk management of solitary and eusocial reproduction",
+      "primary_category": "q-bio.PE",
+      "published": "2014-07-01T15:55:27Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "43bc6c48af6cd80c198e2b48ba3544792a75d76cba0ca1668dbc8682ee5b70eb": {
+      "arxiv_id": "1403.6074",
+      "doi": "10.1016/j.jtbi.2013.01.010",
+      "title": "The Evolution of Complexity in Social Organization - A Model Using Dominance-Subordinate Behaviour in Two Social Wasp Species",
+      "primary_category": "q-bio.PE",
+      "published": "2014-03-24T18:34:54Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "abb9452fa07428008d3c22092ea474f41262b897f3824b9601e6410826a8c2d8": {
+      "arxiv_id": "1104.3152",
+      "doi": null,
+      "title": "Polyethism in a colony of artificial ants",
+      "primary_category": "cs.AI",
+      "published": "2011-04-15T20:24:54Z",
+      "query": "eusociality",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "857d013e27d7a3ec32cb037bc6638bb4c07ee00fb9795d85d77311d50f30f5a6": {
+      "arxiv_id": "1509.05965",
+      "doi": "10.1016/j.amc.2015.08.006",
+      "title": "The peloton superorganism and protocooperative behavior",
+      "primary_category": "physics.soc-ph",
+      "published": "2015-09-20T03:58:08Z",
+      "query": "superorganisms",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "20c88b2beaffa404cd7cadee6eafa4ffdf3d78dbb90c17afe027bb7d44e07412": {
+      "arxiv_id": "2608.00314",
+      "doi": null,
+      "title": "Noise-induced stability of insect swarms",
+      "primary_category": "physics.bio-ph",
+      "published": "2026-07-31T21:58:42Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "c33690cf3057c7f35daf21a64b83121c78ad97ed82bea8a6c4fc491350a5dd7f": {
+      "arxiv_id": "2408.09917",
+      "doi": "10.1103/PhysRevE.111.044411",
+      "title": "Boltzmann approach to collective motion via nonlocal visual interaction",
+      "primary_category": "nlin.AO",
+      "published": "2024-08-19T11:47:00Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "57874c0a34237a08e487e2674d4de2cf2fc6c9e348290766c9fd3720b53687b5": {
+      "arxiv_id": "2407.11330",
+      "doi": null,
+      "title": "Navigating the swarm: Deep neural networks command emergent behaviours",
+      "primary_category": "cs.NE",
+      "published": "2024-07-16T02:46:11Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "be3dc90bcdd41494465c963695fa326053102561a743692a9a8a7384fe7cc4f8": {
+      "arxiv_id": "2402.09073",
+      "doi": "10.1093/pnasnexus/pgae264",
+      "title": "Selective decision-making and collective behavior of fish by the motion of visual attention",
+      "primary_category": "nlin.AO",
+      "published": "2024-02-14T10:33:33Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "2d922562b205d4580d38e467be85894ca82d09aa7057148ad4a5b5f176579b18": {
+      "arxiv_id": "2307.09720",
+      "doi": null,
+      "title": "A Computational Topology-based Spatiotemporal Analysis Technique for Honeybee Aggregation",
+      "primary_category": "q-bio.QM",
+      "published": "2023-07-19T02:03:32Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "501cfdfa914486d9fedb8682a65daf87a4f4ce224e3c8304159a9cedb6b1a53f": {
+      "arxiv_id": "2211.03879",
+      "doi": "10.1142/9789811260438_0004",
+      "title": "Phase Transitions and Criticality in the Collective Behavior of Animals -- Self-organization and biological function",
+      "primary_category": "physics.bio-ph",
+      "published": "2022-11-07T21:38:00Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "cae3a99d9481611112f76ad17b0ba4a843590582a40fd3de2fad4225609ffaec": {
+      "arxiv_id": "2206.07016",
+      "doi": null,
+      "title": "Dynamical behavior of a colony migration system: Do colony size and quorum threshold affect collective-decision?",
+      "primary_category": "math.DS",
+      "published": "2022-06-14T17:26:55Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "80dec2b141a4afacf09f3fe8d13c9f77cb59b2a2cd5281df6475376d3cf520e5": {
+      "arxiv_id": "2203.14238",
+      "doi": null,
+      "title": "Bifurcation theory captures band formation in the Vicsek model of flock formation",
+      "primary_category": "cond-mat.stat-mech",
+      "published": "2022-03-27T08:11:20Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "4c5424ce2c77be69ad9c1059ace64b7c743be5995b3ba038a99ba0384aa51d1e": {
+      "arxiv_id": "2007.04254",
+      "doi": null,
+      "title": "Dynamics of mosquito swarms over a moving marker",
+      "primary_category": "physics.bio-ph",
+      "published": "2020-07-08T16:43:40Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "82324ddf85341c543fc169751f1ed408dea390bc1d0728007aa4931bf05e1f43": {
+      "arxiv_id": "2004.00552",
+      "doi": "10.1371/journal.pone.0243628",
+      "title": "Development of swarm behavior in artificial learning agents that adapt to different foraging environments",
+      "primary_category": "q-bio.PE",
+      "published": "2020-04-01T16:32:13Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "b7d5ca26eb7d5ce0e56aef9dbc683ec4d54bd04e89ea9585b92eeecfecd9900e": {
+      "arxiv_id": "1901.07465",
+      "doi": null,
+      "title": "Collective learning from individual experiences and information transfer during group foraging",
+      "primary_category": "q-bio.PE",
+      "published": "2019-01-22T17:00:58Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "cb5c85bf0f0a23a0b72cd15af25eb0a264b820d32b3c64be76bd1feb5fc2bcb2": {
+      "arxiv_id": "1703.04731",
+      "doi": "10.1098/rsos.170344",
+      "title": "Task allocation and site fidelity jointly influence foraging regulation in honey bee colonies",
+      "primary_category": "q-bio.PE",
+      "published": "2017-03-14T21:09:11Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "e619910ba7c5b99b1a471eab74062be8773b7b792558065bbcbf40f7d7856c4d": {
+      "arxiv_id": "1611.04223",
+      "doi": "10.1103/PhysRevE.95.012408",
+      "title": "Emergent pattern formation in an interstitial biofilm",
+      "primary_category": "nlin.AO",
+      "published": "2016-11-14T01:53:04Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "c6a5e4f7cb0fca01763925854e399341e45ecd8d72d7abe99b27fe591e2f36f9": {
+      "arxiv_id": "1511.04528",
+      "doi": "10.1103/PhysRevX.6.011008",
+      "title": "Engineering sensorial delay to control phototaxis and emergent collective behaviors",
+      "primary_category": "physics.bio-ph",
+      "published": "2015-11-14T08:30:28Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "67e5b56888affbed5106937c38a30227a136a869df826484c9e613554eda5358": {
+      "arxiv_id": "2601.04111",
+      "doi": null,
+      "title": "Stigmergic optimal transport",
+      "primary_category": "q-bio.NC",
+      "published": "2026-01-07T17:17:32Z",
+      "query": "stigmergy",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "9697a88c42d2e0feee91ef13cd334b13c2cfdf64b134ce450c1fcb089464954f": {
+      "arxiv_id": "nlin/0502057",
+      "doi": null,
+      "title": "Social Cognitive Maps, Swarm Perception and Distributed Search on Dynamic Landscapes",
+      "primary_category": "nlin.AO",
+      "published": "2005-02-24T18:21:42Z",
+      "query": "stigmergy",
+      "retrieved_at": "2026-09-16T17:27:11+00:00"
+    }
+  }
+}

@@ -8,6 +8,7 @@ entry point in both its cached and fetch modes.
 from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 
 import pytest
@@ -213,7 +214,7 @@ class TestMain:
         # The cached corpus itself must be left untouched.
         assert json.loads(corpus_file.read_text(encoding="utf-8")) == subset
 
-    def test_fetch_mode_dedupes_and_reports_low_yield(
+    def test_fetch_mode_merges_into_existing_corpus(
         self, tmp_path, local_pubmed, real_abstracts
     ) -> None:
         existing = tmp_path / "existing_corpus.json"
@@ -232,12 +233,98 @@ class TestMain:
             ],
         )
 
-        # Every query returns the same two abstracts; dedup keeps 2 (< 20).
+        # Fetched abstracts are merged into the existing corpus, never
+        # overwriting it; dedupe keeps 2 new (< 20 total → rc 1).
         assert rc == 1
         saved = json.loads(existing.read_text(encoding="utf-8"))
-        assert saved == [ABSTRACT_QUEEN, ABSTRACT_TASKS]
+        assert saved[:5] == real_abstracts[:5]
+        assert saved[5:] == [ABSTRACT_QUEEN, ABSTRACT_TASKS]
         assert stats_path.exists()
         stats = json.loads(stats_path.read_text(encoding="utf-8"))
-        assert stats["total_abstracts"] == 2
+        assert stats["total_abstracts"] == 7
         assert stats["top_tokens"]
         assert all(set(entry) == {"token", "count"} for entry in stats["top_tokens"])
+
+    def test_force_preserves_existing_records(
+        self, tmp_path, local_pubmed, real_abstracts
+    ) -> None:
+        """Regression: --force must merge, never destroy grown records."""
+        corpus_file = tmp_path / "data" / "corpus" / "abstracts.json"
+        corpus_file.parent.mkdir(parents=True)
+        existing = real_abstracts[:5]
+        corpus_file.write_text(json.dumps(existing), encoding="utf-8")
+
+        rc = main(project_root=tmp_path, argv=["--force"])
+
+        saved = json.loads(corpus_file.read_text(encoding="utf-8"))
+        # Every pre-existing record survives the forced re-fetch.
+        assert all(a in saved for a in existing)
+        assert saved[5:] == [ABSTRACT_QUEEN, ABSTRACT_TASKS]
+        assert len(saved) == len(set(saved))  # no duplicates
+        # Newly appended records get provenance sidecars.
+        prov = json.loads(
+            (tmp_path / "data" / "corpus" / "provenance.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert len(prov["records"]) == 2
+        for sidecar in prov["records"].values():
+            assert set(sidecar) == {"pmid", "doi", "title", "year", "journal", "query"}
+        # rc is 1 only because 5 + 2 < 20.
+        assert rc == 1
+
+    def test_grow_appends_records_and_updates_provenance(
+        self, tmp_path, local_pubmed, real_abstracts, monkeypatch
+    ) -> None:
+        corpus_file = tmp_path / "data" / "corpus" / "abstracts.json"
+        corpus_file.parent.mkdir(parents=True)
+        seed = real_abstracts[:20]
+        corpus_file.write_text(json.dumps(seed), encoding="utf-8")
+        monkeypatch.setattr(time, "sleep", lambda _: None)
+
+        argv = ["--grow", "--target-new", "5", "--max-per-query", "2"]
+        rc = main(project_root=tmp_path, argv=argv)
+
+        assert rc == 0
+        after = json.loads(corpus_file.read_text(encoding="utf-8"))
+        assert after[:20] == seed
+        assert after[20:] == [ABSTRACT_QUEEN, ABSTRACT_TASKS]
+        prov = json.loads(
+            (tmp_path / "data" / "corpus" / "provenance.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert len(prov["records"]) == 2
+        for sidecar in prov["records"].values():
+            assert set(sidecar) == {"pmid", "doi", "title", "year", "journal", "query"}
+            assert sidecar["pmid"] in {"111", "222"}
+        stats = json.loads(
+            (tmp_path / "output" / "data" / "corpus_statistics.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        assert stats["total_abstracts"] == 22
+        assert stats["most_common_tokens"]
+        assert all(
+            isinstance(entry, list) and len(entry) == 2
+            for entry in stats["most_common_tokens"]
+        )
+
+    def test_grow_is_idempotent(self, tmp_path, local_pubmed, real_abstracts, monkeypatch) -> None:
+        corpus_file = tmp_path / "data" / "corpus" / "abstracts.json"
+        corpus_file.parent.mkdir(parents=True)
+        seed = real_abstracts[:20]
+        corpus_file.write_text(json.dumps(seed), encoding="utf-8")
+        monkeypatch.setattr(time, "sleep", lambda _: None)
+
+        argv = ["--grow", "--target-new", "5", "--max-per-query", "2"]
+        assert main(project_root=tmp_path, argv=argv) == 0
+        after_first = json.loads(corpus_file.read_text(encoding="utf-8"))
+        prov_path = tmp_path / "data" / "corpus" / "provenance.json"
+        prov_first = prov_path.read_text(encoding="utf-8")
+
+        # Second run: known PMIDs are excluded, nothing new is appended.
+        assert main(project_root=tmp_path, argv=argv) == 0
+        after_second = json.loads(corpus_file.read_text(encoding="utf-8"))
+        assert after_second == after_first
+        assert prov_path.read_text(encoding="utf-8") == prov_first

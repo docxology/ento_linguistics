@@ -1,0 +1,728 @@
+[
+  {
+    "arxiv_id": "2510.06011",
+    "doi": null,
+    "title": "How many more is different?",
+    "abstract": "From the formation of ice in small clusters of water molecules to the mass raids of army ant colonies, the emergent behavior of collectives depends critically on their size. At the same time, common wisdom holds that such behaviors are robust to the loss of individuals. This tension points to the need for a more systematic study of how number influences collective behavior. We initiate this study by focusing on collective behaviors that change abruptly at certain critical numbers of individuals. We show that a subtle modification of standard bifurcation analysis identifies such critical numbers, including those associated with discreteness- and noise-induced transitions. By treating them as instances of the same phenomenon, we show that critical numbers across physical scales and scientific domains commonly arise from competing feedbacks that scale differently with number. We then use this idea to find overlooked critical numbers in past studies of collective behavior and explore the implications for their conclusions. In particular, we highlight how deterministic approximations of stochastic models can fail near critical numbers. We close by distinguishing these qualitative changes from density-dependent phase transitions and by discussing how our approach could generalize to broader classes of collective behaviors.",
+    "primary_category": "q-bio.PE",
+    "published": "2025-10-07T15:10:13Z",
+    "authors": [
+      "Jacob Calvert",
+      "Andréa W. Richa",
+      "Dana Randall"
+    ]
+  },
+  {
+    "arxiv_id": "2504.01199",
+    "doi": "10.1016/j.physa.2025.130990",
+    "title": "Spatial Dynamics of Synchronized Ants: A Mobile Oscillator Model Analysis",
+    "abstract": "Synchronized short-term activity cycles are a prominent feature in the nests of certain ant species, but their functional significance remains controversial. This study investigates whether synchronization enhances spatial accessibility within ant nests, a factor critical for efficient task performance and colony fitness. We use the mobile oscillator model, a computational framework that simulates ant movement and synchronous activity, to examine the effect of synchronization on the spatial distribution of inactive ants, which act as obstacles to the movement of active ants. Our analysis reveals no significant effect of synchronization on the size of inactive ant clusters or on direct measures of spatial accessibility, such as the number of steps and net displacement during ant activity periods. These findings suggest that within the mobile oscillator model, synchronization does not directly enhance spatial accessibility, highlighting the need for more complex models to elucidate the intricate relationship between synchronization and spatial dynamics in ant colonies.",
+    "primary_category": "physics.bio-ph",
+    "published": "2025-04-01T21:26:22Z",
+    "authors": [
+      "José F. Fontanari",
+      "Paulo R. A. Campos"
+    ]
+  },
+  {
+    "arxiv_id": "2411.09169",
+    "doi": null,
+    "title": "Artificial Theory of Mind and Self-Guided Social Organisation",
+    "abstract": "One of the challenges artificial intelligence (AI) faces is how a collection of agents coordinate their behaviour to achieve goals that are not reachable by any single agent. In a recent article by Ozmen et al this was framed as one of six grand challenges: That AI needs to respect human cognitive processes at the human-AI interaction frontier. We suggest that this extends to the AI-AI frontier and that it should also reflect human psychology, as it is the only successful framework we have from which to build out. In this extended abstract we first make the case for collective intelligence in a general setting, drawing on recent work from single neuron complexity in neural networks and ant network adaptability in ant colonies. From there we introduce how species relate to one another in an ecological network via niche selection, niche choice, and niche conformity with the aim of forming an analogy with human social network development as new agents join together and coordinate. From there we show how our social structures are influenced by our neuro-physiology, our psychology, and our language. This emphasises how individual people within a social network influence the structure and performance of that network in complex tasks, and that cognitive faculties such as Theory of Mind play a central role. We finish by discussing the current state of the art in AI and where there is potential for further development of a socially embodied collective artificial intelligence that is capable of guiding its own social structures.",
+    "primary_category": "cs.MA",
+    "published": "2024-11-14T04:06:26Z",
+    "authors": [
+      "Michael S. Harré",
+      "Jaime Ruiz-Serra",
+      "Catherine Drysdale"
+    ]
+  },
+  {
+    "arxiv_id": "2406.13147",
+    "doi": "10.1162/isal_a_00713",
+    "title": "A Simulation Environment for the Neuroevolution of Ant Colony Dynamics",
+    "abstract": "We introduce a simulation environment to facilitate research into emergent collective behaviour, with a focus on replicating the dynamics of ant colonies. By leveraging real-world data, the environment simulates a target ant trail that a controllable agent must learn to replicate, using sensory data observed by the target ant. This work aims to contribute to the neuroevolution of models for collective behaviour, focusing on evolving neural architectures that encode domain-specific behaviours in the network topology. By evolving models that can be modified and studied in a controlled environment, we can uncover the necessary conditions required for collective behaviours to emerge. We hope this environment will be useful to those studying the role of interactions in emergent behaviour within collective systems.",
+    "primary_category": "cs.MA",
+    "published": "2024-06-19T01:51:15Z",
+    "authors": [
+      "Michael Crosscombe",
+      "Ilya Horiguchi",
+      "Norihiro Maruyama",
+      "Shigeto Dobata",
+      "Takashi Ikegami"
+    ]
+  },
+  {
+    "arxiv_id": "2402.11391",
+    "doi": "10.1016/j.mbs.2024.109245",
+    "title": "A soluble model for synchronized rhythmic activity in ant colonies",
+    "abstract": "Synchronization is one of the most striking instances of collective behavior, occurring in many natural phenomena. For example, in some ant species, ants are inactive within the nest most of the time, but their bursts of activity are highly synchronized and involve the entire nest population. Here we revisit a simulation model that generates this synchronized rhythmic activity through autocatalytic behavior, i.e., active ants can activate inactive ants, followed by a period of rest. We derive a set of delay differential equations that provide an accurate description of the short- and medium-time simulations for large ant colonies. Analysis of the fixed-point solutions, complemented by numerical integration of the equations, indicates the existence of stable limit-cycle solutions when the rest period is greater than a threshold and the event of spontaneous activation of inactive ants is very unlikely, so that most of the arousal of ants is done by active ants. Furthermore, we argue that the persistent oscillations observed in the simulations for colonies of finite size are due to resonant amplification of demographic noise.",
+    "primary_category": "nlin.AO",
+    "published": "2024-02-17T21:58:28Z",
+    "authors": [
+      "Pedro M. M. da Silveira",
+      "José F. Fontanari"
+    ]
+  },
+  {
+    "arxiv_id": "2401.15046",
+    "doi": null,
+    "title": "Lane formation and aggregation spots in a model of ants",
+    "abstract": "We investigate an interacting particle model to simulate a foraging colony of ants, where each ant is represented as an active Brownian particle. The interactions among ants are mediated through chemotaxis, aligning their orientations with the upward gradient of the pheromone field. Unlike conventional models, our study introduces a parameter that enables the reproduction of two distinctive behaviors: the well-known Keller--Segel aggregation into spots and the formation of traveling clusters, without relying on external constraints such as food sources or nests. We consider the associated mean-field limit partial differential equation (PDE) of this system and establish the analytical and numerical foundations for understanding these particle behaviors. Remarkably, the mean-field PDE not only supports aggregation spots and lane formation but also unveils a bistable region where these two behaviors compete. The patterns associated with these phenomena are elucidated by the shape of the growing eigenfunctions derived from linear stability analysis. This study not only contributes to our understanding of complex ant colony dynamics but also introduces a novel parameter-dependent perspective on pattern formation in collective systems.",
+    "primary_category": "math.AP",
+    "published": "2024-01-26T18:18:51Z",
+    "authors": [
+      "Maria Bruna",
+      "Martin Burger",
+      "Oscar de Wit"
+    ]
+  },
+  {
+    "arxiv_id": "2107.11075",
+    "doi": "10.7554/eLife.31730",
+    "title": "Individual crop loads provide local control for collective food intake in ant colonies",
+    "abstract": "Nutritional regulation by ants emerges from a distributed process: food is collected by a small fraction of workers, stored within the crops of individuals, and spreads via local ant-to-ant interactions. The precise individual level underpinnings of this collective regulation have remained unclear mainly due to difficulties in measuring food within ants crops. Here we image fluorescent liquid food in individually tagged Camponotus sanctus ants, and track the real-time food flow from foragers to their gradually satiating colonies. We show how the feedback between colony satiation level and food inflow is mediated by individual crop loads; specifically, the crop loads of recipient ants control food flow rates, while those of foragers regulate the frequency of foraging trips. Interestingly, these effects do not rise from pure physical limitations of crop capacity. Our findings suggest that the emergence of food intake regulation does not require individual foragers to assess the global state of the colony.",
+    "primary_category": "q-bio.PE",
+    "published": "2021-07-23T08:35:48Z",
+    "authors": [
+      "Efrat Greenwald",
+      "Lior Baltiansky",
+      "Ofer Feinerman"
+    ]
+  },
+  {
+    "arxiv_id": "2105.00883",
+    "doi": null,
+    "title": "Decentralized decision making by an ant colony: drift-diffusion model of individual choice, quorum and collective decision",
+    "abstract": "Ants are social insects. When the existing nest of an ant colony becomes uninhabitable, the hunt for a new suitable location for migration of the colony begins. Normally, multiple sites may be available as the potential new nest site. Distinct sites may be chosen by different scout ants based on their own assessments. Since the individual assessment is error prone, many ants may choose inferior site(s). But, the collective decision that emerges from the sequential and decentralized decision making process is often far better. We develop a model for this multi-stage decision making process. A stochastic drift-diffusion model (DDM) captures the sequential information accumulation by individual scout ants for arriving at their respective individual choices. The subsequent tandem runs of the scouts, whereby they recruit their active nestmates, is modelled in terms of suitable adaptations of the totally asymmetric simple exclusion processes (TASEP). By a systematic analysis of the model we explore the conditions that determine the speed of the emergence of the collective decision and the quality of that decision. More specifically, we demonstrate that collective decision of the colony is much less error-prone that the individual decisions of the scout ants. We also compare our theoretical predictions with experimental data.",
+    "primary_category": "nlin.AO",
+    "published": "2021-05-03T14:08:55Z",
+    "authors": [
+      "Smriti Pradhan",
+      "Swayamshree Patra",
+      "Debashish Chowdhury"
+    ]
+  },
+  {
+    "arxiv_id": "2012.11508",
+    "doi": null,
+    "title": "The genomic architecture and evolutionary fates of supergenes",
+    "abstract": "Supergenes are genomic regions containing sets of tightly linked loci that control multi-trait phenotypic polymorphisms under balancing selection. Recent advances in genomics have uncovered significant variation in both the genomic architecture as well as the mode of origin of supergenes across diverse organismal systems. Although the role of genomic architecture for the origin of supergenes has been much discussed, differences in the genomic architecture also subsequently affect the evolutionary trajectory of supergenes and the rate of degeneration of supergene haplotypes. In this review, we synthesize recent genomic work and historical models of supergene evolution, highlighting how the genomic architecture of supergenes affects their evolutionary fate. We discuss how recent findings on classic supergenes involved in governing ant colony social form, mimicry in butterflies, and heterostyly in flowering plants relate to theoretical expectations. Furthermore, we use forward simulations to demonstrate that differences in genomic architecture affect the degeneration of supergenes. Finally, we discuss implications of the evolution of supergene haplotypes for the long-term fate of balanced polymorphisms governed by supergenes.",
+    "primary_category": "q-bio.PE",
+    "published": "2020-12-21T17:26:07Z",
+    "authors": [
+      "Juanita Gutiérrez-Valencia",
+      "William Hughes",
+      "Emma L. Berdan",
+      "Tanja Slotte"
+    ]
+  },
+  {
+    "arxiv_id": "2009.10563",
+    "doi": null,
+    "title": "From Ants to Fishing Vessels: A Simple Model for Herding and Exploitation of Finite Resources",
+    "abstract": "We analyse the dynamics of fishing vessels with different home ports in an area where these vessels, in choosing where to fish, are influenced by their own experience in the past and by their current observation of the locations of other vessels in the fleet. Empirical data from the boats near Ancona and Pescara shows stylized statistical properties that are reminiscent of Kirman and Föllmer's ant recruitment model, although with two ant colonies represented by the two ports. From the point of view of a fisherman, the two fishing areas are not equally attractive, and he tends to prefer the one closer to where he is based. This piece of evidence led us to extend the original ants model to a situation with two asymmetric zones and finite resources. We show that, in the mean-field regime, our model exhibits the same properties as the empirical data. We obtain a phase diagram that separates high and low herding regimes, but also fish population extinction. Our analysis has interesting policy implications for the ecology of fishing areas. It also suggests that herding behaviour here, just as in financial markets, will lead to significant fluctuations in the amount of fish landed, as the boat concentration on one area at a given point in time will diminish the overall catch, such loss not being compensated by the reproduction of fish in the other area. In other terms, individually rational behaviour will not lead to collectively optimal results.",
+    "primary_category": "physics.soc-ph",
+    "published": "2020-09-22T14:05:37Z",
+    "authors": [
+      "José Moran",
+      "Antoine Fosset",
+      "Alan Kirman",
+      "Michael Benzaquen"
+    ]
+  },
+  {
+    "arxiv_id": "1811.00590",
+    "doi": null,
+    "title": "Modeling tropotaxis in ant colonies: recruitment and trail formation",
+    "abstract": "We propose an active walker model for the motion of individual ants communicating via chemical signals. It is assumed that communication takes the form of a time-dependent pheromone field that feedbacks into the motion ants through tropotaxis: individuals can sense the gradient of the pheromone concentration field and adjust their orientation accordingly. The individual model takes the form of a Langevin system of equations in polar coordinates driven by two-dimensional Gaussian fluctuations and with orientation changes in response to two pheromone fields: one emanating from the nest, and other actively produced by ants in their nest-bound journey after finding a food source. We explicitly track the evolution of both fields in three dimensions. The proposed tropotaxis model relating the pheromone field to the orientation changes is similar to Weber's law, but depends explicitly only on the gradient of the pheromone concentration. We identify ranges of values for the model parameters that yield the emergence of two key foraging patterns: successful recruitment to newly found sources, and colony-wide trail networks.",
+    "primary_category": "q-bio.PE",
+    "published": "2018-11-01T18:57:49Z",
+    "authors": [
+      "Jorge M Ramirez",
+      "Sara M Vallejo",
+      "Yurani Villa",
+      "Sara Gaona",
+      "Sarai Quintero"
+    ]
+  },
+  {
+    "arxiv_id": "1709.08343",
+    "doi": "10.1098/rsif.2017.0413",
+    "title": "Spatial organization and interactions of harvester ants during foraging activity",
+    "abstract": "Local interactions, when individuals meet, can regulate collective behavior. In a system without any central control, the rate of interaction may depend simply on how the individuals move around. But interactions could in turn influence movement; individuals might seek out interactions, or their movement in response to interaction could influence further interaction rates. We develop a general framework to address these questions, using collision theory to establish a baseline expected rate of interaction based on proximity. We test the models using data from harvester ant colonies. A colony uses feedback from interactions inside the nest to regulate foraging activity. Potential foragers leave the nest in response to interactions with returning foragers with food. The time series of interactions and local density of ants show how density hotspots lead to interactions that are clustered in time. A correlated random walk null model describes the mixing of potential and returning foragers. A model from collision theory relates walking speed and spatial proximity with the probability of interaction. The results demonstrate that although ants do not mix homogeneously, trends in interaction patterns can be explained simply by the walking speed and local density of surrounding ants.",
+    "primary_category": "physics.bio-ph",
+    "published": "2017-09-25T06:44:32Z",
+    "authors": [
+      "Jacob D. Davidson",
+      "Deborah M. Gordon"
+    ]
+  },
+  {
+    "arxiv_id": "1401.1321",
+    "doi": null,
+    "title": "Utility Rate Equations of Group Population Dynamics in Biological and Social Systems",
+    "abstract": "We present a novel system of equations to describe the evolution of self-organized structured societies (biological or human) composed of several trait groups. The suggested approach is based on the combination of ideas employed in the theory of biological populations, system theory, and utility theory. The evolution equations are defined as utility rate equations, whose parameters are characterized by the utility of each group with respect to the society as a whole and by the mutual utilities of groups with respect to each other. We analyze in detail the cases of two groups (cooperators and defectors) and of three groups (cooperators, defectors, and regulators) and find that, in a self-organized society, neither defectors nor regulators can overpass the maximal fractions of about 10% each. This is in agreement with the data for bee and ant colonies. The classification of societies by their distance from equilibrium is proposed. We apply the formalism to rank the countries according to the introduced metric quantifying their relative stability, which depends on the cost of defectors and regulators as well as their respective population fractions. We find a remarkable concordance with more standard economic ranking based, for instance, on GDP per capita.",
+    "primary_category": "physics.soc-ph",
+    "published": "2014-01-07T09:33:30Z",
+    "authors": [
+      "V. I. Yukalov",
+      "E. P. Yukalova",
+      "D. Sornette"
+    ]
+  },
+  {
+    "arxiv_id": "1102.2296",
+    "doi": null,
+    "title": "Mathematical Modeling on Obligate Mutualism: Interactions between leaf-cutter ants and their fungus garden",
+    "abstract": "We propose a simple mathematical model by applying Michaelis-Menton equations of enzyme kinetics to study the mutualistic interaction between the leaf cutter ant and its fungus garden at the early stage of colony expansion. We derive the sufficient conditions on the extinction and coexistence of these two species. In addition, we give a region of initial condition that leads to the extinction of two species when the model has an interior attractor. Our global analysis indicates that the division of labor by workers ants and initial conditions are two important {factors} that determine whether leaf cutter ants colonies and their fungus garden survive and grow can exist or not. We validate the model by doing the comparing between model simulations and data on fungal and ant colony growth rates under laboratory conditions. We perform sensitive analysis and parameter estimation of the model based on the experimental data to gain more biological insights on the ecological interactions between leaf cutter ants and their fungus garden. Finally, we give conclusions and {discuss} potential future {work}.",
+    "primary_category": "math.DS",
+    "published": "2011-02-11T07:33:34Z",
+    "authors": [
+      "Yun Kang",
+      "Michael Makiyama",
+      "Rebecca Clark",
+      "Jennifer Fewell"
+    ]
+  },
+  {
+    "arxiv_id": "1001.5244",
+    "doi": "10.2478/s13230-010-0015-z",
+    "title": "Computing Networks: A General Framework to Contrast Neural and Swarm Cognitions",
+    "abstract": "This paper presents the Computing Networks (CNs) framework. CNs are used to generalize neural and swarm architectures. Artificial neural networks, ant colony optimization, particle swarm optimization, and realistic biological models are used as examples of instantiations of CNs. The description of these architectures as CNs allows their comparison. Their differences and similarities allow the identification of properties that enable neural and swarm architectures to perform complex computations and exhibit complex cognitive abilities. In this context, the most relevant characteristics of CNs are the existence multiple dynamical and functional scales. The relationship between multiple dynamical and functional scales with adaptation, cognition (of brains and swarms) and computation is discussed.",
+    "primary_category": "cs.NE",
+    "published": "2010-01-28T18:55:53Z",
+    "authors": [
+      "Carlos Gershenson"
+    ]
+  },
+  {
+    "arxiv_id": "0912.2563",
+    "doi": null,
+    "title": "A Model-Based Approach to Predicting Predator-Prey & Friend-Foe Relationships in Ant Colonies",
+    "abstract": "Understanding predator-prey relationships among insects is a challenging task in the domain of insect-colony research. This is due to several factors involved, such as determining whether a particular behavior is the result of a predator-prey interaction, a friend-foe interaction or another kind of interaction. In this paper, we analyze a series of predator-prey and friend-foe interactions in two colonies of carpenter ants to better understand and predict such behavior. Using the data gathered, we have also come up with a preliminary model for predicting such behavior under the specific conditions the experiment was conducted in. In this paper, we present the results of our data analysis as well as an overview of the processes involved.",
+    "primary_category": "cs.AI",
+    "published": "2009-12-14T01:53:25Z",
+    "authors": [
+      "Karthik Narayanaswami"
+    ]
+  },
+  {
+    "arxiv_id": "0810.4583",
+    "doi": null,
+    "title": "Analytical and Numerical Investigation of Ant Behavior Under Crowded Conditions",
+    "abstract": "Swarm intelligence is widely recognized as a powerful paradigm of self-organized optimization, with numerous examples of successful applications in distributed artificial intelligence. However, the role of physical interactions in the organization of traffic flows in ants under crowded conditions has only been studied very recently. The related results suggest new ways of congestion control and simple algorithms for optimal resource usage based on local interactions and, therefore, decentralized control concepts. Here, we present a mathematical analysis of such a concept for an experiment with two alternative ways with limited capacities between a food source and the nest of an ant colony. Moreover, we carry out microscopic computer simulations for generalized setups, in which ants have more alternatives or the alternative ways are of different lengths. In this way and by variation of interaction parameters, we can get a better idea, how powerful congestion control based on local repulsive interactions may be. Finally, we will discuss potential applications of this design principle to routing in traffic or data networks and machine usage in supply systems.",
+    "primary_category": "physics.soc-ph",
+    "published": "2008-10-25T08:43:48Z",
+    "authors": [
+      "Karsten Peters",
+      "Anders Johansson",
+      "Audrey Dussutour",
+      "Dirk Helbing"
+    ]
+  },
+  {
+    "arxiv_id": "0712.0744",
+    "doi": "10.1109/CEC.2007.4424594",
+    "title": "Computational Chemotaxis in Ants and Bacteria over Dynamic Environments",
+    "abstract": "Chemotaxis can be defined as an innate behavioural response by an organism to a directional stimulus, in which bacteria, and other single-cell or multicellular organisms direct their movements according to certain chemicals in their environment. This is important for bacteria to find food (e.g., glucose) by swimming towards the highest concentration of food molecules, or to flee from poisons. Based on self-organized computational approaches and similar stigmergic concepts we derive a novel swarm intelligent algorithm. What strikes from these observations is that both eusocial insects as ant colonies and bacteria have similar natural mechanisms based on stigmergy in order to emerge coherent and sophisticated patterns of global collective behaviour. Keeping in mind the above characteristics we will present a simple model to tackle the collective adaptation of a social swarm based on real ant colony behaviors (SSA algorithm) for tracking extrema in dynamic environments and highly multimodal complex functions described in the well-know De Jong test suite. Later, for the purpose of comparison, a recent model of artificial bacterial foraging (BFOA algorithm) based on similar stigmergic features is described and analyzed. Final results indicate that the SSA collective intelligence is able to cope and quickly adapt to unforeseen situations even when over the same cooperative foraging period, the community is requested to deal with two different and contradictory purposes, while outperforming BFOA in adaptive speed. Results indicate that the present approach deals well in severe Dynamic Optimization problems.",
+    "primary_category": "cs.MA",
+    "published": "2007-12-05T15:02:19Z",
+    "authors": [
+      "Vitorino Ramos",
+      "C. M. Fernandes",
+      "A. C. Rosa",
+      "A. Abraham"
+    ]
+  },
+  {
+    "arxiv_id": "0706.0171",
+    "doi": null,
+    "title": "Persistent pods of the tree Acacia caven: a natural refuge for diverse insects including Bruchid beetles and the parasitoids Trichogrammatidae, Pteromalidae and Eulophidae",
+    "abstract": "The persistent pods of the tree, Acacia caven, that do not fall from the tree provide opportunities for the appearance of a diverse group of insects the following season. Such pods collected during the spring of 1999 in Chile were indehiscent with highly sclerified pod walls. In contrast, persistent pods collected in Uruguay after a wet winter and spring (2002) were partially dehiscent, inducing the deterioration of the woody pods, and consequently exposing the seeds. These persistent pods are a natural refuge for insect species, namely two bruchid beetles (Pseudopachymeria spinipes, Stator furcatus), one scolytidae (Dendroctonus sp), lepidopterous larvae, ant colonies (Camponotus sp),one species of oophagous parasitoid (Uscana espinae group senex), the gregarious larval-pupae parasitoid Monoksa dorsiplana (Pteromalidae) and two species of Horismenus spp. (Eulophidae). The patriline of M. dorsiplana is frequently formed by 1 son +7 daughters.",
+    "primary_category": "q-bio.PE",
+    "published": "2007-06-01T15:04:59Z",
+    "authors": [
+      "Danielle Rousse"
+    ]
+  },
+  {
+    "arxiv_id": "nlin/0507045",
+    "doi": null,
+    "title": "An ant-based algorithm for annular sorting",
+    "abstract": "In this paper we describe a minimal model for annular sorting by Leptothorax ants. Simulation results are consistent with the structures observed in actual ant colonies.",
+    "primary_category": "nlin.AO",
+    "published": "2005-07-22T12:35:12Z",
+    "authors": [
+      "Oliver Don",
+      "Martyn Amos"
+    ]
+  },
+  {
+    "arxiv_id": "nlin/0304006",
+    "doi": null,
+    "title": "Determining possible avenues of approach using ANTS",
+    "abstract": "Threat assessment is an important part of level 3 data fusion. Here we study a subproblem of this, worst-case risk assessment. Inspired by agent-based models used for simulation of trail formation for urban planning, we use ant colony optimization (ANTS) to determine possible avenues of approach for the enemy, given a situation picture.\n  One way of determining such avenues would be to calculate the ``potential field'' caused by placing sources at possible goals for the enemy. This requires postulating a functional form for the potential, and also takes long time. Here we instead seek a method for quickly obtaining an effective potential. ANTS, which has previously been used to obtain approximate solutions to various optimization problems, is well suited for this. The output of our method describes possible avenues of approach for the enemy, i.e, areas where we should be prepared for attack. (The algorithm can also be run ``reversed'' to instead get areas of opportunity for our forces to exploit.)\n  Using real geographical data, we found that our method gives a fast and reliable way of determining such avenues. Our method can be used in a computer-based command and control system to replace the first step of human intelligence analysis.",
+    "primary_category": "nlin.AO",
+    "published": "2003-04-04T15:25:51Z",
+    "authors": [
+      "Pontus Svenson",
+      "Hedvig Sidenbladh"
+    ]
+  },
+  {
+    "arxiv_id": "2609.16316",
+    "doi": null,
+    "title": "Navigating the Delicate Geometry of Beehive Mite Infestation with Optimal Control",
+    "abstract": "The parasitic mite Varroa destructor poses a severe existential threat to global honey bee Apis mellifera populations. In this paper, we present a dynamical systems model of hive-mite interactions incorporating a eusocial Allee effect to evaluate the efficacy of chemical interventions. We partition treatments into ``soft'' miticides (targeting phoretic mites) and ``harsh'' miticides (penetrating the capped brood to target reproductive mites). Our bifurcation analysis reveals a fundamental trade-off: while harsh treatments effectively eradicate the protected mite reservoir by shifting the transcritical bifurcation boundary, they impose sublethal toxicity on the bees. We analytically show that exceeding a critical dosage threshold culminates in a catastrophic saddle-node bifurcation that guarantees colony collapse. To navigate this toxicity limit, we formulate an optimal control problem using Pontryagin's Maximum Principle. Numerical solutions reveal that a dynamic ``shock and maintain'' cocktail strategy optimally balances reservoir clearance with hive viability. Expanding the model to include treatment-resistant strains demonstrates that single-chemical reliance forces the hive onto a highly toxic, nearly unsustainable chemical treadmill. Finally, our mathematical framework yields a striking ecological prediction: because the eradication boundary scales intimately with the colony's carrying capacity, unchecked mite pressure will likely exert evolutionary forces that select for smaller, naturally resistant hives over the massive colonies favored by commercial agriculture.",
+    "primary_category": "q-bio.PE",
+    "published": "2026-09-14T20:29:48Z",
+    "authors": [
+      "Julia Saff",
+      "Bhargav R. Karamched"
+    ]
+  },
+  {
+    "arxiv_id": "2604.23408",
+    "doi": null,
+    "title": "Messaging strategies and the emergence of echo chambers in collective decision-making",
+    "abstract": "Collective decision-making arises from individual agents integrating their own personal observations with information obtained from social partners. In many biological systems that exhibit collective decision-making, the process by which social information is produced, transmitted, and used is subject to two key constraints. First, individuals often do not observe the internal states or personal observations of their neighbors; instead, they observe neighbors' discrete actions. Second, agents often have limited attention, such that, at any given moment, only a subset of social partners influences decisions. Using methods from nonlinear dynamics, we show that either of these constraints can cause collective accuracy to become extremely sensitive to the weight individuals place on the information they receive from others. This sensitivity arises from the spontaneous formation of echo chamber-like states in which individuals receive and transmit homogeneous social messages. Under such conditions, collectives become locked in self-reinforcing states that prevent them from tracking changes in the environment. We reveal the mathematical basis of this phenomenon, and show that it emerges not only in generic models of collective decision-making but also in models developed to describe specific biological systems, including neural circuits, eusocial insect colonies, and mobile animal groups. Finally, we identify biologically plausible mechanisms through which individuals may reduce the risk of echo chamber formation and achieve robust yet sensitive collective decisions without requiring fine-tuning parameters. Our results reveal how fundamental constraints on communication shape the dynamics and reliability of collective decisions across diverse biological systems.",
+    "primary_category": "q-bio.QM",
+    "published": "2026-04-25T18:59:53Z",
+    "authors": [
+      "Ling-Wei Kong",
+      "Naomi Ehrich Leonard",
+      "Andrew M. Hein"
+    ]
+  },
+  {
+    "arxiv_id": "2603.26226",
+    "doi": null,
+    "title": "Braess's paradox in tandem-running ants: When shortest path is not the quickest",
+    "abstract": "Braess's paradox -- where adding network capacity increases travel time -- is typically attributed to selfish agents. Although eusocial colonies maximize collective fitness, we find experimentally that \\emph{Diacamma indicum} ants exhibit this paradox: Leaders favour the shortest path even when it slows the colony. We present a quantitative model of the exploration-exploitation trade-off, demonstrating that evolutionary forces selecting for shortest-path identification can force suboptimal global states. This proves the paradox can emerge in highly cooperative systems without individual selfishness.",
+    "primary_category": "physics.bio-ph",
+    "published": "2026-03-27T09:49:43Z",
+    "authors": [
+      "Joy Das Bairagya",
+      "Udipta Chakraborti",
+      "Sumana Annagiri",
+      "Sagar Chakraborty"
+    ]
+  },
+  {
+    "arxiv_id": "2507.17923",
+    "doi": null,
+    "title": "Altruism and energy flow in dynamic beehive models",
+    "abstract": "This work explores the relationship between altruism and the genetic system of arrhenotoky through an evolutionary game theory (EGT)-inspired lens, using a dynamic model of beehive populations consisting of three castes: workers, drones, and the queen. Arrhenotoky is a form of asexual reproduction in which unfertilized eggs become males while fertilized eggs develop into females, leading to unusual patterns of genetic relatedness between family members. This mode of reproduction occurs in insects such as the Hymenoptera, including bees. In the hive environment, bees often display altruistic behavior, or actions taken by an organism that reduce its own fitness to increase the fitness of others. Eusociality, an elaborate form of social organization characterized by complex and altruistic social behaviors, is also observed in the Hymenoptera. To explore the interplay between altruism and the reproductive patterns of arrhenotoky, we employ a population dynamics model to simulate beehive populations over a range of parameters, controlling for altruism in workers and the queen. Our results show that altruistic behaviors are essential for beehive success, with optimal worker altruism corresponding to the division of labor observed in eusocial species. Furthermore, we find that modest altruism from the queen is also vital for hive survival, emphasizing the delicate balance that can exist in these complex social systems. Overall, our findings shed light on the co-evolution of altruism, arrhenotoky, and eusociality in the natural world.",
+    "primary_category": "q-bio.PE",
+    "published": "2025-07-23T20:39:34Z",
+    "authors": [
+      "Zachary Nathan",
+      "Daniel DiPietro",
+      "Olivia J. Chu"
+    ]
+  },
+  {
+    "arxiv_id": "2502.09475",
+    "doi": null,
+    "title": "Extinction and Metastability of Pheromone-Roads in Stochastic Models for Foraging Walks of Ants",
+    "abstract": "Macroscopic changes of group behavior of eusocial insects are studied from the viewpoint of non-equilibrium phase transitions. Recent combined study of experiments and mathematical modeling by the group led by the third author suggests that a species of garden ant switches the individual foraging walk from pheromone-mediated to visual-cues-mediated depending on situation. If an initial pheromone-road between the nest and food sources is a detour, ants using visual cues can pioneer shorter paths. These shorter paths are reinforced by pheromone secreted by following ants, and then the detour ceases to exist. Once the old pheromone-road extincts, there will be almost no chance to reconstruct it. Hence the extinction of pheromone-road is expected to be regarded as a phase transition to an absorbing state. We propose a discrete-time model on a square lattice consisting of switching random walks interacting though time-dependent pheromone field. The numerical study shows that the critical phenomena of the present extinction transitions of pheromone-roads do not seem to belong to the directed percolation universality class associated with the usual absorbing-state transition. The new aspects are cased by the coexistence and competition with newly creating pheromone-roads. In a regime in the extinction phase, the annihilating road shows metastability and takes long time-period to be replaced by a new road.",
+    "primary_category": "cond-mat.stat-mech",
+    "published": "2025-02-13T16:39:07Z",
+    "authors": [
+      "Saori Morimoto",
+      "Makoto Katori",
+      "Hiraku Nishimori"
+    ]
+  },
+  {
+    "arxiv_id": "2411.09168",
+    "doi": null,
+    "title": "An AI Theory of Mind Will Enhance Our Collective Intelligence",
+    "abstract": "Collective intelligence plays a central role in many fields, from economics and evolutionary theory to neural networks and eusocial insects, and is also core to work on emergence and self-organisation in complex-systems theory. However, in human collective intelligence there is still much to understand about how specific psychological processes at the individual level give rise to self-organised structures at the social level. Psychological factors have so far played a minor role in collective-intelligence studies because the principles are often general and applicable to agents without sophisticated psychologies. We emphasise, with examples from other complex adaptive systems, the broad applicability of collective-intelligence principles, while noting that mechanisms and time scales differ markedly between cases. We review evidence that flexible collective intelligence in human social settings is improved by a particular cognitive tool: our Theory of Mind. We then hypothesise that AIs equipped with a theory of mind will enhance collective intelligence in ways similar to human contributions. To make this case, we step back from the algorithmic basis of AI psychology and consider the large-scale impact AI can have as agential actors in a 'social ecology' rather than as mere technological tools. We identify several key characteristics of psychologically mediated collective intelligence and show that the development of a Theory of Mind is crucial in distinguishing human social collective intelligence from more general forms. Finally, we illustrate how individuals, human or otherwise, integrate within a collective not by being genetically or algorithmically programmed, but by growing and adapting into the socio-cognitive niche they occupy. AI can likewise inhabit one or multiple such niches, facilitated by a Theory of Mind.",
+    "primary_category": "cs.MA",
+    "published": "2024-11-14T03:58:50Z",
+    "authors": [
+      "Michael S. Harré",
+      "Catherine Drysdale",
+      "Jaime Ruiz-Serra"
+    ]
+  },
+  {
+    "arxiv_id": "2308.00298",
+    "doi": null,
+    "title": "Finite population effects on optimal communication for social foragers",
+    "abstract": "Foraging is crucial for animals to survive. Many species forage in groups, as individuals communicate to share information about the location of available resources. For example, eusocial foragers, such as honey bees and many ants, recruit members from their central hive or nest to a known foraging site. However, the optimal level of communication and recruitment depends on the overall group size, the distribution of available resources, and the extent of interference between multiple individuals attempting to forage from a site. In this paper, we develop a discrete-time Markov chain model of eusocial foragers, who communicate information with a certain probability. We compare the stochastic model and its corresponding infinite-population limit. We find that foraging efficiency tapers off when recruitment probability is too high -- a phenomenon that does not occur in the infinite-population model, even though it occurs for any finite population size. The marginal inefficiency at high recruitment probability increases as the population increases, similar to a boundary layer. In particular, we prove there is a significant gap between the foraging efficiency of finite and infinite population models in the extreme case of complete communication. We also analyze this phenomenon by approximating the stationary distribution of foragers over sites in terms of mean escape times from multiple quasi-steady states. We conclude that for any finite group of foragers, an individual who has found a resource should only sometimes recruit others to the same resource. We discuss the relationship between our analysis and multi-agent multi-arm bandit problems.",
+    "primary_category": "q-bio.PE",
+    "published": "2023-08-01T05:39:49Z",
+    "authors": [
+      "Hyunjoong Kim",
+      "Yoichiro Mori",
+      "Joshua B Plotkin"
+    ]
+  },
+  {
+    "arxiv_id": "2208.12373",
+    "doi": null,
+    "title": "Collective phototactic robotectonics",
+    "abstract": "Cooperative task execution, a hallmark of eusociality, is enabled by local interactions between the agents and the environment through a dynamically evolving communication signal. Inspired by the collective behavior of social insects whose dynamics is modulated by interactions with the environment, we show that a robot collective can successfully nucleate a construction site via a trapping instability and cooperatively build organized structures. The same robot collective can also perform de-construction with a simple change in the behavioral parameter. These behaviors belong to a two-dimensional phase space of cooperative behaviors defined by agent-agent interaction (cooperation) along one axis and the agent-environment interaction (collection and deposition) on the other. Our behavior-based approach to robot design combined with a principled derivation of local rules enables the collective to solve tasks with robustness to a dynamically changing environment and a wealth of complex behaviors.",
+    "primary_category": "cs.RO",
+    "published": "2022-08-25T23:19:36Z",
+    "authors": [
+      "Fabio Giardina",
+      "S Ganga Prasath",
+      "L Mahadevan"
+    ]
+  },
+  {
+    "arxiv_id": "2206.11129",
+    "doi": null,
+    "title": "Social Insects and Beyond: The Physics of Soft, Dense Invertebrate Aggregations",
+    "abstract": "Aggregation is a common behavior by which groups of organisms arrange into cohesive groups. Whether suspended in the air (like honey bee clusters), built on the ground (such as army ant bridges), or immersed in water (such as sludge worm blobs), these collectives serve a multitude of biological functions, from protection against predation to the ability to maintain a relatively desirable local environment despite a variable ambient environment. In this review, we survey dense aggregations of a variety of insects, other arthropods, and worms from a soft matter standpoint. An aggregation can be orders of magnitude larger than its individual organisms, consisting of tens to hundreds of thousands of individuals, and yet functions as a coherent entity. Understanding how aggregating organisms coordinate with one another to form a superorganism requires an interdisciplinary approach. We discuss how the physics of the aggregation can yield additional insights to those gained from ecological and physiological considerations, given that the aggregating individuals exchange information, energy, and matter continually with the environment and one another. While the connection between animal aggregations and the physics of non-living materials has been proposed since the early 1900s, the recent advent of physics of behavior studies provides new insights into social interactions governed by physical principles. Current efforts focus on eusocial insects; however, we show that these may just be the tip of an iceberg of superorganisms that take advantage of physical interactions and simple behavioral rules to adapt to changing environments. By bringing attention to a wide range of invertebrate aggregations, we wish to inspire a new generation of scientists to explore collective dynamics and bring a deeper understanding of the physics of dense living aggregations.",
+    "primary_category": "q-bio.PE",
+    "published": "2022-06-22T14:21:53Z",
+    "authors": [
+      "O. Shishkov",
+      "O. Peleg"
+    ]
+  },
+  {
+    "arxiv_id": "2206.00116",
+    "doi": null,
+    "title": "Towards Eusociality Using an Inverse Agent Based Model",
+    "abstract": "The emergence of eusocial species is both very rare in evolutionary history and results in remarkably successful species. By inverting an agent based model, agent rules are discovered that display behaviors characteristic of eusocial species as well as other behaviors that lead to unexpected population dynamics. By holding the agents' genome constant across the colony and allowing the agents' rules to evolve, the individual behaviors exhibit phenotypic plasticity in response to environmental cues. The phenotypically driven reduction of intrinsic growth rates and the emergence of non-reproducing phenotypes both demonstrate selection pressure at the colony (system) level. The efficiency of an evolved colony is shown to have a strong relationship to the computational capacity of the agents. Various other emergent behaviors, both eusocial and otherwise novel, are identified and discussed. A path forward to more capable eusocial populations and inter-colony evolution is outlined.",
+    "primary_category": "physics.soc-ph",
+    "published": "2022-05-31T20:55:19Z",
+    "authors": [
+      "John C. Stevenson"
+    ]
+  },
+  {
+    "arxiv_id": "2104.10081",
+    "doi": "10.3389/fevo.2022.750837",
+    "title": "Exploring Evolved Multicellular Life Histories in a Open-Ended Digital Evolution System",
+    "abstract": "Evolutionary transitions occur when previously-independent replicating entities unite to form more complex individuals. Such transitions have profoundly shaped natural evolutionary history and occur in two forms: fraternal transitions involve lower-level entities that are kin (e.g., transitions to multicellularity or to eusocial colonies), while egalitarian transitions involve unrelated individuals (e.g., the origins of mitochondria). The necessary conditions and evolutionary mechanisms for these transitions to arise continue to be fruitful targets of scientific interest. Here, we examine a range of fraternal transitions in populations of open-ended self-replicating computer programs. These digital cells were allowed to form and replicate kin groups by selectively adjoining or expelling daughter cells. The capability to recognize kin-group membership enabled preferential communication and cooperation between cells. We repeatedly observed group-level traits that are characteristic of a fraternal transition. These included reproductive division of labor, resource sharing within kin groups, resource investment in offspring groups, asymmetrical behaviors mediated by messaging, morphological patterning, and adaptive apoptosis. We report eight case studies from replicates where transitions occurred and explore the diverse range of adaptive evolved multicellular strategies.",
+    "primary_category": "q-bio.PE",
+    "published": "2021-04-20T16:03:09Z",
+    "authors": [
+      "Matthew Andres Moreno",
+      "Charles Ofria"
+    ]
+  },
+  {
+    "arxiv_id": "1703.00389",
+    "doi": null,
+    "title": "The impact of species-neutral stage structure on macroecological patterns",
+    "abstract": "Despite its radical assumption of ecological equivalence between species, neutral biodiversity theory can often provide good fits to species abundance distributions observed in nature. Major criticisms of neutral theory have focused on interspecific differences, which are in conflict with ecological equivalence. However, neutrality in nature is also broken by differences between conspecific individuals at different life stages, which in many communities may vastly exceed interspecific differences between individuals at similar stages. These within-species asymmetries have not been fully explored in species-neutral models, and it is not known whether demographic stage structure affects macroecological patterns in neutral theory. Here we present a two-stage neutral model where fecundity and mortality change as an individual transitions from one stage to the other. We explore several qualitatively different scenarios, and compare numerically obtained species abundance distributions to the predictions of unstructured neutral theory. We find that abundance distributions are generally robust to this kind of stage structure, but significant departures from unstructured predictions occur if adults have sufficiently low fecundity and mortality. In addition, we show that the cumulative number of births per species, which is distributed as a power law with a 3/2 exponent, is invariant even when the abundance distribution departs from unstructured model predictions. Our findings potentially explain power law-like abundance distributions in organisms with strong demographic structure, such as eusocial insects and humans, and partially rehabilitate species abundance distributions from past criticisms as to their inability to distinguish between biological mechanisms.",
+    "primary_category": "q-bio.PE",
+    "published": "2017-03-01T17:04:57Z",
+    "authors": [
+      "Rafael D'Andrea",
+      "James P. O'Dwyer"
+    ]
+  },
+  {
+    "arxiv_id": "1607.06055",
+    "doi": "10.1103/PhysRevE.96.022111",
+    "title": "A trophallaxis inspired model for distributed transport between randomly interacting agents",
+    "abstract": "A trophallaxis inspired model for distributed transport between randomly interacting agents Trophallaxis, the regurgitation and mouth to mouth transfer of liquid food between members of eusocial insect societies, is an important process that allows the fast and efficient dissemination of food in the colony. Trophallactic systems are typically treated as a network of agent interactions. This approach, though valuable, does not easily lend itself to analytic predictions. In this work we consider a simple trophallactic system of randomly interacting agents with finite carrying capacity, and calculate analytically and via a series of simulations the global food intake rate for the whole colony as well as observables describing how uniformly the food is distributed within the nest. Our work serves as a stepping stone to describing the collective properties of more complex trophallactic systems, such as those including division of labor between foragers and workers.",
+    "primary_category": "physics.bio-ph",
+    "published": "2016-07-20T18:31:30Z",
+    "authors": [
+      "Johannes Gräwer",
+      "Henrik Ronellenfitsch",
+      "Marco G. Mazza",
+      "Eleni Katifori"
+    ]
+  },
+  {
+    "arxiv_id": "1604.07109",
+    "doi": null,
+    "title": "Finding a Mate With Eusocial Skills",
+    "abstract": "Sexual reproductive behavior has a necessary social coordination component as willing and capable partners must both be in the right place at the right time. It has recently been demonstrated that many social organizations that support sexual reproduction can evolve in the absence of social coordination between agents (e.g. herding, assortative mating, and natal philopatry). In this paper we explore these results by including social transfer mechanisms to our agents and contrasting their reproductive behavior with a control group without social transfer mechanisms. We conclude that similar behaviors emerge in our social learning agents as those that emerged in the non-social learning agents. Social learners were more inclined towards natal philopatry. Social learners also evolved a culture of eusociality including reproductive division of labor.",
+    "primary_category": "q-bio.PE",
+    "published": "2016-04-25T02:22:03Z",
+    "authors": [
+      "Chris Marriott",
+      "Jobran Chebib"
+    ]
+  },
+  {
+    "arxiv_id": "1510.08831",
+    "doi": "10.1098/rspb.2015.1975",
+    "title": "Antisocial pool rewarding does not deter public cooperation",
+    "abstract": "Rewarding cooperation is in many ways expected behaviour from social players. However, strategies that promote antisocial behaviour are also surprisingly common, not just in human societies, but also among eusocial insects and bacteria. Examples include sanctioning of individuals who behave prosocially, or rewarding of freeriders who do not contribute to collective enterprises. We therefore study the public goods game with antisocial and prosocial pool rewarding in order to determine the potential negative consequences on the effectiveness of positive incentives to promote cooperation. Contrary to a naive expectation, we show that the ability of defectors to distribute rewards to their like does not deter public cooperation as long as cooperators are able to do the same. Even in the presence of antisocial rewarding the spatial selection for cooperation in evolutionary social dilemmas is enhanced. Since the administration of rewards to either strategy requires a considerable degree of aggregation, cooperators can enjoy the benefits of their prosocial contributions as well as the corresponding rewards. Defectors when aggregated, on the other hand, can enjoy antisocial rewards, but due to their lack of contributions to the public good they ultimately succumb to their inherent inability to secure a sustainable future. Strategies that facilitate the aggregation of akin players, even if they seek to promote antisocial behaviour, thus always enhance the long-term benefits of cooperation.",
+    "primary_category": "q-bio.PE",
+    "published": "2015-10-29T19:27:27Z",
+    "authors": [
+      "Attila Szolnoki",
+      "Matjaz Perc"
+    ]
+  },
+  {
+    "arxiv_id": "1407.0290",
+    "doi": null,
+    "title": "Risk management of solitary and eusocial reproduction",
+    "abstract": "Social insect colonies can be seen as a distinct form of biological organization because they function as superorganisms. Understanding how natural selection acts on the emergence and maintenance of these colonies remains a major question in evolutionary biology and ecology. Here, we explore this by using multi-type branching processes to calculate the basic reproductive ratios and the extinction probabilities for solitary versus eusocial reproductive strategies. In order to derive precise mathematical results, we use a simple haploid, asexual model. In general, we show that eusocial reproductive strategies are unlikely to materialize unless large fitness advantages are gained by the production of only a few workers. These fitness advantages are maximized through obligate rather than facultative eusocial strategies. Furthermore, we find that solitary reproduction is `unbeatable' as long as the solitary reproductive ratio exceeds a critical value. In these cases, no eusocial parameters exist that would reduce their probability of extinction. Our results help to explain why the number of solitary species exceeds that of eusocial ones: eusociality is a high risk, high reward strategy, while solitary reproduction is better at risk management.",
+    "primary_category": "q-bio.PE",
+    "published": "2014-07-01T15:55:27Z",
+    "authors": [
+      "Feng Fu",
+      "Sarah D. Kocher",
+      "Martin A. Nowak"
+    ]
+  },
+  {
+    "arxiv_id": "1403.6074",
+    "doi": "10.1016/j.jtbi.2013.01.010",
+    "title": "The Evolution of Complexity in Social Organization - A Model Using Dominance-Subordinate Behaviour in Two Social Wasp Species",
+    "abstract": "Dominance and subordinate behaviours are important ingredients in the social organizations of group living animals. Behavioural observations on the two eusocial species \\textit{Ropalidia marginata} and \\textit{Ropalidia cyathiformis} suggest varying complexities in their social systems. The queen of R. cyathiformis is an aggressive individual who usually holds the top position in the dominance hierarchy although she does not necessarily show the maximum number of acts of dominance, while the R. marginata queen rarely shows aggression and usually does not hold the top position in the dominance hierarchy of her colony. These differences are reflected in the distribution of dominance-subordinate interactions among the hierarchically ranked individuals in both the species. The percentage of dominance interactions decrease gradually with hierarchical ranks in R. marginata while in R. cyathiformis it first increases and then decreases. We use an agent-based model to investigate the underlying mechanism that could give rise to the observed patterns for both the species. The model assumes, besides some non-interacting individuals, that the interaction probabilities of the agents depend on their pre-differentiated winning abilities. Our simulations show that if the queen takes up a strategy of being involved in a moderate number of dominance interactions, one could get the pattern similar to R. cyathiformis, while taking up the strategy of very low interactions by the queen could lead to the pattern of R. marginata. We infer that both the species follow a common interaction pattern, while the differences in their social organization are due to the slight changes in queen as well as worker strategies. These changes in strategies are expected to accompany the evolution of more complex societies from simpler ones.",
+    "primary_category": "q-bio.PE",
+    "published": "2014-03-24T18:34:54Z",
+    "authors": [
+      "Anjan K. Nandi",
+      "Anindita Bhadra",
+      "Annagiri Sumana",
+      "Sujata A. Deshpande",
+      "Raghavendra Gadagkar"
+    ]
+  },
+  {
+    "arxiv_id": "1104.3152",
+    "doi": null,
+    "title": "Polyethism in a colony of artificial ants",
+    "abstract": "We explore self-organizing strategies for role assignment in a foraging task carried out by a colony of artificial agents. Our strategies are inspired by various mechanisms of division of labor (polyethism) observed in eusocial insects like ants, termites, or bees. Specifically we instantiate models of caste polyethism and age or temporal polyethism to evaluated the benefits to foraging in a dynamic environment. Our experiment is directly related to the exploration/exploitation trade of in machine learning.",
+    "primary_category": "cs.AI",
+    "published": "2011-04-15T20:24:54Z",
+    "authors": [
+      "Chris Marriott",
+      "Carlos Gershenson"
+    ]
+  },
+  {
+    "arxiv_id": "1509.05965",
+    "doi": "10.1016/j.amc.2015.08.006",
+    "title": "The peloton superorganism and protocooperative behavior",
+    "abstract": "A theoretical framework for protocooperative behavior in pelotons (groups of cyclists) is proposed. A threshold between cooperative and free-riding behaviors in pelotons is modeled, together comprising protocooperative behavior (different from protocooperation). Protocooperative behavior is a function of: 1. two or more cyclists coupled by drafting benefit, 2. cyclists' current power output or speed, and 3. cyclists' maximal sustainable outputs (MSO). Characteristics of protocooperative behavior include: 1. relatively low speed phase in which cyclists naturally pass each other and share highest-cost front positions, and 2. free-riding phase in which cyclists maintain speeds of those ahead, but cannot pass. Threshold for protocooperative behavior is equivalent to coefficient of drafting d, below which cooperative behavior occurs; above which free-riding occurs up to a second threshold when coupled cyclists diverge. These behaviors are also hypothesized to emerge in other biological systems involving energy savings mechanisms. Further, the tension between intra-group cooperation and inter-group competition is consistent with superorganism properties.",
+    "primary_category": "physics.soc-ph",
+    "published": "2015-09-20T03:58:08Z",
+    "authors": [
+      "Hugh Trenchard"
+    ]
+  },
+  {
+    "arxiv_id": "2608.00314",
+    "doi": null,
+    "title": "Noise-induced stability of insect swarms",
+    "abstract": "Flying insect swarms exhibit cohesion without the local velocity alignment observed in flocks of birds or schools of fish. The interaction rules and channels of communication between insects that lead to collective behavior have not yet been determined. We propose a theoretical model based on acoustic communication between swarm members, where each individual is attracted to a weighted mean field of its neighbors. We demonstrate that this simple framework can describe a wide range of swarming dynamics, including a phenomenon where pairs of insects break free from the swarm in a helical orbit around each other. Counterintuitively, our numerical model suggests that stochastic noise enhances the stability of an insect swarm, as it interferes with pair formation. Finally, we demonstrate that a specific species of malarial mosquito produces swarms that reside on the edge of a transition to instability. Our study shows that fairly simple local interaction rules can be sufficient to describe the collective behavior of swarming biological systems.",
+    "primary_category": "physics.bio-ph",
+    "published": "2026-07-31T21:58:42Z",
+    "authors": [
+      "Justin Faber",
+      "Annabelle Boots",
+      "Dolores Bozovic"
+    ]
+  },
+  {
+    "arxiv_id": "2408.09917",
+    "doi": "10.1103/PhysRevE.111.044411",
+    "title": "Boltzmann approach to collective motion via nonlocal visual interaction",
+    "abstract": "Visual cues play crucial roles in the collective motion of animals, birds, fish, and insects. The interaction mediated by visual information is essentially non-local and has many-body nature due to occlusion, which poses a challenging problem in modeling the emergent collective behavior. In this paper, we introduce a Boltzmann-equation approach incorporating non-local visual interaction. Occlusion is treated in a self-consistent manner via a coarse-grained density field, which renders the interaction effectively pairwise. Our model also incorporates the recent finding that each organism stochastically selects a neighbor to interact at each instant. We analytically derive the order-disorder transition point, and show that the visual screening effect raises the transition threshold, which does not vanish when the density of the agents or the range of the intrinsic interaction is taken to infinity. Our analysis suggests that the model exhibits a discontinuous transition as in the local interaction models, and but the discontinuity is weakened by the non-locality. Our study clarifies the essential role of non-locality in the visual interactions among moving organisms.",
+    "primary_category": "nlin.AO",
+    "published": "2024-08-19T11:47:00Z",
+    "authors": [
+      "Susumu Ito",
+      "Nariya Uchida"
+    ]
+  },
+  {
+    "arxiv_id": "2407.11330",
+    "doi": null,
+    "title": "Navigating the swarm: Deep neural networks command emergent behaviours",
+    "abstract": "Interacting individuals in complex systems often give rise to coherent motion exhibiting coordinated global structures. Such phenomena are ubiquitously observed in nature, from cell migration, bacterial swarms, animal and insect groups, and even human societies. Primary mechanisms responsible for the emergence of collective behavior have been extensively identified, including local alignments based on average or relative velocity, non-local pairwise repulsive-attractive interactions such as distance-based potentials, interplay between local and non-local interactions, and cognitive-based inhomogeneous interactions. However, discovering how to adapt these mechanisms to modulate emergent behaviours remains elusive. Here, we demonstrate that it is possible to generate coordinated structures in collective behavior at desired moments with intended global patterns by fine-tuning an inter-agent interaction rule. Our strategy employs deep neural networks, obeying the laws of dynamics, to find interaction rules that command desired collective structures. The decomposition of interaction rules into distancing and aligning forces, expressed by polynomial series, facilitates the training of neural networks to propose desired interaction models. Presented examples include altering the mean radius and size of clusters in vortical swarms, timing of transitions from random to ordered states, and continuously shifting between typical modes of collective motions. This strategy can even be leveraged to superimpose collective modes, resulting in hitherto unexplored but highly practical hybrid collective patterns, such as protective security formations. Our findings reveal innovative strategies for creating and controlling collective motion, paving the way for new applications in robotic swarm operations, active matter organisation, and for the uncovering of obscure interaction rules in biological systems.",
+    "primary_category": "cs.NE",
+    "published": "2024-07-16T02:46:11Z",
+    "authors": [
+      "Dongjo Kim",
+      "Jeongsu Lee",
+      "Ho-Young Kim"
+    ]
+  },
+  {
+    "arxiv_id": "2402.09073",
+    "doi": "10.1093/pnasnexus/pgae264",
+    "title": "Selective decision-making and collective behavior of fish by the motion of visual attention",
+    "abstract": "Collective motion provides a spectacular example of self-organization in Nature. Visual information plays a crucial role among various types of information in determining interactions. Recently, experiments have revealed that organisms such as fish and insects selectively utilize a portion, rather than the entirety, of visual information. Here, focusing on fish, we propose an agent-based model where the direction of attention is guided by visual stimuli received from the images of nearby fish. Our model reproduces a branching phenomenon where a fish selectively follows a specific individual as the distance between two or three nearby fish increases. Furthermore, our model replicates various patterns of collective motion in a group of agents, such as vortex, polarized school, swarm, and turning. We also discuss the topological nature of the visual interaction, as well as the positional distribution of nearby fish and the map of pairwise and three-body interactions induced by them. Through a comprehensive comparison with existing experimental results, we clarify the roles of visual interactions and issues to be resolved by other forms of interactions.",
+    "primary_category": "nlin.AO",
+    "published": "2024-02-14T10:33:33Z",
+    "authors": [
+      "Susumu Ito",
+      "Nariya Uchida"
+    ]
+  },
+  {
+    "arxiv_id": "2307.09720",
+    "doi": null,
+    "title": "A Computational Topology-based Spatiotemporal Analysis Technique for Honeybee Aggregation",
+    "abstract": "A primary challenge in understanding collective behavior is characterizing the spatiotemporal dynamics of the group. We employ topological data analysis to explore the structure of honeybee aggregations that form during trophallaxis, which is the direct exchange of food among nestmates. From the positions of individual bees, we build topological summaries called CROCKER matrices to track the morphology of the group as a function of scale and time. Each column of a CROCKER matrix records the number of topological features, such as the number of components or holes, that exist in the data for a range of analysis scales at a given point in time. To detect important changes in the morphology of the group from this information, we first apply dimensionality reduction techniques to these matrices and then use classic clustering and change-point detection algorithms on the resulting scalar data. A test of this methodology on synthetic data from an agent-based model of honeybees and their trophallaxis behavior shows two distinct phases: a dispersed phase that occurs before food is introduced, followed by a food-exchange phase during which aggregations form. We then move to laboratory data, successfully detecting the same two phases across multiple experiments. Interestingly, our method reveals an additional phase change towards the end of the experiments, suggesting the possibility of another dispersed phase that follows the food-exchange phase.",
+    "primary_category": "q-bio.QM",
+    "published": "2023-07-19T02:03:32Z",
+    "authors": [
+      "Golnar Gharooni-Fard",
+      "Morgan Byers",
+      "Varad Deshmukh",
+      "Elizabeth Bradley",
+      "Carissa Mayo",
+      "Chad Topaz",
+      "Orit Peleg"
+    ]
+  },
+  {
+    "arxiv_id": "2211.03879",
+    "doi": "10.1142/9789811260438_0004",
+    "title": "Phase Transitions and Criticality in the Collective Behavior of Animals -- Self-organization and biological function",
+    "abstract": "Collective behaviors exhibited by animal groups, such as fish schools, bird flocks, or insect swarms are fascinating examples of self-organization in biology. Concepts and methods from statistical physics have been used to argue theoretically about the potential consequences of collective effects in such living systems. In particular, it has been proposed that such collective systems should operate close to a phase transition, specifically a (pseudo-)critical point, in order to optimize their capability for collective computation. In this chapter, we will first review relevant phase transitions exhibited by animal collectives, pointing out the difficulties of applying concepts from statistical physics to biological systems. Then we will discuss the current state of research on the \"criticality hypothesis\", including methods for how to measure distance from criticality and specific functional consequences for animal groups operating near a phase transition. We will highlight the emerging view that de-emphasizes the optimality of being exactly at a critical point and instead explores the potential benefits of living systems being able to tune to an optimal distance from criticality. We will close by laying out future challenges for studying collective behavior at the interface of physics and biology.",
+    "primary_category": "physics.bio-ph",
+    "published": "2022-11-07T21:38:00Z",
+    "authors": [
+      "Pawel Romanczuk",
+      "Bryan C. Daniels"
+    ]
+  },
+  {
+    "arxiv_id": "2206.07016",
+    "doi": null,
+    "title": "Dynamical behavior of a colony migration system: Do colony size and quorum threshold affect collective-decision?",
+    "abstract": "Social insects are ecologically and evolutionarily most successful organisms on earth, which can achieve robust collective behaviors through local interactions among group members. Colony migration has been considered as a leading example of collective decision-making in social insects. In this paper, a piecewise colony migration system with recruitment switching is proposed to explore underlying mechanisms and synergistic effects of colony size and quorum on the outcomes of collective decision. The completed dynamical analysis for the non-smooth system (including the dynamics on subsystems, switching surface, and full system) is performed, and the sufficient conditions significantly related to colony size for the stability of equilibria are provided. The theoretical results suggest that large colonies are more likely to emigrate to a new site. More interesting findings include but not limit to: (a) the system may exhibit oscillation when the colony size is below a critical level; (b) the system may also exhibit a bistable state, and colonies migrate to a new site or the old nest depending on their initial sizes of recruiters. Bifurcation analysis shows that the variations of colony size and quorum threshold greatly impact the dynamics. The results suggest that it is important to distinguish two populations of recruiters in modeling. This work may provide important insights on how simple and local interactions achieve the collective migrating activity in social insects.",
+    "primary_category": "math.DS",
+    "published": "2022-06-14T17:26:55Z",
+    "authors": [
+      "Lisha Wang",
+      "Zhipeng Qiu",
+      "Takao Sasaki",
+      "Yun Kang"
+    ]
+  },
+  {
+    "arxiv_id": "2203.14238",
+    "doi": null,
+    "title": "Bifurcation theory captures band formation in the Vicsek model of flock formation",
+    "abstract": "Collective behavior occurs ubiquitously in nature and it plays a key role in bacterial colonies, mammalian cells or flocks of birds. Here, we examine the average density and velocity of self-propelled particles, which are described by a system of partial differential equations near the flocking transition of the Vicsek model. This agent-based model illustrates the trend towards flock formation of animals that align their velocities to an average of those of their neighbors. Near the flocking transition, particle density and velocity obey partial differential equations that include a parameter $ε$ measuring the distance to the bifurcation point. We have obtained analytically the Riemann invariants in one and two spatial dimensions for the hyperbolic ($ε=0$) and parabolic ($ε\\neq 0$) system and, under periodic initial-boundary value conditions, we show that the solutions include wave trains. Additionally, we have found wave trains having oscillation frequencies that agree with those predicted by a linearization approximation and that may propagate at angles depending on the initial condition. The wave amplitudes increase with time for the hyperbolic system but are stabilized to finite values for the parabolic system. To integrate the partial differential equations, we design a basic numerical scheme which is first order in time and space. To mitigate numerical dissipation and ensure good resolution of the wave features, we also use a high order accurate WENO5 reconstruction procedure in space and a third order accurate Runge-Kutta scheme in time. Comparisons with direct simulations of the Vicsek model confirm these predictions.",
+    "primary_category": "cond-mat.stat-mech",
+    "published": "2022-03-27T08:11:20Z",
+    "authors": [
+      "C. Trenado",
+      "L. L. Bonilla",
+      "A. Marquina"
+    ]
+  },
+  {
+    "arxiv_id": "2007.04254",
+    "doi": null,
+    "title": "Dynamics of mosquito swarms over a moving marker",
+    "abstract": "Insect swarms are a model system for understanding collective behavior where the collective motion appears in disorder. To initiate and maintain a swarm in place, flying insects often use a visual external cue called a marker. In mosquitoes, understanding the swarming behavior and its relation to the marker has an additional medical relevance since swarming often precedes mating in the wild, thus constituting an important stage to intercept for controlling mosquito population. In this paper, we conduct preliminary experiments to characterize the visual coupling between a swarm of mosquitoes and a marker. A laboratory microcosm with artificial lighting was built to stimulate consistent swarming in the malarial mosquito Anopheles stephensi. The experimental setup was used to film a mosquito swarm with a stereo camera system as a marker was moved back-and-forth with different frequencies. System identification analysis of the frequency response shows that the relationship between the swarm and the marker can be described by delayed second order dynamics in a feedback loop. Further, the length of the internal time delay appears to correlate with the number of mosquitoes swarming on the marker indicating that such a delay may be able capture social interactions within swarming systems. For insect swarms, model fitting of trajectory data provides a way to numerically compare swarming behaviors of different species with respect to marker characteristics. These preliminary results motivate investigating linear dynamic system in feedback as a framework for modeling insect swarms and set the stage for future studies.",
+    "primary_category": "physics.bio-ph",
+    "published": "2020-07-08T16:43:40Z",
+    "authors": [
+      "Puneet Jain",
+      "Om Prakash Singh",
+      "Sachit Butail"
+    ]
+  },
+  {
+    "arxiv_id": "2004.00552",
+    "doi": "10.1371/journal.pone.0243628",
+    "title": "Development of swarm behavior in artificial learning agents that adapt to different foraging environments",
+    "abstract": "Collective behavior, and swarm formation in particular, has been studied from several perspectives within a large variety of fields, ranging from biology to physics. In this work, we apply Projective Simulation to model each individual as an artificial learning agent that interacts with its neighbors and surroundings in order to make decisions and learn from them. Within a reinforcement learning framework, we discuss one-dimensional learning scenarios where agents need to get to food resources to be rewarded. We observe how different types of collective motion emerge depending on the distance the agents need to travel to reach the resources. For instance, strongly aligned swarms emerge when the food source is placed far away from the region where agents are situated initially. In addition, we study the properties of the individual trajectories that occur within the different types of emergent collective dynamics. Agents trained to find distant resources exhibit individual trajectories with Lévy-like characteristics as a consequence of the collective motion, whereas agents trained to reach nearby resources present Brownian-like trajectories.",
+    "primary_category": "q-bio.PE",
+    "published": "2020-04-01T16:32:13Z",
+    "authors": [
+      "Andrea López-Incera",
+      "Katja Ried",
+      "Thomas Müller",
+      "Hans J. Briegel"
+    ]
+  },
+  {
+    "arxiv_id": "1901.07465",
+    "doi": null,
+    "title": "Collective learning from individual experiences and information transfer during group foraging",
+    "abstract": "Living in groups brings benefits to many animals, such as a protection against predators and an improved capacity for sensing and making decisions while searching for resources in uncertain environments. A body of studies has shown how collective behaviors within animal groups on the move can be useful for pooling information about the current state of the environment. The effects of interactions on collective motion have been mostly studied in models of agents with no memory. Thus, whether coordinated behaviors can emerge from individuals with memory and different foraging experiences is still poorly understood. By means of an agent based model, we quantify how individual memory and information fluxes can contribute to improving the foraging success of a group in complex environments. In this context, we define collective learning as a coordinated change of behavior within a group resulting from individual experiences and information transfer. We show that an initially scattered population of foragers visiting dispersed resources can gradually achieve cohesion and become selectively localized in space around the most salient resource sites. Coordination is lost when memory or information transfer among individuals is suppressed. The present modelling framework provides predictions for empirical studies of collective learning and could also find applications in swarm robotics and motivate new search algorithms based on reinforcement.",
+    "primary_category": "q-bio.PE",
+    "published": "2019-01-22T17:00:58Z",
+    "authors": [
+      "Andrea Falcón-Cortés",
+      "Denis Boyer",
+      "Gabriel Ramos-Fernández"
+    ]
+  },
+  {
+    "arxiv_id": "1703.04731",
+    "doi": "10.1098/rsos.170344",
+    "title": "Task allocation and site fidelity jointly influence foraging regulation in honey bee colonies",
+    "abstract": "Variation in behavior among group members often impacts collective outcomes. Individuals may vary both in the task that they perform and in the persistence with which they perform each task. Although both the distribution of individuals among tasks and differences among individuals in behavioral persistence can each impact collective behavior, we do not know if and how they jointly affect collective outcomes. Here we use a detailed computational model to examine the joint impact of colony-level distribution among tasks and behavioral persistence of individuals, specifically their fidelity to particular resource sites, on the collective tradeoff between exploring for new resources and exploiting familiar ones. We developed an agent-based model of foraging honey bees, parameterized by data from 5 colonies, in which we simulated scouts, who search the environment for new resources, and individuals who are recruited by the scouts to the newly found resources, i.e., recruits. We found that for each value of persistence there is a different optimal ratio of scouts to recruits that maximizes resource collection by the colony. Furthermore, changes to the persistence of scouts induced opposite effects from changes to the persistence of recruits on the collective foraging of the colony. The proportion of scouts that resulted in the most resources collected by the colony decreased as the persistence of recruits increased. However, this optimal proportion of scouts increased as the persistence of scouts increased. Thus, behavioral persistence and task participation can interact to impact a colony's collective behavior in orthogonal directions. Our work provides new insights and generates new hypotheses into how variation in behavior at both the individual and colony levels jointly impact the trade-off between exploring for new resources and exploiting familiar ones.",
+    "primary_category": "q-bio.PE",
+    "published": "2017-03-14T21:09:11Z",
+    "authors": [
+      "Thiago Mosqueiro",
+      "Chelsea Cook",
+      "Ramon Huerta",
+      "Jürgen Gadau",
+      "Brian Smith",
+      "Noa Pinter-Wollman"
+    ]
+  },
+  {
+    "arxiv_id": "1611.04223",
+    "doi": "10.1103/PhysRevE.95.012408",
+    "title": "Emergent pattern formation in an interstitial biofilm",
+    "abstract": "Collective behavior of bacterial colonies plays critical roles in adaptability, survivability, biofilm expansion and infection. We employ an individual-based model of an interstitial biofilm to study emergent pattern formation based on the assumptions that rod-shaped bacteria furrow through a viscous environment, and excrete extracellular polymeric substances which bias their rate of motion. Because the bacteria furrow through their environment, the substratum stiffness is a key control parameter behind the formation of distinct morphological patterns. By systematically varying this property (which we quantify with a stiffness coefficient γ), we show that subtle changes in the substratum stiffness can give rise to a stable state characterized by a high degree of local order and long-range pattern formation. The ordered state exhibits characteristics typically associated with bacterial fitness advantages, even though it is induced by changes in environmental conditions rather than changes in biological parameters. Our findings are applicable to broad range of biofilms and provide insights into the relationship between bacterial movement and their environment, and basic mechanisms behind self-organization of biophysical systems.",
+    "primary_category": "nlin.AO",
+    "published": "2016-11-14T01:53:04Z",
+    "authors": [
+      "Cameron Zachreson",
+      "Christian Wolff",
+      "Cynthia B. Whitchurch",
+      "Milos Toth"
+    ]
+  },
+  {
+    "arxiv_id": "1511.04528",
+    "doi": "10.1103/PhysRevX.6.011008",
+    "title": "Engineering sensorial delay to control phototaxis and emergent collective behaviors",
+    "abstract": "Collective motions emerging from the interaction of autonomous mobile individuals play a key role in many phenomena, from the growth of bacterial colonies to the coordination of robotic swarms. For these collective behaviours to take hold, the individuals must be able to emit, sense and react to signals. When dealing with simple organisms and robots, these signals are necessarily very elementary, e.g. a cell might signal its presence by releasing chemicals and a robot by shining light. An additional challenge arises because the motion of the individuals is often noisy, e.g. the orientation of cells can be altered by Brownian motion and that of robots by an uneven terrain. Therefore, the emphasis is on achieving complex and tunable behaviors from simple autonomous agents communicating with each other in robust ways. Here, we show that the delay between sensing and reacting to a signal can determine the individual and collective long-term behavior of autonomous agents whose motion is intrinsically noisy. We experimentally demonstrate that the collective behaviour of a group of phototactic robots capable of emitting a radially decaying light field can be tuned from segregation to aggregation and clustering by controlling the delay with which they change their propulsion speed in response to the light intensity they measure. We track this transition to the underlying dynamics of this system, in particular, to the ratio between the robots' sensorial delay time and the characteristic time of the robots' random reorientation. Supported by numerics, we discuss how the same mechanism can be applied to control active agents, e.g. airborne drones, moving in a three-dimensional space.",
+    "primary_category": "physics.bio-ph",
+    "published": "2015-11-14T08:30:28Z",
+    "authors": [
+      "Mite Mijalkov",
+      "Austin McDaniel",
+      "Jan Wehr",
+      "Giovanni Volpe"
+    ]
+  },
+  {
+    "arxiv_id": "2601.04111",
+    "doi": null,
+    "title": "Stigmergic optimal transport",
+    "abstract": "Efficient navigation in swarms often relies on the emergence of decentralized approaches that minimize traversal time or energy. Stigmergy, where agents modify a shared environment that then modifies their behavior, is a classic mechanism that can encode this strategy. We develop a theoretical framework for stigmergic transport by casting it as a stochastic optimal control problem: agents (collectively) lay and (individually) follow trails while minimizing expected traversal time. Simulations and analysis reveal two emergent behaviors: path straightening in homogeneous environments and path refraction at material interfaces, both consistent with experimental observations of insect trails. While reminiscent of Fermat's principle, our results show how local, noisy agent+field interactions can give rise to geodesic trajectories in heterogeneous environments, without centralized coordination or global knowledge, relying instead on an embodied slow fast dynamical mechanism.",
+    "primary_category": "q-bio.NC",
+    "published": "2026-01-07T17:17:32Z",
+    "authors": [
+      "Vishaal Krishnan",
+      "L. Mahadevan"
+    ]
+  },
+  {
+    "arxiv_id": "nlin/0502057",
+    "doi": null,
+    "title": "Social Cognitive Maps, Swarm Perception and Distributed Search on Dynamic Landscapes",
+    "abstract": "Swarm Intelligence (SI) is the property of a system whereby the collective behaviors of (unsophisticated) entities interacting locally with their environment cause coherent functional global patterns to emerge. SI provides a basis with which it is possible to explore collective (or distributed) problem solving without centralized control or the provision of a global model. To tackle the formation of a coherent social collective intelligence from individual behaviors, we discuss several concepts related to self-organization, stigmergy and social foraging in animals. Then, in a more abstract level we suggest and stress the role played not only by the environmental media as a driving force for societal learning, as well as by positive and negative feedbacks produced by the many interactions among agents. Finally, presenting a simple model based on the above features, we will address the collective adaptation of a social community to a cultural (environmental, contextual) or media informational dynamical landscape, represented here - for the purpose of different experiments - by several three-dimensional mathematical functions that suddenly change over time. Results indicate that the collective intelligence is able to cope and quickly adapt to unforeseen situations even when over the same cooperative foraging period, the community is requested to deal with two different and contradictory purposes. KEYWORDS: Swarm Intelligence and Perception, Social Cognitive Maps, Social Foraging, Self-Organization, Distributed Search and Optimization",
+    "primary_category": "nlin.AO",
+    "published": "2005-02-24T18:21:42Z",
+    "authors": [
+      "Vitorino Ramos",
+      "Carlos Fernandes",
+      "Agostinho C. Rosa"
+    ]
+  }
+]
