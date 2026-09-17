@@ -6,10 +6,11 @@ lives here; the script only sets paths and delegates.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 os.environ.setdefault("MPLBACKEND", "Agg")
 
@@ -100,11 +101,15 @@ def _setup_directories(project_root: Optional[str] = None) -> Tuple[str, str, st
     # ── Wipe regenerated subdirectories ──────────────────────────────────
     # Clean slate for generated artifacts, but tracked documentation
     # (README.md, AGENTS.md) inside output/ survives the wipe: it is
-    # versioned project content, not a regenerated artifact.
+    # versioned project content, not a regenerated artifact.  The
+    # full-text analysis artifact also survives: it is fingerprint-
+    # guarded against the harvested corpus (a multi-hour computation
+    # that _ensure_fulltext_artifact reuses whenever the fingerprint
+    # matches; a stale artifact is treated as absent and rebuilt).
     for wipe_dir in (figure_dir, data_dir):
         if os.path.exists(wipe_dir):
             for entry in os.listdir(wipe_dir):
-                if entry.endswith(".md"):
+                if entry.endswith(".md") or entry == "fulltext_analysis.json":
                     continue
                 path = os.path.join(wipe_dir, entry)
                 if os.path.isdir(path):
@@ -1020,84 +1025,249 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
         figure_metadata = {
             "concept_map.png": {
                 "label": "fig:concept_map",
-                "caption": "Ento-Linguistic Concept Map",
+                "caption": (
+                    "Concept map of the Ento-Linguistic domains, built by "
+                    "clustering the domain-assigned terminology of the "
+                    "headline PubMed abstract layer (about nineteen hundred "
+                    "abstracts). Each node is a concept cluster; node size "
+                    "is proportional to its term count (annotated below the "
+                    "label), node color encodes the concept's primary domain "
+                    "(legend at right), and edge width is proportional to "
+                    "relationship strength, with numeric weights at edge "
+                    "midpoints. Multi-domain hub concepts bridge the domain "
+                    "clusters."
+                ),
                 "section": "introduction",
             },
             "terminology_network.png": {
                 "label": "fig:terminology_network",
-                "caption": "Terminology Network with Domain Clustering",
+                "caption": (
+                    "Co-occurrence network of the extracted domain-assigned "
+                    "terminology of the headline PubMed abstract layer "
+                    "(about nineteen hundred abstracts). Each node is a "
+                    "term: size proportional to corpus frequency, color to "
+                    "its primary domain (legend at right). Edge width is "
+                    "proportional to the pipeline relationship weight "
+                    "(shared-domain overlap); isolated terms are omitted "
+                    "and only the twenty highest-frequency terms are "
+                    "labelled. Clusters are domain-specific terminology "
+                    "communities."
+                ),
                 "section": "experimental_results",
             },
             "domain_comparison.png": {
                 "label": "fig:domain_comparison",
-                "caption": "Cross-Domain Terminology Comparison",
+                "caption": (
+                    "Six-panel comparison of terminology characteristics "
+                    "across the six Ento-Linguistic domains, computed from "
+                    "the domain-assigned terminology of the headline PubMed "
+                    "abstract layer (about nineteen hundred abstracts). "
+                    "Bar charts with annotated values show: distinct-term "
+                    "count per domain, mean extraction confidence, total "
+                    "corpus frequency, mean semantic entropy in bits, count "
+                    "of bridging terms (assigned to more than one domain), "
+                    "and mean CACE aggregate score (sampled per domain). "
+                    "Bar colors distinguish domains, not magnitudes; higher "
+                    "mean entropy indicates usage contexts spanning more "
+                    "sense clusters (an association, not a causal claim)."
+                ),
                 "section": "experimental_results",
             },
             "domain_overlap_heatmap.png": {
                 "label": "fig:domain_overlap",
-                "caption": "Domain Term Overlap Heatmap",
+                "caption": (
+                    "Symmetric heatmap of Szymkiewicz--Simpson overlap "
+                    "coefficients between each pair of the six "
+                    "Ento-Linguistic domains, computed from term--domain "
+                    "assignments of the headline PubMed abstract layer "
+                    "(about nineteen hundred abstracts). Each cell is the "
+                    "count of terms assigned to both domains divided by the "
+                    "smaller domain's term count; the diagonal is one "
+                    "hundred percent by construction; darker cells "
+                    "(YlOrRd colormap) indicate higher shared terminology, "
+                    "and zero cells are observed zeros of the current "
+                    "corpus."
+                ),
                 "section": "experimental_results",
             },
             "anthropomorphic_framing.png": {
                 "label": "fig:anthropomorphic",
-                "caption": "Anthropomorphic Framing Analysis",
+                "caption": (
+                    "Two-panel inventory of the curated anthropomorphic "
+                    "vocabulary used by the framing analysis over the "
+                    "headline PubMed abstract layer (about nineteen "
+                    "hundred abstracts). Left: bar chart of the number of "
+                    "curated marker terms per category (Hierarchical "
+                    "Terms, Economic Metaphors, Kinship Language, Identity "
+                    "Labels, Agency Attribution), counts annotated and the "
+                    "category total shown. Right: table of up to five "
+                    "example terms per category. Counts are vocabulary "
+                    "sizes, not corpus frequencies; per-domain "
+                    "anthropomorphic proportions derived from these "
+                    "vocabularies are reported separately."
+                ),
                 "section": "discussion",
             },
             "concept_hierarchy.png": {
                 "label": "fig:concept_hierarchy",
-                "caption": "Conceptual Hierarchy Analysis",
+                "caption": (
+                    "Two-panel centrality analysis of the Ento-Linguistic "
+                    "concept map over the headline PubMed abstract layer "
+                    "(about nineteen hundred abstracts). Concepts are "
+                    "clusters of domain-assigned terms; centrality is a "
+                    "concept's count of direct links in the map. Left: "
+                    "concepts ranked by centrality, colored green for core "
+                    "(above the map-wide mean) and red for peripheral (at "
+                    "or below). Right: centrality versus associated-term "
+                    "count, point area proportional to centrality, top-ten "
+                    "concepts labelled. The ranking spans all six domains."
+                ),
                 "section": "discussion",
             },
             "unit_of_individuality_patterns.png": {
                 "label": "fig:unit_individuality_patterns",
-                "caption": "Unit of Individuality Terminology Patterns",
+                "caption": (
+                    "Two-panel terminology analysis of the Unit of "
+                    "Individuality domain over the headline PubMed "
+                    "abstract layer (about nineteen hundred abstracts). "
+                    "Left: pie chart of term-formation patterns "
+                    "(part-of-speech structure), percentages annotated. "
+                    "Right: bar chart of the number of domain terms "
+                    "matching keyword groups for five biological scales "
+                    "(Colony, Sub-colony, Individual, Genomic, Emergent), "
+                    "counts annotated; counts are floored at one for "
+                    "display. The distribution across scales grounds the "
+                    "scale ambiguity discussed in the manuscript."
+                ),
                 "section": "experimental_results",
             },
             "unit_of_individuality_term_frequencies.png": {
                 "label": "fig:unit_individuality_frequencies",
-                "caption": "Unit of Individuality Term Frequencies",
-                "section": "experimental_results",
+                "caption": (
+                    "Horizontal bar chart of the most frequent Unit of "
+                    "Individuality terms by corpus frequency over the "
+                    "headline PubMed abstract layer (about nineteen "
+                    "hundred abstracts); bar length encodes frequency, "
+                    "annotated at the bar tip."
+                ),
             },
             "unit_of_individuality_ambiguities.png": {
                 "label": "fig:unit_individuality_ambiguities",
-                "caption": "Unit of Individuality Ambiguity Analysis",
-                "section": "experimental_results",
+                "caption": (
+                    "Two-panel semantic-entropy analysis of Unit of "
+                    "Individuality terms over the headline PubMed abstract "
+                    "layer (about nineteen hundred abstracts). Left: "
+                    "per-term entropy bars sorted descending, annotated "
+                    "with entropy and context counts, with a dashed "
+                    "median line. Right: corpus frequency versus entropy "
+                    "scatter, point area proportional to context count "
+                    "and color repeating the entropy scale."
+                ),
             },
             "power_and_labor_term_frequencies.png": {
                 "label": "fig:power_labor_frequencies",
-                "caption": "Power & Labor Term Frequencies",
-                "section": "experimental_results",
+                "caption": (
+                    "Bar chart of the fifteen most frequent Power & Labor "
+                    "terms by corpus frequency over the headline PubMed "
+                    "abstract layer (about nineteen hundred abstracts). "
+                    "Bar height encodes frequency, annotated at the bar "
+                    "tip; bars ordered by descending frequency, with "
+                    "YlOrRd shading tracking rank order only."
+                ),
             },
             "power_and_labor_ambiguities.png": {
                 "label": "fig:power_labor_ambiguities",
-                "caption": "Power & Labor Ambiguity Analysis",
-                "section": "experimental_results",
+                "caption": (
+                    "Two-panel semantic-entropy analysis of the fifteen "
+                    "highest-entropy Power & Labor terms over the headline "
+                    "PubMed abstract layer (about nineteen hundred "
+                    "abstracts); entropy computed by TF-IDF vectorization "
+                    "of each term's usage contexts followed by k-means "
+                    "sense clustering. Left: per-term entropy bars sorted "
+                    "descending, annotated with entropy and context "
+                    "counts; dashed line marks the panel median. Right: "
+                    "corpus frequency versus entropy scatter, point area "
+                    "proportional to context count, color repeating the "
+                    "entropy scale."
+                ),
             },
             "domain_overview_grid.png": {
                 "label": "fig:domain_overview_grid",
-                "caption": "Domain Terminology Overview: Top Terms by Frequency & Semantic Entropy",
-                "section": "experimental_results",
+                "caption": (
+                    "Six-panel grid (one panel per Ento-Linguistic "
+                    "domain) of the ten highest-frequency terms by corpus "
+                    "frequency over the headline PubMed abstract layer "
+                    "(about nineteen hundred abstracts). Bar length "
+                    "encodes corpus frequency (annotated at the bar tip); "
+                    "panel titles give each domain's total term count; "
+                    "bar color encodes per-term semantic entropy in bits "
+                    "on a shared YlOrRd scale with a shared color bar; "
+                    "darker bars indicate terms whose usage contexts "
+                    "span more sense clusters."
+                ),
             },
             "domain_patterns_grid.png": {
                 "label": "fig:domain_patterns_grid",
-                "caption": "Domain POS-Composition Patterns: Vocabulary Structure by Domain",
-                "section": "experimental_results",
+                "caption": (
+                    "Six-panel grid of donut charts showing the "
+                    "part-of-speech composition of each Ento-Linguistic "
+                    "domain's vocabulary over the headline PubMed "
+                    "abstract layer (about nineteen hundred abstracts). "
+                    "Each slice is a grammatical category with angle "
+                    "proportional to its share of part-of-speech tag "
+                    "counts (a term may carry several tags, so shares are "
+                    "of tag counts, not distinct terms); categories "
+                    "beyond the six largest are grouped as Other; the "
+                    "donut centre annotates the domain's term count."
+                ),
             },
             "statistical_analysis.png": {
                 "label": "fig:statistical_analysis",
                 "caption": (
-                    "Statistical Analysis: Domain Semantic Entropy, Pairwise "
-                    "Effect Sizes, and Omnibus ANOVA"
+                    "Three-panel inferential summary of per-term semantic "
+                    "entropy over the six Ento-Linguistic domains in the "
+                    "headline PubMed abstract layer (about nineteen "
+                    "hundred abstracts). Panel (a): per-domain mean "
+                    "entropy bars with standard-deviation whiskers where "
+                    "reported and per-domain term counts annotated. "
+                    "Panel (b): diverging bars of pairwise Cohen's d "
+                    "effect sizes, colored by Benjamini-Hochberg "
+                    "significance (asterisks mark significant "
+                    "comparisons). Panel (c): omnibus one-way ANOVA "
+                    "summary text (F, p, eta-squared, correction "
+                    "metadata). Effect sizes and significance describe "
+                    "between-domain entropy differences in this corpus."
                 ),
                 "section": "experimental_results",
             },
             "fulltext_analysis.png": {
                 "label": "fig:fulltext_analysis",
                 "caption": (
-                    "Full-Text Parallel Layer: Domain Semantic Entropy, "
-                    "Pairwise Effect Sizes, and Omnibus ANOVA over the PMC "
-                    "Open Access full-text corpus (shared statistical "
-                    "machinery with the abstract layer)"
+                    "Same three-panel inferential summary as the abstract "
+                    "layer, computed over the PMC full-text parallel "
+                    "layer (about seven thousand PubMed Central "
+                    "open-access full texts): per-domain mean "
+                    "semantic-entropy bars with term counts, pairwise "
+                    "Cohen's d effect sizes colored by Benjamini-Hochberg "
+                    "significance, and the omnibus one-way ANOVA summary "
+                    "text. The full-text layer is a robustness check on "
+                    "the headline abstract layer, using the same frozen "
+                    "statistics schema."
+                ),
+                "section": "supplemental_results",
+            },
+            "layer_comparison.png": {
+                "label": "fig:layer_comparison",
+                "caption": (
+                    "Grouped per-domain bars of mean semantic entropy "
+                    "comparing the headline abstract layer (solid bars, "
+                    "about nineteen hundred PubMed abstracts) with the "
+                    "PMC full-text parallel layer (hatched bars, same "
+                    "domain palette, about seven thousand PubMed Central "
+                    "open-access full texts); per-layer term counts "
+                    "annotated at the bar tips. Differences between "
+                    "layers are descriptive of the two corpora and are "
+                    "not significance-tested in this figure."
                 ),
                 "section": "supplemental_results",
             },
@@ -1162,9 +1332,173 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
 
 
 # ═══════════════════════════════════════════════════════════════════════
-#  Main Entry Point
+#  Full-Text Stage Helpers
 # ═══════════════════════════════════════════════════════════════════════
 
+def _fulltext_corpus_fingerprint(
+    fulltexts: List[Dict[str, Any]], fulltexts_dir: str
+) -> Dict[str, Any]:
+    """Fingerprint the full-text corpus for artifact freshness.
+
+    Combines the corpus record count with the SHA-256 of the
+    provenance sidecar (``data/fulltexts/provenance.json``) — two
+    cheap reads that together change whenever the harvested corpus
+    changes.  The expensive 7,066-document full-text analysis is then
+    only rebuilt when the corpus actually changes, never silently at
+    a lower bound.
+
+    Args:
+        fulltexts: Corpus records loaded from the shards.
+        fulltexts_dir: Corpus directory holding ``provenance.json``.
+
+    Returns:
+        ``{"record_count": int, "provenance_sha256": str, "limit": None}``.
+        The ``limit`` key is ``None`` for the unbounded (full-corpus)
+        fingerprint; the stage records the applied bound there so a
+        bounded artifact can never satisfy the full-corpus guard.
+    """
+    provenance_path = os.path.join(fulltexts_dir, "provenance.json")
+    if os.path.isfile(provenance_path):
+        with open(provenance_path, "rb") as f:
+            provenance_sha = hashlib.sha256(f.read()).hexdigest()
+    else:
+        provenance_sha = "absent"
+    return {
+        "record_count": len(fulltexts),
+        "provenance_sha256": provenance_sha,
+        "limit": None,
+    }
+
+
+def _bhl_artifact_summary(project_root: str) -> Optional[Dict[str, Any]]:
+    """Load the BHL era-stratified artifact when present.
+
+    Args:
+        project_root: Project root holding ``data/bhl``.
+
+    Returns:
+        Parsed ``era_term_usage.json``, or ``None`` when the BHL
+        historical layer has not been harvested.
+    """
+    path = os.path.join(project_root, "data", "bhl", "era_term_usage.json")
+    if not os.path.isfile(path):
+        return None
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except (OSError, ValueError) as exc:
+        logger.warning("⚠️  Unreadable BHL artifact %s: %s", path, exc)
+        return None
+
+
+# ═══════════════════════════════════════════════════════════════════════
+#  Full-Text Corpus Fingerprint Guard
+# ═══════════════════════════════════════════════════════════════════════
+
+
+def _ensure_fulltext_artifact(
+    data_dir: str,
+    fulltexts_dir: str,
+    builder: Optional["Callable[..., Dict[str, Any]]"] = None,
+) -> Optional[Dict[str, Any]]:
+    """Load or rebuild the full-text analysis artifact under the
+    corpus fingerprint freshness guard.
+
+    The corpus is loaded from ``fulltexts_NNNNN.json`` shards and
+    fingerprinted (record count + provenance SHA-256, see
+    :func:`_fulltext_corpus_fingerprint`).  When the existing
+    ``<data_dir>/fulltext_analysis.json`` records the same fingerprint
+    the artifact is reused as-is; otherwise it is rebuilt (full corpus
+    by default, ``FULLTEXT_ANALYSIS_LIMIT`` bounding quick runs) and
+    the applied bound is recorded inside the stored fingerprint so a
+    bounded artifact can never satisfy the full-corpus guard.  The
+    existing artifact lacking a fingerprint (pre-guard output) counts
+    as stale and is regenerated once.
+
+    Args:
+        data_dir: Output data directory holding the artifact.
+        fulltexts_dir: Corpus directory with shards and provenance.
+        builder: Analysis builder override for tests (defaults to
+            ``pipeline.fulltext_pipeline.build_fulltext_analysis``).
+
+    Returns:
+        The artifact dict (fresh or newly built), or ``None`` when the
+        corpus shards are missing.
+    """
+    shards = sorted(
+        p
+        for p in os.listdir(fulltexts_dir)
+        if p.startswith("fulltexts_") and p.endswith(".json")
+    ) if os.path.isdir(fulltexts_dir) else []
+    if not shards:
+        logger.warning(
+            "⚠️  %s holds no fulltexts_*.json shards — full-text layer "
+            "stage skipped (run the full-text harvest first)",
+            fulltexts_dir,
+        )
+        return None
+    try:
+        from data.pmc_fulltext import load_fulltexts
+    except (ImportError, ValueError):
+        from src.data.pmc_fulltext import load_fulltexts
+
+    corpus = load_fulltexts(Path(fulltexts_dir))
+    fingerprint = _fulltext_corpus_fingerprint(corpus, fulltexts_dir)
+    artifact_path = os.path.join(data_dir, "fulltext_analysis.json")
+    existing: Optional[Dict[str, Any]] = None
+    if os.path.isfile(artifact_path):
+        try:
+            with open(artifact_path) as f:
+                existing = json.load(f)
+        except (OSError, ValueError) as exc:
+            logger.warning(
+                "⚠️  Unreadable existing artifact %s: %s", artifact_path, exc
+            )
+    if existing and existing.get("corpus_fingerprint") == fingerprint:
+        logger.info(
+            "  ✅ fulltext_analysis.json is fresh for corpus fingerprint "
+            "%s — skipping regeneration (%d documents)",
+            fingerprint,
+            existing.get("n_documents", 0),
+        )
+        return existing
+
+    # Bounded subset for runtime: the FULL corpus is the default (the
+    # artifact is expensive and only rebuilt when the corpus changes);
+    # override with FULLTEXT_ANALYSIS_LIMIT for quick runs.
+    fulltexts = corpus
+    limit_env = os.environ.get("FULLTEXT_ANALYSIS_LIMIT")
+    limit = int(limit_env) if limit_env else None
+    if limit and 0 < limit < len(fulltexts):
+        logger.info(
+            "  FULLTEXT_ANALYSIS_LIMIT=%s: analyzing first %d of %d documents",
+            limit,
+            limit,
+            len(fulltexts),
+        )
+        fulltexts = fulltexts[:limit]
+    bounded_fingerprint = dict(fingerprint, limit=limit)
+    logger.info("▶ Building full-text analysis artifact...")
+    if builder is None:
+        from pipeline.fulltext_pipeline import build_fulltext_analysis
+
+        builder = build_fulltext_analysis
+    artifact = builder(fulltexts)
+    artifact["corpus_fingerprint"] = bounded_fingerprint
+    os.makedirs(data_dir, exist_ok=True)
+    with open(artifact_path, "w") as f:
+        json.dump(artifact, f, indent=2, default=str)
+    logger.info(
+        f"  ✅ fulltext_analysis.json: {artifact['n_documents']} "
+        f"documents, {len(artifact['pairwise'])} pairwise tests, "
+        f"{len(artifact.get('skipped', []))} skipped"
+    )
+    return artifact
+
+
+# ═══════════════════════════════════════════════════════════════════════
+#  Main Entry Point
+# ═══════════════════════════════════════════════════════════════════════
 def main(project_root: Optional[str] = None) -> None:
     """Generate all research figures and data using the real analysis pipeline.
 
@@ -1180,6 +1514,7 @@ def main(project_root: Optional[str] = None) -> None:
     output_dir, data_dir, figure_dir = _setup_directories(project_root)
 
     logger.info("=" * 70)
+
     logger.info("  Ento-Linguistic Research Figure Generation Pipeline")
     logger.info("=" * 70)
     logger.info(f"  Output: {output_dir}")
@@ -1225,50 +1560,79 @@ def main(project_root: Optional[str] = None) -> None:
 
     # ── Full-text parallel layer stage ────────────────────────────────
     # Builds output/data/fulltext_analysis.json from the PMC full-text
-    # corpus (data/fulltexts/fulltexts.json) when available, mirroring the
+    # corpus shards (data/fulltexts/fulltexts_NNNNN.json), mirroring the
     # abstract-layer statistics schema, and renders the parallel figure.
     # Failure warns and continues — same convention as the stats stage.
-    fulltexts_path = os.path.join(project_root, "data", "fulltexts", "fulltexts.json")
-    if not os.path.isfile(fulltexts_path):
-        logger.warning(
-            "⚠️  %s not found — full-text layer stage skipped "
-            "(run the full-text harvest first)",
-            fulltexts_path,
-        )
-    else:
-        try:
-            from pipeline.fulltext_pipeline import build_fulltext_analysis
+    #
+    # FRESHNESS GUARD: the full-corpus analysis (7,066 documents) takes
+    # hours, so it is only rebuilt when the harvested corpus actually
+    # changes.  The corpus is fingerprinted (record count + provenance
+    # SHA-256); when the existing output/data/fulltext_analysis.json
+    # records the same fingerprint, the artifact is reused as-is and the
+    # figure is re-rendered from it.  The default bound is UNSET (full
+    # corpus); FULLTEXT_ANALYSIS_LIMIT still bounds for quick runs, and
+    # a bounded run records its limit in the fingerprint so it can never
+    # satisfy the full-corpus guard.  See
+    # :func:`_ensure_fulltext_artifact`.
+    fulltexts_dir = os.path.join(project_root, "data", "fulltexts")
+    try:
+        fulltext_artifact = _ensure_fulltext_artifact(data_dir, fulltexts_dir)
+    except Exception as exc:
+        fulltext_artifact = None
+        logger.warning(f"⚠️  Full-text analysis stage warning: {exc}")
 
-            with open(fulltexts_path) as f:
-                fulltexts = json.load(f)
-            # Bounded subset for runtime: the full 500-document corpus is
-            # the default; override with FULLTEXT_ANALYSIS_LIMIT when a
-            # smaller run is needed.
-            limit = int(os.environ.get("FULLTEXT_ANALYSIS_LIMIT", "500"))
-            if limit and 0 < limit < len(fulltexts):
-                logger.info(
-                    "  FULLTEXT_ANALYSIS_LIMIT=%s: analyzing first %d of %d documents",
-                    limit,
-                    limit,
-                    len(fulltexts),
-                )
-                fulltexts = fulltexts[:limit]
-            logger.info("▶ Building full-text analysis artifact...")
-            fulltext_artifact = build_fulltext_analysis(fulltexts)
-            fulltext_path = os.path.join(data_dir, "fulltext_analysis.json")
-            with open(fulltext_path, "w") as f:
-                json.dump(fulltext_artifact, f, indent=2, default=str)
-            logger.info(
-                f"  ✅ fulltext_analysis.json: {fulltext_artifact['n_documents']} "
-                f"documents, {len(fulltext_artifact['pairwise'])} pairwise tests, "
-                f"{len(fulltext_artifact.get('skipped', []))} skipped"
-            )
+    if fulltext_artifact is not None:
+        try:
             fig_path = plot_statistical_analysis(
                 fulltext_artifact, figure_dir, filename="fulltext_analysis.png"
             )
             figures.append(fig_path)
         except Exception as exc:
-            logger.warning(f"⚠️  Full-text analysis stage warning: {exc}")
+            logger.warning(f"⚠️  Full-text figure warning: {exc}")
+
+        # ── Layer-comparison figure ───────────────────────────────────
+        # Rendered when BOTH the abstract-layer statistics artifact and
+        # the full-text artifact exist on disk.
+        try:
+            try:
+                from .statistical_visualization import plot_layer_comparison
+            except (ImportError, ValueError):
+                from visualization.statistical_visualization import (
+                    plot_layer_comparison,
+                )
+            stats_disk_path = os.path.join(data_dir, "statistical_analysis.json")
+            abstract_artifact: Optional[Dict[str, Any]] = None
+            if os.path.isfile(stats_disk_path):
+                with open(stats_disk_path) as f:
+                    abstract_artifact = json.load(f)
+            if abstract_artifact and fulltext_artifact:
+                fig_path = plot_layer_comparison(
+                    abstract_artifact, fulltext_artifact, figure_dir
+                )
+                figures.append(fig_path)
+            else:
+                logger.warning(
+                    "⚠️  layer_comparison.png skipped: abstract and/or "
+                    "full-text artifacts missing"
+                )
+        except Exception as exc:
+            logger.warning(f"⚠️  Layer-comparison stage warning: {exc}")
+
+    # ── BHL historical-layer artifact check ───────────────────────────
+    bhl_artifact = _bhl_artifact_summary(project_root)
+    if bhl_artifact:
+        eras = bhl_artifact.get("eras") or {}
+        logger.info(
+            "  ✅ BHL historical layer present: %s documents across %d eras "
+            "(era_term_usage.json; feeds the BHL_* manuscript tokens)",
+            (bhl_artifact.get("source") or {}).get("documents", 0),
+            len(eras),
+        )
+    else:
+        logger.info(
+            "  ℹ️  No BHL historical-layer artifact (data/bhl/era_term_usage.json); "
+            "BHL_* manuscript tokens omitted"
+        )
 
     fig_path = generate_concept_map(results, figure_dir)
     if fig_path:

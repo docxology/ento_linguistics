@@ -1,5 +1,6 @@
 """Comprehensive integration tests for the entire pipeline to ensure all components work together."""
 
+import json
 import os
 import shutil
 import subprocess
@@ -54,6 +55,40 @@ def _get_infrastructure_paths():
     )
     return repo_root, cli_script, glossary_script
 
+# Small deterministic abstract corpus copied into sandbox projects in
+# place of the real data/corpus/abstracts.json (1,907 records). Covers
+# all six Ento-Linguistic domains so the sandboxed figure-generation
+# stage exercises the same analysis paths on a fixture-sized input.
+_SANDBOX_FIXTURE_ABSTRACTS = [
+    "The queen lays eggs continuously in the brood chamber while workers "
+    "tend the brood and maintain the nest structure of the colony.",
+    "Eusocial insect colonies exhibit a reproductive division of labor in "
+    "which the queen caste produces offspring and the worker caste performs "
+    "colony maintenance tasks.",
+    "Foraging behavior in harvester ants is regulated by local interactions "
+    "among nestmates rather than by centralized control from the queen.",
+    "Haplodiploidy in the Hymenoptera creates asymmetric relatedness among "
+    "full sisters, shaping the evolution of eusocial reproduction.",
+    "Colony-level selection may operate as a superorganism when individual "
+    "fitness is subordinated to collective reproductive outcomes.",
+    "Task allocation in ant colonies follows economic principles: workers "
+    "switch between foraging and nest maintenance to maximize the colony's "
+    "net energy intake.",
+    "Cuticular hydrocarbon profiles mediate nestmate recognition, and "
+    "workers reject non-nestmates at the colony entrance.",
+    "Reproductive conflict in the colony is suppressed by worker policing: "
+    "eggs laid by workers are removed while the queen's eggs survive.",
+    "The soldier caste in Pheidole colonies specializes in defense while "
+    "minor workers perform brood care and forage for the colony.",
+    "Trophallaxis distributes food resources among nestmates, creating a "
+    "colony-wide economy of shared protein and carbohydrate.",
+    "Colony size predicts allometric scaling of worker body size, with "
+    "larger colonies producing more specialized castes.",
+    "Seed dispersal by ants is a mutualism: the colony gains elaiosome "
+    "nutrition while the plant's seeds are cached in nutrient-rich nest "
+    "refuse.",
+]
+
 
 def _setup_test_project_structure(tmp_path: Path, test_name: str) -> Path:
     """Setup proper test project structure with infrastructure and project directories.
@@ -63,6 +98,8 @@ def _setup_test_project_structure(tmp_path: Path, test_name: str) -> Path:
     └── project/
         ├── src/              (from project/src/)
         ├── scripts/          (from project/scripts/)
+        ├── data/             (from project/data/, excluding fulltexts/ and bhl/;
+        │                      abstracts.json replaced by a small fixture corpus)
         ├── manuscript/       (created empty)
         └── output/           (created empty)
 
@@ -94,18 +131,36 @@ def _setup_test_project_structure(tmp_path: Path, test_name: str) -> Path:
     if scripts_src.exists():
         shutil.copytree(scripts_src, project_test / "scripts")
 
-    # Copy data/ if exists (for real corpus)
+    # Copy data/ if exists (for real corpus). Heavy corpus payloads are
+    # excluded: data/fulltexts/ (multi-hour full-text analysis stage — the
+    # pipeline warns-and-skips when the shards are absent) and data/bhl/
+    # (optional historical layer). The abstract corpus itself is replaced
+    # by a small deterministic fixture set instead of the real
+    # 1,907-record corpus so the sandboxed analysis stays fast.
     data_src = project_root / "data"
     if data_src.exists():
-        # If output/data destination already exists from previous steps (it shouldn't yet), handle it matches
-        # but here we are copying the source data (corpus), not output data.
         # The test_root/project directory structure:
         # project/
-        #   data/  <-- Real data here
+        #   data/  <-- Fixture data here
         #   output/
         #     data/ <-- Generated data here
-        shutil.copytree(data_src, project_test / "data")
-    
+        shutil.copytree(
+            data_src,
+            project_test / "data",
+            ignore=shutil.ignore_patterns("fulltexts", "bhl", "abstracts.json"),
+        )
+        corpus_dir = project_test / "data" / "corpus"
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+        (corpus_dir / "abstracts.json").write_text(
+            json.dumps(_SANDBOX_FIXTURE_ABSTRACTS, indent=2), encoding="utf-8"
+        )
+
+    # Regression guard: a sandbox must never receive the heavy full-text
+    # shards (280 MB; the full-text analysis stage would run for hours)
+    # nor the BHL holdings.
+    assert not (project_test / "data" / "fulltexts").exists()
+    assert not (project_test / "data" / "bhl").exists()
+
     # Create output and manuscript directories
     (project_test / "output" / "figures").mkdir(parents=True, exist_ok=True)
     (project_test / "output" / "data").mkdir(parents=True, exist_ok=True)

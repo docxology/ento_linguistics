@@ -1108,13 +1108,13 @@ Figure \ref{fig:terminology_network} illustrates the resulting network.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/terminology_network.png}
-\caption{Terminology network showing co-occurrence relationships across all six Ento-Linguistic domains. Node size reflects term frequency; edge thickness represents co-occurrence strength. Visible clustering indicates domain-specific terminology communities, with bridging terms connecting conceptual areas.}
+\caption{Co-occurrence network of the domain-assigned terminology extracted from the headline abstract layer (1907 open-access PubMed abstracts; 3692 candidate terms, of which 559 are assigned to at least one Ento-Linguistic domain). Each node is an extracted term: node size is proportional to corpus frequency, and node color encodes the term's primary Ento-Linguistic domain (legend at right). Edge width is proportional to the pipeline relationship weight between terms (shared-domain overlap, Eq.~\ref{eq:network_edge_weight}); isolated terms are omitted, and only the twenty highest-frequency terms are labelled for legibility. Clustered regions are terminology communities dominated by particular domains; terms linking communities are the bridging terms discussed in the text. Network values resolve at build time from \texttt{output/data/domain\_statistics.json} and \texttt{output/data/concept\_map\_summary.json}.}
 \label{fig:terminology_network}
 \end{figure}
 
 The network exhibits strong modularity: 3698 nodes (3692 extracted terms
-plus the 6 conceptual cluster nodes) connected by 681 edges, with a
-clustering coefficient of 0.0656 and average degree of 0.37. These
+plus the 6 conceptual cluster nodes) connected by 641 edges, with a
+clustering coefficient of 0.0670 and average degree of 0.35. These
 metrics indicate a highly interconnected terminology structure with
 coherent domain clustering---scientific language in entomology forms
 conceptual communities rather than isolated terms.
@@ -1133,7 +1133,7 @@ visualized in Figure \ref{fig:domain_overlap}.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/domain_overlap_heatmap.png}
-\caption{Domain overlap heatmap showing the Szymkiewicz--Simpson overlap coefficient of shared terminology between each pair of Ento-Linguistic domains. Darker cells indicate higher overlap; Power \& Labor exhibits the strongest cross-domain connectivity (particularly to Behavior \& Identity and Sex \& Reproduction), while Economics shows zero bridging terms with other domains. Off-diagonal asymmetry reflects directional borrowing patterns. Values are computed at runtime from the extracted term-domain assignments in \texttt{output/data/domain\_statistics.json}.}
+\caption{Cross-domain terminology overlap among the six Ento-Linguistic domains, computed at build time from the term--domain assignments of the headline abstract layer (1907 open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). Each cell is the Szymkiewicz--Simpson overlap coefficient (Eq.~\ref{eq:overlap_coefficient}): the number of extracted terms assigned to both domains of the pair, divided by the smaller domain's term count. The heatmap is symmetric, so off-diagonal cells read the same in both directions; darker cells (\texttt{YlOrRd} colormap) indicate higher shared terminology, and the diagonal is 100\% by construction. The strongest observed connectivity joins Power \& Labor with Behavior \& Identity and with Sex \& Reproduction; zero cells (for example Economics with Behavior \& Identity) are observed zeros of the current corpus: no extracted term is assigned to both domains of those pairs.}
 \label{fig:domain_overlap}
 \end{figure}
 
@@ -1158,7 +1158,7 @@ domains.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/domain_comparison.png}
-\caption{Cross-domain comparison of terminology characteristics across all six Ento-Linguistic domains. The six panels show (top-left) the number of distinct terms extracted per domain, (top-right) the average confidence score assigned during extraction, (center-left) cumulative term frequency across the corpus, (center-right) the mean semantic entropy $H(t)$ per domain, (bottom-left) cross-domain bridging term counts, and (bottom-right) the mean CACE aggregate score. Domains with higher semantic entropy contain terms whose meanings shift most across research contexts, indicating areas where terminological reform may be most impactful. All panel values are computed at runtime from \texttt{output/data/domain\_statistics.json}.}
+\caption{Comparison of terminology characteristics across the six Ento-Linguistic domains, computed at build time from the domain-assigned terminology of the headline abstract layer (1907 open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). The 3\,×\,2 grid of bar charts shows (top-left) the number of distinct terms extracted per domain, (top-right) the mean extraction confidence assigned by the term extractor, (center-left) the total corpus frequency of each domain's terms, (center-right) the mean semantic entropy $H(t)$ per domain (Eq.~\ref{eq:semantic_entropy}, averaged over the domain's terms), (bottom-left) the number of bridging terms (terms assigned to more than one domain), and (bottom-right) the mean CACE aggregate score (Clarity, Appropriateness, Consistency, Evolvability; computed per domain on a sample of up to fifty terms). Within each panel, bar height encodes the quantity named on the $y$-axis, with values annotated at the bar tips; bar colors distinguish domains, not magnitudes. Domains with higher mean semantic entropy have usage contexts spanning more sense clusters in this corpus---an observed association, not evidence of causal framing effects.}
 \label{fig:domain_comparison}
 \end{figure}
 
@@ -1180,7 +1180,7 @@ heavily within the Power/Labor and Unit of Individuality discourse.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/anthropomorphic_framing.png}
-\caption{Anthropomorphic framing prevalence across Ento-Linguistic domains. The trajectory highlights paradigm shifts across decades, showcasing how domains like Power \& Labor experienced steep declines in overt anthropomorphism—consistent with the formal "slave" terminology reforms documented in Section \ref{sec:discussion}—while economic framing concurrently rose to prominence.}
+\caption{Inventory of the curated anthropomorphic vocabulary used by the framing analysis over the headline abstract layer (1907 open-access PubMed abstracts). \emph{Left}: number of curated marker terms per category---Hierarchical Terms, Economic Metaphors, Kinship Language, Identity Labels, and Agency Attribution; bar height encodes the count, annotated at the bar tip, with the overall total shown bottom-right. \emph{Right}: up to five example terms per category. These categories define the marker vocabularies that the pipeline's framing analysis matches in term-occurrence contexts; the counts are the sizes of the curated vocabularies, not corpus frequencies. Per-domain anthropomorphic-framing proportions derived from these vocabularies resolve at build time from \texttt{output/data/domain\_statistics.json}.}
 \label{fig:anthropomorphic}
 \end{figure}
 
@@ -1212,21 +1212,21 @@ and Figure \ref{fig:domain_patterns_grid} respectively.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/domain_overview_grid.png}
-\caption{Domain Terminology Overview: top-10 terms by corpus frequency for each of the six Ento-Linguistic domains, displayed as a 3\,×\,2 grid of horizontal bar charts. Bar color encodes semantic entropy $H(t)$ (bits) on a shared \texttt{YlOrRd} scale; darker bars indicate higher polysemy. The overview highlights Economics' high entropy despite sparse vocabulary, with Power \& Labor and Behavior \& Identity also showing notable polysemy.}
+\caption{Top terms by corpus frequency for each of the six Ento-Linguistic domains, as a 3\,×\,2 grid of horizontal bar charts computed at build time from the terminology of the headline abstract layer (1907 open-access PubMed abstracts; 559 domain-assigned terms; \texttt{output/data/domain\_statistics.json}). Within each panel, the ten highest-frequency terms of that domain are ranked by corpus frequency (bar length, annotated at the bar tip); panel titles give each domain's total term count. Bar color encodes per-term semantic entropy $H(t)$ in bits (Eq.~\ref{eq:semantic_entropy}) on a shared \texttt{YlOrRd} scale spanning zero to the corpus maximum, with the shared color bar at right; darker bars indicate terms whose usage contexts span more sense clusters. The grid shows Economics as the smallest domain while its terms carry the highest entropies (Table \ref{tab:entropy_distribution}), with Power \& Labor and Behavior \& Identity also containing high-entropy terms.}
 \label{fig:domain_overview_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/domain_patterns_grid.png}
-\caption{Domain POS-Composition Patterns: donut charts showing the part-of-speech structure of each domain's vocabulary (3\,×\,2 grid, one panel per domain). Slices correspond to grammatical categories—noun compounds, adjective-noun, verb-noun, and other constructions—revealing how each domain's terminology is structurally organized. Domains with a dominant noun-compound slice (e.g., Unit of Individuality) tend toward reification of biological processes.}
+\caption{Part-of-speech composition of each Ento-Linguistic domain's vocabulary, shown as donut charts in a 3\,×\,2 grid (one panel per domain), computed at build time from the part-of-speech tags of the domain-assigned terms extracted from the headline abstract layer (1907 open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). Each slice is a grammatical category (for example noun compounds, adjective--noun, or verb--noun constructions) with slice angle proportional to that category's share of part-of-speech tag counts within the domain; because a term can carry several tags, shares are of tag counts, not distinct terms. Categories beyond the six largest per domain are grouped as \emph{Other}, and the annotation at each donut's centre gives the domain's term count. Domains whose slices concentrate in noun-compound categories (for example Unit of Individuality) have vocabularies structurally biased toward reified noun phrases in this corpus.}
 \label{fig:domain_patterns_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/unit_of_individuality_patterns.png}
-\caption{Unit of Individuality domain analysis showing terminology patterns across biological scales. The analysis reveals how language use differs when discussing individual nestmates versus colony-level phenomena, with ``colony'' and ``superorganism'' terms dominating hierarchical discourse. Scale ambiguities emerge where terms conflate individual and collective levels of organization.}
+\caption{Terminology patterns in the Unit of Individuality domain, computed at build time from the domain's terms in the headline abstract layer (1907 open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). \emph{Left}: term-formation patterns (the part-of-speech structure of the domain's terms) as a pie chart, with slice angles proportional to pattern counts and percentages annotated. \emph{Right}: number of domain terms whose names match keyword groups for five biological scales---Colony (Superorganism), Sub-colony (Caste), Individual (Worker), Genomic (Gene-level), and Emergent (Collective)---as a bar chart with counts annotated; counts are floored at one for display, so a near-zero scale is indistinguishable from a single match. Colony-level terms such as ``colony'' and ``superorganism'' populate the colony-scale group; the distribution across scales grounds the scale ambiguities discussed in the text.}
 \label{fig:unit_individuality_patterns}
 \end{figure}
 
@@ -1256,21 +1256,21 @@ studies (Figures \ref{fig:concept_hierarchy},
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/concept_hierarchy.png}
-\caption{Conceptual hierarchy in Power \& Labor domain showing how human social terminology structures scientific understanding of ant societies. The term "caste" creates direct parallels to human hierarchical systems \cite{crespi1992caste}, while terms like "queen" and "worker" impose role-based identities that may not reflect biological flexibility. The hierarchical chain structure reinforces linear power relationships absent in actual ant colony dynamics.}
+\caption{Concept-centrality structure of the Ento-Linguistic concept map, computed at build time from the concept map built over the headline abstract layer (1907 open-access PubMed abstracts; \texttt{output/data/concept\_map\_summary.json}). Concepts are clusters of domain-assigned terms; a concept's centrality is its number of direct links to other concepts in the map. \emph{Left}: all concepts ranked by centrality (bar length, score annotated at the bar tip), colored green for core concepts (centrality strictly above the map-wide mean) and red for peripheral concepts (at or below the mean). \emph{Right}: centrality against the number of associated terms, with point area proportional to centrality and the ten highest-centrality concepts labelled. The ranking spans all six Ento-Linguistic domains; it is not restricted to Power \& Labor.}
 \label{fig:concept_hierarchy}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/power_and_labor_term_frequencies.png}
-\caption{Frequency analysis of Power \& Labor domain terminology. ``Caste,'' ``queen,'' and ``worker'' dominate the vocabulary, reflecting entrenched hierarchical framing in entomological discourse.}
+\caption{Corpus frequency of the fifteen most frequent Power \& Labor terms, computed at build time from the domain-assigned terminology of the headline abstract layer (1907 open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). Bar height encodes total corpus frequency, annotated at the bar tip; bars are ordered by descending frequency, and the \texttt{YlOrRd} shading tracks rank order only, encoding no additional quantity. In the current corpus ``queen,'' ``worker,'' and ``caste'' are the three most frequent terms of this domain, consistent with the entrenched hierarchical framing discussed in the text; the ranking is descriptive, and no significance testing is applied to it.}
 \label{fig:power_labor_frequencies}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output/figures/power_and_labor_ambiguities.png}
-\caption{Semantic entropy $H(t)$ for Power \& Labor domain terms (Eq.~\ref{eq:semantic_entropy}). \emph{Left}: per-term entropy sorted by descending $H(t)$, with context counts annotated; a dashed line marks the panel median. \emph{Right}: corpus frequency plotted against $H(t)$, with point size proportional to the number of extracted contexts per term. Terms such as ``caste'' and ``queen'' exhibit elevated entropy, consistent with their documented polysemy across hierarchical, reproductive, and behavioral research contexts.}
+\caption{Semantic entropy $H(t)$ of Power \& Labor terms (Eq.~\ref{eq:semantic_entropy}), computed at build time from the usage contexts of the domain's terms in the headline abstract layer (1907 open-access PubMed abstracts; TF-IDF vectorization of each term's contexts followed by $k$-means sense clustering; \texttt{output/data/domain\_statistics.json}). The fifteen highest-entropy terms of the domain are shown. \emph{Left}: per-term entropy as bars sorted by descending $H(t)$, each annotated with its entropy in bits and extracted-context count, with a dashed vertical line marking the panel median. \emph{Right}: corpus frequency (horizontal) against $H(t)$ (vertical), with point area proportional to the number of extracted contexts and point color repeating the entropy scale (\texttt{Purples}). ``Caste'' and ``queen'' exhibit elevated entropy in this corpus, consistent with their documented polysemy across hierarchical, reproductive, and behavioral research contexts; entropy values describe context diversity and imply no preferred reform direction.}
 \label{fig:power_labor_ambiguities}
 \end{figure}
 
@@ -1530,7 +1530,7 @@ accumulates across a research community.
 
 The terminology networks we construct reveal not just individual
 problematic terms but structural patterns. The high clustering
-coefficient (0.0656) indicates that terms reinforce each other within
+coefficient (0.0670) indicates that terms reinforce each other within
 conceptual clusters, creating self-sustaining frameworks that resist
 piecemeal reform. This network-level effect connects to
 \citeauthor{foucault1972archaeology}'s
@@ -1693,7 +1693,7 @@ disciplinary boundaries should be especially attentive to these
 polysemous bridge terms, as divergent interpretations represent a
 systematic source of miscommunication.
 
-Conversely, the strong domain clustering (clustering coefficient 0.0656)
+Conversely, the strong domain clustering (clustering coefficient 0.0670)
 indicates that within-domain communication is relatively coherent. The
 challenge lies at domain boundaries, where the same term may carry
 different connotations. Making these boundary effects explicit---through
@@ -3210,21 +3210,28 @@ accompanying summary figure \texttt{statistical\_analysis.png}.
 \subsection{Full-Text Parallel Layer}\label{full-text-parallel-layer}
 
 To test whether the ento-linguistic patterns reported above survive
-beyond abstracts, a parallel analysis layer was run over 500 open access
-full texts harvested from PubMed Central (PMC). The abstract corpus
-remains the headline corpus of this study; the full-text layer is
+beyond abstracts, a parallel analysis layer was run over 7066 open
+access full texts harvested from PubMed Central (PMC). The abstract
+corpus remains the headline corpus of this study; the full-text layer is
 reported here as a robustness check. The analysis machinery is shared:
 the same terminology extraction, domain assignment, semantic-entropy,
 and CACE scoring implementations are applied to full texts, with the
 frozen artifact written to \texttt{output/data/fulltext\_analysis.json}
 and rendered in figure \texttt{fulltext\_analysis.png}.
 
-The layer comprises 2951458 tokens of running text, with a per-document
-median of 5368.5000 tokens. Table \ref{tab:fulltext_domain} reports
+The layer comprises 44440455 tokens of running text, with a per-document
+median of 5621.0000 tokens. Table \ref{tab:fulltext_domain} reports
 per-domain term counts and mean semantic entropy over the full texts; 15
 pairwise Welch \(t\)-tests (Benjamini-Hochberg corrected, as in Table
 \ref{tab:pairwise_domain}) accompany the omnibus one-way ANOVA on
-per-term semantic entropy, \(F = 0.6952\), 0.6286.
+per-term semantic entropy, \(F = 3.8601\), 0.0019.
+
+Anthropomorphic framing over the same full texts is scored as the
+proportion of domain-term occurrence contexts containing an
+anthropomorphic framing marker (\texttt{add\_framing\_analysis} in
+\texttt{src/pipeline/fulltext\_pipeline.py}): 0.0169 overall, with
+Economics a clear outlier at 0.0957 against 0.0072 for Unit of
+Individuality and 0.0064 for Behavior \& Identity.
 
 \begin{table}[h]
 \centering
@@ -3232,12 +3239,12 @@ per-term semantic entropy, \(F = 0.6952\), 0.6286.
 \hline
 \textbf{Domain} & \textbf{Terms extracted} & \textbf{Mean $H$ (bits)} \\
 \hline
-Behavior \& Identity & 15 & 2.0310 \\
-Economics & 6 & 2.1685 \\
-Kin \& Relatedness & 4 & 2.1325 \\
-Power \& Labor & 15 & 1.9997 \\
-Sex \& Reproduction & 12 & 2.0000 \\
-Unit of Individuality & 35 & 2.0402 \\
+Behavior \& Identity & 77 & 2.0179 \\
+Economics & 21 & 1.8788 \\
+Kin \& Relatedness & 12 & 2.0257 \\
+Power \& Labor & 100 & 2.0566 \\
+Sex \& Reproduction & 68 & 2.0810 \\
+Unit of Individuality & 230 & 2.0411 \\
 \hline
 \end{tabular}
 \caption{Per-domain terminology in the PMC full-text parallel layer: extracted-term counts and mean semantic entropy $H(t)$, computed with the same pipeline as the abstract layer (\texttt{output/data/fulltext\_analysis.json}, \texttt{descriptives} section). Term extraction uses a higher minimum token frequency than the abstract layer because full texts are substantially longer.}
@@ -3493,11 +3500,43 @@ gene expression in \emph{Lasius niger} is more strongly influenced by
 age than by caste---further undermining the fixedness implied by
 ``caste'' terminology.
 
+\paragraph{BHL Historical-Layer Grounding
+(1850-1970)}\label{sec:bhl_grounding}
+
+These period claims are anchored in measurable term usage by the
+Biodiversity Heritage Library historical full-text layer: 130
+ant/myrmecology documents harvested from the BHL mirror collection on
+the Internet Archive (BHL API v3 requires a key; see
+\texttt{data/bhl/README.md} for the provenance and the verbatim query).
+The era-stratified artifact \texttt{data/bhl/era\_term\_usage.json},
+produced by \texttt{src/pipeline/bhl\_analysis.py}, reports ``caste''
+rising monotonically from 0.0451 per 10k tokens in 1850-1899 (23
+documents) to 0.6085 in 1900-1949 (82 documents) and 2.2126 in 1950-1970
+(25 documents) --- an intensification consistent with the Genetic
+Revolution and Molecular Biology era framings above. The labor
+vocabulary shows the same arc: ``worker'' rises from 2.1652 to 8.3759 to
+18.9372 per 10k tokens across the eras, while ``queen'' remains the
+anchor term throughout (5.1023 → 6.0679 → 12.9502 per 10k). The
+integrative-era vocabulary is absent from the entire stratum:
+``superorganism'' registers 0.0000, 0.0000, and 0.0000 per 10k tokens
+across the three eras --- zero throughout --- marking it as a post-1970
+import into general monographic usage rather than a term the historical
+corpus itself carries. All numbers resolve at render time from the
+BHL\_* manuscript tokens.
+
 \subsubsection{Superorganism Concept
 Evolution}\label{superorganism-concept-evolution}
 
 Table \ref{tab:superorganism_concept_evolution} traces the superorganism
 concept across seven decades of research:
+
+The BHL historical layer brackets the start of this table from below:
+across 130 BHL-mirror documents, ``superorganism'' occurs 0.0000 per 10k
+tokens in 1850-1899, 0.0000 in 1900-1949, and 0.0000 in 1950-1970 ---
+zero throughout (\texttt{data/bhl/era\_term\_usage.json}, produced by
+\texttt{src/pipeline/bhl\_analysis.py}), confirming that the concept's
+theoretical vocabulary lived outside the monographic stratum and entered
+routine usage only in the post-1970 decades traced here.
 
 \begin{table}[h]
 \centering

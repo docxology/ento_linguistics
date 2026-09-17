@@ -7,21 +7,21 @@ Frequency and ambiguity analyses show that the highest-frequency terms (``colony
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth]{../output/figures/domain_overview_grid.png}
-\caption{Domain Terminology Overview: top-10 terms by corpus frequency for each of the six Ento-Linguistic domains, displayed as a 3\,×\,2 grid of horizontal bar charts. Bar color encodes semantic entropy $H(t)$ (bits) on a shared \texttt{YlOrRd} scale; darker bars indicate higher polysemy. The overview highlights Economics' high entropy despite sparse vocabulary, with Power \& Labor and Behavior \& Identity also showing notable polysemy.}
+\caption{Top terms by corpus frequency for each of the six Ento-Linguistic domains, as a 3\,×\,2 grid of horizontal bar charts computed at build time from the terminology of the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; {{CORPUS_DOMAIN_TERMS}} domain-assigned terms; \texttt{output/data/domain\_statistics.json}). Within each panel, the ten highest-frequency terms of that domain are ranked by corpus frequency (bar length, annotated at the bar tip); panel titles give each domain's total term count. Bar color encodes per-term semantic entropy $H(t)$ in bits (Eq.~\ref{eq:semantic_entropy}) on a shared \texttt{YlOrRd} scale spanning zero to the corpus maximum, with the shared color bar at right; darker bars indicate terms whose usage contexts span more sense clusters. The grid shows Economics as the smallest domain while its terms carry the highest entropies (Table \ref{tab:entropy_distribution}), with Power \& Labor and Behavior \& Identity also containing high-entropy terms.}
 \label{fig:domain_overview_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth]{../output/figures/domain_patterns_grid.png}
-\caption{Domain POS-Composition Patterns: donut charts showing the part-of-speech structure of each domain's vocabulary (3\,×\,2 grid, one panel per domain). Slices correspond to grammatical categories—noun compounds, adjective-noun, verb-noun, and other constructions—revealing how each domain's terminology is structurally organized. Domains with a dominant noun-compound slice (e.g., Unit of Individuality) tend toward reification of biological processes.}
+\caption{Part-of-speech composition of each Ento-Linguistic domain's vocabulary, shown as donut charts in a 3\,×\,2 grid (one panel per domain), computed at build time from the part-of-speech tags of the domain-assigned terms extracted from the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). Each slice is a grammatical category (for example noun compounds, adjective--noun, or verb--noun constructions) with slice angle proportional to that category's share of part-of-speech tag counts within the domain; because a term can carry several tags, shares are of tag counts, not distinct terms. Categories beyond the six largest per domain are grouped as \emph{Other}, and the annotation at each donut's centre gives the domain's term count. Domains whose slices concentrate in noun-compound categories (for example Unit of Individuality) have vocabularies structurally biased toward reified noun phrases in this corpus.}
 \label{fig:domain_patterns_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{../output/figures/unit_of_individuality_patterns.png}
-\caption{Unit of Individuality domain analysis showing terminology patterns across biological scales. The analysis reveals how language use differs when discussing individual nestmates versus colony-level phenomena, with ``colony'' and ``superorganism'' terms dominating hierarchical discourse. Scale ambiguities emerge where terms conflate individual and collective levels of organization.}
+\caption{Terminology patterns in the Unit of Individuality domain, computed at build time from the domain's terms in the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). \emph{Left}: term-formation patterns (the part-of-speech structure of the domain's terms) as a pie chart, with slice angles proportional to pattern counts and percentages annotated. \emph{Right}: number of domain terms whose names match keyword groups for five biological scales---Colony (Superorganism), Sub-colony (Caste), Individual (Worker), Genomic (Gene-level), and Emergent (Collective)---as a bar chart with counts annotated; counts are floored at one for display, so a near-zero scale is indistinguishable from a single match. Colony-level terms such as ``colony'' and ``superorganism'' populate the colony-scale group; the distribution across scales grounds the scale ambiguities discussed in the text.}
 \label{fig:unit_individuality_patterns}
 \end{figure}
 
@@ -32,21 +32,21 @@ The most structurally rigid domain shows clear hierarchical patterns derived fro
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{../output/figures/concept_hierarchy.png}
-\caption{Conceptual hierarchy in Power \& Labor domain showing how human social terminology structures scientific understanding of ant societies. The term "caste" creates direct parallels to human hierarchical systems \cite{crespi1992caste}, while terms like "queen" and "worker" impose role-based identities that may not reflect biological flexibility. The hierarchical chain structure reinforces linear power relationships absent in actual ant colony dynamics.}
+\caption{Concept-centrality structure of the Ento-Linguistic concept map, computed at build time from the concept map built over the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; \texttt{output/data/concept\_map\_summary.json}). Concepts are clusters of domain-assigned terms; a concept's centrality is its number of direct links to other concepts in the map. \emph{Left}: all concepts ranked by centrality (bar length, score annotated at the bar tip), colored green for core concepts (centrality strictly above the map-wide mean) and red for peripheral concepts (at or below the mean). \emph{Right}: centrality against the number of associated terms, with point area proportional to centrality and the ten highest-centrality concepts labelled. The ranking spans all six Ento-Linguistic domains; it is not restricted to Power \& Labor.}
 \label{fig:concept_hierarchy}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{../output/figures/power_and_labor_term_frequencies.png}
-\caption{Frequency analysis of Power \& Labor domain terminology. ``Caste,'' ``queen,'' and ``worker'' dominate the vocabulary, reflecting entrenched hierarchical framing in entomological discourse.}
+\caption{Corpus frequency of the fifteen most frequent Power \& Labor terms, computed at build time from the domain-assigned terminology of the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). Bar height encodes total corpus frequency, annotated at the bar tip; bars are ordered by descending frequency, and the \texttt{YlOrRd} shading tracks rank order only, encoding no additional quantity. In the current corpus ``queen,'' ``worker,'' and ``caste'' are the three most frequent terms of this domain, consistent with the entrenched hierarchical framing discussed in the text; the ranking is descriptive, and no significance testing is applied to it.}
 \label{fig:power_labor_frequencies}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{../output/figures/power_and_labor_ambiguities.png}
-\caption{Semantic entropy $H(t)$ for Power \& Labor domain terms (Eq.~\ref{eq:semantic_entropy}). \emph{Left}: per-term entropy sorted by descending $H(t)$, with context counts annotated; a dashed line marks the panel median. \emph{Right}: corpus frequency plotted against $H(t)$, with point size proportional to the number of extracted contexts per term. Terms such as ``caste'' and ``queen'' exhibit elevated entropy, consistent with their documented polysemy across hierarchical, reproductive, and behavioral research contexts.}
+\caption{Semantic entropy $H(t)$ of Power \& Labor terms (Eq.~\ref{eq:semantic_entropy}), computed at build time from the usage contexts of the domain's terms in the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; TF-IDF vectorization of each term's contexts followed by $k$-means sense clustering; \texttt{output/data/domain\_statistics.json}). The fifteen highest-entropy terms of the domain are shown. \emph{Left}: per-term entropy as bars sorted by descending $H(t)$, each annotated with its entropy in bits and extracted-context count, with a dashed vertical line marking the panel median. \emph{Right}: corpus frequency (horizontal) against $H(t)$ (vertical), with point area proportional to the number of extracted contexts and point color repeating the entropy scale (\texttt{Purples}). ``Caste'' and ``queen'' exhibit elevated entropy in this corpus, consistent with their documented polysemy across hierarchical, reproductive, and behavioral research contexts; entropy values describe context diversity and imply no preferred reform direction.}
 \label{fig:power_labor_ambiguities}
 \end{figure}
 

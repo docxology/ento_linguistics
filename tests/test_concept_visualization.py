@@ -1060,3 +1060,52 @@ class TestDomainComparisonWithTerms:
         fig = viz.create_domain_overlap_heatmap(overlaps)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
+
+
+class TestRenderDeterminism:
+    """Byte-identical PNGs for identical inputs (no RNG, stable ordering)."""
+
+    @staticmethod
+    def _concept_map() -> ConceptMap:
+        cmap = ConceptMap()
+        c1 = Concept(
+            name="colony_organization",
+            description="How ant colonies are organized",
+            terms={"colony", "queen", "worker"},
+            domains={"unit_of_individuality", "power_and_labor"},
+        )
+        c2 = Concept(
+            name="division_of_labor",
+            description="Task specialization in colonies",
+            terms={"worker", "forager", "nurse"},
+            domains={"behavior_and_identity", "power_and_labor"},
+        )
+        cmap.concepts["colony_organization"] = c1
+        cmap.concepts["division_of_labor"] = c2
+        cmap.add_relationship("colony_organization", "division_of_labor", 0.8)
+        return cmap
+
+    def test_concept_map_png_byte_identical(self, tmp_path: Path) -> None:
+        """Two renders of the same concept map produce identical bytes."""
+        import hashlib
+
+        viz = ConceptVisualizer()
+        digests = []
+        for i in range(2):
+            path = tmp_path / f"concept_map_{i}.png"
+            fig = viz.visualize_concept_map(self._concept_map(), filepath=path)
+            plt.close(fig)
+            digests.append(hashlib.sha256(path.read_bytes()).hexdigest())
+        assert digests[0] == digests[1]
+
+    def test_select_label_positions_deterministic(self) -> None:
+        """Collision pruning depends only on input order, not iteration state."""
+        viz = ConceptVisualizer()
+        pos = {
+            "a": (0.0, 0.0),
+            "b": (0.01, 0.0),
+            "c": (0.9, 0.9),
+        }
+        first = viz._select_label_positions(pos, ["a", "b", "c"])
+        second = viz._select_label_positions(pos, ["a", "b", "c"])
+        assert first == second == {"a": (0.0, 0.0), "c": (0.9, 0.9)}

@@ -53,6 +53,8 @@ def plot_line(
     color: Optional[str] = None,
     linestyle: str = "-",
     marker: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a line plot.
@@ -80,6 +82,9 @@ def plot_line(
     if label:
         ax.legend()
 
+    ax.set_xlabel(xlabel if xlabel is not None else "x", fontsize=MIN_FONT)
+    ax.set_ylabel(ylabel if ylabel is not None else "y", fontsize=MIN_FONT)
+
     return ax
 
 
@@ -92,6 +97,8 @@ def plot_scatter(
     size: Optional[float] = None,
     alpha: float = 0.6,
     label: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a scatter plot.
@@ -99,6 +106,8 @@ def plot_scatter(
     Args:
         x: X values
         y: Y values
+        xlabel: X-axis label (default "x")
+        ylabel: Y-axis label (default "y")
         ax: Axes to plot on
         color: Point color
         size: Point size
@@ -117,6 +126,9 @@ def plot_scatter(
     if label:
         ax.legend()
 
+    ax.set_xlabel(xlabel if xlabel is not None else "x", fontsize=MIN_FONT)
+    ax.set_ylabel(ylabel if ylabel is not None else "y", fontsize=MIN_FONT)
+
     return ax
 
 
@@ -127,6 +139,8 @@ def plot_bar(
     ax: Optional[plt.Axes] = None,
     color: Optional[str] = None,
     width: float = 0.8,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a bar chart.
@@ -136,6 +150,8 @@ def plot_bar(
         values: Bar values
         ax: Axes to plot on
         color: Bar color
+        xlabel: X-axis label (default "Category")
+        ylabel: Y-axis label (default "Value")
         width: Bar width
         **kwargs: Additional arguments
 
@@ -149,6 +165,10 @@ def plot_bar(
     ax.bar(x_pos, values, color=color, width=width, **kwargs)
     ax.set_xticks(x_pos)
     ax.set_xticklabels(categories, rotation=45, ha="right")
+    ax.set_xlabel(
+        xlabel if xlabel is not None else "Category", fontsize=MIN_FONT
+    )
+    ax.set_ylabel(ylabel if ylabel is not None else "Value", fontsize=MIN_FONT)
 
     return ax
 
@@ -161,6 +181,8 @@ def plot_heatmap(
     col_labels: Optional[List[str]] = None,
     cmap: str = "viridis",
     colorbar: bool = True,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a heatmap.
@@ -173,6 +195,8 @@ def plot_heatmap(
         cmap: Colormap name
         colorbar: Whether to show colorbar
         **kwargs: Additional arguments
+        xlabel: X-axis label (default "Column index")
+        ylabel: Y-axis label (default "Row index")
 
     Returns:
         Axes object
@@ -193,6 +217,13 @@ def plot_heatmap(
     if colorbar:
         plt.colorbar(im, ax=ax)
 
+    ax.set_xlabel(
+        xlabel if xlabel is not None else "Column index", fontsize=MIN_FONT
+    )
+    ax.set_ylabel(
+        ylabel if ylabel is not None else "Row index", fontsize=MIN_FONT
+    )
+
     return ax
 
 
@@ -205,6 +236,8 @@ def plot_contour(
     levels: int = 20,
     cmap: str = "viridis",
     filled: bool = True,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a contour plot.
@@ -213,6 +246,9 @@ def plot_contour(
         x: X coordinates (2D array)
         y: Y coordinates (2D array)
         z: Z values (2D array)
+        xlabel: X-axis label (default "x")
+        ylabel: Y-axis label (default "y")
+
         ax: Axes to plot on
         levels: Number of contour levels
         cmap: Colormap name
@@ -231,6 +267,9 @@ def plot_contour(
     else:
         contour = ax.contour(x, y, z, levels=levels, cmap=cmap, **kwargs)
         ax.clabel(contour, inline=True, fontsize=MIN_FONT)
+
+    ax.set_xlabel(xlabel if xlabel is not None else "x", fontsize=MIN_FONT)
+    ax.set_ylabel(ylabel if ylabel is not None else "y", fontsize=MIN_FONT)
 
     return ax
 
@@ -264,6 +303,9 @@ def plot_3d_surface(
 
     surf = ax.plot_surface(x, y, z, cmap=cmap, **kwargs)
     plt.colorbar(surf, ax=ax, shrink=0.5)
+    ax.set_xlabel("x", fontsize=MIN_FONT)
+    ax.set_ylabel("y", fontsize=MIN_FONT)
+    ax.set_zlabel("z", fontsize=MIN_FONT)
 
     return ax
 
@@ -340,7 +382,8 @@ def plot_comparison(
         ax.set_xticks(x_pos)
         ax.set_xticklabels(methods, rotation=45, ha="right")
 
-    ax.set_ylabel(metric_name)
+    ax.set_xlabel("Method", fontsize=MIN_FONT)
+    ax.set_ylabel(metric_name, fontsize=MIN_FONT)
     ax.set_title(f"Comparison: {metric_name}")
     ax.grid(True, alpha=0.3)
 
@@ -378,7 +421,13 @@ def plot_term_frequency(
     values = np.array([t[1] for t in top_terms])
 
     return plot_bar(
-        categories, values, ax=ax, color=kwargs.get("color", "skyblue"), **kwargs
+        categories,
+        values,
+        ax=ax,
+        color=kwargs.get("color", "skyblue"),
+        xlabel=kwargs.pop("xlabel", "Term"),
+        ylabel=kwargs.pop("ylabel", "Frequency (count)"),
+        **kwargs,
     )
 
 
@@ -402,7 +451,13 @@ def plot_domain_distribution(
     values = np.array(list(domain_counts.values()))
 
     return plot_bar(
-        categories, values, ax=ax, color=kwargs.get("color", "lightgreen"), **kwargs
+        categories,
+        values,
+        ax=ax,
+        color=kwargs.get("color", "lightgreen"),
+        xlabel=kwargs.pop("xlabel", "Domain"),
+        ylabel=kwargs.pop("ylabel", "Count"),
+        **kwargs,
     )
 
 

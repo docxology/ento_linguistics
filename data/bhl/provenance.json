@@ -1,0 +1,2087 @@
+{
+ "0041a2e9f725a2aa8196922bae773a55d0125a3c8f2f9d137792ed45148d5329": {
+  "bhl_id": "studygenusxenom1843crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "studygenusxenom1843crei",
+  "publication_date": "1957",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A study of the genus Xenomyrmex (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/studygenusxenom1843crei"
+ },
+ "01149bbff01c8a0813b55ca4ab62a58ce311aedf6e281880638915940ff35513": {
+  "bhl_id": "dieameiseschilde00escher",
+  "collections": [
+   "b",
+   "i",
+   "o",
+   "d",
+   "i",
+   "v",
+   "e",
+   "r",
+   "s",
+   "i",
+   "t",
+   "y"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "dieameiseschilde00escher",
+  "publication_date": "1917",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Die Ameise. Schilderung ihrer Lebensweise",
+  "url": "https://archive.org/details/dieameiseschilde00escher"
+ },
+ "023dcd9397e9ec05c6662744386d35628cd49e3ff8e03d8c2987cfe40bdbd143": {
+  "bhl_id": "CAT31344296",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31344296",
+  "publication_date": "1933",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek & Son, Inc., commercial growers of early or winter flowering sweet pea seed : June 1933 to June 1934 / Ant. C. Zvolanek & Son, Inc. ; Anton C. Zvolanek, originator of winter-flowering sweet peas.",
+  "url": "https://archive.org/details/CAT31344296"
+ },
+ "08d4f6d594dea4c1a3da78a1ad34b22a3af569567176fa9fcff4b2f1bc8f2920": {
+  "bhl_id": "houseants147back_1",
+  "collections": [
+   "usda-leaflet",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "houseants147back_1",
+  "publication_date": "1946",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "House ants.",
+  "url": "https://archive.org/details/houseants147back_1"
+ },
+ "0d1c2c351a078cad9d3f420b67501076f9b56d1a162b6ae1b057faed4c2a7c46": {
+  "bhl_id": "speciesdeshymn00andr",
+  "collections": [
+   "b",
+   "i",
+   "o",
+   "d",
+   "i",
+   "v",
+   "e",
+   "r",
+   "s",
+   "i",
+   "t",
+   "y"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "speciesdeshymn00andr",
+  "publication_date": "1881",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Species des hyménoptères composant le groupe des formicides : avec l'exposé de leurs murs et la description de toutes les espèces d'Europe et des pays limitrophes en Afrique et en Asie",
+  "url": "https://archive.org/details/speciesdeshymn00andr"
+ },
+ "0d370c37e663279fa9277073b94cadfb02c9f03051021a53b91d03cfe179efb6": {
+  "bhl_id": "testsofmethodsof1231snyd",
+  "collections": [
+   "usda-bulletin",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "testsofmethodsof1231snyd",
+  "publication_date": "1924",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Tests of methods of protecting woods against termites or white ants : a progress report",
+  "url": "https://archive.org/details/testsofmethodsof1231snyd"
+ },
+ "0d61187fb23903b206e9ed7e8aeb48d117dbed093978434bcd66abfcd6f645ec": {
+  "bhl_id": "antsbeeswaspsrec00lubbock",
+  "collections": [
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "antsbeeswaspsrec00lubbock",
+  "publication_date": "1882",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps : a record of observations on the habits of the social hymenoptera",
+  "url": "https://archive.org/details/antsbeeswaspsrec00lubbock"
+ },
+ "0f0dc3cc06e31f0602080f6b26f7907e2a6bf1a2f557b5eb900876776d085849": {
+  "bhl_id": "CAT31311604",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31311604",
+  "publication_date": "1922",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's florists' and private gardeners' list of sweet pea seed : June 1922 to June 1923 / Ant. C. Zvolanek & Sons Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31311604"
+ },
+ "12ef29349c101b015ea7086276e304b39d86e190669fd950bd48a834f448684b": {
+  "bhl_id": "determinationst00hier",
+  "collections": [
+   "biodiversity",
+   "harvardbotanylibraries",
+   "fieldnotesclir2016",
+   "Harvard_University"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "determinationst00hier",
+  "publication_date": "1904",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Determinations taken from four papers published by Hieronymus in Hedwigia, volumes 39, 41, and 43, and Urban Symb. Ant. 3",
+  "url": "https://archive.org/details/determinationst00hier"
+ },
+ "132302e95a6aabc7e436b048487e8215e286358caebc2eabe393c07fc57e38b4": {
+  "bhl_id": "termitesorwhitea333snyd",
+  "collections": [
+   "usda-bulletin",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "termitesorwhitea333snyd",
+  "publication_date": "1916",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Termites, or \"white ants\", in the United States : their damage and methods of prevention",
+  "url": "https://archive.org/details/termitesorwhitea333snyd"
+ },
+ "1645f225e51a64d5199aeb6f8858daa975c6d601357ebefdcbe7cfe03d571a95": {
+  "bhl_id": "argentineant00newe",
+  "collections": [
+   "library_of_congress",
+   "biodiversity",
+   "fedlink"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "argentineant00newe",
+  "publication_date": "1913",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The Argentine ant",
+  "url": "https://archive.org/details/argentineant00newe"
+ },
+ "1693b56df81ed047a22163a67c7d449174433f4257a535ce7b44b6e27745dec4": {
+  "bhl_id": "antsbeeswaspsrec00john",
+  "collections": [
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "antsbeeswaspsrec00john",
+  "publication_date": "1882",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps. A record of observations on the habits of the social Hymenoptera",
+  "url": "https://archive.org/details/antsbeeswaspsrec00john"
+ },
+ "1843bdc334cfacab226e3891b4dc2075d2081f12075d18a4f9c1060bb3493121": {
+  "bhl_id": "biologicalnotes1554webe",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "biologicalnotes1554webe",
+  "publication_date": "1952",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Biological notes on Dacetini (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/biologicalnotes1554webe"
+ },
+ "188100ee8e60e18df63fba7e8d5f721e9c6c1ed9070c85f1471c3b48ec53d782": {
+  "bhl_id": "CAT31337293",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31337293",
+  "publication_date": "1930",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's commercial grower and gardener's list of early or winter-flowering sweet pea seed : 1930 1931 / Ant. C. Zvolanek and Sons ; Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31337293"
+ },
+ "1a42bf2d68d49b51d99e6c2438a4cfd79b54b0d5b5167c522f214e2b9c17446d": {
+  "bhl_id": "newafricanantsg1396webe",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "newafricanantsg1396webe",
+  "publication_date": "1949",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "New African ants of the genera Cerapachys, Phryacaces and Simopone",
+  "url": "https://archive.org/details/newafricanantsg1396webe"
+ },
+ "1c39cf0c06aaca1a86bc164dc53ab93958d4f25909651d888bdd7e80fed0c0a7": {
+  "bhl_id": "CAT31329169",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31329169",
+  "publication_date": "1927",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's florists' and private gardeners' list of sweet pea seed : June 1927 to June 1928 / Ant. C. Zvolanek and Sons ; Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31329169"
+ },
+ "1c9d8491e71420df4bb5d6431d2623a26f358164f241be250b34d5afd46e3443": {
+  "bhl_id": "antsbiminiislan1671smit",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "antsbiminiislan1671smit",
+  "publication_date": "1954",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants of the Bimini island group, Bahamas, British West Indies (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/antsbiminiislan1671smit"
+ },
+ "1d4fb3566adfe149247a73a47881b2a20c203d43010c700a51f8d512322edda7": {
+  "bhl_id": "houseants147back_0",
+  "collections": [
+   "usda-leaflet",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "houseants147back_0",
+  "publication_date": "1938",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "House ants",
+  "url": "https://archive.org/details/houseants147back_0"
+ },
+ "1dd25735d72e5d1e7129bfc821ec1c4d25baa801030a944d275a80cd60fee1f0": {
+  "bhl_id": "antsbeeswaspsrec00aveb",
+  "collections": [
+   "library_of_congress",
+   "biodiversity",
+   "fedlink"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "antsbeeswaspsrec00aveb",
+  "publication_date": "1911",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps. A record of observations on the habits of the social Hymenoptera",
+  "url": "https://archive.org/details/antsbeeswaspsrec00aveb"
+ },
+ "1e842b6d2c1252cb77901fc8b8b74a03c02ac16892292300e8eca84cb2330f63": {
+  "bhl_id": "insectbookpopu00howa",
+  "collections": [
+   "b",
+   "i",
+   "o",
+   "d",
+   "i",
+   "v",
+   "e",
+   "r",
+   "s",
+   "i",
+   "t",
+   "y"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "insectbookpopu00howa",
+  "publication_date": "1901",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The insect book; a popular account of the bees, wasps, ants, grasshoppers, flies and other North American insects exclusive of the butterflies, moths and beetles, with full life histories, tables and bibliographies",
+  "url": "https://archive.org/details/insectbookpopu00howa"
+ },
+ "1e943f84b9395e8147f0a39ce4d1203cb1a24f8346e7fcbecddf1b962d9b8c89": {
+  "bhl_id": "dieraumorientier00brun",
+  "collections": [
+   "b",
+   "i",
+   "o",
+   "d",
+   "i",
+   "v",
+   "e",
+   "r",
+   "s",
+   "i",
+   "t",
+   "y"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "dieraumorientier00brun",
+  "publication_date": "1914",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Die raumorientierung der ameisen und das orientierungsproblem im allgemeinen. Eine kritisch-experimentelle studie; zugleich ein beitrag zur theorie der mneme",
+  "url": "https://archive.org/details/dieraumorientier00brun"
+ },
+ "1f5111970a64a84f3ab834fc9645272365566ce381138bd2c376266b85a6657f": {
+  "bhl_id": "kriegundfriedeni00saj",
+  "collections": [
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "kriegundfriedeni00saj",
+  "publication_date": "1908",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Krieg und Frieden im Ameisenstaat",
+  "url": "https://archive.org/details/kriegundfriedeni00saj"
+ },
+ "20ad7a469f095de8e5698aa5fa2a9bc00593fa48cacc91d9532de1451eb93424": {
+  "bhl_id": "solomonslittlepe00crow",
+  "collections": [
+   "thomasfisherbiodiversity",
+   "thomasfisher",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "solomonslittlepe00crow",
+  "publication_date": "1882",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Solomon's little people; a story about the ants",
+  "url": "https://archive.org/details/solomonslittlepe00crow"
+ },
+ "21725367b4acc0a91c4e2f418e8170699c1f2621b0429057cb8a668fd1d57c80": {
+  "bhl_id": "newantgenusphei1557greg",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "newantgenusphei1557greg",
+  "publication_date": "1952",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A new ant of the genus Pheidole from Colorado",
+  "url": "https://archive.org/details/newantgenusphei1557greg"
+ },
+ "229245a43189837a5fd596fb6269e11fd828731b6cebb54899fb2f50863cdbb7": {
+  "bhl_id": "rediscoverylept1635crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "rediscoverylept1635crei",
+  "publication_date": "1953",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The rediscovery of Leptothorax silvestrii (Santschi) (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/rediscoverylept1635crei"
+ },
+ "271f64294ff7a48e4366ebce602ad7cf405349b2718babd1345642b5c012e21b": {
+  "bhl_id": "newpanamaeciton1441webe",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "newpanamaeciton1441webe",
+  "publication_date": "1949",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A new Panama Eciton (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/newpanamaeciton1441webe"
+ },
+ "294ad9b218091200812a84f86d8342f6fd037cc7c06f3c3185ba40daf0aa6547": {
+  "bhl_id": "africanspeciesg1442webe",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "africanspeciesg1442webe",
+  "publication_date": "1950",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The African species of the genus Oligomyrmex Mayr (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/africanspeciesg1442webe"
+ },
+ "2a999345424e7d5f4699e274df5303630899c3ee3f3e38d28738997a62dc4262": {
+  "bhl_id": "histoirenaturell01saus",
+  "collections": [
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "histoirenaturell01saus",
+  "publication_date": "1890",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Histoire naturelle des Hymenoptères",
+  "url": "https://archive.org/details/histoirenaturell01saus"
+ },
+ "2bae184e218654d78e2b6afafcf1debe87c91e815cc61a242aec1e8279ba8c29": {
+  "bhl_id": "antsofbalticambe00whee",
+  "collections": [
+   "fieldmuseumlibrary-texts",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "antsofbalticambe00whee",
+  "publication_date": "1914",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The ants of the Baltic amber",
+  "url": "https://archive.org/details/antsofbalticambe00whee"
+ },
+ "2f9f09ff3924641a611ce2f057ef84078897a42f23682ab6a20dae807a0dda4c": {
+  "bhl_id": "psychologyofants00wasmuoft",
+  "collections": [
+   "kellylibrary",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "psychologyofants00wasmuoft",
+  "publication_date": "1905",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Psychology of ants and of higher animals",
+  "url": "https://archive.org/details/psychologyofants00wasmuoft"
+ },
+ "328869f059cfb071545bc4fc9764ae50cc37d6747f4c7063450d98c59a5387e5": {
+  "bhl_id": "catalogueofbritibrituoft",
+  "collections": [
+   "gerstein",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "catalogueofbritibrituoft",
+  "publication_date": "1858",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Catalogue of British fossorial Hymenoptera, Formicidae and Vespidae, in the collection of the British Museum",
+  "url": "https://archive.org/details/catalogueofbritibrituoft"
+ },
+ "38efec1380abce92c76520d512131bc2c96f5d824a453c711676f106948f39a0": {
+  "bhl_id": "studiesonfungous00garm",
+  "collections": [
+   "university_of_illinois_urbana-champaign",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "studiesonfungous00garm",
+  "publication_date": "1914",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Studies on the fungous parasites of the corn-field ant (Lasius niger L. var. americanus Emery)",
+  "url": "https://archive.org/details/studiesonfungous00garm"
+ },
+ "3941db8036fa59088188d89fea4bf8b650a9406168d398236a08b1245cba69cb": {
+  "bhl_id": "newantthrushfrom3131blak",
+  "collections": [
+   "biodiversity",
+   "fieldiana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "newantthrushfrom3131blak",
+  "publication_date": "1949",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A new ant-thrush from British Guiana",
+  "url": "https://archive.org/details/newantthrushfrom3131blak"
+ },
+ "399a7efd7b89c8bc8d5ad084b1e70019de32b6a1a1cd02a2e8555f854c445079": {
+  "bhl_id": "antsbeeswaspsre00aveb",
+  "collections": [
+   "library_of_congress",
+   "biodiversity",
+   "fedlink"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "antsbeeswaspsre00aveb",
+  "publication_date": "1890",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps. A record of observations on the habits of the social Hymenoptera",
+  "url": "https://archive.org/details/antsbeeswaspsre00aveb"
+ },
+ "3ac15cd9a4c8fdfebc50e186fcb813d3adbc484473a5ac5d23320890b697de6d": {
+  "bhl_id": "antssomeotherins00fore",
+  "collections": [
+   "biodiversity",
+   "MBLWHOI",
+   "blc",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "antssomeotherins00fore",
+  "publication_date": "1904",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants and some other insects; an inquiry into the psychic powers of these animals",
+  "url": "https://archive.org/details/antssomeotherins00fore"
+ },
+ "3e79f50ca48c6e58a11f1cb4a66939df5a9de5ecf048547375761be815dca60d": {
+  "bhl_id": "cu31924002853822",
+  "collections": [
+   "cornell",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "cu31924002853822",
+  "publication_date": "1889",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps. A record of observations on the habits of the social Hymenoptera",
+  "url": "https://archive.org/details/cu31924002853822"
+ },
+ "40cd6b29b93eb6286be109cf6990643885f4b3d9133a407fe89e07421899ec9e": {
+  "bhl_id": "supplementtoharv00mogg",
+  "collections": [
+   "biodiversity",
+   "MBLWHOI",
+   "blc",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "supplementtoharv00mogg",
+  "publication_date": "1874",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Supplement to harvesting ants and trap-door spiders",
+  "url": "https://archive.org/details/supplementtoharv00mogg"
+ },
+ "485ad7fb4c95564c01030c733e46a373211dc87252a87eb9398502990eb49093": {
+  "bhl_id": "newspeciesofantt397blak",
+  "collections": [
+   "biodiversity",
+   "fieldiana"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "newspeciesofantt397blak",
+  "publication_date": "1957",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A new species of ant-thrush from Peru",
+  "url": "https://archive.org/details/newspeciesofantt397blak"
+ },
+ "4919f54a0a06fb2e4a1114fbd655b8a8a98e159b80df61985c4fef6ca7e0015e": {
+  "bhl_id": "youngcollectorsh00bath",
+  "collections": [
+   "b",
+   "i",
+   "o",
+   "d",
+   "i",
+   "v",
+   "e",
+   "r",
+   "s",
+   "i",
+   "t",
+   "y"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "youngcollectorsh00bath",
+  "publication_date": "1890",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The young collector's handbook of ants, bees, dragon-flies, earwigs, crickets, and flies (Hymenoptera, neuroptera, orthoptera, hemiptera, diptera)",
+  "url": "https://archive.org/details/youngcollectorsh00bath"
+ },
+ "4db62de31b5ae403fb46902e59fff64509d0486ac578936fd2d88f0c44eac770": {
+  "bhl_id": "revisionformsstno10crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "revisionformsstno10crei",
+  "publication_date": "1940",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A revision of the forms of Stigmatomma pallipes",
+  "url": "https://archive.org/details/revisionformsstno10crei"
+ },
+ "4dd4b31652516103db856e6fecfd67342ea41bf9dbde0a4081757b634360ea05": {
+  "bhl_id": "tachigaliaants00whee",
+  "collections": [
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "tachigaliaants00whee",
+  "publication_date": "1921",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The Tachigalia ants",
+  "url": "https://archive.org/details/tachigaliaants00whee"
+ },
+ "4e7b19b3dd01bbfff71bc6df2b17dc6335c4da52468501899b26865544a8edaf": {
+  "bhl_id": "CAT31311603",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31311603",
+  "publication_date": "1920",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's florists' list of sweet pea seed : 1920-1921 / Ant. C. Zvolanek & Sons Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31311603"
+ },
+ "50892efa20765fce6a6096f7e5ecf645cb2d4535024bd75e269404f25caa8f59": {
+  "bhl_id": "revisionnorthamno10crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "revisionnorthamno10crei",
+  "publication_date": "1940",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A revision of the North American variants of the ant Formica rufa",
+  "url": "https://archive.org/details/revisionnorthamno10crei"
+ },
+ "51373c1537d217624b33707ee0a9dd08646d0f7d8b39a601ba6141bfd2c5465e": {
+  "bhl_id": "newtrinidadmyrm1465webe",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "newtrinidadmyrm1465webe",
+  "publication_date": "1950",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "New Trinidad Myrmicinae, with a note on Basiceros Schulz (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/newtrinidadmyrm1465webe"
+ },
+ "597b37682ea590c839a832baff68b43dee64b00a21e2e67156279bb8358d48cb": {
+  "bhl_id": "twodestructivete2148hunt",
+  "collections": [
+   "usda-circularentomology",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "twodestructivete2148hunt",
+  "publication_date": "1912",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Two destructive Texas ants",
+  "url": "https://archive.org/details/twodestructivete2148hunt"
+ },
+ "5e92b140abc340c86802d18adc6aa166637968c39767ce95ab2673e475066d2f": {
+  "bhl_id": "reportonhabitsof49cook",
+  "collections": [
+   "usda-bulletinentomology",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "reportonhabitsof49cook",
+  "publication_date": "1904",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Report on the habits of the kelep, or Guatemalen cotton-boll-weevil ant",
+  "url": "https://archive.org/details/reportonhabitsof49cook"
+ },
+ "5eda3b2d0d2a8c5be45dfa4a5e43d8ab7691520d4b34fac1fd587a638348bd5d": {
+  "bhl_id": "NHM392248",
+  "collections": [
+   "darwinslibrary",
+   "nhml_london",
+   "biodiversity"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "NHM392248",
+  "publication_date": "1861",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Essai d'une r?ponse a la question de prix propos?e en 1850 par l'Acad?mie des sciences pour le concours de 1853, et puis remise pour celui de 1856, savoir : ?tudier les lois de la distribution des corps organis?s fossiles dans diff?rents terrains s?dimentaires, suivant l'ordre de leur superposition, discuter la question de leur apparition ou de leur disaprition successive ou simultan?e, rechercher la nature des rapports qui existent entre l'?tat actuel du r`egne organique et ses ?tats ant?rieurs",
+  "url": "https://archive.org/details/NHM392248"
+ },
+ "604ec826aaf969a336b5b9637ea993d88c5730cd49833d38ed1a68bdb22413f5": {
+  "bhl_id": "CAT31303237",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31303237",
+  "publication_date": "1919",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's florists' list of sweet pea seed : 1918-19 / Ant. C. Zvolanek.",
+  "url": "https://archive.org/details/CAT31303237"
+ },
+ "619deb43c552520acb37ed1ee0306e5828769d5c3cebceba9aa04a4f041686fc": {
+  "bhl_id": "antsbeeswaspsrec00lub",
+  "collections": [
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "antsbeeswaspsrec00lub",
+  "publication_date": "1915",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps : a record of observations on the habits of the social Hymenoptera",
+  "url": "https://archive.org/details/antsbeeswaspsrec00lub"
+ },
+ "63776fda2907784515bb5c022c3e9e6e79d80f354ccaaeeaf7b1ed8a04365e98": {
+  "bhl_id": "furtherobservat2156crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "furtherobservat2156crei",
+  "publication_date": "1963",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Further observations on Pseudomyrmex apache (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/furtherobservat2156crei"
+ },
+ "6548cf3c38360e84ea2c172b6dd61e1721a8657ad30a06752d096e086e35b534": {
+  "bhl_id": "studyofsomesocia00whee",
+  "collections": [
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "studyofsomesocia00whee",
+  "publication_date": "1921",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A study of some social beetles in British Guiana and of their relations to the ant-plant Tachigalia",
+  "url": "https://archive.org/details/studyofsomesocia00whee"
+ },
+ "6596f4052e35cfb57215c864879c9b66a448a057047943a59523d9d494c13d9d": {
+  "bhl_id": "lifeinanthill00writ",
+  "collections": [
+   "library_of_congress",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "lifeinanthill00writ",
+  "publication_date": "1940",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Life in an ant hill,",
+  "url": "https://archive.org/details/lifeinanthill00writ"
+ },
+ "6643dde59d6845f92e19bb141f346fa37113f514f4da950c924fa95eda1764a5": {
+  "bhl_id": "newsubspeciesxe1634crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "newsubspeciesxe1634crei",
+  "publication_date": "1953",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A new subspecies of Xenomyrmex stolli from northeastern Mexico (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/newsubspeciesxe1634crei"
+ },
+ "6823592a98285e7fc252b13b78da7eb650bc4ec012351930f38d78c148fe29b0": {
+  "bhl_id": "reproductivesys1665haga",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "reproductivesys1665haga",
+  "publication_date": "1954",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The reproductive system of the army-ant queen, Eciton (Eciton) Part 3, The oöcyte cycle",
+  "url": "https://archive.org/details/reproductivesys1665haga"
+ },
+ "68c87b4e0504ee7c86742db70dc10d1588da27e11ea04d3fc5fefc87c489bf69": {
+  "bhl_id": "antssomeotherins00foreuoft",
+  "collections": [
+   "gerstein",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "antssomeotherins00foreuoft",
+  "publication_date": "1904",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants and some other insects; an inquiry into the psychic powers of these animals, with an appendix on the peculiarities of their olfactory sense",
+  "url": "https://archive.org/details/antssomeotherins00foreuoft"
+ },
+ "6bc34dfa725edc1b9743fb49201b4e8990b84916cbecd7540c6086865a50b8fa": {
+  "bhl_id": "beewhiteantsthei00lard",
+  "collections": [
+   "thomasfisherbiodiversity",
+   "thomasfisher",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "beewhiteantsthei00lard",
+  "publication_date": "1856",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The bee and white ants, their manners and habits; with illustrations of animal instinct and intelligence",
+  "url": "https://archive.org/details/beewhiteantsthei00lard"
+ },
+ "70f75396e6ba7912418e634458f94227a5688d9da7b5b4257bdad9a1fd9c322a": {
+  "bhl_id": "CAT31346391",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31346391",
+  "publication_date": "1935",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Sweet pea seed / Ant. C. Zvolanek & Son, Incorporated.",
+  "url": "https://archive.org/details/CAT31346391"
+ },
+ "714b153d8f9320b1415a874fd0b4d87166e5e101be7fbe4e54a354bb4756efb2": {
+  "bhl_id": "whiteantstermiti00frog",
+  "collections": [
+   "fieldmuseumlibrary-texts",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "whiteantstermiti00frog",
+  "publication_date": "1905",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "White ants (Termitidæ) ..",
+  "url": "https://archive.org/details/whiteantstermiti00frog"
+ },
+ "71b0d2655598463ada24aedd47879f3319ac9da78c71b1ef5cfc1c6d9bd87791": {
+  "bhl_id": "questionsanswers1933unit_3",
+  "collections": [
+   "usda-housekeeperschat",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "questionsanswers1933unit_3",
+  "publication_date": "1933",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Questions and answers",
+  "url": "https://archive.org/details/questionsanswers1933unit_3"
+ },
+ "7210b1127ea212b67778b7a06470d437e2a15e6a413463adef56fed8a16518cc": {
+  "bhl_id": "CAT31300377",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31300377",
+  "publication_date": "1916",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Florists list of winter-orchid-flowering and other sweet pea seed. 1916-17 / Ant. C. Zvolanek.",
+  "url": "https://archive.org/details/CAT31300377"
+ },
+ "73ed31b14aae7ad448079ff9f1022d788f356843eecbe36d617eef87ca416ba2": {
+  "bhl_id": "threeobscuregenno67whee",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "threeobscuregenno67whee",
+  "publication_date": "1933",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Three obscure genera of ponerine ants",
+  "url": "https://archive.org/details/threeobscuregenno67whee"
+ },
+ "747424d9e1d4f7e8b087dc566c339ad522e85f7ac5920b4bfae9fe0fb83030ff": {
+  "bhl_id": "argentineantdist377barb",
+  "collections": [
+   "usda-bulletin",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "argentineantdist377barb",
+  "publication_date": "1916",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The Argentine ant : distribution and control in the United States",
+  "url": "https://archive.org/details/argentineantdist377barb"
+ },
+ "74ff8da96e56d3f7d2caa9558a3bb47621b04de57e14f3126377ba6a42779eeb": {
+  "bhl_id": "summertimebrings226unit",
+  "collections": [
+   "usda-housekeeperschat",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "summertimebrings226unit",
+  "publication_date": "1938",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Summer-time brings ants",
+  "url": "https://archive.org/details/summertimebrings226unit"
+ },
+ "75802ecc574b2eb6f6255138f00ce32a86c63fc8ac681e0dbf41a17d090a791b": {
+  "bhl_id": "youngcollectorsh00bath_0",
+  "collections": [
+   "thomasfisherbiodiversity",
+   "thomasfisher",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "youngcollectorsh00bath_0",
+  "publication_date": "1890",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The young collector's handbook of ants, bees, dragon-flies, earwigs, crickets, and flies (Hymenoptera, Neuroptera, Orthoptera, Hemiptera, Diptera)",
+  "url": "https://archive.org/details/youngcollectorsh00bath_0"
+ },
+ "7887492bc12aa693f74c579b7807f6e6f50bfe189991bb4f3004e1adc9009aa9": {
+  "bhl_id": "pillboxtrapforre1930unit",
+  "collections": [
+   "usda-housekeeperschat",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "pillboxtrapforre1930unit",
+  "publication_date": "1930",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A pill-box trap for red ants",
+  "url": "https://archive.org/details/pillboxtrapforre1930unit"
+ },
+ "78c5f0b4ce3932c55d5c7797a8c224116f9bb6e326dd66f627432c47012bf8b3": {
+  "bhl_id": "insectbookpopula1937howa",
+  "collections": [
+   "biodiversity",
+   "MBLWHOI",
+   "blc",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "insectbookpopula1937howa",
+  "publication_date": "1937",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The insect book; a popular account of the bees, wasps, ants, grasshoppers, flies and other North American insects exclusive of the butterflies, moths and beetles, with full life histories, tables and bibliographies",
+  "url": "https://archive.org/details/insectbookpopula1937howa"
+ },
+ "78dbb921649030ced56e68c4288b7739b87a45628183584cdd93cb872cf52b1a": {
+  "bhl_id": "antsbeeswaspsrec00lubb",
+  "collections": [
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "antsbeeswaspsrec00lubb",
+  "publication_date": "1897",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps ; a record of observations on the habits of the social Hymenoptera",
+  "url": "https://archive.org/details/antsbeeswaspsrec00lubb"
+ },
+ "7d69800fc74012267ebe9a62cc8f601c4b5d83a8c119a0b7a3cb3666cea24a7b": {
+  "bhl_id": "houseantsmonomor234marl",
+  "collections": [
+   "usda-circularentomology",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "houseantsmonomor234marl",
+  "publication_date": "1898",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "House ants (Monomorium pharaonis, et al.)",
+  "url": "https://archive.org/details/houseantsmonomor234marl"
+ },
+ "831e588741b2679c2e45ff2c54bef9aff4b072e0f83cf3741b17a106d5e96e42": {
+  "bhl_id": "hymenopteraacule00saun",
+  "collections": [
+   "b",
+   "i",
+   "o",
+   "d",
+   "i",
+   "v",
+   "e",
+   "r",
+   "s",
+   "i",
+   "t",
+   "y"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "hymenopteraacule00saun",
+  "publication_date": "1896",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The Hymenoptera Aculeata of the British Islands : a descriptive account of the families, genera, and species indigenous to Great Britain and Ireland, with notes as to habits, localities, habitats",
+  "url": "https://archive.org/details/hymenopteraacule00saun"
+ },
+ "8393cebe5c5ba4f22efe2762af26446b0e905c767c2b077440b67ab5156bbf7b": {
+  "bhl_id": "importedfireanth350unit_0",
+  "collections": [
+   "usda-leaflet",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "importedfireanth350unit_0",
+  "publication_date": "1958",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The imported fire ant : how to control it",
+  "url": "https://archive.org/details/importedfireanth350unit_0"
+ },
+ "84bed3a11e07a870e7ccf28bffe31d45f66e237d2813d78b0ee6384a7e2b6596": {
+  "bhl_id": "newdataonhabits1612crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "newdataonhabits1612crei",
+  "publication_date": "1953",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "New data on the habits of the ants of the genus Veromessor",
+  "url": "https://archive.org/details/newdataonhabits1612crei"
+ },
+ "863deee8e837349a6929d9692297e43845fc0d1dfadf4e8fe385017d8230e45f": {
+  "bhl_id": "controlofargenti965wogl",
+  "collections": [
+   "usda-bulletin",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "controlofargenti965wogl",
+  "publication_date": "1921",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Control of the Argentine ant in California citrus orchards",
+  "url": "https://archive.org/details/controlofargenti965wogl"
+ },
+ "86b923eba5b29bac133203111b17d1b7c560d17e5767897eb26f18dcb017a22e": {
+  "bhl_id": "CAT31296969",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31296969",
+  "publication_date": "1915",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's winter flowering orchid sweet peas / [Ant. C. Zvolanek].",
+  "url": "https://archive.org/details/CAT31296969"
+ },
+ "8e83ba8db93d626488d543306a90278b379f239459d8540136f5045ca0804bd2": {
+  "bhl_id": "antcommunitiesho00mcco",
+  "collections": [
+   "biodiversity",
+   "MBLWHOI",
+   "blc",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "antcommunitiesho00mcco",
+  "publication_date": "1909",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ant communities and how they are governed; a study in natural civics",
+  "url": "https://archive.org/details/antcommunitiesho00mcco"
+ },
+ "8ebc0bd36c37e7ee3eed0439cd39b996641077467730b966115e86185f77d764": {
+  "bhl_id": "twonewspeciesfono77crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "twonewspeciesfono77crei",
+  "publication_date": "1935",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Two new species of Formica from western United States",
+  "url": "https://archive.org/details/twonewspeciesfono77crei"
+ },
+ "8ecdd30166614636e1973f03c559df1ed71f9a2ff77fc248e622a78f88f44f5a": {
+  "bhl_id": "biologicalembryo00tanq",
+  "collections": [
+   "biodiversity",
+   "theses-and-dissertations"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "biologicalembryo00tanq",
+  "publication_date": "1913",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Biological and embryological studies on Formicidae",
+  "url": "https://archive.org/details/biologicalembryo00tanq"
+ },
+ "9238d865738e90049d74efdcdc744dc35d30ae9a9a5d6d25246185a24da7882d": {
+  "bhl_id": "uniquecasecircuno12schn",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "uniquecasecircuno12schn",
+  "publication_date": "1944",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A unique case of circular milling in ants, considered in relation to trail following and the general problem of orientation",
+  "url": "https://archive.org/details/uniquecasecircuno12schn"
+ },
+ "93309c5a136efb1a8f1e48180d3a796c9f416aa7b0d8c7bb7a27f40134d8c4e6": {
+  "bhl_id": "studiesonsouthw2239crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "studiesonsouthw2239crei",
+  "publication_date": "1965",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Studies on southwestern ants belonging to Camponotus, subgenus Myrmobrachys (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/studiesonsouthw2239crei"
+ },
+ "96fe413737ad2d09fca2a19973436b69d266f0fa47047cb9f32df227e9f401b5": {
+  "bhl_id": "dieameiseschilde00esch",
+  "collections": [
+   "b",
+   "i",
+   "o",
+   "d",
+   "i",
+   "v",
+   "e",
+   "r",
+   "s",
+   "i",
+   "t",
+   "y"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "dieameiseschilde00esch",
+  "publication_date": "1906",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Die ameise. Schilderung ihrer lebensweise",
+  "url": "https://archive.org/details/dieameiseschilde00esch"
+ },
+ "978ead1c5c660ec12d9fb563c656b69fdfe3bcd70839a99e873d26396fb64362": {
+  "bhl_id": "systematicsevolu472seev",
+  "collections": [
+   "biodiversity",
+   "fieldiana"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "systematicsevolu472seev",
+  "publication_date": "1965",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The systematics, evolution and zoogeography of staphylinid beetles, associated with army ants (Coleoptera, Staphylinidae)",
+  "url": "https://archive.org/details/systematicsevolu472seev"
+ },
+ "988db44792c51d70d6abc0bc58b03431eb5ff6da5f9ee0de126374a2aaf46d40": {
+  "bhl_id": "studyarmyantlifno13schn",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "studyarmyantlifno13schn",
+  "publication_date": "1947",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A study of army-ant life and behavior under dry-season conditions with special reference to reproductive functions. 1, Southern Mexico",
+  "url": "https://archive.org/details/studyarmyantlifno13schn"
+ },
+ "994b1a80ee95c0e3e41c51c126af5ae21b6d3ce95289ed0098ab987e7db38142": {
+  "bhl_id": "antsaboutshadepa57midd",
+  "collections": [
+   "usda-forestentomologybrief",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "antsaboutshadepa57midd",
+  "publication_date": "1923",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants about shade and park trees and shrubs",
+  "url": "https://archive.org/details/antsaboutshadepa57midd"
+ },
+ "9a33f7200b90bbdb0edb23dd76757b0cafba2d61339b4c9d1613444d7aebca40": {
+  "bhl_id": "studiesoncampon2393crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "studiesoncampon2393crei",
+  "publication_date": "1969",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Studies on Camponotus (Myrmaphaenus) andrei Forel (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/studiesoncampon2393crei"
+ },
+ "9c4a5cb1a9734727379fbc9df28e90048727fc1309a1e0855921c650cbfe8a0a": {
+  "bhl_id": "antsbeeswaspsrec00lubb_0",
+  "collections": [
+   "thomasfisherbiodiversity",
+   "thomasfisher",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "antsbeeswaspsrec00lubb_0",
+  "publication_date": "1882",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps; a record of observations on the habits of the social hymenoptera",
+  "url": "https://archive.org/details/antsbeeswaspsrec00lubb_0"
+ },
+ "9ea1490556a88e0b97ce78df6583cff86f3b367171b297789332711611c5149d": {
+  "bhl_id": "CAT31326728",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31326728",
+  "publication_date": "1926",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's florists' and private gardeners' list of sweet pea seed : June 1926 to June 1927 / Ant. C. Zvolanek & Sons Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31326728"
+ },
+ "a2214a40f6f661a7abdd45f870daf80560fcff9b59a9ecfa8b560f2aea61f668": {
+  "bhl_id": "memorialfactorsi00wyla",
+  "collections": [
+   "university_of_illinois_urbana-champaign",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "memorialfactorsi00wyla",
+  "publication_date": "1915",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Memorial factors in learning among ants",
+  "url": "https://archive.org/details/memorialfactorsi00wyla"
+ },
+ "a66e4cdab9256cc48216c015f492a2e2210173ef0932a441c87103de1be4b549": {
+  "bhl_id": "CAT31352365",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31352365",
+  "publication_date": "1938",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "1938 price list of winter flowering sweet pea seed / Ant. C. Zvolanek & Son.",
+  "url": "https://archive.org/details/CAT31352365"
+ },
+ "a72274d2bc3f00e79fd5179d684c4577ee4dfcf3036eea78f7fd30148aabb238": {
+  "bhl_id": "houseants147back",
+  "collections": [
+   "usda-leaflet",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "houseants147back",
+  "publication_date": "1937",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "House ants",
+  "url": "https://archive.org/details/houseants147back"
+ },
+ "a779757f6e46ac1490ce3a74970e37e9b53dd0e0ba2ff59926d3640295da2257": {
+  "bhl_id": "reproductivesys1664haga",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "reproductivesys1664haga",
+  "publication_date": "1954",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The reproductive system of the army-ant queen, Eciton (Eciton) Part 2, Histology",
+  "url": "https://archive.org/details/reproductivesys1664haga"
+ },
+ "a93dbf15b1c9ffa72c3a309560e97653aa253783c6a139e4e5b95dfce4a04070": {
+  "bhl_id": "dieeuropischen00mayr",
+  "collections": [
+   "fieldmuseumlibrary-texts",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "dieeuropischen00mayr",
+  "publication_date": "1861",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Die Europäischen Formiciden : nach der analytischen methode bearbeitet",
+  "url": "https://archive.org/details/dieeuropischen00mayr"
+ },
+ "a9faffb6a6d4e3d3ca243fe3d2722089b45344aae3b8ad4eb33e7cf93e053959": {
+  "bhl_id": "naturescraftsmen00mcco",
+  "collections": [
+   "fieldmuseumlibrary-texts",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "naturescraftsmen00mcco",
+  "publication_date": "1907",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Nature's craftsmen; popular studies of ants and other insects",
+  "url": "https://archive.org/details/naturescraftsmen00mcco"
+ },
+ "ac392b3a1a0f53ba8c4ba3fe21e083d33b044ade883684b1caa5cd84f8a9819e": {
+  "bhl_id": "cu31924031203619",
+  "collections": [
+   "cornell",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "cu31924031203619",
+  "publication_date": "1906",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps. A record of observations on the habits of the social Hymenoptera",
+  "url": "https://archive.org/details/cu31924031203619"
+ },
+ "ae99917881bc8bbc5af51120b6861326721e59d0782526348709bc62e9e234ad": {
+  "bhl_id": "studiesoncentra1443webe",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "studiesoncentra1443webe",
+  "publication_date": "1950",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Studies on Central African ants of the genus Pseudolasius Emery (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/studiesoncentra1443webe"
+ },
+ "af06de2b9c506dc4633a2b54fb840887a59557ebd6a546ef94b70843aa230cfb": {
+  "bhl_id": "houseants1935unit",
+  "collections": [
+   "usda-housekeeperschat",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "houseants1935unit",
+  "publication_date": "1935",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "House ants",
+  "url": "https://archive.org/details/houseants1935unit"
+ },
+ "b09c8eece1248d70e6afd731d19585e44f25e728dcf38d0f9bd51efbe5e617ea": {
+  "bhl_id": "CAT31309053",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31309053",
+  "publication_date": "1921",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's florists' list of sweet pea seed : June 1921 to June 1922 / Ant. C. Zvolanek & Sons Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31309053"
+ },
+ "b133c6ff57bf87113aa8dadf0d7e74de9bc54b64462d1b62b3371b874263c469": {
+  "bhl_id": "importedfireanth350unit",
+  "collections": [
+   "usda-leaflet",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "importedfireanth350unit",
+  "publication_date": "1954",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The imported fire ant : how to control it",
+  "url": "https://archive.org/details/importedfireanth350unit"
+ },
+ "b15b4d9c2ffa6bb929dd10f402569171f4ae95b8113da9dc8078f06a68592bf4": {
+  "bhl_id": "twonewmealybugsno45buek",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "twonewmealybugsno45buek",
+  "publication_date": "1931",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Two new mealy-bugs (Coccidae) in nests of ants (Lasius)",
+  "url": "https://archive.org/details/twonewmealybugsno45buek"
+ },
+ "b6f927663d1bfd2c8ea4c347edb12302eee880944c6a82ab71689e07742024ea": {
+  "bhl_id": "twodestructivete00hunt",
+  "collections": [
+   "library_of_congress",
+   "biodiversity",
+   "fedlink"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "twodestructivete00hunt",
+  "publication_date": "1922",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Two destructive Texas ants",
+  "url": "https://archive.org/details/twodestructivete00hunt"
+ },
+ "bd0a4e95e10498066696798d922a0bcc5f8c8cd9272a07f1285296c564a4b82b": {
+  "bhl_id": "CAT31323717",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31323717",
+  "publication_date": "1925",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's florists' and private gardeners' list of sweet pea seed : June 1925 to June 1926 / Ant. C. Zvolanek & Sons Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31323717"
+ },
+ "bef91a0c724b72501076d0654537856399d6606b37b1a804fe08eede9a870d98": {
+  "bhl_id": "halfhourinnatura00peab",
+  "collections": [
+   "b",
+   "i",
+   "o",
+   "d",
+   "i",
+   "v",
+   "e",
+   "r",
+   "s",
+   "i",
+   "t",
+   "y"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "halfhourinnatura00peab",
+  "publication_date": "1883",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A half hour in natural history",
+  "url": "https://archive.org/details/halfhourinnatura00peab"
+ },
+ "bf4cce6fd8e200ed017a9ed269435c712d45b5587580ac8af4eb91d60e4dbb44": {
+  "bhl_id": "insectbookpopula00howauoft",
+  "collections": [
+   "gerstein",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "insectbookpopula00howauoft",
+  "publication_date": "1916",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The insect book : a popular account of the bees, wasps, ants, grasshoppers, flies, and other North American insects exclusive of the butterflies, moths and beetles, with full life histories, tables and bibliographies",
+  "url": "https://archive.org/details/insectbookpopula00howauoft"
+ },
+ "bfc15d33558c2b794e778a0c659bac095220002c8ff9c3625c3f560681cf77e2": {
+  "bhl_id": "australianantgeno84whee",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "australianantgeno84whee",
+  "publication_date": "1936",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The Australian ant genus Froggattella",
+  "url": "https://archive.org/details/australianantgeno84whee"
+ },
+ "c0b185e25e19c59146a5b63a1e4f19e19c7fc91d1f89e19a63b468fce83703e7": {
+  "bhl_id": "comparativestudi00wasmuoft",
+  "collections": [
+   "robarts",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "comparativestudi00wasmuoft",
+  "publication_date": "1905",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Comparative studies in the psychology of ants and of higher animals",
+  "url": "https://archive.org/details/comparativestudi00wasmuoft"
+ },
+ "c23a69feb37adea891785ee7eb1717fa4a9c8f8d133812c4f2c6d31030844380": {
+  "bhl_id": "collectedpaperso00whee",
+  "collections": [
+   "fieldmuseumlibrary-texts",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "collectedpaperso00whee",
+  "publication_date": "1905",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Collected papers on ants",
+  "url": "https://archive.org/details/collectedpaperso00whee"
+ },
+ "c5f6c6d9742f5f1cfca72f7d72b95a1ea5fb43e06490aa4cfbfa05bf362dd47c": {
+  "bhl_id": "questionboxansw1942unit_5",
+  "collections": [
+   "usda-housekeeperschat",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "questionboxansw1942unit_5",
+  "publication_date": "1942",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Question box : answers from scientists of the U.S. Department of Agriculture",
+  "url": "https://archive.org/details/questionboxansw1942unit_5"
+ },
+ "c929a35335d48197d290b228eb5511fdc9b7c6024d1ec54166c3294c0b951f12": {
+  "bhl_id": "argentineantinre647hort",
+  "collections": [
+   "usda-bulletin",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "argentineantinre647hort",
+  "publication_date": "1918",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The Argentine ant in relation to citrus groves",
+  "url": "https://archive.org/details/argentineantinre647hort"
+ },
+ "ca202eda184bfbb1bad9f358223cd93b4282fb6fed137573f931950c8a850b36": {
+  "bhl_id": "houseantsmonomo234marl",
+  "collections": [
+   "usda-circularentomology",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "houseantsmonomo234marl",
+  "publication_date": "1907",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "House ants. (Monomorium pharaonis, et al.",
+  "url": "https://archive.org/details/houseantsmonomo234marl"
+ },
+ "cc4c5d0282b5b7739520db7078c6a1cf9577eff2cf48fe3400940413c71f140f": {
+  "bhl_id": "soldiercastephe1637greg",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "soldiercastephe1637greg",
+  "publication_date": "1953",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The soldier caste of Pheidole (Ceratopheidole) clydei Gregg (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/soldiercastephe1637greg"
+ },
+ "cd9a9527f46a5110fe9cd3b74144723d98346e84012051bc1aa25e7364771e2f": {
+  "bhl_id": "moreinsectquesti1938unit",
+  "collections": [
+   "usda-housekeeperschat",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "moreinsectquesti1938unit",
+  "publication_date": "1938",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "More insect questions",
+  "url": "https://archive.org/details/moreinsectquesti1938unit"
+ },
+ "cff88101fff1c187060bf125f64bbf19d30263b2623c90969c6091d614cdc6a4": {
+  "bhl_id": "CAT31356608",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31356608",
+  "publication_date": "1940",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "1940-1941 price list of winter-flowering sweet pea seed / Ant. C. Zvolanek & Son.",
+  "url": "https://archive.org/details/CAT31356608"
+ },
+ "d33cafc007be6c2f945a832a48f2842ae8f73ec0b15b020e6632d6f62e82e3c4": {
+  "bhl_id": "antstheirstructu00whee",
+  "collections": [
+   "biodiversity",
+   "MBLWHOI",
+   "blc",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "antstheirstructu00whee",
+  "publication_date": "1910",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants; their structure, development and behavior",
+  "url": "https://archive.org/details/antstheirstructu00whee"
+ },
+ "d35dabc2e38be5dfed38017da946605c201c574f29f67c5f5c483d0df154b488": {
+  "bhl_id": "antstheirwayswit00whit",
+  "collections": [
+   "thomasfisherbiodiversity",
+   "thomasfisher",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "antstheirwayswit00whit",
+  "publication_date": "1895",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants and their ways, with illustrations, and an appendix giving a complete list of genera and species of the British ants",
+  "url": "https://archive.org/details/antstheirwayswit00whit"
+ },
+ "d4e35d4e9771044072392f1816cf68a367689a294f34db753fe8fefe7f5391d5": {
+  "bhl_id": "biologicalembryo00tanq_0",
+  "collections": [
+   "university_of_illinois_urbana-champaign",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "biologicalembryo00tanq_0",
+  "publication_date": "1912",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Biological and embryological studies on Formicidae",
+  "url": "https://archive.org/details/biologicalembryo00tanq_0"
+ },
+ "d5d8459222381c739e96d9cc8c9bd1e051377a4e0dbfe06c213ff01ac10f4701": {
+  "bhl_id": "antlikeflowerbe1720pall",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "antlikeflowerbe1720pall",
+  "publication_date": "1955",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The ant-like flower beetles of north central Mexico collected on the David Rockefeller Mexican Expedition of 1947 : and other Mexican and Central American anthicids in the American Museum of Natural History (Coleoptera, Anthicidae)",
+  "url": "https://archive.org/details/antlikeflowerbe1720pall"
+ },
+ "d714774aaa24934dbbb963411bea269bb874073d48cd435d291376e4c6e3ef52": {
+  "bhl_id": "CAT31331744",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31331744",
+  "publication_date": "1928",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's commercial grower and gardeners' list of early or winter-flowering sweet pea seed : June 1928 to June 1929 / Ant. C. Zvolanek and Sons ; Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31331744"
+ },
+ "d838ba90fefa1d5f72f46d27914fb33ffb3348e96339604cff069f9b19f86950": {
+  "bhl_id": "resultsarchboldno12schn",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "resultsarchboldno12schn",
+  "publication_date": "1944",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Results of the Archbold Expeditions. No. 51, Behavior and ecological notes on some ants from south-central Florida",
+  "url": "https://archive.org/details/resultsarchboldno12schn"
+ },
+ "dc39c61c4d8a958030bb0411d15c1d39d228ba4b52702b26b725eb9d71b569e2": {
+  "bhl_id": "questionboxhowge1941unit",
+  "collections": [
+   "usda-housekeeperschat",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "questionboxhowge1941unit",
+  "publication_date": "1941",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Question box how get rid of ants? How treat berry stains? answers from entomologists and home economists of the U. S. Department of Agriculture",
+  "url": "https://archive.org/details/questionboxhowge1941unit"
+ },
+ "de691dc90cb6fb8b2da7feacb18884ab4e19ffaf5dbce23b62db4fdf24d96342": {
+  "bhl_id": "notesonmyrmecoc1807crei",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "notesonmyrmecoc1807crei",
+  "publication_date": "1956",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Notes on Myrmecocystus lugubris Wheeler and its synonym, Myrmecocystus yuma Wheeler (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/notesonmyrmecoc1807crei"
+ },
+ "e14f05808ac55f1e174cf78568cb90d9d19a7b82a5c5ff78bc99b338a0c33edf": {
+  "bhl_id": "antsbeeswaspsrec00lubbuoft",
+  "collections": [
+   "gerstein",
+   "biodiversity",
+   "toronto",
+   "university_of_toronto"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "antsbeeswaspsrec00lubbuoft",
+  "publication_date": "1883",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Ants, bees, and wasps; a record of observations on the habits of the social Hymenoptera",
+  "url": "https://archive.org/details/antsbeeswaspsrec00lubbuoft"
+ },
+ "e62f29c5f511c0bb540b056f558f2ea2c498f3c3308984d1b5b3919e229d8261": {
+  "bhl_id": "studiesonafrica1548webe",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "studiesonafrica1548webe",
+  "publication_date": "1952",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Studies on African Myrmicinae. 1 : (Hymenoptera, Formicidae)",
+  "url": "https://archive.org/details/studiesonafrica1548webe"
+ },
+ "e68abc5457fd1b9374e156638fa6b87eec15805e2644ec12b8ae568ddc70bf7a": {
+  "bhl_id": "oustantybystarva1936unit",
+  "collections": [
+   "usda-housekeeperschat",
+   "usdanationalagriculturallibrary",
+   "fedlink",
+   "americana",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "oustantybystarva1936unit",
+  "publication_date": "1936",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Oust the anty by starvation",
+  "url": "https://archive.org/details/oustantybystarva1936unit"
+ },
+ "e7f6e40846962df313ec6487721767f3d24d0e490faa13706962e747c05a284d": {
+  "bhl_id": "newponerineants1398webe",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "newponerineants1398webe",
+  "publication_date": "1949",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "New ponerine ants from Equatorial Africa",
+  "url": "https://archive.org/details/newponerineants1398webe"
+ },
+ "eee973cb77bc3e8e3200a429bac0ddc0caeedfe8806792d5fa7b60b2c57b1b55": {
+  "bhl_id": "CAT31340000",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31340000",
+  "publication_date": "1931",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's commercial grower and gardener's list of early or winter-flowering sweet pea seed : June 1931 to June 1932 / Ant. C. Zvolanek and Sons ; Sweet Pea Ranch.",
+  "url": "https://archive.org/details/CAT31340000"
+ },
+ "ef0d0f8270b076dc8a842350caabbea6a529222566ed54145abf902fd8d56399": {
+  "bhl_id": "newspeciesmyrme2033cazi",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "newspeciesmyrme2033cazi",
+  "publication_date": "1961",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "A new species of myrmecophilous Scarabaeidae, with notes on other species (Coleoptera, Cremastocheilini)",
+  "url": "https://archive.org/details/newspeciesmyrme2033cazi"
+ },
+ "f62a31cea34b604e1c88b1cbaaa7c987774394ce59c4283a69090581c317594d": {
+  "bhl_id": "CAT31296967",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31296967",
+  "publication_date": "1915",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "List of winter orchid and other sweet peas, 1915 / Ant. C. Zvolanek.",
+  "url": "https://archive.org/details/CAT31296967"
+ },
+ "f6926b62fb4f1a16fd6eb1112a3f2f7c8d0eca0d5cd71d4ac9a326fa5d9f8e3f": {
+  "bhl_id": "cu31924003653965",
+  "collections": [
+   "cornell",
+   "biodiversity",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "cu31924003653965",
+  "publication_date": "1878",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The bee and white ants, their manners and habits; with illustrations of animal instinct and intelligence",
+  "url": "https://archive.org/details/cu31924003653965"
+ },
+ "f9cf921171a7cb4fd89b3715fa756840a87cfa5f8e9d77f90cc3fbad2faeb906": {
+  "bhl_id": "CAT31354333",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31354333",
+  "publication_date": "1939",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "1939 price list of winter flowering sweet pea seed / Ant. C. Zvolanek & Son.",
+  "url": "https://archive.org/details/CAT31354333"
+ },
+ "fa24daf43431aa23837cbbf118b6c2beda061a44fa0f572c3e6a5a34b4298f42": {
+  "bhl_id": "CAT31304942",
+  "collections": [
+   "usda-nurseryandseedcatalog",
+   "usdanationalagriculturallibrary",
+   "biodiversity",
+   "fedlink",
+   "americana"
+  ],
+  "era": "era_1900_1949",
+  "ia_identifier": "CAT31304942",
+  "publication_date": "1919",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Zvolanek's florists' list of sweet pea seed : 1919-20 / Ant. C. Zvolanek.",
+  "url": "https://archive.org/details/CAT31304942"
+ },
+ "fb0b671a1e3a4d535c3cef932a8ffd564f75f6db67ad35c31b96242f41ad2bd3": {
+  "bhl_id": "reproductivesys1663haga",
+  "collections": [
+   "americanmuseumnaturalhistory",
+   "biodiversity"
+  ],
+  "era": "era_1950_1970",
+  "ia_identifier": "reproductivesys1663haga",
+  "publication_date": "1954",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "The reproductive system of the army-ant queen, Eciton (Eciton) Part 1, General anatomy",
+  "url": "https://archive.org/details/reproductivesys1663haga"
+ },
+ "febe4fff5d8ebc1b8f6aa5826bbc39d72e33a21dc786bb844414f75e8a52bf9c": {
+  "bhl_id": "harvestingantstr00mogg",
+  "collections": [
+   "biodiversity",
+   "MBLWHOI",
+   "blc",
+   "americana"
+  ],
+  "era": "era_1850_1899",
+  "ia_identifier": "harvestingantstr00mogg",
+  "publication_date": "1873",
+  "query": "collection:\"biodiversity\" AND mediatype:texts AND (title:(ants OR ant OR Formicidae OR myrmecology) OR subject:(Formicidae OR ants OR myrmecology OR \"social insects\" OR eusocial)) AND date:[1850-01-01 TO 1970-12-31]",
+  "retrieved_at": "2026-09-16T22:32:07.872084+00:00",
+  "title": "Harvesting ants and trap-door spiders. Notes and observations on their habits and dwellings",
+  "url": "https://archive.org/details/harvestingantstr00mogg"
+ }
+}

@@ -6,6 +6,7 @@ effect sizes, confidence intervals, dashboards, and hypothesis testing.
 """
 from __future__ import annotations
 
+import json
 import tempfile
 from pathlib import Path
 
@@ -558,3 +559,275 @@ class TestStandaloneModuleImport:
         assert hasattr(module, "plot_statistical_analysis")
         assert module.MIN_FONT >= 16
         plt.close("all")
+
+
+class TestPlotLayerComparison:
+    """plot_layer_comparison: grouped abstract-vs-fulltext entropy bars."""
+
+    ABSTRACT_ARTIFACT = {
+        "layer": "abstract",
+        "descriptives": {
+            domain: {"n_terms": 10 + i, "entropy_mean": 1.0 + i * 0.1}
+            for i, domain in enumerate(
+                [
+                    "unit_of_individuality",
+                    "behavior_and_identity",
+                    "power_and_labor",
+                    "sex_and_reproduction",
+                    "kin_and_relatedness",
+                    "economics",
+                ]
+            )
+        },
+    }
+
+    FULLTEXT_ARTIFACT = {
+        "layer": "fulltext",
+        "descriptives": {
+            domain: {"n_terms": 20 + i, "entropy_mean": 2.0 + i * 0.1}
+            for i, domain in enumerate(
+                [
+                    "unit_of_individuality",
+                    "behavior_and_identity",
+                    "power_and_labor",
+                    "sex_and_reproduction",
+                    "kin_and_relatedness",
+                    "economics",
+                ]
+            )
+        },
+    }
+
+    def test_renders_valid_png(self, tmp_path) -> None:
+        from visualization.statistical_visualization import plot_layer_comparison
+
+        filepath = plot_layer_comparison(
+            self.ABSTRACT_ARTIFACT,
+            self.FULLTEXT_ARTIFACT,
+            str(tmp_path),
+        )
+        path = Path(filepath)
+        assert path.name == "layer_comparison.png"
+        assert path.exists() and path.stat().st_size > 0
+
+    def test_custom_filename(self, tmp_path) -> None:
+        from visualization.statistical_visualization import plot_layer_comparison
+
+        filepath = plot_layer_comparison(
+            self.ABSTRACT_ARTIFACT,
+            self.FULLTEXT_ARTIFACT,
+            str(tmp_path),
+            filename="custom_name.png",
+        )
+        assert Path(filepath).name == "custom_name.png"
+        assert Path(filepath).exists()
+
+    def test_missing_descriptives_falls_back(self, tmp_path) -> None:
+        from visualization.statistical_visualization import plot_layer_comparison
+
+        filepath = plot_layer_comparison({}, {}, str(tmp_path))
+        assert Path(filepath).exists() and Path(filepath).stat().st_size > 0
+
+    def test_font_floor_enforced(self, tmp_path, monkeypatch) -> None:
+        """Every rendered text element is at least 16pt."""
+        import matplotlib.pyplot as plt
+
+        import visualization.statistical_visualization as svv
+
+        captured = {}
+
+        def capturing_save_and_verify(fig, filepath, dpi=300):
+            captured["fig"] = fig
+
+        monkeypatch.setattr(svv, "save_and_verify", capturing_save_and_verify)
+        svv.plot_layer_comparison(
+            self.ABSTRACT_ARTIFACT,
+            self.FULLTEXT_ARTIFACT,
+            str(tmp_path),
+        )
+        fig = captured["fig"]
+        sizes = []
+        for ax in fig.axes:
+            sizes.append(ax.title.get_fontsize())
+            sizes.extend(t.get_fontsize() for t in ax.texts)
+            sizes.extend(
+                lab.get_fontsize()
+                for lab in ax.get_xticklabels() + ax.get_yticklabels()
+            )
+            legend = ax.get_legend()
+            if legend is not None:
+                sizes.extend(
+                    t.get_fontsize() for t in legend.get_texts()
+                )
+        assert sizes
+        assert min(sizes) >= 16.0, f"sub-16pt text found: {min(sizes)}"
+        plt.close(fig)
+
+    def test_real_artifacts_smoke(self, tmp_path) -> None:
+        """Renders a valid PNG from the two real pipeline artifacts."""
+        from visualization.statistical_visualization import plot_layer_comparison
+
+        output_data = Path(__file__).resolve().parents[1] / "output" / "data"
+        abstract_path = output_data / "statistical_analysis.json"
+        fulltext_path = output_data / "fulltext_analysis.json"
+        if not (abstract_path.is_file() and fulltext_path.is_file()):
+            pytest.skip("real pipeline artifacts not present")
+        with abstract_path.open() as f:
+            abstract_artifact = json.load(f)
+        with fulltext_path.open() as f:
+            fulltext_artifact = json.load(f)
+        filepath = Path(
+            plot_layer_comparison(
+                abstract_artifact, fulltext_artifact, str(tmp_path)
+            )
+        )
+        assert filepath.exists() and filepath.stat().st_size > 0
+
+
+class TestFulltextFingerprintGuard:
+    """Corpus-fingerprint freshness guard for the full-text stage
+    (src/visualization/manuscript_figures._ensure_fulltext_artifact)."""
+
+    @staticmethod
+    def _write_corpus(fulltexts_dir: Path, n_docs: int = 3) -> None:
+        """Materialize one shard + provenance sidecar."""
+        fulltexts_dir.mkdir(parents=True, exist_ok=True)
+        corpus = [{"pmcid": f"PMC{i}"} for i in range(n_docs)]
+        (fulltexts_dir / "fulltexts_00001.json").write_text(
+            json.dumps(corpus), encoding="utf-8"
+        )
+        (fulltexts_dir / "provenance.json").write_text(
+            json.dumps({"PMC0": {}, "PMC1": {}, "PMC2": {}}), encoding="utf-8"
+        )
+
+    @staticmethod
+    def _fake_builder(calls):
+        def builder(fulltexts):
+            calls.append(list(fulltexts))
+            return {
+                "layer": "fulltext",
+                "n_documents": len(fulltexts),
+                "pairwise": [],
+                "skipped": [],
+            }
+
+        return builder
+
+    def test_fingerprint_shape(self, tmp_path) -> None:
+        from visualization.manuscript_figures import (
+            _fulltext_corpus_fingerprint,
+        )
+
+        self._write_corpus(tmp_path)
+        fingerprint = _fulltext_corpus_fingerprint(
+            [{"pmcid": "PMC0"}, {"pmcid": "PMC1"}, {"pmcid": "PMC2"}],
+            str(tmp_path),
+        )
+        assert fingerprint["record_count"] == 3
+        assert len(fingerprint["provenance_sha256"]) == 64
+
+    def test_stale_artifact_is_regenerated_once(self, tmp_path, monkeypatch) -> None:
+        """A pre-guard artifact (no fingerprint) counts as stale."""
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+
+        fulltexts_dir = tmp_path / "fulltexts"
+        data_dir = tmp_path / "output" / "data"
+        data_dir.mkdir(parents=True)
+        self._write_corpus(fulltexts_dir)
+        (data_dir / "fulltext_analysis.json").write_text(
+            json.dumps({"layer": "fulltext", "n_documents": 500}),
+            encoding="utf-8",
+        )
+        monkeypatch.delenv("FULLTEXT_ANALYSIS_LIMIT", raising=False)
+        calls = []
+        artifact = _ensure_fulltext_artifact(
+            str(data_dir), str(fulltexts_dir), builder=self._fake_builder(calls)
+        )
+        assert artifact["n_documents"] == 3
+        assert artifact["corpus_fingerprint"]["record_count"] == 3
+        assert artifact["corpus_fingerprint"]["limit"] is None
+        assert len(calls) == 1
+        # Stored artifact carries the fingerprint.
+        stored = json.loads(
+            (data_dir / "fulltext_analysis.json").read_text(encoding="utf-8")
+        )
+        assert stored["corpus_fingerprint"] == artifact["corpus_fingerprint"]
+
+    def test_fresh_artifact_is_skipped(self, tmp_path, monkeypatch) -> None:
+        """Matching fingerprint → the builder is not called again."""
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+
+        fulltexts_dir = tmp_path / "fulltexts"
+        data_dir = tmp_path / "output" / "data"
+        data_dir.mkdir(parents=True)
+        self._write_corpus(fulltexts_dir)
+        monkeypatch.delenv("FULLTEXT_ANALYSIS_LIMIT", raising=False)
+        calls = []
+        first = _ensure_fulltext_artifact(
+            str(data_dir), str(fulltexts_dir), builder=self._fake_builder(calls)
+        )
+        assert len(calls) == 1
+        second = _ensure_fulltext_artifact(
+            str(data_dir), str(fulltexts_dir), builder=self._fake_builder(calls)
+        )
+        assert len(calls) == 1  # builder not called again
+        assert second == first
+
+    def test_changed_corpus_is_regenerated(self, tmp_path, monkeypatch) -> None:
+        """A changed provenance sidecar invalidates the fingerprint."""
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+
+        fulltexts_dir = tmp_path / "fulltexts"
+        data_dir = tmp_path / "output" / "data"
+        data_dir.mkdir(parents=True)
+        self._write_corpus(fulltexts_dir)
+        monkeypatch.delenv("FULLTEXT_ANALYSIS_LIMIT", raising=False)
+        calls = []
+        _ensure_fulltext_artifact(
+            str(data_dir), str(fulltexts_dir), builder=self._fake_builder(calls)
+        )
+        assert len(calls) == 1
+        # Touch the provenance sidecar → corpus changed.
+        (fulltexts_dir / "provenance.json").write_text(
+            json.dumps({"changed": True}), encoding="utf-8"
+        )
+        _ensure_fulltext_artifact(
+            str(data_dir), str(fulltexts_dir), builder=self._fake_builder(calls)
+        )
+        assert len(calls) == 2
+
+    def test_bounded_run_never_satisfies_full_corpus_guard(
+        self, tmp_path, monkeypatch
+    ) -> None:
+        """FULLTEXT_ANALYSIS_LIMIT artifacts are marked with their limit."""
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+
+        fulltexts_dir = tmp_path / "fulltexts"
+        data_dir = tmp_path / "output" / "data"
+        data_dir.mkdir(parents=True)
+        self._write_corpus(fulltexts_dir, n_docs=5)
+        monkeypatch.setenv("FULLTEXT_ANALYSIS_LIMIT", "2")
+        calls = []
+        bounded = _ensure_fulltext_artifact(
+            str(data_dir), str(fulltexts_dir), builder=self._fake_builder(calls)
+        )
+        assert bounded["n_documents"] == 2
+        assert bounded["corpus_fingerprint"]["limit"] == 2
+        # Even with the same env, the bounded artifact is fresh only for
+        # the bounded fingerprint (same limit) — not for a full run.
+        monkeypatch.delenv("FULLTEXT_ANALYSIS_LIMIT", raising=False)
+        _ensure_fulltext_artifact(
+            str(data_dir), str(fulltexts_dir), builder=self._fake_builder(calls)
+        )
+        assert len(calls) == 2  # full corpus rebuilt over the bounded one
+
+    def test_missing_shards_returns_none(self, tmp_path) -> None:
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+
+        calls = []
+        result = _ensure_fulltext_artifact(
+            str(tmp_path / "out"), str(tmp_path / "absent"),
+            builder=self._fake_builder(calls),
+        )
+        assert result is None
+        assert calls == []

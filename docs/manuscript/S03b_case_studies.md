@@ -36,9 +36,53 @@ Ultra-longitudinal analysis reveals century-scale conceptual evolution:
 
 **Genomic Era (2000-2024)**: Epigenetic and transcriptomic regulation of caste phenotypes \cite{chandra2021epigenetics}, accompanied by growing recognition that rigid caste categories fail to capture the labile, environmentally responsive nature of social insect development \cite{boomsma2018superorganismality}. \citet{warner2024caste} demonstrate that caste differentiation becomes increasingly *canalized* from early development through cascading gene-expression changes modulated by juvenile hormone signaling, while gene expression in *Lasius niger* is more strongly influenced by age than by caste—further undermining the fixedness implied by "caste" terminology.
 
+#### BHL Historical-Layer Grounding (1850-1970) {#sec:bhl_grounding}
+
+These period claims are anchored in measurable term usage by the
+Biodiversity Heritage Library historical full-text layer:
+{{BHL_DOCUMENTS}} ant/myrmecology documents harvested from the BHL
+mirror collection on the Internet Archive (BHL API v3 requires a
+key; see `data/bhl/README.md` for the provenance and the verbatim
+query). The era-stratified artifact `data/bhl/era_term_usage.json`,
+produced by `src/pipeline/bhl_analysis.py`, reports "caste" rising
+monotonically from {{BHL_ERA_1850_1899_CASTE_PER_10K}} per 10k
+tokens in 1850-1899 ({{BHL_ERA_1850_1899_DOCS}} documents) to
+{{BHL_ERA_1900_1949_CASTE_PER_10K}} in 1900-1949
+({{BHL_ERA_1900_1949_DOCS}} documents) and
+{{BHL_ERA_1950_1970_CASTE_PER_10K}} in 1950-1970
+({{BHL_ERA_1950_1970_DOCS}} documents) — an intensification
+consistent with the Genetic Revolution and Molecular Biology era
+framings above. The labor vocabulary shows the same arc: "worker"
+rises from {{BHL_ERA_1850_1899_WORKER_PER_10K}} to
+{{BHL_ERA_1900_1949_WORKER_PER_10K}} to
+{{BHL_ERA_1950_1970_WORKER_PER_10K}} per 10k tokens across the
+eras, while "queen" remains the anchor term throughout
+({{BHL_ERA_1850_1899_QUEEN_PER_10K}} →
+{{BHL_ERA_1900_1949_QUEEN_PER_10K}} →
+{{BHL_ERA_1950_1970_QUEEN_PER_10K}} per 10k). The integrative-era
+vocabulary is absent from the entire stratum: "superorganism"
+registers {{BHL_ERA_1850_1899_SUPERORGANISM_PER_10K}},
+{{BHL_ERA_1900_1949_SUPERORGANISM_PER_10K}}, and
+{{BHL_ERA_1950_1970_SUPERORGANISM_PER_10K}} per 10k tokens across
+the three eras — zero throughout — marking it as a post-1970 import
+into general monographic usage rather than a term the historical
+corpus itself carries. All numbers resolve at render time from the
+BHL_* manuscript tokens.
+
 ### Superorganism Concept Evolution
 
-Table \ref{tab:superorganism_concept_evolution} traces the superorganism concept across seven decades of research:
+Table \ref{tab:superorganism_concept_evolution} traces the
+superorganism concept across seven decades of research:
+
+The BHL historical layer brackets the start of this table from
+below: across {{BHL_DOCUMENTS}} BHL-mirror documents, "superorganism"
+occurs {{BHL_ERA_1850_1899_SUPERORGANISM_PER_10K}} per 10k tokens in
+1850-1899, {{BHL_ERA_1900_1949_SUPERORGANISM_PER_10K}} in 1900-1949,
+and {{BHL_ERA_1950_1970_SUPERORGANISM_PER_10K}} in 1950-1970 — zero
+throughout (`data/bhl/era_term_usage.json`, produced by
+`src/pipeline/bhl_analysis.py`), confirming that the concept's
+theoretical vocabulary lived outside the monographic stratum and
+entered routine usage only in the post-1970 decades traced here.
 
 \begin{table}[h]
 \centering

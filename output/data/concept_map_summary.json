@@ -2,9 +2,9 @@
   "n_concepts": 6,
   "n_relationships": 15,
   "network_nodes": 3698,
-  "network_edges": 681,
-  "network_clustering": 0.0656,
-  "network_avg_degree": 0.37,
+  "network_edges": 641,
+  "network_clustering": 0.067,
+  "network_avg_degree": 0.35,
   "concepts": {
     "biological_individuality": {
       "description": "Concepts related to what constitutes a biological individual",

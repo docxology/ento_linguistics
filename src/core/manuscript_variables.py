@@ -261,7 +261,9 @@ def build_variable_map(
 
 
 def build_statistical_tokens(
-    stats_artifact: dict, fulltext_artifact: Optional[dict] = None
+    stats_artifact: dict,
+    fulltext_artifact: Optional[dict] = None,
+    bhl_data_dir: Optional[Path] = None,
 ) -> dict:
     """Map the statistical-analysis artifact onto inferential template tokens.
 
@@ -277,18 +279,26 @@ def build_statistical_tokens(
 
     When the parallel full-text layer artifact is available, the additional
     FULLTEXT_* token family is emitted (see :func:`_build_fulltext_tokens`).
+    When the BHL historical-layer artifact is available
+    (``<bhl_data_dir>/era_term_usage.json``, default
+    ``BHL_DATA_DIR``), the BHL_* token family is emitted (see
+    :func:`_build_bhl_tokens`).
 
     Args:
         stats_artifact: Parsed ``statistical_analysis.json`` contents.
         fulltext_artifact: Parsed ``fulltext_analysis.json`` contents, or
             ``None`` to load it from the default output-data location
             (missing file resolves to no FULLTEXT_* tokens, never KeyError).
+        bhl_data_dir: Directory holding the BHL historical layer
+            (``era_term_usage.json``); ``None`` defaults to
+            :data:`BHL_DATA_DIR` (the project ``data/bhl``).
 
     Returns:
         Mapping of token names to formatted string values.
     """
     variables: dict = {}
     variables.update(_build_fulltext_tokens(fulltext_artifact))
+    variables.update(_build_bhl_tokens(_load_bhl_artifact(bhl_data_dir)))
     if not stats_artifact:
         return variables
     anova = stats_artifact.get("anova") or {}
@@ -367,6 +377,11 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
       per-domain extracted-term count and mean semantic entropy from the
       artifact's ``descriptives`` section (SLUG = canonical domain slug
       uppercased).
+    - ``FULLTEXT_DOMAIN_<SLUG>_ANTHROPOMORPHIC`` /
+      ``FULLTEXT_ANTHROPOMORPHIC_OVERALL``: per-domain and overall
+      anthropomorphic-framing proportions from the artifact's
+      ``framing`` section (4-decimal; omitted when the artifact carries
+      no ``framing`` section).
     - ``FULLTEXT_PAIRWISE_N``: number of pairwise comparisons.
     - ``FULLTEXT_ANOVA_F`` / ``FULLTEXT_ANOVA_P``: omnibus ANOVA statistic
       and p-value (formatted with the shared ``_fmt_stat``/``_fmt_p``
@@ -398,6 +413,17 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
         variables[f"FULLTEXT_DOMAIN_{slug}_ENTROPY"] = _fmt_stat(
             entry.get("entropy_mean")
         )
+    for domain, entry in (fulltext_artifact.get("framing") or {}).items():
+        if domain == "overall":
+            continue
+        variables[f"FULLTEXT_DOMAIN_{str(domain).upper()}_ANTHROPOMORPHIC"] = (
+            _fmt_stat(entry.get("proportion"))
+        )
+    overall = (fulltext_artifact.get("framing") or {}).get("overall")
+    if overall:
+        variables["FULLTEXT_ANTHROPOMORPHIC_OVERALL"] = _fmt_stat(
+            overall.get("proportion")
+        )
     variables["FULLTEXT_PAIRWISE_N"] = str(
         len(fulltext_artifact.get("pairwise") or [])
     )
@@ -408,6 +434,115 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
     return variables
 
 
+BHL_DATA_DIR = PROJECT_DIR / "data" / "bhl"
+
+#: Era buckets emitted by the BHL layer artifact, in canonical order.
+BHL_ERA_KEYS: tuple[str, ...] = (
+    "era_1850_1899",
+    "era_1900_1949",
+    "era_1950_1970",
+)
+
+#: The 18 canonical domain-seed terms (3 per Ento-Linguistic domain)
+#: that receive BHL_<ERA>_<TERM>_PER_10K tokens.  Frozen names: every
+#: member is a seed of the canonical
+#: ``analysis.term_extraction.TerminologyExtractor.DOMAIN_SEEDS`` for
+#: its domain, and all are present in the harvested artifact.
+BHL_CANONICAL_TERMS: tuple[str, ...] = (
+    # unit_of_individuality
+    "colony",
+    "nestmate",
+    "superorganism",
+    # behavior_and_identity
+    "division of labor",
+    "foraging",
+    "worker",
+    # power_and_labor
+    "caste",
+    "hierarchy",
+    "queen",
+    # sex_and_reproduction
+    "brood",
+    "mating",
+    "reproduction",
+    # kin_and_relatedness
+    "altruism",
+    "kin",
+    "relatedness",
+    # economics
+    "allocation",
+    "cost",
+    "resource",
+)
+
+
+def _load_bhl_artifact(data_dir: Optional[Path] = None) -> dict:
+    """Load the BHL era-stratified artifact.
+
+    Args:
+        data_dir: Directory containing ``era_term_usage.json``;
+            ``None`` defaults to :data:`BHL_DATA_DIR`.
+
+    Returns:
+        Parsed artifact, or empty dict when the file is absent (the
+        caller then emits no BHL_* tokens).
+    """
+    directory = data_dir if data_dir is not None else BHL_DATA_DIR
+    return load_json(directory / "era_term_usage.json")
+
+
+def _build_bhl_tokens(bhl_artifact: Optional[dict]) -> dict:
+    """Map the BHL historical-layer artifact onto the BHL_* token family.
+
+    Emits (all omitted when the artifact is absent/empty, never KeyError):
+
+    - ``BHL_DOCUMENTS``: total analyzed BHL historical documents
+      (``source.documents``, falling back to the sum of per-era counts).
+    - ``BHL_ERA_<ERA>_DOCS``: per-era document counts (ERA in
+      ``ERA_1850_1899``, ``ERA_1900_1949``, ``ERA_1950_1970``).
+    - ``BHL_<ERA>_<TERM>_PER_10K``: per-era normalized term frequency
+      (per 10k tokens, 4 decimals) for the
+      :data:`BHL_CANONICAL_TERMS` that the artifact carries (TERM
+      slugified like the CACE_TERM convention: uppercased,
+      spaces/hyphens mapped to underscores).
+
+    Args:
+        bhl_artifact: Parsed ``era_term_usage.json`` contents, or
+            ``None`` to load from the default ``data/bhl`` location.
+
+    Returns:
+        Mapping of BHL_* token names to formatted string values.
+    """
+    if bhl_artifact is None:
+        bhl_artifact = _load_bhl_artifact()
+    variables: dict = {}
+    if not bhl_artifact:
+        return variables
+    eras: dict = bhl_artifact.get("eras") or {}
+    source: dict = bhl_artifact.get("source") or {}
+    total_documents = source.get("documents")
+    if total_documents is None:
+        total_documents = sum(
+            int((eras.get(era) or {}).get("documents", 0))
+            for era in BHL_ERA_KEYS
+        )
+    variables["BHL_DOCUMENTS"] = str(total_documents)
+    for era in BHL_ERA_KEYS:
+        era_upper = era.upper()
+        entry = eras.get(era) or {}
+        if not entry:
+            continue
+        variables[f"BHL_{era_upper}_DOCS"] = str(entry.get("documents", 0))
+        frequencies = entry.get("terms_per_10k") or {}
+        carried_terms = bhl_artifact.get("terms") or {}
+        for term in BHL_CANONICAL_TERMS:
+            if term not in carried_terms:
+                continue
+            slug = term.upper().replace("-", "_").replace(" ", "_")
+            variables[f"BHL_{era_upper}_{slug}_PER_10K"] = _fmt_stat(
+                frequencies.get(term, 0.0)
+            )
+    return variables
 
 
 def fill_manuscript(

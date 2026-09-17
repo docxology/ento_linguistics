@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  16 SEP 2026 12:00
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  17 SEP 2026 12:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1505,13 +1505,24 @@ utput/figures/anthropomorphic_framing.png Graphic file (type bmp)
 /figures/anthropomorphic_framing.png>
 
 
+Package microtype Warning: Unknown slot number of character
+(microtype)                `² (= \textsuperscript {2})'
+(microtype)                in font encoding `TU'.
+(microtype)                Make sure it's a single character
+(microtype)                (or a number) in protrusion list
+(microtype)                `LMR-it'.
+
+
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[15]
+[15] [16]
 File: /Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/o
 utput/figures/domain_overview_grid.png Graphic file (type bmp)
 </Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output
 /figures/domain_overview_grid.png>
+
+
+LaTeX Warning: Float too large for page by 13.96461pt on input line 1217.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1521,7 +1532,7 @@ utput/figures/domain_patterns_grid.png Graphic file (type bmp)
 </Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output
 /figures/domain_patterns_grid.png>
 
-LaTeX Warning: Float too large for page by 91.15782pt on input line 1224.
+LaTeX Warning: Float too large for page by 157.15765pt on input line 1224.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1552,17 +1563,9 @@ utput/figures/power_and_labor_ambiguities.png Graphic file (type bmp)
 </Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output
 /figures/power_and_labor_ambiguities.png>
 
-Package microtype Warning: Unknown slot number of character
-(microtype)                `² (= \textsuperscript {2})'
-(microtype)                in font encoding `TU'.
-(microtype)                Make sure it's a single character
-(microtype)                (or a number) in protrusion list
-(microtype)                `LMR-it'.
-
-
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[16]
+[17]
 Overfull \hbox (1084.093pt too wide) in paragraph at lines 1353--1364
 []\TU/lmr/m/n/10 Hub terms such as [][][][][][]relatedness,’’ and [][][][][][]k
 in
@@ -1574,15 +1577,15 @@ Overfull \hbox (5.10596pt too wide) in paragraph at lines 1353--1364
 equently than with [][][][][][]policing,’’
  []
 
-[17] [18] [19] [20] [21] [22] [23]
+[18] [19] [20] [21] [22] [23] [24]
 Underfull \hbox (badness 1009) in paragraph at lines 1818--1829
 \TU/lmr/m/n/10 This work establishes Ento-Linguistic analysis as a methodology 
 for examining how scientific language
  []
 
-[24] [25] [26] [27] [28] [29]
+[25] [26] [27] [28] [29] [30]
 ignored: Infinite glue shrinkage found in box being split [
-30]
+31]
 Overfull \hbox (2.45494pt too wide) in paragraph at lines 2359--2359
 []|[][][][][][]|  
  []
@@ -1622,7 +1625,7 @@ Overfull \hbox (70.70494pt too wide) in paragraph at lines 2377--2377
 []|[][][][][][]|  
  []
 
-[31] [32] (./ento_linguistics_combined.bbl [33] [34]) [35]
+[32] [33] (./ento_linguistics_combined.bbl [34] [35]) [36]
 Missing character: There is no ├ (U+251C) in font [lmmono8-regular]:!
 Missing character: There is no ─ (U+2500) in font [lmmono8-regular]:!
 Missing character: There is no ─ (U+2500) in font [lmmono8-regular]:!
@@ -1762,7 +1765,7 @@ Overfull \hbox (30.45712pt too wide) in paragraph at lines 2475--2475
 []|[][][][][][]|  
  []
 
-[36]
+[37]
 Missing character: There is no ∪ (U+222A) in font [lmroman10-regular]:mapping=t
 ex-text;!
 
@@ -1811,7 +1814,7 @@ Overfull \hbox (9.56438pt too wide) in paragraph at lines 2541--2544
  []
 
 
-ignored: Infinite glue shrinkage found in box being split [37]
+ignored: Infinite glue shrinkage found in box being split [38]
 Overfull \hbox (83.3493pt too wide) in paragraph at lines 2580--2586
 []\TU/lmr/bx/n/10 Anthropomorphic \TU/lmr/m/n/10 (4 patterns): [][][][][][], []
 [][][][][],
@@ -1829,13 +1832,13 @@ Overfull \hbox (31.5693pt too wide) in paragraph at lines 2592--2597
 ][],
  []
 
-[38]
+[39]
 Overfull \hbox (67.34149pt too wide) in paragraph at lines 2668--2673
 \TU/lmr/m/n/10 token window) $[]$ deduplicate contexts $[]$ assign confidence. 
 [][][][][][]
  []
 
-[39]
+[40]
 Overfull \hbox (23.21042pt too wide) in paragraph at lines 2755--2762
 []\TU/lmr/m/n/10 Cluster count: [][][][][][]; [][][][][][]
  []
@@ -1860,7 +1863,7 @@ Overfull \hbox (16.30527pt too wide) in paragraph at lines 2799--2799
 []|[][][][][][]|  
  []
 
-[40]
+[41]
 Overfull \hbox (97.58487pt too wide) in paragraph at lines 2818--2820
 [][][][][][] $[]$ [][][][][][]\TU/lmr/m/n/10 . 
  []
@@ -1894,7 +1897,7 @@ Overfull \hbox (11.25822pt too wide) in paragraph at lines 2871--2880
 ][] (term/contexts/issue
  []
 
-[41]
+[42]
 Underfull \hbox (badness 1852) in paragraph at lines 2915--2920
 [][][][][][]\TU/lmr/m/n/10 : name, description, terms (Set), domains (Set), par
 ent_concepts, child_concepts, confidence.
@@ -1937,7 +1940,7 @@ Overfull \hbox (125.39453pt too wide) in paragraph at lines 2989--2990
 []|[][][][][][]|  
  []
 
-[42]
+[43]
 Overfull \hbox (4.41592pt too wide) in paragraph at lines 3004--3015
 \TU/lmr/m/n/10 tion, anecdotal). [][][][][][]: 4 framework types (progress/conf
 lict/discovery/complexity),
@@ -1973,7 +1976,7 @@ Overfull \hbox (114.15149pt too wide) in paragraph at lines 3036--3054
 ][][]/[][][][][][]:
  []
 
-[43]
+[44]
 Overfull \hbox (19.13818pt too wide) in paragraph at lines 3064--3069
 []\TU/lmr/bx/n/10 Clean-slate\TU/lmr/m/n/10 : [][][][][][] and [][][][][][] wip
 ed and recreated on every run ([][][][][][]
@@ -1991,71 +1994,76 @@ Overfull \hbox (10.15378pt too wide) in paragraph at lines 3080--3083
 all [][][][][][] modules; run via [][][][][][]
  []
 
-[44]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.3127 ...oup) and $df_2 = N - k$ (within-group).}
-                                                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-Missing character: There is no 𝜂 (U+1D702) in font [lmroman9-regular]:mapping=t
-ex-text;!
-! Missing $ inserted.
-<inserted text> 
-                $
-l.3127 ...oup) and $df_2 = N - k$ (within-group).}
-                                                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.3127 ...oup) and $df_2 = N - k$ (within-group).}
-                                                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-Missing character: There is no 𝜂 (U+1D702) in font [lmroman9-regular]:mapping=t
-ex-text;!
-! Missing $ inserted.
-<inserted text> 
-                $
-l.3127 ...oup) and $df_2 = N - k$ (within-group).}
-                                                  
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 [45]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3127 ...oup) and $df_2 = N - k$ (within-group).}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+Missing character: There is no 𝜂 (U+1D702) in font [lmroman9-regular]:mapping=t
+ex-text;!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3127 ...oup) and $df_2 = N - k$ (within-group).}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3127 ...oup) and $df_2 = N - k$ (within-group).}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+Missing character: There is no 𝜂 (U+1D702) in font [lmroman9-regular]:mapping=t
+ex-text;!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3127 ...oup) and $df_2 = N - k$ (within-group).}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[46] [47] [48] [49]
-Overfull \hbox (55.44495pt too wide) in paragraph at lines 3504--3517
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[46]
+Overfull \hbox (27.05489pt too wide) in paragraph at lines 3229--3235
+\TU/lmr/m/n/10 containing an anthropomorphic framing marker ([][][][][][] in []
+[][][][][]):
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[47] [48] [49] [50] [51]
+Overfull \hbox (55.44495pt too wide) in paragraph at lines 3543--3556
  [][] 
  []
 
-[50] [51] [52] [53] [54] [55] [56] [57] (./ento_linguistics_combined.aux)
+[52] [53] [54] [55] [56] [57] [58] [59] (./ento_linguistics_combined.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 26175 strings out of 468168
- 497756 string characters out of 5432815
- 1180899 words of memory out of 5000000
- 54522 multiletter control sequences out of 15000+600000
+ 26174 strings out of 468168
+ 497730 string characters out of 5432815
+ 1188899 words of memory out of 5000000
+ 54521 multiletter control sequences out of 15000+600000
  655849 words of font info for 122 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 90i,9n,114p,1223b,728s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,9n,114p,1405b,728s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on ento_linguistics_combined.pdf (57 pages).
+Output written on ento_linguistics_combined.pdf (59 pages).

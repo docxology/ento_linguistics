@@ -41,6 +41,7 @@ except (ImportError, ValueError):
 __all__ = [
     "StatisticalVisualizer",
     "plot_statistical_analysis",
+    "plot_layer_comparison",
 ]
 
 
@@ -675,6 +676,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 )
                 axes[plot_idx].set_title("Statistical Significance")
                 axes[plot_idx].grid(True, alpha=0.3)
+                axes[plot_idx].set_ylabel("Value", fontsize=MIN_FONT)
                 plot_idx += 1
                 rendered.add("significance_results")
 
@@ -686,6 +688,8 @@ class StatisticalVisualizer(ConceptVisualizer):
                 values = [es_data[label] for label in labels]
 
                 axes[plot_idx].barh(labels, values, color="lightgreen", alpha=0.7)
+                axes[plot_idx].set_xlabel("Effect size", fontsize=MIN_FONT)
+                axes[plot_idx].set_ylabel("Comparison", fontsize=MIN_FONT)
                 axes[plot_idx].set_title("Effect Sizes")
                 axes[plot_idx].grid(True, alpha=0.3)
                 plot_idx += 1
@@ -700,6 +704,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 data_lists = [dist_data[name] for name in dist_names]
 
                 axes[plot_idx].boxplot(data_lists, tick_labels=dist_names)
+                axes[plot_idx].set_ylabel("Value", fontsize=MIN_FONT)
                 axes[plot_idx].set_title("Distribution Comparison")
                 axes[plot_idx].grid(True, alpha=0.3)
                 plot_idx += 1
@@ -745,6 +750,8 @@ class StatisticalVisualizer(ConceptVisualizer):
                 )
                 axes[plot_idx].set_xticks(x_pos)
                 axes[plot_idx].set_xticklabels(groups, rotation=45, ha="right")
+                axes[plot_idx].set_xlabel("Group", fontsize=MIN_FONT)
+                axes[plot_idx].set_ylabel("Estimate", fontsize=MIN_FONT)
                 axes[plot_idx].set_title("Confidence Intervals")
                 axes[plot_idx].grid(True, alpha=0.3)
                 plot_idx += 1
@@ -761,7 +768,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 axes[i].set_title(f"{pending[i - plot_idx]} — no data")
 
         plt.suptitle(title, fontsize=MIN_FONT + 4, fontweight="bold")
-        plt.tight_layout()
+        plt.tight_layout(rect=(0, 0, 1, 0.95))
 
         if filepath:
             fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -872,6 +879,26 @@ class StatisticalVisualizer(ConceptVisualizer):
 # panel — consistent with StatisticalVisualizer.significance_colors.
 _SIGNIFICANT_COLOR = "#D55E00"  # Vermillion
 _NOT_SIGNIFICANT_COLOR = "#0072B2"  # Blue
+_DOMAIN_SHORT_NAMES = {
+    "unit_of_individuality": "Unit",
+    "behavior_and_identity": "Behavior",
+    "power_and_labor": "Power",
+    "sex_and_reproduction": "Sex",
+    "kin_and_relatedness": "Kin",
+    "economics": "Economics",
+}
+
+
+def _short_domain(name: str) -> str:
+    """Compact display name for a domain (short canonical names, others title-cased).
+
+    Examples:
+        >>> _short_domain("behavior_and_identity")
+        'Behavior'
+        >>> _short_domain("noncanonical_extra_domain")
+        'Noncanonical Extra Domain'
+    """
+    return _DOMAIN_SHORT_NAMES.get(name, name.replace("_", " ").title())
 
 
 def _format_p(p: float) -> str:
@@ -975,13 +1002,20 @@ def plot_statistical_analysis(
     order = _domain_order(descriptives)
     if order:
         means = [float(descriptives[d]["entropy_mean"]) for d in order]
-        sds = [float(descriptives[d].get("entropy_sd", 0.0)) for d in order]
+        # SD whiskers only when the artifact actually reports per-domain
+        # ``entropy_sd``; otherwise omit them honestly (and drop the
+        # "± SD" claim from the axis label) rather than drawing zero-length
+        # error bars that read as measured zero variance.
+        has_sd = all("entropy_sd" in descriptives[d] for d in order)
+        sds = (
+            [float(descriptives[d]["entropy_sd"]) for d in order] if has_sd else None
+        )
         colors = [DOMAIN_PALETTE.get(d, FALLBACK_COLOR) for d in order]
         bars = ax_entropy.bar(
             range(len(order)),
             means,
             yerr=sds,
-            capsize=4,
+            capsize=4 if has_sd else None,
             color=colors,
             edgecolor="black",
             alpha=0.85,
@@ -992,19 +1026,30 @@ def plot_statistical_analysis(
             rotation=30,
             ha="right",
         )
-        top = max(m + s for m, s in zip(means, sds))
+        top = max(
+            m + s for m, s in zip(means, sds)
+        ) if has_sd else max(means)
         ax_entropy.set_ylim(0, top * 1.25)
         for bar, domain in zip(bars, order):
             n_terms = descriptives[domain].get("n_terms", 0)
             ax_entropy.annotate(
                 f"n={n_terms}",
-                xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                # Anchor above the SD whisker cap (bar top when no SD is
+                # reported) so the text never crosses the error bar.
+                xy=(
+                    bar.get_x() + bar.get_width() / 2,
+                    bar.get_height()
+                    + (float(descriptives[domain]["entropy_sd"]) if has_sd else 0.0),
+                ),
                 xytext=(0, 3),
                 textcoords="offset points",
                 ha="center",
                 fontsize=MIN_FONT,
             )
-        ax_entropy.set_ylabel("Semantic Entropy (mean ± SD)", fontsize=MIN_FONT)
+        ax_entropy.set_ylabel(
+            "Semantic Entropy (mean ± SD)" if has_sd else "Semantic Entropy (mean)",
+            fontsize=MIN_FONT,
+        )
         ax_entropy.set_title("Domain Entropy", fontsize=MIN_FONT + 2, fontweight="bold")
         ax_entropy.grid(True, axis="y", alpha=0.3)
     else:
@@ -1013,7 +1058,13 @@ def plot_statistical_analysis(
     # ── Panel (b): Cohen's d diverging bars, BH significance coding ──
     if pairwise:
         labels = [
-            f"{row.get('domain_a', '?')} vs\n{row.get('domain_b', '?')}"
+            # Single-line compact labels: 15 two-line full-domain labels
+            # overlap at the 16pt floor, so comparisons render as short
+            # domain names on one row each.
+            "{} vs {}".format(
+                _short_domain(row.get("domain_a", "?")),
+                _short_domain(row.get("domain_b", "?")),
+            )
             for row in pairwise
         ]
         ds = [float(row.get("cohens_d", 0.0)) for row in pairwise]
@@ -1034,8 +1085,8 @@ def plot_statistical_analysis(
         ax_effects.set_yticklabels(labels)
         ax_effects.invert_yaxis()
         span = max(0.1, max(abs(d) for d in ds))
-        ax_effects.set_xlim(-span * 1.45, span * 1.45)
-        for y, d in zip(ypos, ds):
+        ax_effects.set_xlim(-span * 1.55, span * 1.55)
+        for y, d, row in zip(ypos, ds, pairwise):
             ax_effects.text(
                 d + (span * 0.04 if d >= 0 else -span * 0.04),
                 y,
@@ -1044,7 +1095,24 @@ def plot_statistical_analysis(
                 ha="left" if d >= 0 else "right",
                 fontsize=MIN_FONT,
             )
-        ax_effects.set_xlabel("Cohen's d", fontsize=MIN_FONT)
+            # BH-significance marker: colour already codes significance
+            # (vermillion vs blue); the asterisk keeps it readable in
+            # greyscale, directly above each significant bar's tip.
+            if row.get("significant_bh"):
+                ax_effects.annotate(
+                    "*",
+                    xy=(d, y),
+                    xytext=(0, 4),
+                    textcoords="offset points",
+                    ha="center",
+                    va="bottom",
+                    fontsize=MIN_FONT,
+                    fontweight="bold",
+                    color=_SIGNIFICANT_COLOR,
+                )
+        ax_effects.set_xlabel(
+            "Cohen's d (* = BH-significant)", fontsize=MIN_FONT
+        )
         ax_effects.set_title(
             "Pairwise Effect Sizes", fontsize=MIN_FONT + 2, fontweight="bold"
         )
@@ -1059,36 +1127,49 @@ def plot_statistical_analysis(
                 label="Not significant", alpha=0.85,
             ),
         ]
-        ax_effects.legend(handles=legend_elements, loc="upper right")
+        # Outside the axes so the legend can never collide with bars or
+        # their value labels; savefig(bbox_inches="tight") keeps it.
+        ax_effects.legend(
+            handles=legend_elements, loc="upper left", bbox_to_anchor=(1.02, 1)
+        )
     else:
         _fallback_text(ax_effects, "No pairwise comparisons available")
 
     # ── Panel (c): compact ANOVA summary text ──
     if anova:
+        # Readable two-line summary: a bolded header line and a single
+        # statistics line carrying F, p, effect size and the correction
+        # provenance, instead of the previous five-line block.
         metric = anova.get("metric", "")
-        lines = ["ANOVA Summary", ""]
+        header = "ANOVA Summary"
         if metric:
-            lines[0] = f"ANOVA Summary — {metric.replace('_', ' ').title()}"
-        lines.append(
-            "F({},{}) = {:.2f}, {}".format(
-                anova.get("df1", "?"),
-                anova.get("df2", "?"),
-                float(anova.get("F", float("nan"))),
-                _format_p(float(anova.get("p", 1.0))),
-            )
+            header += f" — {metric.replace('_', ' ').title()}"
+        stat_line = "F({},{}) = {:.2f}, {}".format(
+            "{:g}".format(float(anova.get("df1", float("nan")))),
+            "{:g}".format(float(anova.get("df2", float("nan")))),
+            float(anova.get("F", float("nan"))),
+            _format_p(float(anova.get("p", 1.0))),
         )
-        lines.append(f"η² = {float(anova.get('eta_squared', 0.0)):.3f}")
+        stat_line += f", η² = {float(anova.get('eta_squared', 0.0)):.3f}"
         if corrections:
-            lines.append(
-                "{} corrections over {} comparisons".format(
-                    str(corrections.get("method", "unknown")).replace("_", " ").title(),
-                    corrections.get("n_comparisons", "?"),
-                )
+            stat_line += " ({} over {} comparisons)".format(
+                str(corrections.get("method", "unknown")).replace("_", " ").title(),
+                corrections.get("n_comparisons", "?"),
             )
         ax_summary.text(
             0.5,
+            0.60,
+            header,
+            ha="center",
+            va="center",
+            transform=ax_summary.transAxes,
+            fontsize=MIN_FONT + 2,
+            fontweight="bold",
+        )
+        ax_summary.text(
             0.5,
-            "\n".join(lines),
+            0.35,
+            stat_line,
             ha="center",
             va="center",
             transform=ax_summary.transAxes,
@@ -1097,6 +1178,161 @@ def plot_statistical_analysis(
         ax_summary.axis("off")
     else:
         _fallback_text(ax_summary, "No ANOVA results available")
+
+    filepath = out_path / filename
+    save_and_verify(fig, filepath, dpi=300)
+    plt.close(fig)
+    return str(filepath)
+
+
+@publication_style
+def plot_layer_comparison(
+    abstract_artifact: dict,
+    fulltext_artifact: dict,
+    output_dir: str,
+    filename: str = "layer_comparison.png",
+    metadata: Optional[Dict[str, Dict[str, Any]]] = None,
+) -> str:
+    """Render grouped per-domain entropy bars for the two corpus layers.
+
+    Side-by-side bars per canonical Ento-Linguistic domain: the abstract
+    layer (solid, domain palette colour) vs the full-text layer (same
+    colour, hatched), both reading ``descriptives.<domain>.entropy_mean``
+    from their artifacts.  Domains follow the canonical manuscript order
+    first, then any extras lexicographically (shared
+    :func:`_domain_order`); bars carry per-group value labels with
+    per-layer ``n_terms`` annotations and every text element respects
+    the 16pt floor.  The legend names each layer with its corpus size
+    (``n_documents``) when the artifact — or the optional ``metadata``
+    override — carries it.  Deterministic: fixed order, fixed colours,
+    no randomness.
+
+    Args:
+        abstract_artifact: Parsed ``statistical_analysis.json`` (abstract
+            layer).  An empty dict yields a labelled fallback panel.
+        fulltext_artifact: Parsed ``fulltext_analysis.json`` (full-text
+            layer).
+        output_dir: Directory the figure is written to (created if absent).
+        filename: Output filename.
+        metadata: Optional per-layer overrides, e.g.
+            ``{"abstract": {"n_documents": 120}}`` / ``{"fulltext": {...}}``.
+            ``n_documents`` here takes precedence over the artifact's own
+            value, so callers can supply corpus sizes for artifacts that
+            do not record them.  Ignored when ``None`` (default).
+
+    Returns:
+        Absolute path to the saved figure.
+
+    Raises:
+        RuntimeError: If the saved file is missing or empty.
+    """
+    out_path = Path(output_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+
+    abstract_desc: Dict[str, Any] = abstract_artifact.get("descriptives") or {}
+    fulltext_desc: Dict[str, Any] = fulltext_artifact.get("descriptives") or {}
+    order = _domain_order({**abstract_desc, **fulltext_desc})
+
+    fig = plt.figure(figsize=(16, 9))
+    ax = fig.add_subplot(111)
+
+    if order:
+        abstract_means = [
+            float((abstract_desc.get(d) or {}).get("entropy_mean", 0.0))
+            for d in order
+        ]
+        fulltext_means = [
+            float((fulltext_desc.get(d) or {}).get("entropy_mean", 0.0))
+            for d in order
+        ]
+        abstract_ns = [
+            int((abstract_desc.get(d) or {}).get("n_terms", 0)) for d in order
+        ]
+        fulltext_ns = [
+            int((fulltext_desc.get(d) or {}).get("n_terms", 0)) for d in order
+        ]
+        xpos = np.arange(len(order))
+        width = 0.38
+        colors = [DOMAIN_PALETTE.get(d, FALLBACK_COLOR) for d in order]
+        meta = metadata or {}
+
+        def _layer_label(default: str, artifact: dict, layer_meta: dict) -> str:
+            n_docs = layer_meta.get(
+                "n_documents", artifact.get("n_documents")
+            )
+            if n_docs is None:
+                return default
+            return f"{default}\n(n={n_docs} documents)"
+
+        ax.bar(
+            xpos - width / 2,
+            abstract_means,
+            width=width,
+            color=colors,
+            edgecolor="black",
+            alpha=0.9,
+            label=_layer_label(
+                "Abstract layer", abstract_artifact, meta.get("abstract") or {}
+            ),
+        )
+        ax.bar(
+            xpos + width / 2,
+            fulltext_means,
+            width=width,
+            color=colors,
+            edgecolor="black",
+            alpha=0.55,
+            hatch="//",
+            label=_layer_label(
+                "Full-text layer", fulltext_artifact, meta.get("fulltext") or {}
+            ),
+        )
+        ax.set_xticks(xpos)
+        ax.set_xticklabels(
+            [d.replace("_", " ").title() for d in order],
+            rotation=30,
+            ha="right",
+        )
+        top = max(
+            max(abstract_means, default=0.0), max(fulltext_means, default=0.0)
+        )
+        ax.set_ylim(0, top * 1.25 if top > 0 else 1.0)
+        for x, value, n_terms in zip(
+            xpos - width / 2, abstract_means, abstract_ns
+        ):
+            ax.annotate(
+                f"{value:.2f}\nn={n_terms}",
+                xy=(x, value),
+                xytext=(0, 3),
+                textcoords="offset points",
+                ha="center",
+                va="bottom",
+                fontsize=MIN_FONT,
+            )
+        for x, value, n_terms in zip(
+            xpos + width / 2, fulltext_means, fulltext_ns
+        ):
+            ax.annotate(
+                f"{value:.2f}\nn={n_terms}",
+                xy=(x, value),
+                xytext=(0, 3),
+                textcoords="offset points",
+                ha="center",
+                va="bottom",
+                fontsize=MIN_FONT,
+            )
+        ax.set_ylabel("Semantic Entropy (mean)", fontsize=MIN_FONT)
+        ax.set_title(
+            "Domain Semantic Entropy: Abstract vs Full-Text Layer",
+            fontsize=MIN_FONT + 2,
+            fontweight="bold",
+        )
+        ax.grid(True, axis="y", alpha=0.3)
+        # Outside the axes so the legend can never collide with bar
+        # value labels; bbox_inches="tight" in save_and_verify keeps it.
+        ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1))
+    else:
+        _fallback_text(ax, "No domain descriptives available")
 
     filepath = out_path / filename
     save_and_verify(fig, filepath, dpi=300)

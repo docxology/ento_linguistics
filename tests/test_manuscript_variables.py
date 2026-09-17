@@ -590,3 +590,185 @@ class TestMainEntryPoint:
         out = capsys.readouterr().out
         assert "All template variables successfully filled." in out
         assert "remain unfilled" not in out
+
+
+class TestBhlTokens:
+    """BHL_* tokens resolve from data/bhl/era_term_usage.json (BHL
+    historical layer, era-stratified)."""
+
+    @staticmethod
+    def _bhl_artifact() -> dict:
+        """Realistic era_term_usage.json fixture (subset of eras/terms)."""
+        canonical = manuscript_variables_module.BHL_CANONICAL_TERMS
+        terms = {
+            term: {
+                "era_1850_1899": 0,
+                "era_1900_1949": 0,
+                "era_1950_1970": 0,
+                "domains": [],
+                "total": 0,
+            }
+            for term in canonical
+        }
+        terms["xylophagy"] = {
+            "era_1850_1899": 7,
+            "era_1900_1949": 0,
+            "era_1950_1970": 0,
+            "domains": [],
+            "total": 7,
+        }
+        return {
+            "layer": "bhl_historical",
+            "source": {"documents": 2, "data_dir": "data/bhl"},
+            "eras": {
+                "era_1850_1899": {
+                    "documents": 1,
+                    "tokens": 1000,
+                    "terms_per_10k": {
+                        "caste": 0.5,
+                        "queen": 10.25,
+                        "superorganism": 0.0,
+                        "xylophagy": 3.0,
+                    },
+                    "domains_per_10k": {},
+                },
+                "era_1900_1949": {
+                    "documents": 1,
+                    "tokens": 2000,
+                    "terms_per_10k": {
+                        "caste": 1.5,
+                        "queen": 0.0,
+                        "superorganism": 0.0,
+                    },
+                    "domains_per_10k": {},
+                },
+                # era_1950_1970 absent → no tokens for that era.
+            },
+            "terms": terms,
+        }
+
+    def test_bhl_tokens_direct_call(self, tmp_path) -> None:
+        """BHL_* tokens resolve from a bhl_data_dir via build_statistical_tokens."""
+        bhl_dir = tmp_path / "bhl"
+        _write_json(bhl_dir / "era_term_usage.json", self._bhl_artifact())
+        tokens = build_statistical_tokens({}, bhl_data_dir=bhl_dir)
+
+        assert tokens["BHL_DOCUMENTS"] == "2"
+        assert tokens["BHL_ERA_1850_1899_DOCS"] == "1"
+        assert tokens["BHL_ERA_1900_1949_DOCS"] == "1"
+        assert tokens["BHL_ERA_1850_1899_CASTE_PER_10K"] == "0.5000"
+        assert tokens["BHL_ERA_1900_1949_CASTE_PER_10K"] == "1.5000"
+        assert tokens["BHL_ERA_1850_1899_QUEEN_PER_10K"] == "10.2500"
+        # Zero-frequency canonical terms are kept (absence is signal).
+        assert tokens["BHL_ERA_1850_1899_SUPERORGANISM_PER_10K"] == "0.0000"
+        # Multi-word term slugified like the CACE_TERM convention.
+        assert tokens["BHL_ERA_1850_1899_DIVISION_OF_LABOR_PER_10K"] == "0.0000"
+        # Non-canonical terms emit no tokens.
+        assert "BHL_ERA_1850_1899_XYLOPHAGY_PER_10K" not in tokens
+        # Absent era emits no tokens.
+        assert not [k for k in tokens if "ERA_1950_1970" in k]
+
+    def test_absent_bhl_artifact_omits_tokens(self, tmp_path) -> None:
+        """No era_term_usage.json → no BHL_* tokens, no KeyError."""
+        tokens = build_statistical_tokens({}, bhl_data_dir=tmp_path / "absent")
+        assert [k for k in tokens if k.startswith("BHL_")] == []
+
+    def test_bhl_tokens_render_through_variable_map(
+        self, data_dirs, monkeypatch
+    ) -> None:
+        """BHL_* tokens resolve through build_variable_map."""
+        output_data, corpus_dir = data_dirs
+        bhl_dir = output_data.parent / "bhl_data"
+        _write_json(bhl_dir / "era_term_usage.json", self._bhl_artifact())
+        monkeypatch.setattr(
+            manuscript_variables_module, "BHL_DATA_DIR", bhl_dir
+        )
+        variables = build_variable_map(
+            output_data_dir=output_data, corpus_dir=corpus_dir
+        )
+        assert variables["BHL_DOCUMENTS"] == "2"
+        assert variables["BHL_ERA_1850_1899_CASTE_PER_10K"] == "0.5000"
+        assert variables["BHL_ERA_1900_1949_QUEEN_PER_10K"] == "0.0000"
+
+    def test_real_artifact_tokens_resolve(self) -> None:
+        """Spot-verify the BHL_* family against the real data/bhl artifact."""
+        artifact = manuscript_variables_module.load_json(
+            manuscript_variables_module.BHL_DATA_DIR / "era_term_usage.json"
+        )
+        if not artifact:
+            pytest.skip("real BHL artifact not harvested yet")
+        tokens = build_statistical_tokens({})
+        eras = artifact["eras"]
+        assert (
+            tokens["BHL_DOCUMENTS"]
+            == str(artifact.get("source", {}).get("documents"))
+        )
+        for era, entry in eras.items():
+            era_upper = era.upper()
+            assert (
+                tokens[f"BHL_{era_upper}_DOCS"] == str(entry["documents"])
+            )
+            frequencies = entry["terms_per_10k"]
+            for term in manuscript_variables_module.BHL_CANONICAL_TERMS:
+                if term not in frequencies:
+                    continue
+                slug = term.upper().replace("-", "_").replace(" ", "_")
+                expected = f"{float(frequencies[term]):.4f}"
+                assert tokens[f"BHL_{era_upper}_{slug}_PER_10K"] == expected
+
+
+class TestFulltextFramingTokens:
+    """FULLTEXT_*_ANTHROPOMORPHIC / FULLTEXT_ANTHROPOMORPHIC_OVERALL
+    resolve from the full-text artifact's ``framing`` section."""
+
+    FRAMING_ARTIFACT = {
+        "layer": "fulltext",
+        "n_documents": 3,
+        "min_term_frequency": 20,
+        "documents": [{"pmcid": "PMC1", "token_count": 100}],
+        "domain_term_counts": {},
+        "descriptives": {},
+        "framing": {
+            "economics": {"proportion": 0.123456, "n_contexts": 900},
+            "power_and_labor": {"proportion": 0.424242, "n_contexts": 1200},
+            "overall": {"proportion": 0.25, "n_contexts": 2100},
+        },
+        "pairwise": [],
+        "anova": {},
+    }
+
+    def test_framing_tokens_direct_call(self) -> None:
+        """Per-domain and overall framing tokens emit from the section."""
+        tokens = build_statistical_tokens(
+            {}, fulltext_artifact=self.FRAMING_ARTIFACT
+        )
+        assert tokens["FULLTEXT_DOMAIN_ECONOMICS_ANTHROPOMORPHIC"] == "0.1235"
+        assert tokens["FULLTEXT_DOMAIN_POWER_AND_LABOR_ANTHROPOMORPHIC"] == "0.4242"
+        assert tokens["FULLTEXT_ANTHROPOMORPHIC_OVERALL"] == "0.2500"
+        # The "overall" key must not double as a domain slug.
+        assert "FULLTEXT_DOMAIN_OVERALL_ANTHROPOMORPHIC" not in tokens
+
+    def test_framing_tokens_resolve_via_variable_map(self, data_dirs) -> None:
+        """Tokens resolve through build_variable_map against the artifact file."""
+        output_data, corpus_dir = data_dirs
+        _write_json(output_data / "fulltext_analysis.json", self.FRAMING_ARTIFACT)
+        variables = build_variable_map(output_data_dir=output_data, corpus_dir=corpus_dir)
+        assert variables["FULLTEXT_ANTHROPOMORPHIC_OVERALL"] == "0.2500"
+        assert variables["FULLTEXT_DOMAIN_ECONOMICS_ANTHROPOMORPHIC"] == "0.1235"
+
+    def test_absent_framing_section_omits_tokens(self) -> None:
+        """Artifact without a ``framing`` section → no framing tokens,
+        other FULLTEXT_* tokens unaffected (no KeyError)."""
+        artifact = dict(self.FRAMING_ARTIFACT)
+        artifact.pop("framing")
+        artifact["anova"] = {"F": 1.23456, "p": 0.012345}
+        tokens = build_statistical_tokens({}, fulltext_artifact=artifact)
+        assert [k for k in tokens if "ANTHROPOMORPHIC" in k] == []
+        assert tokens["FULLTEXT_ANOVA_F"] == "1.2346"
+
+    def test_empty_framing_section_omits_tokens(self) -> None:
+        """Empty ``framing`` mapping (degenerate corpus) → no framing tokens."""
+        artifact = dict(self.FRAMING_ARTIFACT)
+        artifact["framing"] = {}
+        tokens = build_statistical_tokens({}, fulltext_artifact=artifact)
+        assert [k for k in tokens if "ANTHROPOMORPHIC" in k] == []

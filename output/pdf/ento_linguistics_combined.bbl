@@ -1,4 +1,4 @@
-\begin{thebibliography}{41}
+\begin{thebibliography}{40}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -47,13 +47,6 @@ Jacob Cohen.
 \newblock \emph{Statistical Power Analysis for the Behavioral Sciences}.
 \newblock Lawrence Erlbaum Associates, Hillsdale, NJ, 2nd edition, 1988.
 \newblock ISBN 978-0805802832.
-
-\bibitem[Crespi and Yanega(1992)]{crespi1992caste}
-Bernard~J Crespi and Douglas Yanega.
-\newblock Definitions of {``}caste{''} in social insects.
-\newblock \emph{Ethology Ecology \& Evolution}, 4\penalty0 (3):\penalty0
-  295--312, 1992.
-\newblock \doi{10.1080/08927014.1992.9523134}.
 
 \bibitem[Deacon(2011)]{deacon2011incomplete}
 Terrence~W Deacon.

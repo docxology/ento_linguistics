@@ -2,7 +2,12 @@
 """Build a domain-appropriate entomological corpus — Thin Orchestrator.
 
 Delegates PubMed retrieval, deduplication, corpus validation, and persistence
-to ``src/pipeline/corpus_build.py``.
+to ``src/pipeline/corpus_build.py``. Exposed modes:
+
+* default: cached statistics refresh (fetches nothing when the corpus is full)
+* ``--force``: re-fetch base queries and merge into the existing corpus
+* ``--grow [--target-new N] [--max-per-query N] [--since-pdat DATE]``:
+  append new unique records from all ``CORPUS_GROWTH_QUERIES``
 """
 from __future__ import annotations
 

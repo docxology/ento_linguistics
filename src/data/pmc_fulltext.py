@@ -44,12 +44,19 @@ from urllib.request import Request, urlopen
 __all__ = [
     "PMC_SEARCH_QUERY",
     "PMCFulltextHarvester",
+    "SHARD_SIZE",
     "dedupe_by_pmcid",
     "is_relevant",
+    "load_citation_counts",
+    "load_corpus_pmcids",
+    "load_fulltexts",
+    "order_by_citation",
     "parse_article",
     "parse_fulltext_xml",
+    "shard_filename",
     "write_corpus",
     "write_readme",
+    "write_shard",
 ]
 
 logger = logging.getLogger(__name__)
@@ -92,6 +99,208 @@ CORPUS_FIELDS: tuple = (
     "abstract",
     "body_text",
 )
+
+
+# ── Sharding (GitHub rejects blobs >100 MB) ──────────────────────────
+
+# Maximum corpus records per shard file (~19 MB each at ~36 KB of body
+# text per record).
+SHARD_SIZE = 1000
+
+# Shard filename glob (relative to the corpus directory).
+SHARD_GLOB = "fulltexts_*.json"
+
+
+def shard_filename(index: int) -> str:
+    """Return the zero-padded shard filename for a 1-based index.
+
+    Args:
+        index: 1-based shard index.
+
+    Returns:
+        ``fulltexts_00001.json`` for index 1, and so on.
+
+    Examples:
+        >>> shard_filename(12)
+        'fulltexts_00012.json'
+    """
+    return f"fulltexts_{index:05d}.json"
+
+
+def shard_paths(data_dir: Path) -> List[Path]:
+    """List shard files in a corpus directory in concatenation order.
+
+    Args:
+        data_dir: Corpus directory (``data/fulltexts``).
+
+    Returns:
+        Shard paths sorted by filename (numerical order == lexical
+        order because of the zero padding).
+    """
+    return sorted(data_dir.glob(SHARD_GLOB))
+
+
+def _atomic_write_text(path: Path, text: str) -> None:
+    """Write ``text`` to ``path`` atomically (tmp file + rename).
+
+    Args:
+        path: Destination file.
+        text: Full file content.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    tmp.replace(path)
+
+
+def write_shard(path: Path, records: List[Dict[str, Any]]) -> None:
+    """Write one shard file atomically.
+
+    Args:
+        path: Destination shard path.
+        records: Corpus records for this shard (at most ``SHARD_SIZE``).
+    """
+    corpus = [
+        {field: record.get(field) for field in CORPUS_FIELDS} for record in records
+    ]
+    _atomic_write_text(
+        path, json.dumps(corpus, ensure_ascii=False, indent=1) + "\n"
+    )
+
+
+def read_shard(path: Path) -> List[Dict[str, Any]]:
+    """Read one shard file.
+
+    Args:
+        path: Shard path.
+
+    Returns:
+        The shard's corpus records.
+    """
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_fulltexts(data_dir: Path) -> List[Dict[str, Any]]:
+    """Load the full-text corpus by concatenating shards in order.
+
+    Frozen name: the pipeline layer loads the corpus through this
+    helper, so it must not be renamed.
+
+    Args:
+        data_dir: Corpus directory containing ``fulltexts_NNNNN.json``
+            shard files.
+
+    Returns:
+        All corpus records, shard 1 first.
+    """
+    records: List[Dict[str, Any]] = []
+    for path in shard_paths(data_dir):
+        records.extend(read_shard(path))
+    return records
+
+
+def load_corpus_pmcids(data_dir: Path, provenance_path: Path) -> set:
+    """Collect every PMCID already present in the corpus.
+
+    Reads provenance plus each shard's ``pmcid`` field (one shard in
+    memory at a time), so an interrupted harvest can skip previously
+    stored documents.
+
+    Args:
+        data_dir: Corpus directory with shard files.
+        provenance_path: Provenance sidecar path.
+
+    Returns:
+        Set of PMCIDs (``PMC`` prefix) present anywhere in shards or
+        provenance.
+    """
+    pmcids: set = set()
+    for path in shard_paths(data_dir):
+        for record in read_shard(path):
+            if record.get("pmcid"):
+                pmcids.add(record["pmcid"])
+    if provenance_path.exists():
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+        for entry in provenance.values():
+            if entry.get("pmcid"):
+                pmcids.add(entry["pmcid"])
+    return pmcids
+
+
+def load_provenance(provenance_path: Path) -> Dict[str, Any]:
+    """Load the provenance sidecar (empty mapping when absent).
+
+    Args:
+        provenance_path: Provenance sidecar path.
+
+    Returns:
+        Mapping ``sha256(body_text)`` -> provenance entry.
+    """
+    if not provenance_path.exists():
+        return {}
+    return json.loads(provenance_path.read_text(encoding="utf-8"))
+
+
+def build_provenance(
+    records: List[Dict[str, Any]],
+    query: str,
+    retrieved_at: str,
+) -> Dict[str, Any]:
+    """Build provenance entries for corpus records.
+
+    Args:
+        records: Corpus records.
+        query: Verbatim search query recorded per document.
+        retrieved_at: ISO-8601 retrieval timestamp.
+
+    Returns:
+        Mapping ``sha256(body_text)`` ->
+        ``{pmcid, doi, query, retrieved_at}``.
+    """
+    provenance: Dict[str, Any] = {}
+    for record in records:
+        digest = hashlib.sha256(
+            (record["body_text"] or "").encode("utf-8")
+        ).hexdigest()
+        provenance[digest] = {
+            "pmcid": record["pmcid"],
+            "doi": record["doi"],
+            "query": query,
+            "retrieved_at": retrieved_at,
+        }
+    return provenance
+
+
+def order_by_citation(
+    pmcids: List[str],
+    cited_by: Dict[str, int],
+) -> List[str]:
+    """Order PMCIDs highest-cited first where citation counts are known.
+
+    PMCIDs present in ``cited_by`` are sorted by descending count;
+    unknown PMCIDs keep their original (esearch relevance) order after
+    the known ones.
+
+    Args:
+        pmcids: Candidate PMCIDs in relevance order.
+        cited_by: Mapping PMCID -> OpenAlex ``cited_by_count``.
+
+    Returns:
+        Reordered PMCID list.
+
+    Examples:
+        >>> order_by_citation(["PMC1", "PMC2"], {"PMC2": 5})
+        ['PMC2', 'PMC1']
+    """
+    indexed = list(enumerate(pmcids))
+    indexed.sort(
+        key=lambda item: (
+            0 if item[1] in cited_by else 1,
+            -cited_by.get(item[1], 0),
+            item[0],
+        )
+    )
+    return [pmcid for _, pmcid in indexed]
 
 
 def is_relevant(record: Dict[str, Any]) -> bool:
@@ -244,11 +453,14 @@ def parse_article(article: ET.Element) -> Dict[str, Any]:
         found = _descendants(element, name)
         return found[0] if found else None
 
-    front = first_any(article, "front") or article
+    front = first_any(article, "front")
+    if front is None:
+        front = article
     ids = _article_ids(article)
 
+    pub_date = first_any(front, "pub-date")
     year_text = _text(
-        _first_descendant(first_any(front, "pub-date") or article, "year")
+        _first_descendant(pub_date if pub_date is not None else article, "year")
     )
     try:
         year: Optional[int] = int(year_text)
@@ -467,6 +679,158 @@ class PMCFulltextHarvester:
             time.sleep(self.delay)
         return records[:target]
 
+    def harvest_sharded(
+        self,
+        data_dir: Path,
+        provenance_path: Path,
+        query: str = PMC_SEARCH_QUERY,
+        target: Optional[int] = None,
+        retmax: int = 10000,
+        cited_by: Optional[Dict[str, int]] = None,
+    ) -> Dict[str, Any]:
+        """Resumable sharded harvest of the full candidate set.
+
+        Skips PMCIDs already present in ``data_dir`` shards or
+        ``provenance_path``, fetches the remaining candidates in
+        batches (highest-cited first where citation counts are known,
+        relevance order otherwise), and appends records to shard files
+        of at most ``SHARD_SIZE`` records.  Every shard and the
+        provenance sidecar are written atomically after each shard
+        fill, so an interrupted run continues where it stopped and no
+        partial file is ever left behind.
+
+        Args:
+            data_dir: Corpus directory holding shard files.
+            provenance_path: Provenance sidecar path (single file).
+            query: Verbatim search query recorded per document.
+            target: Stop after this many NEW records; ``None`` harvests
+                the entire candidate set.
+            retmax: esearch ``retmax`` (upper bound on candidates).
+            cited_by: Optional PMCID -> OpenAlex ``cited_by_count``
+                map used to prioritize the fetch order.
+
+        Returns:
+            Summary mapping with ``candidates``, ``already_stored``,
+            ``harvested``, ``shards``, ``failed_batches``.
+        """
+        data_dir.mkdir(parents=True, exist_ok=True)
+        already = load_corpus_pmcids(data_dir, provenance_path)
+        pmcids = self.search_pmcids(query, retmax=retmax)
+        if cited_by:
+            pmcids = order_by_citation(pmcids, cited_by)
+        logger.info(
+            "esearch returned %d candidate PMCIDs (%d already stored)",
+            len(pmcids),
+            len(already),
+        )
+
+        # Seed the write buffer from the tail shard (or the legacy
+        # single-file corpus when no shards exist yet) so shards stay
+        # full; ``pending`` is the partially-filled shard file to
+        # overwrite on the first flush.
+        shards = shard_paths(data_dir)
+        pending: Optional[Path] = shards[-1] if shards else None
+        if shards:
+            buffer = read_shard(shards[-1])
+        elif (data_dir / "fulltexts.json").exists():
+            buffer = json.loads(
+                (data_dir / "fulltexts.json").read_text(encoding="utf-8")
+            )
+            already.update(
+                record["pmcid"] for record in buffer if record.get("pmcid")
+            )
+        else:
+            buffer = []
+        buffer_start = len(buffer)
+        next_shard = len(shards)
+
+        provenance = load_provenance(provenance_path)
+        retrieved_at = datetime.now(timezone.utc).isoformat()
+        harvested = 0
+        failed_batches = 0
+        for start in range(0, len(pmcids), self.BATCH_SIZE):
+            if target is not None and harvested >= target:
+                break
+            batch = pmcids[start : start + self.BATCH_SIZE]
+            if all(pmcid in already for pmcid in batch):
+                continue  # resume: nothing new in this batch, skip fetch
+            try:
+                batch_records = self.fetch_fulltext_batch(batch)
+            except (RuntimeError, ET.ParseError) as exc:
+                logger.warning("Skipping batch %s: %s", batch[0], exc)
+                failed_batches += 1
+                time.sleep(self.delay)
+                continue
+            new_records = []
+            for record in batch_records:
+                pmcid = record["pmcid"]
+                if (
+                    pmcid in already
+                    or not record["body_text"]
+                    or not is_relevant(record)
+                ):
+                    continue
+                already.add(pmcid)
+                new_records.append(record)
+            if new_records:
+                harvested += len(new_records)
+                for digest, entry in build_provenance(
+                    new_records, query, retrieved_at
+                ).items():
+                    provenance.setdefault(digest, entry)
+                buffer.extend(new_records)
+                while len(buffer) >= SHARD_SIZE:
+                    chunk = buffer[:SHARD_SIZE]
+                    buffer = buffer[SHARD_SIZE:]
+                    if pending is not None:
+                        path = pending
+                        pending = None
+                    else:
+                        next_shard += 1
+                        path = data_dir / shard_filename(next_shard)
+                    write_shard(path, chunk)
+                    _atomic_write_text(
+                        provenance_path,
+                        json.dumps(
+                            provenance, ensure_ascii=False, indent=1,
+                            sort_keys=True,
+                        ) + "\n",
+                    )
+            logger.info(
+                "Progress: %d/%d candidates fetched, %d new records "
+                "(batch at %s)",
+                start + len(batch),
+                len(pmcids),
+                harvested,
+                batch[0],
+            )
+            time.sleep(self.delay)
+
+        # Flush the tail only when it differs from the stored tail shard.
+        if buffer and (len(buffer) != buffer_start or pending is None):
+            if pending is not None:
+                path = pending
+            else:
+                next_shard += 1
+                path = data_dir / shard_filename(next_shard)
+            write_shard(path, buffer)
+        _atomic_write_text(
+            provenance_path,
+            json.dumps(
+                provenance, ensure_ascii=False, indent=1, sort_keys=True
+            ) + "\n",
+        )
+        summary = {
+            "candidates": len(pmcids),
+            "already_stored": len(already) - harvested,
+            "harvested": harvested,
+            "shards": [p.name for p in shard_paths(data_dir)],
+            "failed_batches": failed_batches,
+        }
+        logger.info("Harvest complete: %s", summary)
+        return summary
+
+
 
 # ── Persistence ───────────────────────────────────────────────────────
 
@@ -494,17 +858,7 @@ def write_corpus(
     retrieved_at = retrieved_at or datetime.now(timezone.utc).isoformat()
     corpus = [{field: record.get(field) for field in CORPUS_FIELDS} for record in records]
 
-    provenance: Dict[str, Any] = {}
-    for record in corpus:
-        digest = hashlib.sha256(
-            (record["body_text"] or "").encode("utf-8")
-        ).hexdigest()
-        provenance[digest] = {
-            "pmcid": record["pmcid"],
-            "doi": record["doi"],
-            "query": query,
-            "retrieved_at": retrieved_at,
-        }
+    provenance = build_provenance(corpus, query, retrieved_at)
 
     corpus_path.parent.mkdir(parents=True, exist_ok=True)
     provenance_path.parent.mkdir(parents=True, exist_ok=True)
@@ -524,41 +878,117 @@ def write_corpus(
     return provenance
 
 
-def write_readme(
-    records: List[Dict[str, Any]],
-    output_dir: Path,
-    query: str = PMC_SEARCH_QUERY,
-) -> Path:
-    """Write ``README.md`` documenting the harvested corpus.
+def load_citation_counts(
+    provenance_path: Path,
+    citation_metadata_path: Path,
+) -> Dict[str, int]:
+    """Map PMCID -> OpenAlex ``cited_by_count`` where DOI matching allows.
 
-    Records the search query verbatim, the applied filters, license
-    coverage computed from the actual records, and the reproduction
-    command.
+    ``citation_metadata.json`` is keyed by abstract SHA-256 and carries
+    DOIs; PMCID/DOI pairs are only locally known from the provenance
+    sidecar, so citation-ordered harvesting covers exactly those
+    documents.  Unmatched candidates keep esearch relevance order.
 
     Args:
-        records: Harvested corpus records.
+        provenance_path: Provenance sidecar (``pmcid``/``doi`` pairs).
+        citation_metadata_path: OpenAlex enrichment sidecar (DOI ->
+            ``cited_by_count``).
+
+    Returns:
+        Mapping PMCID -> cited_by_count for every matchable document.
+    """
+    if not citation_metadata_path.exists():
+        return {}
+    metadata = json.loads(citation_metadata_path.read_text(encoding="utf-8"))
+    doi_counts = {
+        entry["doi"]: entry.get("cited_by_count", 0)
+        for entry in metadata.values()
+        if entry.get("doi")
+    }
+    counts: Dict[str, int] = {}
+    for entry in load_provenance(provenance_path).values():
+        doi = entry.get("doi")
+        pmcid = entry.get("pmcid")
+        if doi and pmcid and doi in doi_counts:
+            counts[pmcid] = doi_counts[doi]
+    return counts
+
+
+def _coverage_stats(data_dir: Path) -> Dict[str, Any]:
+    """Compute corpus coverage statistics streaming over the shards.
+
+    Args:
+        data_dir: Corpus directory with shard files.
+
+    Returns:
+        Mapping with ``count``, ``body_chars``, ``years``,
+        ``journals``, ``license_counts``.
+    """
+    count = 0
+    body_chars = 0
+    years: List[int] = []
+    journals: set = set()
+    license_counts: Dict[str, int] = {}
+    for path in shard_paths(data_dir):
+        for record in read_shard(path):
+            count += 1
+            body = record.get("body_text") or ""
+            body_chars += len(body)
+            if isinstance(record.get("year"), int):
+                years.append(record["year"])
+            journals.add(record.get("journal") or "unknown")
+            license_counts[record.get("license") or "unknown"] = (
+                license_counts.get(record.get("license") or "unknown", 0) + 1
+            )
+    return {
+        "count": count,
+        "body_chars": body_chars,
+        "years": years,
+        "journals": journals,
+        "license_counts": license_counts,
+    }
+
+
+def write_readme(
+    output_dir: Path,
+    query: str = PMC_SEARCH_QUERY,
+    summary: Optional[Dict[str, Any]] = None,
+) -> Path:
+    """Write ``README.md`` documenting the sharded harvested corpus.
+
+    Records the search query verbatim, the applied filters, shard
+    layout, resumability behaviour, coverage computed by streaming
+    over the actual shards, and the reproduction command.
+
+    Args:
         output_dir: Corpus directory receiving ``README.md``.
         query: Verbatim search query.
+        summary: Optional harvest summary (``candidates``,
+            ``harvested``, ``failed_batches``) from
+            ``PMCFulltextHarvester.harvest_sharded``.
 
     Returns:
         The README path.
     """
-    license_counts: Dict[str, int] = {}
-    years = [r["year"] for r in records if isinstance(r.get("year"), int)]
-    journals = {r.get("journal") or "unknown" for r in records}
-    for record in records:
-        license_counts[record.get("license") or "unknown"] = (
-            license_counts.get(record.get("license") or "unknown", 0) + 1
-        )
+    stats = _coverage_stats(output_dir)
+    shards = [p.name for p in shard_paths(output_dir)]
     license_lines = "\n".join(
         f"- `{license}`: {count} documents"
         for license, count in sorted(
-            license_counts.items(), key=lambda item: (-item[1], item[0])
+            stats["license_counts"].items(), key=lambda item: (-item[1], item[0])
         )
     )
     year_line = (
-        f"{min(years)}–{max(years)}" if years else "n/a"
+        f"{min(stats['years'])}–{max(stats['years'])}" if stats["years"] else "n/a"
     )
+    shard_lines = "\n".join(f"- `{name}`" for name in shards) or "- (none yet)"
+    summary_block = ""
+    if summary:
+        summary_block = (
+            f"\nLast harvest run: {summary.get('harvested', 0)} new documents "
+            f"from {summary.get('candidates', 0)} candidates "
+            f"({summary.get('failed_batches', 0)} failed batches skipped).\n"
+        )
     readme = f"""# PMC Open-Access Full-Text Corpus (parallel layer)
 
 Parallel analysis layer harvested from PubMed Central via the
@@ -567,10 +997,15 @@ the headline corpus.
 
 ## Files
 
-- `fulltexts.json` — JSON list of full-text records
-  (`pmcid`, `doi`, `title`, `year`, `journal`, `license`, `abstract`,
-  `body_text`).
-- `provenance.json` — sidecar mapping `sha256(body_text)` to
+- `fulltexts_NNNNN.json` — shard files, at most {SHARD_SIZE} records
+  each (~39 MB at full-text length), holding JSON lists of full-text
+  records (`pmcid`, `doi`, `title`, `year`, `journal`, `license`,
+  `abstract`, `body_text`).  Concatenation order is the filename
+  order:
+
+{shard_lines}
+
+- `provenance.json` — single sidecar mapping `sha256(body_text)` to
   `{{pmcid, doi, query, retrieved_at}}`.
 - `README.md` — this document.
 
@@ -581,13 +1016,15 @@ the headline corpus.
 ```
 
 Applied against `esearch db=pmc` with `retmode=json`,
-`sort=relevance`, `retmax=600`, and the project's NCBI `tool`/`email`
+`sort=relevance`, `retmax=10000`, and the project's NCBI `tool`/`email`
 identification.  The `open access[Filter]` clause restricts hits to the
 PMC open-access subset, so every hit has a retrievable full text.
 
 ## Filters
 
-1. esearch relevance ranking over `{query}`.
+1. esearch relevance ranking over `{query}`; harvest order prioritizes
+   documents with a locally matchable OpenAlex `cited_by_count`
+   (highest cited first), relevance order otherwise.
 2. `efetch db=pmc retmode=xml` in batches of
    {PMCFulltextHarvester.BATCH_SIZE} PMCIDs, spaced
    {PMCFulltextHarvester.REQUEST_DELAY}s apart (NCBI politeness).
@@ -597,21 +1034,35 @@ PMC open-access subset, so every hit has a retrievable full text.
    social insects, Formicinae, Myrmicinae, Dorylinae, Linepithema,
    Solenopsis) occurs in title/abstract/body.
 4. Duplicates dropped by PMCID (first occurrence kept).
-5. Target cap: 500 documents.
+5. Target: every candidate from the relevance esearch (no cap).
 
-## Coverage ({len(records)} documents)
+## Sharding and resumability
+
+- Shards hold at most {SHARD_SIZE} records (GitHub rejects blobs
+  >100 MB).  Each shard and the provenance sidecar are written
+  atomically (tmp file + rename) after every shard fill.
+- The harvester skips any PMCID already present in the shards or
+  provenance, so an interrupted run resumes where it stopped:
+
+```bash
+uv run python src/data/pmc_fulltext.py
+```
+
+- Load the whole corpus in order with the frozen helper:
+
+```python
+from data.pmc_fulltext import load_fulltexts
+records = load_fulltexts(Path("data/fulltexts"))
+```
+{summary_block}
+## Coverage ({stats['count']} documents)
 
 - Publication years: {year_line}
-- Distinct journals: {len(journals)}
+- Distinct journals: {len(stats['journals'])}
+- Body text: {stats['body_chars']:,} characters
 - License coverage:
 
 {license_lines}
-
-## Reproduction
-
-```bash
-uv run python src/data/pmc_fulltext.py --target 500
-```
 
 The analysis layer is built separately:
 
@@ -621,12 +1072,15 @@ uv run python src/pipeline/fulltext_pipeline.py
 """
     output_dir.mkdir(parents=True, exist_ok=True)
     path = output_dir / "README.md"
-    path.write_text(readme, encoding="utf-8")
+    _atomic_write_text(path, readme)
     return path
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    """CLI entry point: harvest the PMC full-text corpus.
+    """CLI entry point: harvest the PMC full-text corpus into shards.
+
+    Resumable: existing shard PMCIDs are skipped; re-running continues an
+    interrupted harvest.
 
     Args:
         argv: Argument list (defaults to ``sys.argv[1:]``).
@@ -636,10 +1090,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     """
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument(
-        "--target", type=int, default=500, help="Number of full texts to harvest"
+        "--target",
+        type=int,
+        default=None,
+        help="Stop after this many NEW records (default: all candidates)",
     )
     parser.add_argument(
-        "--retmax", type=int, default=600, help="esearch candidate cap"
+        "--retmax",
+        type=int,
+        default=10000,
+        help="esearch candidate cap (default: 10000, the full set)",
     )
     parser.add_argument(
         "--output-dir",
@@ -653,17 +1113,27 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     project_root = Path(__file__).resolve().parents[2]
     output_dir = args.output_dir or project_root / "data" / "fulltexts"
+    provenance_path = output_dir / "provenance.json"
     harvester = PMCFulltextHarvester()
-    records = harvester.harvest(target=args.target, retmax=args.retmax)
-    write_corpus(
-        records,
-        corpus_path=output_dir / "fulltexts.json",
-        provenance_path=output_dir / "provenance.json",
-        query=PMC_SEARCH_QUERY,
+    summary = harvester.harvest_sharded(
+        output_dir,
+        provenance_path,
+        target=args.target,
+        retmax=args.retmax,
+        cited_by=load_citation_counts(
+            provenance_path,
+            project_root / "data" / "corpus" / "citation_metadata.json",
+        ),
     )
-    write_readme(records, output_dir, query=PMC_SEARCH_QUERY)
-    print(f"Harvested {len(records)} full texts into {output_dir}")
+    write_readme(output_dir, query=PMC_SEARCH_QUERY, summary=summary)
+    total = sum(len(read_shard(p)) for p in shard_paths(output_dir))
+    legacy = output_dir / "fulltexts.json"
+    if legacy.exists() and shard_paths(output_dir):
+        legacy.unlink()
+        logger.info("Removed legacy fulltexts.json (migrated into shards)")
+    print(f"Harvested {summary['harvested']} new; {total} total in {output_dir}")
     return 0
+
 
 
 if __name__ == "__main__":  # pragma: no cover

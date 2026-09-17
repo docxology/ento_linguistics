@@ -115,6 +115,16 @@ $t$-tests (Benjamini-Hochberg corrected, as in Table
 \ref{tab:pairwise_domain}) accompany the omnibus one-way ANOVA on per-term
 semantic entropy, $F = {{FULLTEXT_ANOVA_F}}$, {{FULLTEXT_ANOVA_P}}.
 
+Anthropomorphic framing over the same full texts is scored as the
+proportion of domain-term occurrence contexts containing an anthropomorphic
+framing marker (\texttt{add\_framing\_analysis} in
+\texttt{src/pipeline/fulltext\_pipeline.py}): {{FULLTEXT_ANTHROPOMORPHIC_OVERALL}}
+overall, with Economics a clear outlier at
+{{FULLTEXT_DOMAIN_ECONOMICS_ANTHROPOMORPHIC}} against
+{{FULLTEXT_DOMAIN_UNIT_OF_INDIVIDUALITY_ANTHROPOMORPHIC}} for Unit of
+Individuality and {{FULLTEXT_DOMAIN_BEHAVIOR_AND_IDENTITY_ANTHROPOMORPHIC}}
+for Behavior \& Identity.
+
 \begin{table}[h]
 \centering
 \begin{tabular}{|l|c|c|}

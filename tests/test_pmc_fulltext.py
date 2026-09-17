@@ -10,14 +10,22 @@ from pathlib import Path
 
 import pytest
 
+from data import pmc_fulltext
 from data.pmc_fulltext import (
     PMC_SEARCH_QUERY,
     PMCFulltextHarvester,
     dedupe_by_pmcid,
     is_relevant,
+    load_corpus_pmcids,
+    load_fulltexts,
+    main,
+    order_by_citation,
     parse_fulltext_xml,
+    shard_filename,
+    shard_paths,
     write_corpus,
     write_readme,
+    write_shard,
 )
 
 def _article(
@@ -291,9 +299,215 @@ class TestWriteReadme:
         records = parse_fulltext_xml(
             _articleset(RELEVANT_ARTICLE, IRRELEVANT_ARTICLE)
         )
-        readme = write_readme(records, tmp_path, query=PMC_SEARCH_QUERY)
+        write_shard(tmp_path / "fulltexts_00001.json", records)
+        readme = write_readme(tmp_path, query=PMC_SEARCH_QUERY)
         text = readme.read_text(encoding="utf-8")
         assert PMC_SEARCH_QUERY in text
         assert "open access[Filter]" in text
         assert "`: 2 documents" in text
-        assert "src/data/pmc_fulltext.py --target 500" in text
+        assert "fulltexts_00001.json" in text
+        assert "src/data/pmc_fulltext.py" in text
+        assert "load_fulltexts" in text
+
+
+def _sharded_article(pmcid: str, index: int) -> str:
+    """Distinct relevant article so every record has its own digest."""
+    return _article(
+        pmcid,
+        f"Ant colony study number {index}",
+        f"Eusocial ant colony behavior, experiment {index}.",
+        (f"Ant workers of colony {index} forage collectively.",),
+        doi=f"10.1234/shard.{index:03d}",
+    )
+
+
+class TestOrdering:
+    def test_known_cited_first_desc_then_relevance_order(self):
+        assert order_by_citation(
+            ["PMC1", "PMC2", "PMC3", "PMC4"],
+            {"PMC3": 2, "PMC1": 9, "PMC4": 9},
+        ) == ["PMC1", "PMC4", "PMC3", "PMC2"]
+
+    def test_empty_counts_keeps_input_order(self):
+        assert order_by_citation(["PMC2", "PMC1"], {}) == ["PMC2", "PMC1"]
+
+
+class TestSharding:
+    def test_shard_filename_zero_pads_five_digits(self):
+        assert shard_filename(1) == "fulltexts_00001.json"
+        assert shard_filename(12345) == "fulltexts_12345.json"
+
+    def test_roundtrip_concatenation_order(self, tmp_path: Path):
+        records = parse_fulltext_xml(
+            _articleset(
+                _sharded_article("PMC111", 1),
+                _sharded_article("PMC222", 2),
+                _sharded_article("PMC333", 3),
+            )
+        )
+        write_shard(tmp_path / "fulltexts_00001.json", records[:2])
+        write_shard(tmp_path / "fulltexts_00002.json", records[2:])
+        loaded = load_fulltexts(tmp_path)
+        assert [r["pmcid"] for r in loaded] == ["PMC111", "PMC222", "PMC333"]
+
+    def test_load_fulltexts_empty_dir_returns_empty(self, tmp_path: Path):
+        assert load_fulltexts(tmp_path) == []
+
+    def test_corpus_pmcids_spans_shards_and_provenance(self, tmp_path: Path):
+        records = parse_fulltext_xml(_articleset(_sharded_article("PMC111", 1)))
+        write_shard(tmp_path / "fulltexts_00001.json", records)
+        provenance_path = tmp_path / "provenance.json"
+        provenance_path.write_text(
+            json.dumps(
+                {"deadbeef": {"pmcid": "PMC999", "doi": "10.x/y",
+                              "query": "q", "retrieved_at": "t"}}
+            ),
+            encoding="utf-8",
+        )
+        assert load_corpus_pmcids(tmp_path, provenance_path) == {
+            "PMC111",
+            "PMC999",
+        }
+
+
+class TestHarvestSharded:
+    def _install(self, httpserver, monkeypatch, idlist, articles_xml):
+        httpserver.expect_request("/esearch.fcgi").respond_with_json(
+            {"esearchresult": {"idlist": idlist}}
+        )
+        if articles_xml is not None:
+            httpserver.expect_request("/efetch.fcgi").respond_with_data(
+                articles_xml
+            )
+        harvester = PMCFulltextHarvester(delay=0)
+        monkeypatch.setattr(harvester, "BASE_URL", httpserver.url_for("/"))
+        return harvester
+
+    def _seed(self, data_dir: Path, records):
+        write_shard(data_dir / "fulltexts_00001.json", records)
+        provenance = {}
+        for record in records:
+            digest = hashlib.sha256(
+                (record["body_text"] or "").encode("utf-8")
+            ).hexdigest()
+            provenance[digest] = {
+                "pmcid": record["pmcid"],
+                "doi": record["doi"],
+                "query": "seed",
+                "retrieved_at": "seeded",
+            }
+        (data_dir / "provenance.json").write_text(
+            json.dumps(provenance), encoding="utf-8"
+        )
+
+    def test_resume_harvests_only_missing_pmcids(self, httpserver, monkeypatch, tmp_path: Path):
+        monkeypatch.setattr(pmc_fulltext, "SHARD_SIZE", 2)
+        seeded = parse_fulltext_xml(_articleset(_sharded_article("PMC111", 1)))
+        self._seed(tmp_path, seeded)
+        harvester = self._install(
+            httpserver,
+            monkeypatch,
+            ["111", "222", "333"],
+            _articleset(
+                _sharded_article("PMC111", 1),
+                _sharded_article("PMC222", 2),
+                _sharded_article("PMC333", 3),
+            ),
+        )
+        summary = harvester.harvest_sharded(
+            tmp_path, tmp_path / "provenance.json"
+        )
+        assert summary["harvested"] == 2
+        loaded = load_fulltexts(tmp_path)
+        pmcids = [r["pmcid"] for r in loaded]
+        # No overlap with the seeded shard, order preserved.
+        assert pmcids == ["PMC111", "PMC222", "PMC333"]
+        # Shard cap respected across the rewritten and new shards.
+        assert all(
+            len(json.loads(p.read_text(encoding="utf-8"))) <= 2
+            for p in shard_paths(tmp_path)
+        )
+        assert not list(tmp_path.glob("*.tmp"))
+        provenance = json.loads(
+            (tmp_path / "provenance.json").read_text(encoding="utf-8")
+        )
+        assert len(provenance) == 3
+        assert {e["pmcid"] for e in provenance.values()} == {
+            "PMC111",
+            "PMC222",
+            "PMC333",
+        }
+
+    def test_resume_skips_fetch_for_fully_known_batch(self, httpserver, monkeypatch, tmp_path: Path):
+        seeded = parse_fulltext_xml(_articleset(_sharded_article("PMC111", 1)))
+        self._seed(tmp_path, seeded)
+        fetches = []
+
+        def _count_fetch(request):
+            fetches.append(request.args["id"])
+            return _articleset(_sharded_article("PMC222", 2))
+
+        httpserver.expect_request("/esearch.fcgi").respond_with_json(
+            {"esearchresult": {"idlist": ["111", "222"]}}
+        )
+        httpserver.expect_request("/efetch.fcgi").respond_with_handler(
+            _count_fetch
+        )
+        harvester = PMCFulltextHarvester(delay=0)
+        monkeypatch.setattr(harvester, "BASE_URL", httpserver.url_for("/"))
+        monkeypatch.setattr(harvester, "BATCH_SIZE", 1)
+        summary = harvester.harvest_sharded(
+            tmp_path, tmp_path / "provenance.json"
+        )
+        # Batch "111" was fully stored: skipped; only "222" was fetched.
+        assert fetches == ["222"]
+        assert summary["harvested"] == 1
+
+    def test_migrates_legacy_single_file_corpus(self, httpserver, monkeypatch, tmp_path: Path):
+        monkeypatch.setattr(pmc_fulltext, "SHARD_SIZE", 2)
+        seeded = parse_fulltext_xml(_articleset(_sharded_article("PMC111", 1)))
+        (tmp_path / "fulltexts.json").write_text(
+            json.dumps(seeded), encoding="utf-8"
+        )
+        harvester = self._install(
+            httpserver,
+            monkeypatch,
+            ["111", "222", "333"],
+            _articleset(
+                _sharded_article("PMC111", 1),
+                _sharded_article("PMC222", 2),
+                _sharded_article("PMC333", 3),
+            ),
+        )
+        harvester.harvest_sharded(tmp_path, tmp_path / "provenance.json")
+        assert [r["pmcid"] for r in load_fulltexts(tmp_path)] == [
+            "PMC111",
+            "PMC222",
+            "PMC333",
+        ]
+        assert shard_paths(tmp_path)[0].name == "fulltexts_00001.json"
+
+    def test_main_end_to_end_removes_legacy_file(self, httpserver, monkeypatch, tmp_path: Path):
+        seeded = parse_fulltext_xml(_articleset(_sharded_article("PMC111", 1)))
+        (tmp_path / "fulltexts.json").write_text(
+            json.dumps(seeded), encoding="utf-8"
+        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_json(
+            {"esearchresult": {"idlist": ["111", "222"]}}
+        )
+        httpserver.expect_request("/efetch.fcgi").respond_with_data(
+            _articleset(
+                _sharded_article("PMC111", 1),
+                _sharded_article("PMC222", 2),
+            )
+        )
+        monkeypatch.setattr(PMCFulltextHarvester, "BASE_URL", httpserver.url_for("/"))
+        monkeypatch.setattr(PMCFulltextHarvester, "REQUEST_DELAY", 0)
+        rc = main(["--output-dir", str(tmp_path)])
+        assert rc == 0
+        assert not (tmp_path / "fulltexts.json").exists()
+        assert [r["pmcid"] for r in load_fulltexts(tmp_path)] == [
+            "PMC111",
+            "PMC222",
+        ]
+        assert (tmp_path / "README.md").exists()

@@ -302,7 +302,48 @@ class ConceptVisualizer:
             loc="upper left",
             bbox_to_anchor=(1.05, 1),
             title="Ento-Linguistic Domains",
+            framealpha=0.9,
+            title_fontsize=MIN_FONT,
         )
+
+    @staticmethod
+    def _select_label_positions(
+        pos: Dict[Any, Tuple[float, float]],
+        candidates: List[Any],
+        *,
+        min_frac: float = 0.11,
+    ) -> Dict[Any, Tuple[float, float]]:
+        """Greedy, deterministic label placement to avoid collisions.
+
+        Walks ``candidates`` in the given priority order and keeps a label
+        only if its anchor point is farther than ``min_frac`` (fraction of
+        the layout span) from every already-placed anchor. Because both the
+        candidate order and the acceptance rule are deterministic, repeated
+        renders of the same input pick identical labels.
+
+        Args:
+            pos: Layout positions keyed by node name.
+            candidates: Nodes to label, highest priority first.
+            min_frac: Minimum separation as a fraction of layout span.
+
+        Returns:
+            Mapping of selected node name to its layout position.
+        """
+        if not candidates or not pos:
+            return {}
+        xs = [p[0] for p in pos.values()]
+        ys = [p[1] for p in pos.values()]
+        span = max(max(xs) - min(xs), max(ys) - min(ys)) or 1.0
+        min_dist_sq = (min_frac * span) ** 2
+        selected: Dict[Any, Tuple[float, float]] = {}
+        for name in candidates:
+            x, y = pos[name]
+            if all(
+                (x - px) ** 2 + (y - py) ** 2 >= min_dist_sq
+                for px, py in selected.values()
+            ):
+                selected[name] = (x, y)
+        return selected
 
     @publication_style
     def visualize_terminology_network(
@@ -408,7 +449,11 @@ class ConceptVisualizer:
             :20
         ]  # Top 20 terms
 
-        label_pos = {term: pos[term] for term in important_terms if term in pos}
+        # Anti-collision pass: drop candidates whose 16pt label would sit on
+        # top of a higher-frequency label already placed (deterministic).
+        label_pos = self._select_label_positions(
+            pos, [t for t in important_terms if t in pos]
+        )
         label_dict = {term: term for term in label_pos}
         nx.draw_networkx_labels(G, label_pos, labels=label_dict, font_size=MIN_FONT, ax=ax)
 
@@ -487,7 +532,7 @@ class ConceptVisualizer:
 
         fig, axes = plt.subplots(3, 2, figsize=(16, 18))
         fig.suptitle(
-            "Ento-Linguistic Domain Comparison",
+            "Ento-Linguistic Domain Comparison (Full Corpus Terminology)",
             fontsize=MIN_FONT + 4,
             fontweight="bold",
             y=1.01,
@@ -507,6 +552,8 @@ class ConceptVisualizer:
             ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold", pad=6)
             ax.spines["top"].set_visible(False)
             ax.spines["right"].set_visible(False)
+            ax.grid(axis="y", alpha=0.3)
+            ax.set_axisbelow(True)
             ax.tick_params(axis="y", labelsize=MIN_FONT)
 
         # Panel (0,0): term counts
@@ -649,7 +696,7 @@ class ConceptVisualizer:
         fig, axes = plt.subplots(3, 2, figsize=(18, 22))
         fig.suptitle(
             "Domain Terminology Overview: Top Terms by Frequency & Semantic Entropy",
-            fontsize=MIN_FONT + 4, fontweight="bold", y=1.005,
+            fontsize=MIN_FONT + 4, fontweight="bold",
         )
 
         all_axes = axes.flatten()
@@ -711,7 +758,9 @@ class ConceptVisualizer:
             ax.set_yticks(range(len(names)))
             ax.set_yticklabels(names, fontsize=MIN_FONT)
             ax.invert_yaxis()
-            ax.set_xlabel("Corpus Frequency", fontsize=MIN_FONT)
+            # Headroom so bold value labels never clip at the panel edge.
+            ax.set_xlim(0, max(freqs) * 1.18)
+            ax.set_xlabel("Corpus Frequency (occurrences)", fontsize=MIN_FONT)
             ax.set_title(
                 f"{title}  ({len(domain_terms)} terms)",
                 fontsize=MIN_FONT + 2, fontweight="bold", color=domain_color, pad=6,
@@ -723,8 +772,10 @@ class ConceptVisualizer:
         sm = plt.cm.ScalarMappable(cmap=cmap,
                                     norm=plt.Normalize(vmin=0, vmax=global_max_entropy))
         sm.set_array([])
-        fig.colorbar(sm, ax=all_axes, orientation="vertical", fraction=0.012, pad=0.03,
-                     label="Semantic Entropy H(t) bits")
+        cbar = fig.colorbar(sm, ax=all_axes, orientation="vertical",
+                            fraction=0.012, pad=0.03,
+                            label="Semantic Entropy H(t) bits")
+        cbar.ax.tick_params(labelsize=MIN_FONT)
 
         # Use constrained_layout instead of tight_layout — the colorbar axes
         # are not compatible with tight_layout and would trigger a UserWarning.
@@ -937,7 +988,7 @@ class ConceptVisualizer:
             Patch(facecolor="#4e79a7", alpha=0.82, label="Other"),
         ]
         ax1.legend(handles=legend_elements, loc="lower right",
-                   fontsize=MIN_FONT)
+                   fontsize=MIN_FONT, framealpha=0.9)
 
         # ── Panel 2: Centrality vs Term-count scatter ─────────────────
         sc_x = scores  # centrality on x
@@ -948,8 +999,11 @@ class ConceptVisualizer:
         ax2.scatter(sc_x, sc_y, c=sc_colors, s=sc_sizes, alpha=0.8,
                     edgecolors="white", linewidths=0.8)
 
-        # Label top-10 by centrality
-        for c, x, y in zip(concepts[:10], sc_x[:10], sc_y[:10]):
+        # Label top-10 by centrality, dropping any whose 16pt label would
+        # collide with a higher-ranked label already placed (deterministic).
+        scatter_pos = {c: (x, y) for c, x, y in zip(concepts[:10], sc_x[:10], sc_y[:10])}
+        selected = self._select_label_positions(scatter_pos, concepts[:10])
+        for c, (x, y) in selected.items():
             label = c.replace("_", " ").title()
             ax2.annotate(
                 label, (x, y),
@@ -964,9 +1018,11 @@ class ConceptVisualizer:
                       fontweight="bold", pad=8)
         ax2.spines["top"].set_visible(False)
         ax2.spines["right"].set_visible(False)
+        ax2.grid(True, alpha=0.3)
+        ax2.set_axisbelow(True)
         ax2.tick_params(labelsize=MIN_FONT)
 
-        plt.tight_layout()
+        plt.tight_layout(w_pad=3.0)
 
         if filepath:
             fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -1187,10 +1243,13 @@ class ConceptVisualizer:
             G, pos, width=edge_weights, edge_color="gray", alpha=0.6, ax=ax
         )
 
-        # Draw labels for high-degree nodes only
+        # Draw labels for high-degree nodes only, with a deterministic
+        # anti-collision pass so 16pt labels never stack on dense layouts.
         high_degree_nodes = [node for node in G.nodes() if G.degree(node) > 2]
-        labels = {node: node for node in high_degree_nodes}
-        nx.draw_networkx_labels(G, pos, labels, font_size=MIN_FONT, font_weight="bold", ax=ax)
+        label_pos = self._select_label_positions(pos, high_degree_nodes)
+        labels = {node: node for node in label_pos}
+        nx.draw_networkx_labels(G, label_pos, labels, font_size=MIN_FONT,
+                                font_weight="bold", ax=ax)
 
         ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         ax.axis("off")
@@ -1288,12 +1347,15 @@ class ConceptVisualizer:
         # Add labels
         ax.set_xticks(range(len(domains)))
         ax.set_yticks(range(len(domains)))
-        ax.set_xticklabels(display_labels, rotation=45, ha="right")
-        ax.set_yticklabels(display_labels)
+        ax.set_xticklabels(display_labels, rotation=45, ha="right",
+                           fontsize=MIN_FONT)
+        ax.set_yticklabels(display_labels, fontsize=MIN_FONT)
 
-        # Add colorbar
+        # Add colorbar labelled with the metric name and units.
         cbar = ax.figure.colorbar(im, ax=ax)
-        cbar.ax.set_ylabel("Overlap Percentage", rotation=-90, va="bottom")
+        cbar.ax.set_ylabel("Overlap Percentage (%)", rotation=270,
+                           va="bottom", fontsize=MIN_FONT, labelpad=18)
+        cbar.ax.tick_params(labelsize=MIN_FONT)
 
         # Add text annotations
         for i in range(len(domains)):
