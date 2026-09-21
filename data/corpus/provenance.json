@@ -57912,6 +57912,14 @@
       "year": 1965,
       "journal": "Science (New York, N.Y.)",
       "query": "myrmecology_core"
+    },
+    "84ed37c9ce251114a1805fba4270ec7d22cd73dffa59c05707b96b36a2b3b72e": {
+      "pmid": "42763070",
+      "doi": null,
+      "title": "Distinct mycelial network architectures during early development of Trichoderma atroviride and Neurospora crassa.",
+      "year": 2026,
+      "journal": "Fungal genetics and biology : FG & B",
+      "query": "foraging_economics"
     }
   },
   "seen_pmids": [
@@ -68768,6 +68776,7 @@
     "42742041",
     "42742686",
     "42759082",
+    "42763070",
     "4330687",
     "4382052",
     "4383460",

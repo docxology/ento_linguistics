@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.18)  20 SEP 2026 00:27
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.18)  21 SEP 2026 01:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2048,7 +2048,13 @@ Overfull \hbox (27.05489pt too wide) in paragraph at lines 3229--3235
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [47] [48] [49] [50] [51] [52]
-Overfull \hbox (55.44495pt too wide) in paragraph at lines 3581--3594
+Underfull \hbox (badness 1226) in paragraph at lines 3571--3579
+[]\TU/lmr/m/n/10 The BHL historical layer brackets the start of this table from
+ below: across 2460 BHL-mirror docu-
+ []
+
+
+Overfull \hbox (55.44495pt too wide) in paragraph at lines 3582--3595
  [][] 
  []
 

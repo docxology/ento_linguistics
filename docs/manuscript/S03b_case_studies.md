@@ -60,14 +60,14 @@ eras, while "queen" remains the anchor term throughout
 ({{BHL_ERA_1850_1899_QUEEN_PER_10K}} →
 {{BHL_ERA_1900_1949_QUEEN_PER_10K}} →
 {{BHL_ERA_1950_1970_QUEEN_PER_10K}} per 10k). The integrative-era
-vocabulary is absent from the entire stratum: "superorganism"
+vocabulary is vanishingly rare in the entire stratum: "superorganism"
 registers {{BHL_ERA_1850_1899_SUPERORGANISM_PER_10K}},
 {{BHL_ERA_1900_1949_SUPERORGANISM_PER_10K}}, and
 {{BHL_ERA_1950_1970_SUPERORGANISM_PER_10K}} per 10k tokens across
-the three eras — zero throughout — marking it as a post-1970 import
-into general monographic usage rather than a term the historical
-corpus itself carries. All numbers resolve at render time from the
-BHL_* manuscript tokens.
+the three eras — near-zero throughout — marking it as essentially a
+post-1970 import into general monographic usage rather than a term
+the historical corpus itself carries. All numbers resolve at render
+time from the BHL_* manuscript tokens.
 
 ### Superorganism Concept Evolution
 
@@ -78,8 +78,9 @@ The BHL historical layer brackets the start of this table from
 below: across {{BHL_DOCUMENTS}} BHL-mirror documents, "superorganism"
 occurs {{BHL_ERA_1850_1899_SUPERORGANISM_PER_10K}} per 10k tokens in
 1850-1899, {{BHL_ERA_1900_1949_SUPERORGANISM_PER_10K}} in 1900-1949,
-and {{BHL_ERA_1950_1970_SUPERORGANISM_PER_10K}} in 1950-1970 — zero
-throughout (`data/bhl/era_term_usage.json`, produced by
+and {{BHL_ERA_1950_1970_SUPERORGANISM_PER_10K}} in 1950-1970 — at or
+near the resolution floor throughout
+(`data/bhl/era_term_usage.json`, produced by
 `src/pipeline/bhl_analysis.py`), confirming that the concept's
 theoretical vocabulary lived outside the monographic stratum and
 entered routine usage only in the post-1970 decades traced here.

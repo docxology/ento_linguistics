@@ -5,7 +5,7 @@ manuscript's S03b longitudinal claims (see
 `docs/manuscript/S03b_case_studies.md` and
 `src/pipeline/bhl_analysis.py`).
 
-Last harvest run: 0 new documents from 133 candidates (3 texts fetched, 0 without text derivative, 0 out of window, 3 irrelevant, 0 failed items skipped).
+Last harvest run: 0 new documents from 133 candidates (2 texts fetched, 1 without text derivative, 0 out of window, 3 irrelevant, 0 failed items skipped).
 
 
 ## API reality check

@@ -1,8 +1,8 @@
 {
-  "total_tokens": 999905,
-  "unique_tokens": 47227,
-  "total_characters": 10972345,
-  "avg_token_length": 7.208466804346413,
+  "total_tokens": 1000038,
+  "unique_tokens": 47230,
+  "total_characters": 10973822,
+  "avg_token_length": 7.208531075819119,
   "most_common_tokens": [
     [
       "ant",
@@ -10,11 +10,11 @@
     ],
     [
       "specie",
-      10623
+      10625
     ],
     [
       "colony",
-      7456
+      7457
     ],
     [
       "worker",
@@ -42,7 +42,7 @@
     ],
     [
       "result",
-      3693
+      3694
     ],
     [
       "may",
@@ -54,7 +54,7 @@
     ],
     [
       "foraging",
-      3428
+      3429
     ],
     [
       "individual",
@@ -62,7 +62,7 @@
     ],
     [
       "two",
-      3190
+      3191
     ],
     [
       "effect",
@@ -85,5 +85,5 @@
       2886
     ]
   ],
-  "type_token_ratio": 0.04723148699126417
+  "type_token_ratio": 0.04722820532819753
 }

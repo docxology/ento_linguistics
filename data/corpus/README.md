@@ -167,13 +167,46 @@ uv run python scripts/01_build_corpus.py --grow --target-new 1000 \
 uv run python scripts/01_build_corpus.py --grow --target-new 0
 ```
 
+## Corpus growth (2026-09-19 → 2026-09-20, full search-surface drain)
+
+Two full-surface `--grow` passes grew the corpus from 1,907 to **7,609
+abstracts** (+5,702). The 2026-09-19 pass appended 5,701 records
+(sidecars 1,538 → 7,239; `seen_pmids` ledger 5,016 → 11,077; committed as
+the 2026-09-20 baseline). The 2026-09-20 pass
+(`--target-new 500000 --max-per-query 10000`, no date window) then fully
+enumerated every remaining hit of all 12 `CORPUS_GROWTH_QUERIES` and
+appended just **1** new record (from `foraging_economics`), bringing the
+sidecar count to 7,240 and the ledger to 11,078.
+
+### 2026-09-20 full-surface hit counts (retmax 10000, all queries enumerated)
+
+| # | Query name | Hits | Appended |
+|---|-----------|------|----------|
+| 1 | `reproductive_skew` | 68 | 0 |
+| 2 | `kin_recognition` | 93 | 0 |
+| 3 | `superorganism` | 155 | 0 |
+| 4 | `nestmate_recognition` | 255 | 0 |
+| 5 | `colony_organization` | 359 | 0 |
+| 6 | `eusocial_communication` | 391 | 0 |
+| 7 | `sociobiology` | 351 | 0 |
+| 8 | `kin_selection` | 424 | 0 |
+| 9 | `division_of_labor` | 725 | 0 |
+| 10 | `foraging_economics` | 1809 | 1 |
+| 11 | `caste_queen_worker` | 1271 | 0 |
+| 12 | `myrmecology_core` | 7177 | 0 |
+
+Total appended: 1 (7,608 → 7,609). **The search surface is exhausted**: the
+corpus now contains every record the 12 growth queries return that passes
+the relevance filters and dedupe. Further `--grow` runs append 0 until
+newly published matching work appears (use `--since-pdat "2026/09/20"` to
+window future growth).
+
 Validation after any growth:
 `uv run pytest tests/test_corpus_build.py tests/test_literature_mining.py -q`
 plus a `DataLoader().load_corpus("corpus/abstracts.json")` smoke load.
-Queries 9-12 (`division_of_labor`, `foraging_economics`,
-`caste_queen_worker`, `myrmecology_core`) still have thousands of unfetched
-hits; raising `--target-new` grows the corpus further (surfaced PMIDs enter
-the ledger first, so repeated runs stay idempotent).
+All 12 `CORPUS_GROWTH_QUERIES` were fully enumerated on 2026-09-20 (see the
+2026-09-19 → 2026-09-20 growth section above); raising `--target-new` no
+longer grows the corpus until new publications appear.
 
 ## arXiv preprint layer (2026-09-16)
 

@@ -11663,6 +11663,12 @@
   "query": "(\"ant\"[Title/Abstract] OR \"ants\"[Title/Abstract] OR \"Formicidae\"[Title/Abstract] OR \"myrmecolog*\"[Title/Abstract] OR \"eusocial\"[Title/Abstract] OR \"eusociality\"[Title/Abstract] OR \"social insect\"[Title/Abstract]) AND \"open access\"[Filter]",
   "retrieved_at": "2026-09-16T22:03:44.500952+00:00"
  },
+ "4748899c280eeb20799cb6d26bf0245ebcff7cb4f32fc91cc9373f3103b5da6c": {
+  "doi": "10.3897/mycokeys.140.197771",
+  "pmcid": "PMC13589296",
+  "query": "(\"ant\"[Title/Abstract] OR \"ants\"[Title/Abstract] OR \"Formicidae\"[Title/Abstract] OR \"myrmecolog*\"[Title/Abstract] OR \"eusocial\"[Title/Abstract] OR \"eusociality\"[Title/Abstract] OR \"social insect\"[Title/Abstract]) AND \"open access\"[Filter]",
+  "retrieved_at": "2026-09-21T00:45:28.543660+00:00"
+ },
  "474ae7f02ce858661376131c80b4cd20318e7f75816a30e713941a0800504aaa": {
   "doi": "10.1093/geroni/igab019",
   "pmcid": "PMC8304153",
@@ -18364,6 +18370,12 @@
   "pmcid": "PMC10698966",
   "query": "(\"ant\"[Title/Abstract] OR \"ants\"[Title/Abstract] OR \"Formicidae\"[Title/Abstract] OR \"myrmecolog*\"[Title/Abstract] OR \"eusocial\"[Title/Abstract] OR \"eusociality\"[Title/Abstract] OR \"social insect\"[Title/Abstract]) AND \"open access\"[Filter]",
   "retrieved_at": "2026-09-16T22:03:44.500952+00:00"
+ },
+ "6f9971c08f7b320bb8ee26660a66b119c463bc458b8b44a72291bc5e3a8bbf0a": {
+  "doi": "10.1093/femsec/fiag104",
+  "pmcid": "PMC13587098",
+  "query": "(\"ant\"[Title/Abstract] OR \"ants\"[Title/Abstract] OR \"Formicidae\"[Title/Abstract] OR \"myrmecolog*\"[Title/Abstract] OR \"eusocial\"[Title/Abstract] OR \"eusociality\"[Title/Abstract] OR \"social insect\"[Title/Abstract]) AND \"open access\"[Filter]",
+  "retrieved_at": "2026-09-21T00:45:28.543660+00:00"
  },
  "6fa2c64551bce30e79102c4d874c2496d8ab10bd15f2c4ff561d153b0347754c": {
   "doi": "10.1371/journal.pone.0138578",
@@ -35590,6 +35602,12 @@
   "pmcid": "PMC3175119",
   "query": "(\"ant\"[Title/Abstract] OR \"ants\"[Title/Abstract] OR \"Formicidae\"[Title/Abstract] OR \"myrmecolog*\"[Title/Abstract] OR \"eusocial\"[Title/Abstract] OR \"eusociality\"[Title/Abstract] OR \"social insect\"[Title/Abstract]) AND \"open access\"[Filter]",
   "retrieved_at": "2026-09-16T22:03:44.500952+00:00"
+ },
+ "d7631015822228c1f3e1d0f002176dbd2ee56f3e9fff263ce87caa3c8a157f55": {
+  "doi": "10.3389/frobt.2026.1895019",
+  "pmcid": "PMC13587347",
+  "query": "(\"ant\"[Title/Abstract] OR \"ants\"[Title/Abstract] OR \"Formicidae\"[Title/Abstract] OR \"myrmecolog*\"[Title/Abstract] OR \"eusocial\"[Title/Abstract] OR \"eusociality\"[Title/Abstract] OR \"social insect\"[Title/Abstract]) AND \"open access\"[Filter]",
+  "retrieved_at": "2026-09-21T00:45:28.543660+00:00"
  },
  "d770e81da73cf301f830c918de960ab2a049c3cce6f653a6669eac27765fadc7": {
   "doi": "10.1038/s41598-022-21507-7",

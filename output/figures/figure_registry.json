@@ -1,65 +1,9 @@
 {
-  "fig:anthropomorphic": {
-    "filename": "anthropomorphic_framing.png",
-    "caption": "Two-panel inventory of the curated anthropomorphic vocabulary used by the framing analysis over the headline PubMed abstract layer (about nineteen hundred abstracts). Left: bar chart of the number of curated marker terms per category (Hierarchical Terms, Economic Metaphors, Kinship Language, Identity Labels, Agency Attribution), counts annotated and the category total shown. Right: table of up to five example terms per category. Counts are vocabulary sizes, not corpus frequencies; per-domain anthropomorphic proportions derived from these vocabularies are reported separately.",
-    "label": "fig:anthropomorphic",
-    "section": "discussion",
-    "generated_by": null,
-    "metadata": null
-  },
-  "fig:concept_hierarchy": {
-    "filename": "concept_hierarchy.png",
-    "caption": "Two-panel centrality analysis of the Ento-Linguistic concept map over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Concepts are clusters of domain-assigned terms; centrality is a concept's count of direct links in the map. Left: concepts ranked by centrality, colored green for core (above the map-wide mean) and red for peripheral (at or below). Right: centrality versus associated-term count, point area proportional to centrality, top-ten concepts labelled. The ranking spans all six domains.",
-    "label": "fig:concept_hierarchy",
-    "section": "discussion",
-    "generated_by": null,
-    "metadata": null
-  },
-  "fig:concept_map": {
-    "filename": "concept_map.png",
-    "caption": "Concept map of the Ento-Linguistic domains, built by clustering the domain-assigned terminology of the headline PubMed abstract layer (about nineteen hundred abstracts). Each node is a concept cluster; node size is proportional to its term count (annotated below the label), node color encodes the concept's primary domain (legend at right), and edge width is proportional to relationship strength, with numeric weights at edge midpoints. Multi-domain hub concepts bridge the domain clusters.",
-    "label": "fig:concept_map",
-    "section": "introduction",
-    "generated_by": null,
-    "metadata": null
-  },
-  "fig:discourse_comparison": {
-    "filename": "discourse_comparison.png",
-    "caption": "Grouped bars of corpus-level discourse frequencies comparing the headline PubMed abstract layer (solid bars, discourse pass over its full analyzed sample) with the PMC full-text parallel layer (hatched bars, discourse pass over its deterministic 20% text sample; per-layer analyzed-text counts are given in the legend). Three panels, one per shared discourse dimension: discourse patterns (anthropomorphic framing, economic metaphors, hierarchical framing, scale ambiguity), rhetorical strategies (analogy, anecdotal, authority, generalization), and persuasive techniques (authoritative citations, metaphorical language, quantitative emphasis, rhetorical questions). Panels whose plotted maximum spans at least two orders of magnitude above their smallest positive frequency use a symlog y-axis (linear below one occurrence) so both layers remain legible. Between-layer differences are descriptive of the two corpora and sampling fractions and are not significance-tested in this figure.",
-    "label": "fig:discourse_comparison",
-    "section": "supplemental_results",
-    "generated_by": null,
-    "metadata": null
-  },
-  "fig:domain_comparison": {
-    "filename": "domain_comparison.png",
-    "caption": "Six-panel comparison of terminology characteristics across the six Ento-Linguistic domains, computed from the domain-assigned terminology of the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Bar charts with annotated values show: distinct-term count per domain, mean extraction confidence, total corpus frequency, mean semantic entropy in bits, count of bridging terms (assigned to more than one domain), and mean CACE aggregate score (sampled per domain). Bar colors distinguish domains, not magnitudes; higher mean entropy indicates usage contexts spanning more sense clusters (an association, not a causal claim).",
-    "label": "fig:domain_comparison",
+  "fig:statistical_analysis": {
+    "filename": "statistical_analysis.png",
+    "caption": "Three-panel inferential summary of per-term semantic entropy over the six Ento-Linguistic domains in the headline PubMed abstract layer (about nineteen hundred abstracts). Panel (a): per-domain mean entropy bars with 95% confidence-interval whiskers (Student-t, from per-domain n and SD) and per-domain term counts annotated. Panel (b): diverging bars of pairwise Cohen's d effect sizes, colored by Benjamini-Hochberg significance (asterisks mark significant comparisons). Panel (c): omnibus one-way ANOVA summary text (F, p, eta-squared, correction metadata). Effect sizes and significance describe between-domain entropy differences in this corpus.",
+    "label": "fig:statistical_analysis",
     "section": "experimental_results",
-    "generated_by": null,
-    "metadata": null
-  },
-  "fig:domain_overlap": {
-    "filename": "domain_overlap_heatmap.png",
-    "caption": "Symmetric heatmap of Szymkiewicz--Simpson overlap coefficients between each pair of the six Ento-Linguistic domains, computed from term--domain assignments of the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Each cell is the count of terms assigned to both domains divided by the smaller domain's term count; the diagonal is one hundred percent by construction; darker cells (YlOrRd colormap) indicate higher shared terminology, and zero cells are observed zeros of the current corpus.",
-    "label": "fig:domain_overlap",
-    "section": "experimental_results",
-    "generated_by": null,
-    "metadata": null
-  },
-  "fig:domain_overview_grid": {
-    "filename": "domain_overview_grid.png",
-    "caption": "Six-panel grid (one panel per Ento-Linguistic domain) of the ten highest-frequency terms by corpus frequency over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Bar length encodes corpus frequency (annotated at the bar tip); panel titles give each domain's total term count; bar color encodes per-term semantic entropy in bits on a shared YlOrRd scale with a shared color bar; darker bars indicate terms whose usage contexts span more sense clusters.",
-    "label": "fig:domain_overview_grid",
-    "section": null,
-    "generated_by": null,
-    "metadata": null
-  },
-  "fig:domain_patterns_grid": {
-    "filename": "domain_patterns_grid.png",
-    "caption": "Six-panel grid of donut charts showing the word-formation composition of each Ento-Linguistic domain's vocabulary over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Each slice is a word-formation class (hyphenated compound, multiword phrase, or single word) with angle proportional to its share of the domain's term counts; categories beyond the six largest are grouped as Other; the donut centre annotates the domain's term count.",
-    "label": "fig:domain_patterns_grid",
-    "section": null,
     "generated_by": null,
     "metadata": null
   },
@@ -79,27 +23,19 @@
     "generated_by": null,
     "metadata": null
   },
-  "fig:power_labor_ambiguities": {
-    "filename": "power_and_labor_ambiguities.png",
-    "caption": "Two-panel semantic-entropy analysis of the fifteen highest-entropy Power & Labor terms over the headline PubMed abstract layer (about nineteen hundred abstracts); entropy computed by TF-IDF vectorization of each term's usage contexts followed by k-means sense clustering. Left: per-term entropy bars sorted descending, annotated with entropy and context counts; dashed line marks the panel median. Right: corpus frequency versus entropy scatter, point area proportional to context count, color repeating the entropy scale.",
-    "label": "fig:power_labor_ambiguities",
-    "section": null,
+  "fig:discourse_comparison": {
+    "filename": "discourse_comparison.png",
+    "caption": "Grouped bars of corpus-level discourse frequencies comparing the headline PubMed abstract layer (solid bars, discourse pass over its full analyzed sample) with the PMC full-text parallel layer (hatched bars, discourse pass over its deterministic 20% text sample; per-layer analyzed-text counts are given in the legend). Three panels, one per shared discourse dimension: discourse patterns (anthropomorphic framing, economic metaphors, hierarchical framing, scale ambiguity), rhetorical strategies (analogy, anecdotal, authority, generalization), and persuasive techniques (authoritative citations, metaphorical language, quantitative emphasis, rhetorical questions). Panels whose plotted maximum spans at least two orders of magnitude above their smallest positive frequency use a symlog y-axis (linear below one occurrence) so both layers remain legible. Between-layer differences are descriptive of the two corpora and sampling fractions and are not significance-tested in this figure.",
+    "label": "fig:discourse_comparison",
+    "section": "supplemental_results",
     "generated_by": null,
     "metadata": null
   },
-  "fig:power_labor_frequencies": {
-    "filename": "power_and_labor_term_frequencies.png",
-    "caption": "Bar chart of the fifteen most frequent Power & Labor terms by corpus frequency over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Bar height encodes frequency, annotated at the bar tip; bars ordered by descending frequency, with YlOrRd shading tracking rank order only.",
-    "label": "fig:power_labor_frequencies",
-    "section": null,
-    "generated_by": null,
-    "metadata": null
-  },
-  "fig:statistical_analysis": {
-    "filename": "statistical_analysis.png",
-    "caption": "Three-panel inferential summary of per-term semantic entropy over the six Ento-Linguistic domains in the headline PubMed abstract layer (about nineteen hundred abstracts). Panel (a): per-domain mean entropy bars with 95% confidence-interval whiskers (Student-t, from per-domain n and SD) and per-domain term counts annotated. Panel (b): diverging bars of pairwise Cohen's d effect sizes, colored by Benjamini-Hochberg significance (asterisks mark significant comparisons). Panel (c): omnibus one-way ANOVA summary text (F, p, eta-squared, correction metadata). Effect sizes and significance describe between-domain entropy differences in this corpus.",
-    "label": "fig:statistical_analysis",
-    "section": "experimental_results",
+  "fig:concept_map": {
+    "filename": "concept_map.png",
+    "caption": "Concept map of the Ento-Linguistic domains, built by clustering the domain-assigned terminology of the headline PubMed abstract layer (about nineteen hundred abstracts). Each node is a concept cluster; node size is proportional to its term count (annotated below the label), node color encodes the concept's primary domain (legend at right), and edge width is proportional to relationship strength, with numeric weights at edge midpoints. Multi-domain hub concepts bridge the domain clusters.",
+    "label": "fig:concept_map",
+    "section": "introduction",
     "generated_by": null,
     "metadata": null
   },
@@ -111,11 +47,75 @@
     "generated_by": null,
     "metadata": null
   },
+  "fig:domain_comparison": {
+    "filename": "domain_comparison.png",
+    "caption": "Six-panel comparison of terminology characteristics across the six Ento-Linguistic domains, computed from the domain-assigned terminology of the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Bar charts with annotated values show: distinct-term count per domain, mean extraction confidence, total corpus frequency, mean semantic entropy in bits, count of bridging terms (assigned to more than one domain), and mean CACE aggregate score (sampled per domain). Bar colors distinguish domains, not magnitudes; higher mean entropy indicates usage contexts spanning more sense clusters (an association, not a causal claim).",
+    "label": "fig:domain_comparison",
+    "section": "experimental_results",
+    "generated_by": null,
+    "metadata": null
+  },
+  "fig:domain_overlap": {
+    "filename": "domain_overlap_heatmap.png",
+    "caption": "Symmetric heatmap of Szymkiewicz--Simpson overlap coefficients between each pair of the six Ento-Linguistic domains, computed from term--domain assignments of the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Each cell is the count of terms assigned to both domains divided by the smaller domain's term count; the diagonal is one hundred percent by construction; darker cells (YlOrRd colormap) indicate higher shared terminology, and zero cells are observed zeros of the current corpus.",
+    "label": "fig:domain_overlap",
+    "section": "experimental_results",
+    "generated_by": null,
+    "metadata": null
+  },
+  "fig:anthropomorphic": {
+    "filename": "anthropomorphic_framing.png",
+    "caption": "Two-panel inventory of the curated anthropomorphic vocabulary used by the framing analysis over the headline PubMed abstract layer (about nineteen hundred abstracts). Left: bar chart of the number of curated marker terms per category (Hierarchical Terms, Economic Metaphors, Kinship Language, Identity Labels, Agency Attribution), counts annotated and the category total shown. Right: table of up to five example terms per category. Counts are vocabulary sizes, not corpus frequencies; per-domain anthropomorphic proportions derived from these vocabularies are reported separately.",
+    "label": "fig:anthropomorphic",
+    "section": "discussion",
+    "generated_by": null,
+    "metadata": null
+  },
+  "fig:concept_hierarchy": {
+    "filename": "concept_hierarchy.png",
+    "caption": "Two-panel centrality analysis of the Ento-Linguistic concept map over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Concepts are clusters of domain-assigned terms; centrality is a concept's count of direct links in the map. Left: concepts ranked by centrality, colored green for core (above the map-wide mean) and red for peripheral (at or below). Right: centrality versus associated-term count, point area proportional to centrality, top-ten concepts labelled. The ranking spans all six domains.",
+    "label": "fig:concept_hierarchy",
+    "section": "discussion",
+    "generated_by": null,
+    "metadata": null
+  },
   "fig:unit_individuality_patterns": {
     "filename": "unit_of_individuality_patterns.png",
     "caption": "Two-panel terminology analysis of the Unit of Individuality domain over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Left: pie chart of term-formation patterns (part-of-speech structure), percentages annotated. Right: bar chart of the number of domain terms matching keyword groups for five biological scales (Colony, Sub-colony, Individual, Genomic, Emergent), counts annotated; counts are floored at one for display. The distribution across scales grounds the scale ambiguity discussed in the manuscript.",
     "label": "fig:unit_individuality_patterns",
     "section": "experimental_results",
+    "generated_by": null,
+    "metadata": null
+  },
+  "fig:power_labor_frequencies": {
+    "filename": "power_and_labor_term_frequencies.png",
+    "caption": "Bar chart of the fifteen most frequent Power & Labor terms by corpus frequency over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Bar height encodes frequency, annotated at the bar tip; bars ordered by descending frequency, with YlOrRd shading tracking rank order only.",
+    "label": "fig:power_labor_frequencies",
+    "section": null,
+    "generated_by": null,
+    "metadata": null
+  },
+  "fig:power_labor_ambiguities": {
+    "filename": "power_and_labor_ambiguities.png",
+    "caption": "Two-panel semantic-entropy analysis of the fifteen highest-entropy Power & Labor terms over the headline PubMed abstract layer (about nineteen hundred abstracts); entropy computed by TF-IDF vectorization of each term's usage contexts followed by k-means sense clustering. Left: per-term entropy bars sorted descending, annotated with entropy and context counts; dashed line marks the panel median. Right: corpus frequency versus entropy scatter, point area proportional to context count, color repeating the entropy scale.",
+    "label": "fig:power_labor_ambiguities",
+    "section": null,
+    "generated_by": null,
+    "metadata": null
+  },
+  "fig:domain_overview_grid": {
+    "filename": "domain_overview_grid.png",
+    "caption": "Six-panel grid (one panel per Ento-Linguistic domain) of the ten highest-frequency terms by corpus frequency over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Bar length encodes corpus frequency (annotated at the bar tip); panel titles give each domain's total term count; bar color encodes per-term semantic entropy in bits on a shared YlOrRd scale with a shared color bar; darker bars indicate terms whose usage contexts span more sense clusters.",
+    "label": "fig:domain_overview_grid",
+    "section": null,
+    "generated_by": null,
+    "metadata": null
+  },
+  "fig:domain_patterns_grid": {
+    "filename": "domain_patterns_grid.png",
+    "caption": "Six-panel grid of donut charts showing the word-formation composition of each Ento-Linguistic domain's vocabulary over the headline PubMed abstract layer (7,608 open-access PubMed abstracts). Each slice is a word-formation class (hyphenated compound, multiword phrase, or single word) with angle proportional to its share of the domain's term counts; categories beyond the six largest are grouped as Other; the donut centre annotates the domain's term count.",
+    "label": "fig:domain_patterns_grid",
+    "section": null,
     "generated_by": null,
     "metadata": null
   }
