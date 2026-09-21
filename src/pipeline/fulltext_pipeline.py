@@ -42,6 +42,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from analysis.term_extraction import TerminologyExtractor
 from analysis.text_analysis import LinguisticFeatureExtractor, TextProcessor
+from core.parallel import map_ordered
 from data.pmc_fulltext import load_fulltexts
 from pipeline.statistics_pipeline import build_statistical_analysis
 
@@ -159,6 +160,82 @@ def _framing_token_domains(
     return token_domains, dict(sorted(tallies.items()))
 
 
+# --- Per-process worker state for the framing-analysis pool tasks ----------
+#
+# ``map_ordered`` spawns worker processes that re-import this module, so the
+# analysis singletons (``TextProcessor``, ``LinguisticFeatureExtractor``) and
+# the pass-2 domain vocabulary must be (re)built inside each worker.  The
+# pool initializer below seeds them once per worker; the task functions read
+# the singletons.  On the serial path (< 64 items, or pool failure) the tasks
+# run in the parent, which ``add_framing_analysis`` seeds before dispatching.
+
+_FRAMING_PROCESSOR: Optional[TextProcessor] = None
+_FRAMING_FEATURE_EXTRACTOR: Optional[LinguisticFeatureExtractor] = None
+_FRAMING_TOKEN_DOMAINS: Optional[Dict[str, List[str]]] = None
+
+
+def _framing_worker_init(
+    token_domains: Optional[Dict[str, List[str]]] = None,
+) -> None:
+    """Build this process's framing-analysis singletons (pool initializer)."""
+    global _FRAMING_PROCESSOR, _FRAMING_FEATURE_EXTRACTOR, _FRAMING_TOKEN_DOMAINS
+    if _FRAMING_PROCESSOR is None:
+        _FRAMING_PROCESSOR = TextProcessor()
+    if _FRAMING_FEATURE_EXTRACTOR is None:
+        _FRAMING_FEATURE_EXTRACTOR = LinguisticFeatureExtractor()
+    if token_domains is not None:
+        _FRAMING_TOKEN_DOMAINS = token_domains
+
+
+def _framing_count_tokens_task(text: str) -> Counter:
+    """Pass-1 worker task: token ``Counter`` for one document.
+
+    Serial equivalent: ``counts.update(process_text(text, lemmatize=False))``
+    with the parent merging each per-record ``Counter`` in record order.
+    """
+    return Counter(_FRAMING_PROCESSOR.process_text(text, lemmatize=False))
+
+
+def _framing_contexts_task(text: str) -> Tuple[Counter, Counter, int, int]:
+    """Pass-2 worker task: framing scan over one document.
+
+    Serial equivalent of the per-record loop in ``add_framing_analysis``
+    pass 2 (same ``process_text(text, lemmatize=False)`` token stream, same
+    ``FRAMING_CONTEXT_WINDOW`` windows, same
+    ``extract_framing_features(context)["anthropomorphic_terms"] > 0`` test).
+    Returns ``(per-domain context counts, per-domain framed counts,
+    overall contexts, overall framed)``; the parent sums the integers per
+    key in record order.
+    """
+    tokens = _FRAMING_PROCESSOR.process_text(text, lemmatize=False)
+    n_tokens = len(tokens)
+    domain_contexts: Counter = Counter()
+    domain_framed: Counter = Counter()
+    overall_contexts = 0
+    overall_framed = 0
+    for position, token in enumerate(tokens):
+        domains = _FRAMING_TOKEN_DOMAINS.get(token)
+        if not domains:
+            continue
+        start = max(0, position - FRAMING_CONTEXT_WINDOW)
+        end = min(n_tokens, position + FRAMING_CONTEXT_WINDOW + 1)
+        context = " ".join(tokens[start:end])
+        is_framed = (
+            _FRAMING_FEATURE_EXTRACTOR.extract_framing_features(context)[
+                "anthropomorphic_terms"
+            ]
+            > 0
+        )
+        for domain in domains:
+            domain_contexts[domain] += 1
+            if is_framed:
+                domain_framed[domain] += 1
+        overall_contexts += 1
+        if is_framed:
+            overall_framed += 1
+    return domain_contexts, domain_framed, overall_contexts, overall_framed
+
+
 def add_framing_analysis(
     artifact: Dict[str, Any],
     fulltexts: List[Dict[str, Any]],
@@ -213,14 +290,21 @@ def add_framing_analysis(
         raise ValueError("add_framing_analysis requires a non-empty full-text corpus")
 
     min_term_frequency = int(artifact.get("min_term_frequency") or 20)
-    processor = TextProcessor()
+    # Seed this process's singletons: the classifier shares the same
+    # processor instance the serial implementation used, and the serial
+    # path (< 64 records, or pool failure) runs the worker tasks here.
+    _framing_worker_init()
+    processor = _FRAMING_PROCESSOR
     classifier = TerminologyExtractor(text_processor=processor)
 
     # Pass 1 — global token counts over the exact stream the extractor
     # counts, so the reconstructed term set is the artifact's own.
+    texts = [_document_text(record) for record in fulltexts]
     counts: Counter = Counter()
-    for record in fulltexts:
-        counts.update(processor.process_text(_document_text(record), lemmatize=False))
+    for record_counts in map_ordered(
+        _framing_count_tokens_task, texts, initializer=_framing_worker_init
+    ):
+        counts.update(record_counts)
 
     token_domains, tallies = _framing_token_domains(
         counts, classifier, min_term_frequency
@@ -235,34 +319,27 @@ def add_framing_analysis(
 
     # Pass 2 — scan every domain-term occurrence context for framing
     # features via the public LinguisticFeatureExtractor API.
-    feature_extractor = LinguisticFeatureExtractor()
-    domain_contexts: Dict[str, int] = {}
-    domain_framed: Dict[str, int] = {}
+    _framing_worker_init(token_domains)
+    domain_contexts: Counter = Counter()
+    domain_framed: Counter = Counter()
     overall_contexts = 0
     overall_framed = 0
-    for record in fulltexts:
-        tokens = processor.process_text(_document_text(record), lemmatize=False)
-        n_tokens = len(tokens)
-        for position, token in enumerate(tokens):
-            domains = token_domains.get(token)
-            if not domains:
-                continue
-            start = max(0, position - FRAMING_CONTEXT_WINDOW)
-            end = min(n_tokens, position + FRAMING_CONTEXT_WINDOW + 1)
-            context = " ".join(tokens[start:end])
-            is_framed = (
-                feature_extractor.extract_framing_features(context)[
-                    "anthropomorphic_terms"
-                ]
-                > 0
-            )
-            for domain in domains:
-                domain_contexts[domain] = domain_contexts.get(domain, 0) + 1
-                if is_framed:
-                    domain_framed[domain] = domain_framed.get(domain, 0) + 1
-            overall_contexts += 1
-            if is_framed:
-                overall_framed += 1
+
+    for (
+        part_contexts,
+        part_framed,
+        part_overall_contexts,
+        part_overall_framed,
+    ) in map_ordered(
+        _framing_contexts_task,
+        texts,
+        initializer=_framing_worker_init,
+        initargs=(token_domains,),
+    ):
+        domain_contexts.update(part_contexts)
+        domain_framed.update(part_framed)
+        overall_contexts += part_overall_contexts
+        overall_framed += part_overall_framed
 
     framing: Dict[str, Any] = {}
     for domain in sorted(domain_contexts):

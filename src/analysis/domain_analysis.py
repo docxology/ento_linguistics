@@ -10,12 +10,13 @@ from __future__ import annotations
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 
 from .term_extraction import Term, filter_matching_sentences
 from .text_analysis import LinguisticFeatureExtractor, TextProcessor
+from core.parallel import map_ordered
 
 __all__ = [
     "DomainAnalysis",
@@ -24,6 +25,27 @@ __all__ = [
 
 if TYPE_CHECKING:  # pragma: no cover
     from .semantic_entropy import SemanticEntropyResult
+
+
+def _entropy_task(item: Tuple[str, List[List[str]]]) -> "SemanticEntropyResult":
+    """Compute one term's semantic entropy from its candidate sentences.
+
+    Module-level so the process pool can pickle it (the in-method closure
+    it replaced was not).  Regex context extraction over the term's
+    candidate sentences — the same ``filter_matching_sentences`` +
+    ``calculate_semantic_entropy`` path the serial loop used — followed
+    by the canonical TF-IDF → KMeans → Shannon-entropy computation.
+    """
+    from .semantic_entropy import calculate_semantic_entropy
+
+    key, term_candidates = item
+    contexts: List[str] = []
+    for sentences in term_candidates:
+        for sentence in filter_matching_sentences(sentences, key):
+            clean_context = sentence.strip()
+            if len(clean_context.split()) > 3:
+                contexts.append(clean_context)
+    return calculate_semantic_entropy(term=key, contexts=contexts)
 
 # Function words excluded from lexical keyword-support computation so that
 # stop-word overlap cannot inflate support ratios.
@@ -878,6 +900,15 @@ class DomainAnalyzer:
         build on this method so there is exactly one per-term entropy
         implementation.
 
+        Sentence candidates are pre-pruned with an alphanumeric part-token
+        index: a sentence can whole-word match a term only if every
+        alphanumeric part of the term occurs in the sentence, so only
+        sentences passing that necessary condition are regex-scanned.  The
+        regex still decides — pruning can only over-select, never drop a
+        match.  Per-term work is independent and runs through
+        ``core.parallel.map_ordered`` (ordered merge) when the term count
+        warrants a pool, so results equal the serial computation exactly.
+
         Args:
             terms: Terms to analyze
             texts: Source texts for context
@@ -898,21 +929,49 @@ class DomainAnalyzer:
         # Tokenize every text once; reuse the sentence lists for all terms
         tokenized_texts = [sent_tokenize(text) for text in texts]
 
+        # ── Inverted part-token index (pruning only; regex decides) ──
+        part_re = re.compile(r"[a-z0-9]+")
+        term_keys: List[str] = [term.text.lower() for term in terms]
+        term_parts: Dict[str, frozenset] = {
+            key: frozenset(part_re.findall(key)) for key in term_keys
+        }
+        part_to_keys: Dict[str, List[str]] = defaultdict(list)
+        for key, parts in term_parts.items():
+            for part in sorted(parts):
+                part_to_keys[part].append(key)
+
+        # Candidate sentences per term: every alphanumeric part of the
+        # term present in the sentence.  Collected in (text, sentence)
+        # order so the regex scan below sees the same sentence sequence
+        # the naive per-text loop would.
+        candidates: Dict[str, List[List[str]]] = {
+            key: [] for key in dict.fromkeys(term_keys)
+        }
+        for sentences in tokenized_texts:
+            matched_in_text: Dict[str, List[str]] = defaultdict(list)
+            for sentence in sentences:
+                sentence_parts = set(part_re.findall(sentence.lower()))
+                hits: Dict[str, int] = {}
+                for part in sentence_parts:
+                    keys = part_to_keys.get(part)
+                    if keys:
+                        for key in keys:
+                            hits[key] = hits.get(key, 0) + 1
+                for key, count in hits.items():
+                    if count == len(term_parts[key]):
+                        matched_in_text[key].append(sentence)
+            for key, matched in matched_in_text.items():
+                candidates[key].append(matched)
+
+        # ── Per-term work (regex context extraction + entropy) ─────────
+        work_items: List[Tuple[str, List[List[str]]]] = [
+            (term.text.lower(), candidates[term.text.lower()]) for term in terms
+        ]
+        computed = map_ordered(_entropy_task, work_items)
+
         results: Dict[str, "SemanticEntropyResult"] = {}
-        for term in terms:
-            term_text = term.text.lower()
-            contexts: List[str] = []
-
-            # Extract contexts where the term appears (whole-word match)
-            for sentences in tokenized_texts:
-                for sentence in filter_matching_sentences(sentences, term_text):
-                    clean_context = sentence.strip()
-                    if len(clean_context.split()) > 3:
-                        contexts.append(clean_context)
-
-            results[term_text] = calculate_semantic_entropy(
-                term=term_text, contexts=contexts
-            )
+        for term, result in zip(terms, computed):
+            results[term.text.lower()] = result
 
         return results
 

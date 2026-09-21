@@ -36,14 +36,24 @@ artifact's ``skipped`` list instead of being fabricated as 0.0.
 from __future__ import annotations
 
 from itertools import combinations
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 import numpy as np
 
 from analysis.cace_scoring import CACEScore, evaluate_term_cace
-from analysis.discourse_analysis import DiscourseAnalyzer
+from analysis.discourse_analysis import (
+    DiscourseAnalyzer,
+    analyze_persuasive_techniques,
+    analyze_rhetorical_strategies,
+    identify_patterns_in_text,
+)
 from analysis.domain_analysis import DomainAnalyzer
+from analysis.persuasive_analysis import (
+    _calculate_technique_impact,
+    _rate_technique_effectiveness,
+)
 from analysis.text_analysis import LinguisticFeatureExtractor, TextProcessor
+from core.parallel import map_ordered
 from analysis.statistics import (
     anova_test,
     benjamini_hochberg_correction,
@@ -193,8 +203,6 @@ def _format_domain_descriptives(
     domain: str,
     entropy_values: List[float],
     domain_terms: List[Term],
-    analyzer: DomainAnalyzer,
-    texts: List[str],
     cace_scores: Optional[List[CACEScore]] = None,
 ) -> Dict[str, Any]:
     """Build one domain's entry of the ``descriptives`` section.
@@ -204,8 +212,6 @@ def _format_domain_descriptives(
         entropy_values: Valid per-term entropies for the domain (from
             ``iter_domain_term_entropies``).
         domain_terms: All terms assigned to the domain.
-        analyzer: Shared ``DomainAnalyzer`` (used for ambiguity metrics).
-        texts: Source texts for context.
         cace_scores: Precomputed per-term CACE scores for the domain's
             bounded sample (from :func:`_domain_cace_scores`).  Computed
             here when omitted.
@@ -228,10 +234,15 @@ def _format_domain_descriptives(
         # Wave-1 contract: the domain ambiguity score is the mean of valid
         # per-term entropies (real values; omitted entirely when no term in
         # the domain had enough contexts).
-        metrics = analyzer.quantify_ambiguity_metrics(domain_terms, texts)
-        ambiguity = metrics.get("domain_metrics", {}).get("average_ambiguity_score")
-        if ambiguity is not None:
-            entry["ambiguity_mean"] = float(ambiguity)
+        # ``entropy_values`` IS that mean's input list (from
+        # ``iter_domain_term_entropies``, same terms, same order, same
+        # ``status == "ok"`` filter), so
+        # ``quantify_ambiguity_metrics(domain_terms, texts)`` would return
+        # ``average_ambiguity_score == float(np.mean(entropy_values))`` —
+        # recomputing it from scratch (a full-corpus re-tokenization plus a
+        # per-term regex/KMeans pass per domain) cannot change the value.
+        # Reuse the already-computed mean instead.
+        entry["ambiguity_mean"] = entry["entropy_mean"]
 
     scores = (
         cace_scores
@@ -352,6 +363,88 @@ def _domain_term_counts(terms: List[Term]) -> Dict[str, Dict[str, Any]]:
     return dict(sorted(counts.items()))
 
 
+# ---------------------------------------------------------------------------
+# Process-pool per-text tasks (framing).  ``TextProcessor`` holds NLTK
+# objects and must never be pickled through a task, so each worker builds
+# its own singletons via the pool initializer; the lazy guards also cover
+# the serial fallback path, which runs tasks in the parent process.
+# ---------------------------------------------------------------------------
+_WORKER_TOKEN_DOMAINS: Optional[Dict[str, List[str]]] = None
+_WORKER_PROCESSOR: Optional[TextProcessor] = None
+_WORKER_FEATURE_EXTRACTOR: Optional[LinguisticFeatureExtractor] = None
+
+
+def _init_framing_workers(
+    token_domains: Optional[Dict[str, List[str]]] = None,
+) -> None:
+    """Initialize per-worker framing state (pool initializer)."""
+    global _WORKER_TOKEN_DOMAINS, _WORKER_PROCESSOR, _WORKER_FEATURE_EXTRACTOR
+    if token_domains is not None:
+        _WORKER_TOKEN_DOMAINS = token_domains
+    if _WORKER_PROCESSOR is None:
+        _WORKER_PROCESSOR = TextProcessor()
+    if _WORKER_FEATURE_EXTRACTOR is None:
+        _WORKER_FEATURE_EXTRACTOR = LinguisticFeatureExtractor()
+
+
+def _framing_text_task(text: str) -> Tuple[Dict[str, int], Dict[str, int], Dict[str, int], Dict[str, int], int, int]:
+    """Per-text anthropomorphic-framing task for :func:`map_ordered`.
+
+    Performs exactly the per-text computation of the serial
+    ``_framing_section`` loop — the same ``process_text(text,
+    lemmatize=False)`` stream, ±``FRAMING_CONTEXT_WINDOW`` context windows
+    and ``extract_framing_features`` cross-check — and returns only
+    per-text integer counters, which the parent merges
+    order-insensitively.  Invalid texts contribute nothing (the serial
+    loop skipped them).
+    """
+    if not isinstance(text, str) or not text.strip():
+        return {}, {}, {}, {}, 0, 0
+    if _WORKER_PROCESSOR is None or _WORKER_FEATURE_EXTRACTOR is None:
+        _init_framing_workers()
+    processor = _WORKER_PROCESSOR
+    feature_extractor = _WORKER_FEATURE_EXTRACTOR
+    token_domains = _WORKER_TOKEN_DOMAINS
+    tokens = processor.process_text(text, lemmatize=False)
+    n_tokens = len(tokens)
+    domain_contexts: Dict[str, int] = {}
+    domain_framed: Dict[str, int] = {}
+    term_contexts: Dict[str, int] = {}
+    term_framed: Dict[str, int] = {}
+    overall_contexts = 0
+    overall_framed = 0
+    for position, token in enumerate(tokens):
+        domains = token_domains.get(token)
+        if not domains:
+            continue
+        start = max(0, position - FRAMING_CONTEXT_WINDOW)
+        end = min(n_tokens, position + FRAMING_CONTEXT_WINDOW + 1)
+        context = " ".join(tokens[start:end])
+        is_framed = bool(
+            feature_extractor.extract_framing_features(context)[
+                "anthropomorphic_terms"
+            ]
+        )
+        for domain in domains:
+            domain_contexts[domain] = domain_contexts.get(domain, 0) + 1
+            if is_framed:
+                domain_framed[domain] = domain_framed.get(domain, 0) + 1
+        term_contexts[token] = term_contexts.get(token, 0) + 1
+        if is_framed:
+            term_framed[token] = term_framed.get(token, 0) + 1
+        overall_contexts += 1
+        if is_framed:
+            overall_framed += 1
+    return (
+        domain_contexts,
+        domain_framed,
+        term_contexts,
+        term_framed,
+        overall_contexts,
+        overall_framed,
+    )
+
+
 def _framing_section(
     terms: List[Term], texts: List[str]
 ) -> "Tuple[Dict[str, Any], Dict[str, Any]]":
@@ -391,41 +484,42 @@ def _framing_section(
     if not token_domains or not texts:
         return {}, {}
 
-    processor = TextProcessor()
-    feature_extractor = LinguisticFeatureExtractor()
+    # Per-text framing computation runs in the process pool (serial under
+    # 64 texts) via an ordered map; the per-text task carries only the
+    # text, with the term->domain map installed as per-worker singleton
+    # state by the pool initializer.  All counters are integers, so the
+    # parent merge is order-insensitive.
+    _init_framing_workers(token_domains)
+    results = map_ordered(
+        _framing_text_task,
+        texts,
+        initializer=_init_framing_workers,
+        initargs=(token_domains,),
+    )
     domain_contexts: Dict[str, int] = {}
     domain_framed: Dict[str, int] = {}
     term_contexts: Dict[str, int] = {}
     term_framed: Dict[str, int] = {}
     overall_contexts = 0
     overall_framed = 0
-    for text in texts:
-        if not isinstance(text, str) or not text.strip():
-            continue
-        tokens = processor.process_text(text, lemmatize=False)
-        n_tokens = len(tokens)
-        for position, token in enumerate(tokens):
-            domains = token_domains.get(token)
-            if not domains:
-                continue
-            start = max(0, position - FRAMING_CONTEXT_WINDOW)
-            end = min(n_tokens, position + FRAMING_CONTEXT_WINDOW + 1)
-            context = " ".join(tokens[start:end])
-            is_framed = bool(
-                feature_extractor.extract_framing_features(context)[
-                    "anthropomorphic_terms"
-                ]
-            )
-            for domain in domains:
-                domain_contexts[domain] = domain_contexts.get(domain, 0) + 1
-                if is_framed:
-                    domain_framed[domain] = domain_framed.get(domain, 0) + 1
-            term_contexts[token] = term_contexts.get(token, 0) + 1
-            if is_framed:
-                term_framed[token] = term_framed.get(token, 0) + 1
-            overall_contexts += 1
-            if is_framed:
-                overall_framed += 1
+    for (
+        text_domain_contexts,
+        text_domain_framed,
+        text_term_contexts,
+        text_term_framed,
+        text_overall_contexts,
+        text_overall_framed,
+    ) in results:
+        for domain, count in text_domain_contexts.items():
+            domain_contexts[domain] = domain_contexts.get(domain, 0) + count
+        for domain, count in text_domain_framed.items():
+            domain_framed[domain] = domain_framed.get(domain, 0) + count
+        for token, count in text_term_contexts.items():
+            term_contexts[token] = term_contexts.get(token, 0) + count
+        for token, count in text_term_framed.items():
+            term_framed[token] = term_framed.get(token, 0) + count
+        overall_contexts += text_overall_contexts
+        overall_framed += text_overall_framed
 
     framing: Dict[str, Any] = {}
     for domain in sorted(domain_contexts):
@@ -490,6 +584,43 @@ def _discourse_sample(texts: List[str]) -> "Tuple[List[str], int, float]":
     return eligible, n_excluded, 1.0
 
 
+# ---------------------------------------------------------------------------
+# Process-pool per-text task (discourse).  ``DiscourseAnalyzer`` holds
+# NLTK-backed ``TextProcessor`` state and must never be pickled through a
+# task, so each worker builds its own analyzer via the pool initializer
+# (the lazy guard also covers the serial fallback path).
+# ---------------------------------------------------------------------------
+_WORKER_DISCOURSE_ANALYZER: Optional[DiscourseAnalyzer] = None
+
+
+def _init_discourse_worker() -> None:
+    """Pool initializer: build one DiscourseAnalyzer per worker process."""
+    global _WORKER_DISCOURSE_ANALYZER
+    if _WORKER_DISCOURSE_ANALYZER is None:
+        _WORKER_DISCOURSE_ANALYZER = DiscourseAnalyzer()
+
+
+def _discourse_text_task(text: str) -> Dict[str, Any]:
+    """Per-text discourse-analysis task for :func:`map_ordered`.
+
+    Runs the same single-text passes the serial ``_discourse_section``
+    performs per sampled text (each analyzer invoked on a one-text list):
+    discourse-pattern identification, rhetorical strategies,
+    argumentative-structure extraction and persuasive-technique counting.
+    The parent merges the per-text contributions in sample order.
+    """
+    if _WORKER_DISCOURSE_ANALYZER is None:
+        _init_discourse_worker()
+    return {
+        "patterns": identify_patterns_in_text(text),
+        "rhetorical": analyze_rhetorical_strategies([text]),
+        "structures": _WORKER_DISCOURSE_ANALYZER.analyze_argumentative_structures(
+            [text]
+        ),
+        "persuasive": analyze_persuasive_techniques([text]),
+    }
+
+
 def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
     """Compute the corpus-level ``discourse`` section.
 
@@ -527,32 +658,67 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
     if not analysis_texts:
         return None
 
-    analyzer = DiscourseAnalyzer()
+    # Per-text discourse computation runs in the process pool (serial
+    # under 64 sampled texts) via an ordered map; each task returns one
+    # text's contribution to all four analyses and the parent merges in
+    # sample order (examples lists and first-seen claims are
+    # order-sensitive; integer counters are not).
+    _init_discourse_worker()
+    results = map_ordered(
+        _discourse_text_task,
+        analysis_texts,
+        initializer=_init_discourse_worker,
+    )
 
-    # Patterns — per-pattern instance counts over the corpus.
+    # Patterns — per-pattern instance counts, examples and domains merged
+    # in sample order (emitted keyed by sorted pattern type, as before).
+    pattern_examples: Dict[str, List[str]] = {}
+    pattern_domains: Dict[str, Set[str]] = {}
+    pattern_functions: Dict[str, str] = {}
+    for result in results:
+        for pattern_type, pattern_data in result["patterns"].items():
+            if pattern_type not in pattern_examples:
+                pattern_examples[pattern_type] = []
+                pattern_domains[pattern_type] = set()
+                pattern_functions[pattern_type] = pattern_data.get("function", "")
+            pattern_examples[pattern_type].append(pattern_data.get("example", ""))
+            if "domain" in pattern_data:
+                pattern_domains[pattern_type].add(pattern_data["domain"])
+
     patterns: Dict[str, Any] = {}
-    for pattern_type, pattern in sorted(
-        analyzer.analyze_discourse_patterns(analysis_texts).items()
-    ):
+    for pattern_type in sorted(pattern_examples):
         patterns[pattern_type] = {
-            "frequency": int(pattern.frequency),
-            "rhetorical_function": pattern.rhetorical_function,
-            "domains": sorted(pattern.domains),
-            "examples": list(pattern.examples[:DISCOURSE_EXAMPLE_CAP]),
+            "frequency": len(pattern_examples[pattern_type]),
+            "rhetorical_function": pattern_functions[pattern_type],
+            "domains": sorted(pattern_domains[pattern_type]),
+            "examples": list(pattern_examples[pattern_type][:DISCOURSE_EXAMPLE_CAP]),
         }
 
-    # Rhetorical strategies — frequencies and text coverage.
-    rhetorical: Dict[str, Any] = {}
-    for strategy, data in sorted(
-        analyzer.analyze_rhetorical_strategies(analysis_texts).items()
-    ):
-        rhetorical[strategy] = {
-            "frequency": int(data.get("frequency", 0)),
-            "text_count": int(data.get("text_count", 0)),
-        }
+    # Rhetorical strategies — frequencies and text coverage (integers).
+    rhetorical_freq: Dict[str, int] = {}
+    rhetorical_text_count: Dict[str, int] = {}
+    for result in results:
+        for strategy, data in result["rhetorical"].items():
+            rhetorical_freq[strategy] = rhetorical_freq.get(strategy, 0) + int(
+                data.get("frequency", 0)
+            )
+            rhetorical_text_count[strategy] = rhetorical_text_count.get(
+                strategy, 0
+            ) + int(data.get("text_count", 0))
 
-    # Argumentative structures — aggregate statistics.
-    structures = analyzer.analyze_argumentative_structures(analysis_texts)
+    rhetorical: Dict[str, Any] = {
+        strategy: {
+            "frequency": rhetorical_freq[strategy],
+            "text_count": rhetorical_text_count[strategy],
+        }
+        for strategy in sorted(rhetorical_freq)
+    }
+
+    # Argumentative structures — per-text structures concatenated in
+    # sample order (claim order is order-sensitive).
+    structures = []
+    for result in results:
+        structures.extend(result["structures"])
     marker_counts: Dict[str, int] = {}
     n_with_evidence = 0
     n_with_warrant = 0
@@ -589,13 +755,38 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
         ][:5],
     }
 
-    # Persuasive techniques — effectiveness metrics verbatim.
-    persuasive: Dict[str, Any] = {
-        technique: dict(data)
-        for technique, data in sorted(
-            analyzer.measure_persuasive_effectiveness(analysis_texts).items()
-        )
-    }
+    # Persuasive techniques — counts and example lists merged in sample
+    # order, then the same effectiveness computation as
+    # ``measure_persuasive_effectiveness`` applied to the merged totals
+    # (the function's own expressions, verbatim).
+    technique_counts: Dict[str, int] = {}
+    technique_examples: Dict[str, List[str]] = {}
+    for result in results:
+        for technique, data in result["persuasive"].items():
+            if technique not in technique_counts:
+                technique_counts[technique] = 0
+                technique_examples[technique] = []
+            technique_counts[technique] += int(data.get("count", 0))
+            technique_examples[technique].extend(data.get("examples", []))
+
+    persuasive: Dict[str, Any] = {}
+    for technique in sorted(technique_counts):
+        merged_data = {
+            "count": technique_counts[technique],
+            "examples": technique_examples[technique],
+        }
+        usage_frequency = merged_data.get("count", 0)
+        context_relevance = len(merged_data.get("examples", []))
+        persuasive[technique] = {
+            "usage_frequency": usage_frequency,
+            "context_relevance": context_relevance,
+            "heuristic_impact_index": _calculate_technique_impact(merged_data),
+            "heuristic_effectiveness_band": _rate_technique_effectiveness(
+                merged_data
+            ),
+            "success_examples": merged_data.get("examples", [])[:3],
+            "usage_distribution": merged_data.get("distribution", {}),
+        }
 
     return {
         "n_texts": len(texts),
@@ -735,7 +926,7 @@ def build_statistical_analysis(
         values = domain_entropies.get(domain, [])
         domain_cace = _domain_cace_scores(domain_terms)
         descriptives[domain] = _format_domain_descriptives(
-            domain, values, domain_terms, analyzer, texts, cace_scores=domain_cace
+            domain, values, domain_terms, cace_scores=domain_cace
         )
         if domain_cace:
             cace[domain] = _format_domain_cace_entry(domain_cace)

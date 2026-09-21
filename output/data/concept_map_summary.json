@@ -2,8 +2,8 @@
   "n_concepts": 6,
   "n_relationships": 15,
   "network_nodes": 11623,
-  "network_edges": 1140,
-  "network_clustering": 0.0397,
+  "network_edges": 1176,
+  "network_clustering": 0.037,
   "network_avg_degree": 0.2,
   "concepts": {
     "biological_individuality": {

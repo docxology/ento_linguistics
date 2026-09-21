@@ -12,6 +12,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .text_analysis import TextProcessor
+from core.parallel import map_ordered
 
 __all__ = [
     "Term",
@@ -37,6 +38,39 @@ def filter_matching_sentences(sentences: List[str], term: str) -> List[str]:
     """
     pattern = re.compile(r"\b" + re.escape(term) + r"\b", re.IGNORECASE)
     return [sentence for sentence in sentences if pattern.search(sentence)]
+
+
+# Per-process tokenizer singleton for the pool-based tokenization task
+# below.  Set by the pool initializer; the lazy guard in the task also
+# covers the serial fallback path, which runs tasks in the parent.
+_WORKER_TEXT_PROCESSOR: Optional[TextProcessor] = None
+
+
+def _init_worker_text_processor() -> None:
+    """Pool initializer: build one TextProcessor per worker process."""
+    global _WORKER_TEXT_PROCESSOR
+    if _WORKER_TEXT_PROCESSOR is None:
+        _WORKER_TEXT_PROCESSOR = TextProcessor()
+
+
+def _tokenize_text_task(text: str) -> "Tuple[List[str], Counter]":
+    """Per-text tokenization task for :func:`map_ordered`.
+
+    Performs exactly the per-text computation of the serial
+    ``extract_terms`` loop — ``TextProcessor.process_text(text,
+    lemmatize=False)`` — returning the token list plus a local frequency
+    counter (integers merge order-insensitively in the parent).
+
+    Args:
+        text: One corpus text.
+
+    Returns:
+        ``(tokens, Counter(tokens))`` for this text.
+    """
+    if _WORKER_TEXT_PROCESSOR is None:
+        _init_worker_text_processor()
+    tokens = _WORKER_TEXT_PROCESSOR.process_text(text, lemmatize=False)
+    return tokens, Counter(tokens)
 
 
 @dataclass
@@ -315,22 +349,21 @@ class TerminologyExtractor:
         if not valid_texts:
             return {}
 
-        # Process all texts and build context mapping in single pass
+        # Tokenize all texts with the same per-text computation as the
+        # serial loop, via an ordered parallel map (serial under 64 texts).
+        # The parent merges in text order, so the aggregate is identical:
+        # ``all_tokens`` concatenation, ``term_counts`` integer merge and
+        # ``text_contexts`` built in text order.
+        tokenized = map_ordered(
+            _tokenize_text_task, texts, initializer=_init_worker_text_processor
+        )
         all_tokens = []
-        text_contexts = []
-        token_positions = defaultdict(list)  # token -> [(text_idx, pos) ...]
-
-        for text_idx, text in enumerate(texts):
-            tokens = self.text_processor.process_text(text, lemmatize=False)
+        text_contexts: List[Tuple[str, List[str]]] = []
+        term_counts: Counter = Counter()
+        for text, (tokens, local_counts) in zip(texts, tokenized):
             all_tokens.extend(tokens)
             text_contexts.append((text, tokens))
-
-            # Track positions for efficient context extraction
-            for pos, token in enumerate(tokens):
-                token_positions[token].append((text_idx, pos))
-
-        # Count term frequencies
-        term_counts = Counter(all_tokens)
+            term_counts.update(local_counts)
 
         # Extract candidate terms (filter by frequency first for efficiency)
         candidate_terms = {
@@ -338,6 +371,16 @@ class TerminologyExtractor:
             for token, count in term_counts.items()
             if count >= min_frequency and self._is_candidate_term(token)
         }
+
+        # Track candidate-token positions for efficient context extraction,
+        # in one parent-side pass in text order.  Non-candidate tokens are
+        # skipped: ``_extract_term_contexts_efficient`` only looks up
+        # candidate tokens, so their positions are never read.
+        token_positions: Dict[str, List[Tuple[int, int]]] = defaultdict(list)
+        for text_idx, (_text, tokens) in enumerate(text_contexts):
+            for pos, token in enumerate(tokens):
+                if token in candidate_terms:
+                    token_positions[token].append((text_idx, pos))
 
         # Create Term objects for candidates
         for candidate in candidate_terms:
