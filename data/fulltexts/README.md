@@ -71,17 +71,17 @@ from data.pmc_fulltext import load_fulltexts
 records = load_fulltexts(Path("data/fulltexts"))
 ```
 
-Last harvest run: 0 new documents from 7198 candidates (0 failed batches skipped).
+Last harvest run: 4 new documents from 7204 candidates (0 failed batches skipped).
 
-## Coverage (7066 documents)
+## Coverage (7070 documents)
 
 - Publication years: 1873–2026
 - Distinct journals: 1093
-- Body text: 273,115,165 characters
+- Body text: 273,410,711 characters
 - License coverage:
 
-- `https://creativecommons.org/licenses/by/4.0/`: 5129 documents
-- `https://creativecommons.org/licenses/by-nc-nd/4.0/`: 626 documents
+- `https://creativecommons.org/licenses/by/4.0/`: 5130 documents
+- `https://creativecommons.org/licenses/by-nc-nd/4.0/`: 629 documents
 - `https://creativecommons.org/licenses/by-nc/4.0/`: 358 documents
 - `https://creativecommons.org/licenses/by/3.0/`: 227 documents
 - `https://creativecommons.org/licenses/by/2.0/`: 195 documents

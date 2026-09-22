@@ -1,0 +1,411 @@
+{
+  "entries": [
+    {
+      "contract_match": true,
+      "path": "output/AGENTS.md",
+      "sha256": "84ae2ea4c1b45ad4946226f25f60b0df745e52e8ddd0ae7a96187fd89397099f",
+      "size_bytes": 678,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/README.md",
+      "sha256": "1e83df0b35e96c8e32c7cedfcbed2b6d634f9d0e829093fb827c4fa4ec808844",
+      "size_bytes": 386,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/data/AGENTS.md",
+      "sha256": "3b114d63ad00559f1978ee1e7843474aab06e0b8eff7c2d18fb203d8a3acdc69",
+      "size_bytes": 799,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/data/README.md",
+      "sha256": "4d819b0f1f958a398534b1acbd3f1000e4d8ff69e19522180b80f4bcd8dccc62",
+      "size_bytes": 375,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/data/concept_map_summary.json",
+      "sha256": "04b39ce4e613bc98bf6a31128daa934346058a5cf79abf2177537a469b9a4607",
+      "size_bytes": 1491,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/data/corpus_statistics.json",
+      "sha256": "cf2a178516f76023a43ee3f9685afa591a55632951a2091d1c9546d86d950246",
+      "size_bytes": 994,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/data/domain_statistics.json",
+      "sha256": "e4100b9da0c41ea16b4b4774f60426174bbdd969dc6804ea50ebc063b42c604e",
+      "size_bytes": 9900,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/data/extracted_terms.json",
+      "sha256": "b2fc682b8862abcb345344fb3d4dc59f16a3f89be1a3d1d36acde8fe5810d7bc",
+      "size_bytes": 1657849,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/data/fulltext_analysis.json",
+      "sha256": "302568f470b839a71d0d02e9a02b684037f793b5561b8ed28f6f1ebc6fb140ec",
+      "size_bytes": 1708871,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/data/statistical_analysis.json",
+      "sha256": "d5cdaf18d76dcdaee740ebf5be19912e28d09a4c47246d2072c80aa33f95755f",
+      "size_bytes": 192495,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/AGENTS.md",
+      "sha256": "b8f1e014d8f2df3dd9b8f4697759494fb05edf8b04bd454e247055cf6beea27f",
+      "size_bytes": 1044,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/README.md",
+      "sha256": "2c608c30cebf665086ec38db7cddd1cf32e96b4e62f02b4dfa0a17f3c87c9e33",
+      "size_bytes": 618,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/anthropomorphic_framing.png",
+      "sha256": "bd24716cbc51a47966338a1753b3988d56b95c142334f5d4b2c7573fc992c9e6",
+      "size_bytes": 548358,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/concept_hierarchy.png",
+      "sha256": "d8452d47a52b1cf2dea77a780da8f4c3bba1dc822a79db0a1a3f75b384dd3d50",
+      "size_bytes": 366651,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/concept_map.png",
+      "sha256": "35a5a8370e3ee8257df073649cf9aa348cdce30aa4a1f666af559c003b376dcf",
+      "size_bytes": 656438,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/discourse_comparison.png",
+      "sha256": "029d4d3c215831172b02e25fb95f77ce06f056d625e9b4ee27cce35edea9fb3f",
+      "size_bytes": 740909,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/domain_comparison.png",
+      "sha256": "b598ff3971627eb6a913d1dc991ab25fafc8d273574dd011920277b6dbd99396",
+      "size_bytes": 1142706,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/domain_overlap_heatmap.png",
+      "sha256": "54e8ece7bee43fcda0b6b3a53826befe47c8f817c922c4434cc73d4d0f2c92fc",
+      "size_bytes": 410060,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/domain_overview_grid.png",
+      "sha256": "142e4b3de18120988a547c19ef1fc007ed0cdaf59d900ec1d17d42136938d067",
+      "size_bytes": 1009910,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/domain_patterns_grid.png",
+      "sha256": "ada77a7d61b3bc3ccd5109e2319f8b134a1f87b422ddb3d1965a895357aa687f",
+      "size_bytes": 719188,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/figure_registry.json",
+      "sha256": "05433c50b1bfc49778f0a898392749ec24124655fbd0c51e3631b953ef964cbd",
+      "size_bytes": 11312,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/fulltext_analysis.png",
+      "sha256": "ee77292bde879f8f870ed14bc95bc7fe64b8a6b683a8a9c160048cf1a5166841",
+      "size_bytes": 658968,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/layer_comparison.png",
+      "sha256": "bf33f63ff60028bab65aba04f4b8270402cf101ab4a3ad8fa785e2c6e8bc9a58",
+      "size_bytes": 533862,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/power_and_labor_ambiguities.png",
+      "sha256": "654c89a775d925f1cb42edd17714ccf02747d0711bd910bb0a2d7bd58301d737",
+      "size_bytes": 574184,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/power_and_labor_term_frequencies.png",
+      "sha256": "a74ce85264a9d3b929a20a3ed22abc5f9e0044b828e46a3eade978e7ccc3f469",
+      "size_bytes": 333638,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/statistical_analysis.png",
+      "sha256": "c09b2fa5430335ebc69c613d6c7f2a5da33af0d2038c217cf766496edd500290",
+      "size_bytes": 661971,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/terminology_network.png",
+      "sha256": "8c1ba8a2f3c08542e2c64fa0590a2d422ec15a2d78898e3f49fe9c8a0bef6a63",
+      "size_bytes": 874808,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/figures/unit_of_individuality_patterns.png",
+      "sha256": "11bf5ba1b9868f49a3bccc54c43fe5fdaa246dd29adfb163e7c5f2e7a9d9f369",
+      "size_bytes": 331901,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/AGENTS.md",
+      "sha256": "7bc04b4d00f1031523d87bae78055f2d9f75a37e76b0d6c49a95790f4986d3e6",
+      "size_bytes": 936,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/Ento_Linguistics_DAF_TCC_v1_04-15-2026.pdf",
+      "sha256": "51e7e62ef9146ca31b115d2ba15d32f44f36b9e64456bca20489e4a9312670c3",
+      "size_bytes": 5889924,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/README.md",
+      "sha256": "cbdffd888eeb89845f753af37fef75fc1476d9f2215ce1c117d7c04e7aadd5b6",
+      "size_bytes": 644,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/_title_page.tex",
+      "sha256": "787548af4900093eef8cea2d36ba26d498d559a5f54627eeb0ed94e6c5895b9f",
+      "size_bytes": 1218,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/ento_linguistics_combined.bbl",
+      "sha256": "96d445003892ed1bde75358ee43bb2338a8d9757c1f1eea0287ea0407c220d92",
+      "size_bytes": 11161,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/ento_linguistics_combined.blg",
+      "sha256": "a5a12e7da659d3c8e0f445f4224ce1e5f172ad0b588ec57d5fe0a6feb2733224",
+      "size_bytes": 934,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/ento_linguistics_combined.pdf",
+      "sha256": "7409ac5d49f7aa4510dcafacae773a3d3f6cf7049e2d3e5ef8af335ce6dc45fc",
+      "size_bytes": 7298463,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/ento_linguistics_combined.tex",
+      "sha256": "210f492105a19ee4a318a428b4d3a3e26b93e8f2690dbc77a14470c0dd6ac84a",
+      "size_bytes": 181837,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/pdf/temp_combined.md",
+      "sha256": "5aa893c72656b12ae96fdde7fc2899b51e45fe8c9c607be0ec46492f0a72e8fd",
+      "size_bytes": 144266,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/reports/AGENTS.md",
+      "sha256": "ca73873ef2b72e90791ae9486890e37415769cbaf99c7e26dc78a67915f0e5ce",
+      "size_bytes": 806,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/reports/README.md",
+      "sha256": "b1b431e78317b004552fec02e750d5d4c43059502836a458682083faf34f41d6",
+      "size_bytes": 514,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/reports/manuscript_composition.json",
+      "sha256": "3e8a3ddbea9543d67a707a9867694956f79091a78eabd1e11da91bc9d86ee37c",
+      "size_bytes": 4137,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/reports/telemetry.json",
+      "sha256": "36e19498374dadee85e10e836d623beb57d1c1716c2ec63594aaa143420ab859",
+      "size_bytes": 3070,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/reports/telemetry.txt",
+      "sha256": "e526c5ced344b611815072f19c2dc7eab551e1408f12aecd9b01fb7f808ed4c9",
+      "size_bytes": 1196,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/reports/test_results.json",
+      "sha256": "51bd00730c9b28f7da87268d6196940e89d3f5044524e7c6b597cb6ad241f71a",
+      "size_bytes": 8536,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/reports/test_results.md",
+      "sha256": "df837c0ce3a5cb82664b1f618e3bfde970c5ccf7fb774197a3bd5a51f65d78f3",
+      "size_bytes": 296,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    },
+    {
+      "contract_match": true,
+      "path": "output/web/_combined_manuscript.md",
+      "sha256": "5aa893c72656b12ae96fdde7fc2899b51e45fe8c9c607be0ec46492f0a72e8fd",
+      "size_bytes": 144266,
+      "stage_name": "standalone-output-scan",
+      "stage_num": 0,
+      "timestamp": ""
+    }
+  ],
+  "inventory_mode": "stable-local-output-v1",
+  "issues": []
+}

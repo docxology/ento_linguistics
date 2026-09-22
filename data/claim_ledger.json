@@ -1,0 +1,34 @@
+{
+  "schema": "claim-ledger-v1",
+  "note": "Manuscript constants attested to their producing source. Registered so the evidence-registry number check can ground these prose values; values are implementation constants, not measured claims.",
+  "claims": [
+    {
+      "claim_id": "pubmed_miner_inter_batch_delay_ms",
+      "kind": "number",
+      "value": 500,
+      "freshness": "active",
+      "source": "src/data/literature_mining.py:363 (PubMedMiner batch pacing, time.sleep(0.5) between eFetch batches)"
+    },
+    {
+      "claim_id": "cace_default_max_entropy_bits",
+      "kind": "number",
+      "value": 3.32,
+      "freshness": "active",
+      "source": "src/analysis/cace_scoring.py:125 (DEFAULT_MAX_ENTROPY = log2(10) ~= 3.32 bits, 10 equiprobable semantic senses)"
+    },
+    {
+      "claim_id": "student_t_ci_critical_value",
+      "kind": "number",
+      "value": 0.975,
+      "freshness": "active",
+      "source": "src/visualization/statistical_visualization.py:1033 (Student-t 95% CI critical value via scipy.stats.t.ppf(0.975, n-1))"
+    },
+    {
+      "claim_id": "huber_1810_publication_year",
+      "kind": "number",
+      "value": 1810,
+      "freshness": "active",
+      "source": "docs/manuscript/05_discussion.md (Pierre Huber, Recherches sur les moeurs des fourmis indigenes, Geneva, 1810 — historical publication year cited in the slave-term case study)"
+    }
+  ]
+}

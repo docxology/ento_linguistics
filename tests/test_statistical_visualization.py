@@ -831,3 +831,104 @@ class TestFulltextFingerprintGuard:
         )
         assert result is None
         assert calls == []
+
+
+class TestPlotDiscourseComparison:
+    """plot_discourse_comparison renders the two-layer discourse figure
+    from the real artifacts (scoped smoke) and degrades honestly when
+    the ``discourse`` sections are absent."""
+
+    @pytest.fixture(scope="class")
+    def real_artifacts(self):
+        """Real abstract/full-text artifacts (skipped when absent)."""
+        data_dir = Path(__file__).resolve().parents[1] / "output" / "data"
+        abstract_path = data_dir / "statistical_analysis.json"
+        fulltext_path = data_dir / "fulltext_analysis.json"
+        if not (abstract_path.is_file() and fulltext_path.is_file()):
+            pytest.skip("real layer artifacts not present")
+        abstract = json.loads(abstract_path.read_text(encoding="utf-8"))
+        fulltext = json.loads(fulltext_path.read_text(encoding="utf-8"))
+        if not (abstract.get("discourse") and fulltext.get("discourse")):
+            pytest.skip("real artifacts carry no discourse sections yet")
+        return abstract, fulltext
+
+    def test_renders_valid_png_from_real_artifacts(
+        self, real_artifacts, tmp_path
+    ):
+        """Save-and-verify path produces a non-empty PNG (real data)."""
+        from visualization.statistical_visualization import (
+            plot_discourse_comparison,
+        )
+
+        abstract, fulltext = real_artifacts
+        out = tmp_path / "discourse_comparison.png"
+        result = plot_discourse_comparison(abstract, fulltext, str(tmp_path))
+        assert Path(result).is_file()
+        assert Path(result).stat().st_size > 0
+        assert Path(result) == out
+
+    def test_deterministic_render(self, real_artifacts, tmp_path):
+        """Two renders on identical inputs are byte-identical."""
+        from visualization.statistical_visualization import (
+            plot_discourse_comparison,
+        )
+
+        abstract, fulltext = real_artifacts
+        one = plot_discourse_comparison(abstract, fulltext, str(tmp_path))
+        two = plot_discourse_comparison(
+            abstract, fulltext, str(tmp_path), filename="repeat.png"
+        )
+        assert Path(one).read_bytes() == Path(two).read_bytes()
+
+    def test_absent_discourse_sections_render_fallbacks(self, tmp_path):
+        """Empty artifacts → labelled fallback panels, valid PNG."""
+        from visualization.statistical_visualization import (
+            plot_discourse_comparison,
+        )
+
+        result = plot_discourse_comparison({}, {}, str(tmp_path))
+        assert Path(result).is_file()
+        assert Path(result).stat().st_size > 0
+
+    def test_symlog_scaling_for_order_of_magnitude_spans(
+        self, tmp_path, monkeypatch
+    ):
+        """Panels spanning >=100x switch to symlog (documented choice):
+        verified via the axis transform on the drawn figure.  The plot
+        closes its own figure, so plt.close is a no-op for inspection."""
+        import matplotlib.pyplot as plt
+
+        from visualization.statistical_visualization import (
+            plot_discourse_comparison,
+        )
+
+        artifact = {
+            "layer": "abstract",
+            "discourse": {
+                "n_texts_analyzed": 10,
+                "patterns": {"anthropomorphic_framing": {"frequency": 1},
+                             "economic_metaphors": {"frequency": 500}},
+                "rhetorical": {"authority": {"frequency": 2},
+                               "anecdotal": {"frequency": 3}},
+                "persuasive": {
+                    "metaphorical_language": {"usage_frequency": 900},
+                    "rhetorical_questions": {"usage_frequency": 4},
+                },
+            },
+        }
+        monkeypatch.setattr(plt, "close", lambda *args, **kwargs: None)
+        plot_discourse_comparison(artifact, artifact, str(tmp_path))
+        # Locate the plot's own figure (three axes) among open figures.
+        candidates = [
+            plt.figure(num)
+            for num in plt.get_fignums()
+            if len(plt.figure(num).get_axes()) == 3
+        ]
+        assert len(candidates) == 1
+        axes = candidates[0].get_axes()
+        # Patterns (1 vs 500) and persuasive (4 vs 900) span >=100x ->
+        # symlog; rhetorical (2 vs 3, ratio 1.5) stays linear.
+        assert axes[0].get_yscale() == "symlog"
+        assert axes[1].get_yscale() == "linear"
+        assert axes[2].get_yscale() == "symlog"
+        plt.close("all")

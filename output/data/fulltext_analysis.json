@@ -1,6 +1,6 @@
 {
   "layer": "fulltext",
-  "n_documents": 7066,
+  "n_documents": 7070,
   "min_term_frequency": 20,
   "documents": [
     {
@@ -56530,28 +56530,60 @@
       "journal": "Scientific Reports",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 6567
+    },
+    {
+      "pmcid": "PMC13580763",
+      "doi": "10.1002/brb3.71511",
+      "year": 2026,
+      "journal": "Brain and Behavior",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "token_count": 4944
+    },
+    {
+      "pmcid": "PMC13578750",
+      "doi": "10.1038/s41598-026-70295-x",
+      "year": 2026,
+      "journal": "Scientific Reports",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 19748
+    },
+    {
+      "pmcid": "PMC13584405",
+      "doi": "10.1186/s12870-026-09500-y",
+      "year": 2026,
+      "journal": "BMC Plant Biology",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 9585
+    },
+    {
+      "pmcid": "PMC13584598",
+      "doi": "10.1186/s12866-026-05381-1",
+      "year": 2026,
+      "journal": "BMC Microbiology",
+      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "token_count": 10210
     }
   ],
   "domain_term_counts": {
     "behavior_and_identity": {
       "term_count": 78,
       "bridging_term_count": 39,
-      "total_frequency": 82210
+      "total_frequency": 82213
     },
     "economics": {
       "term_count": 21,
       "bridging_term_count": 1,
-      "total_frequency": 25821
+      "total_frequency": 25855
     },
     "kin_and_relatedness": {
       "term_count": 12,
       "bridging_term_count": 1,
-      "total_frequency": 20322
+      "total_frequency": 20395
     },
     "power_and_labor": {
       "term_count": 101,
       "bridging_term_count": 58,
-      "total_frequency": 62656
+      "total_frequency": 62659
     },
     "sex_and_reproduction": {
       "term_count": 68,
@@ -56561,56 +56593,56 @@
     "unit_of_individuality": {
       "term_count": 232,
       "bridging_term_count": 5,
-      "total_frequency": 83350
+      "total_frequency": 83363
     }
   },
   "descriptives": {
     "behavior_and_identity": {
       "n_terms": 77,
       "bridging_count": 39,
-      "entropy_mean": 2.0178850788531113,
-      "entropy_sd": 0.20032615377972737,
-      "ambiguity_mean": 2.0178850788531113,
+      "entropy_mean": 2.0201691069733534,
+      "entropy_sd": 0.1972437362655182,
+      "ambiguity_mean": 2.0201691069733534,
       "cace_mean": 0.5619161327236756
     },
     "economics": {
       "n_terms": 21,
       "bridging_count": 1,
-      "entropy_mean": 1.8788481709353653,
-      "entropy_sd": 0.29369236824204603,
-      "ambiguity_mean": 1.8788481709353653,
+      "entropy_mean": 1.8649668367018406,
+      "entropy_sd": 0.30807759288944675,
+      "ambiguity_mean": 1.8649668367018406,
       "cace_mean": 0.5732448550479146
     },
     "kin_and_relatedness": {
       "n_terms": 12,
       "bridging_count": 1,
-      "entropy_mean": 2.025711412154381,
-      "entropy_sd": 0.23208688435354027,
-      "ambiguity_mean": 2.025711412154381,
+      "entropy_mean": 2.031713164223363,
+      "entropy_sd": 0.25009971179485624,
+      "ambiguity_mean": 2.031713164223363,
       "cace_mean": 0.5828376885351789
     },
     "power_and_labor": {
       "n_terms": 100,
       "bridging_count": 58,
-      "entropy_mean": 2.0566009670480976,
-      "entropy_sd": 0.17812857395112583,
-      "ambiguity_mean": 2.0566009670480976,
+      "entropy_mean": 2.0588866015970204,
+      "entropy_sd": 0.17624876994608685,
+      "ambiguity_mean": 2.0588866015970204,
       "cace_mean": 0.5236166444972039
     },
     "sex_and_reproduction": {
       "n_terms": 68,
       "bridging_count": 24,
-      "entropy_mean": 2.080970227759352,
+      "entropy_mean": 2.0809702277593525,
       "entropy_sd": 0.16363699030451082,
-      "ambiguity_mean": 2.080970227759352,
+      "ambiguity_mean": 2.0809702277593525,
       "cace_mean": 0.5604866814090006
     },
     "unit_of_individuality": {
       "n_terms": 230,
       "bridging_count": 5,
-      "entropy_mean": 2.041121006721678,
-      "entropy_sd": 0.1938199267756779,
-      "ambiguity_mean": 2.041121006721678,
+      "entropy_mean": 2.0403778567869955,
+      "entropy_sd": 0.19502073302204187,
+      "ambiguity_mean": 2.0403778567869955,
       "cace_mean": 0.5837697229536073
     }
   },
@@ -56787,11 +56819,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "economics",
       "metric": "semantic_entropy",
-      "t": 2.043651424727075,
-      "df": 25.290350961826398,
-      "p": 0.05153553365107591,
-      "p_bh": 0.15460660095322773,
-      "cohens_d": 0.6185326230411184,
+      "t": 2.1894530074500285,
+      "df": 24.640635790844676,
+      "p": 0.03825615699894729,
+      "p_bh": 0.13333942616096234,
+      "cohens_d": 0.6847355281991573,
       "n_a": 77,
       "n_b": 21,
       "significant_bh": false
@@ -56800,11 +56832,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "kin_and_relatedness",
       "metric": "semantic_entropy",
-      "t": -0.11057198958027041,
-      "df": 13.675999046783144,
-      "p": 0.9135620135788785,
-      "p_bh": 0.9135620135788785,
-      "cohens_d": -0.037918511836919584,
+      "t": -0.15266725612934684,
+      "df": 13.217900710206518,
+      "p": 0.8809665766439227,
+      "p_bh": 0.9079483353229854,
+      "cohens_d": -0.055912395706787285,
       "n_a": 77,
       "n_b": 12,
       "significant_bh": false
@@ -56813,11 +56845,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -1.3370400066081192,
-      "df": 153.13555511155073,
-      "p": 0.18319234832889902,
-      "p_bh": 0.34348565311668566,
-      "cohens_d": -0.20495280735320684,
+      "t": -1.355468784944357,
+      "df": 153.6053660594736,
+      "p": 0.177257948105375,
+      "p_bh": 0.33235865269757814,
+      "cohens_d": -0.20764647590168148,
       "n_a": 77,
       "n_b": 100,
       "significant_bh": false
@@ -56826,11 +56858,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -2.0855801897735913,
-      "df": 142.1690449072253,
-      "p": 0.038803958845331984,
-      "p_bh": 0.14551484566999495,
-      "cohens_d": -0.34096195082827435,
+      "t": -2.0277843454611206,
+      "df": 142.46668520101892,
+      "p": 0.04444647538698744,
+      "p_bh": 0.13333942616096234,
+      "cohens_d": -0.33182275060688654,
       "n_a": 77,
       "n_b": 68,
       "significant_bh": false
@@ -56839,11 +56871,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -0.8881185892261465,
-      "df": 126.96112947111514,
-      "p": 0.37615642466712207,
-      "p_bh": 0.5642346370006831,
-      "cohens_d": -0.11858475493273188,
+      "t": -0.7803698699151818,
+      "df": 129.29084658062078,
+      "p": 0.43659955866363,
+      "p_bh": 0.5953630345413136,
+      "cohens_d": -0.1030745577809203,
       "n_a": 77,
       "n_b": 230,
       "significant_bh": false
@@ -56852,11 +56884,11 @@
       "domain_a": "economics",
       "domain_b": "kin_and_relatedness",
       "metric": "semantic_entropy",
-      "t": -1.5840277135047078,
-      "df": 27.62133125429424,
-      "p": 0.12457146372860699,
-      "p_bh": 0.26693885084701496,
-      "cohens_d": -0.524022282414159,
+      "t": -1.6902581153353926,
+      "df": 27.128135929534732,
+      "p": 0.10243945492500535,
+      "p_bh": 0.21951311769644002,
+      "cohens_d": -0.5632161547246626,
       "n_a": 21,
       "n_b": 12,
       "significant_bh": false
@@ -56865,11 +56897,11 @@
       "domain_a": "economics",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -2.6722376595012496,
-      "df": 23.1814245545568,
-      "p": 0.013555329755692838,
-      "p_bh": 0.10166497316769628,
-      "cohens_d": -0.873446875386884,
+      "t": -2.790213609317816,
+      "df": 22.82192992412276,
+      "p": 0.010447095907615835,
+      "p_bh": 0.07835321930711876,
+      "cohens_d": -0.9425650715068888,
       "n_a": 21,
       "n_b": 100,
       "significant_bh": false
@@ -56878,11 +56910,11 @@
       "domain_a": "economics",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -3.0126657097002734,
-      "df": 23.95295350310967,
-      "p": 0.006029786595360578,
-      "p_bh": 0.09044679893040868,
-      "cohens_d": -0.9962821190069155,
+      "t": -3.0815551787650786,
+      "df": 23.583465129888925,
+      "p": 0.00517497141555601,
+      "p_bh": 0.07762457123334016,
+      "cohens_d": -1.0394430718187557,
       "n_a": 21,
       "n_b": 68,
       "significant_bh": false
@@ -56891,11 +56923,11 @@
       "domain_a": "economics",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -2.4831055257285564,
-      "df": 21.61924705470735,
-      "p": 0.021285968898867,
-      "p_bh": 0.106429844494335,
-      "cohens_d": -0.7943851417282322,
+      "t": -2.5627333715789935,
+      "df": 21.487760956030744,
+      "p": 0.01794099592812369,
+      "p_bh": 0.08970497964061845,
+      "cohens_d": -0.8472902619725052,
       "n_a": 21,
       "n_b": 230,
       "significant_bh": false
@@ -56904,11 +56936,11 @@
       "domain_a": "kin_and_relatedness",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -0.4455743237158055,
-      "df": 12.603109333940395,
-      "p": 0.663462486018878,
-      "p_bh": 0.7655336377140901,
-      "cohens_d": -0.16651637891543186,
+      "t": -0.3656386852309838,
+      "df": 12.34527673075315,
+      "p": 0.7208231346785732,
+      "p_bh": 0.8317190015521998,
+      "cohens_d": -0.1459068606269171,
       "n_a": 12,
       "n_b": 100,
       "significant_bh": false
@@ -56917,11 +56949,11 @@
       "domain_a": "kin_and_relatedness",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -0.790827219906296,
-      "df": 12.998230604324787,
-      "p": 0.4432356877905105,
-      "p_bh": 0.6011671262808033,
-      "cohens_d": -0.3128614353399836,
+      "t": -0.6578570672629012,
+      "df": 12.712868801817184,
+      "p": 0.5223643329556913,
+      "p_bh": 0.6529554161946142,
+      "cohens_d": -0.2734610471052721,
       "n_a": 12,
       "n_b": 68,
       "significant_bh": false
@@ -56930,11 +56962,11 @@
       "domain_a": "kin_and_relatedness",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -0.22592807880855229,
-      "df": 11.814332136395036,
-      "p": 0.8251185780117126,
-      "p_bh": 0.8840556192982635,
-      "cohens_d": -0.07847954822671438,
+      "t": -0.11815410449554704,
+      "df": 11.708433598519225,
+      "p": 0.9079483353229854,
+      "p_bh": 0.9079483353229854,
+      "cohens_d": -0.04365047777731079,
       "n_a": 12,
       "n_b": 230,
       "significant_bh": false
@@ -56943,11 +56975,11 @@
       "domain_a": "power_and_labor",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -0.9138683920915189,
-      "df": 151.78128070166042,
-      "p": 0.3622354272810543,
-      "p_bh": 0.5642346370006831,
-      "cohens_d": -0.14069202487501803,
+      "t": -0.8320617925704046,
+      "df": 150.86422865976564,
+      "p": 0.4066891995915094,
+      "p_bh": 0.5953630345413136,
+      "cohens_d": -0.1283567701599568,
       "n_a": 100,
       "n_b": 68,
       "significant_bh": false
@@ -56956,11 +56988,11 @@
       "domain_a": "power_and_labor",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": 0.7060977718506427,
-      "df": 203.80762672035692,
-      "p": 0.4809337010246426,
-      "p_bh": 0.6011671262808033,
-      "cohens_d": 0.08162169945713946,
+      "t": 0.8483491250677233,
+      "df": 207.08610343793285,
+      "p": 0.3972230831919523,
+      "p_bh": 0.5953630345413136,
+      "cohens_d": 0.0974218635198382,
       "n_a": 100,
       "n_b": 230,
       "significant_bh": false
@@ -56969,11 +57001,11 @@
       "domain_a": "sex_and_reproduction",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": 1.6882966974457112,
-      "df": 127.68008392240665,
-      "p": 0.09379533553390061,
-      "p_bh": 0.23448833883475154,
-      "cohens_d": 0.2120874094256664,
+      "t": 1.7166569413400883,
+      "df": 128.4583210386991,
+      "p": 0.08845215201800201,
+      "p_bh": 0.21951311769644002,
+      "cohens_d": 0.2149401863128017,
       "n_a": 68,
       "n_b": 230,
       "significant_bh": false
@@ -56981,50 +57013,248 @@
   ],
   "anova": {
     "metric": "semantic_entropy",
-    "F": 3.860087285888518,
+    "F": 4.325063874074968,
     "df1": 5.0,
     "df2": 502.0,
-    "p": 0.001926260032421923,
-    "eta_squared": 0.037023633744942906
+    "p": 0.0007311383080175529,
+    "eta_squared": 0.0412992240260228
   },
   "corrections": {
     "method": "benjamini_hochberg",
     "n_comparisons": 15
   },
   "skipped": [],
+  "discourse": {
+    "n_texts": 7070,
+    "n_texts_excluded_min_length": 0,
+    "n_texts_analyzed": 1414,
+    "min_text_length": 200,
+    "sample_fraction": 0.2,
+    "patterns": {
+      "anthropomorphic_framing": {
+        "frequency": 47,
+        "rhetorical_function": "Imposes human-like agency on insect societies",
+        "domains": [
+          "behavior_and_identity"
+        ],
+        "examples": [
+          "Found 1 anthropomorphic constructions",
+          "Found 2 anthropomorphic constructions",
+          "Found 4 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 3 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions"
+        ]
+      },
+      "economic_metaphors": {
+        "frequency": 1090,
+        "rhetorical_function": "Applies market logic to biological processes",
+        "domains": [
+          "economics"
+        ],
+        "examples": [
+          "Found 5 economic metaphors",
+          "Found 2 economic metaphors",
+          "Found 3 economic metaphors",
+          "Found 3 economic metaphors",
+          "Found 3 economic metaphors",
+          "Found 2 economic metaphors",
+          "Found 2 economic metaphors",
+          "Found 3 economic metaphors",
+          "Found 6 economic metaphors",
+          "Found 1 economic metaphors"
+        ]
+      },
+      "hierarchical_framing": {
+        "frequency": 1108,
+        "rhetorical_function": "Structures social relationships as human-like hierarchies",
+        "domains": [
+          "power_and_labor"
+        ],
+        "examples": [
+          "Found 8 hierarchical terms",
+          "Found 12 hierarchical terms",
+          "Found 5 hierarchical terms",
+          "Found 3 hierarchical terms",
+          "Found 18 hierarchical terms",
+          "Found 2 hierarchical terms",
+          "Found 13 hierarchical terms",
+          "Found 3 hierarchical terms",
+          "Found 4 hierarchical terms",
+          "Found 9 hierarchical terms"
+        ]
+      },
+      "scale_ambiguity": {
+        "frequency": 33,
+        "rhetorical_function": "Creates confusion about biological levels of analysis",
+        "domains": [
+          "unit_of_individuality"
+        ],
+        "examples": [
+          "Found 3 scale-ambiguous constructions",
+          "Found 1 scale-ambiguous constructions",
+          "Found 5 scale-ambiguous constructions",
+          "Found 3 scale-ambiguous constructions",
+          "Found 1 scale-ambiguous constructions",
+          "Found 1 scale-ambiguous constructions",
+          "Found 1 scale-ambiguous constructions",
+          "Found 1 scale-ambiguous constructions",
+          "Found 1 scale-ambiguous constructions",
+          "Found 1 scale-ambiguous constructions"
+        ]
+      }
+    },
+    "rhetorical": {
+      "analogy": {
+        "frequency": 1792,
+        "text_count": 678
+      },
+      "anecdotal": {
+        "frequency": 9229,
+        "text_count": 1302
+      },
+      "authority": {
+        "frequency": 29178,
+        "text_count": 1060
+      },
+      "generalization": {
+        "frequency": 4228,
+        "text_count": 1002
+      }
+    },
+    "argumentative": {
+      "n_structures": 1299,
+      "n_with_evidence": 70,
+      "n_with_warrant": 1262,
+      "n_with_qualification": 1295,
+      "n_with_discourse_markers": 1299,
+      "mean_discourse_markers": 16.310239,
+      "top_discourse_markers": {
+        "however": 1252,
+        "but": 1241,
+        "may": 1198,
+        "could": 1105,
+        "due to": 1060,
+        "therefore": 1056,
+        "thus": 1033,
+        "although": 1030,
+        "because": 995,
+        "according to": 882
+      },
+      "example_claims": [
+        [
+          "Third, evidence thus far indicates that tuning ORs are expressed within a small number of sensilla [38].",
+          "If OR expression in L. humile works similarly, the abundance of OR transcripts in the ORN nucleus may be out of reach of the RISC complex and therefore masking the effects of gene knockdown when conducting qPCR analysis.",
+          "Therefore, RNAi-mediated knockdown of OR expression is currently the only potential method that can allow us to investigate how individual ORs regulate nestmate recognition, and our work shows that ingested dsRNA is capable of knocking down OR expression in adults."
+        ],
+        [
+          "High genetic proximity among relatives therefore seems critical for the evolution of eusociality and thus the haplodiploid sex determination system of Hymenoptera may have been instrumental for the several independent advents of eusociality in this order (Hamilton, 1964; Hughes et al., 2008).",
+          "Therefore, CHCs might have been an ancestral signals required for the emergence of colony-specific altruism and reproductive division of labor (Kather and Martin, 2015).",
+          "To date, it thus remains unknown if the basiconic sensilla-specific subsystem is ubiquitous among social Hymenoptera and if it could have played a role in the advent of eusociality in this insect order.",
+          "We thus checked whether this feature is also present in hornets.",
+          "Thus, the observed responses to alkanes were not mechano- or thermosensory responses and were not due to the hexane solvent.",
+          "Consequently, the average response to alkanes during the stimulus was statistically higher than the responses to volatiles and to the control (Figure 6F; Kruskal-Wallis test, H = 13.55, p < 0.01; multiple comparisons (Dunn test): l.c.",
+          "Thus, OSNs contained in basiconic sensilla 2 respond preferentially to long-chain alkanes that are typically found in the cuticular hydrocarbon profiles of hornets (Martin et al., 2009).",
+          "Hornets thus possess a very characteristic olfactory subsystem involved in CHC processing.",
+          "Thus, an efficient CHC-processing system should be crucial for Vespidae social biology, as a basis for nestmate discrimination, caste differentiation, worker policing and task allocation.",
+          "This olfactory subsystem may therefore have been present in their last common ancestor, a solitary predatory wasp (Johnson et al., 2013; Branstetter et al., 2017; Peters et al., 2017)."
+        ],
+        [
+          "Therefore, we considered the tree from Bayesian inference of amino acid sequence data as our best estimate of the phylogenetic relationships of ants and focus the following discussion on this tree topology."
+        ],
+        [
+          "Fire ants often do not build their typical mound structures due to frequent rains, irrigation, and cleaning activities; therefore, mound-based monitoring methods may not have high efficiency to detect S. invicta in cities.",
+          "Therefore, we also calculated the percentage of sausage with ant presence and the percentage of tapes paved by the three categories of ants (S. invicta, T. melanocephalum, or non-target ants).",
+          "Both S. invicta and T. melanocephalum do not have soldiers, and therefore can be easily distinguished from P. parva, P. yeensis, P. nodus, P. sinica, and C. affinis, which have soldiers with much a larger body size and inflated heads than workers (Table 5; Supplementary Materials: Figures S3\u2013S7).",
+          "Therefore, we believe that adhesive tapes and baits are equally effective in monitoring S. invicta and T. melanocephalum, even at the early stage of invasion when the ant number is low.",
+          "Therefore, here we placed a sausage to enhance the tape-paving behavior.",
+          "[28] stated that myrmicinae ant species do not have greatly distensible crops that can carry large amount of liquid food, and therefore they have evolved such behaviors to handle and consume liquid food.",
+          "Thus, workers would choose the particles with the maximum size they can carry."
+        ],
+        [
+          "Consequently, hemipteran populations proliferate and produce more honeydew for ants to harvest, which in turn, promotes increased population growth of L. humile, which amplifies infestations and associated economic damage by both pest groups (Schall and Hoddle 2017, McCalla et al.",
+          "Therefore, binary classifiers for nonsevere vs. severe infestation levels were constructed using both logistic regression and SVM.",
+          "Consequently, results for column 1 ant counts are not considered further.",
+          "Therefore, these results from the test data support the conclusion that the zero-inflated Poisson mixed regression model provided the best overall fit to the ant count data."
+        ]
+      ]
+    },
+    "persuasive": {
+      "authoritative_citations": {
+        "usage_frequency": 29178,
+        "context_relevance": 0,
+        "heuristic_impact_index": 1.0,
+        "heuristic_effectiveness_band": "highly_effective",
+        "success_examples": [],
+        "usage_distribution": {}
+      },
+      "metaphorical_language": {
+        "usage_frequency": 20759,
+        "context_relevance": 0,
+        "heuristic_impact_index": 1.0,
+        "heuristic_effectiveness_band": "highly_effective",
+        "success_examples": [],
+        "usage_distribution": {}
+      },
+      "quantitative_emphasis": {
+        "usage_frequency": 1396,
+        "context_relevance": 0,
+        "heuristic_impact_index": 1.0,
+        "heuristic_effectiveness_band": "highly_effective",
+        "success_examples": [],
+        "usage_distribution": {}
+      },
+      "rhetorical_questions": {
+        "usage_frequency": 230,
+        "context_relevance": 195,
+        "heuristic_impact_index": 1.0,
+        "heuristic_effectiveness_band": "highly_effective",
+        "success_examples": [
+          "how",
+          "how",
+          "how"
+        ],
+        "usage_distribution": {}
+      }
+    }
+  },
   "framing": {
     "behavior_and_identity": {
       "proportion": 0.006374,
-      "n_contexts": 82210
+      "n_contexts": 82213
     },
     "economics": {
-      "proportion": 0.095659,
-      "n_contexts": 25821
+      "proportion": 0.095726,
+      "n_contexts": 25855
     },
     "kin_and_relatedness": {
-      "proportion": 0.009251,
-      "n_contexts": 20322
+      "proportion": 0.009463,
+      "n_contexts": 20395
     },
     "power_and_labor": {
-      "proportion": 0.007725,
-      "n_contexts": 62656
+      "proportion": 0.007724,
+      "n_contexts": 62659
     },
     "sex_and_reproduction": {
       "proportion": 0.012473,
       "n_contexts": 36479
     },
     "unit_of_individuality": {
-      "proportion": 0.007223,
-      "n_contexts": 83350
+      "proportion": 0.007221,
+      "n_contexts": 83363
     },
     "overall": {
-      "proportion": 0.016944,
-      "n_contexts": 252368
+      "proportion": 0.016975,
+      "n_contexts": 252493
     }
   },
   "corpus_fingerprint": {
-    "record_count": 7066,
-    "provenance_sha256": "c9fd5343b395c22ab3ec2e7c2f0708c6944fc7492985d977009fdf65eeb35cf4",
+    "record_count": 7070,
+    "provenance_sha256": "1765eabc6131d8d8d2661bb136215ff031c7bf70c7fcde16fa9393933339e666",
     "limit": null
   }
 }

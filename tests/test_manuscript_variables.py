@@ -772,3 +772,239 @@ class TestFulltextFramingTokens:
         artifact["framing"] = {}
         tokens = build_statistical_tokens({}, fulltext_artifact=artifact)
         assert [k for k in tokens if "ANTHROPOMORPHIC" in k] == []
+
+
+class TestDiscourseTokens:
+    """ABSTRACT_*/FULLTEXT_* discourse tokens resolve from each layer
+    artifact's ``discourse`` section via build_statistical_tokens."""
+
+    DISCOURSE = {
+        "n_texts": 100,
+        "n_texts_excluded_min_length": 1,
+        "n_texts_analyzed": 99,
+        "min_text_length": 200,
+        "sample_fraction": 0.99,
+        "patterns": {
+            "anthropomorphic_framing": {"frequency": 5},
+            "hierarchical_framing": {"frequency": 311},
+            "economic_metaphors": {"frequency": 235},
+            "scale_ambiguity": {"frequency": 13},
+            "noncanonical_pattern": {"frequency": 7},
+        },
+        "rhetorical": {
+            "analogy": {"frequency": 135},
+            "anecdotal": {"frequency": 443},
+            "authority": {"frequency": 23},
+            "generalization": {"frequency": 183},
+        },
+        "argumentative": {
+            "n_structures": 473,
+            "n_with_evidence": 3,
+        },
+        "persuasive": {
+            "metaphorical_language": {"usage_frequency": 939},
+            "rhetorical_questions": {"usage_frequency": 19},
+        },
+    }
+
+    def test_discourse_tokens_direct_call(self) -> None:
+        """Every documented token resolves; extras sorted after canonical."""
+        artifact = {"layer": "abstract", "discourse": dict(self.DISCOURSE)}
+        tokens = build_statistical_tokens(artifact)
+        assert tokens["ABSTRACT_DISCOURSE_N_ANALYZED"] == "99"
+        assert tokens["ABSTRACT_DISCOURSE_SAMPLE_FRACTION"] == "0.9900"
+        assert tokens["ABSTRACT_PATTERNS_HIERARCHICAL_FRAMING"] == "311"
+        assert tokens["ABSTRACT_PATTERNS_ECONOMIC_METAPHORS"] == "235"
+        # Non-canonical pattern keys still emit (emit for keys that exist).
+        assert tokens["ABSTRACT_PATTERNS_NONCANONICAL_PATTERN"] == "7"
+        assert tokens["ABSTRACT_RHETORICAL_AUTHORITY"] == "23"
+        assert tokens["ABSTRACT_RHETORICAL_ANECDOTAL"] == "443"
+        assert tokens["ABSTRACT_ARG_STRUCTURES"] == "473"
+        assert tokens["ABSTRACT_PERSUASIVE_METAPHORICAL"] == "939"
+
+    def test_fulltext_discourse_twins(self) -> None:
+        """The FULLTEXT_* family mirrors the ABSTRACT_* family."""
+        artifact = {
+            "layer": "fulltext",
+            "discourse": dict(self.DISCOURSE, sample_fraction=0.2),
+        }
+        tokens = build_statistical_tokens({}, fulltext_artifact=artifact)
+        assert tokens["FULLTEXT_DISCOURSE_N_ANALYZED"] == "99"
+        assert tokens["FULLTEXT_DISCOURSE_SAMPLE_FRACTION"] == "0.2000"
+        assert tokens["FULLTEXT_PATTERNS_SCALE_AMBIGUITY"] == "13"
+        assert tokens["FULLTEXT_RHETORICAL_GENERALIZATION"] == "183"
+        assert tokens["FULLTEXT_ARG_STRUCTURES"] == "473"
+        assert tokens["FULLTEXT_PERSUASIVE_METAPHORICAL"] == "939"
+        # No ABSTRACT_* prefix leakage from a fulltext-only artifact.
+        assert [k for k in tokens if k.startswith("ABSTRACT_")] == []
+
+    def test_absent_discourse_section_omits_tokens(self) -> None:
+        """Abstract artifact without/with-empty ``discourse`` → no
+        ABSTRACT_* discourse tokens; other families unaffected (no
+        KeyError).  FULLTEXT_* tokens may still resolve from the real
+        full-text artifact on disk — the assertion is prefix-scoped."""
+        artifact = {"layer": "abstract", "anova": {"F": 1.5}}
+        tokens = build_statistical_tokens(artifact)
+        assert [
+            k
+            for k in tokens
+            if k.startswith("ABSTRACT_")
+            and ("DISCOURSE" in k or "PATTERNS_" in k)
+        ] == []
+        assert tokens["ANOVA_F"] == "1.5000"
+        full = {"layer": "abstract", "discourse": {}}
+        assert [
+            k
+            for k in build_statistical_tokens(full)
+            if k.startswith("ABSTRACT_")
+            and ("DISCOURSE" in k or "PATTERNS_" in k)
+        ] == []
+
+    def test_discourse_tokens_resolve_via_variable_map(
+        self, data_dirs
+    ) -> None:
+        """Tokens resolve through build_variable_map against the files."""
+        output_data, corpus_dir = data_dirs
+        stats = {
+            "layer": "abstract",
+            "anova": {},
+            "discourse": self.DISCOURSE,
+        }
+        _write_json(output_data / "statistical_analysis.json", stats)
+        variables = build_variable_map(
+            output_data_dir=output_data, corpus_dir=corpus_dir
+        )
+        assert variables["ABSTRACT_DISCOURSE_N_ANALYZED"] == "99"
+        assert variables["ABSTRACT_PATTERNS_HIERARCHICAL_FRAMING"] == "311"
+
+    def test_real_artifacts_discourse_tokens_resolve(self) -> None:
+        """Spot-verify against the real layer artifacts when present."""
+        stats = manuscript_variables_module.load_json(
+            manuscript_variables_module.OUTPUT_DATA_DIR
+            / "statistical_analysis.json"
+        )
+        fulltext = manuscript_variables_module.load_json(
+            manuscript_variables_module.OUTPUT_DATA_DIR
+            / "fulltext_analysis.json"
+        )
+        tokens = build_statistical_tokens(stats, fulltext_artifact=fulltext)
+        for artifact, prefix in (
+            (stats, "ABSTRACT"),
+            (fulltext, "FULLTEXT"),
+        ):
+            discourse = artifact.get("discourse") or {}
+            if not discourse:
+                continue
+            assert (
+                tokens[f"{prefix}_DISCOURSE_N_ANALYZED"]
+                == str(discourse["n_texts_analyzed"])
+            )
+            for key, entry in (discourse.get("patterns") or {}).items():
+                slug = key.upper()
+                assert (
+                    tokens[f"{prefix}_PATTERNS_{slug}"]
+                    == str(int(entry["frequency"]))
+                )
+
+
+class TestBhlExpandedTokens:
+    """BHL_ERA_<ERA>_{TERMS,ENTROPY_MEAN,FRAMING} resolve from the
+    expanded era_term_usage.json full-stack sections (and omit for
+    degenerate eras without them)."""
+
+    @staticmethod
+    def _expanded_era_entry() -> dict:
+        return {
+            "documents": 2,
+            "tokens": 5000,
+            "terms_per_10k": {"queen": 4.0},
+            "domains_per_10k": {},
+            "extraction": {
+                "min_frequency": 2,
+                "n_terms": 1234,
+                "domains": {},
+            },
+            "entropy": {
+                "bounded_to_top_terms": 4,
+                "n_terms_evaluated": 4,
+                "n_valid": 4,
+                "n_excluded": 0,
+                "terms": {
+                    "queen": 1.5,
+                    "workers": 2.0,
+                    "colony": 1.0,
+                    "castes": 2.5,
+                },
+                "domains": {},
+            },
+            "framing": {
+                "unit_of_individuality": {"proportion": 0.01, "n_contexts": 10},
+                "overall": {"proportion": 0.0125, "n_contexts": 100},
+            },
+        }
+
+    def test_expanded_tokens_direct_call(self, tmp_path) -> None:
+        """TERMS/ENTROPY_MEAN/FRAMING resolve per era."""
+        artifact = TestBhlTokens._bhl_artifact()
+        artifact["eras"]["era_1850_1899"].update(self._expanded_era_entry())
+        bhl_dir = tmp_path / "bhl"
+        _write_json(bhl_dir / "era_term_usage.json", artifact)
+        tokens = build_statistical_tokens({}, bhl_data_dir=bhl_dir)
+        assert tokens["BHL_ERA_1850_1899_TERMS"] == "1234"
+        # Unweighted mean over the era's valid per-term entropies.
+        assert tokens["BHL_ERA_1850_1899_ENTROPY_MEAN"] == "1.7500"
+        assert tokens["BHL_ERA_1850_1899_FRAMING"] == "0.0125"
+        # Era without expanded sections emits no expanded tokens.
+        assert not [
+            k for k in tokens if k.startswith("BHL_ERA_1900_1949_TERMS")
+        ]
+        assert not [
+            k for k in tokens if "ERA_1900_1949_ENTROPY_MEAN" in k
+        ]
+
+    def test_degenerate_sections_omit_tokens(self, tmp_path) -> None:
+        """Degenerate era (entropy/framing None) omits honestly."""
+        artifact = TestBhlTokens._bhl_artifact()
+        degenerate = self._expanded_era_entry()
+        degenerate["entropy"] = None
+        degenerate["framing"] = None
+        artifact["eras"]["era_1850_1899"].update(degenerate)
+        bhl_dir = tmp_path / "bhl"
+        _write_json(bhl_dir / "era_term_usage.json", artifact)
+        tokens = build_statistical_tokens({}, bhl_data_dir=bhl_dir)
+        assert tokens["BHL_ERA_1850_1899_TERMS"] == "1234"
+        assert not [k for k in tokens if "ERA_1850_1899_ENTROPY_MEAN" in k]
+        assert not [k for k in tokens if "ERA_1850_1899_FRAMING" in k]
+
+    def test_real_artifact_expanded_tokens_resolve(self) -> None:
+        """Spot-verify the expanded family against the real artifact."""
+        artifact = manuscript_variables_module.load_json(
+            manuscript_variables_module.BHL_DATA_DIR / "era_term_usage.json"
+        )
+        if not artifact:
+            pytest.skip("real BHL artifact not harvested yet")
+        tokens = build_statistical_tokens({})
+        for era, entry in (artifact.get("eras") or {}).items():
+            era_upper = era.upper()
+            extraction = entry.get("extraction") or {}
+            if extraction:
+                assert (
+                    tokens[f"BHL_{era_upper}_TERMS"]
+                    == str(int(extraction["n_terms"]))
+                )
+            term_entropies = (entry.get("entropy") or {}).get("terms") or {}
+            if term_entropies:
+                expected = (
+                    sum(float(v) for v in term_entropies.values())
+                    / len(term_entropies)
+                )
+                assert (
+                    tokens[f"BHL_{era_upper}_ENTROPY_MEAN"]
+                    == f"{expected:.4f}"
+                )
+            overall = (entry.get("framing") or {}).get("overall") or {}
+            if overall:
+                assert (
+                    tokens[f"BHL_{era_upper}_FRAMING"]
+                    == f"{float(overall['proportion']):.4f}"
+                )

@@ -1,487 +1,795 @@
 {
  "eras": {
   "era_1850_1899": {
-   "documents": 23,
+   "documents": 1013,
    "domains_per_10k": {
-    "behavior_and_identity": 5.0169,
-    "economics": 3.2176,
-    "kin_and_relatedness": 4.4358,
-    "power_and_labor": 16.1689,
-    "sex_and_reproduction": 20.2587,
-    "unit_of_individuality": 55.9799
+    "behavior_and_identity": 2.8984,
+    "economics": 6.6394,
+    "kin_and_relatedness": 3.3986,
+    "power_and_labor": 9.2232,
+    "sex_and_reproduction": 22.573,
+    "unit_of_individuality": 17.2544
+   },
+   "entropy": {
+    "bounded_to_top_terms": 20,
+    "domains": {
+     "behavior_and_identity": 1.378304,
+     "power_and_labor": 1.561073,
+     "sex_and_reproduction": 1.436855,
+     "unit_of_individuality": 1.470736
+    },
+    "n_excluded": 0,
+    "n_terms_evaluated": 20,
+    "n_valid": 20,
+    "terms": {
+     "colony": 0.992965,
+     "evolution": 1.08993,
+     "kind": 1.084235,
+     "kinds": 1.558036,
+     "king": 0.759382,
+     "kingdom": 2.098539,
+     "making": 0.785667,
+     "markings": 1.918599,
+     "organism": 1.948508,
+     "organisms": 1.410936,
+     "queen": 1.743842,
+     "queensland": 1.551116,
+     "reproduction": 1.129867,
+     "selection": 1.721779,
+     "skin": 1.448868,
+     "striking": 1.299177,
+     "taking": 1.197559,
+     "worker": 1.378304,
+     "workers": 1.585238,
+     "working": 1.071638
+    }
+   },
+   "extraction": {
+    "domains": {
+     "behavior_and_identity": {
+      "bridging_term_count": 67,
+      "term_count": 154,
+      "total_frequency": 23450
+     },
+     "economics": {
+      "bridging_term_count": 1,
+      "term_count": 111,
+      "total_frequency": 4227
+     },
+     "kin_and_relatedness": {
+      "bridging_term_count": 5,
+      "term_count": 106,
+      "total_frequency": 3840
+     },
+     "power_and_labor": {
+      "bridging_term_count": 134,
+      "term_count": 368,
+      "total_frequency": 34753
+     },
+     "sex_and_reproduction": {
+      "bridging_term_count": 80,
+      "term_count": 614,
+      "total_frequency": 38187
+     },
+     "unit_of_individuality": {
+      "bridging_term_count": 17,
+      "term_count": 463,
+      "total_frequency": 32868
+     }
+    },
+    "min_frequency": 2,
+    "n_terms": 140338
+   },
+   "framing": {
+    "behavior_and_identity": {
+     "n_contexts": 23450,
+     "proportion": 0.004392
+    },
+    "economics": {
+     "n_contexts": 4227,
+     "proportion": 0.114975
+    },
+    "kin_and_relatedness": {
+     "n_contexts": 3840,
+     "proportion": 0.004948
+    },
+    "overall": {
+     "n_contexts": 108157,
+     "proportion": 0.009458
+    },
+    "power_and_labor": {
+     "n_contexts": 34753,
+     "proportion": 0.007021
+    },
+    "sex_and_reproduction": {
+     "n_contexts": 38187,
+     "proportion": 0.005525
+    },
+    "unit_of_individuality": {
+     "n_contexts": 32868,
+     "proportion": 0.005507
+    }
    },
    "terms_per_10k": {
-    "aggression": 0.005,
-    "alarm": 0.2506,
-    "allocation": 0.0,
-    "altruism": 0.0,
-    "ant": 22.3439,
-    "authority": 0.3358,
-    "autonomy": 0.0,
-    "behavior": 0.0,
-    "behavioral repertoire": 0.0,
-    "behaviour": 1.4034,
-    "benefit": 0.0902,
-    "boundary": 0.0451,
-    "brood": 0.3809,
-    "brood care": 0.0,
-    "brother": 0.0551,
-    "budget": 0.0,
-    "caste": 0.0451,
-    "coercion": 0.0,
-    "collective": 0.0601,
-    "colony": 1.3733,
+    "aggression": 0.0163,
+    "alarm": 0.1153,
+    "allocation": 0.0079,
+    "altruism": 0.0171,
+    "ant": 2.3074,
+    "authority": 0.4291,
+    "autonomy": 0.0037,
+    "behavior": 0.3639,
+    "behavioral repertoire": 0.0001,
+    "behaviour": 0.1872,
+    "benefit": 0.3107,
+    "boundary": 0.1681,
+    "brood": 0.5761,
+    "brood care": 0.0004,
+    "brother": 0.1548,
+    "budget": 0.0185,
+    "caste": 0.0836,
+    "coercion": 0.0076,
+    "collective": 0.0417,
+    "colony": 0.9534,
     "colony economy": 0.0,
     "colony kin structure": 0.0,
     "colony-level": 0.0,
-    "command": 0.0501,
-    "conflict": 0.1554,
-    "control": 0.0451,
-    "cooperation": 0.0251,
-    "copulation": 0.0,
-    "cost": 0.0601,
-    "daughter": 0.0251,
-    "demand": 0.0601,
-    "diploid": 0.0,
-    "distribution": 0.411,
-    "division": 1.7442,
-    "division of labor": 0.005,
-    "dominant": 0.0301,
-    "efficiency": 0.0,
-    "egg": 0.7568,
-    "emergence": 0.0702,
+    "command": 0.1668,
+    "conflict": 0.0783,
+    "control": 0.5912,
+    "cooperation": 0.0492,
+    "copulation": 0.1111,
+    "cost": 0.8065,
+    "daughter": 0.1292,
+    "demand": 0.3769,
+    "diploid": 0.0073,
+    "distribution": 1.4918,
+    "division": 1.4164,
+    "division of labor": 0.0164,
+    "dominant": 0.1262,
+    "efficiency": 0.0993,
+    "egg": 1.6781,
+    "emergence": 0.2027,
     "eusocial": 0.0,
     "eusociality": 0.0,
-    "exchange": 0.0902,
-    "expenditure": 0.0,
-    "exploitation": 0.005,
-    "family": 3.4734,
-    "female": 3.7791,
-    "fertilization": 0.005,
-    "forager": 0.0,
-    "foraging": 0.0852,
-    "foraging efficiency": 0.0,
-    "genetic": 0.0,
-    "genetic relatedness": 0.0,
-    "grooming": 0.0,
-    "group": 0.6766,
-    "guard": 0.3358,
-    "gyne": 0.0,
-    "hamiltonian": 0.0,
+    "exchange": 0.4976,
+    "expenditure": 0.2216,
+    "exploitation": 0.03,
+    "family": 2.3084,
+    "female": 5.9284,
+    "fertilization": 0.1646,
+    "forager": 0.0021,
+    "foraging": 0.0788,
+    "foraging efficiency": 0.0001,
+    "genetic": 0.052,
+    "genetic relatedness": 0.0001,
+    "grooming": 0.0134,
+    "group": 2.2059,
+    "guard": 0.1312,
+    "gyne": 0.0011,
+    "hamiltonian": 0.0002,
     "haplodiploidy": 0.0,
-    "haploid": 0.0,
-    "hierarchy": 0.0,
+    "haploid": 0.0067,
+    "hierarchy": 0.0151,
     "holobiont": 0.0,
-    "host": 0.0952,
-    "identity": 0.0752,
-    "inclusive fitness": 0.0,
-    "individual": 1.1177,
+    "host": 0.5869,
+    "identity": 0.2335,
+    "inclusive fitness": 0.0001,
+    "individual": 1.5154,
     "individual-level": 0.0,
-    "investment": 0.01,
-    "kin": 0.0,
-    "kin selection": 0.0,
-    "labor": 0.0301,
-    "larva": 3.303,
-    "larvae": 2.3507,
-    "major": 0.3709,
-    "male": 3.1275,
-    "mating": 0.0,
-    "minor": 0.396,
+    "investment": 0.0496,
+    "kin": 0.0313,
+    "kin selection": 0.0003,
+    "labor": 0.1974,
+    "larva": 2.4147,
+    "larvae": 2.1664,
+    "major": 0.583,
+    "male": 6.7561,
+    "mating": 0.1351,
+    "minor": 0.5991,
     "monandry": 0.0,
-    "monogyny": 0.0,
-    "monopoly": 0.0,
+    "monogyny": 0.0003,
+    "monopoly": 0.0387,
     "multilevel selection": 0.0,
-    "nepotism": 0.0,
-    "nest": 28.0326,
-    "nestmate": 0.0,
-    "nuptial": 0.02,
-    "nurse": 0.1704,
-    "obedience": 0.0551,
-    "offspring": 0.3158,
+    "nepotism": 0.0002,
+    "nest": 3.3331,
+    "nestmate": 0.0004,
+    "nuptial": 0.0528,
+    "nurse": 0.0733,
+    "obedience": 0.0645,
+    "offspring": 0.4434,
     "optimal foraging": 0.0,
     "optimization": 0.0,
-    "organism": 0.005,
-    "oviposition": 0.015,
-    "parasite": 0.1403,
-    "parthenogenesis": 0.0,
-    "plasticity": 0.01,
-    "policing": 0.0,
-    "polyandry": 0.0,
+    "organism": 0.6469,
+    "oviposition": 0.1283,
+    "parasite": 0.436,
+    "parthenogenesis": 0.1241,
+    "plasticity": 0.02,
+    "policing": 0.0004,
+    "polyandry": 0.0241,
     "polyethism": 0.0,
-    "polygyny": 0.0,
-    "polymorphism": 0.0,
-    "power": 5.0973,
-    "productivity": 0.0,
-    "profit": 0.1103,
-    "pupa": 1.2229,
-    "queen": 5.1023,
-    "recruitment": 0.0,
-    "regulation": 0.0251,
-    "relatedness": 0.0,
+    "polygyny": 0.0017,
+    "polymorphism": 0.0462,
+    "power": 1.9882,
+    "productivity": 0.0079,
+    "profit": 0.2914,
+    "pupa": 0.7481,
+    "queen": 0.8993,
+    "recruitment": 0.0069,
+    "regulation": 0.0815,
+    "relatedness": 0.0007,
     "relatedness coefficient": 0.0,
-    "reproduction": 0.1905,
+    "reproduction": 0.4943,
     "reproduction control": 0.0,
-    "reproductive": 0.02,
-    "resource": 0.005,
+    "reproductive": 0.4017,
+    "resource": 0.0264,
     "resource economics": 0.0,
-    "return": 1.5888,
-    "role": 0.0401,
-    "scout": 0.0,
-    "selfish": 0.0551,
-    "sex determination": 0.0,
-    "sex differentiation": 0.0,
-    "sharing": 0.01,
-    "sibling": 0.0,
-    "sibship": 0.0,
-    "sister": 0.3308,
-    "slave": 0.3859,
-    "social": 1.1327,
-    "society": 1.0475,
-    "soldier": 0.2606,
-    "specialization": 0.005,
-    "sperm": 0.005,
-    "spermathecae": 0.0,
-    "subordinate": 0.015,
-    "superorganism": 0.0,
-    "supply": 0.7167,
-    "suppression": 0.0351,
-    "switching": 0.0,
-    "symbiont": 0.0,
-    "task": 0.1955,
+    "return": 0.773,
+    "role": 0.0757,
+    "scout": 0.0049,
+    "selfish": 0.0353,
+    "sex determination": 0.0061,
+    "sex differentiation": 0.0009,
+    "sharing": 0.0199,
+    "sibling": 0.0057,
+    "sibship": 0.0004,
+    "sister": 0.0919,
+    "slave": 0.0846,
+    "social": 1.0992,
+    "society": 4.5395,
+    "soldier": 0.1637,
+    "specialization": 0.0673,
+    "sperm": 0.1276,
+    "spermathecae": 0.0197,
+    "subordinate": 0.0887,
+    "superorganism": 0.0017,
+    "supply": 1.0875,
+    "suppression": 0.0506,
+    "switching": 0.003,
+    "symbiont": 0.0018,
+    "task": 0.2628,
     "task allocation": 0.0,
-    "trade": 0.0652,
+    "trade": 0.5528,
     "trade-off": 0.0,
     "trade-offs": 0.0,
-    "trail": 0.02,
-    "trophallaxis": 0.0,
-    "worker": 2.1652
+    "trail": 0.101,
+    "trophallaxis": 0.0049,
+    "worker": 0.6583
    },
-   "tokens": 1995178
+   "tokens": 162415661
   },
   "era_1900_1949": {
-   "documents": 82,
+   "documents": 1247,
    "domains_per_10k": {
-    "behavior_and_identity": 18.2209,
-    "economics": 4.2377,
-    "kin_and_relatedness": 9.1278,
-    "power_and_labor": 24.7062,
-    "sex_and_reproduction": 36.9113,
-    "unit_of_individuality": 61.0653
+    "behavior_and_identity": 4.7967,
+    "economics": 10.1417,
+    "kin_and_relatedness": 5.3331,
+    "power_and_labor": 12.6213,
+    "sex_and_reproduction": 18.0507,
+    "unit_of_individuality": 18.2926
+   },
+   "entropy": {
+    "bounded_to_top_terms": 20,
+    "domains": {
+     "behavior_and_identity": 1.107447,
+     "power_and_labor": 1.510184,
+     "sex_and_reproduction": 1.523989,
+     "unit_of_individuality": 1.457829
+    },
+    "n_excluded": 0,
+    "n_terms_evaluated": 20,
+    "n_valid": 20,
+    "terms": {
+     "behavior": 0.832871,
+     "colony": 1.552878,
+     "evolution": 1.311858,
+     "kind": 1.058259,
+     "kinds": 1.39295,
+     "king": 0.834933,
+     "kingdom": 1.764137,
+     "making": 1.300594,
+     "organism": 1.362781,
+     "organisms": 1.265451,
+     "queen": 1.638346,
+     "reproduction": 1.409632,
+     "selection": 1.286949,
+     "skin": 1.133779,
+     "striking": 1.084027,
+     "taking": 1.242451,
+     "to-day": 1.214278,
+     "worker": 1.382023,
+     "workers": 1.060212,
+     "working": 1.212655
+    }
+   },
+   "extraction": {
+    "domains": {
+     "behavior_and_identity": {
+      "bridging_term_count": 75,
+      "term_count": 197,
+      "total_frequency": 33304
+     },
+     "economics": {
+      "bridging_term_count": 2,
+      "term_count": 175,
+      "total_frequency": 10575
+     },
+     "kin_and_relatedness": {
+      "bridging_term_count": 4,
+      "term_count": 145,
+      "total_frequency": 8821
+     },
+     "power_and_labor": {
+      "bridging_term_count": 127,
+      "term_count": 481,
+      "total_frequency": 39401
+     },
+     "sex_and_reproduction": {
+      "bridging_term_count": 63,
+      "term_count": 701,
+      "total_frequency": 49325
+     },
+     "unit_of_individuality": {
+      "bridging_term_count": 20,
+      "term_count": 625,
+      "total_frequency": 44504
+     }
+    },
+    "min_frequency": 2,
+    "n_terms": 157847
+   },
+   "framing": {
+    "behavior_and_identity": {
+     "n_contexts": 33304,
+     "proportion": 0.005225
+    },
+    "economics": {
+     "n_contexts": 10575,
+     "proportion": 0.050875
+    },
+    "kin_and_relatedness": {
+     "n_contexts": 8821,
+     "proportion": 0.007369
+    },
+    "overall": {
+     "n_contexts": 153196,
+     "proportion": 0.009524
+    },
+    "power_and_labor": {
+     "n_contexts": 39401,
+     "proportion": 0.00769
+    },
+    "sex_and_reproduction": {
+     "n_contexts": 49325,
+     "proportion": 0.006569
+    },
+    "unit_of_individuality": {
+     "n_contexts": 44504,
+     "proportion": 0.007145
+    }
    },
    "terms_per_10k": {
-    "aggression": 0.0043,
-    "alarm": 0.1739,
-    "allocation": 0.0,
-    "altruism": 0.0043,
-    "ant": 20.2421,
-    "authority": 0.2478,
-    "autonomy": 0.0174,
-    "behavior": 1.8951,
-    "behavioral repertoire": 0.0,
-    "behaviour": 0.5086,
-    "benefit": 0.1174,
-    "boundary": 0.0869,
-    "brood": 2.1994,
-    "brood care": 0.0,
-    "brother": 0.0391,
-    "budget": 0.0,
-    "caste": 0.6085,
-    "coercion": 0.0,
-    "collective": 0.0782,
-    "colony": 7.5979,
+    "aggression": 0.0366,
+    "alarm": 0.0938,
+    "allocation": 0.0157,
+    "altruism": 0.0344,
+    "ant": 1.4267,
+    "authority": 0.4754,
+    "autonomy": 0.0189,
+    "behavior": 0.8352,
+    "behavioral repertoire": 0.0003,
+    "behaviour": 0.5616,
+    "benefit": 0.4043,
+    "boundary": 0.2046,
+    "brood": 0.4219,
+    "brood care": 0.0002,
+    "brother": 0.3029,
+    "budget": 0.0593,
+    "caste": 0.113,
+    "coercion": 0.0076,
+    "collective": 0.0801,
+    "colony": 1.1714,
     "colony economy": 0.0,
     "colony kin structure": 0.0,
     "colony-level": 0.0,
-    "command": 0.0435,
-    "conflict": 0.1043,
-    "control": 1.2127,
-    "cooperation": 0.0782,
-    "copulation": 0.0652,
-    "cost": 0.2999,
-    "daughter": 0.0261,
-    "demand": 0.1347,
-    "diploid": 0.0043,
-    "distribution": 0.9084,
-    "division": 0.8997,
-    "division of labor": 0.2391,
-    "dominant": 0.1478,
-    "efficiency": 0.1174,
-    "egg": 3.1382,
-    "emergence": 0.1999,
-    "eusocial": 0.0,
-    "eusociality": 0.0,
-    "exchange": 0.0869,
-    "expenditure": 0.0261,
-    "exploitation": 0.0261,
-    "family": 7.8413,
-    "female": 8.3237,
-    "fertilization": 0.1521,
-    "forager": 0.0261,
-    "foraging": 0.6172,
-    "foraging efficiency": 0.0,
-    "genetic": 0.0043,
-    "genetic relatedness": 0.0,
-    "grooming": 0.0043,
-    "group": 3.6903,
-    "guard": 0.2999,
-    "gyne": 0.0174,
-    "hamiltonian": 0.0,
-    "haplodiploidy": 0.0,
-    "haploid": 0.0,
-    "hierarchy": 0.0,
+    "command": 0.2059,
+    "conflict": 0.1524,
+    "control": 1.634,
+    "cooperation": 0.2069,
+    "copulation": 0.1049,
+    "cost": 1.4358,
+    "daughter": 0.2302,
+    "demand": 0.7293,
+    "diploid": 0.0289,
+    "distribution": 1.9258,
+    "division": 1.8094,
+    "division of labor": 0.0783,
+    "dominant": 0.3454,
+    "efficiency": 0.3155,
+    "egg": 1.7791,
+    "emergence": 0.1799,
+    "eusocial": 0.0009,
+    "eusociality": 0.0007,
+    "exchange": 0.4215,
+    "expenditure": 0.3431,
+    "exploitation": 0.1033,
+    "family": 3.1391,
+    "female": 4.1104,
+    "fertilization": 0.2608,
+    "forager": 0.0069,
+    "foraging": 0.098,
+    "foraging efficiency": 0.0001,
+    "genetic": 0.233,
+    "genetic relatedness": 0.0006,
+    "grooming": 0.0104,
+    "group": 3.0442,
+    "guard": 0.1917,
+    "gyne": 0.0012,
+    "hamiltonian": 0.001,
+    "haplodiploidy": 0.0006,
+    "haploid": 0.0156,
+    "hierarchy": 0.0236,
     "holobiont": 0.0,
-    "host": 1.517,
-    "identity": 0.113,
-    "inclusive fitness": 0.0,
-    "individual": 2.1516,
-    "individual-level": 0.0,
-    "investment": 0.0304,
-    "kin": 0.0652,
-    "kin selection": 0.0,
-    "labor": 0.5998,
-    "larva": 5.2724,
-    "larvae": 4.2901,
-    "major": 0.426,
-    "male": 3.699,
-    "mating": 0.1956,
-    "minor": 0.4347,
-    "monandry": 0.0,
-    "monogyny": 0.0,
-    "monopoly": 0.0,
-    "multilevel selection": 0.0,
-    "nepotism": 0.0,
-    "nest": 22.1459,
-    "nestmate": 0.0,
-    "nuptial": 0.5607,
-    "nurse": 0.1608,
-    "obedience": 0.1087,
-    "offspring": 0.7346,
-    "optimal foraging": 0.0,
-    "optimization": 0.0,
-    "organism": 0.2521,
-    "oviposition": 0.1652,
-    "parasite": 1.0301,
-    "parthenogenesis": 0.1782,
-    "plasticity": 0.3086,
-    "policing": 0.0087,
-    "polyandry": 0.0,
+    "host": 0.9199,
+    "identity": 0.1964,
+    "inclusive fitness": 0.0001,
+    "individual": 2.4546,
+    "individual-level": 0.0001,
+    "investment": 0.1319,
+    "kin": 0.1088,
+    "kin selection": 0.0004,
+    "labor": 0.3346,
+    "larva": 1.8204,
+    "larvae": 1.897,
+    "major": 0.7138,
+    "male": 4.1245,
+    "mating": 0.2794,
+    "minor": 0.5773,
+    "monandry": 0.0001,
+    "monogyny": 0.0007,
+    "monopoly": 0.0606,
+    "multilevel selection": 0.0001,
+    "nepotism": 0.0006,
+    "nest": 2.9942,
+    "nestmate": 0.0001,
+    "nuptial": 0.096,
+    "nurse": 0.0755,
+    "obedience": 0.0433,
+    "offspring": 0.6619,
+    "optimal foraging": 0.0002,
+    "optimization": 0.0002,
+    "organism": 1.164,
+    "oviposition": 0.0948,
+    "parasite": 0.5699,
+    "parthenogenesis": 0.1166,
+    "plasticity": 0.0685,
+    "policing": 0.0025,
+    "polyandry": 0.0099,
     "polyethism": 0.0,
-    "polygyny": 0.0,
-    "polymorphism": 0.8476,
-    "power": 2.282,
-    "productivity": 0.0043,
-    "profit": 0.0695,
-    "pupa": 2.2907,
-    "queen": 6.0679,
-    "recruitment": 0.0,
-    "regulation": 0.113,
-    "relatedness": 0.0,
+    "polygyny": 0.0084,
+    "polymorphism": 0.0648,
+    "power": 2.2582,
+    "productivity": 0.0756,
+    "profit": 0.3634,
+    "pupa": 0.597,
+    "queen": 1.0799,
+    "recruitment": 0.0228,
+    "regulation": 0.1753,
+    "relatedness": 0.0045,
     "relatedness coefficient": 0.0,
-    "reproduction": 0.2478,
+    "reproduction": 0.8956,
     "reproduction control": 0.0,
-    "reproductive": 0.3868,
-    "resource": 0.013,
+    "reproductive": 0.5281,
+    "resource": 0.0844,
     "resource economics": 0.0,
-    "return": 1.0736,
-    "role": 0.113,
-    "scout": 0.0609,
-    "selfish": 0.0174,
-    "sex determination": 0.0043,
-    "sex differentiation": 0.0,
-    "sharing": 0.0217,
-    "sibling": 0.0,
-    "sibship": 0.0,
-    "sister": 0.213,
-    "slave": 0.4129,
-    "social": 3.4642,
-    "society": 1.0258,
-    "soldier": 1.2649,
-    "specialization": 0.0956,
-    "sperm": 0.0391,
-    "spermathecae": 0.0,
-    "subordinate": 0.0652,
-    "superorganism": 0.0,
-    "supply": 1.1649,
-    "suppression": 0.0782,
-    "switching": 0.0,
-    "symbiont": 0.0,
-    "task": 0.2738,
+    "return": 1.087,
+    "role": 0.2311,
+    "scout": 0.0169,
+    "selfish": 0.0449,
+    "sex determination": 0.0238,
+    "sex differentiation": 0.0037,
+    "sharing": 0.0469,
+    "sibling": 0.0195,
+    "sibship": 0.0001,
+    "sister": 0.1917,
+    "slave": 0.1733,
+    "social": 2.4695,
+    "society": 2.8834,
+    "soldier": 0.1997,
+    "specialization": 0.1441,
+    "sperm": 0.2669,
+    "spermathecae": 0.0126,
+    "subordinate": 0.0995,
+    "superorganism": 0.0008,
+    "supply": 1.6198,
+    "suppression": 0.1018,
+    "switching": 0.0047,
+    "symbiont": 0.0021,
+    "task": 0.4107,
     "task allocation": 0.0,
-    "trade": 0.1695,
-    "trade-off": 0.0,
-    "trade-offs": 0.0,
-    "trail": 1.956,
-    "trophallaxis": 0.0,
-    "worker": 8.3759
+    "trade": 1.0813,
+    "trade-off": 0.0004,
+    "trade-offs": 0.0002,
+    "trail": 0.2041,
+    "trophallaxis": 0.0059,
+    "worker": 0.7938
    },
-   "tokens": 2300647
+   "tokens": 154851004
   },
   "era_1950_1970": {
-   "documents": 25,
+   "documents": 200,
    "domains_per_10k": {
-    "behavior_and_identity": 43.6012,
-    "economics": 4.4904,
-    "kin_and_relatedness": 1.9524,
-    "power_and_labor": 66.3128,
-    "sex_and_reproduction": 33.9048,
-    "unit_of_individuality": 50.4343
+    "behavior_and_identity": 10.0809,
+    "economics": 9.397,
+    "kin_and_relatedness": 4.8721,
+    "power_and_labor": 36.1983,
+    "sex_and_reproduction": 26.2966,
+    "unit_of_individuality": 17.0291
+   },
+   "entropy": {
+    "bounded_to_top_terms": 20,
+    "domains": {
+     "behavior_and_identity": 1.409278,
+     "kin_and_relatedness": 1.657321,
+     "power_and_labor": 1.430319,
+     "sex_and_reproduction": 1.511132,
+     "unit_of_individuality": 1.192997
+    },
+    "n_excluded": 0,
+    "n_terms_evaluated": 20,
+    "n_valid": 20,
+    "terms": {
+     "behavior": 1.421075,
+     "colony": 1.166567,
+     "evolution": 1.123992,
+     "genetic": 1.657321,
+     "genetics": 2.007397,
+     "kind": 1.311726,
+     "kinds": 1.336089,
+     "lacking": 1.524147,
+     "making": 0.705092,
+     "mating": 1.55488,
+     "meloidogyne": 1.887719,
+     "organism": 1.219426,
+     "organisms": 1.227179,
+     "queen": 1.463157,
+     "queensland": 1.225095,
+     "reproduction": 1.515358,
+     "selection": 1.622751,
+     "skin": 1.19221,
+     "worker": 1.397482,
+     "workers": 1.561165
+    }
+   },
+   "extraction": {
+    "domains": {
+     "behavior_and_identity": {
+      "bridging_term_count": 10,
+      "term_count": 31,
+      "total_frequency": 8587
+     },
+     "economics": {
+      "bridging_term_count": 0,
+      "term_count": 17,
+      "total_frequency": 1189
+     },
+     "kin_and_relatedness": {
+      "bridging_term_count": 1,
+      "term_count": 25,
+      "total_frequency": 1951
+     },
+     "power_and_labor": {
+      "bridging_term_count": 15,
+      "term_count": 147,
+      "total_frequency": 7024
+     },
+     "sex_and_reproduction": {
+      "bridging_term_count": 8,
+      "term_count": 102,
+      "total_frequency": 7108
+     },
+     "unit_of_individuality": {
+      "bridging_term_count": 2,
+      "term_count": 100,
+      "total_frequency": 5263
+     }
+    },
+    "min_frequency": 2,
+    "n_terms": 31643
+   },
+   "framing": {
+    "behavior_and_identity": {
+     "n_contexts": 8587,
+     "proportion": 0.004192
+    },
+    "economics": {
+     "n_contexts": 1189,
+     "proportion": 0.006728
+    },
+    "kin_and_relatedness": {
+     "n_contexts": 1951,
+     "proportion": 0.005126
+    },
+    "overall": {
+     "n_contexts": 26292,
+     "proportion": 0.002738
+    },
+    "power_and_labor": {
+     "n_contexts": 7024,
+     "proportion": 0.003132
+    },
+    "sex_and_reproduction": {
+     "n_contexts": 7108,
+     "proportion": 0.000703
+    },
+    "unit_of_individuality": {
+     "n_contexts": 5263,
+     "proportion": 0.00209
+    }
    },
    "terms_per_10k": {
-    "aggression": 0.0,
-    "alarm": 0.0,
-    "allocation": 0.0,
-    "altruism": 0.0,
-    "ant": 8.525,
-    "authority": 0.1302,
-    "autonomy": 0.0,
-    "behavior": 5.141,
+    "aggression": 0.0502,
+    "alarm": 0.0663,
+    "allocation": 0.0285,
+    "altruism": 0.0087,
+    "ant": 2.061,
+    "authority": 0.2108,
+    "autonomy": 0.0105,
+    "behavior": 3.1553,
     "behavioral repertoire": 0.0,
-    "behaviour": 0.0,
-    "benefit": 0.0651,
-    "boundary": 0.1302,
-    "brood": 2.1475,
-    "brood care": 0.0,
-    "brother": 0.0,
-    "budget": 0.0,
-    "caste": 2.2126,
-    "coercion": 0.0,
-    "collective": 0.0,
-    "colony": 9.9567,
+    "behaviour": 0.7087,
+    "benefit": 0.1352,
+    "boundary": 0.1773,
+    "brood": 0.6343,
+    "brood care": 0.0093,
+    "brother": 0.098,
+    "budget": 0.0546,
+    "caste": 0.253,
+    "coercion": 0.0031,
+    "collective": 0.0484,
+    "colony": 1.2258,
     "colony economy": 0.0,
     "colony kin structure": 0.0,
     "colony-level": 0.0,
-    "command": 0.0,
-    "conflict": 0.0,
-    "control": 1.6269,
-    "cooperation": 0.1302,
-    "copulation": 0.0,
-    "cost": 0.0,
-    "daughter": 0.0,
-    "demand": 0.0,
-    "diploid": 0.0,
-    "distribution": 3.1887,
-    "division": 0.3254,
-    "division of labor": 0.0,
-    "dominant": 0.0651,
-    "efficiency": 0.0,
-    "egg": 0.5857,
-    "emergence": 0.1302,
-    "eusocial": 0.0,
+    "command": 0.0403,
+    "conflict": 0.0539,
+    "control": 19.1488,
+    "cooperation": 0.2263,
+    "copulation": 0.1829,
+    "cost": 0.4625,
+    "daughter": 0.1463,
+    "demand": 0.2021,
+    "diploid": 0.1296,
+    "distribution": 5.0668,
+    "division": 2.6779,
+    "division of labor": 0.057,
+    "dominant": 0.4309,
+    "efficiency": 0.5239,
+    "egg": 2.1025,
+    "emergence": 0.4756,
+    "eusocial": 0.0006,
     "eusociality": 0.0,
-    "exchange": 0.0651,
-    "expenditure": 0.0,
-    "exploitation": 0.0,
-    "family": 1.6269,
-    "female": 9.371,
-    "fertilization": 0.0,
-    "forager": 0.0651,
-    "foraging": 3.8395,
+    "exchange": 0.47,
+    "expenditure": 0.036,
+    "exploitation": 0.067,
+    "family": 2.7876,
+    "female": 4.507,
+    "fertilization": 0.4923,
+    "forager": 0.0155,
+    "foraging": 0.2455,
     "foraging efficiency": 0.0,
-    "genetic": 0.1302,
+    "genetic": 0.9331,
     "genetic relatedness": 0.0,
-    "grooming": 0.0,
-    "group": 17.5706,
-    "guard": 0.0,
-    "gyne": 0.0,
+    "grooming": 0.0118,
+    "group": 4.6992,
+    "guard": 0.0942,
+    "gyne": 0.0012,
     "hamiltonian": 0.0,
-    "haplodiploidy": 0.0,
-    "haploid": 0.0,
-    "hierarchy": 0.0,
+    "haplodiploidy": 0.0006,
+    "haploid": 0.0663,
+    "hierarchy": 0.0453,
     "holobiont": 0.0,
-    "host": 24.3385,
-    "identity": 0.1952,
+    "host": 4.7134,
+    "identity": 0.2927,
     "inclusive fitness": 0.0,
-    "individual": 1.692,
+    "individual": 1.782,
     "individual-level": 0.0,
-    "investment": 0.0,
-    "kin": 0.0,
+    "investment": 0.0254,
+    "kin": 0.0961,
     "kin selection": 0.0,
-    "labor": 0.0,
-    "larva": 0.7809,
-    "larvae": 2.2126,
-    "major": 3.9046,
-    "male": 4.4252,
-    "mating": 0.4555,
-    "minor": 1.6269,
-    "monandry": 0.0,
-    "monogyny": 0.0,
-    "monopoly": 0.0,
+    "labor": 0.478,
+    "larva": 1.5984,
+    "larvae": 5.7731,
+    "major": 1.6865,
+    "male": 4.949,
+    "mating": 0.8036,
+    "minor": 0.7428,
+    "monandry": 0.0006,
+    "monogyny": 0.0081,
+    "monopoly": 0.0099,
     "multilevel selection": 0.0,
     "nepotism": 0.0,
-    "nest": 11.1931,
+    "nest": 2.0368,
     "nestmate": 0.0,
-    "nuptial": 0.0,
-    "nurse": 3.6443,
-    "obedience": 0.0,
-    "offspring": 0.0651,
+    "nuptial": 0.0781,
+    "nurse": 0.1104,
+    "obedience": 0.0068,
+    "offspring": 0.3292,
     "optimal foraging": 0.0,
     "optimization": 0.0,
-    "organism": 0.1302,
-    "oviposition": 0.3905,
-    "parasite": 0.0,
-    "parthenogenesis": 0.0,
-    "plasticity": 0.0651,
+    "organism": 1.2171,
+    "oviposition": 0.7378,
+    "parasite": 1.4701,
+    "parthenogenesis": 0.1209,
+    "plasticity": 0.0298,
     "policing": 0.0,
-    "polyandry": 0.0,
-    "polyethism": 0.0,
-    "polygyny": 0.0,
-    "polymorphism": 0.1302,
-    "power": 0.1952,
-    "productivity": 0.0,
-    "profit": 0.0,
-    "pupa": 0.0651,
-    "queen": 12.9502,
-    "recruitment": 0.0,
-    "regulation": 0.0,
-    "relatedness": 0.0,
+    "polyandry": 0.0056,
+    "polyethism": 0.0062,
+    "polygyny": 0.0056,
+    "polymorphism": 0.364,
+    "power": 0.5221,
+    "productivity": 0.3714,
+    "profit": 0.1097,
+    "pupa": 0.2902,
+    "queen": 1.1384,
+    "recruitment": 0.0248,
+    "regulation": 0.5549,
+    "relatedness": 0.0025,
     "relatedness coefficient": 0.0,
-    "reproduction": 0.1952,
-    "reproduction control": 0.0,
-    "reproductive": 2.6681,
-    "resource": 0.0,
+    "reproduction": 1.6933,
+    "reproduction control": 0.0006,
+    "reproductive": 1.2097,
+    "resource": 0.1116,
     "resource economics": 0.0,
-    "return": 0.3905,
-    "role": 0.1302,
-    "scout": 0.0,
-    "selfish": 0.0,
-    "sex determination": 0.0,
-    "sex differentiation": 0.0,
-    "sharing": 0.1302,
-    "sibling": 0.0,
+    "return": 0.4477,
+    "role": 1.4719,
+    "scout": 0.0192,
+    "selfish": 0.0019,
+    "sex determination": 0.0961,
+    "sex differentiation": 0.0223,
+    "sharing": 0.0322,
+    "sibling": 0.1085,
     "sibship": 0.0,
-    "sister": 0.0,
-    "slave": 0.0,
-    "social": 0.6508,
-    "society": 0.2603,
-    "soldier": 5.987,
-    "specialization": 0.2603,
-    "sperm": 0.1952,
-    "spermathecae": 0.1302,
-    "subordinate": 0.0,
-    "superorganism": 0.0,
-    "supply": 0.6508,
-    "suppression": 0.0,
-    "switching": 0.0,
-    "symbiont": 0.0,
-    "task": 0.2603,
+    "sister": 0.08,
+    "slave": 0.1221,
+    "social": 1.4961,
+    "society": 1.4862,
+    "soldier": 0.1209,
+    "specialization": 0.2213,
+    "sperm": 0.6957,
+    "spermathecae": 0.1631,
+    "subordinate": 0.0453,
+    "superorganism": 0.0099,
+    "supply": 0.8643,
+    "suppression": 0.3695,
+    "switching": 0.0087,
+    "symbiont": 0.0099,
+    "task": 0.1686,
     "task allocation": 0.0,
-    "trade": 0.0,
-    "trade-off": 0.0,
+    "trade": 0.4545,
+    "trade-off": 0.0006,
     "trade-offs": 0.0,
-    "trail": 0.1952,
-    "trophallaxis": 0.0651,
-    "worker": 18.9372
+    "trail": 0.1922,
+    "trophallaxis": 0.0056,
+    "worker": 1.4608
    },
-   "tokens": 153666
+   "tokens": 16128385
   }
  },
- "generated": "2026-09-16T23:01:54+00:00",
+ "generated": "2026-09-18T10:48:02+00:00",
  "layer": "bhl_historical",
+ "skipped": [],
  "source": {
   "data_dir": "/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/data/bhl",
-  "documents": 130,
+  "documents": 2460,
   "harvester": "src/data/bhl_corpus.py",
   "matching": "deterministic token-window matching over normalized (NFC, lowercased, hyphen-break-joined) OCR text; frequencies per 10k era tokens, 4 decimals",
+  "ocr_cleaning": "clean_ocr_text: normalize_text (NFC fold, hyphen-break join, whitespace collapse) plus removal of OCR speck tokens (standalone digit runs and single letters); domain seed terms are >=2 alphabetic characters, so these tokens carry no vocabulary signal",
+  "stack": {
+   "entropy": "DomainAnalyzer.quantify_ambiguity_metrics over the top 20 most frequent extracted terms per era (documented bounded fraction); only status=ok terms report entropy",
+   "extraction": "TerminologyExtractor over clean_ocr_text output, min_frequency=2 per era",
+   "framing": "occurrence-context anthropomorphic framing proportions via the public LinguisticFeatureExtractor API (+-3-token window); vocabulary reconstructed from the extraction token stream and cross-checked"
+  },
   "vocabulary_source": "analysis.term_extraction.TerminologyExtractor.DOMAIN_SEEDS"
  },
  "terms": {
@@ -489,182 +797,182 @@
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 1,
-   "era_1900_1949": 1,
-   "era_1950_1970": 0,
-   "total": 2
+   "era_1850_1899": 264,
+   "era_1900_1949": 567,
+   "era_1950_1970": 81,
+   "total": 912
   },
   "alarm": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 50,
-   "era_1900_1949": 40,
-   "era_1950_1970": 0,
-   "total": 90
+   "era_1850_1899": 1873,
+   "era_1900_1949": 1452,
+   "era_1950_1970": 107,
+   "total": 3432
   },
   "allocation": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 128,
+   "era_1900_1949": 243,
+   "era_1950_1970": 46,
+   "total": 417
   },
   "altruism": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 1,
-   "era_1950_1970": 0,
-   "total": 1
+   "era_1850_1899": 278,
+   "era_1900_1949": 532,
+   "era_1950_1970": 14,
+   "total": 824
   },
   "ant": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 4458,
-   "era_1900_1949": 4657,
-   "era_1950_1970": 131,
-   "total": 9246
+   "era_1850_1899": 37475,
+   "era_1900_1949": 22092,
+   "era_1950_1970": 3324,
+   "total": 62891
   },
   "authority": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 67,
-   "era_1900_1949": 57,
-   "era_1950_1970": 2,
-   "total": 126
+   "era_1850_1899": 6969,
+   "era_1900_1949": 7362,
+   "era_1950_1970": 340,
+   "total": 14671
   },
   "autonomy": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 4,
-   "era_1950_1970": 0,
-   "total": 4
+   "era_1850_1899": 60,
+   "era_1900_1949": 293,
+   "era_1950_1970": 17,
+   "total": 370
   },
   "behavior": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 436,
-   "era_1950_1970": 79,
-   "total": 515
+   "era_1850_1899": 5911,
+   "era_1900_1949": 12933,
+   "era_1950_1970": 5089,
+   "total": 23933
   },
   "behavioral repertoire": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 2,
+   "era_1900_1949": 4,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 6
   },
   "behaviour": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 280,
-   "era_1900_1949": 117,
-   "era_1950_1970": 0,
-   "total": 397
+   "era_1850_1899": 3041,
+   "era_1900_1949": 8696,
+   "era_1950_1970": 1143,
+   "total": 12880
   },
   "benefit": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 18,
-   "era_1900_1949": 27,
-   "era_1950_1970": 1,
-   "total": 46
+   "era_1850_1899": 5047,
+   "era_1900_1949": 6260,
+   "era_1950_1970": 218,
+   "total": 11525
   },
   "boundary": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 9,
-   "era_1900_1949": 20,
-   "era_1950_1970": 2,
-   "total": 31
+   "era_1850_1899": 2731,
+   "era_1900_1949": 3169,
+   "era_1950_1970": 286,
+   "total": 6186
   },
   "brood": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 76,
-   "era_1900_1949": 506,
-   "era_1950_1970": 33,
-   "total": 615
+   "era_1850_1899": 9356,
+   "era_1900_1949": 6533,
+   "era_1950_1970": 1023,
+   "total": 16912
   },
   "brood care": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 6,
+   "era_1900_1949": 3,
+   "era_1950_1970": 15,
+   "total": 24
   },
   "brother": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 11,
-   "era_1900_1949": 9,
-   "era_1950_1970": 0,
-   "total": 20
+   "era_1850_1899": 2514,
+   "era_1900_1949": 4691,
+   "era_1950_1970": 158,
+   "total": 7363
   },
   "budget": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 301,
+   "era_1900_1949": 918,
+   "era_1950_1970": 88,
+   "total": 1307
   },
   "caste": {
    "domains": [
     "behavior_and_identity",
     "power_and_labor"
    ],
-   "era_1850_1899": 9,
-   "era_1900_1949": 140,
-   "era_1950_1970": 34,
-   "total": 183
+   "era_1850_1899": 1358,
+   "era_1900_1949": 1750,
+   "era_1950_1970": 408,
+   "total": 3516
   },
   "coercion": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 123,
+   "era_1900_1949": 117,
+   "era_1950_1970": 5,
+   "total": 245
   },
   "collective": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 12,
-   "era_1900_1949": 18,
-   "era_1950_1970": 0,
-   "total": 30
+   "era_1850_1899": 678,
+   "era_1900_1949": 1240,
+   "era_1950_1970": 78,
+   "total": 1996
   },
   "colony": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 274,
-   "era_1900_1949": 1748,
-   "era_1950_1970": 153,
-   "total": 2175
+   "era_1850_1899": 15485,
+   "era_1900_1949": 18139,
+   "era_1950_1970": 1977,
+   "total": 35601
   },
   "colony economy": {
    "domains": [
@@ -697,334 +1005,334 @@
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 10,
-   "era_1900_1949": 10,
-   "era_1950_1970": 0,
-   "total": 20
+   "era_1850_1899": 2709,
+   "era_1900_1949": 3188,
+   "era_1950_1970": 65,
+   "total": 5962
   },
   "conflict": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 31,
-   "era_1900_1949": 24,
-   "era_1950_1970": 0,
-   "total": 55
+   "era_1850_1899": 1271,
+   "era_1900_1949": 2360,
+   "era_1950_1970": 87,
+   "total": 3718
   },
   "control": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 9,
-   "era_1900_1949": 279,
-   "era_1950_1970": 25,
-   "total": 313
+   "era_1850_1899": 9602,
+   "era_1900_1949": 25302,
+   "era_1950_1970": 30884,
+   "total": 65788
   },
   "cooperation": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 5,
-   "era_1900_1949": 18,
-   "era_1950_1970": 2,
-   "total": 25
+   "era_1850_1899": 799,
+   "era_1900_1949": 3204,
+   "era_1950_1970": 365,
+   "total": 4368
   },
   "copulation": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 15,
-   "era_1950_1970": 0,
-   "total": 15
+   "era_1850_1899": 1804,
+   "era_1900_1949": 1625,
+   "era_1950_1970": 295,
+   "total": 3724
   },
   "cost": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 12,
-   "era_1900_1949": 69,
-   "era_1950_1970": 0,
-   "total": 81
+   "era_1850_1899": 13099,
+   "era_1900_1949": 22234,
+   "era_1950_1970": 746,
+   "total": 36079
   },
   "daughter": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 5,
-   "era_1900_1949": 6,
-   "era_1950_1970": 0,
-   "total": 11
+   "era_1850_1899": 2099,
+   "era_1900_1949": 3564,
+   "era_1950_1970": 236,
+   "total": 5899
   },
   "demand": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 12,
-   "era_1900_1949": 31,
-   "era_1950_1970": 0,
-   "total": 43
+   "era_1850_1899": 6122,
+   "era_1900_1949": 11293,
+   "era_1950_1970": 326,
+   "total": 17741
   },
   "diploid": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 1,
-   "era_1950_1970": 0,
-   "total": 1
+   "era_1850_1899": 119,
+   "era_1900_1949": 447,
+   "era_1950_1970": 209,
+   "total": 775
   },
   "distribution": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 82,
-   "era_1900_1949": 209,
-   "era_1950_1970": 49,
-   "total": 340
+   "era_1850_1899": 24229,
+   "era_1900_1949": 29821,
+   "era_1950_1970": 8172,
+   "total": 62222
   },
   "division": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 348,
-   "era_1900_1949": 207,
-   "era_1950_1970": 5,
-   "total": 560
+   "era_1850_1899": 23005,
+   "era_1900_1949": 28019,
+   "era_1950_1970": 4319,
+   "total": 55343
   },
   "division of labor": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 1,
-   "era_1900_1949": 55,
-   "era_1950_1970": 0,
-   "total": 56
+   "era_1850_1899": 266,
+   "era_1900_1949": 1213,
+   "era_1950_1970": 92,
+   "total": 1571
   },
   "dominant": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 6,
-   "era_1900_1949": 34,
-   "era_1950_1970": 1,
-   "total": 41
+   "era_1850_1899": 2050,
+   "era_1900_1949": 5349,
+   "era_1950_1970": 695,
+   "total": 8094
   },
   "efficiency": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 27,
-   "era_1950_1970": 0,
-   "total": 27
+   "era_1850_1899": 1613,
+   "era_1900_1949": 4886,
+   "era_1950_1970": 845,
+   "total": 7344
   },
   "egg": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 151,
-   "era_1900_1949": 722,
-   "era_1950_1970": 9,
-   "total": 882
+   "era_1850_1899": 27255,
+   "era_1900_1949": 27550,
+   "era_1950_1970": 3391,
+   "total": 58196
   },
   "emergence": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 14,
-   "era_1900_1949": 46,
-   "era_1950_1970": 2,
-   "total": 62
+   "era_1850_1899": 3292,
+   "era_1900_1949": 2785,
+   "era_1950_1970": 767,
+   "total": 6844
   },
   "eusocial": {
    "domains": [
     "unit_of_individuality"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1900_1949": 14,
+   "era_1950_1970": 1,
+   "total": 15
   },
   "eusociality": {
    "domains": [
     "unit_of_individuality"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1900_1949": 11,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 11
   },
   "exchange": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 18,
-   "era_1900_1949": 20,
-   "era_1950_1970": 1,
-   "total": 39
+   "era_1850_1899": 8082,
+   "era_1900_1949": 6527,
+   "era_1950_1970": 758,
+   "total": 15367
   },
   "expenditure": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 6,
-   "era_1950_1970": 0,
-   "total": 6
+   "era_1850_1899": 3599,
+   "era_1900_1949": 5313,
+   "era_1950_1970": 58,
+   "total": 8970
   },
   "exploitation": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 1,
-   "era_1900_1949": 6,
-   "era_1950_1970": 0,
-   "total": 7
+   "era_1850_1899": 488,
+   "era_1900_1949": 1599,
+   "era_1950_1970": 108,
+   "total": 2195
   },
   "family": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 693,
-   "era_1900_1949": 1804,
-   "era_1950_1970": 25,
-   "total": 2522
+   "era_1850_1899": 37492,
+   "era_1900_1949": 48610,
+   "era_1950_1970": 4496,
+   "total": 90598
   },
   "female": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 754,
-   "era_1900_1949": 1915,
-   "era_1950_1970": 144,
-   "total": 2813
+   "era_1850_1899": 96287,
+   "era_1900_1949": 63650,
+   "era_1950_1970": 7269,
+   "total": 167206
   },
   "fertilization": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 1,
-   "era_1900_1949": 35,
-   "era_1950_1970": 0,
-   "total": 36
+   "era_1850_1899": 2673,
+   "era_1900_1949": 4039,
+   "era_1950_1970": 794,
+   "total": 7506
   },
   "forager": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 6,
-   "era_1950_1970": 1,
-   "total": 7
+   "era_1850_1899": 34,
+   "era_1900_1949": 107,
+   "era_1950_1970": 25,
+   "total": 166
   },
   "foraging": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 17,
-   "era_1900_1949": 142,
-   "era_1950_1970": 59,
-   "total": 218
+   "era_1850_1899": 1280,
+   "era_1900_1949": 1518,
+   "era_1950_1970": 396,
+   "total": 3194
   },
   "foraging efficiency": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 1,
+   "era_1900_1949": 1,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 2
   },
   "genetic": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 1,
-   "era_1950_1970": 2,
-   "total": 3
+   "era_1850_1899": 845,
+   "era_1900_1949": 3608,
+   "era_1950_1970": 1505,
+   "total": 5958
   },
   "genetic relatedness": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 1,
+   "era_1900_1949": 9,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 10
   },
   "grooming": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 1,
-   "era_1950_1970": 0,
-   "total": 1
+   "era_1850_1899": 218,
+   "era_1900_1949": 161,
+   "era_1950_1970": 19,
+   "total": 398
   },
   "group": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 135,
-   "era_1900_1949": 849,
-   "era_1950_1970": 270,
-   "total": 1254
+   "era_1850_1899": 35827,
+   "era_1900_1949": 47139,
+   "era_1950_1970": 7579,
+   "total": 90545
   },
   "guard": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 67,
-   "era_1900_1949": 69,
-   "era_1950_1970": 0,
-   "total": 136
+   "era_1850_1899": 2131,
+   "era_1900_1949": 2968,
+   "era_1950_1970": 152,
+   "total": 5251
   },
   "gyne": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 4,
-   "era_1950_1970": 0,
-   "total": 4
+   "era_1850_1899": 18,
+   "era_1900_1949": 19,
+   "era_1950_1970": 2,
+   "total": 39
   },
   "hamiltonian": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 3,
+   "era_1900_1949": 15,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 18
   },
   "haplodiploidy": {
    "domains": [
     "sex_and_reproduction"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1900_1949": 9,
+   "era_1950_1970": 1,
+   "total": 10
   },
   "haploid": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 109,
+   "era_1900_1949": 241,
+   "era_1950_1970": 107,
+   "total": 457
   },
   "hierarchy": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 246,
+   "era_1900_1949": 366,
+   "era_1950_1970": 73,
+   "total": 685
   },
   "holobiont": {
    "domains": [
@@ -1039,316 +1347,316 @@
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 19,
-   "era_1900_1949": 349,
-   "era_1950_1970": 374,
-   "total": 742
+   "era_1850_1899": 9532,
+   "era_1900_1949": 14244,
+   "era_1950_1970": 7602,
+   "total": 31378
   },
   "identity": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 15,
-   "era_1900_1949": 26,
-   "era_1950_1970": 3,
-   "total": 44
+   "era_1850_1899": 3792,
+   "era_1900_1949": 3041,
+   "era_1950_1970": 472,
+   "total": 7305
   },
   "inclusive fitness": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 1,
+   "era_1900_1949": 1,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 2
   },
   "individual": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 223,
-   "era_1900_1949": 495,
-   "era_1950_1970": 26,
-   "total": 744
+   "era_1850_1899": 24613,
+   "era_1900_1949": 38010,
+   "era_1950_1970": 2874,
+   "total": 65497
   },
   "individual-level": {
    "domains": [
     "unit_of_individuality"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1900_1949": 1,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 1
   },
   "investment": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 2,
-   "era_1900_1949": 7,
-   "era_1950_1970": 0,
-   "total": 9
+   "era_1850_1899": 806,
+   "era_1900_1949": 2043,
+   "era_1950_1970": 41,
+   "total": 2890
   },
   "kin": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 15,
-   "era_1950_1970": 0,
-   "total": 15
+   "era_1850_1899": 508,
+   "era_1900_1949": 1685,
+   "era_1950_1970": 155,
+   "total": 2348
   },
   "kin selection": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 5,
+   "era_1900_1949": 6,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 11
   },
   "labor": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 6,
-   "era_1900_1949": 138,
-   "era_1950_1970": 0,
-   "total": 144
+   "era_1850_1899": 3206,
+   "era_1900_1949": 5181,
+   "era_1950_1970": 771,
+   "total": 9158
   },
   "larva": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 659,
-   "era_1900_1949": 1213,
-   "era_1950_1970": 12,
-   "total": 1884
+   "era_1850_1899": 39219,
+   "era_1900_1949": 28189,
+   "era_1950_1970": 2578,
+   "total": 69986
   },
   "larvae": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 469,
-   "era_1900_1949": 987,
-   "era_1950_1970": 34,
-   "total": 1490
+   "era_1850_1899": 35185,
+   "era_1900_1949": 29375,
+   "era_1950_1970": 9311,
+   "total": 73871
   },
   "major": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 74,
-   "era_1900_1949": 98,
-   "era_1950_1970": 60,
-   "total": 232
+   "era_1850_1899": 9469,
+   "era_1900_1949": 11054,
+   "era_1950_1970": 2720,
+   "total": 23243
   },
   "male": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 624,
-   "era_1900_1949": 851,
-   "era_1950_1970": 68,
-   "total": 1543
+   "era_1850_1899": 109730,
+   "era_1900_1949": 63868,
+   "era_1950_1970": 7982,
+   "total": 181580
   },
   "mating": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 45,
-   "era_1950_1970": 7,
-   "total": 52
+   "era_1850_1899": 2195,
+   "era_1900_1949": 4326,
+   "era_1950_1970": 1296,
+   "total": 7817
   },
   "minor": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 79,
-   "era_1900_1949": 100,
-   "era_1950_1970": 25,
-   "total": 204
+   "era_1850_1899": 9730,
+   "era_1900_1949": 8939,
+   "era_1950_1970": 1198,
+   "total": 19867
   },
   "monandry": {
    "domains": [
     "sex_and_reproduction"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1900_1949": 1,
+   "era_1950_1970": 1,
+   "total": 2
   },
   "monogyny": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 5,
+   "era_1900_1949": 11,
+   "era_1950_1970": 13,
+   "total": 29
   },
   "monopoly": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 628,
+   "era_1900_1949": 939,
+   "era_1950_1970": 16,
+   "total": 1583
   },
   "multilevel selection": {
    "domains": [
     "kin_and_relatedness"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1900_1949": 1,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 1
   },
   "nepotism": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 4,
+   "era_1900_1949": 10,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 14
   },
   "nest": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 5593,
-   "era_1900_1949": 5095,
-   "era_1950_1970": 172,
-   "total": 10860
+   "era_1850_1899": 54135,
+   "era_1900_1949": 46366,
+   "era_1950_1970": 3285,
+   "total": 103786
   },
   "nestmate": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 7,
+   "era_1900_1949": 2,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 9
   },
   "nuptial": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 4,
-   "era_1900_1949": 129,
-   "era_1950_1970": 0,
-   "total": 133
+   "era_1850_1899": 857,
+   "era_1900_1949": 1486,
+   "era_1950_1970": 126,
+   "total": 2469
   },
   "nurse": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 34,
-   "era_1900_1949": 37,
-   "era_1950_1970": 56,
-   "total": 127
+   "era_1850_1899": 1191,
+   "era_1900_1949": 1169,
+   "era_1950_1970": 178,
+   "total": 2538
   },
   "obedience": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 11,
-   "era_1900_1949": 25,
-   "era_1950_1970": 0,
-   "total": 36
+   "era_1850_1899": 1047,
+   "era_1900_1949": 670,
+   "era_1950_1970": 11,
+   "total": 1728
   },
   "offspring": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 63,
-   "era_1900_1949": 169,
-   "era_1950_1970": 1,
-   "total": 233
+   "era_1850_1899": 7202,
+   "era_1900_1949": 10249,
+   "era_1950_1970": 531,
+   "total": 17982
   },
   "optimal foraging": {
    "domains": [
     "economics"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1900_1949": 3,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 3
   },
   "optimization": {
    "domains": [
     "economics"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1900_1949": 3,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 3
   },
   "organism": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 1,
-   "era_1900_1949": 58,
-   "era_1950_1970": 2,
-   "total": 61
+   "era_1850_1899": 10507,
+   "era_1900_1949": 18024,
+   "era_1950_1970": 1963,
+   "total": 30494
   },
   "oviposition": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 3,
-   "era_1900_1949": 38,
-   "era_1950_1970": 6,
-   "total": 47
+   "era_1850_1899": 2083,
+   "era_1900_1949": 1468,
+   "era_1950_1970": 1190,
+   "total": 4741
   },
   "parasite": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 28,
-   "era_1900_1949": 237,
-   "era_1950_1970": 0,
-   "total": 265
+   "era_1850_1899": 7082,
+   "era_1900_1949": 8825,
+   "era_1950_1970": 2371,
+   "total": 18278
   },
   "parthenogenesis": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 41,
-   "era_1950_1970": 0,
-   "total": 41
+   "era_1850_1899": 2015,
+   "era_1900_1949": 1806,
+   "era_1950_1970": 195,
+   "total": 4016
   },
   "plasticity": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 2,
-   "era_1900_1949": 71,
-   "era_1950_1970": 1,
-   "total": 74
+   "era_1850_1899": 325,
+   "era_1900_1949": 1061,
+   "era_1950_1970": 48,
+   "total": 1434
   },
   "policing": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 2,
+   "era_1850_1899": 7,
+   "era_1900_1949": 39,
    "era_1950_1970": 0,
-   "total": 2
+   "total": 46
   },
   "polyandry": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 391,
+   "era_1900_1949": 154,
+   "era_1950_1970": 9,
+   "total": 554
   },
   "polyethism": {
    "domains": [
@@ -1356,99 +1664,99 @@
    ],
    "era_1850_1899": 0,
    "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1950_1970": 10,
+   "total": 10
   },
   "polygyny": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 28,
+   "era_1900_1949": 130,
+   "era_1950_1970": 9,
+   "total": 167
   },
   "polymorphism": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 195,
-   "era_1950_1970": 2,
-   "total": 197
+   "era_1850_1899": 750,
+   "era_1900_1949": 1004,
+   "era_1950_1970": 587,
+   "total": 2341
   },
   "power": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 1017,
-   "era_1900_1949": 525,
-   "era_1950_1970": 3,
-   "total": 1545
+   "era_1850_1899": 32291,
+   "era_1900_1949": 34969,
+   "era_1950_1970": 842,
+   "total": 68102
   },
   "productivity": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 1,
-   "era_1950_1970": 0,
-   "total": 1
+   "era_1850_1899": 129,
+   "era_1900_1949": 1171,
+   "era_1950_1970": 599,
+   "total": 1899
   },
   "profit": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 22,
-   "era_1900_1949": 16,
-   "era_1950_1970": 0,
-   "total": 38
+   "era_1850_1899": 4732,
+   "era_1900_1949": 5627,
+   "era_1950_1970": 177,
+   "total": 10536
   },
   "pupa": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 244,
-   "era_1900_1949": 527,
-   "era_1950_1970": 1,
-   "total": 772
+   "era_1850_1899": 12151,
+   "era_1900_1949": 9245,
+   "era_1950_1970": 468,
+   "total": 21864
   },
   "queen": {
    "domains": [
     "power_and_labor",
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 1018,
-   "era_1900_1949": 1396,
-   "era_1950_1970": 199,
-   "total": 2613
+   "era_1850_1899": 14606,
+   "era_1900_1949": 16722,
+   "era_1950_1970": 1836,
+   "total": 33164
   },
   "recruitment": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 112,
+   "era_1900_1949": 353,
+   "era_1950_1970": 40,
+   "total": 505
   },
   "regulation": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 5,
-   "era_1900_1949": 26,
-   "era_1950_1970": 0,
-   "total": 31
+   "era_1850_1899": 1323,
+   "era_1900_1949": 2714,
+   "era_1950_1970": 895,
+   "total": 4932
   },
   "relatedness": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 12,
+   "era_1900_1949": 69,
+   "era_1950_1970": 4,
+   "total": 85
   },
   "relatedness coefficient": {
    "domains": [
@@ -1463,10 +1771,10 @@
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 38,
-   "era_1900_1949": 57,
-   "era_1950_1970": 3,
-   "total": 98
+   "era_1850_1899": 8029,
+   "era_1900_1949": 13869,
+   "era_1950_1970": 2731,
+   "total": 24629
   },
   "reproduction control": {
    "domains": [
@@ -1474,26 +1782,26 @@
    ],
    "era_1850_1899": 0,
    "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1950_1970": 1,
+   "total": 1
   },
   "reproductive": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 4,
-   "era_1900_1949": 89,
-   "era_1950_1970": 41,
-   "total": 134
+   "era_1850_1899": 6525,
+   "era_1900_1949": 8177,
+   "era_1950_1970": 1951,
+   "total": 16653
   },
   "resource": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 1,
-   "era_1900_1949": 3,
-   "era_1950_1970": 0,
-   "total": 4
+   "era_1850_1899": 429,
+   "era_1900_1949": 1307,
+   "era_1950_1970": 180,
+   "total": 1916
   },
   "resource economics": {
    "domains": [
@@ -1508,217 +1816,217 @@
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 317,
-   "era_1900_1949": 247,
-   "era_1950_1970": 6,
-   "total": 570
+   "era_1850_1899": 12555,
+   "era_1900_1949": 16832,
+   "era_1950_1970": 722,
+   "total": 30109
   },
   "role": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 8,
-   "era_1900_1949": 26,
-   "era_1950_1970": 2,
-   "total": 36
+   "era_1850_1899": 1230,
+   "era_1900_1949": 3579,
+   "era_1950_1970": 2374,
+   "total": 7183
   },
   "scout": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 14,
-   "era_1950_1970": 0,
-   "total": 14
+   "era_1850_1899": 80,
+   "era_1900_1949": 261,
+   "era_1950_1970": 31,
+   "total": 372
   },
   "selfish": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 11,
-   "era_1900_1949": 4,
-   "era_1950_1970": 0,
-   "total": 15
+   "era_1850_1899": 574,
+   "era_1900_1949": 695,
+   "era_1950_1970": 3,
+   "total": 1272
   },
   "sex determination": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 1,
-   "era_1950_1970": 0,
-   "total": 1
+   "era_1850_1899": 99,
+   "era_1900_1949": 369,
+   "era_1950_1970": 155,
+   "total": 623
   },
   "sex differentiation": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 14,
+   "era_1900_1949": 57,
+   "era_1950_1970": 36,
+   "total": 107
   },
   "sharing": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 2,
-   "era_1900_1949": 5,
-   "era_1950_1970": 2,
-   "total": 9
+   "era_1850_1899": 324,
+   "era_1900_1949": 726,
+   "era_1950_1970": 52,
+   "total": 1102
   },
   "sibling": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 92,
+   "era_1900_1949": 302,
+   "era_1950_1970": 175,
+   "total": 569
   },
   "sibship": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1850_1899": 6,
+   "era_1900_1949": 2,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 8
   },
   "sister": {
    "domains": [
     "kin_and_relatedness"
    ],
-   "era_1850_1899": 66,
-   "era_1900_1949": 49,
-   "era_1950_1970": 0,
-   "total": 115
+   "era_1850_1899": 1493,
+   "era_1900_1949": 2968,
+   "era_1950_1970": 129,
+   "total": 4590
   },
   "slave": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 77,
-   "era_1900_1949": 95,
-   "era_1950_1970": 0,
-   "total": 172
+   "era_1850_1899": 1374,
+   "era_1900_1949": 2683,
+   "era_1950_1970": 197,
+   "total": 4254
   },
   "social": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 226,
-   "era_1900_1949": 797,
-   "era_1950_1970": 10,
-   "total": 1033
+   "era_1850_1899": 17853,
+   "era_1900_1949": 38240,
+   "era_1950_1970": 2413,
+   "total": 58506
   },
   "society": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 209,
-   "era_1900_1949": 236,
-   "era_1950_1970": 4,
-   "total": 449
+   "era_1850_1899": 73728,
+   "era_1900_1949": 44649,
+   "era_1950_1970": 2397,
+   "total": 120774
   },
   "soldier": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 52,
-   "era_1900_1949": 291,
-   "era_1950_1970": 92,
-   "total": 435
+   "era_1850_1899": 2659,
+   "era_1900_1949": 3092,
+   "era_1950_1970": 195,
+   "total": 5946
   },
   "specialization": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 1,
-   "era_1900_1949": 22,
-   "era_1950_1970": 4,
-   "total": 27
+   "era_1850_1899": 1093,
+   "era_1900_1949": 2232,
+   "era_1950_1970": 357,
+   "total": 3682
   },
   "sperm": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 1,
-   "era_1900_1949": 9,
-   "era_1950_1970": 3,
-   "total": 13
+   "era_1850_1899": 2073,
+   "era_1900_1949": 4133,
+   "era_1950_1970": 1122,
+   "total": 7328
   },
   "spermathecae": {
    "domains": [
     "sex_and_reproduction"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 2,
-   "total": 2
+   "era_1850_1899": 320,
+   "era_1900_1949": 195,
+   "era_1950_1970": 263,
+   "total": 778
   },
   "subordinate": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 3,
-   "era_1900_1949": 15,
-   "era_1950_1970": 0,
-   "total": 18
+   "era_1850_1899": 1440,
+   "era_1900_1949": 1541,
+   "era_1950_1970": 73,
+   "total": 3054
   },
   "superorganism": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 28,
+   "era_1900_1949": 13,
+   "era_1950_1970": 16,
+   "total": 57
   },
   "supply": {
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 143,
-   "era_1900_1949": 268,
-   "era_1950_1970": 10,
-   "total": 421
+   "era_1850_1899": 17663,
+   "era_1900_1949": 25083,
+   "era_1950_1970": 1394,
+   "total": 44140
   },
   "suppression": {
    "domains": [
     "power_and_labor"
    ],
-   "era_1850_1899": 7,
-   "era_1900_1949": 18,
-   "era_1950_1970": 0,
-   "total": 25
+   "era_1850_1899": 822,
+   "era_1900_1949": 1577,
+   "era_1950_1970": 596,
+   "total": 2995
   },
   "switching": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 49,
+   "era_1900_1949": 73,
+   "era_1950_1970": 14,
+   "total": 136
   },
   "symbiont": {
    "domains": [
     "unit_of_individuality"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1850_1899": 29,
+   "era_1900_1949": 33,
+   "era_1950_1970": 16,
+   "total": 78
   },
   "task": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 39,
-   "era_1900_1949": 63,
-   "era_1950_1970": 4,
-   "total": 106
+   "era_1850_1899": 4269,
+   "era_1900_1949": 6360,
+   "era_1950_1970": 272,
+   "total": 10901
   },
   "task allocation": {
    "domains": [
@@ -1733,56 +2041,56 @@
    "domains": [
     "economics"
    ],
-   "era_1850_1899": 13,
-   "era_1900_1949": 39,
-   "era_1950_1970": 0,
-   "total": 52
+   "era_1850_1899": 8979,
+   "era_1900_1949": 16744,
+   "era_1950_1970": 733,
+   "total": 26456
   },
   "trade-off": {
    "domains": [
     "economics"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 0,
-   "total": 0
+   "era_1900_1949": 6,
+   "era_1950_1970": 1,
+   "total": 7
   },
   "trade-offs": {
    "domains": [
     "economics"
    ],
    "era_1850_1899": 0,
-   "era_1900_1949": 0,
+   "era_1900_1949": 3,
    "era_1950_1970": 0,
-   "total": 0
+   "total": 3
   },
   "trail": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 4,
-   "era_1900_1949": 450,
-   "era_1950_1970": 3,
-   "total": 457
+   "era_1850_1899": 1641,
+   "era_1900_1949": 3161,
+   "era_1950_1970": 310,
+   "total": 5112
   },
   "trophallaxis": {
    "domains": [
     "behavior_and_identity"
    ],
-   "era_1850_1899": 0,
-   "era_1900_1949": 0,
-   "era_1950_1970": 1,
-   "total": 1
+   "era_1850_1899": 80,
+   "era_1900_1949": 92,
+   "era_1950_1970": 9,
+   "total": 181
   },
   "worker": {
    "domains": [
     "behavior_and_identity",
     "power_and_labor"
    ],
-   "era_1850_1899": 432,
-   "era_1900_1949": 1927,
-   "era_1950_1970": 291,
-   "total": 2650
+   "era_1850_1899": 10692,
+   "era_1900_1949": 12292,
+   "era_1950_1970": 2356,
+   "total": 25340
   }
  }
 }

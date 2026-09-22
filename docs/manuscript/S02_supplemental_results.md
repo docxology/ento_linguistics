@@ -142,3 +142,54 @@ Unit of Individuality & {{FULLTEXT_DOMAIN_UNIT_OF_INDIVIDUALITY_TERMS}} & {{FULL
 \caption{Per-domain terminology in the PMC full-text parallel layer: extracted-term counts and mean semantic entropy $H(t)$, computed with the same pipeline as the abstract layer (\texttt{output/data/fulltext\_analysis.json}, \texttt{descriptives} section). Term extraction uses a higher minimum token frequency than the abstract layer because full texts are substantially longer.}
 \label{tab:fulltext_domain}
 \end{table}
+
+## Discourse and Rhetorical Layer
+
+Both statistical artifacts additionally carry a corpus-level
+``discourse`` section --- discourse patterns, rhetorical strategies,
+argumentative structures, and persuasive techniques --- computed by the
+shared discourse stage (\texttt{add\_discourse\_analysis} in
+\texttt{src/pipeline/statistics\_pipeline.py}) after the statistics
+stages. The abstract layer's discourse pass covers
+{{ABSTRACT_DISCOURSE_N_ANALYZED}} texts (sample fraction
+{{ABSTRACT_DISCOURSE_SAMPLE_FRACTION}}). The full-text layer's
+discourse pass covers {{FULLTEXT_DISCOURSE_N_ANALYZED}} of its
+{{FULLTEXT_DOCUMENTS}} texts --- a deterministic
+{{FULLTEXT_DISCOURSE_SAMPLE_FRACTION}} sample disclosed here because
+full texts exceed the discourse pass's minimum-length bound far less
+often than abstracts but are subsampled to keep the pass bounded.
+Both layers' discourse dimensions are compared in figure
+\texttt{discourse\_comparison.png} (registered as
+\texttt{fig:discourse\_comparison}); panels spanning orders of
+magnitude use a symlog frequency axis.
+
+Discourse patterns occur {{ABSTRACT_PATTERNS_HIERARCHICAL_FRAMING}}
+times as hierarchical framing in the abstract layer against
+{{FULLTEXT_PATTERNS_HIERARCHICAL_FRAMING}} occurrences in the
+full-text layer, with {{ABSTRACT_PATTERNS_ECONOMIC_METAPHORS}} versus
+{{FULLTEXT_PATTERNS_ECONOMIC_METAPHORS}} economic metaphors,
+{{ABSTRACT_PATTERNS_ANTHROPOMORPHIC_FRAMING}} versus
+{{FULLTEXT_PATTERNS_ANTHROPOMORPHIC_FRAMING}} anthropomorphic framings,
+and {{ABSTRACT_PATTERNS_SCALE_AMBIGUITY}} versus
+{{FULLTEXT_PATTERNS_SCALE_AMBIGUITY}} scale-ambiguous constructions.
+
+Rhetorical strategies show the same abstract-to-full-text expansion:
+{{ABSTRACT_RHETORICAL_ANECDOTAL}} anecdotal markers in the abstract
+layer versus {{FULLTEXT_RHETORICAL_ANECDOTAL}} in full texts,
+{{ABSTRACT_RHETORICAL_AUTHORITY}} versus
+{{FULLTEXT_RHETORICAL_AUTHORITY}} authority markers,
+{{ABSTRACT_RHETORICAL_ANALOGY}} versus
+{{FULLTEXT_RHETORICAL_ANALOGY}} analogies, and
+{{ABSTRACT_RHETORICAL_GENERALIZATION}} versus
+{{FULLTEXT_RHETORICAL_GENERALIZATION}} generalizations.
+
+The argumentative-structure pass identifies
+{{ABSTRACT_ARG_STRUCTURES}} argumentative structures in the abstract
+layer versus {{FULLTEXT_ARG_STRUCTURES}} in the full-text sample.
+Metaphorical language, the dominant persuasive technique, occurs
+{{ABSTRACT_PERSUASIVE_METAPHORICAL}} times in the abstract layer
+against {{FULLTEXT_PERSUASIVE_METAPHORICAL}} occurrences in full
+texts. All frequencies are raw corpus counts from the artifacts'
+\texttt{discourse} sections (\texttt{output/data/statistical\_analysis.json}
+and \texttt{output/data/fulltext\_analysis.json}); no values in this
+subsection are literals.

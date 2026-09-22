@@ -227,6 +227,20 @@ class ConceptVisualizer:
                 color="#555555",
             )
 
+        # ── Canvas clearance for boundary labels ────────────────────
+        # Spring layouts push peripheral nodes to the layout extremes;
+        # their bold 16pt labels (e.g. "Kinship Systems", "Resource
+        # Economics") are wider than the node and get clipped by the
+        # figure edge.  Pad the axes limits by 18% of the layout span
+        # on every side so labels and term-count annotations always
+        # fit inside the saved figure.
+        xs = [xy[0] for xy in pos.values()]
+        ys = [xy[1] for xy in pos.values()]
+        x_span = (max(xs) - min(xs)) or 1.0
+        y_span = (max(ys) - min(ys)) or 1.0
+        ax.set_xlim(min(xs) - 0.18 * x_span, max(xs) + 0.18 * x_span)
+        ax.set_ylim(min(ys) - 0.18 * y_span, max(ys) + 0.18 * y_span)
+
         # ── Legend ───────────────────────────────────────────────────
         self._add_domain_legend(ax)
 
@@ -234,10 +248,15 @@ class ConceptVisualizer:
         total_concepts = len(G.nodes())
         total_relationships = len(G.edges())
         total_terms = sum(term_counts)
+        # Subtitle sits just above the axes; the title must clear it.
+        # Pad per title line (20pt per extra line at the 18pt title
+        # size) so multi-line titles never collide with the subtitle.
         ax.set_title(
             title,
-            fontsize=MIN_FONT + 2, fontweight="bold", pad=20,
+            fontsize=MIN_FONT + 2, fontweight="bold",
+            pad=24 + 20 * title.count("\n"),
         )
+
         ax.text(
             0.5, 1.01,
             f"{total_concepts} concepts · {total_relationships} relationships · "
@@ -460,7 +479,13 @@ class ConceptVisualizer:
         # Add legend
         self._add_domain_legend(ax)
 
-        ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
+        # Subtitle sits just above the axes; pad per title line so
+        # multi-line titles never collide with the subtitle text.
+        ax.set_title(
+            title,
+            fontsize=MIN_FONT + 2, fontweight="bold",
+            pad=24 + 20 * title.count("\n"),
+        )
         n_labelled = len(label_dict)
         ax.text(
             0.5, 1.005,
@@ -793,11 +818,12 @@ class ConceptVisualizer:
         terms: Dict[str, Any],
         filepath: Optional[Path] = None,
     ) -> plt.Figure:
-        """6-panel donut grid: one chart per domain showing POS tag composition.
+        """6-panel donut grid: one chart per domain showing term word-formation
+        composition.
 
         Replaces the 6 scattered ``{domain}_patterns.png`` single-bar charts
         with informative donut plots showing how each domain's vocabulary is
-        structured (noun compounds, adjective-noun, verb-noun, etc.).
+        structured (hyphenated compounds, multiword phrases, single words).
 
         Args:
             terms: Full term dict from analysis pipeline
@@ -818,7 +844,7 @@ class ConceptVisualizer:
 
         fig, axes = plt.subplots(3, 2, figsize=(16, 20))
         fig.suptitle(
-            "Domain Vocabulary Composition: Part-of-Speech Patterns",
+            "Domain Vocabulary Composition: Word-Formation Patterns",
             fontsize=MIN_FONT + 4, fontweight="bold", y=1.005,
         )
         all_axes = axes.flatten()
@@ -843,7 +869,12 @@ class ConceptVisualizer:
                 ax.axis("off")
                 continue
 
-            # Build POS composition from pos_tags attribute
+            # Word-formation composition.  No extraction stage populates
+            # ``pos_tags`` yet, so the honest fallback is surface
+            # morphology: hyphenated compounds, multiword phrases, and
+            # single words.  (A 100% "Noun" donut carries no
+            # information; these classes do discriminate — e.g.
+            # "queen-worker" vs "caste" vs "division of labor".)
             pos_counts: Dict[str, int] = {}
             for t in domain_terms:
                 tags = getattr(t, "pos_tags", [])
@@ -852,10 +883,13 @@ class ConceptVisualizer:
                         label = tag.upper()
                         pos_counts[label] = pos_counts.get(label, 0) + 1
                 else:
-                    # Estimate from term surface form:
-                    # multi-word → likely compound; single → noun
-                    words = getattr(t, "text", "").split() or [""]
-                    label = "Compound" if len(words) > 1 else "Noun"
+                    text = getattr(t, "text", "") or ""
+                    if "-" in text:
+                        label = "Hyphenated compound"
+                    elif " " in text.strip():
+                        label = "Multiword phrase"
+                    else:
+                        label = "Single word"
                     pos_counts[label] = pos_counts.get(label, 0) + 1
 
             if not pos_counts:
@@ -987,8 +1021,13 @@ class ConceptVisualizer:
             Patch(facecolor="#d62728", alpha=0.82, label="Peripheral"),
             Patch(facecolor="#4e79a7", alpha=0.82, label="Other"),
         ]
-        ax1.legend(handles=legend_elements, loc="lower right",
-                   fontsize=MIN_FONT, framealpha=0.9)
+        # Below the axes so the legend can never sit on top of the
+        # bottom bar and its score label; bbox_inches="tight" keeps it.
+        ax1.legend(
+            handles=legend_elements, loc="upper center",
+            bbox_to_anchor=(0.5, -0.22), ncols=3,
+            fontsize=MIN_FONT, framealpha=0.9,
+        )
 
         # ── Panel 2: Centrality vs Term-count scatter ─────────────────
         sc_x = scores  # centrality on x
@@ -1088,15 +1127,13 @@ class ConceptVisualizer:
         ax1.set_yticks(y_pos)
         ax1.set_yticklabels(categories, fontsize=MIN_FONT)
         ax1.invert_yaxis()
-        ax1.set_xlabel("Number of Terms", fontsize=MIN_FONT)
+        total = sum(counts)
+        ax1.set_xlabel(f"Number of Terms (total: {total})",
+                       fontsize=MIN_FONT)
         ax1.set_title("Terms per Anthropomorphic Category",
                       fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
         ax1.spines["top"].set_visible(False)
         ax1.spines["right"].set_visible(False)
-        total = sum(counts)
-        ax1.text(0.98, 0.02, f"Total: {total} terms",
-                 transform=ax1.transAxes, ha="right", va="bottom",
-                 fontsize=MIN_FONT, color="#555", fontstyle="italic")
 
         # ── Panel 2: Sample terms table ───────────────────────────────
         ax2.axis("off")
@@ -1108,7 +1145,7 @@ class ConceptVisualizer:
 
         ax2.text(0.02, header_y, "Category", transform=ax2.transAxes,
                  fontsize=MIN_FONT, fontweight="bold", va="center")
-        ax2.text(0.35, header_y, "Example Terms", transform=ax2.transAxes,
+        ax2.text(0.42, header_y, "Example Terms", transform=ax2.transAxes,
                  fontsize=MIN_FONT, fontweight="bold", va="center")
         # Header separator line (use plot with transform to avoid axhline restriction)
         ax2.plot([0, 1], [header_y - row_height / 2, header_y - row_height / 2],
@@ -1135,10 +1172,15 @@ class ConceptVisualizer:
             sample = ", ".join(terms_list[:5])
             if len(terms_list) > 5:
                 sample += f" … (+{len(terms_list) - 5})"
-            ax2.text(0.35, y, sample, transform=ax2.transAxes,
+            ax2.text(0.42, y, sample, transform=ax2.transAxes,
                      fontsize=MIN_FONT, va="center", color="#333")
 
-        plt.tight_layout()
+        # Explicit layout: tight_layout shrinks the hidden-axis table
+        # panel (ax2 carries only text artists) to a sliver, colliding
+        # its title with panel 1's and squeezing the table columns;
+        # fixed fractions keep both panels at their width-ratio share.
+        fig.subplots_adjust(left=0.08, right=0.97, top=0.86,
+                            bottom=0.12, wspace=0.45)
 
         if filepath:
             fig.savefig(filepath, dpi=300, bbox_inches="tight")

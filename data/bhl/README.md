@@ -5,7 +5,7 @@ manuscript's S03b longitudinal claims (see
 `docs/manuscript/S03b_case_studies.md` and
 `src/pipeline/bhl_analysis.py`).
 
-Last harvest run: 130 new documents from 133 candidates (133 texts fetched, 0 without text derivative, 0 out of window, 3 irrelevant, 0 failed items skipped).
+Last harvest run: 0 new documents from 133 candidates (3 texts fetched, 0 without text derivative, 0 out of window, 3 irrelevant, 0 failed items skipped).
 
 
 ## API reality check
@@ -21,12 +21,17 @@ Last harvest run: 130 new documents from 133 candidates (133 texts fetched, 0 wi
   is Cloudflare-gated (HTTP 403) for non-browser clients.
 - The `/data/` OpenData exports (BibTeX/KBART/MODS/RIS/TSV) are
   metadata-only — no full text.
+- When a key is available the harvest additionally runs BHL's
+  keyed full-text search (`PublicationSearch`, `searchtype=F`) — the
+  "Search Inside" capability; the literal `op=SearchInside` returns an
+  empty 200 response and is not part of the API method table.
 - This corpus therefore harvests the BHL mirror collection on the
   Internet Archive (`collection:"biodiversity"`) via IA's keyless
   Search / Metadata / Download endpoints; each record lists the BHL
   collections its item belongs to.
 
 API check at harvest time: endpoint `https://www.biodiversitylibrary.org/api3`, keyed=False, status=`HTTP 401 (key required)`, ok=False.
+
 
 ## Files
 
@@ -40,10 +45,74 @@ API check at harvest time: endpoint `https://www.biodiversitylibrary.org/api3`, 
 - `bhl_shard_00002.json`
 - `bhl_shard_00003.json`
 - `bhl_shard_00004.json`
+- `bhl_shard_00005.json`
+- `bhl_shard_00006.json`
+- `bhl_shard_00007.json`
+- `bhl_shard_00008.json`
+- `bhl_shard_00009.json`
+- `bhl_shard_00010.json`
+- `bhl_shard_00011.json`
+- `bhl_shard_00012.json`
+- `bhl_shard_00013.json`
+- `bhl_shard_00014.json`
+- `bhl_shard_00015.json`
+- `bhl_shard_00016.json`
+- `bhl_shard_00017.json`
+- `bhl_shard_00018.json`
+- `bhl_shard_00019.json`
+- `bhl_shard_00020.json`
+- `bhl_shard_00021.json`
+- `bhl_shard_00022.json`
+- `bhl_shard_00023.json`
+- `bhl_shard_00024.json`
+- `bhl_shard_00025.json`
+- `bhl_shard_00026.json`
+- `bhl_shard_00027.json`
+- `bhl_shard_00028.json`
+- `bhl_shard_00029.json`
+- `bhl_shard_00030.json`
+- `bhl_shard_00031.json`
+- `bhl_shard_00032.json`
+- `bhl_shard_00033.json`
+- `bhl_shard_00034.json`
+- `bhl_shard_00035.json`
+- `bhl_shard_00036.json`
+- `bhl_shard_00037.json`
+- `bhl_shard_00038.json`
+- `bhl_shard_00039.json`
+- `bhl_shard_00040.json`
+- `bhl_shard_00041.json`
+- `bhl_shard_00042.json`
+- `bhl_shard_00043.json`
+- `bhl_shard_00044.json`
+- `bhl_shard_00045.json`
+- `bhl_shard_00046.json`
+- `bhl_shard_00047.json`
+- `bhl_shard_00048.json`
+- `bhl_shard_00049.json`
+- `bhl_shard_00050.json`
+- `bhl_shard_00051.json`
+- `bhl_shard_00052.json`
+- `bhl_shard_00053.json`
+- `bhl_shard_00054.json`
+- `bhl_shard_00055.json`
+- `bhl_shard_00056.json`
+- `bhl_shard_00057.json`
+- `bhl_shard_00058.json`
+- `bhl_shard_00059.json`
+- `bhl_shard_00060.json`
+- `bhl_shard_00061.json`
+- `bhl_shard_00062.json`
 
 - `provenance.json` — sidecar mapping `sha256(full_text)` to
   `{bhl_id, ia_identifier, title, publication_date, era, collections,
   url, query, retrieved_at}`.
+- `searchinside_results.json` — keyed-search checkpoint: per-term
+  in-window publication lists from `PublicationSearch` (resumable:
+  terms already present are not re-queried).
+- `searchinside_items.json` — keyed-search checkpoint: Part→Item
+  resolution cache, the ranked capped candidate item list with the
+  queries that matched each item, and the IA-backed harvest stubs.
 - `README.md` — this document.
 
 ## Search query (verbatim)
@@ -71,22 +140,22 @@ Issued against `https://archive.org/advancedsearch.php` with
    Formicidae, myrmecology/myrmecological, eusocial/eusociality,
    "social insects".
 
-## Era coverage (130 documents)
+## Era coverage (2460 documents)
 
-- Publication years: 1856-1969
-- Body text: 29,191,517 characters
+- Publication years: 1850-1970
+- Body text: 2,350,509,858 characters
 - Documents per era:
 
-- `era_1850_1899`: 23 documents
-- `era_1900_1949`: 82 documents
-- `era_1950_1970`: 25 documents
+- `era_1850_1899`: 1013 documents
+- `era_1900_1949`: 1247 documents
+- `era_1950_1970`: 200 documents
 
 ## Reproduction
 
 ```bash
 uv run python src/data/bhl_corpus.py
-# upgrade path once a BHL API key is available:
-BHL_API_KEY=<key> uv run python src/data/bhl_corpus.py
+# keyed full-text upgrade (requires BHL_API_KEY; resumable):
+BHL_API_KEY=<key> uv run python src/data/bhl_corpus.py --keyed
 ```
 
 The harvester is resumable: stored `ia_identifier`s are skipped and

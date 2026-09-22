@@ -1,8 +1,9 @@
 """Tests for BHL historical full-text harvesting (src/data/bhl_corpus.py).
 
 Fixture-based only: no live network.  IA/BHL responses are stubbed via
-monkeypatched ``urlopen``; file persistence exercises real tmp_path
-directories.
+monkeypatched ``urlopen`` (keyless paths) and ``pytest_httpserver``
+fixtures (keyed SearchInside paths); file persistence exercises real
+tmp_path directories.
 """
 
 from __future__ import annotations
@@ -11,8 +12,10 @@ import json
 from urllib.error import HTTPError
 
 import pytest
+from werkzeug.wrappers import Response
 
 from data.bhl_corpus import (
+    BHL_KEYED_QUERY,
     BHL_SEARCH_QUERY,
     CORPUS_FIELDS,
     ERA_BOUNDS,
@@ -22,9 +25,11 @@ from data.bhl_corpus import (
     harvest_bhl,
     is_relevant_bhl_record,
     parse_advancedsearch_doc,
+    parse_publication_search_doc,
     read_shard,
     shard_filename,
     shard_paths,
+    write_readme,
     write_shard,
 )
 
@@ -480,3 +485,435 @@ class TestHarvestBhlWrapper:
         assert "collection:\"biodiversity\"" in readme
         assert BHL_SEARCH_QUERY in readme
         assert "1 new documents" in readme
+
+
+# ── Keyed SearchInside (BHL API v3) tests ─────────────────────────────
+
+FAKE_KEY = "test-key-1234"
+
+
+def _ok(result) -> dict:
+    """Render a successful BHL API v3 response body."""
+    return {"Status": "ok", "ErrorMessage": None, "Result": result}
+
+
+def _pub_item(item_id: int, date: str, title: str = "Ants") -> dict:
+    """One PublicationSearch Item hit."""
+    return {
+        "BHLType": "Item",
+        "FoundIn": "Both",
+        "ItemID": str(item_id),
+        "Title": title,
+        "PublicationDate": date,
+    }
+
+
+def _pub_part(part_id: int, date: str, title: str = "Ants part") -> dict:
+    """One PublicationSearch Part hit."""
+    return {
+        "BHLType": "Part",
+        "FoundIn": "Both",
+        "PartID": str(part_id),
+        "Title": title,
+        "Date": date,
+    }
+
+
+def _serve_api(httpserver, responses: list, calls: list) -> None:
+    """Queue ordered ``/api3`` JSON responses and record request params."""
+
+    for response in responses:
+
+        def handler(request, _response=response):
+            calls.append(
+                {key: request.args.get(key) for key in request.args.keys()}
+            )
+            return Response(
+                json.dumps(_response), content_type="application/json"
+            )
+
+        httpserver.expect_oneshot_request("/api3").respond_with_handler(
+            handler
+        )
+
+
+@pytest.fixture
+def bhl_api(monkeypatch, httpserver):
+    """Point the BHL API base at the local httpserver."""
+    monkeypatch.setattr(
+        "data.bhl_corpus.BHL_API_BASE", httpserver.url_for("api3")
+    )
+    return httpserver
+
+
+class TestParsePublicationSearchDoc:
+    def test_keeps_items_parts_in_order(self):
+        payload = json.dumps(
+            _ok(
+                [
+                    _pub_item(7, "1868", "On ants"),
+                    _pub_part(9, "1901-05"),
+                ]
+            )
+        )
+        stubs = parse_publication_search_doc(payload)
+        assert stubs == [
+            {
+                "bhl_type": "Item",
+                "item_id": 7,
+                "part_id": None,
+                "title": "On ants",
+                "publication_date": "1868",
+                "year": 1868,
+                "found_in": "Both",
+            },
+            {
+                "bhl_type": "Part",
+                "item_id": None,
+                "part_id": 9,
+                "title": "Ants part",
+                "publication_date": "1901-05",
+                "year": 1901,
+                "found_in": "Both",
+            },
+        ]
+
+    def test_skips_unresolvable_and_undated(self):
+        payload = json.dumps(
+            _ok(
+                [
+                    {"BHLType": "Title", "TitleID": "3"},
+                    {"BHLType": "Item", "Title": "no id"},
+                    {"BHLType": "Part", "Title": "no date"},  # undated
+                ]
+            )
+        )
+        stubs = parse_publication_search_doc(payload)
+        assert stubs == []
+
+    def test_empty_result(self):
+        assert parse_publication_search_doc(json.dumps(_ok(None))) == []
+
+
+class TestSearchInside:
+    def test_pages_filters_and_params(self, bhl_api):
+        page1 = _ok([_pub_item(1, "1868"), _pub_part(2, "1901")])
+        page2 = _ok(
+            [
+                _pub_part(3, "1975"),  # outside 1850-1970 window
+                {"BHLType": "Part", "Title": "undated"},  # undated
+            ]
+        )
+        calls: list = []
+        _serve_api(bhl_api, [page1, page2], calls)
+        pubs, truncated = BHLHarvester(
+            api_key=FAKE_KEY, delay=0
+        ).search_inside("Formicidae", date_from=1850, date_to=1970, rows=2)
+        assert truncated is False
+        assert [p["year"] for p in pubs] == [1868, 1901]
+        assert [c["page"] for c in calls] == ["1", "2"]
+        for call in calls:
+            assert call["op"] == "PublicationSearch"
+            assert call["searchterm"] == "Formicidae"
+            assert call["searchtype"] == "F"
+            assert call["pageSize"] == "2"
+            assert call["apikey"] == FAKE_KEY
+            assert call["format"] == "json"
+
+    def test_stops_at_api_page_cap(self, bhl_api, monkeypatch):
+        monkeypatch.setattr("data.bhl_corpus.BHL_SEARCH_MAX_PAGES", 2)
+        full_page = _ok(
+            [_pub_item(1, "1868"), _pub_part(2, "1901")]
+        )
+        calls: list = []
+        # Two full pages: the (monkeypatched) 50-page cap stops paging
+        # before a short page can.
+        _serve_api(bhl_api, [full_page, full_page], calls)
+        pubs, truncated = BHLHarvester(api_key=FAKE_KEY, delay=0).search_inside(
+            "ants", rows=2
+        )
+        assert truncated is True
+        assert len(pubs) == 4
+        assert [c["page"] for c in calls] == ["1", "2"]
+
+    def test_api_error_raises_without_leaking_key(self, bhl_api):
+        bhl_api.expect_oneshot_request("/api3").respond_with_json(
+            {"Status": "error", "ErrorMessage": "boom", "Result": None}
+        )
+        with pytest.raises(RuntimeError, match="boom"):
+            BHLHarvester(api_key=FAKE_KEY, delay=0).search_inside("ants")
+
+
+class TestPartAndItemResolution:
+    def test_part_resolves_to_item(self, bhl_api):
+        calls: list = []
+        _serve_api(bhl_api, [_ok([{"PartID": "11", "ItemID": "100"}])], calls)
+        assert BHLHarvester(api_key=FAKE_KEY, delay=0).get_part_item_id(
+            11
+        ) == 100
+        assert calls[0]["op"] == "GetPartMetadata"
+        assert calls[0]["id"] == "11"
+
+    def test_item_stub_from_ia_source(self, bhl_api):
+        bhl_api.expect_oneshot_request("/api3").respond_with_json(
+            _ok(
+                [
+                    {
+                        "ItemID": "335118",
+                        "Source": "Internet Archive",
+                        "SourceIdentifier": "newpanamaeciton1441webe",
+                        "Year": "1949",
+                        "Title": None,
+                    }
+                ]
+            )
+        )
+        stub = BHLHarvester(api_key=FAKE_KEY, delay=0).get_item_stub(335118)
+        assert stub == {
+            "ia_identifier": "newpanamaeciton1441webe",
+            "title": "",
+            "publication_date": "1949",
+            "bhl_item_id": 335118,
+        }
+
+    def test_non_ia_item_yields_no_stub(self, bhl_api):
+        bhl_api.expect_oneshot_request("/api3").respond_with_json(
+            _ok(
+                [
+                    {
+                        "ItemID": "5",
+                        "Source": "Other",
+                        "SourceIdentifier": "xyz",
+                        "Year": "1900",
+                    }
+                ]
+            )
+        )
+        assert BHLHarvester(api_key=FAKE_KEY, delay=0).get_item_stub(5) is None
+
+
+class TestCollectSearchInsideCandidates:
+    def _queue_enumeration(self, httpserver, calls: list):
+        """Term 'terma' hits part 11, 'termb' hits part 12 and item 200."""
+        responses = [
+            _ok([_pub_part(11, "1900", "Ants of A")]),
+            _ok(
+                [
+                    _pub_part(12, "1901", "Ants of B"),
+                    _pub_item(200, "1930", "Superorganism book"),
+                ]
+            ),
+            _ok([{"PartID": "11", "ItemID": "100"}]),  # part 11 -> item 100
+            _ok([{"PartID": "12", "ItemID": "100"}]),  # part 12 -> item 100
+            # Stub resolution: item 100 is IA-backed, item 200 is not.
+            _ok(
+                [
+                    {
+                        "ItemID": "100",
+                        "Source": "Internet Archive",
+                        "SourceIdentifier": "ia-one",
+                        "Year": "1900",
+                        "Title": None,
+                    }
+                ]
+            ),
+            _ok(
+                [
+                    {
+                        "ItemID": "200",
+                        "Source": "Other",
+                        "SourceIdentifier": "not-ia",
+                        "Year": "1930",
+                    }
+                ]
+            ),
+        ]
+        _serve_api(httpserver, responses, calls)
+
+    def _collect(self, httpserver, data_dir, cap=2):
+        monkeypatch = pytest.MonkeyPatch()
+        try:
+            monkeypatch.setattr(
+                "data.bhl_corpus.SEARCH_INSIDE_TERMS", ("terma", "termb")
+            )
+            calls: list = []
+            self._queue_enumeration(httpserver, calls)
+            harvester = BHLHarvester(api_key=FAKE_KEY, delay=0)
+            stubs, stats = harvester.collect_search_inside_candidates(
+                data_dir, cap=cap
+            )
+        finally:
+            monkeypatch.undo()
+        return stubs, stats
+
+    def test_merge_dedupe_and_cap(self, bhl_api, tmp_path):
+        stubs, stats = self._collect(bhl_api, tmp_path, cap=2)
+        # Both parts resolve to the same item: deduped to item 100 plus
+        # the direct item 200 hit; item 200 is non-IA so only one stub.
+        assert stats["candidate_items"] == 2
+        assert stats["per_term_publications"] == {"terma": 1, "termb": 2}
+        assert stats["truncated"] is False
+        assert stats["not_ia_sourced"] == 1
+        assert [s["ia_identifier"] for s in stubs] == ["ia-one"]
+        assert stubs[0]["queries"] == ["terma", "termb"]
+        results = json.loads(
+            (tmp_path / "searchinside_results.json").read_text()
+        )
+        assert set(results["terms"]) == {"terma", "termb"}
+        items_doc = json.loads(
+            (tmp_path / "searchinside_items.json").read_text()
+        )
+        assert items_doc["part_to_item"] == {"11": 100, "12": 100}
+
+    def test_cap_truncates_highest_relevance(self, bhl_api, tmp_path):
+        stubs, stats = self._collect(bhl_api, tmp_path, cap=1)
+        assert stats["candidate_items"] == 1
+        assert stats["truncated"] is True
+        assert [s["ia_identifier"] for s in stubs] == ["ia-one"]
+
+    def test_resume_skips_enumerated_terms(self, bhl_api, tmp_path):
+        self._collect(bhl_api, tmp_path, cap=2)
+        # Second run re-serves nothing: any unexpected request answers
+        # HTTP 500, whose non-ok Status would raise.  No error means
+        # enumeration, part resolution, and stub resolution were all
+        # served from the checkpoints.
+        monkeypatch = pytest.MonkeyPatch()
+        try:
+            monkeypatch.setattr(
+                "data.bhl_corpus.SEARCH_INSIDE_TERMS", ("terma", "termb")
+            )
+            stubs, stats = BHLHarvester(
+                api_key=FAKE_KEY, delay=0
+            ).collect_search_inside_candidates(tmp_path, cap=2)
+        finally:
+            monkeypatch.undo()
+        assert [s["ia_identifier"] for s in stubs] == ["ia-one"]
+        assert stats["stubs"] == 1
+
+
+class TestKeyedHarvestMerge:
+    def test_harvest_sharded_merges_keyed_stubs(self, bhl_api, tmp_path):
+        # Existing corpus already stores ia-one via the keyless run.
+        data_dir = tmp_path / "bhl"
+        data_dir.mkdir()
+        stored = {
+            "bhl_id": "ia-one",
+            "ia_identifier": "ia-one",
+            "title": "Ants of A",
+            "publication_date": "1900",
+            "year": 1900,
+            "era": "era_1900_1949",
+            "collections": ["biodiversity"],
+            "url": "https://archive.org/details/ia-one",
+            "full_text": "ants of a",
+        }
+        write_shard(data_dir / "bhl_shard_00001.json", [stored])
+        # Keyed candidates: ia-one (stored, skipped) and ia-two (new).
+        stubs = [
+            {
+                "ia_identifier": "ia-one",
+                "title": "",
+                "publication_date": "1900",
+                "bhl_item_id": 100,
+            },
+            {
+                "ia_identifier": "ia-two",
+                "title": "",
+                "publication_date": "1931",
+                "bhl_item_id": 101,
+            },
+        ]
+        # Keyless api_check probe, then IA metadata + text for ia-two.
+        bhl_api.expect_oneshot_request("/api3").respond_with_json(_ok([]))
+        metadata = {
+            "metadata": {
+                "identifier": "ia-two",
+                "title": "Ants of Two",
+                "date": "1931",
+                "collection": ["biodiversity"],
+            },
+            "files": [{"name": "ia-two_djvu.txt"}],
+        }
+        bhl_api.expect_oneshot_request(
+            "/ia/metadata/ia-two"
+        ).respond_with_json(metadata)
+        bhl_api.expect_oneshot_request(
+            "/ia/download/ia-two/ia-two_djvu.txt"
+        ).respond_with_data("the ants of two colonies " * 5)
+        monkeypatch = pytest.MonkeyPatch()
+        try:
+            monkeypatch.setattr(
+                "data.bhl_corpus.IA_METADATA_URL",
+                bhl_api.url_for("ia/metadata/{identifier}"),
+            )
+            monkeypatch.setattr(
+                "data.bhl_corpus.IA_DOWNLOAD_URL",
+                bhl_api.url_for(
+                    "ia/download/{identifier}/{identifier}_djvu.txt"
+                ),
+            )
+            harvester = BHLHarvester(delay=0)
+            summary = harvester.harvest_sharded(
+                data_dir,
+                data_dir / "provenance.json",
+                query=BHL_KEYED_QUERY,
+                stubs=stubs,
+            )
+        finally:
+            monkeypatch.undo()
+        assert summary["candidates"] == 2
+        assert summary["already_stored"] == 1
+        records = [r for p in shard_paths(data_dir) for r in read_shard(p)]
+        assert [r["ia_identifier"] for r in records] == ["ia-one", "ia-two"]
+        assert records[1]["title"] == "Ants of Two"
+        assert records[1]["era"] == "era_1900_1949"
+        provenance = json.loads(
+            (data_dir / "provenance.json").read_text(encoding="utf-8")
+        )
+        assert all(e["query"] == BHL_KEYED_QUERY for e in provenance.values())
+        assert FAKE_KEY not in json.dumps(provenance)
+
+    def test_keyed_wrapper_requires_api_key(self, monkeypatch, tmp_path):
+        monkeypatch.delenv("BHL_API_KEY", raising=False)
+        with pytest.raises(RuntimeError, match="requires a BHL API v3 key"):
+            harvest_bhl(data_dir=tmp_path, keyed=True)
+
+
+class TestKeyedReadme:
+    def test_readme_documents_keyed_search(self, tmp_path):
+        summary = {
+            "harvested": 3,
+            "candidates": 5,
+            "fetched": 3,
+            "no_text_derivative": 0,
+            "out_of_window": 1,
+            "irrelevant": 1,
+            "failed_items": 0,
+            "api_check": {
+                "endpoint": "https://www.biodiversitylibrary.org/api3",
+                "keyed": True,
+                "status": "ok",
+                "ok": True,
+            },
+            "keyed": {
+                "op": "PublicationSearch",
+                "searchtype": "F",
+                "date_window": [1850, 1970],
+                "per_term_publications": {
+                    "ants": 120,
+                    "division of labour": 7,
+                },
+                "candidate_items": 3000,
+                "cap": 3000,
+                "truncated": True,
+                "not_ia_sourced": 4,
+                "stubs": 2996,
+            },
+        }
+        path = write_readme(tmp_path, summary=summary)
+        readme = path.read_text(encoding="utf-8")
+        assert "## Keyed full-text search (BHL API v3)" in readme
+        assert "op=PublicationSearch&searchtype=F" in readme
+        assert "- `ants`: 120 in-window publications" in readme
+        assert "truncated=True" in readme
+        assert FAKE_KEY not in readme

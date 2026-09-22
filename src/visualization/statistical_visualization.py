@@ -42,6 +42,7 @@ __all__ = [
     "StatisticalVisualizer",
     "plot_statistical_analysis",
     "plot_layer_comparison",
+    "plot_discourse_comparison",
 ]
 
 
@@ -966,9 +967,10 @@ def plot_statistical_analysis(
     - ``anova``: omnibus F-test with ``eta_squared``
     - ``corrections``: multiple-comparison metadata
 
-    Panels: (a) per-domain entropy mean ± SD bars with n annotations;
-    (b) diverging Cohen's d bars, colourblind-safe coding for BH-significant
-    vs non-significant comparisons; (c) compact ANOVA summary text panel.
+    Panels: (a) per-domain entropy means with 95% CI whiskers and n
+    annotations; (b) diverging Cohen's d bars, colourblind-safe coding
+    for BH-significant vs non-significant comparisons; (c) compact
+    ANOVA summary text panel.
 
     Missing/empty sections degrade to labelled fallback panels; ``p`` values
     below 0.001 (including exact 0.0) are annotated as ``p < 0.001``.
@@ -998,24 +1000,50 @@ def plot_statistical_analysis(
     ax_effects = fig.add_subplot(gs[0, 1])
     ax_summary = fig.add_subplot(gs[1, :])
 
-    # ── Panel (a): per-domain entropy mean ± SD ──
-    order = _domain_order(descriptives)
+    # ── Panel (a): per-domain entropy mean with 95% CI whiskers ──
+    # Only domains whose descriptives entry actually carries
+    # ``entropy_mean`` (tiny fixtures can omit it); plotting a missing
+    # metric is a crash, not a zero.
+    order = [
+        d for d in _domain_order(descriptives)
+        if "entropy_mean" in (descriptives.get(d) or {})
+    ]
     if order:
         means = [float(descriptives[d]["entropy_mean"]) for d in order]
-        # SD whiskers only when the artifact actually reports per-domain
-        # ``entropy_sd``; otherwise omit them honestly (and drop the
-        # "± SD" claim from the axis label) rather than drawing zero-length
-        # error bars that read as measured zero variance.
+        # Whiskers drawn only when the artifact actually reports
+        # per-domain ``entropy_sd`` (with ``n_terms``); otherwise omit
+        # them honestly rather than drawing zero-length error bars
+        # that read as measured zero variance.
+        # 95% confidence intervals (the publication-standard
+        # uncertainty display) computed from the artifact's per-domain
+        # ``entropy_sd`` and ``n_terms``; SD whiskers overstate overlap
+        # between domains and invite misreading.  Student-t quantiles
+        # for honest small-n intervals, falling back to the normal
+        # approximation when scipy is unavailable.
         has_sd = all("entropy_sd" in descriptives[d] for d in order)
-        sds = (
-            [float(descriptives[d]["entropy_sd"]) for d in order] if has_sd else None
-        )
+        cis = None
+        if has_sd:
+            cis = []
+            for d in order:
+                n = int(descriptives[d].get("n_terms", 0))
+                sd = float(descriptives[d]["entropy_sd"])
+                if n > 1 and sd > 0:
+                    try:
+                        from scipy.stats import t as student_t
+                        crit = float(student_t.ppf(0.975, n - 1))
+                    except ImportError:
+                        crit = 1.96
+                    cis.append(crit * sd / (n ** 0.5))
+                else:
+                    cis.append(0.0)
+            if not any(c > 0 for c in cis):
+                cis = None
         colors = [DOMAIN_PALETTE.get(d, FALLBACK_COLOR) for d in order]
         bars = ax_entropy.bar(
             range(len(order)),
             means,
-            yerr=sds,
-            capsize=4 if has_sd else None,
+            yerr=cis,
+            capsize=4 if cis else None,
             color=colors,
             edgecolor="black",
             alpha=0.85,
@@ -1026,20 +1054,25 @@ def plot_statistical_analysis(
             rotation=30,
             ha="right",
         )
-        top = max(
-            m + s for m, s in zip(means, sds)
-        ) if has_sd else max(means)
+        if cis:
+            top = max(m + c for m, c in zip(means, cis))
+        else:
+            top = max(means)
         ax_entropy.set_ylim(0, top * 1.25)
         for bar, domain in zip(bars, order):
             n_terms = descriptives[domain].get("n_terms", 0)
+            ci = (
+                cis[order.index(domain)]
+                if cis
+                else 0.0
+            )
             ax_entropy.annotate(
                 f"n={n_terms}",
-                # Anchor above the SD whisker cap (bar top when no SD is
-                # reported) so the text never crosses the error bar.
+                # Anchor above the CI whisker cap (bar top when no CI
+                # is reported) so the text never crosses the error bar.
                 xy=(
                     bar.get_x() + bar.get_width() / 2,
-                    bar.get_height()
-                    + (float(descriptives[domain]["entropy_sd"]) if has_sd else 0.0),
+                    bar.get_height() + ci,
                 ),
                 xytext=(0, 3),
                 textcoords="offset points",
@@ -1047,7 +1080,8 @@ def plot_statistical_analysis(
                 fontsize=MIN_FONT,
             )
         ax_entropy.set_ylabel(
-            "Semantic Entropy (mean ± SD)" if has_sd else "Semantic Entropy (mean)",
+            "Semantic Entropy (mean ± 95% CI)" if cis
+            else "Semantic Entropy (mean)",
             fontsize=MIN_FONT,
         )
         ax_entropy.set_title("Domain Entropy", fontsize=MIN_FONT + 2, fontweight="bold")
@@ -1334,6 +1368,221 @@ def plot_layer_comparison(
     else:
         _fallback_text(ax, "No domain descriptives available")
 
+    filepath = out_path / filename
+    save_and_verify(fig, filepath, dpi=300)
+    plt.close(fig)
+    return str(filepath)
+
+
+#: Canonical key ordering per discourse dimension (canonical members
+#: first, extras appended lexicographically) shared by
+#: :func:`plot_discourse_comparison`.  Mirrors the token-family
+#: ordering in ``core.manuscript_variables._DISCOURSE_CANONICAL_ORDER``.
+_DISCOURSE_DIMENSIONS: List[Tuple[str, str, Tuple[str, ...]]] = [
+    (
+        "patterns",
+        "Discourse Patterns",
+        (
+            "anthropomorphic_framing",
+            "economic_metaphors",
+            "hierarchical_framing",
+            "scale_ambiguity",
+        ),
+    ),
+    (
+        "rhetorical",
+        "Rhetorical Strategies",
+        ("analogy", "anecdotal", "authority", "generalization"),
+    ),
+    (
+        "persuasive",
+        "Persuasive Techniques",
+        (
+            "authoritative_citations",
+            "metaphorical_language",
+            "quantitative_emphasis",
+            "rhetorical_questions",
+        ),
+    ),
+]
+
+#: Grouped-bar scale threshold: when a panel's plotted maximum is at
+#: least this multiple of its smallest positive value, the panel
+#: switches to a symlog y-axis (linear below 1 occurrence) so bars
+#: spanning orders of magnitude stay legible.  Chosen over a plain
+#: log scale because discourse frequencies can legitimately be 0
+#: (zero is drawable on symlog, invisible on log).
+_LOG_SCALE_RATIO = 100.0
+
+
+def _ordered_discourse_keys(section: str, members: dict) -> List[str]:
+    """Order one discourse dimension's keys canonically, extras sorted."""
+    canonical = next(
+        (c for name, _, c in _DISCOURSE_DIMENSIONS if name == section), ()
+    )
+    return [k for k in canonical if k in members] + sorted(
+        k for k in members if k not in canonical
+    )
+
+
+@publication_style
+def plot_discourse_comparison(
+    abstract_artifact: dict,
+    fulltext_artifact: dict,
+    output_dir: str,
+    filename: str = "discourse_comparison.png",
+) -> str:
+    """Render per-dimension discourse-frequency bars for the two layers.
+
+    One panel per shared ``discourse`` dimension — discourse patterns,
+    rhetorical strategies, persuasive techniques — with grouped bars
+    comparing the abstract layer (solid) against the full-text layer
+    (hatched, same neutral palette) reading
+    ``discourse.<dimension>.<key>.frequency`` (persuasive techniques
+    read ``usage_frequency``) from both artifacts.  Keys follow the
+    canonical ordering (:data:`_DISCOURSE_DIMENSIONS`, extras
+    lexicographic); every text element respects the 16pt floor;
+    per-layer legend labels carry the analyzed-text counts
+    (``n_texts_analyzed``, which discloses the full-text layer's
+    deterministic 20% sample).
+
+    Scaling: when a panel's plotted maximum is at least 100x its
+    smallest positive value, the panel uses a symlog y-axis (linear
+    below 1) so abstract vs full-text ranges that differ by orders of
+    magnitude stay legible; symlog rather than plain log because zero
+    frequencies are drawable.  The choice is deterministic (fixed
+    threshold, fixed order, no randomness).
+
+    Missing ``discourse`` sections or empty dimensions degrade to
+    labelled fallback panels; no fabricated zeros are drawn.
+
+    Args:
+        abstract_artifact: Parsed ``statistical_analysis.json``.
+        fulltext_artifact: Parsed ``fulltext_analysis.json``.
+        output_dir: Directory the figure is written to (created if
+            absent).
+        filename: Output filename.
+
+    Returns:
+        Absolute path to the saved figure.
+
+    Raises:
+        RuntimeError: If the saved file is missing or empty.
+    """
+    out_path = Path(output_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+
+    abstract_discourse: Dict[str, Any] = (
+        abstract_artifact.get("discourse") or {}
+    )
+    fulltext_discourse: Dict[str, Any] = (
+        fulltext_artifact.get("discourse") or {}
+    )
+
+    fig = plt.figure(figsize=(18, 7.5))
+    axes = fig.subplots(1, 3)
+    # Headroom for the shared figure-level legend row above the
+    # per-panel titles.
+    fig.subplots_adjust(top=0.86)
+    has_bars = False
+    abstract_n = abstract_discourse.get("n_texts_analyzed")
+    fulltext_n = fulltext_discourse.get("n_texts_analyzed")
+    abstract_label = (
+        f"Abstract layer (n={abstract_n} texts)"
+        if abstract_n is not None
+        else "Abstract layer"
+    )
+    fulltext_label = (
+        f"Full-text layer (n={fulltext_n} texts)"
+        if fulltext_n is not None
+        else "Full-text layer"
+    )
+
+    for ax, (section, title, _canonical) in zip(axes, _DISCOURSE_DIMENSIONS):
+        members: Dict[str, Any] = abstract_discourse.get(section) or {}
+        extra_members: Dict[str, Any] = fulltext_discourse.get(section) or {}
+        keys = _ordered_discourse_keys(section, {**members, **extra_members})
+        if not keys:
+            _fallback_text(ax, f"No {section.replace('_', ' ')} data available")
+            continue
+        value_key = "usage_frequency" if section == "persuasive" else "frequency"
+        abstract_values = [
+            float((members.get(k) or {}).get(value_key, 0.0)) for k in keys
+        ]
+        fulltext_values = [
+            float((extra_members.get(k) or {}).get(value_key, 0.0)) for k in keys
+        ]
+        xpos = np.arange(len(keys))
+        width = 0.38
+        bars_a = ax.bar(
+            xpos - width / 2,
+            abstract_values,
+            width=width,
+            color="#0072B2",
+            edgecolor="black",
+            alpha=0.9,
+            label=abstract_label,
+        )
+        bars_f = ax.bar(
+            xpos + width / 2,
+            fulltext_values,
+            width=width,
+            color="#0072B2",
+            edgecolor="black",
+            alpha=0.55,
+            hatch="//",
+            label=fulltext_label,
+        )
+        ax.set_xticks(xpos)
+        ax.set_xticklabels(
+            [k.replace("_", " ").title() for k in keys],
+            rotation=30,
+            ha="right",
+        )
+        plotted = [v for v in abstract_values + fulltext_values if v > 0]
+        top = max(abstract_values + fulltext_values)
+        if plotted and top >= _LOG_SCALE_RATIO * min(plotted):
+            ax.set_yscale("symlog", linthresh=1)
+            ax.set_ylabel("Frequency (symlog scale)", fontsize=MIN_FONT)
+        else:
+            ax.set_ylim(0, top * 1.25 if top > 0 else 1.0)
+            ax.set_ylabel("Frequency", fontsize=MIN_FONT)
+        for bars, values in ((bars_a, abstract_values), (bars_f, fulltext_values)):
+            for bar, value in zip(bars, values):
+                ax.annotate(
+                    f"{value:.0f}",
+                    xy=(bar.get_x() + bar.get_width() / 2, value),
+                    xytext=(0, 3),
+                    textcoords="offset points",
+                    ha="center",
+                    va="bottom",
+                    fontsize=MIN_FONT,
+                )
+        # Symlog panels auto-scale without accounting for the value
+        # annotations above the tallest bar; widen the top so the
+        # labels are never clipped.  Linear panels already reserve
+        # 25% headroom via set_ylim above.
+        if plotted and top >= _LOG_SCALE_RATIO * min(plotted):
+            lo, hi = ax.get_ylim()
+            ax.set_ylim(lo, hi * 2.0)
+        ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
+        ax.grid(True, axis="y", alpha=0.3)
+        has_bars = True
+    if has_bars:
+        # One shared figure-level legend row above the panels: the
+        # per-axes legend used to cover the bars of the first panel.
+        handles = []
+        labels_ = []
+        for ax in axes:
+            h, l = ax.get_legend_handles_labels()
+            if h:
+                handles, labels_ = h, l
+                break
+        if handles:
+            fig.legend(
+                handles, labels_, loc="upper center", ncol=2,
+                bbox_to_anchor=(0.5, 1.02), frameon=False,
+            )
     filepath = out_path / filename
     save_and_verify(fig, filepath, dpi=300)
     plt.close(fig)

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.22)  17 SEP 2026 12:29
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.18)  20 SEP 2026 00:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1485,6 +1485,7 @@ utput/figures/domain_overlap_heatmap.png Graphic file (type bmp)
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+[14]
 File: /Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/o
 utput/figures/domain_comparison.png Graphic file (type bmp)
 </Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output
@@ -1496,14 +1497,13 @@ LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
 (Font)              scaled to size 8.99904pt on input line 1161.
 
+
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[14]
 File: /Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/o
 utput/figures/anthropomorphic_framing.png Graphic file (type bmp)
 </Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output
 /figures/anthropomorphic_framing.png>
-
 
 Package microtype Warning: Unknown slot number of character
 (microtype)                `² (= \textsuperscript {2})'
@@ -1512,10 +1512,11 @@ Package microtype Warning: Unknown slot number of character
 (microtype)                (or a number) in protrusion list
 (microtype)                `LMR-it'.
 
+[15]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[15] [16]
+[16]
 File: /Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/o
 utput/figures/domain_overview_grid.png Graphic file (type bmp)
 </Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output
@@ -1532,7 +1533,7 @@ utput/figures/domain_patterns_grid.png Graphic file (type bmp)
 </Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/output
 /figures/domain_patterns_grid.png>
 
-LaTeX Warning: Float too large for page by 157.15765pt on input line 1224.
+LaTeX Warning: Float too large for page by 122.78769pt on input line 1224.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -2046,24 +2047,24 @@ Overfull \hbox (27.05489pt too wide) in paragraph at lines 3229--3235
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[47] [48] [49] [50] [51]
-Overfull \hbox (55.44495pt too wide) in paragraph at lines 3543--3556
+[47] [48] [49] [50] [51] [52]
+Overfull \hbox (55.44495pt too wide) in paragraph at lines 3581--3594
  [][] 
  []
 
-[52] [53] [54] [55] [56] [57] [58] [59] (./ento_linguistics_combined.aux)
+[53] [54] [55] [56] [57] [58] [59] [60] (./ento_linguistics_combined.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 26174 strings out of 468168
- 497730 string characters out of 5432815
- 1188899 words of memory out of 5000000
- 54521 multiletter control sequences out of 15000+600000
+ 26180 strings out of 468168
+ 497856 string characters out of 5432815
+ 1188899 words of memory out of 64000000
+ 54527 multiletter control sequences out of 15000+600000
  655849 words of font info for 122 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  90i,9n,114p,1405b,728s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on ento_linguistics_combined.pdf (59 pages).
+Output written on ento_linguistics_combined.pdf (60 pages).

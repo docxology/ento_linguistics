@@ -20,8 +20,10 @@ import pytest
 from analysis.term_extraction import Term
 from core.manuscript_variables import build_variable_map
 from pipeline.statistics_pipeline import (
+    ABSTRACT_LAYER,
     CANONICAL_DOMAINS,
     CACE_TABLE_TERMS,
+    add_discourse_analysis,
     build_statistical_analysis,
 )
 
@@ -474,3 +476,184 @@ class TestManuscriptVariableTokens:
             )
         }
         assert stat_tokens == set()
+
+
+class TestAbstractLayerFraming:
+    """layer='abstract': framing parity with the full-text artifact."""
+
+    SLICE_SIZE = 200
+
+    @pytest.fixture(scope="class")
+    @classmethod
+    def artifact(cls) -> Dict[str, Any]:
+        """One end-to-end abstract-layer build over the real slice."""
+        texts = _real_texts(cls.SLICE_SIZE)
+        terms = _load_slice_terms(texts)
+        assert terms, "no extracted terms occur in the corpus slice"
+        return build_statistical_analysis(terms, texts, layer=ABSTRACT_LAYER)
+
+    def test_layer_marker_and_domain_term_counts(
+        self, artifact: Dict[str, Any]
+    ) -> None:
+        """The abstract artifact carries the layer marker and term tallies."""
+        assert artifact["layer"] == ABSTRACT_LAYER
+        counts = artifact["domain_term_counts"]
+        assert counts, "the slice extraction must assign terms to domains"
+        assert set(counts) <= set(CANONICAL_DOMAINS)
+        for entry in counts.values():
+            assert set(entry) == {
+                "term_count",
+                "bridging_term_count",
+                "total_frequency",
+            }
+            assert entry["term_count"] >= 1
+            assert entry["total_frequency"] >= entry["term_count"]
+
+    def test_framing_shape(self, artifact: Dict[str, Any]) -> None:
+        """framing matches the full-text shape: per-domain + overall."""
+        framing = artifact["framing"]
+        assert set(framing) <= set(CANONICAL_DOMAINS) | {"overall"}
+        assert "overall" in framing
+        assert framing["overall"]["n_contexts"] > 0
+        for entry in framing.values():
+            assert set(entry) == {"proportion", "n_contexts"}
+            assert 0.0 <= entry["proportion"] <= 1.0
+            assert entry["n_contexts"] >= 1
+
+    def test_framing_overall_counts_each_occurrence_once(
+        self, artifact: Dict[str, Any]
+    ) -> None:
+        """Per-domain n_contexts sums to >= overall (bridging terms double-count)."""
+        framing = artifact["framing"]
+        domain_sum = sum(
+            e["n_contexts"] for k, e in framing.items() if k != "overall"
+        )
+        assert domain_sum >= framing["overall"]["n_contexts"]
+
+    def test_framing_terms_section(self, artifact: Dict[str, Any]) -> None:
+        """Per-term framing data exists and is internally consistent."""
+        framing_terms = artifact["framing_terms"]
+        assert framing_terms, "domain terms must occur in the slice texts"
+        for term, entry in framing_terms.items():
+            assert set(entry) == {"proportion", "n_contexts", "domains"}
+            assert 0.0 <= entry["proportion"] <= 1.0
+            assert entry["n_contexts"] >= 1
+            assert entry["domains"] and set(entry["domains"]) <= set(CANONICAL_DOMAINS)
+        # Term-level occurrence counts aggregate to the per-domain counts.
+        framing = artifact["framing"]
+        for domain in set(framing) - {"overall"}:
+            from_terms = sum(
+                e["n_contexts"]
+                for e in framing_terms.values()
+                if domain in e["domains"]
+            )
+            assert from_terms == framing[domain]["n_contexts"]
+
+    def test_no_layer_sections_by_default(
+        self, artifact: Dict[str, Any]
+    ) -> None:
+        """Default builds (full-text/arXiv callers) carry no abstract sections."""
+        texts = _real_texts(self.SLICE_SIZE)
+        terms = _load_slice_terms(texts)
+        plain = build_statistical_analysis(terms, texts)
+        assert "layer" not in plain
+        assert "framing" not in plain
+        assert "framing_terms" not in plain
+        assert "domain_term_counts" not in plain
+
+
+class TestDiscourseSection:
+    """Corpus-level discourse section: schema, boundaries, degenerates."""
+
+    SLICE_SIZE = 60
+
+    @pytest.fixture(scope="class")
+    @classmethod
+    def artifact(cls) -> Dict[str, Any]:
+        """Build over a real slice (small enough to keep the suite fast)."""
+        texts = _real_texts(cls.SLICE_SIZE)
+        terms = _load_slice_terms(texts)
+        return build_statistical_analysis(terms, texts)
+
+    def test_schema_keys(self, artifact: Dict[str, Any]) -> None:
+        """The four analyzer subsections plus honest metadata are present."""
+        discourse = artifact["discourse"]
+        assert {"patterns", "rhetorical", "argumentative", "persuasive"} <= set(
+            discourse
+        )
+        assert {"n_texts", "n_texts_analyzed", "n_texts_excluded_min_length",
+                "min_text_length", "sample_fraction"} <= set(discourse)
+        assert discourse["n_texts"] == self.SLICE_SIZE
+        assert discourse["n_texts_analyzed"] > 0
+        assert discourse["sample_fraction"] == 1.0
+
+    def test_patterns_shape(self, artifact: Dict[str, Any]) -> None:
+        """Pattern entries record real frequencies over the analyzed texts."""
+        patterns = artifact["discourse"]["patterns"]
+        assert isinstance(patterns, dict)
+        for entry in patterns.values():
+            assert {"frequency", "rhetorical_function", "domains", "examples"} <= set(entry)
+            assert entry["frequency"] >= 1
+
+    def test_rhetorical_strategies_present(self, artifact: Dict[str, Any]) -> None:
+        """Authority citations occur in real abstracts — nonzero frequency."""
+        rhetorical = artifact["discourse"]["rhetorical"]
+        assert set(rhetorical) == {
+            "authority", "analogy", "generalization", "anecdotal",
+        }
+        assert rhetorical["authority"]["frequency"] > 0
+        for entry in rhetorical.values():
+            assert entry["frequency"] >= 0
+            assert entry["text_count"] >= 0
+
+    def test_persuasive_effectiveness_shape(self, artifact: Dict[str, Any]) -> None:
+        """Persuasive entries are the analyzer's effectiveness metrics."""
+        persuasive = artifact["discourse"]["persuasive"]
+        assert persuasive, "the analyzer always returns its technique keys"
+        for entry in persuasive.values():
+            assert {"usage_frequency", "context_relevance",
+                    "heuristic_impact_index", "heuristic_effectiveness_band"} <= set(entry)
+            assert 0.0 <= entry["heuristic_impact_index"] <= 1.0
+
+    def test_argumentative_aggregates(self, artifact: Dict[str, Any]) -> None:
+        """Argumentative aggregates are internally consistent counts."""
+        arg = artifact["discourse"]["argumentative"]
+        assert {"n_structures", "n_with_evidence", "n_with_warrant",
+                "n_with_qualification", "n_with_discourse_markers"} <= set(arg)
+        assert arg["n_structures"] >= 0
+        assert arg["n_with_evidence"] <= arg["n_structures"]
+        if arg["n_with_discourse_markers"]:
+            assert arg["mean_discourse_markers"] >= 1.0
+
+    def test_empty_corpus_omits_section(self) -> None:
+        """An empty corpus omits the discourse section — never zero-filled."""
+        artifact = build_statistical_analysis([], [])
+        assert "discourse" not in artifact
+
+    def test_all_tiny_texts_omitted_with_count(self) -> None:
+        """Texts below the minimum length are excluded and counted honestly."""
+        merged = add_discourse_analysis({}, ["Ants." * 3])
+        assert "discourse" not in merged
+
+    def test_add_discourse_analysis_merges_and_counts(self) -> None:
+        """The public merge path adds metadata and keeps existing keys."""
+        tiny = "Ants."
+        long = (
+            "The colony functions as a superorganism whose workers decide "
+            "collectively about foraging behavior and resource allocation. "
+        ) * 10
+        merged = add_discourse_analysis({"layer": "x"}, [tiny, long])
+        discourse = merged["discourse"]
+        assert merged["layer"] == "x"
+        assert discourse["n_texts"] == 2
+        assert discourse["n_texts_excluded_min_length"] == 1
+        assert discourse["n_texts_analyzed"] == 1
+
+    def test_discourse_deterministic(self, artifact: Dict[str, Any]) -> None:
+        """Rebuilding yields byte-identical discourse metadata and counts."""
+        texts = _real_texts(self.SLICE_SIZE)
+        terms = _load_slice_terms(texts)
+        rebuild = build_statistical_analysis(terms, texts)
+        assert json.dumps(artifact["discourse"], indent=2) == json.dumps(
+            rebuild["discourse"], indent=2
+        )

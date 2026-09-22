@@ -126,6 +126,7 @@ Outputs in `output/reports/test_results.json` and `output/figures/figure_registr
 - arXiv preprint layer (`src/data/arxiv_corpus.py`) and OpenAlex citation enrichment (`src/data/openalex_enrichment.py`) as separate, documented source layers.
 - Figures registered in `output/figures/figure_registry.json`.
 - Inferential statistics stage: pairwise Welch $t$-tests with Benjamini–Hochberg correction and Cohen's $d$, plus one-way ANOVA (`src/pipeline/statistics_pipeline.py`), writing `output/data/statistical_analysis.json` and the `statistical_analysis.png` figure.
+- Corpus-level discourse analysis: both statistical artifacts carry a `discourse` section (discourse patterns, rhetorical strategies, argumentative structures, persuasive techniques), exposed as the `ABSTRACT_*`/`FULLTEXT_*` discourse token families, driving the S02 "Discourse and Rhetorical Layer" subsection and the `discourse_comparison.png` figure (`fig:discourse_comparison`, rendered when both layer artifacts exist).
 
 ## Project Architecture
 

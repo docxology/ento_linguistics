@@ -9,10 +9,12 @@ vocabularies.  The result is written to
 
     {"layer": "bhl_historical", "generated": ..., "source": {...},
      "eras": {era: {"documents", "tokens", "terms_per_10k",
-                    "domains_per_10k"}},
+                    "domains_per_10k", "extraction", "entropy",
+                    "framing"}},
      "terms": {term: {"era_1850_1899": count, "era_1900_1949": count,
                       "era_1950_1970": count, "domains": [...],
-                      "total": n}}}
+                      "total": n}},
+     "skipped": [{kind, era?, reason}, ...]}
 
 Normalized per-10k frequencies live under ``eras``; ``terms``
 carries the raw per-era occurrence counts plus each term's domain
@@ -43,6 +45,44 @@ Determinism: pure string/token arithmetic, no randomness, sorted
 serialization; re-running on an unchanged corpus reproduces the file
 byte-for-byte (the ``generated`` timestamp excepted).
 
+Expanded schema (full linguistic stack, per era)
+------------------------------------------------
+Beyond the per-10k frequencies above, ``build_artifact`` runs the
+full stack per era over the OCR texts:
+
+1. **Extraction** — ``TerminologyExtractor`` over
+   :func:`clean_ocr_text` output with ``min_frequency=2``
+   (``OCR_MIN_TERM_FREQUENCY``): single occurrences in OCR text are
+   dominated by scanning flukes, so the guard excludes them.  The
+   section records ``n_terms``, ``min_frequency`` and the per-domain
+   term tallies (same shape as the full-text layer's
+   ``domain_term_counts``).
+2. **Entropy** — per-term semantic entropy via the public
+   ``DomainAnalyzer.quantify_ambiguity_metrics`` API, bounded to the
+   top ``ENTROPY_TOP_TERMS`` (20) most frequent extracted terms per
+   era (documented bounded fraction: entropy is TF-IDF -> KMeans ->
+   Shannon over sentence contexts, infeasible over the full ~29M-char
+   OCR scan).  Only terms with ``status == "ok"`` (enough usable
+   sentence contexts) report a value; excluded terms are counted in
+   ``n_excluded``, never folded in as 0.0.  Per-domain means are
+   computed over the same valid terms.
+3. **Framing** — occurrence-context anthropomorphic-framing
+   proportions (same shape and semantics as the full-text layer's
+   ``framing`` section): every occurrence of a domain-assigned term is
+   evaluated with the public
+   ``analysis.text_analysis.LinguisticFeatureExtractor
+   .extract_framing_features`` API over a +-``FRAMING_CONTEXT_WINDOW``
+   (3)-token window.  The domain-assigned term vocabulary is
+   reconstructed from the identical token stream
+   ``TerminologyExtractor`` counts and cross-checked against the era
+   extraction's per-domain tallies (mismatch raises).
+
+Degenerate eras omit honestly: an era with no documents contributes no
+``extraction``/``entropy``/``framing`` sections and is recorded in the
+artifact's ``skipped`` list; an era whose bounded entropy sample
+yields no valid entropies omits the term/domain maps (exclusion
+counts remain).
+
 Known limitation (documented, deterministic): hyphenated spellings
 such as ``super-organism`` do not match the vocabulary term
 ``superorganism``; OCR-era texts use both spellings, and counts are
@@ -50,7 +90,6 @@ literal-token counts by design.  NO ``output/`` writes: the artifact
 lands in ``data/bhl/``; figure/token wiring belongs to the
 integration wave.
 """
-
 from __future__ import annotations
 
 import argparse
@@ -58,21 +97,44 @@ import json
 import logging
 import re
 import unicodedata
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from analysis.domain_analysis import DomainAnalyzer
+from analysis.term_extraction import TerminologyExtractor
+from analysis.text_analysis import LinguisticFeatureExtractor, TextProcessor
+from pipeline.fulltext_pipeline import (
+    FRAMING_CONTEXT_WINDOW,
+    _domain_term_counts,
+    _framing_token_domains,
+)
 __all__ = [
     "ERA_KEYS",
     "ARTIFACT_NAME",
+    "OCR_MIN_TERM_FREQUENCY",
+    "ENTROPY_TOP_TERMS",
     "normalize_text",
+    "clean_ocr_text",
     "tokenize",
     "domain_vocabularies",
     "analyze_eras",
+    "analyze_era_stack",
     "build_artifact",
     "load_corpus_records_for_analysis",
     "main",
 ]
+
+#: Minimum per-era token frequency for the extraction/entropy/framing
+#: stack.  Single occurrences in OCR text are dominated by scanning
+#: flukes, so the guard excludes them.
+OCR_MIN_TERM_FREQUENCY = 2
+
+#: Bounded entropy pass: per-term semantic entropy is evaluated for at
+#: most this many most-frequent extracted terms per era (documented
+#: bounded fraction over the ~29M-char OCR scan).
+ENTROPY_TOP_TERMS = 20
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +147,14 @@ ERA_KEYS: Tuple[str, ...] = (
 
 #: Artifact filename written next to the corpus shards.
 ARTIFACT_NAME = "era_term_usage.json"
+
+#: OCR speck tokens: standalone digit runs (page/plate numbers) and
+#: single letters (roman-numeral folios, stray glyphs).  Domain seed
+#: terms are >=2 alphabetic characters, so these tokens carry no
+#: vocabulary signal.  Lookarounds keep digits/letters inside words
+#: and hyphenated compounds intact.
+_OCR_NOISE_TOKEN_RE = re.compile(r"(?<![\w-])(?:\d[\d.,:;%]*|[A-Za-z])(?![\w-])")
+
 
 _TOKEN_RE = re.compile(r"[a-z]+(?:-[a-z]+)*")
 _HYPHEN_LINEBREAK_RE = re.compile(r"(\w)-\s*\n\s*(\w)")
@@ -106,6 +176,34 @@ def normalize_text(text: str) -> str:
     text = unicodedata.normalize("NFC", text).lower()
     text = _HYPHEN_LINEBREAK_RE.sub(r"\1\2", text)
     return _WHITESPACE_RE.sub(" ", text).strip()
+
+
+def clean_ocr_text(text: str) -> str:
+    """Normalize OCR text for the extraction/entropy/framing stack.
+
+    OCR noise handling (documented deterministic procedure):
+
+    1. :func:`normalize_text`: NFC-fold, lowercase, join hyphenated
+       line breaks, collapse whitespace.
+    2. Drop OCR speck tokens matched by ``_OCR_NOISE_TOKEN_RE``:
+       standalone digit runs (page/plate numbers, dates used as
+       folios) and single letters (roman-numeral folios, stray
+       glyphs).  Every domain seed term is at least two alphabetic
+       characters long, so these tokens carry no vocabulary signal;
+       lookarounds keep letters/digits inside words (``iiv``, ``x1a``)
+       and hyphenated compounds (``x-ray``) intact.
+
+    Args:
+        text: Raw OCR ``full_text`` of one corpus record.
+
+    Returns:
+        Cleaned text used by the per-era stack (extraction, entropy,
+        framing).  The per-10k frequency pass keeps using
+        :func:`normalize_text` unchanged (backward compatible).
+    """
+    normalized = normalize_text(text)
+    cleaned = _OCR_NOISE_TOKEN_RE.sub(" ", normalized)
+    return _WHITESPACE_RE.sub(" ", cleaned).strip()
 
 
 def tokenize(text: str) -> List[str]:
@@ -277,11 +375,221 @@ def analyze_eras(
     return {"eras": eras, "terms": terms}
 
 
+def analyze_era_stack(
+    era_records: List[Dict[str, Any]],
+    min_term_frequency: int = OCR_MIN_TERM_FREQUENCY,
+    entropy_top_terms: int = ENTROPY_TOP_TERMS,
+) -> Dict[str, Any]:
+    """Run the full linguistic stack over one era's OCR texts.
+
+    Stages (all deterministic):
+
+    1. ``clean_ocr_text`` over each record's ``full_text``.
+    2. ``TerminologyExtractor`` extraction with the
+       ``min_term_frequency`` OCR guard.
+    3. Bounded per-term semantic entropy (public
+       ``DomainAnalyzer.quantify_ambiguity_metrics`` API) over the
+       ``entropy_top_terms`` most frequent extracted terms (descending
+       frequency, ties by term text ascending).
+    4. Occurrence-context anthropomorphic-framing proportions via the
+       public ``LinguisticFeatureExtractor.extract_framing_features``
+       API; the domain-assigned term vocabulary is reconstructed from
+       the identical token stream the extractor counts and
+       cross-checked against stage 2's per-domain tallies.
+
+    Args:
+        era_records: Corpus records of one era (``full_text`` field).
+        min_term_frequency: Minimum token frequency for extraction.
+        entropy_top_terms: Bound on the entropy sample.
+
+    Returns:
+        ``{"extraction": {...}, "entropy": {...}|None,
+        "framing": {...}|None, "skipped": [...]}``.  ``entropy`` /
+        ``framing`` are ``None`` when the era is degenerate (no
+        extracted terms, or no valid entropies / occurrence contexts);
+        every omission carries a ``skipped`` entry.
+    """
+    cleaned = [clean_ocr_text(r.get("full_text") or "") for r in era_records]
+    skipped: List[Dict[str, str]] = []
+
+    # ── 1. Extraction (OCR-guarded) ──────────────────────────────────
+    extractor = TerminologyExtractor()
+    terms = extractor.extract_terms(cleaned, min_frequency=min_term_frequency)
+    extraction: Dict[str, Any] = {
+        "min_frequency": min_term_frequency,
+        "n_terms": len(terms),
+        "domains": _domain_term_counts(terms),
+    }
+    if not terms:
+        reason = (
+            f"no domain-assigned terms extracted at min_frequency="
+            f"{min_term_frequency}; entropy and framing omitted"
+        )
+        skipped.append({"kind": "era_stack", "reason": reason})
+        return {"extraction": extraction, "entropy": None, "framing": None, "skipped": skipped}
+
+    # ── 2. Bounded per-term entropy ──────────────────────────────────
+    ranked = sorted(terms.values(), key=lambda t: (-t.frequency, t.text))[
+        :entropy_top_terms
+    ]
+    analyzer = DomainAnalyzer()
+    metrics = analyzer.quantify_ambiguity_metrics(ranked, cleaned)
+    scores = metrics.get("term_ambiguity_scores", {})
+    per_term_entropy: Dict[str, float] = {}
+    domain_values: Dict[str, List[float]] = {}
+    for term in ranked:
+        result = scores.get(term.text.lower())
+        if not result or result.get("status") != "ok":
+            continue  # insufficient contexts or error: excluded, not 0.0
+        entropy = float(result["entropy_bits"])
+        per_term_entropy[term.text] = round(entropy, 6)
+        for domain in term.domains:
+            domain_values.setdefault(domain, []).append(entropy)
+    entropy: Optional[Dict[str, Any]] = {
+        "bounded_to_top_terms": min(entropy_top_terms, len(ranked)),
+        "n_terms_evaluated": len(ranked),
+        "n_valid": len(per_term_entropy),
+        "n_excluded": len(ranked) - len(per_term_entropy),
+        "terms": dict(sorted(per_term_entropy.items())),
+        "domains": {
+            domain: round(sum(values) / len(values), 6)
+            for domain, values in sorted(domain_values.items())
+        },
+    }
+    if not per_term_entropy:
+        entropy = None
+        skipped.append(
+            {
+                "kind": "era_entropy",
+                "reason": (
+                    f"none of the top-{len(ranked)} terms had enough "
+                    "sentence contexts for semantic entropy; per-term "
+                    "entropies omitted (n_excluded recorded in extraction)"
+                ),
+            }
+        )
+
+    # ── 3. Framing proportions over occurrence contexts ──────────────
+    framing = _era_framing_proportions(
+        cleaned, terms, min_term_frequency, skipped
+    )
+
+    return {
+        "extraction": extraction,
+        "entropy": entropy,
+        "framing": framing,
+        "skipped": skipped,
+    }
+
+
+def _era_framing_proportions(
+    cleaned_texts: List[str],
+    terms: Dict[str, Any],
+    min_term_frequency: int,
+    skipped: List[Dict[str, str]],
+) -> Optional[Dict[str, Any]]:
+    """Compute anthropomorphic-framing proportions for one era.
+
+    Mirrors ``pipeline.fulltext_pipeline.add_framing_analysis`` over
+    BHL records (the shared helper assembles texts from
+    title/abstract/body fields, which OCR records do not carry): the
+    domain-assigned term vocabulary is reconstructed with the identical
+    normalized token stream ``TerminologyExtractor`` counts and
+    cross-checked against the extraction's per-domain tallies, then
+    every domain-term occurrence is scanned with the public
+    ``LinguisticFeatureExtractor.extract_framing_features`` API over a
+    +-``FRAMING_CONTEXT_WINDOW``-token window.  A term assigned to
+    several domains contributes every occurrence to each of them; the
+    ``overall`` entry counts each occurrence once.
+
+    Returns:
+        ``{domain: {"proportion", "n_contexts"}, ..., "overall": {...}}``
+        or ``None`` (with a ``skipped`` entry appended) when no
+        domain-term occurrence context exists in the era.
+    """
+    processor = TextProcessor()
+    classifier = TerminologyExtractor(text_processor=processor)
+    doc_tokens = [
+        processor.process_text(text, lemmatize=False) for text in cleaned_texts
+    ]
+    counts: Counter = Counter()
+    for tokens in doc_tokens:
+        counts.update(tokens)
+    token_domains, tallies = _framing_token_domains(
+        counts, classifier, min_term_frequency
+    )
+    expected = _domain_term_counts(terms)
+    if tallies != expected:
+        raise ValueError(
+            "_era_framing_proportions: reconstructed per-domain term counts "
+            "do not match the era extraction; the token stream diverged from "
+            "the extraction pass"
+        )
+
+    feature_extractor = LinguisticFeatureExtractor()
+    domain_contexts: Dict[str, int] = {}
+    domain_framed: Dict[str, int] = {}
+    overall_contexts = 0
+    overall_framed = 0
+    for tokens in doc_tokens:
+        n_tokens = len(tokens)
+        for position, token in enumerate(tokens):
+            domains = token_domains.get(token)
+            if not domains:
+                continue
+            start = max(0, position - FRAMING_CONTEXT_WINDOW)
+            end = min(n_tokens, position + FRAMING_CONTEXT_WINDOW + 1)
+            context = " ".join(tokens[start:end])
+            is_framed = (
+                feature_extractor.extract_framing_features(context)[
+                    "anthropomorphic_terms"
+                ]
+                > 0
+            )
+            for domain in domains:
+                domain_contexts[domain] = domain_contexts.get(domain, 0) + 1
+                if is_framed:
+                    domain_framed[domain] = domain_framed.get(domain, 0) + 1
+            overall_contexts += 1
+            if is_framed:
+                overall_framed += 1
+
+    if not overall_contexts:
+        skipped.append(
+            {
+                "kind": "era_framing",
+                "reason": (
+                    "no domain-assigned term occurrence contexts in the "
+                    "era; framing proportions omitted"
+                ),
+            }
+        )
+        return None
+    proportions: Dict[str, Any] = {}
+    for domain in sorted(domain_contexts):
+        n_contexts = domain_contexts[domain]
+        proportions[domain] = {
+            "proportion": round(domain_framed.get(domain, 0) / n_contexts, 6),
+            "n_contexts": n_contexts,
+        }
+    proportions["overall"] = {
+        "proportion": round(overall_framed / overall_contexts, 6),
+        "n_contexts": overall_contexts,
+    }
+    return proportions
+
+
 def build_artifact(
     data_dir: Path,
     records: Optional[List[Dict[str, Any]]] = None,
 ) -> Dict[str, Any]:
     """Build the era-stratified artifact dict for the BHL corpus.
+
+    Per era, ``analyze_era_stack`` adds the ``extraction`` /
+    ``entropy`` / ``framing`` sections; degenerate eras omit those
+    sections and record the omission in the artifact-level
+    ``skipped`` list.  The ``terms_per_10k``/``domains_per_10k``/
+    ``terms`` sections are unchanged (backward compatible).
 
     Args:
         data_dir: Corpus directory with ``bhl_shard_*.json`` files.
@@ -290,12 +598,36 @@ def build_artifact(
 
     Returns:
         Artifact dict: ``{"layer": "bhl_historical", "generated",
-        "source", "eras", "terms"}``.
+        "source", "eras", "terms", "skipped"}``.
     """
     if records is None:
         records = load_corpus_records_for_analysis(data_dir)
     vocabulary_source = "analysis.term_extraction.TerminologyExtractor.DOMAIN_SEEDS"
     eras_terms = analyze_eras(records)
+    eras = eras_terms["eras"]
+    skipped: List[Dict[str, str]] = []
+    for era in ERA_KEYS:
+        era_records = [r for r in records if r.get("era") == era]
+        if not era_records:
+            skipped.append(
+                {
+                    "kind": "era_stack",
+                    "era": era,
+                    "reason": (
+                        "no documents in era; extraction/entropy/framing "
+                        "sections omitted"
+                    ),
+                }
+            )
+            continue
+        logger.info("Running full stack for %s (%d documents)", era, len(era_records))
+        stack = analyze_era_stack(era_records)
+        eras[era]["extraction"] = stack["extraction"]
+        eras[era]["entropy"] = stack["entropy"]
+        eras[era]["framing"] = stack["framing"]
+        skipped.extend(
+            {**entry, "era": era} for entry in stack["skipped"]
+        )
     return {
         "layer": "bhl_historical",
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -309,8 +641,35 @@ def build_artifact(
                 "(NFC, lowercased, hyphen-break-joined) OCR text; "
                 "frequencies per 10k era tokens, 4 decimals"
             ),
+            "ocr_cleaning": (
+                "clean_ocr_text: normalize_text (NFC fold, hyphen-break "
+                "join, whitespace collapse) plus removal of OCR speck "
+                "tokens (standalone digit runs and single letters); "
+                "domain seed terms are >=2 alphabetic characters, so "
+                "these tokens carry no vocabulary signal"
+            ),
+            "stack": {
+                "extraction": (
+                    "TerminologyExtractor over clean_ocr_text output, "
+                    f"min_frequency={OCR_MIN_TERM_FREQUENCY} per era"
+                ),
+                "entropy": (
+                    "DomainAnalyzer.quantify_ambiguity_metrics over the "
+                    f"top {ENTROPY_TOP_TERMS} most frequent extracted "
+                    "terms per era (documented bounded fraction); only "
+                    "status=ok terms report entropy"
+                ),
+                "framing": (
+                    "occurrence-context anthropomorphic framing "
+                    "proportions via the public "
+                    "LinguisticFeatureExtractor API (+-3-token window); "
+                    "vocabulary reconstructed from the extraction token "
+                    "stream and cross-checked"
+                ),
+            },
         },
         **eras_terms,
+        "skipped": skipped,
     }
 
 
@@ -352,6 +711,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         "Analyzed %d documents across eras: %s",
         artifact["source"]["documents"],
         era_docs,
+    )
+    logger.info(
+        "Full-stack sections: %d honest omissions recorded in 'skipped'",
+        len(artifact.get("skipped", [])),
     )
     output.parent.mkdir(parents=True, exist_ok=True)
     tmp = output.with_name(output.name + ".tmp")

@@ -309,3 +309,36 @@ class TestFramingAnalysis:
         # Everything outside the framing section is untouched.
         merged.pop("framing")
         assert merged == base
+
+
+class TestDiscourseSection:
+    """The full-text artifact carries the corpus-level discourse section
+    (computed inside build_statistical_analysis over the full texts)."""
+
+    def test_artifact_carries_discourse(self, fulltexts):
+        artifact = build_fulltext_analysis(fulltexts, min_term_frequency=2)
+        discourse = artifact["discourse"]
+        assert {"patterns", "rhetorical", "argumentative", "persuasive"} <= set(
+            discourse
+        )
+        # The full fixture corpus is analyzed in full — no sampling.
+        assert discourse["n_texts"] == 3
+        assert discourse["n_texts_analyzed"] == 3
+        assert discourse["n_texts_excluded_min_length"] == 0
+        assert discourse["sample_fraction"] == 1.0
+        assert discourse["rhetorical"]["authority"]["frequency"] >= 0
+
+    def test_discourse_deterministic(self, fulltexts):
+        first = build_fulltext_analysis(fulltexts, min_term_frequency=2)
+        second = build_fulltext_analysis(fulltexts, min_term_frequency=2)
+        assert json.dumps(first["discourse"], indent=2) == json.dumps(
+            second["discourse"], indent=2
+        )
+
+    def test_discourse_present_when_framing_disabled(self, fulltexts):
+        """Discourse is independent of the optional framing stage."""
+        artifact = build_fulltext_analysis(
+            fulltexts, min_term_frequency=2, include_framing=False
+        )
+        assert "discourse" in artifact
+        assert "framing" not in artifact

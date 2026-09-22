@@ -12,6 +12,10 @@ The Ento-Linguistics PDF build uses **`scripts/_render_pdf_override.py`** (not t
 
 **BHL historical family** from `data/bhl/era_term_usage.json` (optional; absent artifact → no tokens), emitted by the same shared `build_statistical_tokens` builder via its `bhl_data_dir` parameter (default `BHL_DATA_DIR` = project `data/bhl`): `BHL_DOCUMENTS` (total analyzed BHL historical documents), `BHL_ERA_1850_1899_DOCS`/`BHL_ERA_1900_1949_DOCS`/`BHL_ERA_1950_1970_DOCS` (per-era document counts), and `BHL_<ERA>_<TERM>_PER_10K` for the 18 canonical domain-seed terms (`BHL_CANONICAL_TERMS` in `src/core/manuscript_variables.py`: colony, nestmate, superorganism, division of labor, foraging, worker, caste, hierarchy, queen, brood, mating, reproduction, altruism, kin, relatedness, allocation, cost, resource; TERM slugified like the CACE_TERM convention — uppercased, spaces/hyphens mapped to underscores; e.g. `BHL_ERA_1900_1949_DIVISION_OF_LABOR_PER_10K`). Values are per-era normalized term frequencies (per 10k tokens, 4 decimals); zero frequencies are kept. These ground the era claims in `S03b_case_studies.md`.
 
+**Discourse families** from both layer artifacts' `discourse` sections (optional; absent section → no tokens), emitted by `build_statistical_tokens` via `_build_discourse_tokens`: per layer prefix `ABSTRACT_*` (from `statistical_analysis.json`) and `FULLTEXT_*` (from `fulltext_analysis.json`) — `DISCOURSE_N_ANALYZED` (`n_texts_analyzed`), `DISCOURSE_SAMPLE_FRACTION` (4 decimals), `PATTERNS_<PATTERN_SLUG>` (per-pattern `frequency`), `RHETORICAL_<STRATEGY_SLUG>` (per-strategy `frequency`), `ARG_STRUCTURES` (`argumentative.n_structures`), and `PERSUASIVE_METAPHORICAL` (`persuasive.metaphorical_language.usage_frequency`). These drive the S02 "Discourse and Rhetorical Layer" subsection and the `discourse_comparison.png` figure (`fig:discourse_comparison`).
+
+**BHL expanded-era family**: when `data/bhl/era_term_usage.json` carries the per-era full-stack sections, `_build_bhl_tokens` additionally emits `BHL_ERA_<ERA>_TERMS` (`extraction.n_terms`), `BHL_ERA_<ERA>_ENTROPY_MEAN` (mean of the era's valid bounded-sample per-term entropies, 4 decimals), and `BHL_ERA_<ERA>_FRAMING` (overall occurrence-context anthropomorphic-framing proportion, 4 decimals) — omitted for eras without those sections, never fabricated.
+
 **Strict mode:** `build_pdf(strict_templates=True)`, the CLI flag `--strict-templates`, or environment variable `STRICT_TEMPLATE_VARS=1`/`true`/`yes` causes an unresolved placeholder after substitution to print to stderr and **`sys.exit(1)`** (use in CI to catch missing keys).
 
 **Editing rule:** any number that should track the latest pipeline run must be a double-brace variable token present in `_load_corpus_vars`; do not duplicate corpus statistics as literals in markdown.
@@ -223,7 +227,7 @@ As shown in \ref{fig:terminology_network}...
 - `domain_overlap_heatmap.png` - Szymkiewicz-Simpson overlap coefficient between domains
 - `domain_comparison.png` - Cross-domain term frequency and metrics comparison
 - `domain_overview_grid.png` - Top-10 terms per domain (3×2 grid)
-- `domain_patterns_grid.png` - POS composition per domain (3×2 grid)
+- `domain_patterns_grid.png` - Word-formation composition per domain (3×2 grid; hyphenated compounds / multiword phrases / single words)
 - `concept_hierarchy.png` - Hierarchical concept organization (Power & Labor)
 - `anthropomorphic_framing.png` - Anthropomorphic framing analysis
 - `unit_of_individuality_patterns.png` - Unit of Individuality domain analysis

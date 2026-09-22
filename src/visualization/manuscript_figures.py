@@ -149,6 +149,10 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
     from analysis.domain_analysis import DomainAnalyzer
 
     results: Dict[str, Any] = {}
+    # The analyzed texts ride along so downstream stages (e.g. the
+    # anthropomorphic-terminology figure's on-the-fly framing fallback)
+    # can compute corpus-level features without re-loading the corpus.
+    results["texts"] = list(texts)
 
     # ── Step 1: Text Processing ───────────────────────────────────────
     logger.info("Step 1/4: Processing text corpus...")
@@ -447,8 +451,24 @@ def generate_domain_overlap_heatmap(results: Dict[str, Any], figure_dir: str) ->
 def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) -> str:
     """Generate anthropomorphic_framing.png showing human-derived terminology.
 
+    Data source: the abstract artifact's real per-term framing
+    proportions (``framing_terms`` — computed by
+    ``pipeline.statistics_pipeline.build_statistical_analysis`` with
+    ``layer="abstract"`` from every ±3-token context around each
+    domain-term occurrence via
+    ``LinguisticFeatureExtractor.extract_framing_features``).  When the
+    statistics-stage section is absent, framing proportions are
+    computed on the fly from ``results["terms"]`` and
+    ``results["texts"]`` via the same machinery.  Categories are the
+    six canonical Ento-Linguistic domains; a term appears in a category
+    when it is assigned to that domain AND at least one of its
+    occurrence contexts carries an anthropomorphic framing pattern
+    (proportion > 0), sorted by framing proportion.  No curated word
+    list.
+
     Args:
-        results: Analysis pipeline results
+        results: Analysis pipeline results (``framing_terms`` from the
+            statistics stage, or ``terms`` + ``texts`` to compute them).
         figure_dir: Output directory for figures
 
     Returns:
@@ -458,29 +478,60 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
 
     filepath = Path(figure_dir) / "anthropomorphic_framing.png"
 
-    # Curated anthropomorphic concepts organized by category
-    anthropomorphic_data: Dict[str, List[str]] = {
-        "Hierarchical Terms": [
-            "queen", "king", "worker", "soldier", "slave",
-            "master", "caste", "rank", "dominance", "subordinate",
-        ],
-        "Economic Metaphors": [
-            "investment", "trade", "market", "efficiency",
-            "resource allocation", "returns", "expenditure",
-        ],
-        "Kinship Language": [
-            "mother", "sister", "daughter", "family",
-            "kin", "altruism", "selflessness",
-        ],
-        "Identity Labels": [
-            "forager", "nurse", "guard", "scout",
-            "recruit", "specialist", "generalist",
-        ],
-        "Agency Attribution": [
-            "decides", "chooses", "communicates", "signals",
-            "cooperates", "competes", "sacrifices",
-        ],
+    # Real per-term framing proportions, organized by canonical domain.
+    # Preferred source: the statistics stage's artifact section
+    # (``results["framing_terms"]``).  When absent — e.g. direct
+    # generator tests — compute it on the fly from the analyzed terms
+    # and texts riding in ``results`` via the same public machinery the
+    # statistics stage uses, so the figure never falls back to a
+    # curated word list.
+    framing_terms: Dict[str, Any] = results.get("framing_terms") or {}
+    if not framing_terms:
+        texts = results.get("texts") or []
+        terms = results.get("terms") or {}
+        if terms and texts:
+            from pipeline.statistics_pipeline import _framing_section
+            _, framing_terms = _framing_section(list(terms.values()), texts)
+    if not framing_terms:
+        logger.warning(
+            "⚠️  anthropomorphic_framing.png skipped: no per-term framing "
+            "data available (statistics stage produced no framing_terms "
+            "and results carry no texts/terms to compute them)"
+        )
+        return ""
+    # Domain slugs get manuscript-style display labels so the category
+    # column stays readable.
+    display_labels = {
+        "unit_of_individuality": "Unit of Individuality",
+        "behavior_and_identity": "Behavior & Identity",
+        "power_and_labor": "Power & Labor",
+        "sex_and_reproduction": "Sex & Reproduction",
+        "kin_and_relatedness": "Kin & Relatedness",
+        "economics": "Economics",
     }
+    anthropomorphic_data: Dict[str, List[str]] = {}
+    for domain in sorted({d for entry in framing_terms.values() for d in entry.get("domains", [])}):
+        framed_terms = [
+            term
+            for term, entry in framing_terms.items()
+            if domain in entry.get("domains", []) and entry.get("proportion", 0.0) > 0.0
+        ]
+        framed_terms.sort(
+            key=lambda t: (
+                -framing_terms[t]["proportion"],
+                -framing_terms[t]["n_contexts"],
+                t,
+            )
+        )
+        if framed_terms:
+            anthropomorphic_data[display_labels.get(domain, domain)] = framed_terms
+
+    if not anthropomorphic_data:
+        logger.warning(
+            "⚠️  anthropomorphic_framing.png skipped: no domain term shows "
+            "anthropomorphic framing in the real extraction"
+        )
+        return ""
 
     viz = ConceptVisualizer(figsize=(14, 10))
     viz.create_anthropomorphic_analysis_plot(
@@ -497,9 +548,6 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
 
 def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
     """Generate concept_hierarchy.png as a 2-panel centrality figure.
-
-    Passes ``term_counts`` so the scatter panel has real y-axis values
-    instead of all-1 defaults.
 
     Args:
         results: Analysis pipeline results
@@ -521,7 +569,6 @@ def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
         centrality_scores[concept_name] = connections
         # Count terms mapped into this concept
         term_counts[concept_name] = len(concept_map.concepts[concept_name].terms)
-
     # Core = above-average centrality; peripheral = below
     core_concepts = []
     peripheral_concepts = []
@@ -637,7 +684,10 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
                  str(c), ha="center", va="bottom", fontsize=MIN_FONT,
                  fontweight="bold")
     ax2.set_xticks(range(len(scales)))
-    ax2.set_xticklabels(scales, fontsize=MIN_FONT)
+    ax2.set_xticklabels(
+        scales, fontsize=MIN_FONT, rotation=30, ha="right",
+        rotation_mode="anchor",
+    )
     ax2.set_ylabel("Number of Terms", fontsize=MIN_FONT)
     ax2.set_title("Scale-Level Distribution", fontsize=MIN_FONT + 2, fontweight="bold")
     ax2.spines["top"].set_visible(False)
@@ -799,12 +849,27 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
 
     # ── Right panel: frequency vs entropy scatter ────────────────────
     sc_sizes = [max(40, c * 8) for c in n_ctx]
+    ax2.margins(x=0.15)
     scatter = ax2.scatter(freqs, entropies, s=sc_sizes, c=entropies,
                           cmap="Purples", edgecolors="#333", linewidths=0.5,
                           alpha=0.85, vmin=0, vmax=max_ent)
-    for name, f, e in zip(names, freqs, entropies):
+    annotations = [
         ax2.annotate(name, (f, e), xytext=(4, 3), textcoords="offset points",
                      fontsize=MIN_FONT, color="#333")
+        for name, f, e in zip(names, freqs, entropies)
+    ]
+    # Deterministic label de-overlap: draw once, measure the rendered
+    # 16pt label boxes, and drop any label that overlaps one already
+    # placed (top-entropy labels win — the list is entropy-sorted).
+    # The dropped points stay readable in the left panel's ranked bars.
+    fig.canvas.draw()
+    placed_boxes: list = []
+    for ann in annotations:
+        bbox = ann.get_window_extent(fig.canvas.get_renderer())
+        if any(bbox.overlaps(other) for other in placed_boxes):
+            ann.remove()
+        else:
+            placed_boxes.append(bbox)
 
     ax2.set_xlabel("Corpus Frequency", fontsize=MIN_FONT)
     ax2.set_ylabel("Semantic Entropy H(t) (bits)", fontsize=MIN_FONT)
@@ -1044,7 +1109,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                 "caption": (
                     "Co-occurrence network of the extracted domain-assigned "
                     "terminology of the headline PubMed abstract layer "
-                    "(about nineteen hundred abstracts). Each node is a "
+                    "(7,608 open-access PubMed abstracts). Each node is a "
                     "term: size proportional to corpus frequency, color to "
                     "its primary domain (legend at right). Edge width is "
                     "proportional to the pipeline relationship weight "
@@ -1061,7 +1126,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                     "Six-panel comparison of terminology characteristics "
                     "across the six Ento-Linguistic domains, computed from "
                     "the domain-assigned terminology of the headline PubMed "
-                    "abstract layer (about nineteen hundred abstracts). "
+                    "abstract layer (7,608 open-access PubMed abstracts). "
                     "Bar charts with annotated values show: distinct-term "
                     "count per domain, mean extraction confidence, total "
                     "corpus frequency, mean semantic entropy in bits, count "
@@ -1080,7 +1145,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                     "coefficients between each pair of the six "
                     "Ento-Linguistic domains, computed from term--domain "
                     "assignments of the headline PubMed abstract layer "
-                    "(about nineteen hundred abstracts). Each cell is the "
+                    "(7,608 open-access PubMed abstracts). Each cell is the "
                     "count of terms assigned to both domains divided by the "
                     "smaller domain's term count; the diagonal is one "
                     "hundred percent by construction; darker cells "
@@ -1113,7 +1178,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                 "caption": (
                     "Two-panel centrality analysis of the Ento-Linguistic "
                     "concept map over the headline PubMed abstract layer "
-                    "(about nineteen hundred abstracts). Concepts are "
+                    "(7,608 open-access PubMed abstracts). Concepts are "
                     "clusters of domain-assigned terms; centrality is a "
                     "concept's count of direct links in the map. Left: "
                     "concepts ranked by centrality, colored green for core "
@@ -1129,7 +1194,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                 "caption": (
                     "Two-panel terminology analysis of the Unit of "
                     "Individuality domain over the headline PubMed "
-                    "abstract layer (about nineteen hundred abstracts). "
+                    "abstract layer (7,608 open-access PubMed abstracts). "
                     "Left: pie chart of term-formation patterns "
                     "(part-of-speech structure), percentages annotated. "
                     "Right: bar chart of the number of domain terms "
@@ -1156,7 +1221,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                 "caption": (
                     "Two-panel semantic-entropy analysis of Unit of "
                     "Individuality terms over the headline PubMed abstract "
-                    "layer (about nineteen hundred abstracts). Left: "
+                    "layer (7,608 open-access PubMed abstracts). Left: "
                     "per-term entropy bars sorted descending, annotated "
                     "with entropy and context counts, with a dashed "
                     "median line. Right: corpus frequency versus entropy "
@@ -1169,7 +1234,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                 "caption": (
                     "Bar chart of the fifteen most frequent Power & Labor "
                     "terms by corpus frequency over the headline PubMed "
-                    "abstract layer (about nineteen hundred abstracts). "
+                    "abstract layer (7,608 open-access PubMed abstracts). "
                     "Bar height encodes frequency, annotated at the bar "
                     "tip; bars ordered by descending frequency, with "
                     "YlOrRd shading tracking rank order only."
@@ -1197,7 +1262,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                     "Six-panel grid (one panel per Ento-Linguistic "
                     "domain) of the ten highest-frequency terms by corpus "
                     "frequency over the headline PubMed abstract layer "
-                    "(about nineteen hundred abstracts). Bar length "
+                    "(7,608 open-access PubMed abstracts). Bar length "
                     "encodes corpus frequency (annotated at the bar tip); "
                     "panel titles give each domain's total term count; "
                     "bar color encodes per-term semantic entropy in bits "
@@ -1210,15 +1275,15 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                 "label": "fig:domain_patterns_grid",
                 "caption": (
                     "Six-panel grid of donut charts showing the "
-                    "part-of-speech composition of each Ento-Linguistic "
+                    "word-formation composition of each Ento-Linguistic "
                     "domain's vocabulary over the headline PubMed "
-                    "abstract layer (about nineteen hundred abstracts). "
-                    "Each slice is a grammatical category with angle "
-                    "proportional to its share of part-of-speech tag "
-                    "counts (a term may carry several tags, so shares are "
-                    "of tag counts, not distinct terms); categories "
-                    "beyond the six largest are grouped as Other; the "
-                    "donut centre annotates the domain's term count."
+                    "abstract layer (7,608 open-access PubMed abstracts). "
+                    "Each slice is a word-formation class (hyphenated "
+                    "compound, multiword phrase, or single word) with "
+                    "angle proportional to its share of the domain's "
+                    "term counts; categories beyond the six largest are "
+                    "grouped as Other; the donut centre annotates the "
+                    "domain's term count."
                 ),
             },
             "statistical_analysis.png": {
@@ -1228,8 +1293,9 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                     "entropy over the six Ento-Linguistic domains in the "
                     "headline PubMed abstract layer (about nineteen "
                     "hundred abstracts). Panel (a): per-domain mean "
-                    "entropy bars with standard-deviation whiskers where "
-                    "reported and per-domain term counts annotated. "
+                    "entropy bars with 95% confidence-interval whiskers "
+                    "(Student-t, from per-domain n and SD) and per-domain "
+                    "term counts annotated. "
                     "Panel (b): diverging bars of pairwise Cohen's d "
                     "effect sizes, colored by Benjamini-Hochberg "
                     "significance (asterisks mark significant "
@@ -1267,6 +1333,32 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                     "open-access full texts); per-layer term counts "
                     "annotated at the bar tips. Differences between "
                     "layers are descriptive of the two corpora and are "
+                    "not significance-tested in this figure."
+                ),
+                "section": "supplemental_results",
+            },
+            "discourse_comparison.png": {
+                "label": "fig:discourse_comparison",
+                "caption": (
+                    "Grouped bars of corpus-level discourse frequencies "
+                    "comparing the headline PubMed abstract layer (solid "
+                    "bars, discourse pass over its full analyzed sample) "
+                    "with the PMC full-text parallel layer (hatched bars, "
+                    "discourse pass over its deterministic 20% text "
+                    "sample; per-layer analyzed-text counts are given in "
+                    "the legend). Three panels, one per shared discourse "
+                    "dimension: discourse patterns (anthropomorphic "
+                    "framing, economic metaphors, hierarchical framing, "
+                    "scale ambiguity), rhetorical strategies (analogy, "
+                    "anecdotal, authority, generalization), and "
+                    "persuasive techniques (authoritative citations, "
+                    "metaphorical language, quantitative emphasis, "
+                    "rhetorical questions). Panels whose plotted maximum "
+                    "spans at least two orders of magnitude above their "
+                    "smallest positive frequency use a symlog y-axis "
+                    "(linear below one occurrence) so both layers remain "
+                    "legible. Between-layer differences are descriptive "
+                    "of the two corpora and sampling fractions and are "
                     "not significance-tested in this figure."
                 ),
                 "section": "supplemental_results",
@@ -1319,7 +1411,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                     filename=filename,
                     caption=meta["caption"],
                     label=meta["label"],
-                    section=meta["section"],
+                    section=meta.get("section"),
                 )
                 registered += 1
 
@@ -1496,6 +1588,87 @@ def _ensure_fulltext_artifact(
     return artifact
 
 
+def _merge_discourse_sections(data_dir: str, fulltexts_dir: str) -> None:
+    """Compute and merge the corpus-level ``discourse`` section into BOTH
+    layer artifacts on disk.
+
+    The abstract artifact is usually already carrying the section (the
+    statistics stage computes it inside
+    ``build_statistical_analysis``); it is only recomputed here when the
+    on-disk artifact lacks it.  The fingerprint-guarded full-text
+    artifact is augmented in place — the discourse pass runs over the
+    harvested full-text corpus with the deterministic bounded sample of
+    :func:`pipeline.statistics_pipeline.add_discourse_analysis`, so the
+    multi-hour statistics stages are NOT recomputed.
+
+    Degenerate inputs (missing artifact, no eligible texts) are logged
+    and skipped — never fabricated.
+
+    Args:
+        data_dir: Output data directory holding both artifacts.
+        fulltexts_dir: Corpus directory with ``fulltexts_NNNNN.json``
+            shards.
+    """
+    from pipeline.statistics_pipeline import add_discourse_analysis
+
+    def _merge(path: str, texts: List[str]) -> None:
+        with open(path) as f:
+            artifact = json.load(f)
+        if artifact.get("discourse"):
+            logger.info(
+                "  ✅ %s already carries a discourse section — skipping "
+                "recompute",
+                os.path.basename(path),
+            )
+            return
+        merged = add_discourse_analysis(artifact, texts)
+        if not merged.get("discourse"):
+            logger.warning(
+                "⚠️  %s: no text eligible for discourse analysis "
+                "(all below the minimum length) — section omitted",
+                os.path.basename(path),
+            )
+            return
+        with open(path, "w") as f:
+            json.dump(merged, f, indent=2, default=str)
+        section = merged["discourse"]
+        logger.info(
+            "  ✅ %s: discourse section merged (%d/%d texts analyzed, "
+            "sample_fraction %s)",
+            os.path.basename(path),
+            section["n_texts_analyzed"],
+            section["n_texts"],
+            section["sample_fraction"],
+        )
+
+    # ── Abstract layer ────────────────────────────────────────────────
+    stats_path = os.path.join(data_dir, "statistical_analysis.json")
+    if os.path.isfile(stats_path):
+        _merge(stats_path, REAL_ABSTRACTS)
+    else:
+        logger.warning(
+            "⚠️  statistical_analysis.json missing — abstract discourse "
+            "section skipped (statistics stage failed?)"
+        )
+
+    # ── Full-text layer ───────────────────────────────────────────────
+    fulltext_path = os.path.join(data_dir, "fulltext_analysis.json")
+    if not os.path.isfile(fulltext_path):
+        logger.warning(
+            "⚠️  fulltext_analysis.json missing — full-text discourse "
+            "section skipped"
+        )
+        return
+    try:
+        from data.pmc_fulltext import load_fulltexts
+    except (ImportError, ValueError):
+        from src.data.pmc_fulltext import load_fulltexts
+    from pipeline.fulltext_pipeline import _document_text
+
+    records = load_fulltexts(Path(fulltexts_dir))
+    _merge(fulltext_path, [_document_text(record) for record in records])
+
+
 # ═══════════════════════════════════════════════════════════════════════
 #  Main Entry Point
 # ═══════════════════════════════════════════════════════════════════════
@@ -1545,7 +1718,9 @@ def main(project_root: Optional[str] = None) -> None:
             )
 
         logger.info("▶ Building statistical analysis artifact...")
-        stats_artifact = build_statistical_analysis(results["terms"], REAL_ABSTRACTS)
+        stats_artifact = build_statistical_analysis(
+            results["terms"], REAL_ABSTRACTS, layer="abstract"
+        )
         stats_path = os.path.join(data_dir, "statistical_analysis.json")
         with open(stats_path, "w") as f:
             json.dump(stats_artifact, f, indent=2, default=str)
@@ -1553,6 +1728,9 @@ def main(project_root: Optional[str] = None) -> None:
             f"  ✅ statistical_analysis.json: {len(stats_artifact['pairwise'])} "
             f"pairwise tests, {len(stats_artifact.get('skipped', []))} skipped"
         )
+        # Per-term framing proportions feed the anthropomorphic-terminology
+        # figure (real LinguisticFeatureExtractor-derived data, no curated list).
+        results["framing_terms"] = stats_artifact.get("framing_terms") or {}
         fig_path = plot_statistical_analysis(stats_artifact, figure_dir)
         figures.append(fig_path)
     except Exception as exc:
@@ -1618,6 +1796,36 @@ def main(project_root: Optional[str] = None) -> None:
         except Exception as exc:
             logger.warning(f"⚠️  Layer-comparison stage warning: {exc}")
 
+        # ── Discourse-comparison figure ───────────────────────────────
+        # Rendered when BOTH artifacts exist (same availability guard as
+        # the layer-comparison figure above).  No additional fingerprint
+        # treatment needed: the discourse stage merges the ``discourse``
+        # sections in place and preserves the full-text artifact's
+        # ``corpus_fingerprint`` (see _merge_discourse_sections), so this
+        # re-render never clobbers the freshness guard.
+        try:
+            try:
+                from .statistical_visualization import (
+                    plot_discourse_comparison,
+                )
+            except (ImportError, ValueError):
+                from visualization.statistical_visualization import (
+                    plot_discourse_comparison,
+                )
+            if abstract_artifact and fulltext_artifact:
+                fig_path = plot_discourse_comparison(
+                    abstract_artifact, fulltext_artifact, figure_dir
+                )
+                figures.append(fig_path)
+            else:
+                logger.warning(
+                    "⚠️  discourse_comparison.png skipped: abstract and/or "
+                    "full-text artifacts missing"
+                )
+        except Exception as exc:
+            logger.warning(f"⚠️  Discourse-comparison stage warning: {exc}")
+    else:
+        logger.warning("⚠️  Discourse-comparison stage warning: full-text artifact unavailable")
     # ── BHL historical-layer artifact check ───────────────────────────
     bhl_artifact = _bhl_artifact_summary(project_root)
     if bhl_artifact:
@@ -1633,6 +1841,17 @@ def main(project_root: Optional[str] = None) -> None:
             "  ℹ️  No BHL historical-layer artifact (data/bhl/era_term_usage.json); "
             "BHL_* manuscript tokens omitted"
         )
+
+    # ── Discourse analysis stage ──────────────────────────────────────
+    # Adds the corpus-level discourse/rhetorical/persuasive section to
+    # BOTH artifacts on disk (abstract + full-text), after the
+    # statistics/full-text stages and before figure generation.  The
+    # anthropomorphic-terminology figure below reads the real per-term
+    # framing proportions from the abstract artifact's framing data.
+    try:
+        _merge_discourse_sections(data_dir, fulltexts_dir)
+    except Exception as exc:
+        logger.warning(f"⚠️  Discourse analysis stage warning: {exc}")
 
     fig_path = generate_concept_map(results, figure_dir)
     if fig_path:

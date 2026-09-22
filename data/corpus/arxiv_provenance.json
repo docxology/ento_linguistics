@@ -1,6 +1,6 @@
 {
   "_note": "Provenance for the arXiv preprint layer. Keys are SHA-256 of the exact abstract string in arxiv_records.json. arXiv records are a separate source layer and are NOT merged into abstracts.json.",
-  "retrieved_at": "2026-09-16T17:27:11+00:00",
+  "retrieved_at": "2026-09-19T22:34:22+00:00",
   "queries": {
     "ant_colonies": "(cat:q-bio.PE OR cat:nlin.AO) AND all:\"ant colonies\"",
     "eusociality": "(cat:q-bio.PE OR cat:nlin.AO) AND all:\"eusociality\"",
@@ -10,24 +10,24 @@
   },
   "query_stats": {
     "ant_colonies": {
-      "kept": 21,
-      "duplicates": 0
+      "kept": 0,
+      "duplicates": 21
     },
     "eusociality": {
-      "kept": 18,
-      "duplicates": 4
+      "kept": 0,
+      "duplicates": 22
     },
     "superorganisms": {
-      "kept": 1,
-      "duplicates": 2
+      "kept": 0,
+      "duplicates": 3
     },
     "collective_behavior": {
-      "kept": 14,
-      "duplicates": 5
+      "kept": 5,
+      "duplicates": 21
     },
     "stigmergy": {
-      "kept": 2,
-      "duplicates": 1
+      "kept": 0,
+      "duplicates": 3
     }
   },
   "records": {
@@ -534,6 +534,51 @@
       "published": "2005-02-24T18:21:42Z",
       "query": "stigmergy",
       "retrieved_at": "2026-09-16T17:27:11+00:00"
+    },
+    "df370ae0ef7ca17435f22ad84556bf51d8dcfb2a9ed10fc4edf02fc352a9839a": {
+      "arxiv_id": "1105.1117",
+      "doi": "10.1371/journal.pcbi.1002282",
+      "title": "Collective Animal Behavior from Bayesian Estimation and Probability Matching",
+      "primary_category": "q-bio.QM",
+      "published": "2011-05-05T16:32:59Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-19T22:34:22+00:00"
+    },
+    "9775f633c561175ff15cc489a24c59529aaf2ed28a465cabd2e40ce4d4ed62ed": {
+      "arxiv_id": "1103.1612",
+      "doi": null,
+      "title": "Ant foraging and minimal paths in simple graphs",
+      "primary_category": "q-bio.PE",
+      "published": "2011-03-08T19:46:05Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-19T22:34:22+00:00"
+    },
+    "28c7cf9c93c57ccd732944a90c123b6407e593f97208e398eb292d7f646662b3": {
+      "arxiv_id": "q-bio/0408019",
+      "doi": null,
+      "title": "Collective Dynamics of Active Elements: Task Allocation and Pheromone Trailing",
+      "primary_category": "q-bio.PE",
+      "published": "2004-08-25T08:05:42Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-19T22:34:22+00:00"
+    },
+    "5e5c280b07e8eb78f391a378c7a4285e6761b782537164633cd5c575f0a2a4bb": {
+      "arxiv_id": "adap-org/9507003",
+      "doi": "10.1016/0375-9601(95)00624-C",
+      "title": "Pattern Formation and Functionality in Swarm Models",
+      "primary_category": "nlin.AO",
+      "published": "1995-07-18T20:19:46Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-19T22:34:22+00:00"
+    },
+    "5680178feec4f22a98add3166a85c85e4470bc8aaecfb7fc44301ac3d391eac6": {
+      "arxiv_id": "adap-org/9306002",
+      "doi": null,
+      "title": "Swarms, Phase Transitions, and Collective Intelligence",
+      "primary_category": "nlin.AO",
+      "published": "1993-06-11T03:26:04Z",
+      "query": "collective_behavior",
+      "retrieved_at": "2026-09-19T22:34:22+00:00"
     }
   }
 }

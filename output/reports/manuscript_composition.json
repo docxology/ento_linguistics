@@ -1,0 +1,121 @@
+{
+  "algorithm": "shared-combined-markdown-v1",
+  "binding_sha256": "bb0bb37c511e4d435f0767fa5f4d86664de8e0838cbc76be9919653ba0f74069",
+  "combined_path": "output/web/_combined_manuscript.md",
+  "combined_sha256": "5aa893c72656b12ae96fdde7fc2899b51e45fe8c9c607be0ec46492f0a72e8fd",
+  "combined_size_bytes": 144266,
+  "input_root_kind": "source",
+  "ordered_inputs": [
+    {
+      "ordinal": 1,
+      "path": "docs/manuscript/01_abstract.md",
+      "sha256": "716409fdc5af9df6f7d7154a6a3a6d4ab0a0f785281f911c33c80df789c29cc8",
+      "size_bytes": 2565
+    },
+    {
+      "ordinal": 2,
+      "path": "docs/manuscript/02_introduction.md",
+      "sha256": "ff2d40076fcbbd731aee08783d102e06cd00220a4abea1829968e46fa0636008",
+      "size_bytes": 11214
+    },
+    {
+      "ordinal": 3,
+      "path": "docs/manuscript/03_methods.md",
+      "sha256": "5db1a13ef519aa263589965427b2bcb69ed7cc92ff0c2aa4801704fd77b5a205",
+      "size_bytes": 16344
+    },
+    {
+      "ordinal": 4,
+      "path": "docs/manuscript/04a_corpus_and_networks.md",
+      "sha256": "ef37324c031e83c8a862e304b6d8d17c459f27886ed27224bef4c636fe398027",
+      "size_bytes": 11458
+    },
+    {
+      "ordinal": 5,
+      "path": "docs/manuscript/04b_domain_findings.md",
+      "sha256": "6aea1e66398eef2e9a448307cad9f74710bd091462ff52e39bad2924508b5bb8",
+      "size_bytes": 18165
+    },
+    {
+      "ordinal": 6,
+      "path": "docs/manuscript/05_discussion.md",
+      "sha256": "f2ebdd318fa150a3209dd23df656a455fe88c09f035f30ea9eb87ff66d2a9609",
+      "size_bytes": 18561
+    },
+    {
+      "ordinal": 7,
+      "path": "docs/manuscript/06_conclusion.md",
+      "sha256": "5d96d5c8cbc1f12fa41d470cddd13193eaddf0988e353aa37700243d5cfe8c94",
+      "size_bytes": 7558
+    },
+    {
+      "ordinal": 8,
+      "path": "docs/manuscript/07_related_work.md",
+      "sha256": "b5046caafd8ed875c48280f7063ea0559f755a3c937c6d506acd321468f7fbf5",
+      "size_bytes": 11237
+    },
+    {
+      "ordinal": 9,
+      "path": "docs/manuscript/08_acknowledgments.md",
+      "sha256": "e2ce5029a017a70dcbf3f205f5970d32726fb6ae706794523988923467ea95ba",
+      "size_bytes": 1181
+    },
+    {
+      "ordinal": 10,
+      "path": "docs/manuscript/S01a_text_and_extraction.md",
+      "sha256": "614603389a4900b3af74c7242e7ce78f079b3566b17d663d4fc8ee5ccaeb1028",
+      "size_bytes": 11588
+    },
+    {
+      "ordinal": 11,
+      "path": "docs/manuscript/S01b_analysis_infrastructure.md",
+      "sha256": "14ee63ea3d192e58a3b2e7b30ed87986276be2e02b4cb06220e24664205218bf",
+      "size_bytes": 8050
+    },
+    {
+      "ordinal": 12,
+      "path": "docs/manuscript/S02_supplemental_results.md",
+      "sha256": "74d146cb0e321a2af5cdbff72bf2d031bd6611009980f9c322abd0e9d90afe40",
+      "size_bytes": 19482
+    },
+    {
+      "ordinal": 13,
+      "path": "docs/manuscript/S03a_theoretical_extensions.md",
+      "sha256": "679cf8b35d413cd0b1bc7c0fe6f9eb54bc0aed7c4286412c4cfa8f27abebd261",
+      "size_bytes": 5685
+    },
+    {
+      "ordinal": 14,
+      "path": "docs/manuscript/S03b_case_studies.md",
+      "sha256": "97ae337b8cc3c25e67a4d7ae04c152dd023cccde39c833a29a5d42951275166a",
+      "size_bytes": 6414
+    },
+    {
+      "ordinal": 15,
+      "path": "docs/manuscript/S04_supplemental_applications.md",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "ordinal": 16,
+      "path": "docs/manuscript/98_symbols_glossary.md",
+      "sha256": "ca5ae086c32eafd1ea3eee4be73de74497c3bd998650bb78b1c8b7bf7e0ba5af",
+      "size_bytes": 6040
+    },
+    {
+      "ordinal": 17,
+      "path": "docs/manuscript/99_references.md",
+      "sha256": "e98d213f84b6563b90fcdac3ddce682603f915a58e3ced5a2385586eff1c3ec1",
+      "size_bytes": 59
+    },
+    {
+      "ordinal": 18,
+      "path": "docs/manuscript/preamble.tex",
+      "sha256": "86b606b35f54741340e96d921439a15d556e04af5ac132c5bf414bcaf60c9377",
+      "size_bytes": 9120
+    }
+  ],
+  "ordered_inputs_sha256": "e639dde2cc56bd0a176ea6c28810f208b9b256ef7be5d6bb08f12a4e2f9b4631",
+  "project": "ongoing/EntoTech/ento_linguistics",
+  "schema_version": "template-manuscript-composition-v1"
+}

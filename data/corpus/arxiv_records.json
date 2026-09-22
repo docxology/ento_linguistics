@@ -724,5 +724,72 @@
       "Carlos Fernandes",
       "Agostinho C. Rosa"
     ]
+  },
+  {
+    "arxiv_id": "1105.1117",
+    "doi": "10.1371/journal.pcbi.1002282",
+    "title": "Collective Animal Behavior from Bayesian Estimation and Probability Matching",
+    "abstract": "Animals living in groups make movement decisions that depend, among other factors, on social interactions with other group members. Our present understanding of social rules in animal collectives is mainly based on empirical fits to observations, with less emphasis in obtaining first-principles approaches that allow their derivation. Here we show that patterns of collective decisions can be derived from the basic ability of animals to make probabilistic estimations in the presence of uncertainty. We build a decision-making model with two stages: Bayesian estimation and probabilistic matching. In the first stage, each animal makes a Bayesian estimation of which behavior is best to perform taking into account personal information about the environment and social information collected by observing the behaviors of other animals. In the probability matching stage, each animal chooses a behavior with a probability equal to the Bayesian-estimated probability that this behavior is the most appropriate one. This model derives very simple rules of interaction in animal collectives that depend only on two types of reliability parameters, one that each animal assigns to the other animals and another given by the quality of the non-social information. We test our model by obtaining theoretically a rich set of observed collective patterns of decisions in three-spined sticklebacks, Gasterosteus aculeatus, a shoaling fish species. The quantitative link shown between probabilistic estimation and collective rules of behavior allows a better contact with other fields such as foraging, mate selection, neurobiology and psychology, and gives predictions for experiments directly testing the relationship between estimation and collective behavior.",
+    "primary_category": "q-bio.QM",
+    "published": "2011-05-05T16:32:59Z",
+    "authors": [
+      "Alfonso Pérez-Escudero",
+      "Gonzalo G. de Polavieja"
+    ]
+  },
+  {
+    "arxiv_id": "1103.1612",
+    "doi": null,
+    "title": "Ant foraging and minimal paths in simple graphs",
+    "abstract": "Ants are known to be able to find paths of minimal length between the nest and food sources. The deposit of pheromones while they search for food and their chemotactical response to them has been proposed as a crucial element in the mechanism for finding minimal paths. We investigate both individual and collective behavior of ants in some simple networks representing basic mazes. The character of the graphs considered is such that it allows a fully rigorous mathematical treatment via analysis of some markovian processes in terms of which the evolution can be represented. Our analytical and computational results show that in order for the ants to follow shortest paths between nest and food, it is necessary to superimpose to the ants' random walk the chemotactic reinforcement. It is also needed a certain degree of persistence so that ants tend to move preferably without changing their direction much. It is also important the number of ants, since we will show that the speed for finding minimal paths increases very fast with it.",
+    "primary_category": "q-bio.PE",
+    "published": "2011-03-08T19:46:05Z",
+    "authors": [
+      "M. Vela-Pérez",
+      "M. A. Fontelos",
+      "J. J. L. Velázquez"
+    ]
+  },
+  {
+    "arxiv_id": "q-bio/0408019",
+    "doi": null,
+    "title": "Collective Dynamics of Active Elements: Task Allocation and Pheromone Trailing",
+    "abstract": "Collective behavior of active elements inspired by mass of biological organisms is addressed. Especially, two topics are focused on among amazing behaviors performed by colony of ants. First, task allocation phenomena are treated from the viewpoint of proportion regulation of population between different states. Using a dynamical model consisting of elements and external ``stock materials'', adaptability against various disturbances is numerically studied. In addition, a dynamical model for a colony ants interacting via two kind of pheromones is studied, in which simulated ants, as a mass, are shown to make an efficient foraging flexibly varying the foraging tactics according to feeding schedules. Finally, experiments are performed with robots moving in virtual pheromone fields simulated by CG and CCD camera feedback system. Trail formation processes are demonstrated by this multi-robot system.",
+    "primary_category": "q-bio.PE",
+    "published": "2004-08-25T08:05:42Z",
+    "authors": [
+      "T. Mizuguchi",
+      "K. Sugawara",
+      "H. Nishimori",
+      "T. Tao",
+      "T. Kazama",
+      "H. Nakagawa",
+      "Y. Hayakawa",
+      "M. Sano"
+    ]
+  },
+  {
+    "arxiv_id": "adap-org/9507003",
+    "doi": "10.1016/0375-9601(95)00624-C",
+    "title": "Pattern Formation and Functionality in Swarm Models",
+    "abstract": "We explore a simplified class of models we call swarms, which are inspired by the collective behavior of social insects. We perform a mean-field stability analysis and perform numerical simulations of the model. Several interesting types of behavior emerge in the vicinity of a second-order phase transition in the model, including the formation of stable lines of traffic flow, and memory reconstitution and bootstrapping. In addition to providing an understanding of certain classes of biological behavior, these models bear a generic resemblance to a number of pattern formation processes in the physical sciences.",
+    "primary_category": "nlin.AO",
+    "published": "1995-07-18T20:19:46Z",
+    "authors": [
+      "Erik M. Rauch",
+      "Mark M. Millonas",
+      "Dante R. Chialvo"
+    ]
+  },
+  {
+    "arxiv_id": "adap-org/9306002",
+    "doi": null,
+    "title": "Swarms, Phase Transitions, and Collective Intelligence",
+    "abstract": "A spacially extended model of the collective behavior of a large number of locally acting organisms is proposed in which organisms move probabilistically between local cells in space, but with weights dependent on local morphogenetic substances, or morphogens. The morphogens are in turn are effected by the passage of an organism. The evolution of the morphogens, and the corresponding flow of the organisms constitutes the collective behavior of the group. Such models have various types of phase transitions and self-organizing properties controlled both by the level of the noise, and other parameters.\n  The model is then applied to the specific case of ants moving on a lattice. The local behavior of the ants is inspired by the actual behavior observed in the laboratory, and analytic results for the collective behavior are compared to the corresponding laboratory results.\n  It is hoped that the present model might serve as a paradigmatic example of a complex cooperative system in nature. In particular swarm models can be used to explore the relation of nonequilibrium phase transitions to at least three important issues encountered in artificial life. Firstly, that of emergence as complex adaptive behavior. Secondly, as an exploration of continuous phase transitions in biological systems. Lastly, to derive behavioral criteria for the evolution of collective behavior in social organisms.",
+    "primary_category": "nlin.AO",
+    "published": "1993-06-11T03:26:04Z",
+    "authors": [
+      "Mark M. Millonas"
+    ]
   }
 ]

@@ -38,7 +38,7 @@ Current project quality metrics and compliance status. Corpus figures below matc
 | Standard | Status | Notes |
 |----------|--------|-------|
 | **Figure references** | ✅ | `\ref{fig:...}` with matching `\label{fig:...}` |
-| **Figure captions** | ✅ | Descriptive, multi-sentence captions on all 13 generated figures |
+| **Figure captions** | ✅ | Descriptive, multi-sentence captions on all 15 generated figures |
 | **16pt font floor** | ✅ | Enforced by a shared matplotlib style applied across all visualization modules at figure-creation time (not per-module comments) |
 | **Figure registry** | ✅ | `output/figures/figure_registry.json` tracks all generated figures |
 | **Section numbering** | ✅ | 01–06 main, S01–S04 supplemental, 98–99 references |
@@ -47,7 +47,7 @@ Current project quality metrics and compliance status. Corpus figures below matc
 
 ## Figure Generation
 
-Current pipeline run generates **14 figures** (all sourced from real data):
+Current pipeline run generates **15 figures** (all sourced from real data):
 
 | Figure | File | Size | Status |
 |--------|------|------|--------|
@@ -65,6 +65,7 @@ Current pipeline run generates **14 figures** (all sourced from real data):
 | Statistical analysis | `statistical_analysis.png` | — | ✅ Real entropy descriptives, pairwise Welch $t$-tests (BH-corrected, Cohen's $d$), ANOVA |
 | Full-text parallel layer | `fulltext_analysis.png` | — | ✅ Same frozen schema over the PMC full-text corpus (`data/fulltexts/fulltexts.json`); registered as `fig:fulltext_analysis` |
 | Layer comparison | `layer_comparison.png` | — | ✅ Grouped per-domain entropy bars, abstract layer vs PMC full-text layer (rendered when both `statistical_analysis.json` and `fulltext_analysis.json` exist); registered as `fig:layer_comparison` |
+| Discourse comparison | `discourse_comparison.png` | — | ✅ Grouped per-dimension discourse-frequency bars (patterns, rhetorical strategies, persuasive techniques), abstract layer vs PMC full-text layer, symlog panels for order-of-magnitude spans; registered as `fig:discourse_comparison` |
 
 ## Live Corpus Statistics
 
@@ -81,7 +82,7 @@ Current pipeline run generates **14 figures** (all sourced from real data):
 | Concept map | `concept_map_summary.json` | 6 concepts, 9 relationships |
 | Terminology network | `concept_map_summary.json` | 894 nodes, 514 edges |
 | Full-text layer | `data/fulltexts/` shards + `output/data/fulltext_analysis.json` | PMC Open Access full texts (count: `python3 -c "from pathlib import Path; from data.pmc_fulltext import load_fulltexts; print(len(load_fulltexts(Path('data/fulltexts'))))"`); artifact guarded by a corpus fingerprint (record count + provenance SHA-256) — rebuilt only when the corpus changes, **full corpus by default** (`FULLTEXT_ANALYSIS_LIMIT` bounds quick runs; bounded artifacts record their limit and never satisfy the full-corpus guard); rendered via `FULLTEXT_*` tokens |
-| BHL historical layer | `data/bhl/` + `data/bhl/era_term_usage.json` | Biodiversity Heritage Library mirror texts 1850-1970 (count: `python3 -c "import json; print(json.load(open('data/bhl/era_term_usage.json'))['source']['documents'])"`); era-stratified artifact produced by `src/pipeline/bhl_analysis.py`; rendered via `BHL_*` tokens (`BHL_DOCUMENTS`, `BHL_<ERA>_<TERM>_PER_10K`) |
+| BHL historical layer | `data/bhl/` + `data/bhl/era_term_usage.json` | Biodiversity Heritage Library mirror texts 1850-1970 (count: `python3 -c "import json; print(json.load(open('data/bhl/era_term_usage.json'))['source']['documents'])"`); era-stratified artifact produced by `src/pipeline/bhl_analysis.py` (per-era `terms_per_10k` plus expanded `extraction`/`entropy`/`framing` full-stack sections); rendered via `BHL_*` tokens (`BHL_DOCUMENTS`, `BHL_ERA_<ERA>_DOCS`, `BHL_<ERA>_<TERM>_PER_10K`, `BHL_ERA_<ERA>_TERMS`, `BHL_ERA_<ERA>_ENTROPY_MEAN`, `BHL_ERA_<ERA>_FRAMING`) |
 | arXiv preprint layer | `data/corpus/arxiv_records.json` + `arxiv_provenance.json` | Separate source layer (not merged into `abstracts.json`); count: `python3 -c "import json; print(len(json.load(open('data/corpus/arxiv_records.json'))))"`; harvested by `src/data/arxiv_corpus.py` (`python -m data.arxiv_corpus`) |
 | Citation enrichment | `data/corpus/citation_metadata.json` | OpenAlex `cited_by_count`/concepts/OA status per DOI-bearing corpus record, keyed by abstract SHA-256; produced by `src/data/openalex_enrichment.py` (`python -m data.openalex_enrichment`, resumable) |
 

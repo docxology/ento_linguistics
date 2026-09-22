@@ -24,6 +24,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 # paying the full-corpus pipeline cost on every test.
 CORPUS_SLICE = 6
 
+# Larger real slice for the framing-gated anthropomorphic figure: framing
+# patterns need enough real abstracts to fire (6 documents yield none).
+FRAMING_SLICE = 200
+
 
 @pytest.fixture(scope="module")
 def real_corpus() -> list:
@@ -40,6 +44,12 @@ def real_corpus() -> list:
 def results(real_corpus):
     """Run the real analysis pipeline once for the module."""
     return mf.run_analysis_pipeline(real_corpus[:CORPUS_SLICE])
+
+
+@pytest.fixture(scope="module")
+def framing_results(real_corpus):
+    """Real analysis results over a slice large enough for framing data."""
+    return mf.run_analysis_pipeline(real_corpus[:FRAMING_SLICE])
 
 
 @pytest.fixture
@@ -116,8 +126,10 @@ class TestFigureGenerators:
         assert Path(path).is_file() and Path(path).stat().st_size > 0
         plt.close("all")
 
-    def test_generate_anthropomorphic_analysis(self, results, figure_dir):
-        path = mf.generate_anthropomorphic_analysis(results, str(figure_dir))
+    def test_generate_anthropomorphic_analysis(self, framing_results, figure_dir):
+        """The framing-gated figure renders from real framing proportions."""
+        path = mf.generate_anthropomorphic_analysis(framing_results, str(figure_dir))
+        assert path, "the 200-abstract real slice yields framed terms"
         assert Path(path).is_file() and Path(path).stat().st_size > 0
         plt.close("all")
 
@@ -196,12 +208,12 @@ class TestFailurePropagation:
         )
         assert path == ""
 
-    def test_unwritable_target_propagates_error(self, results, tmp_path):
+    def test_unwritable_target_propagates_error(self, framing_results, tmp_path):
         """A save error must propagate, never be swallowed into a success path."""
         blocker = tmp_path / "not_a_dir"
         blocker.write_text("i am a file")
         with pytest.raises(OSError):
-            mf.generate_anthropomorphic_analysis(results, str(blocker))
+            mf.generate_anthropomorphic_analysis(framing_results, str(blocker))
         plt.close("all")
 
 
@@ -256,7 +268,9 @@ def test_register_figures_only_registers_saved_files(
 
 def test_main_end_to_end(real_corpus, tmp_path, monkeypatch):
     """main() produces figures, data files, and a populated registry."""
-    monkeypatch.setattr(mf, "REAL_ABSTRACTS", real_corpus[:CORPUS_SLICE])
+    # Framing slice: the anthropomorphic generator is data-gated on real
+    # framing proportions, which need more than CORPUS_SLICE abstracts.
+    monkeypatch.setattr(mf, "REAL_ABSTRACTS", real_corpus[:FRAMING_SLICE])
 
     mf.main(project_root=str(tmp_path))
 

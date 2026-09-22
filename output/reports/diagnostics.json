@@ -1,16 +1,77 @@
 {
-  "project_name": "ento_linguistics",
-  "total_events": 1,
+  "project_name": "ongoing/EntoTech/ento_linguistics",
+  "total_events": 7,
   "errors": 0,
-  "warnings": 1,
+  "warnings": 7,
   "events": [
     {
       "severity": "WARNING",
       "category": "MARKDOWN_LINK",
       "message": "Bare URL found: 'https://github.com/docxology/ento_linguistics.'",
-      "file_path": "projects/ento_linguistics/manuscript/01_abstract.md",
+      "code": "MARKDOWN.LINK_BARE_URL",
+      "file_path": "/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/docs/manuscript/01_abstract.md",
       "line_number": null,
       "fix_suggestion": "Wrap the URL in a Markdown link with informative text: [link text](url)",
+      "context": {}
+    },
+    {
+      "severity": "WARNING",
+      "category": "MARKDOWN_PANDOC_MID",
+      "message": "Bare pipe pattern '|l|' in prose will be converted by Pandoc to '\\mid l\\mid{}', which fails to render U+2223 in text mode.",
+      "code": "MARKDOWN.PANDOC_BARE_PIPE",
+      "file_path": "/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/docs/manuscript/04a_corpus_and_networks.md",
+      "line_number": null,
+      "fix_suggestion": "Wrap the span in inline math (e.g. '$|l|$' or '${|}l{|}$') so the macro renders through the math font.",
+      "context": {}
+    },
+    {
+      "severity": "WARNING",
+      "category": "MARKDOWN_PANDOC_MID",
+      "message": "Bare pipe pattern '|c|' in prose will be converted by Pandoc to '\\mid c\\mid{}', which fails to render U+2223 in text mode.",
+      "code": "MARKDOWN.PANDOC_BARE_PIPE",
+      "file_path": "/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/docs/manuscript/04a_corpus_and_networks.md",
+      "line_number": null,
+      "fix_suggestion": "Wrap the span in inline math (e.g. '$|c|$' or '${|}c{|}$') so the macro renders through the math font.",
+      "context": {}
+    },
+    {
+      "severity": "WARNING",
+      "category": "MARKDOWN_PANDOC_MID",
+      "message": "Bare pipe pattern '|l|' in prose will be converted by Pandoc to '\\mid l\\mid{}', which fails to render U+2223 in text mode.",
+      "code": "MARKDOWN.PANDOC_BARE_PIPE",
+      "file_path": "/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/docs/manuscript/S02_supplemental_results.md",
+      "line_number": null,
+      "fix_suggestion": "Wrap the span in inline math (e.g. '$|l|$' or '${|}l{|}$') so the macro renders through the math font.",
+      "context": {}
+    },
+    {
+      "severity": "WARNING",
+      "category": "MARKDOWN_PANDOC_MID",
+      "message": "Bare pipe pattern '|c|' in prose will be converted by Pandoc to '\\mid c\\mid{}', which fails to render U+2223 in text mode.",
+      "code": "MARKDOWN.PANDOC_BARE_PIPE",
+      "file_path": "/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/docs/manuscript/S02_supplemental_results.md",
+      "line_number": null,
+      "fix_suggestion": "Wrap the span in inline math (e.g. '$|c|$' or '${|}c{|}$') so the macro renders through the math font.",
+      "context": {}
+    },
+    {
+      "severity": "WARNING",
+      "category": "MARKDOWN_PANDOC_MID",
+      "message": "Bare pipe pattern '|l|' in prose will be converted by Pandoc to '\\mid l\\mid{}', which fails to render U+2223 in text mode.",
+      "code": "MARKDOWN.PANDOC_BARE_PIPE",
+      "file_path": "/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/docs/manuscript/S03b_case_studies.md",
+      "line_number": null,
+      "fix_suggestion": "Wrap the span in inline math (e.g. '$|l|$' or '${|}l{|}$') so the macro renders through the math font.",
+      "context": {}
+    },
+    {
+      "severity": "WARNING",
+      "category": "MARKDOWN_PANDOC_MID",
+      "message": "Bare pipe pattern '|c|' in prose will be converted by Pandoc to '\\mid c\\mid{}', which fails to render U+2223 in text mode.",
+      "code": "MARKDOWN.PANDOC_BARE_PIPE",
+      "file_path": "/Volumes/external_drive/Git/projects/ongoing/docxology/ento_linguistics/docs/manuscript/S03b_case_studies.md",
+      "line_number": null,
+      "fix_suggestion": "Wrap the span in inline math (e.g. '$|c|$' or '${|}c{|}$') so the macro renders through the math font.",
       "context": {}
     }
   ]

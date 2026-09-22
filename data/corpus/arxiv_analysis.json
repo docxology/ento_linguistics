@@ -1,0 +1,1165 @@
+{
+ "anova": {
+  "F": 2.5537921232013887,
+  "df1": 2.0,
+  "df2": 4.0,
+  "eta_squared": 0.5608055998406074,
+  "metric": "semantic_entropy",
+  "p": 0.19289172113136857
+ },
+ "cace": {
+  "behavior_and_identity": {
+   "appropriateness": 0.8166666666666668,
+   "clarity": 1.0,
+   "consistency": 0.1972087933261132,
+   "evolvability": 0.27777777777777773,
+   "max": 0.5954231002922469,
+   "mean": 0.5729133094426394,
+   "min": 0.552483494702338,
+   "n_terms": 3
+  },
+  "economics": {
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.16936594908182517,
+   "evolvability": 0.2666666666666667,
+   "max": 0.6666666666666666,
+   "mean": 0.6090081539371229,
+   "min": 0.5547567492386435,
+   "n_terms": 5
+  },
+  "kin_and_relatedness": {
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.21295675039912057,
+   "evolvability": 0.16666666666666666,
+   "max": 0.6666666666666666,
+   "mean": 0.5949058542664467,
+   "min": 0.5558469007891562,
+   "n_terms": 3
+  },
+  "power_and_labor": {
+   "appropriateness": 0.7250000000000001,
+   "clarity": 1.0,
+   "consistency": 0.38737220026900293,
+   "evolvability": 0.29166666666666663,
+   "max": 0.7083333333333334,
+   "mean": 0.6010097167339173,
+   "min": 0.45820553360233623,
+   "n_terms": 4
+  },
+  "sex_and_reproduction": {
+   "appropriateness": 0.8166666666666668,
+   "clarity": 1.0,
+   "consistency": 0.20188910570864685,
+   "evolvability": 0.2222222222222222,
+   "max": 0.6666666666666666,
+   "mean": 0.560194498649384,
+   "min": 0.45820553360233623,
+   "n_terms": 3
+  },
+  "unit_of_individuality": {
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.1800872327753372,
+   "evolvability": 0.21428571428571433,
+   "max": 0.6666666666666666,
+   "mean": 0.5985932367652629,
+   "min": 0.5510651766243819,
+   "n_terms": 7
+  }
+ },
+ "cace_terms": {
+  "caste": {
+   "aggregate": 0.625,
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "colony": {
+   "aggregate": 0.5965589778243526,
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.052902577964076984,
+   "evolvability": 0.3333333333333333,
+   "in_corpus": true
+  },
+  "haplodiploidy": {
+   "aggregate": 0.625,
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "host worker": {
+   "aggregate": 0.475,
+   "appropriateness": 0.39999999999999997,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "major worker": {
+   "aggregate": 0.5,
+   "appropriateness": 0.5,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "non-reproductive helper": {
+   "aggregate": 0.625,
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "primary reproductive": {
+   "aggregate": 0.625,
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "queen": {
+   "aggregate": 0.45820553360233623,
+   "appropriateness": 0.45,
+   "clarity": 1.0,
+   "consistency": 0.04948880107601169,
+   "evolvability": 0.3333333333333333,
+   "in_corpus": true
+  },
+  "slave": {
+   "aggregate": 0.5,
+   "appropriateness": 0.5,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "soldier": {
+   "aggregate": 0.5,
+   "appropriateness": 0.5,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "task group": {
+   "aggregate": 0.625,
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "trophallaxis": {
+   "aggregate": 0.625,
+   "appropriateness": 1.0,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.0,
+   "in_corpus": false
+  },
+  "worker": {
+   "aggregate": 0.5708333333333333,
+   "appropriateness": 0.45,
+   "clarity": 1.0,
+   "consistency": 0.5,
+   "evolvability": 0.3333333333333333,
+   "in_corpus": true
+  }
+ },
+ "corrections": {
+  "method": "benjamini_hochberg",
+  "n_comparisons": 3
+ },
+ "descriptives": {
+  "behavior_and_identity": {
+   "ambiguity_mean": 2.199497833506115,
+   "bridging_count": 1,
+   "cace_mean": 0.5729133094426394,
+   "entropy_mean": 2.199497833506115,
+   "entropy_sd": 0.019197541856921595,
+   "n_terms": 2
+  },
+  "economics": {
+   "ambiguity_mean": 1.0,
+   "bridging_count": 0,
+   "cace_mean": 0.6090081539371229,
+   "entropy_mean": 1.0,
+   "entropy_sd": 0.0,
+   "n_terms": 1
+  },
+  "kin_and_relatedness": {
+   "ambiguity_mean": 0.7219280948873623,
+   "bridging_count": 0,
+   "cace_mean": 0.5949058542664467,
+   "entropy_mean": 0.7219280948873623,
+   "entropy_sd": 0.0,
+   "n_terms": 1
+  },
+  "power_and_labor": {
+   "ambiguity_mean": 1.0,
+   "bridging_count": 2,
+   "cace_mean": 0.6010097167339173,
+   "entropy_mean": 1.0,
+   "entropy_sd": 0.0,
+   "n_terms": 1
+  },
+  "sex_and_reproduction": {
+   "ambiguity_mean": 0.9772170014624826,
+   "bridging_count": 1,
+   "cace_mean": 0.560194498649384,
+   "entropy_mean": 0.9772170014624826,
+   "entropy_sd": 0.0322200255232836,
+   "n_terms": 2
+  },
+  "unit_of_individuality": {
+   "ambiguity_mean": 1.8299803966468098,
+   "bridging_count": 0,
+   "cace_mean": 0.5985932367652629,
+   "entropy_mean": 1.8299803966468098,
+   "entropy_sd": 0.7896121573568731,
+   "n_terms": 3
+  }
+ },
+ "discourse": {
+  "argumentative": {
+   "example_claims": [
+    [
+     "The related results suggest new ways of congestion control and simple algorithms for optimal resource usage based on local interactions and, therefore, decentralized control concepts."
+    ],
+    [
+     "In contrast, persistent pods collected in Uruguay after a wet winter and spring (2002) were partially dehiscent, inducing the deterioration of the woody pods, and consequently exposing the seeds."
+    ],
+    [
+     "We conclude that for any finite group of foragers, an individual who has found a resource should only sometimes recruit others to the same resource."
+    ],
+    [
+     "We conclude that similar behaviors emerge in our social learning agents as those that emerged in the non-social learning agents."
+    ],
+    [
+     "We therefore study the public goods game with antisocial and prosocial pool rewarding in order to determine the potential negative consequences on the effectiveness of positive incentives to promote cooperation.",
+     "Strategies that facilitate the aggregation of akin players, even if they seek to promote antisocial behaviour, thus always enhance the long-term benefits of cooperation."
+    ]
+   ],
+   "mean_discourse_markers": 3.375,
+   "n_structures": 9,
+   "n_with_discourse_markers": 8,
+   "n_with_evidence": 0,
+   "n_with_qualification": 4,
+   "n_with_warrant": 3,
+   "top_discourse_markers": {
+    "although": 1,
+    "because": 1,
+    "but": 1,
+    "consequently": 1,
+    "however": 4,
+    "may": 3,
+    "often": 3,
+    "since": 2,
+    "therefore": 3,
+    "thus": 4
+   }
+  },
+  "min_text_length": 200,
+  "n_texts": 61,
+  "n_texts_analyzed": 61,
+  "n_texts_excluded_min_length": 0,
+  "patterns": {
+   "economic_metaphors": {
+    "domains": [
+     "economics"
+    ],
+    "examples": [
+     "Found 1 economic metaphors",
+     "Found 1 economic metaphors",
+     "Found 1 economic metaphors",
+     "Found 1 economic metaphors",
+     "Found 1 economic metaphors",
+     "Found 1 economic metaphors",
+     "Found 1 economic metaphors",
+     "Found 2 economic metaphors",
+     "Found 3 economic metaphors",
+     "Found 1 economic metaphors"
+    ],
+    "frequency": 11,
+    "rhetorical_function": "Applies market logic to biological processes"
+   },
+   "hierarchical_framing": {
+    "domains": [
+     "power_and_labor"
+    ],
+    "examples": [
+     "Found 2 hierarchical terms",
+     "Found 1 hierarchical terms",
+     "Found 1 hierarchical terms",
+     "Found 1 hierarchical terms",
+     "Found 3 hierarchical terms",
+     "Found 2 hierarchical terms",
+     "Found 2 hierarchical terms",
+     "Found 1 hierarchical terms",
+     "Found 3 hierarchical terms",
+     "Found 2 hierarchical terms"
+    ],
+    "frequency": 14,
+    "rhetorical_function": "Structures social relationships as human-like hierarchies"
+   },
+   "scale_ambiguity": {
+    "domains": [
+     "unit_of_individuality"
+    ],
+    "examples": [
+     "Found 1 scale-ambiguous constructions"
+    ],
+    "frequency": 1,
+    "rhetorical_function": "Creates confusion about biological levels of analysis"
+   }
+  },
+  "persuasive": {
+   "authoritative_citations": {
+    "context_relevance": 0,
+    "heuristic_effectiveness_band": "ineffective",
+    "heuristic_impact_index": 0.05,
+    "success_examples": [],
+    "usage_distribution": {},
+    "usage_frequency": 1
+   },
+   "metaphorical_language": {
+    "context_relevance": 0,
+    "heuristic_effectiveness_band": "highly_effective",
+    "heuristic_impact_index": 1.0,
+    "success_examples": [],
+    "usage_distribution": {},
+    "usage_frequency": 40
+   },
+   "quantitative_emphasis": {
+    "context_relevance": 0,
+    "heuristic_effectiveness_band": "ineffective",
+    "heuristic_impact_index": 0.0,
+    "success_examples": [],
+    "usage_distribution": {},
+    "usage_frequency": 0
+   },
+   "rhetorical_questions": {
+    "context_relevance": 0,
+    "heuristic_effectiveness_band": "ineffective",
+    "heuristic_impact_index": 0.0,
+    "success_examples": [],
+    "usage_distribution": {},
+    "usage_frequency": 0
+   }
+  },
+  "rhetorical": {
+   "analogy": {
+    "frequency": 5,
+    "text_count": 5
+   },
+   "anecdotal": {
+    "frequency": 23,
+    "text_count": 17
+   },
+   "authority": {
+    "frequency": 1,
+    "text_count": 1
+   },
+   "generalization": {
+    "frequency": 0,
+    "text_count": 0
+   }
+  },
+  "sample_fraction": 1.0
+ },
+ "documents": [
+  {
+   "arxiv_id": "2510.06011",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2025-10-07T15:10:13Z",
+   "title": "How many more is different?",
+   "token_count": 203
+  },
+  {
+   "arxiv_id": "2504.01199",
+   "doi": "10.1016/j.physa.2025.130990",
+   "primary_category": "physics.bio-ph",
+   "published": "2025-04-01T21:26:22Z",
+   "title": "Spatial Dynamics of Synchronized Ants: A Mobile Oscillator Model Analysis",
+   "token_count": 163
+  },
+  {
+   "arxiv_id": "2411.09169",
+   "doi": null,
+   "primary_category": "cs.MA",
+   "published": "2024-11-14T04:06:26Z",
+   "title": "Artificial Theory of Mind and Self-Guided Social Organisation",
+   "token_count": 263
+  },
+  {
+   "arxiv_id": "2406.13147",
+   "doi": "10.1162/isal_a_00713",
+   "primary_category": "cs.MA",
+   "published": "2024-06-19T01:51:15Z",
+   "title": "A Simulation Environment for the Neuroevolution of Ant Colony Dynamics",
+   "token_count": 132
+  },
+  {
+   "arxiv_id": "2402.11391",
+   "doi": "10.1016/j.mbs.2024.109245",
+   "primary_category": "nlin.AO",
+   "published": "2024-02-17T21:58:28Z",
+   "title": "A soluble model for synchronized rhythmic activity in ant colonies",
+   "token_count": 188
+  },
+  {
+   "arxiv_id": "2401.15046",
+   "doi": null,
+   "primary_category": "math.AP",
+   "published": "2024-01-26T18:18:51Z",
+   "title": "Lane formation and aggregation spots in a model of ants",
+   "token_count": 190
+  },
+  {
+   "arxiv_id": "2107.11075",
+   "doi": "10.7554/eLife.31730",
+   "primary_category": "q-bio.PE",
+   "published": "2021-07-23T08:35:48Z",
+   "title": "Individual crop loads provide local control for collective food intake in ant colonies",
+   "token_count": 168
+  },
+  {
+   "arxiv_id": "2105.00883",
+   "doi": null,
+   "primary_category": "nlin.AO",
+   "published": "2021-05-03T14:08:55Z",
+   "title": "Decentralized decision making by an ant colony: drift-diffusion model of individual choice, quorum and collective decision",
+   "token_count": 223
+  },
+  {
+   "arxiv_id": "2012.11508",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2020-12-21T17:26:07Z",
+   "title": "The genomic architecture and evolutionary fates of supergenes",
+   "token_count": 179
+  },
+  {
+   "arxiv_id": "2009.10563",
+   "doi": null,
+   "primary_category": "physics.soc-ph",
+   "published": "2020-09-22T14:05:37Z",
+   "title": "From Ants to Fishing Vessels: A Simple Model for Herding and Exploitation of Finite Resources",
+   "token_count": 260
+  },
+  {
+   "arxiv_id": "1811.00590",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2018-11-01T18:57:49Z",
+   "title": "Modeling tropotaxis in ant colonies: recruitment and trail formation",
+   "token_count": 183
+  },
+  {
+   "arxiv_id": "1709.08343",
+   "doi": "10.1098/rsif.2017.0413",
+   "primary_category": "physics.bio-ph",
+   "published": "2017-09-25T06:44:32Z",
+   "title": "Spatial organization and interactions of harvester ants during foraging activity",
+   "token_count": 203
+  },
+  {
+   "arxiv_id": "1401.1321",
+   "doi": null,
+   "primary_category": "physics.soc-ph",
+   "published": "2014-01-07T09:33:30Z",
+   "title": "Utility Rate Equations of Group Population Dynamics in Biological and Social Systems",
+   "token_count": 211
+  },
+  {
+   "arxiv_id": "1102.2296",
+   "doi": null,
+   "primary_category": "math.DS",
+   "published": "2011-02-11T07:33:34Z",
+   "title": "Mathematical Modeling on Obligate Mutualism: Interactions between leaf-cutter ants and their fungus garden",
+   "token_count": 188
+  },
+  {
+   "arxiv_id": "1001.5244",
+   "doi": "10.2478/s13230-010-0015-z",
+   "primary_category": "cs.NE",
+   "published": "2010-01-28T18:55:53Z",
+   "title": "Computing Networks: A General Framework to Contrast Neural and Swarm Cognitions",
+   "token_count": 119
+  },
+  {
+   "arxiv_id": "0912.2563",
+   "doi": null,
+   "primary_category": "cs.AI",
+   "published": "2009-12-14T01:53:25Z",
+   "title": "A Model-Based Approach to Predicting Predator-Prey & Friend-Foe Relationships in Ant Colonies",
+   "token_count": 135
+  },
+  {
+   "arxiv_id": "0810.4583",
+   "doi": null,
+   "primary_category": "physics.soc-ph",
+   "published": "2008-10-25T08:43:48Z",
+   "title": "Analytical and Numerical Investigation of Ant Behavior Under Crowded Conditions",
+   "token_count": 185
+  },
+  {
+   "arxiv_id": "0712.0744",
+   "doi": "10.1109/CEC.2007.4424594",
+   "primary_category": "cs.MA",
+   "published": "2007-12-05T15:02:19Z",
+   "title": "Computational Chemotaxis in Ants and Bacteria over Dynamic Environments",
+   "token_count": 251
+  },
+  {
+   "arxiv_id": "0706.0171",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2007-06-01T15:04:59Z",
+   "title": "Persistent pods of the tree Acacia caven: a natural refuge for diverse insects including Bruchid beetles and the parasitoids Trichogrammatidae, Pteromalidae and Eulophidae",
+   "token_count": 163
+  },
+  {
+   "arxiv_id": "nlin/0507045",
+   "doi": null,
+   "primary_category": "nlin.AO",
+   "published": "2005-07-22T12:35:12Z",
+   "title": "An ant-based algorithm for annular sorting",
+   "token_count": 33
+  },
+  {
+   "arxiv_id": "nlin/0304006",
+   "doi": null,
+   "primary_category": "nlin.AO",
+   "published": "2003-04-04T15:25:51Z",
+   "title": "Determining possible avenues of approach using ANTS",
+   "token_count": 212
+  },
+  {
+   "arxiv_id": "2609.16316",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2026-09-14T20:29:48Z",
+   "title": "Navigating the Delicate Geometry of Beehive Mite Infestation with Optimal Control",
+   "token_count": 225
+  },
+  {
+   "arxiv_id": "2604.23408",
+   "doi": null,
+   "primary_category": "q-bio.QM",
+   "published": "2026-04-25T18:59:53Z",
+   "title": "Messaging strategies and the emergence of echo chambers in collective decision-making",
+   "token_count": 260
+  },
+  {
+   "arxiv_id": "2603.26226",
+   "doi": null,
+   "primary_category": "physics.bio-ph",
+   "published": "2026-03-27T09:49:43Z",
+   "title": "Braess's paradox in tandem-running ants: When shortest path is not the quickest",
+   "token_count": 96
+  },
+  {
+   "arxiv_id": "2507.17923",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2025-07-23T20:39:34Z",
+   "title": "Altruism and energy flow in dynamic beehive models",
+   "token_count": 238
+  },
+  {
+   "arxiv_id": "2502.09475",
+   "doi": null,
+   "primary_category": "cond-mat.stat-mech",
+   "published": "2025-02-13T16:39:07Z",
+   "title": "Extinction and Metastability of Pheromone-Roads in Stochastic Models for Foraging Walks of Ants",
+   "token_count": 238
+  },
+  {
+   "arxiv_id": "2411.09168",
+   "doi": null,
+   "primary_category": "cs.MA",
+   "published": "2024-11-14T03:58:50Z",
+   "title": "An AI Theory of Mind Will Enhance Our Collective Intelligence",
+   "token_count": 285
+  },
+  {
+   "arxiv_id": "2308.00298",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2023-08-01T05:39:49Z",
+   "title": "Finite population effects on optimal communication for social foragers",
+   "token_count": 262
+  },
+  {
+   "arxiv_id": "2208.12373",
+   "doi": null,
+   "primary_category": "cs.RO",
+   "published": "2022-08-25T23:19:36Z",
+   "title": "Collective phototactic robotectonics",
+   "token_count": 148
+  },
+  {
+   "arxiv_id": "2206.11129",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2022-06-22T14:21:53Z",
+   "title": "Social Insects and Beyond: The Physics of Soft, Dense Invertebrate Aggregations",
+   "token_count": 290
+  },
+  {
+   "arxiv_id": "2206.00116",
+   "doi": null,
+   "primary_category": "physics.soc-ph",
+   "published": "2022-05-31T20:55:19Z",
+   "title": "Towards Eusociality Using an Inverse Agent Based Model",
+   "token_count": 152
+  },
+  {
+   "arxiv_id": "2104.10081",
+   "doi": "10.3389/fevo.2022.750837",
+   "primary_category": "q-bio.PE",
+   "published": "2021-04-20T16:03:09Z",
+   "title": "Exploring Evolved Multicellular Life Histories in a Open-Ended Digital Evolution System",
+   "token_count": 196
+  },
+  {
+   "arxiv_id": "1703.00389",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2017-03-01T17:04:57Z",
+   "title": "The impact of species-neutral stage structure on macroecological patterns",
+   "token_count": 256
+  },
+  {
+   "arxiv_id": "1607.06055",
+   "doi": "10.1103/PhysRevE.96.022111",
+   "primary_category": "physics.bio-ph",
+   "published": "2016-07-20T18:31:30Z",
+   "title": "A trophallaxis inspired model for distributed transport between randomly interacting agents",
+   "token_count": 155
+  },
+  {
+   "arxiv_id": "1604.07109",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2016-04-25T02:22:03Z",
+   "title": "Finding a Mate With Eusocial Skills",
+   "token_count": 132
+  },
+  {
+   "arxiv_id": "1510.08831",
+   "doi": "10.1098/rspb.2015.1975",
+   "primary_category": "q-bio.PE",
+   "published": "2015-10-29T19:27:27Z",
+   "title": "Antisocial pool rewarding does not deter public cooperation",
+   "token_count": 229
+  },
+  {
+   "arxiv_id": "1407.0290",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2014-07-01T15:55:27Z",
+   "title": "Risk management of solitary and eusocial reproduction",
+   "token_count": 190
+  },
+  {
+   "arxiv_id": "1403.6074",
+   "doi": "10.1016/j.jtbi.2013.01.010",
+   "primary_category": "q-bio.PE",
+   "published": "2014-03-24T18:34:54Z",
+   "title": "The Evolution of Complexity in Social Organization - A Model Using Dominance-Subordinate Behaviour in Two Social Wasp Species",
+   "token_count": 295
+  },
+  {
+   "arxiv_id": "1104.3152",
+   "doi": null,
+   "primary_category": "cs.AI",
+   "published": "2011-04-15T20:24:54Z",
+   "title": "Polyethism in a colony of artificial ants",
+   "token_count": 84
+  },
+  {
+   "arxiv_id": "1509.05965",
+   "doi": "10.1016/j.amc.2015.08.006",
+   "primary_category": "physics.soc-ph",
+   "published": "2015-09-20T03:58:08Z",
+   "title": "The peloton superorganism and protocooperative behavior",
+   "token_count": 167
+  },
+  {
+   "arxiv_id": "2608.00314",
+   "doi": null,
+   "primary_category": "physics.bio-ph",
+   "published": "2026-07-31T21:58:42Z",
+   "title": "Noise-induced stability of insect swarms",
+   "token_count": 166
+  },
+  {
+   "arxiv_id": "2408.09917",
+   "doi": "10.1103/PhysRevE.111.044411",
+   "primary_category": "nlin.AO",
+   "published": "2024-08-19T11:47:00Z",
+   "title": "Boltzmann approach to collective motion via nonlocal visual interaction",
+   "token_count": 188
+  },
+  {
+   "arxiv_id": "2407.11330",
+   "doi": null,
+   "primary_category": "cs.NE",
+   "published": "2024-07-16T02:46:11Z",
+   "title": "Navigating the swarm: Deep neural networks command emergent behaviours",
+   "token_count": 267
+  },
+  {
+   "arxiv_id": "2402.09073",
+   "doi": "10.1093/pnasnexus/pgae264",
+   "primary_category": "nlin.AO",
+   "published": "2024-02-14T10:33:33Z",
+   "title": "Selective decision-making and collective behavior of fish by the motion of visual attention",
+   "token_count": 190
+  },
+  {
+   "arxiv_id": "2307.09720",
+   "doi": null,
+   "primary_category": "q-bio.QM",
+   "published": "2023-07-19T02:03:32Z",
+   "title": "A Computational Topology-based Spatiotemporal Analysis Technique for Honeybee Aggregation",
+   "token_count": 235
+  },
+  {
+   "arxiv_id": "2211.03879",
+   "doi": "10.1142/9789811260438_0004",
+   "primary_category": "physics.bio-ph",
+   "published": "2022-11-07T21:38:00Z",
+   "title": "Phase Transitions and Criticality in the Collective Behavior of Animals -- Self-organization and biological function",
+   "token_count": 209
+  },
+  {
+   "arxiv_id": "2206.07016",
+   "doi": null,
+   "primary_category": "math.DS",
+   "published": "2022-06-14T17:26:55Z",
+   "title": "Dynamical behavior of a colony migration system: Do colony size and quorum threshold affect collective-decision?",
+   "token_count": 240
+  },
+  {
+   "arxiv_id": "2203.14238",
+   "doi": null,
+   "primary_category": "cond-mat.stat-mech",
+   "published": "2022-03-27T08:11:20Z",
+   "title": "Bifurcation theory captures band formation in the Vicsek model of flock formation",
+   "token_count": 264
+  },
+  {
+   "arxiv_id": "2007.04254",
+   "doi": null,
+   "primary_category": "physics.bio-ph",
+   "published": "2020-07-08T16:43:40Z",
+   "title": "Dynamics of mosquito swarms over a moving marker",
+   "token_count": 255
+  },
+  {
+   "arxiv_id": "2004.00552",
+   "doi": "10.1371/journal.pone.0243628",
+   "primary_category": "q-bio.PE",
+   "published": "2020-04-01T16:32:13Z",
+   "title": "Development of swarm behavior in artificial learning agents that adapt to different foraging environments",
+   "token_count": 187
+  },
+  {
+   "arxiv_id": "1901.07465",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2019-01-22T17:00:58Z",
+   "title": "Collective learning from individual experiences and information transfer during group foraging",
+   "token_count": 224
+  },
+  {
+   "arxiv_id": "1703.04731",
+   "doi": "10.1098/rsos.170344",
+   "primary_category": "q-bio.PE",
+   "published": "2017-03-14T21:09:11Z",
+   "title": "Task allocation and site fidelity jointly influence foraging regulation in honey bee colonies",
+   "token_count": 298
+  },
+  {
+   "arxiv_id": "1611.04223",
+   "doi": "10.1103/PhysRevE.95.012408",
+   "primary_category": "nlin.AO",
+   "published": "2016-11-14T01:53:04Z",
+   "title": "Emergent pattern formation in an interstitial biofilm",
+   "token_count": 182
+  },
+  {
+   "arxiv_id": "1511.04528",
+   "doi": "10.1103/PhysRevX.6.011008",
+   "primary_category": "physics.bio-ph",
+   "published": "2015-11-14T08:30:28Z",
+   "title": "Engineering sensorial delay to control phototaxis and emergent collective behaviors",
+   "token_count": 278
+  },
+  {
+   "arxiv_id": "2601.04111",
+   "doi": null,
+   "primary_category": "q-bio.NC",
+   "published": "2026-01-07T17:17:32Z",
+   "title": "Stigmergic optimal transport",
+   "token_count": 136
+  },
+  {
+   "arxiv_id": "nlin/0502057",
+   "doi": null,
+   "primary_category": "nlin.AO",
+   "published": "2005-02-24T18:21:42Z",
+   "title": "Social Cognitive Maps, Swarm Perception and Distributed Search on Dynamic Landscapes",
+   "token_count": 234
+  },
+  {
+   "arxiv_id": "1105.1117",
+   "doi": "10.1371/journal.pcbi.1002282",
+   "primary_category": "q-bio.QM",
+   "published": "2011-05-05T16:32:59Z",
+   "title": "Collective Animal Behavior from Bayesian Estimation and Probability Matching",
+   "token_count": 267
+  },
+  {
+   "arxiv_id": "1103.1612",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2011-03-08T19:46:05Z",
+   "title": "Ant foraging and minimal paths in simple graphs",
+   "token_count": 180
+  },
+  {
+   "arxiv_id": "q-bio/0408019",
+   "doi": null,
+   "primary_category": "q-bio.PE",
+   "published": "2004-08-25T08:05:42Z",
+   "title": "Collective Dynamics of Active Elements: Task Allocation and Pheromone Trailing",
+   "token_count": 141
+  },
+  {
+   "arxiv_id": "adap-org/9507003",
+   "doi": "10.1016/0375-9601(95)00624-C",
+   "primary_category": "nlin.AO",
+   "published": "1995-07-18T20:19:46Z",
+   "title": "Pattern Formation and Functionality in Swarm Models",
+   "token_count": 102
+  },
+  {
+   "arxiv_id": "adap-org/9306002",
+   "doi": null,
+   "primary_category": "nlin.AO",
+   "published": "1993-06-11T03:26:04Z",
+   "title": "Swarms, Phase Transitions, and Collective Intelligence",
+   "token_count": 222
+  }
+ ],
+ "domain_term_counts": {
+  "behavior_and_identity": {
+   "bridging_term_count": 1,
+   "term_count": 3,
+   "total_frequency": 97
+  },
+  "economics": {
+   "bridging_term_count": 0,
+   "term_count": 5,
+   "total_frequency": 19
+  },
+  "kin_and_relatedness": {
+   "bridging_term_count": 0,
+   "term_count": 3,
+   "total_frequency": 12
+  },
+  "power_and_labor": {
+   "bridging_term_count": 2,
+   "term_count": 4,
+   "total_frequency": 14
+  },
+  "sex_and_reproduction": {
+   "bridging_term_count": 1,
+   "term_count": 3,
+   "total_frequency": 18
+  },
+  "unit_of_individuality": {
+   "bridging_term_count": 0,
+   "term_count": 7,
+   "total_frequency": 88
+  }
+ },
+ "framing": {
+  "behavior_and_identity": {
+   "n_contexts": 97,
+   "proportion": 0.020619
+  },
+  "economics": {
+   "n_contexts": 19,
+   "proportion": 0.157895
+  },
+  "kin_and_relatedness": {
+   "n_contexts": 12,
+   "proportion": 0.0
+  },
+  "overall": {
+   "n_contexts": 238,
+   "proportion": 0.02521
+  },
+  "power_and_labor": {
+   "n_contexts": 14,
+   "proportion": 0.0
+  },
+  "sex_and_reproduction": {
+   "n_contexts": 18,
+   "proportion": 0.0
+  },
+  "unit_of_individuality": {
+   "n_contexts": 88,
+   "proportion": 0.011364
+  }
+ },
+ "framing_terms": {
+  "allocation": {
+   "domains": [
+    "economics"
+   ],
+   "n_contexts": 3,
+   "proportion": 0.0
+  },
+  "altruism": {
+   "domains": [
+    "kin_and_relatedness"
+   ],
+   "n_contexts": 7,
+   "proportion": 0.0
+  },
+  "behavior": {
+   "domains": [
+    "behavior_and_identity"
+   ],
+   "n_contexts": 66,
+   "proportion": 0.030303
+  },
+  "collective-intelligence": {
+   "domains": [
+    "unit_of_individuality"
+   ],
+   "n_contexts": 2,
+   "proportion": 0.0
+  },
+  "colony": {
+   "domains": [
+    "unit_of_individuality"
+   ],
+   "n_contexts": 44,
+   "proportion": 0.0
+  },
+  "dominance-subordinate": {
+   "domains": [
+    "power_and_labor"
+   ],
+   "n_contexts": 2,
+   "proportion": 0.0
+  },
+  "efficiency": {
+   "domains": [
+    "economics"
+   ],
+   "n_contexts": 3,
+   "proportion": 0.0
+  },
+  "eusocial": {
+   "domains": [
+    "unit_of_individuality"
+   ],
+   "n_contexts": 27,
+   "proportion": 0.037037
+  },
+  "eusociality": {
+   "domains": [
+    "unit_of_individuality"
+   ],
+   "n_contexts": 6,
+   "proportion": 0.0
+  },
+  "food-exchange": {
+   "domains": [
+    "economics"
+   ],
+   "n_contexts": 2,
+   "proportion": 0.0
+  },
+  "foraging": {
+   "domains": [
+    "behavior_and_identity"
+   ],
+   "n_contexts": 29,
+   "proportion": 0.0
+  },
+  "genetic": {
+   "domains": [
+    "kin_and_relatedness"
+   ],
+   "n_contexts": 2,
+   "proportion": 0.0
+  },
+  "hierarchy": {
+   "domains": [
+    "power_and_labor"
+   ],
+   "n_contexts": 2,
+   "proportion": 0.0
+  },
+  "kin": {
+   "domains": [
+    "kin_and_relatedness"
+   ],
+   "n_contexts": 3,
+   "proportion": 0.0
+  },
+  "mating": {
+   "domains": [
+    "sex_and_reproduction"
+   ],
+   "n_contexts": 2,
+   "proportion": 0.0
+  },
+  "non-social": {
+   "domains": [
+    "unit_of_individuality"
+   ],
+   "n_contexts": 2,
+   "proportion": 0.0
+  },
+  "organism": {
+   "domains": [
+    "unit_of_individuality"
+   ],
+   "n_contexts": 4,
+   "proportion": 0.0
+  },
+  "queen": {
+   "domains": [
+    "power_and_labor",
+    "sex_and_reproduction"
+   ],
+   "n_contexts": 8,
+   "proportion": 0.0
+  },
+  "reproduction": {
+   "domains": [
+    "sex_and_reproduction"
+   ],
+   "n_contexts": 8,
+   "proportion": 0.0
+  },
+  "resource": {
+   "domains": [
+    "economics"
+   ],
+   "n_contexts": 8,
+   "proportion": 0.0
+  },
+  "superorganism": {
+   "domains": [
+    "unit_of_individuality"
+   ],
+   "n_contexts": 3,
+   "proportion": 0.0
+  },
+  "trade-off": {
+   "domains": [
+    "economics"
+   ],
+   "n_contexts": 3,
+   "proportion": 1.0
+  },
+  "worker": {
+   "domains": [
+    "behavior_and_identity",
+    "power_and_labor"
+   ],
+   "n_contexts": 2,
+   "proportion": 0.0
+  }
+ },
+ "generated": "2026-09-19T22:35:52+00:00",
+ "layer": "arxiv",
+ "min_term_frequency": 2,
+ "n_documents": 61,
+ "pairwise": [
+  {
+   "cohens_d": 26.336069776474677,
+   "df": 1.6305491678254234,
+   "domain_a": "behavior_and_identity",
+   "domain_b": "sex_and_reproduction",
+   "metric": "semantic_entropy",
+   "n_a": 2,
+   "n_b": 2,
+   "p": 0.001558380915911439,
+   "p_bh": 0.004675142747734317,
+   "significant_bh": true,
+   "t": 46.08812210883069
+  },
+  {
+   "cohens_d": 0.416773284914866,
+   "df": 2.0035450436226143,
+   "domain_a": "behavior_and_identity",
+   "domain_b": "unit_of_individuality",
+   "metric": "semantic_entropy",
+   "n_a": 2,
+   "n_b": 3,
+   "p": 0.5027726431246486,
+   "p_bh": 0.5027726431246486,
+   "significant_bh": false,
+   "t": 0.8101944956158373
+  },
+  {
+   "cohens_d": -0.961561244831557,
+   "df": 2.0099776269756053,
+   "domain_a": "sex_and_reproduction",
+   "domain_b": "unit_of_individuality",
+   "metric": "semantic_entropy",
+   "n_a": 2,
+   "n_b": 3,
+   "p": 0.20204772102204804,
+   "p_bh": 0.30307158153307207,
+   "significant_bh": false,
+   "t": -1.8682444018377624
+  }
+ ],
+ "skipped": [
+  {
+   "domain": "economics",
+   "kind": "domain_group",
+   "reason": "only 1 valid per-term entropy value(s); n < 2 groups cannot be tested"
+  },
+  {
+   "domain": "kin_and_relatedness",
+   "kind": "domain_group",
+   "reason": "only 1 valid per-term entropy value(s); n < 2 groups cannot be tested"
+  },
+  {
+   "domain": "power_and_labor",
+   "kind": "domain_group",
+   "reason": "only 1 valid per-term entropy value(s); n < 2 groups cannot be tested"
+  }
+ ],
+ "source": {
+  "harvester": "arXiv API (preprint layer)",
+  "n_documents": 61,
+  "records": "data/corpus/arxiv_records.json",
+  "text_surface": "title + abstract per record",
+  "vocabulary_source": "analysis.term_extraction.TerminologyExtractor.DOMAIN_SEEDS"
+ }
+}

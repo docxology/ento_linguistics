@@ -269,7 +269,9 @@ def build_statistical_tokens(
 
     Emits ANOVA_*, CORRECTION_METHOD, PAIRWISE_N_COMPARISONS,
     PAIRWISE_<SLUG_A>_<SLUG_B>_{T,P,P_BH,D,SIGNIFICANT} (SLUG = canonical
-    domain slug uppercased, A < B alphabetical), the per-domain CACE
+    domain slug uppercased, A < B alphabetical), the abstract layer's
+    ABSTRACT_* discourse tokens (see :func:`_build_discourse_tokens`),
+    the per-domain CACE
     aggregates CACE_<SLUG>_{MEAN,MIN,MAX,CLARITY,APPROPRIATENESS,CONSISTENCY,
     EVOLVABILITY,N}, and the per-term CACE evaluations
     CACE_TERM_<SLUG>_{CLARITY,APPROPRIATENESS,CONSISTENCY,EVOLVABILITY,
@@ -301,6 +303,9 @@ def build_statistical_tokens(
     variables.update(_build_bhl_tokens(_load_bhl_artifact(bhl_data_dir)))
     if not stats_artifact:
         return variables
+    # Abstract-layer discourse tokens (FULLTEXT_* twins are emitted
+    # inside _build_fulltext_tokens from the same shared builder).
+    variables.update(_build_discourse_tokens(stats_artifact, "ABSTRACT"))
     anova = stats_artifact.get("anova") or {}
     if anova:
         variables["ANOVA_METRIC"] = str(anova.get("metric", ""))
@@ -377,6 +382,10 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
       per-domain extracted-term count and mean semantic entropy from the
       artifact's ``descriptives`` section (SLUG = canonical domain slug
       uppercased).
+    - ``FULLTEXT_PAIRWISE_N``: number of pairwise comparisons.
+    - The FULLTEXT_* discourse-token family (see
+      :func:`_build_discourse_tokens`), emitted from the artifact's
+      ``discourse`` section when present.
     - ``FULLTEXT_DOMAIN_<SLUG>_ANTHROPOMORPHIC`` /
       ``FULLTEXT_ANTHROPOMORPHIC_OVERALL``: per-domain and overall
       anthropomorphic-framing proportions from the artifact's
@@ -397,6 +406,7 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
     if fulltext_artifact is None:
         fulltext_artifact = load_json(OUTPUT_DATA_DIR / "fulltext_analysis.json")
     variables: dict = {}
+    variables.update(_build_discourse_tokens(fulltext_artifact, "FULLTEXT"))
     if not fulltext_artifact:
         return variables
     variables["FULLTEXT_DOCUMENTS"] = str(fulltext_artifact.get("n_documents", 0))
@@ -433,6 +443,100 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
         variables["FULLTEXT_ANOVA_P"] = _fmt_p(anova.get("p"))
     return variables
 
+
+#: Canonical key ordering for the discourse-section token emission:
+#: canonical members first (fixed manuscript order), then any extras
+#: lexicographically.  Deterministic regardless of JSON key order.
+_DISCOURSE_CANONICAL_ORDER: dict[str, tuple[str, ...]] = {
+    "patterns": (
+        "anthropomorphic_framing",
+        "economic_metaphors",
+        "hierarchical_framing",
+        "scale_ambiguity",
+    ),
+    "rhetorical": (
+        "analogy",
+        "anecdotal",
+        "authority",
+        "generalization",
+    ),
+    "persuasive": (
+        "authoritative_citations",
+        "metaphorical_language",
+        "quantitative_emphasis",
+        "rhetorical_questions",
+    ),
+}
+
+
+def _discourse_order(section: str, keys: dict) -> list[str]:
+    """Order discourse-section keys canonically first, extras sorted."""
+    canonical = _DISCOURSE_CANONICAL_ORDER.get(section, ())
+    return [k for k in canonical if k in keys] + sorted(
+        k for k in keys if k not in canonical
+    )
+
+
+def _build_discourse_tokens(artifact: Optional[dict], prefix: str) -> dict:
+    """Map a layer artifact's ``discourse`` section onto a token family.
+
+    Bounded, documented emission (all omitted when the artifact or its
+    ``discourse`` section is absent/empty, never KeyError):
+
+    - ``<PREFIX>_DISCOURSE_N_ANALYZED``: ``n_texts_analyzed`` (the
+      corpus texts that entered the discourse pass after the
+      ``min_text_length`` filter).
+    - ``<PREFIX>_DISCOURSE_SAMPLE_FRACTION``: ``sample_fraction`` (4
+      decimals; 1.0 = full corpus, 0.2 = the full-text layer's
+      deterministic 20% sample).
+    - ``<PREFIX>_PATTERNS_<SLUG>``: per-pattern ``frequency`` for every
+      key the section carries (e.g. ``PATTERNS_HIERARCHICAL_FRAMING``).
+    - ``<PREFIX>_RHETORICAL_<SLUG>``: per-strategy ``frequency`` for
+      every key the section carries (e.g. ``RHETORICAL_AUTHORITY``).
+    - ``<PREFIX>_ARG_STRUCTURES``: ``argumentative.n_structures``.
+    - ``<PREFIX>_PERSUASIVE_METAPHORICAL``:
+      ``persuasive.metaphorical_language.usage_frequency``.
+
+    Args:
+        artifact: Parsed layer artifact (abstract or full-text).
+        prefix: Token family prefix (``ABSTRACT`` or ``FULLTEXT``).
+
+    Returns:
+        Mapping of ``<PREFIX>_*`` discourse token names to string values.
+    """
+    variables: dict = {}
+    discourse: dict = (artifact or {}).get("discourse") or {}
+    if not discourse:
+        return variables
+    n_analyzed = discourse.get("n_texts_analyzed")
+    if n_analyzed is not None:
+        variables[f"{prefix}_DISCOURSE_N_ANALYZED"] = str(int(n_analyzed))
+    sample_fraction = discourse.get("sample_fraction")
+    if sample_fraction is not None:
+        variables[f"{prefix}_DISCOURSE_SAMPLE_FRACTION"] = _fmt_stat(
+            sample_fraction
+        )
+    for section, value_key in (("patterns", "frequency"), ("rhetorical", "frequency")):
+        members: dict = discourse.get(section) or {}
+        for key in _discourse_order(section, members):
+            entry = members.get(key) or {}
+            frequency = entry.get(value_key)
+            if frequency is not None:
+                slug = str(key).upper()
+                variables[f"{prefix}_{section.upper()}_{slug}"] = str(
+                    int(frequency)
+                )
+    argumentative: dict = discourse.get("argumentative") or {}
+    n_structures = argumentative.get("n_structures")
+    if n_structures is not None:
+        variables[f"{prefix}_ARG_STRUCTURES"] = str(int(n_structures))
+    metaphorical = (discourse.get("persuasive") or {}).get(
+        "metaphorical_language"
+    ) or {}
+    usage = metaphorical.get("usage_frequency")
+    if usage is not None:
+        variables[f"{prefix}_PERSUASIVE_METAPHORICAL"] = str(int(usage))
+    return variables
 
 BHL_DATA_DIR = PROJECT_DIR / "data" / "bhl"
 
@@ -505,6 +609,14 @@ def _build_bhl_tokens(bhl_artifact: Optional[dict]) -> dict:
       :data:`BHL_CANONICAL_TERMS` that the artifact carries (TERM
       slugified like the CACE_TERM convention: uppercased,
       spaces/hyphens mapped to underscores).
+    - Expanded per-era full-stack sections (emitted only when the era
+      carries them; degenerate eras omit, never fabricated):
+      ``BHL_ERA_<ERA>_TERMS`` (``extraction.n_terms``), and
+      ``BHL_ERA_<ERA>_ENTROPY_MEAN`` (unweighted mean of the era's
+      valid per-term semantic entropies in the bounded top-terms
+      sample) / ``BHL_ERA_<ERA>_FRAMING`` (overall anthropomorphic
+      framing proportion over occurrence contexts, 4 decimals) when
+      those sections carry data.
 
     Args:
         bhl_artifact: Parsed ``era_term_usage.json`` contents, or
@@ -541,6 +653,28 @@ def _build_bhl_tokens(bhl_artifact: Optional[dict]) -> dict:
             slug = term.upper().replace("-", "_").replace(" ", "_")
             variables[f"BHL_{era_upper}_{slug}_PER_10K"] = _fmt_stat(
                 frequencies.get(term, 0.0)
+            )
+        # Expanded per-era full-stack sections (omit when absent or
+        # degenerate — the empty eras of an earlier harvest carry
+        # none of these keys).
+        extraction = entry.get("extraction") or {}
+        if extraction:
+            variables[f"BHL_{era_upper}_TERMS"] = str(
+                int(extraction.get("n_terms", 0))
+            )
+        term_entropies = (entry.get("entropy") or {}).get("terms") or {}
+        if term_entropies:
+            mean_entropy = (
+                sum(float(v) for v in term_entropies.values())
+                / len(term_entropies)
+            )
+            variables[f"BHL_{era_upper}_ENTROPY_MEAN"] = _fmt_stat(
+                mean_entropy
+            )
+        overall_framing = (entry.get("framing") or {}).get("overall") or {}
+        if overall_framing:
+            variables[f"BHL_{era_upper}_FRAMING"] = _fmt_stat(
+                overall_framing.get("proportion")
             )
     return variables
 
