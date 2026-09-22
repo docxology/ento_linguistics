@@ -2,9 +2,9 @@
 
 All notable changes to the Ento-Linguistics project are documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Concept DOI: [10.5281/zenodo.19574118](https://doi.org/10.5281/zenodo.19574118) — all versions of this release are grouped under the same concept DOI.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Concept DOI: [10.5281/zenodo.19574117](https://doi.org/10.5281/zenodo.19574117) — all versions of this release are grouped under the same concept DOI. — all versions of this release are grouped under the same concept DOI.
 
-## [Unreleased]
+## [1.1.1] - 2026-09-22
 
 Pipeline performance: the language-analysis stages now run the same
 computations with redundant work removed and the embarrassingly parallel
@@ -70,4 +70,5 @@ Methods and statistics revision of the analysis pipeline and manuscript.
 - **Ambiguity scores are real**: supplemental tables no longer present hardcoded placeholder scores; descriptives come from per-term valid-entropy means with exclusions counted.
 - **Manuscript data corrections**: inferential claims in the manuscript are restated as token-driven values, and the pairwise comparisons are correctly described as tests on per-term semantic entropy (not mean ambiguity scores).
 
+[1.1.1]: https://doi.org/10.5281/zenodo.19574117
 [1.1.0]: https://doi.org/10.5281/zenodo.19574118

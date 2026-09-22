@@ -2,7 +2,7 @@
 author:
 - Daniel Ari Friedman
 - Tucker Cahill Chambers
-date: '2026-09-15'
+date: '2026-09-22'
 subtitle: How Terminology Networks Shape Understanding of Insect Biology (And Vice-Versa)
 title: 'Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology'
 ---
@@ -278,7 +278,7 @@ Figure \ref{fig:terminology_network} illustrates the resulting network.
 \label{fig:terminology_network}
 \end{figure}
 
-The network exhibits strong modularity: 11623 nodes (11617 extracted terms plus the 6 conceptual cluster nodes) connected by 1176 edges, with a clustering coefficient of 0.0370 and average degree of 0.20. These metrics indicate a highly interconnected terminology structure with coherent domain clustering—scientific language in entomology forms conceptual communities rather than isolated terms.
+The network exhibits strong modularity: 11623 nodes (11617 extracted terms plus the 6 conceptual cluster nodes) connected by 1112 edges, with a clustering coefficient of 0.0360 and average degree of 0.19. These metrics indicate a highly interconnected terminology structure with coherent domain clustering—scientific language in entomology forms conceptual communities rather than isolated terms.
 
 Domain-level network analysis reveals distinct architectures across the six core themes. As visualized in the aggregate network topology, dense identity clusters characterize Behavior & Identity terminology, while Power & Labor terminology forms hierarchical, chain-like structures. Conversely, Sex & Reproduction terms tend to organize into rigid binary oppositions, and Economics terms cluster tightly around transactional frameworks with few bridges to biological mechanism descriptions.
 
@@ -441,7 +441,7 @@ At the level of *conceptual framing*, terms carry implicit theoretical commitmen
 
 At the level of *cross-domain transfer*, terminology borrowed from human social organization creates systematic biases in how biological phenomena are interpreted. The chain-like network architecture of Power \& Labor terminology (Figure \ref{fig:terminology_network}) mirrors the linear hierarchies of human institutions rather than the distributed, flexible patterns that behavioral data reveal \cite{ravary2007, gordon2010}. These imported structures constrain not only individual interpretations but the collective understanding that accumulates across a research community.
 
-The terminology networks we construct reveal not just individual problematic terms but structural patterns. The high clustering coefficient (0.0370) indicates that terms reinforce each other within conceptual clusters, creating self-sustaining frameworks that resist piecemeal reform. This network-level effect connects to \citeauthor{foucault1972archaeology}'s \citeyearpar{foucault1972archaeology} analysis of how discursive formations constrain what can be said and thought within a field, and extends \citeauthor{lakoff1980metaphors}'s \citeyearpar{lakoff1980metaphors} demonstration of pervasive metaphorical reasoning into formal scientific discourse. Moreover, as recent accounts of collective behavior \cite{gordon2019ecology, gordon2023ecology} gain traction, the need for precise language to distinguish between metaphorical mapping and functional identity becomes even more critical.
+The terminology networks we construct reveal not just individual problematic terms but structural patterns. The high clustering coefficient (0.0360) indicates that terms reinforce each other within conceptual clusters, creating self-sustaining frameworks that resist piecemeal reform. This network-level effect connects to \citeauthor{foucault1972archaeology}'s \citeyearpar{foucault1972archaeology} analysis of how discursive formations constrain what can be said and thought within a field, and extends \citeauthor{lakoff1980metaphors}'s \citeyearpar{lakoff1980metaphors} demonstration of pervasive metaphorical reasoning into formal scientific discourse. Moreover, as recent accounts of collective behavior \cite{gordon2019ecology, gordon2023ecology} gain traction, the need for precise language to distinguish between metaphorical mapping and functional identity becomes even more critical.
 
 ## From Metaphor to Mechanism: An Active Inference Perspective
 
@@ -485,7 +485,7 @@ Terminology reform need not mean wholesale abandonment of existing vocabulary. I
 
 The terminology networks we identified reveal both barriers and bridges for interdisciplinary communication. Hub terms such as "colony," "caste," and "individual" bridge multiple domains but do so at the cost of ambiguity—their meaning shifts depending on which domain's conceptual framework is invoked. Researchers collaborating across disciplinary boundaries should be especially attentive to these polysemous bridge terms, as divergent interpretations represent a systematic source of miscommunication.
 
-Conversely, the strong domain clustering (clustering coefficient 0.0370) indicates that within-domain communication is relatively coherent. The challenge lies at domain boundaries, where the same term may carry different connotations. Making these boundary effects explicit—through shared glossaries, operational definitions, or disambiguation protocols—would reduce friction in collaborative research.
+Conversely, the strong domain clustering (clustering coefficient 0.0360) indicates that within-domain communication is relatively coherent. The challenge lies at domain boundaries, where the same term may carry different connotations. Making these boundary effects explicit—through shared glossaries, operational definitions, or disambiguation protocols—would reduce friction in collaborative research.
 
 ## The "Slave" Terminology Debate: A Case Study in Reform
 
