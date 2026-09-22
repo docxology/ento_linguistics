@@ -16,7 +16,7 @@ The `scripts/` directory contains **thin orchestrators** that integrate with `sr
 | `_discourse_analysis_script.py` | Thin Orchestrator | `src/pipeline/discourse_pipeline.py` | Discourse analysis outputs |
 | `_domain_analysis_script.py` | Thin Orchestrator | `src/pipeline/domain_analysis_pipeline.py` | Domain analysis figures/data |
 | `_example_figure.py` | Self-contained demo (no silent fallbacks) | `src/core/logging`, `src/visualization/figure_manager` | Example PNG/CSV/NPZ |
-| `_fill_manuscript_variables.py` | Thin Orchestrator | `src/core/manuscript_variables.py` | `{{VAR}}`-substituted manuscript markdown |
+| `_fill_manuscript_variables.py` | Thin Orchestrator | `src/core/manuscript_variables.py` | `{{VAR}}` coverage validation (dry run; never rewrites markdown) |
 | `_generate_domain_figures.py` | Thin Orchestrator | `src/pipeline/domain_figures.py` | Per-domain figures |
 | `_literature_analysis_pipeline.py` | Thin Orchestrator | `src/pipeline/literature_pipeline.py` | Mined corpus + analysis outputs |
 | `_manuscript_preflight.py` | Thin Orchestrator | `src/core/validation_utils.py` | Preflight validation (defaults: `docs/manuscript`, `output/pdf/ento_linguistics_combined.pdf`) |

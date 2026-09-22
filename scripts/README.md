@@ -20,7 +20,7 @@ silently.
 | `_discourse_analysis_script.py` | Discourse pattern analysis | `src/pipeline/discourse_pipeline.py` | `uv run python scripts/_discourse_analysis_script.py` |
 | `_domain_analysis_script.py` | Domain-specific terminology analysis | `src/pipeline/domain_analysis_pipeline.py` | `uv run python scripts/_domain_analysis_script.py [domain]` |
 | `_example_figure.py` | Example figure generation (self-contained demo; fails loudly) | `src/core/logging`, `src/visualization/figure_manager` | `uv run python scripts/_example_figure.py` |
-| `_fill_manuscript_variables.py` | Fill `{{VAR}}` placeholders in manuscript markdown | `src/core/manuscript_variables.py` | `uv run python scripts/_fill_manuscript_variables.py` |
+| `_fill_manuscript_variables.py` | Validate `{{VAR}}` placeholder coverage in manuscript markdown (dry run only — substitution happens at PDF build; in-place baking is prohibited) | `src/core/manuscript_variables.py` | `uv run python scripts/_fill_manuscript_variables.py` |
 | `_generate_domain_figures.py` | Per-domain frequency and ambiguity figures | `src/pipeline/domain_figures.py` | `uv run python scripts/_generate_domain_figures.py [domain]` |
 | `_literature_analysis_pipeline.py` | Full literature mining + analysis | `src/pipeline/literature_pipeline.py` | `uv run python scripts/_literature_analysis_pipeline.py` |
 | `_manuscript_preflight.py` | Validate figure refs, glossary, bibliography | `src/core/validation_utils.py` | `uv run python scripts/_manuscript_preflight.py --strict` |

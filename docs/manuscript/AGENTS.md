@@ -42,7 +42,6 @@ The Ento-Linguistics PDF build uses **`scripts/_render_pdf_override.py`** (not t
 | `S02_supplemental_results.md` | Additional experimental results | ✅ |
 | `S03a_theoretical_extensions.md` | Supplemental analysis: theoretical extensions | ✅ |
 | `S03b_case_studies.md` | Supplemental analysis: case studies and validation | ✅ |
-| `S04_supplemental_applications.md` | *(removed — content was speculative)* | — |
 | **Reference Sections** | | |
 | `98_symbols_glossary.md` | Mathematical notation and domain terminology glossary | ✅ |
 | `99_references.md` | Bibliography and cited works (always last) | ✅ |

@@ -452,32 +452,40 @@ class TestFulltextStatisticalTokens:
 class TestFillManuscript:
     """Tests for fill_manuscript."""
 
-    def test_substitutes_known_variables_and_writes(self, tmp_path) -> None:
-        """Known placeholders are replaced in place; unknown ones survive."""
+    def test_validates_placeholders_and_never_writes(self, tmp_path) -> None:
+        """Known placeholders are counted; the file is NEVER rewritten
+        (in-place baking would violate the corpus-statistics editing rule),
+        and dry_run=False raises instead of writing."""
         md = tmp_path / "manuscript.md"
-        md.write_text(
+        original = (
             "We analyzed {{CORPUS_PUBLICATIONS}} publications about {{CORPUS_TOP_TERM_1}}."
-            " The {{UNKNOWN_VARIABLE}} stays.",
-            encoding="utf-8",
+            " The {{UNKNOWN_VARIABLE}} stays."
         )
+        md.write_text(original, encoding="utf-8")
         results = fill_manuscript(
             {"CORPUS_PUBLICATIONS": "12", "CORPUS_TOP_TERM_1": "ant"},
             manuscript_dir=tmp_path,
         )
 
         assert results == {"manuscript.md": 2}
-        content = md.read_text(encoding="utf-8")
-        assert "We analyzed 12 publications about ant." in content
-        assert "{{UNKNOWN_VARIABLE}}" in content
+        assert md.read_text(encoding="utf-8") == original
+
+        with pytest.raises(RuntimeError, match="no longer rewrites"):
+            fill_manuscript(
+                {"CORPUS_PUBLICATIONS": "12", "CORPUS_TOP_TERM_1": "ant"},
+                dry_run=False,
+                manuscript_dir=tmp_path,
+            )
+        assert md.read_text(encoding="utf-8") == original
 
     def test_dry_run_counts_without_writing(self, tmp_path) -> None:
-        """dry_run reports substitution counts but leaves files untouched."""
+        """The default (dry_run=True) counts placeholders without writing."""
         md = tmp_path / "manuscript.md"
         original = "Total tokens: {{CORPUS_TOTAL_TOKENS}}."
         md.write_text(original, encoding="utf-8")
 
         results = fill_manuscript(
-            {"CORPUS_TOTAL_TOKENS": "999"}, dry_run=True, manuscript_dir=tmp_path
+            {"CORPUS_TOTAL_TOKENS": "999"}, manuscript_dir=tmp_path
         )
 
         assert results == {"manuscript.md": 1}
@@ -555,8 +563,8 @@ class TestMainEntryPoint:
             manuscript_variables_module.main()
         assert excinfo.value.code == 1
 
-    def test_main_fills_manuscript_and_reports(self, cli_dirs, capsys) -> None:
-        """A successful run substitutes placeholders and verifies completion."""
+    def test_main_validates_manuscript_and_reports(self, cli_dirs, capsys) -> None:
+        """A successful run validates token coverage without rewriting files."""
         _, manuscript_dir = cli_dirs
         (manuscript_dir / "results.md").write_text(
             "Publications: {{CORPUS_PUBLICATIONS}}; top term: {{CORPUS_TOP_TERM_1}}.",
@@ -569,16 +577,16 @@ class TestMainEntryPoint:
         manuscript_variables_module.main()
 
         out = capsys.readouterr().out
-        assert "All template variables successfully filled." not in out
-        assert "template variables remain unfilled" in out
+        assert "dry run; files unchanged" in out
+        assert "1 template variables remain unresolved" in out
         results_md = (manuscript_dir / "results.md").read_text(encoding="utf-8")
-        assert results_md.startswith("Publications: 3; top term: ant.")
+        assert results_md == "Publications: {{CORPUS_PUBLICATIONS}}; top term: {{CORPUS_TOP_TERM_1}}."
         partial_md = (manuscript_dir / "partial.md").read_text(encoding="utf-8")
         assert partial_md == "Unmapped: {{NOT_A_REAL_VARIABLE}}."
-        assert "TOTAL: 2 substitutions across 1 file" in out
+        assert "TOTAL: 2 placeholder occurrences resolvable across 1 file" in out
 
-    def test_main_all_variables_filled(self, cli_dirs, capsys) -> None:
-        """When no placeholders remain, the success message is printed."""
+    def test_main_all_variables_resolvable(self, cli_dirs, capsys) -> None:
+        """When every placeholder resolves, the success message is printed."""
         _, manuscript_dir = cli_dirs
         (manuscript_dir / "full.md").write_text(
             "{{CORPUS_PUBLICATIONS}} {{CORPUS_TOP_TERM_1}} {{TERM_FREQ_QUEEN}}",
@@ -588,8 +596,8 @@ class TestMainEntryPoint:
         manuscript_variables_module.main()
 
         out = capsys.readouterr().out
-        assert "All template variables successfully filled." in out
-        assert "remain unfilled" not in out
+        assert "All template variables resolve." in out
+        assert "remain unresolved" not in out
 
 
 class TestBhlTokens:

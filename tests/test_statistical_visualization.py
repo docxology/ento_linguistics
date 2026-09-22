@@ -833,6 +833,122 @@ class TestFulltextFingerprintGuard:
         assert calls == []
 
 
+class TestAbstractStatsFingerprintGuard:
+    """Corpus-fingerprint freshness guard for the abstract statistics
+    stage (src/visualization/manuscript_figures._ensure_statistical_artifact)."""
+
+    @staticmethod
+    def _fake_builder(calls):
+        def builder(terms, abstracts, layer="abstract"):
+            calls.append((terms, list(abstracts), layer))
+            return {
+                "layer": layer,
+                "pairwise": [{"i": i} for i in range(len(abstracts))],
+                "skipped": [],
+            }
+
+        return builder
+
+    @pytest.fixture(autouse=True)
+    def _pin_corpus_path(self, tmp_path, monkeypatch):
+        """Point the fingerprint's abstracts.json path at a tmp file."""
+        corpus_path = tmp_path / "abstracts.json"
+        corpus_path.write_text('["a", "b", "c"]', encoding="utf-8")
+        monkeypatch.setattr(
+            "visualization.manuscript_figures._abstracts_corpus_path",
+            lambda: str(corpus_path),
+        )
+        yield
+
+    def test_stale_artifact_is_regenerated(self, tmp_path) -> None:
+        """A pre-guard artifact (no fingerprint) counts as stale."""
+        from visualization.manuscript_figures import (
+            _ensure_statistical_artifact,
+        )
+
+        data_dir = tmp_path / "output" / "data"
+        data_dir.mkdir(parents=True)
+        (data_dir / "statistical_analysis.json").write_text(
+            json.dumps({"layer": "abstract", "pairwise": []}),
+            encoding="utf-8",
+        )
+        calls = []
+        artifact = _ensure_statistical_artifact(
+            str(data_dir), {"term": object()}, ["a", "b", "c"],
+            builder=self._fake_builder(calls),
+        )
+        assert len(calls) == 1
+        assert artifact["corpus_fingerprint"]["record_count"] == 3
+        assert len(artifact["corpus_fingerprint"]["abstracts_sha256"]) == 64
+        stored = json.loads(
+            (data_dir / "statistical_analysis.json").read_text(encoding="utf-8")
+        )
+        assert stored["corpus_fingerprint"] == artifact["corpus_fingerprint"]
+
+    def test_fresh_artifact_is_skipped(self, tmp_path) -> None:
+        """Matching fingerprint → the builder is not called again."""
+        from visualization.manuscript_figures import (
+            _ensure_statistical_artifact,
+        )
+
+        data_dir = tmp_path / "output" / "data"
+        data_dir.mkdir(parents=True)
+        calls = []
+        first = _ensure_statistical_artifact(
+            str(data_dir), {"term": object()}, ["a", "b", "c"],
+            builder=self._fake_builder(calls),
+        )
+        assert len(calls) == 1
+        second = _ensure_statistical_artifact(
+            str(data_dir), {"term": object()}, ["a", "b", "c"],
+            builder=self._fake_builder(calls),
+        )
+        assert len(calls) == 1  # builder not called again
+        assert second == first
+
+    def test_changed_corpus_is_regenerated(
+        self, tmp_path, monkeypatch
+    ) -> None:
+        """A changed abstracts.json invalidates the fingerprint."""
+        from visualization.manuscript_figures import (
+            _ensure_statistical_artifact,
+        )
+
+        data_dir = tmp_path / "output" / "data2"
+        data_dir.mkdir(parents=True)
+        corpus_file = tmp_path / "abstracts2.json"
+        corpus_file.write_text('["a", "b", "c"]', encoding="utf-8")
+        monkeypatch.setattr(
+            "visualization.manuscript_figures._abstracts_corpus_path",
+            lambda: str(corpus_file),
+        )
+        calls = []
+        _ensure_statistical_artifact(
+            str(data_dir), {}, ["a", "b", "c"],
+            builder=self._fake_builder(calls),
+        )
+        assert len(calls) == 1
+        corpus_file.write_text('["a", "b", "c", "d"]', encoding="utf-8")
+        _ensure_statistical_artifact(
+            str(data_dir), {}, ["a", "b", "c", "d"],
+            builder=self._fake_builder(calls),
+        )
+        assert len(calls) == 2
+
+    def test_missing_artifact_builds_fresh(self, tmp_path) -> None:
+        from visualization.manuscript_figures import (
+            _ensure_statistical_artifact,
+        )
+
+        calls = []
+        artifact = _ensure_statistical_artifact(
+            str(tmp_path / "out"), {"term": object()}, ["a"],
+            builder=self._fake_builder(calls),
+        )
+        assert artifact["corpus_fingerprint"]["record_count"] == 1
+        assert len(calls) == 1
+
+
 class TestPlotDiscourseComparison:
     """plot_discourse_comparison renders the two-layer discourse figure
     from the real artifacts (scoped smoke) and degrades honestly when

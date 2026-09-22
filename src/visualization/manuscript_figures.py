@@ -102,10 +102,11 @@ def _setup_directories(project_root: Optional[str] = None) -> Tuple[str, str, st
     # Clean slate for generated artifacts, but tracked documentation
     # (README.md, AGENTS.md) inside output/ survives the wipe: it is
     # versioned project content, not a regenerated artifact.  The
-    # full-text analysis artifact also survives: it is fingerprint-
-    # guarded against the harvested corpus (a multi-hour computation
-    # that _ensure_fulltext_artifact reuses whenever the fingerprint
-    # matches; a stale artifact is treated as absent and rebuilt).
+    # fingerprint-guarded analysis artifacts also survive the wipe: the
+    # full-text artifact (multi-hour computation) and the abstract-layer
+    # statistical artifact are reused whenever their stored corpus
+    # fingerprint matches; a stale artifact (mismatched or missing
+    # fingerprint) is treated as absent and rebuilt.
     for wipe_dir in (figure_dir, data_dir):
         if os.path.exists(wipe_dir):
             for entry in os.listdir(wipe_dir):
@@ -1462,6 +1463,31 @@ def _fulltext_corpus_fingerprint(
     }
 
 
+def max_mtime(directory: str, pattern: str) -> Optional[float]:
+    """Newest file mtime in ``directory`` among names matching ``pattern``.
+
+    Args:
+        directory: Directory to scan (non-recursive).
+        pattern: ``fnmatch`` pattern for candidate file names.
+
+    Returns:
+        The newest mtime, or ``None`` when the directory holds no match
+        (or does not exist).
+    """
+    import fnmatch
+
+    try:
+        candidates = [
+            name for name in os.listdir(directory) if fnmatch.fnmatch(name, pattern)
+        ]
+    except OSError:
+        return None
+    mtimes = [
+        os.path.getmtime(os.path.join(directory, name)) for name in candidates
+    ]
+    return max(mtimes) if mtimes else None
+
+
 def _bhl_artifact_summary(project_root: str) -> Optional[Dict[str, Any]]:
     """Load the BHL era-stratified artifact when present.
 
@@ -1588,6 +1614,106 @@ def _ensure_fulltext_artifact(
     return artifact
 
 
+def _abstract_corpus_fingerprint(
+    abstracts: List[str], abstracts_path: str
+) -> Dict[str, Any]:
+    """Fingerprint the abstract corpus for the statistics-stage guard.
+
+    Same convention as :func:`_fulltext_corpus_fingerprint`: record
+    count plus the SHA-256 of the corpus file (``corpus/abstracts.json``)
+    — two cheap reads that change whenever the harvested corpus changes.
+
+    Args:
+        abstracts: Loaded abstract strings.
+        abstracts_path: Path of the abstracts JSON file.
+
+    Returns:
+        ``{"record_count": int, "abstracts_sha256": str}``.
+    """
+    if abstracts_path and os.path.isfile(abstracts_path):
+        with open(abstracts_path, "rb") as f:
+            abstracts_sha = hashlib.sha256(f.read()).hexdigest()
+    else:
+        abstracts_sha = "absent"
+    return {"record_count": len(abstracts), "abstracts_sha256": abstracts_sha}
+
+
+def _abstracts_corpus_path() -> str:
+    """Locate ``corpus/abstracts.json`` the same way
+    :func:`load_real_corpus` does (best effort; ``""`` when unknown)."""
+    try:
+        from data.loader import DataLoader
+
+        return os.path.join(DataLoader().data_root, "corpus/abstracts.json")
+    except Exception:
+        return ""
+
+
+def _ensure_statistical_artifact(
+    data_dir: str,
+    terms: "Dict[str, Any]",
+    abstracts: List[str],
+    builder: Optional["Callable[..., Dict[str, Any]]"] = None,
+) -> Dict[str, Any]:
+    """Load or rebuild the abstract-layer statistical artifact under a
+    corpus-fingerprint freshness guard.
+
+    The artifact is expensive (per-term semantic entropy over the whole
+    abstract corpus), so it is only rebuilt when the abstract corpus
+    actually changes: ``corpus/abstracts.json`` is fingerprinted (record
+    count + SHA-256, :func:`_abstract_corpus_fingerprint`) and compared
+    against the stored ``corpus_fingerprint`` of the existing artifact.
+    A pre-guard artifact (no fingerprint) counts as stale and is
+    regenerated once.  The fingerprint is attached to the artifact AFTER
+    the frozen-schema build (mirroring the full-text stage), so
+    ``build_statistical_analysis``'s own schema contract is untouched.
+
+    Args:
+        data_dir: Output data directory holding the artifact.
+        terms: Extracted terms (from the abstract analysis pipeline; a
+            deterministic function of the abstract corpus).
+        abstracts: The real abstract corpus (as loaded for the build).
+        builder: Analysis builder override for tests (defaults to
+            ``pipeline.statistics_pipeline.build_statistical_analysis``).
+
+    Returns:
+        The artifact dict (fresh or reused).
+    """
+    artifact_path = os.path.join(data_dir, "statistical_analysis.json")
+    fingerprint = _abstract_corpus_fingerprint(
+        abstracts, _abstracts_corpus_path()
+    )
+    existing: Optional[Dict[str, Any]] = None
+    if os.path.isfile(artifact_path):
+        try:
+            with open(artifact_path) as f:
+                existing = json.load(f)
+        except (OSError, ValueError) as exc:
+            logger.warning(
+                "⚠️  Unreadable existing artifact %s: %s", artifact_path, exc
+            )
+    if existing and existing.get("corpus_fingerprint") == fingerprint:
+        logger.info(
+            "  ✅ statistical_analysis.json is fresh for corpus "
+            "fingerprint %s — skipping regeneration (%d abstracts)",
+            fingerprint["abstracts_sha256"][:12],
+            fingerprint["record_count"],
+        )
+        return existing
+
+    logger.info("▶ Building statistical analysis artifact...")
+    if builder is None:
+        from pipeline.statistics_pipeline import build_statistical_analysis
+
+        builder = build_statistical_analysis
+    artifact = builder(terms, abstracts, layer="abstract")
+    artifact["corpus_fingerprint"] = fingerprint
+    os.makedirs(data_dir, exist_ok=True)
+    with open(artifact_path, "w") as f:
+        json.dump(artifact, f, indent=2, default=str)
+    return artifact
+
+
 def _merge_discourse_sections(data_dir: str, fulltexts_dir: str) -> None:
     """Compute and merge the corpus-level ``discourse`` section into BOTH
     layer artifacts on disk.
@@ -1708,8 +1834,12 @@ def main(project_root: Optional[str] = None) -> None:
     # extracted terms with domain assignments).  A statistics failure is
     # logged and skipped — same convention as the manuscript fill stage
     # below — but on the real corpus it must succeed end to end.
+    #
+    # FRESHNESS GUARD: the artifact is only rebuilt when the abstract
+    # corpus changes (record count + abstracts.json SHA-256 fingerprint
+    # stored in the artifact, mirroring the full-text stage); otherwise
+    # the on-disk artifact is reused and the figure re-rendered from it.
     try:
-        from pipeline.statistics_pipeline import build_statistical_analysis
         try:
             from .statistical_visualization import plot_statistical_analysis
         except (ImportError, ValueError):
@@ -1717,13 +1847,9 @@ def main(project_root: Optional[str] = None) -> None:
                 plot_statistical_analysis,
             )
 
-        logger.info("▶ Building statistical analysis artifact...")
-        stats_artifact = build_statistical_analysis(
-            results["terms"], REAL_ABSTRACTS, layer="abstract"
+        stats_artifact = _ensure_statistical_artifact(
+            data_dir, results["terms"], REAL_ABSTRACTS
         )
-        stats_path = os.path.join(data_dir, "statistical_analysis.json")
-        with open(stats_path, "w") as f:
-            json.dump(stats_artifact, f, indent=2, default=str)
         logger.info(
             f"  ✅ statistical_analysis.json: {len(stats_artifact['pairwise'])} "
             f"pairwise tests, {len(stats_artifact.get('skipped', []))} skipped"
@@ -1830,6 +1956,19 @@ def main(project_root: Optional[str] = None) -> None:
     bhl_artifact = _bhl_artifact_summary(project_root)
     if bhl_artifact:
         eras = bhl_artifact.get("eras") or {}
+        # Freshness warning: the artifact has no corpus fingerprint, so a
+        # stale one (older than any BHL shard) is detected by mtime and
+        # reported — regeneration is a separate CLI (bhl_analysis.main).
+        shard_mtime = max_mtime(os.path.join(project_root, "data", "bhl"), "bhl_shard_*.json")
+        artifact_mtime = os.path.getmtime(
+            os.path.join(project_root, "data", "bhl", "era_term_usage.json")
+        )
+        if shard_mtime and artifact_mtime < shard_mtime:
+            logger.warning(
+                "  ⚠️  BHL era_term_usage.json predates the newest BHL shard — "
+                "stale artifact; regenerate with PYTHONPATH=src uv run python "
+                "src/pipeline/bhl_analysis.py"
+            )
         logger.info(
             "  ✅ BHL historical layer present: %s documents across %d eras "
             "(era_term_usage.json; feeds the BHL_* manuscript tokens)",

@@ -681,14 +681,18 @@ def _build_bhl_tokens(bhl_artifact: Optional[dict]) -> dict:
 
 def fill_manuscript(
     variables: dict[str, str],
-    dry_run: bool = False,
+    dry_run: bool = True,
     manuscript_dir: Path | None = None,
 ) -> dict[str, int]:
-    """Substitute {{VAR}} placeholders in all manuscript .md files.
+    """Validate {{VAR}} placeholder resolvability in manuscript .md files.
 
-    Args:
-        variables: Mapping of variable names to values.
-        dry_run: If True, report substitutions without writing.
+    Dry-run validation only: the canonical manuscript markdown must keep
+    its ``{{VAR}}`` placeholders (the corpus-statistics editing rule —
+    substitution happens in-memory at PDF render time via
+    ``pipeline.rendering.build_pdf``), so this function NEVER writes
+    substituted text back into the source markdown.  ``dry_run=False``
+    raises instead of writing, so callers that relied on the old
+    in-place baking fail loudly rather than corrupting the manuscript.
 
     Returns:
         Dict mapping filename to number of substitutions made.
@@ -720,14 +724,22 @@ def fill_manuscript(
 
         if count > 0:
             if not dry_run:
-                md_path.write_text(new_content, encoding="utf-8")
+                raise RuntimeError(
+                    "fill_manuscript no longer rewrites manuscript markdown "
+                    "in place: baked-in statistics would violate the "
+                    "corpus-statistics editing rule (see docs/manuscript/"
+                    "AGENTS.md). Substitution happens at PDF build time "
+                    "(pipeline.rendering.build_pdf); this call only "
+                    "validates token coverage. Re-run with dry_run=True."
+                )
             results[md_path.name] = count
-
     return results
+
+
 def main() -> None:
-    """Fill manuscript template variables from pipeline outputs."""
+    """Validate manuscript template variables (dry run; files unchanged)."""
     print("=" * 60)
-    print("FILLING MANUSCRIPT TEMPLATE VARIABLES")
+    print("VALIDATING MANUSCRIPT TEMPLATE VARIABLES (dry run; files unchanged)")
     print("=" * 60)
 
     # Check required files exist
@@ -750,30 +762,34 @@ def main() -> None:
     variables = build_variable_map()
     print(f"  Built {len(variables)} variable mappings")
 
-    # Fill manuscripts
-    print(f"\nSubstituting variables in {MANUSCRIPT_DIR}/")
-    results = fill_manuscript(variables)
+    # Validate token coverage WITHOUT rewriting the canonical markdown
+    # (see fill_manuscript: in-place baking would violate the editing rule).
+    print(f"\nValidating variables in {MANUSCRIPT_DIR}/")
+    results = fill_manuscript(variables, dry_run=True)
 
     total = sum(results.values())
     print("\nResults:")
     for filename, count in sorted(results.items()):
-        print(f"  {filename}: {count} substitutions")
-    print(f"\n  TOTAL: {total} substitutions across {len(results)} files")
+        print(f"  {filename}: {count} occurrences resolvable")
+    print(f"\n  TOTAL: {total} placeholder occurrences resolvable across {len(results)} files")
 
-    # Verify no remaining placeholders
-    remaining = 0
+    # Report any placeholders NOT covered by the variable map.  Placeholders
+    # that resolved still sit in the markdown by design (substitution is
+    # in-memory at PDF build); only unknown-variable names are warnings.
+    unresolved = 0
     for md_path in sorted(MANUSCRIPT_DIR.glob("*.md")):
         content = md_path.read_text(encoding="utf-8")
-        matches = re.findall(r"\{\{[A-Z_]+\}\}", content)
-        if matches:
-            remaining += len(matches)
-            print(f"\n  WARNING: {len(matches)} unfilled in {md_path.name}:")
-            for m in sorted(set(matches)):
-                print(f"    - {m}")
+        matches = sorted(set(re.findall(r"\{\{([A-Z_0-9]+)\}\}", content)))
+        unknown = [m for m in matches if m not in variables]
+        if unknown:
+            unresolved += len(unknown)
+            print(f"\n  WARNING: {len(unknown)} unknown variables in {md_path.name}:")
+            for m in unknown:
+                print(f"    - {{{{{m}}}}}")
 
-    if remaining == 0:
-        print("\n  All template variables successfully filled.")
+    if unresolved == 0:
+        print("\n  All template variables resolve.")
     else:
-        print(f"\n  WARNING: {remaining} template variables remain unfilled.")
+        print(f"\n  WARNING: {unresolved} template variables remain unresolved.")
 
     print("=" * 60)
