@@ -56,3 +56,12 @@ Software tests use actual corpus slices, numerical examples, real files, local H
 
 
 Completed BHL eras are saved atomically in local recovery checkpoints. Each checkpoint binds the ordered era records, implementation/dependency/resource signature and any development bound, plus a digest of the completed result. A matching checkpoint can resume a disrupted run; changed inputs or bounds require recomputation, and corrupted matching results fail. The final four-layer receipt is still written only after all required stages complete.
+
+
+## Fixed-Margin Network Robustness Extension
+
+A separately receipted companion workflow reconstructs the abstract terminology network from the frozen identified records and the same frequency-ranked vocabulary. It randomizes the binary document--term incidence matrix with Curveball trades \cite{strona2014curveball, carstens2018curveball}. A trade retains common terms in both selected documents and uniformly repartitions their exclusive terms while preserving both row sizes. Consequently, each term retains its document frequency and each document retains its number of selected terms. Self-loop and other no-op transitions remain part of the chain. The total weight of the projected graph equals the sum of the number of term pairs in each document; this quantity is an invariant of the conditioning margins.
+
+Every retained draw checks the two margins and the weight invariant. The workflow reports projected edge count, mean local unweighted clustering, retained-chain traces, between-chain diagnostics and empirical conditional distributions. It also evaluates observed projections under smaller vocabulary subsets of the same ranking. A second protocol uses longer burn-in and spacing with different seeds. These checks assess structural interpretation and sampling sensitivity. Finite correlated draws and between-chain agreement do not prove convergence to the stationary distribution. Conditional null envelopes describe the sampled reference and are distinct from population confidence intervals.
+
+The companion implementation is in research/network\_robustness/. Its receipt binds the published-core input receipt, exact source inputs, extension implementation, dependency lock and generated outputs. It does not relabel cached core results as newly recomputed analyses. The executed report and trace array are provided as companion artifacts to version 1.2.0.

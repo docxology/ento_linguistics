@@ -37,3 +37,10 @@ Completed BHL eras are saved atomically in local recovery checkpoints. Each chec
 The dependency lock pins Python package versions. Separately installed NLTK resources are content-bound in the receipt, but are not vendored or automatically restored from those hashes. Archive-backed resources bind the whole selected archive; unpacked resources bind ordered relative file names and bytes. Open Multilingual WordNet is not consumed by this English pipeline and is outside this resource receipt. Numerical libraries, platform and fonts can affect exact PDF/image bytes. Semantic algorithms use fixed seeds and stable term ordering; this does not guarantee cross-platform bitwise output identity.
 
 Logs, source custody records, registered figures and a successful PDF build must be reviewed together. Passing tests and content signatures provide software evidence, not a complete source reconciliation, relevance annotation, license audit, human-validation study or scientific release certificate.
+
+
+## Separately receipted methodological extensions
+
+[The fixed-margin network extension](../../research/network_robustness/README.md) consumes the verified published-core abstract and vocabulary exports. Its implementation lives outside the core generator so the existing four-layer receipt retains its original meaning. The extension has its own input, code, lock and output hashes and retains complete chain traces. A primary protocol and a longer-burn/wider-spacing protocol are preserved separately. This is an additional executed analysis, not a claim that unrelated OCR or full-text computations were rerun.
+
+Version 1.2.0 includes the conditional comparison and its independently receipted companion artifacts. The published top-level PDF and Zenodo version are release artifacts; subsequent local manuscript renders do not automatically replace them.

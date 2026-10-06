@@ -1,8 +1,8 @@
 {
   "title": "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology",
-  "version": "1.1.0",
-  "doi": "10.5281/zenodo.19574118",
-  "license": "Apache-2.0",
+  "version": "1.2.0",
+  "doi": "10.5281/zenodo.23198912",
+  "license": "cc-by-4.0",
   "creators": [
     {
       "name": "Friedman, Daniel Ari",
@@ -10,7 +10,7 @@
       "affiliation": "Active Inference Institute, APOIDEAS"
     },
     {
-      "name": "Cahill Chambers, Tucker",
+      "name": "Chambers, Tucker Cahill",
       "orcid": "0009-0008-3793-7872",
       "affiliation": "APOIDEAS"
     }
@@ -27,7 +27,7 @@
     "terminology networks",
     "computational linguistics"
   ],
-  "description": "Self-contained research project examining how language shapes scientific understanding in entomology through systematic analysis of terminology networks across six Ento-Linguistic domains. Version 1.1.0 adds an inferential statistics stage (Welch pairwise tests with Benjamini-Hochberg correction, Cohen's d, one-way ANOVA), a real per-term semantic-ambiguity computation, the statistical_analysis.json artifact and figure, a thin-orchestrator pipeline, and a token-driven manuscript whose inferential tables resolve from measured data at render time.",
+  "description": "Descriptive Ento-Linguistic corpus analyses with a six-domain framework, a fixed-margin terminology-network comparison, and a 20-minute research lecture. Version 1.2.0 adds 600 primary and 300 protocol-sensitivity draws, full traces and independent provenance. The comparison is conditional on the selected vocabulary and convenience corpus; it does not measure causal language effects or author intent. Paper and media: CC BY 4.0; source corpus materials remain subject to their providers' terms.",
   "access_right": "open",
   "upload_type": "publication",
   "publication_type": "preprint",

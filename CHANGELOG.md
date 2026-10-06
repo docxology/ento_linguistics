@@ -2,7 +2,15 @@
 
 All notable changes to the Ento-Linguistics project are documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Concept DOI: [10.5281/zenodo.19574117](https://doi.org/10.5281/zenodo.19574117) — all versions of this release are grouped under the same concept DOI. — all versions of this release are grouped under the same concept DOI.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Concept DOI: [10.5281/zenodo.19574117](https://doi.org/10.5281/zenodo.19574117) — all versions are grouped under the same concept DOI.
+
+## [1.2.0] - 2026-10-06
+
+- Add an independently reproduced full-abstract network comparison using Curveball trades with fixed document and term margins: 600 primary draws and 300 longer-burn/wider-spacing sensitivity draws, complete traces, vocabulary sensitivity and source/output receipts.
+- Strengthen network interpretation and experimental design without treating structural departures as causal language effects or descriptive tails as population p-values.
+- Guard manuscript rendering against stale or empty extension inventories; retain separate provenance for the existing four-layer analyses.
+- Publish the revised manuscript and a 20-minute 4K research lecture with DAF narration, bottom captions, early original figures, six Manim scenes and downloadable companions.
+- Update publication metadata and citation guidance for DOI 10.5281/zenodo.23198912. The Python package version is independent of the manuscript version.
 
 ## [1.1.1] - 2026-09-22
 
@@ -72,3 +80,5 @@ Methods and statistics revision of the analysis pipeline and manuscript.
 
 [1.1.1]: https://doi.org/10.5281/zenodo.19574117
 [1.1.0]: https://doi.org/10.5281/zenodo.19574118
+
+[1.2.0]: https://doi.org/10.5281/zenodo.23198912

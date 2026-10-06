@@ -8,6 +8,12 @@ Terms such as *queen*, *worker*, and *caste* deserve contextual scrutiny because
 
 The observed graph has clustering coefficient {{NETWORK_CLUSTERING}}, while {{CORPUS_MULTIDOMAIN_PERCENTAGE}}\% of assigned terms receive multiple labels. Neither quantity demonstrates self-reinforcing conceptual bias. Co-occurrence can arise because papers discuss several biological processes together; label overlap also follows from the predefined lexicons. A visualization's arrangement must not be read as a human-style command hierarchy.
 
+## Network Structure and Its Conditional Reference
+
+A dense co-occurrence graph needs a reference that accounts for vocabulary selection and document-level opportunity. The companion fixed-margin extension preserves selected-term counts within documents and the document frequency of each term. In the executed finite-chain comparisons, the observed graph has fewer edges and lower clustering than the randomized reference. The same direction appears under the longer-burn, wider-spacing sensitivity protocol. The substantive interpretation is concentration of co-occurrence relative to those margins, rather than exceptional density attributable to terminology alone. Topic, genre and other sources of document organization remain possible explanations. A graph's visual density is therefore an observation to explain, not evidence of conceptual bias by itself.
+
+The extension also makes vocabulary sensitivity explicit. Changing the frequency-ranked subset changes the projection and the amount of connectivity it can display. Interpretation should state the selected vocabulary, the incidence margins and the comparison model. The new extension supplements the version 1.2.0 manuscript revision; its separately receipted output is not represented as a result already contained in the earlier published version.
+
 ## Active Inference as a Theoretical Perspective
 
 Active Inference offers a vocabulary for discussing generative models, inference, and action \cite{friston2010free, clark2013whatever}. In the Active Inferants study, a simulated ant-foraging model reproduces selected colony phenomena in a laboratory-inspired setting \cite{friedman2021active}. This provides an example of mechanistic modeling without a centralized controller; it does not experimentally compare terminology choices or establish the empirical adequacy of every biological assumption.
@@ -27,6 +33,12 @@ The computed aggregate values are {{CACE_TERM_SLAVE_AGGREGATE}} and {{CACE_TERM_
 ## Cross-Domain Communication
 
 Domain overlap can help select terms for shared glossaries and explicit operational definitions. The six-domain framework is one proposed partition; alternative lexicons and annotation schemes may produce different assignments. Maintaining links to established terminology can support discoverability while clarifying which mechanism or observational category is meant. Benefits to communication remain hypotheses for reader and author studies.
+
+## Measurement Validation and Terminology Intervention
+
+Two study designs separate measurement quality from communication effects. Independent annotation of source contexts can test whether occupancy entropy and lexical indicators track reader-labeled meanings and discourse functions after accounting for term frequency, document length and topic. Agreement and uncertainty should be reported at the level of the annotated observation.
+
+A randomized reader study can hold biological evidence constant while varying an established label, a proposed alternative and an explicit operational definition. Prespecified outcomes include inference accuracy, confidence calibration, recall and literature retrieval. This design tests a terminology effect directly. Comparing its outcomes with CACE rankings then evaluates the scoring proposal using evidence outside the scheme. Researchers and students can be included as prespecified groups rather than assumed to interpret a term identically.
 
 ## Limitations
 
