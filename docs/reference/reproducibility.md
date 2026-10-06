@@ -1,5 +1,7 @@
 # Reproducibility and interpretation
 
+[Documentation](../README.md) → Reproducibility and interpretation
+
 The source of truth is the stored corpus plus executable analysis definitions. Generated numbers are bound to input bytes; manuscript placeholders are resolved only when rendering.
 
 ## Data lineage
@@ -27,8 +29,6 @@ BHL literal rates, extraction, and framing cover all stored documents by default
 Caches include corpus content, implementation signatures, the dependency lock, and the selected English NLTK tokenizer, stopword and WordNet contents. The schema-2 manifest explicitly records their hashes. NLTK search order determines the selected resources, so a user-level installation that shadows the project environment is accounted for. The final manifest hashes input/output inventory entries. Rendering validates that receipt before using template values. A source, corpus, figure or analysis edit requires regeneration. Manuscript prose edits require rendering again; receipts do not certify the correctness of prose.
 
 The pipeline propagates required-stage exceptions and renderer failures. Negative tests exercise changed text with unchanged metadata, corrupted corpus records, invalid limits, missing receipts, changed inventories and real subprocess failure.
-
-
 
 Completed BHL eras are saved atomically in local recovery checkpoints. Each checkpoint binds the ordered era records, implementation/dependency/resource signature and any development bound, plus a digest of the completed result. A matching checkpoint can resume a disrupted run; changed inputs or bounds require recomputation, and corrupted matching results fail. The final four-layer receipt is still written only after all required stages complete.
 

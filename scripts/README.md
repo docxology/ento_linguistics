@@ -67,4 +67,4 @@ Scripts **never** implement algorithms or mathematical computations directly.
 
 - [`AGENTS.md`](AGENTS.md) — thin-orchestrator contract and keep/delete verdicts
 - [`../src/AGENTS.md`](../src/AGENTS.md) — available `src/` modules
-- [`../docs/development_workflow.md`](../docs/development_workflow.md) — commands and workflow
+- [`../docs/guides/development.md`](../docs/guides/development.md) — commands and workflow

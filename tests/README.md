@@ -95,4 +95,4 @@ uv run pytest tests/integration/ -v
 
 - [`AGENTS.md`](AGENTS.md) — full documentation
 - [`../src/README.md`](../src/README.md) — source code overview
-- [`../docs/development_workflow.md`](../docs/development_workflow.md) — test commands
+- [`../docs/guides/development.md`](../docs/guides/development.md) — test commands

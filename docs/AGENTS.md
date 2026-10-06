@@ -1,13 +1,12 @@
 # Documentation maintenance
 
-Use README.md for the current standalone commands and reproducibility.md for definitions and limits. Before changing methods, results or captions, trace manuscript_data_lineage.md to the executable generator and its exports.
+Use [README.md](README.md) to locate the reader's task. Keep procedures in guides/, computational definitions in reference/, and canonical paper source in manuscript/.
 
-- Keep corpus-derived manuscript values as supported template tokens.
-- Distinguish full-document extraction/framing from bounded entropy/discourse stages.
-- Record tests, source custody, artifact receipts and rendering evidence together in a dated review report.
-- Combined coverage and branch-only coverage are separate measurements.
-- Count figures from the current registry rather than duplicating an assumed count.
-- Historical review reports describe their captured tree; current changes require fresh evidence.
-- Resolve all required stages and strict rendering failures before reporting a successful build.
+- Setup or execution changes: update [setup](guides/setup.md) and [workflow](guides/workflow.md), checking commands against the active entry points.
+- Method or result changes: trace [data lineage](reference/data-lineage.md) to source and exports before editing the manuscript.
+- Paper changes: follow [authoring](guides/authoring.md); keep computed quantities as supported template tokens and render changed paper source strictly.
+- Verification claims: cite an actual receipt or log and identify its captured revision. Separate combined, statement, and branch coverage.
+- Navigation changes: update every incoming link, including scripts/ and tests/ documentation. Keep numbered manuscript paths stable.
+- Historical execution records belong with output evidence. User documentation should describe current procedures rather than accumulate dated review narratives.
 
-Supporting documents: validation_guide.md, development_workflow.md, manuscript_style_guide.md and standards_compliance.md. Check their claims against the current source when editing them.
+Complete a documentation change when relative links resolve, documented commands match actual interfaces, and the source/analysis/PDF changes required by its scope have been checked. Documentation-only edits to guides or reference pages do not constitute a new corpus run.

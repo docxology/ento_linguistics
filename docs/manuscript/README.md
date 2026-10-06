@@ -1,29 +1,32 @@
-# Manuscript authoring and rendering
+# Manuscript source
 
-The canonical manuscript is the numbered Markdown sections in this directory, with supplemental sections, glossary, references, BibTeX, publication configuration, and TeX preamble. The standalone renderer owns their explicit order.
+[Documentation](../README.md) → Manuscript
 
-## Build from the repository root
+This directory is the canonical source for [the published paper](../../Ento_Linguistics_manuscript.pdf). Read that PDF for resolved numbers; the Markdown deliberately retains computational placeholders.
+
+## Reading map
+
+| Part | Sections |
+| --- | --- |
+| Research question | [Abstract](01_abstract.md), [introduction](02_introduction.md) |
+| Methods | [Main methods](03_methods.md), [text and extraction](S01a_text_and_extraction.md), [statistical infrastructure](S01b_analysis_infrastructure.md) |
+| Results | [Corpus and networks](04a_corpus_and_networks.md), [domain findings](04b_domain_findings.md), [supplemental results](S02_supplemental_results.md) |
+| Interpretation | [Discussion](05_discussion.md), [conclusion](06_conclusion.md), [related work](07_related_work.md) |
+| Proposed extensions | [Theoretical extensions](S03a_theoretical_extensions.md), [case studies and validation agenda](S03b_case_studies.md) |
+| Supporting material | [Acknowledgments](08_acknowledgments.md), [glossary](98_symbols_glossary.md), [references](99_references.md) |
+
+The renderer orders main sections, supplements, glossary, then bibliography. README.md and AGENTS.md are documentation, not paper sections.
+
+## Build and edit
+
+Follow [manuscript authoring](../guides/authoring.md) for variables, captions, equations, and citations. The active configuration is [config.yaml](config.yaml); [references.bib](references.bib) and [preamble.tex](preamble.tex) provide bibliography and styling.
+
+From the repository root, after valid analysis generation:
 
 ~~~bash
-uv run python scripts/02_generate_figures.py
-PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
 uv run python scripts/_render_pdf_override.py --strict-templates
 ~~~
 
-The PDF is *output/pdf/ento_linguistics_combined.pdf*. Pandoc, XeLaTeX, and BibTeX must execute successfully. Tests and analysis generation should run sequentially. See [the repository README](../../README.md) for dependency and NLTK setup.
+The output is output/pdf/ento_linguistics_combined.pdf. The renderer validates the analysis receipt before resolving placeholders and requires successful toolchain execution. Inspect the final PDF before replacing the published top-level copy.
 
-## Editing rules
-
-Keep computed numbers as double-brace placeholders resolved by *src/core/manuscript_variables.py* and *src/pipeline/rendering.py*. Statistical exports and domain figures use the same valid sentence-context entropy estimates. A multi-domain term contributes to several domain memberships.
-
-Use bibliography keys from *references.bib*. Both Pandoc citation syntax and the existing LaTeX natbib commands are supported. Keep section and figure labels stable and ensure referenced PNG files are generated and registered. Main sections precede supplements, then glossary and references.
-
-Source changes require analysis regeneration. Manuscript-only edits require another strict PDF build. The renderer validates the content receipt before substituting values and rejects unresolved placeholders, failed toolchain commands, undefined citations/references, and missing glyphs.
-
-## Interpretation
-
-The headline analysis excludes unreconciled legacy strings but preserves the original archive. Retrieval is broad rather than a curated ant-only selection. BHL extraction, framing, and literal rates use all stored documents by default; entropy uses twenty frequent candidates per era. PMC discourse and domain CACE use explicit bounds.
-
-Report these software measurements as descriptive proxies. Do not convert shared-domain labels into semantic drift, predefined categories into discovered ontology, default scores into evidence of clarity, or exploratory tests into calibrated causal conclusions. Theoretical sections describe proposed models, not fitted or measured quantities.
-
-Current evidence and remaining limits are documented in [the dated review](../review_20261005.md) and [reproducibility guide](../reproducibility.md). Existing version and DOI identify prior publication metadata; this local revision is not a new published release.
+[Data lineage](../reference/data-lineage.md) traces values to exports. [Reproducibility](../reference/reproducibility.md) distinguishes measured proxies, bounded analyses, proposed theory, and unperformed human validation. [Verification and publication](../reference/verification.md) identifies the published revision.

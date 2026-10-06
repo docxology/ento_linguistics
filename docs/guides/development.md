@@ -1,5 +1,7 @@
 # Standalone development workflow
 
+[Documentation](../README.md) → Standalone development workflow
+
 Work from the repository root. Preserve unrelated local changes and inspect local guidance before editing. Python dependencies use uv and uv.lock.
 
 ## Prepare the environment
@@ -33,6 +35,18 @@ Generation refreshes exported data and registered figures, reusing expensive lay
 
 Read the custody audit and content receipt before interpreting results. Render the final source, inspect all figure PNGs and PDF pages, and check the final TeX log for missing glyphs, undefined references/citations and layout overflow. Corpus-derived values remain template tokens in manuscript Markdown.
 
-Document execution logs, source/output hashes, negative controls, coverage and remaining research limits in a dated report. Independent review follows completed manual QA when a rigorous review is requested. Local build evidence does not imply publication, license clearance or human validation.
+Preserve execution logs, source/output hashes, negative controls, coverage and remaining research limits with the generated evidence. Independent review follows completed manual QA when a rigorous review is requested. Local build evidence does not imply publication, license clearance or human validation.
 
-See reproducibility.md and validation_guide.md for interpretation and artifact checks.
+See [reproducibility](../reference/reproducibility.md) and [validation](validation.md) for interpretation and artifact checks.
+
+## Choose controls for a method change
+
+| Change | Relevant real-behavior controls |
+| --- | --- |
+| Extraction or domain assignment | Seed retention, extractor reuse, actual processed-text frequencies, shared-document counts |
+| Entropy or CACE | Known distributions, insufficient-context exclusion, shared sample and denominator agreement |
+| Cache or resource custody | Changed bytes with unchanged metadata, missing/empty resources, falsified hashes, bounded/full separation |
+| BHL recovery | Fresh/resumed equivalence, independent literal counts, changed-era invalidation, tampered result rejection |
+| Figures or rendering | Decoded images, registry/inventory consistency, real failed subprocesses, full page inspection |
+
+Keep calculation in src/ and commands in scripts/. Identify downstream exports and variables before refactoring; fixed seeds and independent numerical examples are more useful than module-size targets or speculative test-count plans.

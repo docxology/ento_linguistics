@@ -425,5 +425,5 @@ uv run pytest tests/ --ff
 
 - [`README.md`](README.md) - Quick reference guide
 - [`../src/AGENTS.md`](../src/AGENTS.md) - Source code documentation
-- [`../docs/development_workflow.md`](../docs/development_workflow.md) - Development workflow
+- [`../docs/guides/development.md`](../docs/guides/development.md) - Development workflow
 - [`integration/AGENTS.md`](integration/AGENTS.md) - Integration test details

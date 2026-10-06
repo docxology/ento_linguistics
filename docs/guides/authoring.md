@@ -1,5 +1,7 @@
 # Manuscript conventions
 
+[Documentation](../README.md) → Manuscript conventions
+
 Canonical sections live in docs/manuscript/. Corpus-derived numbers use supported double-brace template tokens; changes to prose require a fresh strict render. Match methods and captions to executable definitions rather than inferred scientific intent.
 
 ## Figures
@@ -33,4 +35,14 @@ PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
 uv run python scripts/_render_pdf_override.py --strict-templates
 ~~~
 
-The final receipt must match the current sources, corpus, selected NLTK resources and registered artifacts. A successful render establishes artifact coherence, not scientific validity. See reproducibility.md for unresolved custody, relevance, license and annotation limits.
+The final receipt must match the current sources, corpus, selected NLTK resources and registered artifacts. A successful render establishes artifact coherence, not scientific validity. See [reproducibility](../reference/reproducibility.md) for unresolved custody, relevance, license and annotation limits.
+
+## Scope of an edit
+
+| Changed input | Required follow-through |
+| --- | --- |
+| Python analysis, corpus, lock, or selected NLTK resource | Regenerate affected analyses/figures, validate the final receipt, and rebuild the paper |
+| Numbered manuscript, bibliography, publication config, or TeX preamble | Strict render and page checks against the existing valid analysis receipt |
+| Documentation README, guide, or reference | Check links and commands; retain the existing scientific artifacts |
+
+The published top-level PDF and Zenodo deposit are release artifacts. A local render changes neither automatically. Use the [verification reference](../reference/verification.md) to distinguish the last published file from a newly generated one.
