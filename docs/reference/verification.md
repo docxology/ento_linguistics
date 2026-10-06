@@ -26,7 +26,7 @@ A prior resource-guard revision was rejected and corrected before the final run.
 
 ## Earlier baseline paper identity (v1.1.1)
 
-- [Top-level paper](../../Ento_Linguistics_manuscript.pdf)
+- [Archived v1.1.1 paper](https://zenodo.org/records/23193499/files/Ento_Linguistics_revised_2026-10-06.pdf)
 - [Zenodo version record](https://zenodo.org/records/23193499)
 - Version DOI: [10.5281/zenodo.23193499](https://doi.org/10.5281/zenodo.23193499)
 - Concept DOI: [10.5281/zenodo.19574117](https://doi.org/10.5281/zenodo.19574117)
