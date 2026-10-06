@@ -5,11 +5,13 @@ Delegates the Pandoc/XeLaTeX build pipeline, TeX post-processing,
 frontmatter/title-page emission, and ``{{KEY}}`` corpus-variable
 substitution to ``src/pipeline/rendering.py``.
 """
+
 from __future__ import annotations
 
 import argparse
 import os
 import sys
+from pathlib import Path
 
 # ── Path setup ────────────────────────────────────────────────────────
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -32,4 +34,7 @@ if __name__ == "__main__":
         "(also enabled by STRICT_TEMPLATE_VARS=1).",
     )
     args = parser.parse_args()
+    from research.network_robustness.receipt import ensure_extensions
+
+    ensure_extensions(Path(project_root))
     build_pdf(strict_templates=args.strict_templates)
