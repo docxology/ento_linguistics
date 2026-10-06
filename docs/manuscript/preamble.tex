@@ -151,6 +151,8 @@
 % Configure Verbatim environment for inline code
 \DefineVerbatimEnvironment{Verbatim}{Verbatim}{%
     fontsize=\small,
+    breaklines=true,
+    breakanywhere=true,
     frame=single,
     framerule=0.5pt,
     framesep=3pt,
@@ -161,6 +163,8 @@
 % Configure code block styling
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{%
     fontsize=\footnotesize,
+    breaklines=true,
+    breakanywhere=true,
     frame=single,
     framerule=0.5pt,
     framesep=5pt,
@@ -169,8 +173,9 @@
 }
 
 % Style inline code with \texttt
+\DeclareRobustCommand{\codeunderscore}{\textunderscore\allowbreak}
 \renewcommand{\texttt}[1]{%
-    \colorbox{codebg}{\color{codefg}\ttfamily #1}%
+    {\color{codefg}\ttfamily\let\_\codeunderscore #1}%
 }
 
 % Configure listings package for code blocks

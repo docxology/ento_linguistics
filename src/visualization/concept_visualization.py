@@ -260,7 +260,7 @@ class ConceptVisualizer:
         ax.text(
             0.5, 1.01,
             f"{total_concepts} concepts · {total_relationships} relationships · "
-            f"{total_terms} total terms",
+            f"{total_terms} term associations",
             transform=ax.transAxes,
             ha="center", va="bottom",
             fontsize=MIN_FONT,
@@ -444,7 +444,9 @@ class ConceptVisualizer:
         pos = nx.spring_layout(G, k=0.5, iterations=50, seed=42)
 
         # Draw nodes
-        node_sizes = [G.nodes[node]["size"] for node in G.nodes()]
+        max_frequency = max(G.nodes[node]["frequency"] for node in G.nodes())
+        node_sizes = [80 + 500 * np.sqrt(G.nodes[node]["frequency"] / max(max_frequency, 1))
+                      for node in G.nodes()]
         node_colors = [self._get_term_color(node, G) for node in G.nodes()]
 
         nx.draw_networkx_nodes(
@@ -453,9 +455,11 @@ class ConceptVisualizer:
 
         # Draw edges
         if G.edges():
-            edge_weights = [G.edges[edge]["weight"] * 2 for edge in G.edges()]
+            maximum = max(G.edges[edge]["weight"] for edge in G.edges())
+            edge_weights = [0.15 + 3.5 * G.edges[edge]["weight"] / max(maximum, 1)
+                            for edge in G.edges()]
             nx.draw_networkx_edges(
-                G, pos, width=edge_weights, edge_color="gray", alpha=0.5, ax=ax
+                G, pos, width=edge_weights, edge_color="gray", alpha=0.18, ax=ax
             )
 
         # Draw labels (only for important terms).
@@ -489,8 +493,8 @@ class ConceptVisualizer:
         n_labelled = len(label_dict)
         ax.text(
             0.5, 1.005,
-            f"Labels: top-{n_labelled} terms by frequency "
-            f"(of {G.number_of_nodes()} nodes; density tradeoff for legibility)",
+            f"Labels: {n_labelled} collision-filtered from {len(important_terms)} "
+            f"frequency-ranked candidates ({G.number_of_nodes()} nodes)",
             transform=ax.transAxes, ha="center", va="bottom",
             fontsize=MIN_FONT, color="#666666", fontstyle="italic",
         )
@@ -568,8 +572,9 @@ class ConceptVisualizer:
             bars = ax.bar(range(len(domains)), values, color=domain_colors, alpha=0.82,
                           edgecolor="white", linewidth=0.5)
             for bar, v in zip(bars, values):
-                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height(),
-                        f"{v:{fmt}}", ha="center", va="bottom",
+                ax.text(bar.get_x() + bar.get_width() / 2,
+                        bar.get_height() if np.isfinite(v) else 0,
+                        f"{v:{fmt}}" if np.isfinite(v) else "n/a", ha="center", va="bottom",
                         fontsize=MIN_FONT, fontweight="bold")
             ax.set_xticks(range(len(domains)))
             ax.set_xticklabels(short_labels, fontsize=MIN_FONT, rotation=30, ha="right")
@@ -646,36 +651,14 @@ class ConceptVisualizer:
              "Cross-Domain Bridging Terms")
 
         # Panel (2,1): CACE aggregate (Clarity·Appropriateness·Consistency·Evolvability)
-        try:
-            from analysis.cace_scoring import evaluate_term_cace
-            cace_vals = []
-            for domain in domains:
-                if terms:
-                    domain_terms = [
-                        (name, t) for name, t in terms.items()
-                        if domain in getattr(t, "domains", [])
-                    ]
-                    if domain_terms:
-                        scores = []
-                        for name, t in domain_terms[:50]:  # Sample first 50 for speed
-                            sc = evaluate_term_cace(
-                                term=name,
-                                semantic_entropy=getattr(t, "semantic_entropy", 0.0),
-                                contexts=getattr(t, "contexts", [])[:10],
-                                domains=getattr(t, "domains", []),
-                            )
-                            scores.append(sc.aggregate)
-                        cace_vals.append(float(np.mean(scores)))
-                    else:
-                        cace_vals.append(0.5)
-                else:
-                    cace_vals.append(0.5)
-        except Exception:
-            # Fallback: derive from confidence and entropy
-            cace_vals = [
-                min(1.0, float(domain_data[d].get("avg_confidence", 0.5)))
-                for d in domains
-            ]
+        from pipeline.statistics_pipeline import _domain_cace_scores
+        cace_vals = []
+        for domain in domains:
+            domain_terms = [term for term in (terms or {}).values()
+                            if domain in getattr(term, "domains", [])]
+            scores = _domain_cace_scores(domain_terms)
+            cace_vals.append(float(np.mean([score.aggregate for score in scores]))
+                             if scores else float("nan"))
         _bar(axes[2, 1], cace_vals, "Mean CACE Score [0–1]",
              "CACE Aggregate Score per Domain", fmt=".3f")
 

@@ -71,6 +71,15 @@ def test_load_corpus_invalid_format(tmp_path):
         loader.load_corpus("bad_corpus.json")
 
 
+@pytest.mark.parametrize("data", [["real text", 7], ["real text", None],
+                                  ["real text", "  "], {"abstracts": "text"}, []])
+def test_load_corpus_rejects_invalid_records(tmp_path, data):
+    """Corrupt records must not be stringified or silently dropped."""
+    (tmp_path / "bad.json").write_text(json.dumps(data))
+    with pytest.raises(ValueError):
+        DataLoader(tmp_path).load_corpus("bad.json")
+
+
 class TestConvertCorpus:
     """Tests for the convert_corpus fallback/external-source paths."""
 

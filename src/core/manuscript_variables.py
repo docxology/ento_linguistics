@@ -126,7 +126,7 @@ def build_variable_map(
     }
     num_domain_terms = len(domain_assigned)
 
-    # Multi-domain terms (context-dependent drift)
+    # Domain-label overlap, not longitudinal semantic drift.
     multi_domain = {
         k: v for k, v in domain_assigned.items() if len(v.get("domains", [])) > 1
     }
@@ -143,13 +143,16 @@ def build_variable_map(
     variables: dict[str, str] = {}
 
     # --- Corpus-level variables ---
-    variables["CORPUS_PUBLICATIONS"] = str(num_publications)
+    variables["CORPUS_PUBLICATIONS"] = str(corpus_stats.get("n_documents", num_publications))
+    variables["CORPUS_STORED_RECORDS"] = str(num_publications)
+    variables["CORPUS_EXCLUDED_UNRECONCILED"] = str(corpus_stats.get("excluded_unreconciled", 0))
     variables["CORPUS_TOTAL_TOKENS"] = str(corpus_stats.get("total_tokens", 0))
     variables["CORPUS_UNIQUE_TOKENS"] = str(corpus_stats.get("unique_tokens", 0))
     variables["CORPUS_TTR"] = f"{ttr:.4f}"
     variables["CORPUS_CANDIDATE_TERMS"] = str(num_candidate_terms)
     variables["CORPUS_DOMAIN_TERMS"] = str(num_domain_terms)
-    variables["CORPUS_DRIFT_PERCENTAGE"] = drift_pct
+    variables["CORPUS_DRIFT_PERCENTAGE"] = drift_pct  # legacy alias
+    variables["CORPUS_MULTIDOMAIN_PERCENTAGE"] = drift_pct
 
     # Concept map variables
     variables["CORPUS_CONCEPT_COUNT"] = str(concept_map.get("n_concepts", 0))
@@ -179,7 +182,7 @@ def build_variable_map(
     for var_prefix, json_key in domain_key_map.items():
         domain = domain_stats.get(json_key, {})
         variables[f"DOMAIN_{var_prefix}_TERMS"] = str(domain.get("term_count", 0))
-        variables[f"DOMAIN_{var_prefix}_N_TERMS"] = str(domain.get("term_count", 0))
+        variables[f"DOMAIN_{var_prefix}_N_TERMS"] = str(domain.get("entropy_valid_terms", domain.get("term_count", 0)))
         variables[f"DOMAIN_{var_prefix}_FREQ"] = str(domain.get("total_frequency", 0))
         variables[f"DOMAIN_{var_prefix}_BRIDGING"] = str(
             domain.get("bridging_term_count", 0)
@@ -199,7 +202,7 @@ def build_variable_map(
     all_entropies = [
         d.get("semantic_entropy", 0) for d in domain_stats.values()
     ]
-    all_term_counts = [d.get("term_count", 0) for d in domain_stats.values()]
+    all_term_counts = [d.get("entropy_valid_terms", d.get("term_count", 0)) for d in domain_stats.values()]
     if all_entropies and all_term_counts and sum(all_term_counts) > 0:
         weighted_entropy = sum(
             e * n for e, n in zip(all_entropies, all_term_counts)
@@ -255,6 +258,7 @@ def build_variable_map(
         build_statistical_tokens(
             load_json(output_data_dir / "statistical_analysis.json"),
             load_json(output_data_dir / "fulltext_analysis.json"),
+            bhl_data_dir=corpus_dir.parent / "bhl",
         )
     )
     return variables
@@ -366,6 +370,10 @@ def build_statistical_tokens(
             entry.get("evolvability")
         )
         variables[f"CACE_TERM_{slug}_AGGREGATE"] = _fmt_cace(entry.get("aggregate"))
+        extracted = entry.get("in_corpus")
+        variables[f"CACE_TERM_{slug}_IN_CORPUS"] = (
+            "yes" if extracted is True else "no" if extracted is False else "unknown"
+        )
 
     return variables
 
@@ -645,6 +653,9 @@ def _build_bhl_tokens(bhl_artifact: Optional[dict]) -> dict:
         if not entry:
             continue
         variables[f"BHL_{era_upper}_DOCS"] = str(entry.get("documents", 0))
+        coverage = entry.get("stack_coverage") or {}
+        if coverage:
+            variables[f"BHL_{era_upper}_STACK_DOCS"] = str(coverage["documents_analyzed"])
         frequencies = entry.get("terms_per_10k") or {}
         carried_terms = bhl_artifact.get("terms") or {}
         for term in BHL_CANONICAL_TERMS:

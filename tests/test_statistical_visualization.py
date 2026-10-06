@@ -796,6 +796,44 @@ class TestFulltextFingerprintGuard:
         )
         assert len(calls) == 2
 
+    def test_text_edit_without_provenance_edit_invalidates_cache(self, tmp_path) -> None:
+        """Record count and unchanged metadata cannot certify changed text."""
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+        fulltexts_dir = tmp_path / "fulltexts"
+        data_dir = tmp_path / "out"
+        self._write_corpus(fulltexts_dir)
+        calls = []
+        _ensure_fulltext_artifact(str(data_dir), str(fulltexts_dir),
+                                 builder=self._fake_builder(calls))
+        shard = fulltexts_dir / "fulltexts_00001.json"
+        records = json.loads(shard.read_text())
+        records[0]["body_text"] = "An edited ant colony study."
+        shard.write_text(json.dumps(records))
+        _ensure_fulltext_artifact(str(data_dir), str(fulltexts_dir),
+                                 builder=self._fake_builder(calls))
+        assert len(calls) == 2
+
+    def test_repeated_bounded_run_reuses_same_bound(self, tmp_path, monkeypatch) -> None:
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+        fulltexts_dir = tmp_path / "fulltexts"
+        self._write_corpus(fulltexts_dir, n_docs=5)
+        monkeypatch.setenv("FULLTEXT_ANALYSIS_LIMIT", "2")
+        calls = []
+        for _ in range(2):
+            _ensure_fulltext_artifact(str(tmp_path / "out"), str(fulltexts_dir),
+                                     builder=self._fake_builder(calls))
+        assert len(calls) == 1
+
+    @pytest.mark.parametrize("limit", ["-1", "0", "invalid"])
+    def test_invalid_bound_is_rejected(self, tmp_path, monkeypatch, limit) -> None:
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+        fulltexts_dir = tmp_path / "fulltexts"
+        self._write_corpus(fulltexts_dir)
+        monkeypatch.setenv("FULLTEXT_ANALYSIS_LIMIT", limit)
+        with pytest.raises(ValueError):
+            _ensure_fulltext_artifact(str(tmp_path / "out"), str(fulltexts_dir),
+                                     builder=self._fake_builder([]))
+
     def test_bounded_run_never_satisfies_full_corpus_guard(
         self, tmp_path, monkeypatch
     ) -> None:

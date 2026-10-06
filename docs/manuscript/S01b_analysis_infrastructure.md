@@ -1,129 +1,58 @@
 # Supplemental Methods: Statistical and Scoring Infrastructure {#sec:supplemental_infrastructure}
 
-## Statistical Analysis (`src/analysis/statistics.py`)
+The canonical implementations are semantic_entropy, DomainAnalyzer, statistics_pipeline, fulltext_pipeline, arxiv_analysis, and bhl_analysis. Their generated artifacts preserve exclusions, coverage, and exploratory numerical outputs.
 
-All functions implemented from mathematical first principles via NumPy and SciPy.
+## Sentence-context Entropy
 
-### `DescriptiveStats`
+Each source text is sentence-tokenized once for a term set. An inverted index over alphanumeric parts prunes impossible matches; a case-insensitive whole-word regular expression makes the final decision. This preserves matching sentence order. Contexts must contain more than three words, and at least five usable contexts are required for computation.
 
-`calculate_descriptive_stats(data: np.ndarray)` → `DescriptiveStats(mean, std, median, min, max, q25, q75, count)`.
+TF-IDF uses English stop words, minimum document frequency one, and at most one thousand features. KMeans uses random state 42 and ten initializations. The requested cluster count follows the bounded square-root rule in Methods, remaining below the number of contexts. Occupied clusters may be fewer than requested.
 
-### `t_test`
+Shannon entropy is computed from occupied-cluster probabilities in bits (Equation \ref{eq:semantic_entropy}). The normalized value divides by the occupied-cluster ceiling; a single occupied cluster has zero normalized entropy. The exploratory high-entropy flag uses a threshold above two bits. Computational partitions are not independently annotated word senses.
 
-```python
-def t_test(sample1, sample2=None, mu=None, alternative="two-sided") -> Dict
-# Returns: t_statistic, p_value, degrees_of_freedom, alternative
-```
+Results record ok, insufficient_contexts, or error status. Only ok values enter domain means and statistical groups. Excluded estimates are counted separately; their placeholder zero is not included as a measured value. A term assigned to several domains contributes to each domain group. Entropy-table sample sizes and weighted totals count valid domain memberships, not unique terms or documents.
 
-- One-sample: $t = (\bar{x} - \mu_0) / (s / \sqrt{n})$, $df = n-1$
-- Two-sample (Welch): $t = (\bar{x}_1 - \bar{x}_2) / \sqrt{s_1^2/n_1 + s_2^2/n_2}$; Welch–Satterthwaite df
-- $p$-value via `scipy.stats.t.sf`
+## Exploratory Comparisons and Intervals
 
-### `anova_test`
+The statistical artifact reports per-domain valid-entropy means, standard deviations where at least two values exist, and exclusions. Welch tests compare groups with at least two values. Benjamini--Hochberg adjustments apply to the emitted comparison family at a nominal threshold of 0.05. Standardized differences use a small-sample bias correction; they should not be described as uncorrected Cohen's d.
 
-`anova_test(groups: List[np.ndarray])` → `f_statistic, p_value, df_between, df_within`. From-scratch SS computation; $p$ via `scipy.stats.f.sf`.
+One-way ANOVA and its effect-size summary use the valid groups. Figure intervals use nominal Student-t quantiles and are omitted for groups with only one valid estimate. These numerical calculations have software tests and independent numerical comparators, but their simple population interpretation is not justified by this corpus design.
 
-### `calculate_correlation`
+Terms can share documents, contexts and domain labels. Multiplicity adjustment does not repair that dependence, convenience retrieval, unequal context counts, or differing extraction thresholds. Threshold flags are exploratory. Confirmatory inference requires a prespecified document-level model and independently annotated evaluation data.
 
-`method="pearson"`: `numpy.corrcoef` + t-distribution p-value. `method="spearman"`: `scipy.stats.spearmanr`.
+## Shared CACE Sample and Scores
 
-### `calculate_confidence_interval`
+Domain figures and statistical exports use the same scoring function and sample: up to fifty terms per domain, ordered by decreasing frequency with lexical tie-breaking. Each term supplies at most ten of its stored short extraction contexts. The representative-term table is a separate named-term evaluation whose artifact records whether a term was extracted.
 
-$\bar{x} \pm t_{0.975, n-1} \cdot s/\sqrt{n}$; critical value via `scipy.stats.t.ppf(0.975, n-1)`.
+Clarity uses attached sentence-context entropy when available. Appropriateness uses configured vocabulary and domain-overlap penalties. Consistency uses TF-IDF context-vector cosine similarities. Evolvability uses assigned domains and scale-marker categories. Their equally weighted mean is the aggregate; Equations \ref{eq:cace_clarity}--\ref{eq:cace_evolvability} specify the proposed rules.
 
-### `fit_distribution`
+Unavailable entropy still defaults to zero inside the heuristic, and fewer than two contexts yield a Consistency convention of 0.5. These conventions do not establish clarity or consistency. Missing figure input is labeled unavailable instead of substituting confidence as a CACE score. No completed coefficient-sensitivity study, human-rating validation, intervention benefit, or calibrated scientific-accuracy prediction is claimed.
 
-Supports `"normal"` (MLE: μ, σ), `"exponential"` (MLE: λ=1/mean), `"uniform"` (min, max).
+## Framing and Discourse Proxies
 
----
+Occurrence-context framing uses three-token windows around domain-assigned terms. The feature extractor has four anthropomorphic, four hierarchical, and four economic regex patterns. Marker matches are lexical events, not validated author intent or judgments that a biological description is misleading.
 
-## Domain Analysis (`src/analysis/domain_analysis.py`)
+Domain framing proportions count occurrence contexts matching an anthropomorphic pattern. Multi-domain occurrences contribute to each domain but once to the overall tally. Distinct framing-marked term counts in the figure are a different summary from those occurrence proportions.
 
-### `DomainAnalysis` Dataclass
+Discourse, rhetorical, and persuasive analyzers use configured patterns and keywords. Their artifacts record eligible/analyzed texts and exclusions. PMC discourse uses a deterministic stride sample when corpus size exceeds the configured text/character targets, with an approximately one-fifth sample in this snapshot. Raw counts depend on text length and sample size; the cross-layer figure is not a normalized prevalence comparison or an annotated discourse study.
 
-Fields: `domain_name`, `key_terms` (top-10 by frequency), `term_patterns` (compound/multi_word/capitalized/abbreviation/numeric counts), `framing_assumptions`, `conceptual_structure` (domain ontology), `ambiguities` (term/contexts/issue triplets), `recommendations`, `frequency_stats` (mean/median/SD/histogram), `cooccurrence_analysis`, `ambiguity_metrics`, `confidence_scores`, `conceptual_metrics`, `statistical_significance`.
+## Historical OCR and Layer Coverage
 
-### `DomainAnalyzer` Methods
+BHL literal frequencies normalize NFC text, lowercase it, join hyphenated line breaks, and tokenize Latin-letter words while retaining internal hyphens. Seed phrases match exact consecutive tokens; counts are non-overlapping per phrase. Rates divide by era token counts and multiply by ten thousand. Alternative spellings, OCR errors and language affect those rates. An observed zero does not date a concept's origin.
 
-`analyze_all_domains(terms, texts)` dispatches to six specialist methods per domain, then enriches with:
+The BHL computational stack uses cleaned OCR with the canonical extraction and classification rules. Default extraction and framing process all stored era documents using per-document counters, avoiding a corpus-wide token-position map. Stored and cleaned text are still held in memory; memory use is not constant in corpus size. Entropy evaluates twenty frequent candidates per era with sentence contexts drawn from all era documents. Unassigned candidates can enter the overall sampled entropy mean, while domain means only use assigned valid candidates.
 
-1. `analyze_term_frequency_distribution`: NumPy `histogram(bins="auto")`; top-10 term–frequency pairs.
-2. `analyze_term_cooccurrence`: sliding-window co-occurrence matrix.
-3. `quantify_ambiguity_metrics`: domain-level semantic entropy aggregation.
-4. `calculate_statistical_significance`: $\chi^2$/Fisher's on pattern distributions.
+Coverage records available and analyzed documents and characters. An explicit positive `BHL_STACK_CHARACTER_BUDGET` selects a deterministic whole-document development subset. `FULLTEXT_ANALYSIS_LIMIT` similarly bounds a development PMC run. Both limits enter fingerprints; bounded caches cannot satisfy an unbounded default run.
 
-Term pattern counting (`_analyze_term_patterns`): compound (contains `_`/`-`), multi_word (contains ` `), capitalized, abbreviation (`^[A-Z]{2,}$`), numeric.
+## Execution and Artifact Verification
 
----
+The standalone sequence installs locked dependencies and NLTK resources, runs tests, generates figures, checks custody, and renders the manuscript. Testing and generation run sequentially because some legacy tests consume exports.
 
-## Conceptual Mapping (`src/analysis/conceptual_mapping.py`)
+The analysis signature also hashes the selected English NLTK tokenizer, stopwords and WordNet contents. The receipt records these resource hashes without machine-specific installation paths. Missing resources fail, and changed resources invalidate caches. These content hashes do not vendor or automatically restore external resource downloads.
 
-### Data Structures
+Numerical values remain placeholders in canonical Markdown. The generator checks finite/nonempty JSON, decodable PNGs, registry hashes, figure inventory and manuscript figure availability before writing its receipt. Rendering validates the receipt, rejects unresolved placeholders, and requires successful Pandoc, XeLaTeX and BibTeX execution. Undefined citations/references and missing glyphs fail the final build.
 
-`Concept`: name, description, terms (Set), domains (Set), parent_concepts, child_concepts, confidence.
-`ConceptMap`: `concepts: Dict[str, Concept]`, `term_to_concepts: Dict[str, Set[str]]`, `concept_relationships: Dict[Tuple[str,str], float]`.
+Software tests use actual corpus slices, numerical examples, real files, local HTTP and real subprocesses. Negative controls establish that malformed input, stale artifacts and failing commands are rejected. Those checks establish software behavior and provenance, not source relevance, individual reuse rights, human-validation outcomes or causal scientific conclusions.
 
-### `ConceptualMapper`
 
-`build_concept_map(terms)`: (1) instantiate 6 base concept nodes; (2) domain- and keyword-based term assignment; (3) overlap-coefficient edge creation.
-
-`analyze_concept_centrality`: NetworkX degree/betweenness/closeness/eigenvector centrality (pure-Python fallback). `quantify_relationship_strength`: composite = base×0.4 + term_overlap×0.3 + domain_overlap×0.2 + hierarchical×0.1. `identify_cross_domain_bridges`: concepts spanning ≥2 domains. `calculate_concept_similarity`: Jaccard + domain overlap bonus (max 0.3). `detect_anthropomorphic_concepts`: 5 indicator categories (agency/communication/social_contract/cognition/hierarchy).
-
-**Pipeline results (sourced from `output/data/concept_map_summary.json`):**
-
-| Concept | Terms | Domains |
-|---------|-------|---------|
-| `biological_individuality` | {{CONCEPT_BIOLOGICAL_INDIVIDUALITY_TERMS}} | Unit of Individuality |
-| `social_organization` | {{CONCEPT_SOCIAL_ORGANIZATION_TERMS}} | Power & Labor; Behavior & Identity |
-| `reproductive_biology` | {{CONCEPT_REPRODUCTIVE_BIOLOGY_TERMS}} | Sex & Reproduction |
-| `kinship_systems` | {{CONCEPT_KINSHIP_SYSTEMS_TERMS}} | Kin & Relatedness |
-| `resource_economics` | {{CONCEPT_RESOURCE_ECONOMICS_TERMS}} | Economics |
-| `behavioral_ecology` | {{CONCEPT_BEHAVIORAL_ECOLOGY_TERMS}} | Behavior & Identity; Economics |
-| **Concept relationships** | **{{CORPUS_RELATIONSHIP_COUNT}}** | |
-
----
-
-## CACE Scoring (`src/analysis/cace_scoring.py`)
-
-`CACEScore`: term, clarity, appropriateness, consistency, evolvability, aggregate (mean of four).
-
-| Function | Formula |
-|----------|---------|
-| `score_clarity` | `max(0, 1 - entropy_bits / log2(10))` — `log2(10) ≈ 3.32` = `DEFAULT_MAX_ENTROPY` |
-| `score_appropriateness` | `1 - (0.4 × 𝟙[term ∩ 𝒜] + 0.1 × overlap + 0.05 × max(domains−1, 0))` — graduated penalty, never zeroed |
-| `score_consistency` | Mean pairwise cosine similarity of TF-IDF context vectors (high = consistent) |
-| `score_evolvability` | `0.5 × min(1, domains/3) + 0.5 × min(1, scale_levels_in_contexts/3)` |
-| `evaluate_term_cace` | All four scorers → `CACEScore` |
-| `compare_terms_cace` | Ranked `List[CACEScore]` by aggregate descending |
-
-`ANTHROPOMORPHIC_TERMS`: queen, king, slave, worker, soldier, nurse, princess, maiden, + additional (full set in source).
-
----
-
-## Rhetorical Analysis (`src/analysis/rhetorical_analysis.py`)
-
-`analyze_rhetorical_strategies`: 4 strategy types, regex-detected per abstract (authority, analogy, generalization, anecdotal). `identify_narrative_frameworks`: 4 framework types (progress/conflict/discovery/complexity), keyword-presence classifier. `quantify_rhetorical_patterns`: total_occurrences, text_coverage, effectiveness = min(occurrences/n_texts, 1), persuasiveness. `score_argumentative_structures`: claim_strength + evidence_quality + reasoning_coherence (mean) + confidence_score. `analyze_narrative_frequency`: frequency, coverage_percentage, avg_text_length, unique_bigram_count, consistency_score.
-
----
-
-## Visualization (`src/visualization/`)
-
-`ConceptVisualizer` generates 11 research figures via matplotlib multi-panel layouts. `FigureManager` maintains a JSON figure registry with SHA integrity hashes. `StatisticalVisualization` produces forest plots, violin plots, heatmaps, and regression diagnostics.
-
-**Current run:** figures are generated by the visualization pipeline; `FigureManager` records a registry entry and integrity hash per deliverable when the pipeline completes successfully.
-
----
-
-## Core Infrastructure (`src/core/`)
-
-`parameters.py`: `ParameterSet`/`ParameterSweep` infrastructure plus `AnalysisParameters` defaults (`min_term_freq=5`, `cooccurrence_threshold=2`). The semantic-entropy parameters (`max_clusters=5`, `min_contexts=5`, `threshold=2.0`, `random_state=42`) are function defaults of `calculate_semantic_entropy`; TF-IDF `max_features=1000` is set in the vectorizer. Context windows are per-call arguments: 3-token context-extraction windows in `term_extraction.py`, 10-word term co-occurrence windows (`TerminologyExtractor.find_term_cooccurrences`), and 50-word domain co-occurrence windows (`DomainAnalyzer.analyze_term_cooccurrence`). `validation.py`/`validation_utils.py`: type checks and domain membership guards on all public API entry points. `metrics.py`: wall-clock, memory, throughput per stage. `markdown_integration.py`: `\ref{}` resolution and cross-reference validation.
-
----
-
-## Reproducibility
-
-- **Deterministic**: `random_state=42` in all KMeans calls.
-- **Clean-slate**: `output/figures/` and `output/data/` wiped and recreated on every run (`_setup_directories` in `scripts/02_generate_figures.py`).
-- **Live statistics**: all corpus metrics are read from `output/data/corpus_statistics.json`, `domain_statistics.json`, and `concept_map_summary.json` and substituted into the manuscript prose at PDF build time via template placeholders (`scripts/_render_pdf_override.py`) — no corpus statistic appears as a hardcoded literal in the manuscript.
-- **Dependency pinning**: all Python dependencies pinned in `pyproject.toml`.
-- **Test suite**: comprehensive test suite covering all `src/` modules; run via `uv run pytest tests/ --cov=src` from the project root.
+Completed BHL eras are saved atomically in local recovery checkpoints. Each checkpoint binds the ordered era records, implementation/dependency/resource signature and any development bound, plus a digest of the completed result. A matching checkpoint can resume a disrupted run; changed inputs or bounds require recomputation, and corrupted matching results fail. The final four-layer receipt is still written only after all required stages complete.

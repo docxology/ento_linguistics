@@ -1,0 +1,9 @@
+{
+  "analysis_signature": "19d131912bfcb380131a9d779d7bf0c851f7a98f21dab40dd764cb3f77728b1a",
+  "nltk_resources": {
+    "punkt_tab_english": "d5e19f239be1dbfe448828e0085cc5344183024e796ad8721d097543016609ab",
+    "stopwords_english": "c1e8ad75a52bd77f16d29afb2335c520a36373c9d6334987b10575ad0f5586fe",
+    "wordnet": "1b25f66cf5538a118218609e8508616cd03ddf10bc3faa6e234674014b52cf46"
+  },
+  "generation_log": "checkpointed-generation.log"
+}

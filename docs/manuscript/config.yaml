@@ -3,9 +3,9 @@
 
 paper:
   title: "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology"
-  subtitle: "How Terminology Networks Shape Understanding of Insect Biology (And Vice-Versa)"
+  subtitle: "Descriptive Corpus Analysis and a Six-Domain Framework"
   version: "1.1.1" # Paper version
-  date: "2026-09-22" # Release date
+  date: "2026-10-06" # Local manuscript revision date
 
 # Author information
 authors:
@@ -23,6 +23,8 @@ authors:
 # Publication information (optional)
 publication:
   doi: "10.5281/zenodo.19574117"
+  version_doi: "10.5281/zenodo.23193499"
+  zenodo_record_url: "https://zenodo.org/records/23193499"
   journal: "" # Journal name if published
   volume: "" # Journal volume
   pages: "" # Page numbers

@@ -1,4 +1,4 @@
-\begin{thebibliography}{41}
+\begin{thebibliography}{30}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -18,15 +18,6 @@ Jacobus~J Boomsma and Richard Gawne.
 \newblock \emph{Biological Reviews}, 93\penalty0 (1):\penalty0 28--54, 2018.
 \newblock \doi{10.1111/brv.12330}.
 
-\bibitem[Chandra et~al.(2021)Chandra, Gal, Bhaktaram, and
-  Kronauer]{chandra2021epigenetics}
-Vinay Chandra, Adi Gal, Cait Bhaktaram, and Daniel~JC Kronauer.
-\newblock The role of epigenetics, particularly {DNA} methylation, in the
-  evolution of caste in insect societies.
-\newblock \emph{Philosophical Transactions of the Royal Society B},
-  376\penalty0 (1826):\penalty0 20200115, 2021.
-\newblock \doi{10.1098/rstb.2020.0115}.
-
 \bibitem[Chen(2006)]{chen2006citespace}
 Chaomei Chen.
 \newblock Citespace {II}: Detecting and visualizing emerging trends and
@@ -42,17 +33,6 @@ Andy Clark.
 \newblock \emph{Behavioral and Brain Sciences}, 36\penalty0 (3):\penalty0
   181--204, 2013.
 
-\bibitem[Cohen(1988)]{cohen1988statistical}
-Jacob Cohen.
-\newblock \emph{Statistical Power Analysis for the Behavioral Sciences}.
-\newblock Lawrence Erlbaum Associates, Hillsdale, NJ, 2nd edition, 1988.
-\newblock ISBN 978-0805802832.
-
-\bibitem[Deacon(2011)]{deacon2011incomplete}
-Terrence~W Deacon.
-\newblock \emph{Incomplete Nature: How Mind Emerged from Matter}.
-\newblock W. W. Norton \& Company, New York, 2011.
-
 \bibitem[{Entomological Society of America}(2024)]{betternamesproject2024}
 {Entomological Society of America}.
 \newblock Better common names: Addressing racist, colonial, and otherwise
@@ -65,15 +45,10 @@ Norman Fairclough.
 \newblock \emph{Discourse and Social Change}.
 \newblock Polity Press, Cambridge, UK, 1992.
 
-\bibitem[Foucault(1972)]{foucault1972archaeology}
-Michel Foucault.
-\newblock \emph{The Archaeology of Knowledge}.
-\newblock Pantheon Books, New York, 1972.
-
 \bibitem[Friedman et~al.(2021)Friedman, Tschantz, Ramstead, Friston, and
   Constant]{friedman2021active}
-Daniel~A. Friedman, Alexander Tschantz, Maxwell J.~D. Ramstead, Karl Friston,
-  and Axel Constant.
+Daniel~Ari Friedman, Alec Tschantz, Maxwell J.~D. Ramstead, Karl Friston, and
+  Axel Constant.
 \newblock Active inferants: An active inference framework for ant colony
   behavior.
 \newblock \emph{Frontiers in Behavioral Neuroscience}, 15:\penalty0 647732,
@@ -116,31 +91,11 @@ Deborah~M. Gordon.
 \newblock Princeton University Press, Princeton, NJ, 2023.
 \newblock ISBN 978-0691232157.
 
-\bibitem[Grass{\'e}(1959)]{grasse1959reconstruction}
-Pierre-Paul Grass{\'e}.
-\newblock La reconstruction du nid et les coordinations interindividuelles chez
-  {Bellicositermes natalensis} et {Cubitermes} sp.\ la th{\'e}orie de la
-  stigmergie: Essai d'interpr{\'e}tation du comportement des termites
-  constructeurs.
-\newblock \emph{Insectes Sociaux}, 6\penalty0 (1):\penalty0 41--80, 1959.
-\newblock \doi{10.1007/BF02223791}.
-
 \bibitem[Hacking(1999)]{hacking1999social}
 Ian Hacking.
 \newblock \emph{The Social Construction of What?}
 \newblock Harvard University Press, Cambridge, MA, 1999.
 \newblock ISBN 978-0674004122.
-
-\bibitem[Haraway(1991)]{haraway1991}
-Donna~J. Haraway.
-\newblock \emph{Simians, Cyborgs, and Women: The Reinvention of Nature}.
-\newblock Routledge, New York, NY, 1991.
-
-\bibitem[Heinze and Schrempf(2017)]{heinze2017molecular}
-J{\"u}rgen Heinze and Alexandra Schrempf.
-\newblock A molecular concept of caste in insect societies.
-\newblock \emph{Current Opinion in Insect Science}, 25:\penalty0 30--36, 2017.
-\newblock \doi{10.1016/j.cois.2017.11.010}.
 
 \bibitem[Herbers(2006)]{herbers2006}
 Joan~M Herbers.
@@ -154,31 +109,6 @@ Joan~M Herbers.
   research.
 \newblock \emph{BioScience}, 57\penalty0 (2):\penalty0 104--105, 2007.
 \newblock \doi{10.1641/B570203}.
-
-\bibitem[H{\"o}lldobler and Wilson(1990)]{hollldobler1990}
-Bert H{\"o}lldobler and Edward~O. Wilson.
-\newblock \emph{The Ants}.
-\newblock Harvard University Press, Cambridge, MA, 1990.
-\newblock ISBN 978-0674040755.
-
-\bibitem[H{\"o}lldobler and Wilson(2008)]{wilson2008superorganism}
-Bert H{\"o}lldobler and Edward~O. Wilson.
-\newblock \emph{The Superorganism: The Beauty, Elegance, and Strangeness of
-  Insect Societies}.
-\newblock W. W. Norton \& Company, New York, 2008.
-
-\bibitem[Huber(1810)]{huber1810}
-Pierre Huber.
-\newblock \emph{Recherches sur les m{\oe}urs des fourmis indig{\`e}nes}.
-\newblock J.J. Paschoud, Paris, 1810.
-
-\bibitem[Keller(1991)]{keller1991language}
-Evelyn~Fox Keller.
-\newblock Language and ideology in evolutionary theory: Reading cultural norms
-  into natural law.
-\newblock In James~J. Sheehan and Morton Sosna, editors, \emph{The Boundaries
-  of Humanity: Humans, Animals, Machines}, pages 85--102. University of
-  California Press, Berkeley, CA, 1991.
 
 \bibitem[Kirchhoff et~al.(2018)Kirchhoff, Parr, Palacios, Friston, and
   Kiverstein]{kirchhoff2018markov}
@@ -211,23 +141,32 @@ Helen~E. Longino.
   Scientific Inquiry}.
 \newblock Princeton University Press, Princeton, NJ, 1990.
 
-\bibitem[Mavhunga(2018)]{mavhunga2018transient}
-Clapperton~Chakanetsa Mavhunga.
-\newblock \emph{Transient Workspaces: Technologies of Everyday Innovation in
-  Zimbabwe}.
-\newblock MIT Press, Cambridge, MA, 2018.
-\newblock Discusses colonial pest control as technological domination.
-
 \bibitem[Nowak et~al.(2010)Nowak, Tarnita, and Wilson]{nowak2010evolution}
 Martin~A Nowak, Corina~E Tarnita, and Edward~O Wilson.
 \newblock The evolution of eusociality.
 \newblock \emph{Nature}, 466\penalty0 (7310):\penalty0 1057--1062, 2010.
 \newblock \doi{10.1038/nature09205}.
 
+\bibitem[Oldroyd and Yagound(2021)]{oldroyd2021epigenetics}
+Benjamin~P. Oldroyd and Boris Yagound.
+\newblock The role of epigenetics, particularly {DNA} methylation, in the
+  evolution of caste in insect societies.
+\newblock \emph{Philosophical Transactions of the Royal Society B},
+  376\penalty0 (1826):\penalty0 20200115, 2021.
+\newblock \doi{10.1098/rstb.2020.0115}.
+
+\bibitem[Qiu et~al.(2022)Qiu, Dai, et~al.]{qiu2022canalized}
+Bitao Qiu, Xueqin Dai, et~al.
+\newblock Canalized gene expression during development mediates caste
+  differentiation in ants.
+\newblock \emph{Nature Ecology \& Evolution}, 6\penalty0 (11):\penalty0
+  1753--1765, 2022.
+\newblock \doi{10.1038/s41559-022-01884-y}.
+
 \bibitem[Ravary et~al.(2007)Ravary, Lecoutey, Kaminski, Ch{\^a}line, and
   Jaisson]{ravary2007}
-Fabrice Ravary, Emmanuel Lecoutey, Gwidon Kaminski, Nicolas Ch{\^a}line, and
-  Pierre Jaisson.
+Fabien Ravary, Emmanuel Lecoutey, Gwena{\"e}l Kaminski, Nicolas Ch{\^a}line,
+  and Pierre Jaisson.
 \newblock Individual experience alone can generate lasting division of labor in
   ants.
 \newblock \emph{Current Biology}, 17\penalty0 (15):\penalty0 1308--1312, 2007.
@@ -237,7 +176,7 @@ Fabrice Ravary, Emmanuel Lecoutey, Gwidon Kaminski, Nicolas Ch{\^a}line, and
 Charlotte Sleigh.
 \newblock \emph{Six Legs Better: A Cultural History of Myrmecology}.
 \newblock Johns Hopkins University Press, Baltimore, MD, 2007.
-\newblock ISBN 978-0801886980.
+\newblock ISBN 9780801892141.
 
 \bibitem[Steen(2017)]{steen2017deliberate}
 Gerard~J. Steen.
@@ -247,26 +186,11 @@ Gerard~J. Steen.
   2017.
 \newblock \doi{10.1515/ip-2017-0001}.
 
-\bibitem[Vis(2026)]{vis2026colony}
-Janice Vis.
-\newblock Whose colony?: {R}ethinking terminology and insect relations.
-\newblock \emph{Environmental Humanities}, 18\penalty0 (1):\penalty0 78--95,
-  2026.
-\newblock \doi{10.1215/22011919-12211216}.
-\newblock URL
-  \url{https://read.dukeupress.edu/environmental-humanities/article/18/1/78/407807}.
-\newblock Argues that the term ``colony'' carries settler-colonial historical
-  baggage and obscures the actual relational dynamics of insect social
-  arrangements; advocates for alternative terminology recognizing
-  more-than-human histories.
-
-\bibitem[Warner et~al.(2024)Warner, Qiu, Holmes, and
-  Linksvayer]{warner2024caste}
-Miles~R. Warner, Lijun Qiu, Michael~J. Holmes, and Timothy~A. Linksvayer.
-\newblock Caste differentiation becomes increasingly canalized from early
-  development in two ant species.
-\newblock \emph{Nature Communications}, 15:\penalty0 4218, 2024.
-\newblock \doi{10.1038/s41467-024-48526-2}.
+\bibitem[Sumner et~al.(2018)Sumner, Bell, and Taylor]{sumner2018molecular}
+Seirian Sumner, Emily Bell, and Daisy Taylor.
+\newblock A molecular concept of caste in insect societies.
+\newblock \emph{Current Opinion in Insect Science}, 25:\penalty0 42--50, 2018.
+\newblock \doi{10.1016/j.cois.2017.11.010}.
 
 \bibitem[Wheeler(1911)]{wheeler1911}
 William~Morton Wheeler.
@@ -276,7 +200,7 @@ William~Morton Wheeler.
 \newblock \doi{10.1002/jmor.1050220206}.
 
 \bibitem[Wodak and Meyer(2009)]{wodak2009methods}
-Ruth Wodak and Michael Meyer.
+Ruth Wodak and Michael Meyer, editors.
 \newblock \emph{Methods of Critical Discourse Analysis}.
 \newblock SAGE Publications, London, 2nd edition, 2009.
 

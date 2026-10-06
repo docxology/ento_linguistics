@@ -1,0 +1,43 @@
+{
+  "analysis_signature": "19d131912bfcb380131a9d779d7bf0c851f7a98f21dab40dd764cb3f77728b1a",
+  "figures": 17,
+  "headline_analyzed": 7540,
+  "headline_archived": 7609,
+  "headline_excluded": 69,
+  "pmc_documents": 7073,
+  "arxiv_documents": 61,
+  "bhl_coverage": {
+    "era_1850_1899": {
+      "character_budget": null,
+      "characters_analyzed": 1111036600,
+      "characters_available": 1111036600,
+      "documents_analyzed": 996,
+      "documents_available": 996,
+      "selection": "all stored era documents"
+    },
+    "era_1900_1949": {
+      "character_budget": null,
+      "characters_analyzed": 1080342870,
+      "characters_available": 1080342870,
+      "documents_analyzed": 1237,
+      "documents_available": 1237,
+      "selection": "all stored era documents"
+    },
+    "era_1950_1970": {
+      "character_budget": null,
+      "characters_analyzed": 126341933,
+      "characters_available": 126341933,
+      "documents_analyzed": 197,
+      "documents_available": 197,
+      "selection": "all stored era documents"
+    }
+  },
+  "validations": [
+    "finite JSON, decoded PNG, registry hashes and inventory",
+    "current implementation and corpus receipt",
+    "all layer fingerprints agree",
+    "full BHL documents and characters",
+    "domain figure means equal statistical means",
+    "original abstract bytes preserved"
+  ]
+}

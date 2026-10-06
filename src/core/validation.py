@@ -389,6 +389,8 @@ class ValidationFramework:
         """Verify output integrity using infrastructure validation."""
         try:
             report = verify_output_integrity(Path(output_dir))
+            if report.get("status") != "validated" or report.get("summary", {}).get("overall_integrity") is not True:
+                raise ValueError(report.get("error") or str(report.get("issues")))
             result = ValidationResult(
                 is_valid=True,
                 check_name="output_integrity",
@@ -412,7 +414,9 @@ class ValidationFramework:
     ) -> ValidationResult:
         """Validate a figure registry JSON using infrastructure validation."""
         try:
-            validate_figure_registry(Path(registry_path), Path(manuscript_dir))
+            report = validate_figure_registry(Path(registry_path), Path(manuscript_dir))
+            if report.get("success") is not True:
+                raise ValueError(report.get("error") or str(report.get("issues")))
             result = ValidationResult(
                 is_valid=True,
                 check_name="figure_registry",

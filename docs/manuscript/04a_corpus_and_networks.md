@@ -2,15 +2,13 @@
 
 ## Terminology Extraction Across Domains
 
-Our analysis applies the mixed-methodology framework described in Section \ref{sec:methodology} to a corpus of entomological literature. The dataset includes abstracts from foundational works by Hölldobler, Wilson, and Gordon, incorporating terminology patterns characteristic of journals including *Behavioral Ecology*, *Journal of Insect Behavior*, and *Insectes Sociaux*.
-
-Domain-specific extraction from **{{CORPUS_PUBLICATIONS}} publications** ({{CORPUS_TOTAL_TOKENS}} tokens) identified **{{CORPUS_CANDIDATE_TERMS}} candidate terms** total, of which **{{CORPUS_DOMAIN_TERMS}} receive domain assignments** spanning all six domains, with substantial variation in usage patterns:
+Analysis of the source-identified headline layer yields {{CORPUS_CANDIDATE_TERMS}} candidate terms from {{CORPUS_PUBLICATIONS}} abstracts and {{CORPUS_TOTAL_TOKENS}} processed tokens. Of these candidates, {{CORPUS_DOMAIN_TERMS}} receive domain assignments. These counts exclude {{CORPUS_EXCLUDED_UNRECONCILED}} unreconciled archived strings; broad retrieval still limits relevance and representativeness.
 
 \begin{table}[h]
 \centering
 \begin{tabular}{|l|c|c|c|}
 \hline
-\textbf{Domain} & \textbf{Term Count} & \textbf{Total Frequency} & \textbf{Bridging Terms} \\
+\textbf{Domain} & \textbf{Terms} & \textbf{Frequency} & \textbf{Bridging terms} \\
 \hline
 Unit of Individuality & {{DOMAIN_UNIT_OF_INDIVIDUALITY_TERMS}} & {{DOMAIN_UNIT_OF_INDIVIDUALITY_FREQ}} & {{DOMAIN_UNIT_OF_INDIVIDUALITY_BRIDGING}} \\
 Behavior \& Identity & {{DOMAIN_BEHAVIOR_AND_IDENTITY_TERMS}} & {{DOMAIN_BEHAVIOR_AND_IDENTITY_FREQ}} & {{DOMAIN_BEHAVIOR_AND_IDENTITY_BRIDGING}} \\
@@ -20,70 +18,62 @@ Kin \& Relatedness & {{DOMAIN_KIN_AND_RELATEDNESS_TERMS}} & {{DOMAIN_KIN_AND_REL
 Economics & {{DOMAIN_ECONOMICS_TERMS}} & {{DOMAIN_ECONOMICS_FREQ}} & {{DOMAIN_ECONOMICS_BRIDGING}} \\
 \hline
 \end{tabular}
-\caption{Domain-assigned terminology extracted from the {{CORPUS_PUBLICATIONS}}-publication corpus. Terms are assigned by seed-expansion matching against domain-specific seed vocabularies; a single term may appear in multiple domains, so per-domain Term Counts sum to more than the {{CORPUS_DOMAIN_TERMS}} distinct domain-assigned terms. Total Freq counts all occurrences across the corpus for domain-assigned terms. Bridging Terms indicate terms that co-occur across multiple domain vocabularies. Full per-domain breakdowns are in \texttt{output/data/domain\_statistics.json}.}
+\caption{Rule-based domain assignments and corpus frequencies. A term can receive several labels, so domain counts and frequencies are not mutually exclusive. Bridging means multiple labels, not an observed transfer of meaning.}
 \label{tab:terminology_extraction}
 \end{table}
 
-Of {{CORPUS_CANDIDATE_TERMS}} total extracted candidate terms, {{CORPUS_DOMAIN_TERMS}} receive domain assignments. The global corpus vocabulary possesses a Type-Token Ratio (TTR) of **{{CORPUS_TTR}}**, reflecting the dense, highly specialized nature of the discourse. The absolute highest frequency terms across all contexts empirically anchor the investigation: **{{CORPUS_TOP_TERM_1}}** ({{CORPUS_TOP_FREQ_1}} occurrences), **{{CORPUS_TOP_TERM_2}}** ({{CORPUS_TOP_FREQ_2}} occurrences), and **{{CORPUS_TOP_TERM_3}}** ({{CORPUS_TOP_FREQ_3}} occurrences) dominate the conceptual landscape.
-
-Among domains, Behavior \& Identity possesses the highest absolute occurrence frequency ({{DOMAIN_BEHAVIOR_AND_IDENTITY_FREQ}} total occurrences), while Power \& Labor exhibits the most extensive bridging capacity ({{DOMAIN_POWER_AND_LABOR_BRIDGING}} bridging terms). Conversely, Economics maintains the most tightly constrained vocabulary ({{DOMAIN_ECONOMICS_TERMS}} terms) with zero bridging bleed-over ({{DOMAIN_ECONOMICS_BRIDGING}} bridging terms), reflecting strict, insular deployment of economic metaphors.
+The processed vocabulary has type-token ratio {{CORPUS_TTR}}. Its most frequent recorded tokens are {{CORPUS_TOP_TERM_1}} ({{CORPUS_TOP_FREQ_1}}), {{CORPUS_TOP_TERM_2}} ({{CORPUS_TOP_FREQ_2}}), and {{CORPUS_TOP_TERM_3}} ({{CORPUS_TOP_FREQ_3}}). Frequency identifies recurring lexical material; it does not establish its conceptual importance or the intentions of authors.
 
 ## Terminology Network Structure
 
-Terminology networks were constructed from the term--domain assignments produced by extraction: two terms are linked when they share at least one Ento-Linguistic domain, and edge weights are normalized by domain-set size to emphasize meaningful relationships. Writing $D(t)$ for the set of domains term $t$ is assigned to, an edge is retained only when its weight exceeds $0.1$:
+The observed terminology graph uses the hundred most frequent domain-assigned terms. Its edge weight counts documents containing both terms:
 
 \begin{equation}\label{eq:network_edge_weight}
-w(u,v) = \frac{|D(u) \cap D(v)|}{\max(|D(u)|, |D(v)|)}
+w(u,v)=\sum_{d=1}^{N}\mathbf{1}[u\in d]\mathbf{1}[v\in d].
 \end{equation}
 
-Figure \ref{fig:terminology_network} illustrates the resulting network.
+Whole-word matches are case-insensitive, and repeated mentions within a document do not add weight. No edge is inferred from shared labels or extraction order. The graph has clustering coefficient {{NETWORK_CLUSTERING}} under the generated network-summary definition; this statistic does not measure conceptual coherence, communication quality, or resistance to reform.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth]{../output/figures/terminology_network.png}
-\caption{Co-occurrence network of the domain-assigned terminology extracted from the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; {{CORPUS_CANDIDATE_TERMS}} candidate terms, of which {{CORPUS_DOMAIN_TERMS}} are assigned to at least one Ento-Linguistic domain). Each node is an extracted term: node size is proportional to corpus frequency, and node color encodes the term's primary Ento-Linguistic domain (legend at right). Edge width is proportional to the pipeline relationship weight between terms (shared-domain overlap, Eq.~\ref{eq:network_edge_weight}); isolated terms are omitted, and only the twenty highest-frequency terms are labelled for legibility. Clustered regions are terminology communities dominated by particular domains; terms linking communities are the bridging terms discussed in the text. Network values resolve at build time from \texttt{output/data/domain\_statistics.json} and \texttt{output/data/concept\_map\_summary.json}.}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/terminology_network.png}
+\caption{Observed document co-occurrence among the hundred highest-frequency domain-assigned terms in the {{CORPUS_PUBLICATIONS}}-abstract layer. Nodes represent terms, node area uses a square-root frequency scale, color identifies the primary domain, and edge width scales shared-document counts to a bounded display range (Eq.~\ref{eq:network_edge_weight}). Isolated nodes are omitted from the display and up to twenty frequent terms are considered for collision-filtered labels. Layout and dense regions have no causal or hierarchical interpretation.}
 \label{fig:terminology_network}
 \end{figure}
 
-The network exhibits strong modularity: {{NETWORK_NODES}} nodes ({{CORPUS_CANDIDATE_TERMS}} extracted terms plus the {{CORPUS_CONCEPT_COUNT}} conceptual cluster nodes) connected by {{NETWORK_EDGES}} edges, with a clustering coefficient of {{NETWORK_CLUSTERING}} and average degree of {{NETWORK_AVG_DEGREE}}. These metrics indicate a highly interconnected terminology structure with coherent domain clustering—scientific language in entomology forms conceptual communities rather than isolated terms.
-
-Domain-level network analysis reveals distinct architectures across the six core themes. As visualized in the aggregate network topology, dense identity clusters characterize Behavior & Identity terminology, while Power & Labor terminology forms hierarchical, chain-like structures. Conversely, Sex & Reproduction terms tend to organize into rigid binary oppositions, and Economics terms cluster tightly around transactional frameworks with few bridges to biological mechanism descriptions.
-
-The conceptual bridges between these domains are quantified and visualized in Figure \ref{fig:domain_overlap}.
+Domain-assignment overlap is a different quantity, displayed separately in Figure \ref{fig:domain_overlap}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth]{../output/figures/domain_overlap_heatmap.png}
-\caption{Cross-domain terminology overlap among the six Ento-Linguistic domains, computed at build time from the term--domain assignments of the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). Each cell is the Szymkiewicz--Simpson overlap coefficient (Eq.~\ref{eq:overlap_coefficient}): the number of extracted terms assigned to both domains of the pair, divided by the smaller domain's term count. The heatmap is symmetric, so off-diagonal cells read the same in both directions; darker cells (\texttt{YlOrRd} colormap) indicate higher shared terminology, and the diagonal is 100\% by construction. The strongest observed connectivity joins Power \& Labor with Behavior \& Identity and with Sex \& Reproduction; zero cells (for example Economics with Behavior \& Identity) are observed zeros of the current corpus: no extracted term is assigned to both domains of those pairs.}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/domain_overlap_heatmap.png}
+\caption{Szymkiewicz--Simpson overlap coefficients between domain-assigned vocabularies (Eq.~\ref{eq:overlap_coefficient}). Each cell counts shared terms divided by the smaller vocabulary size. Values reflect the current lexical classifier; observed zeros do not establish conceptual isolation.}
 \label{fig:domain_overlap}
 \end{figure}
 
-Distinctive cross-domain bridges include:
-
-- **Power & Labor $\leftrightarrow$ Behavior & Identity**: Mechanisms of role assignment.
-- **Unit of Individuality $\leftrightarrow$ Kin & Relatedness**: Foundations of social structure.
-- **Economics $\leftrightarrow$ Power & Labor**: Resource distribution hierarchies.
-
-Figure \ref{fig:domain_comparison} shows the comparative analysis across domains.
-
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth]{../output/figures/domain_comparison.png}
-\caption{Comparison of terminology characteristics across the six Ento-Linguistic domains, computed at build time from the domain-assigned terminology of the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts; \texttt{output/data/domain\_statistics.json}). The 3\,×\,2 grid of bar charts shows (top-left) the number of distinct terms extracted per domain, (top-right) the mean extraction confidence assigned by the term extractor, (center-left) the total corpus frequency of each domain's terms, (center-right) the mean semantic entropy $H(t)$ per domain (Eq.~\ref{eq:semantic_entropy}, averaged over the domain's terms), (bottom-left) the number of bridging terms (terms assigned to more than one domain), and (bottom-right) the mean CACE aggregate score (Clarity, Appropriateness, Consistency, Evolvability; computed per domain on a sample of up to fifty terms). Within each panel, bar height encodes the quantity named on the $y$-axis, with values annotated at the bar tips; bar colors distinguish domains, not magnitudes. Domains with higher mean semantic entropy have usage contexts spanning more sense clusters in this corpus---an observed association, not evidence of causal framing effects.}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/domain_comparison.png}
+\caption{Six descriptive panels show distinct term counts, mean extraction confidence, total frequency, mean successfully computed sentence-context entropy, bridging counts, and heuristic CACE means over up to fifty selected terms per domain. Extraction confidence is a configured score rather than calibrated classification accuracy. Entropy and CACE sample definitions are specified in Methods; missing entropy does not establish zero ambiguity.}
 \label{fig:domain_comparison}
 \end{figure}
 
-A substantial majority of analyzed terminology exhibits highly context-dependent meanings. Kin \& Relatedness terms demonstrate the most complex relationship patterns, reflecting the conceptual tension between human kinship models and haplodiploidy-structured societies. Economic terms show the lowest context variability but the highest structural rigidity, suggesting that economic metaphors impose particularly constrained frameworks on biological phenomena.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/concept_map.png}
+\caption{Six predefined concept categories connected by vocabulary overlap. Node size summarizes associated terms, which can appear in several categories; the subtitle totals term associations rather than unique terms. Edge weights are classifier-defined overlaps, not observed causal connections or a discovered biological ontology.}
+\label{fig:concept_map}
+\end{figure}
 
 ## Framing Analysis
 
-Computational identification of framing assumptions reveals systematic biases embedded within the literature. Anthropomorphic framing profoundly affects all domains, while hierarchical framing concentrates heavily within the Power/Labor and Unit of Individuality discourse.
+Lexical markers identify contexts for further qualitative examination. They do not distinguish metaphor from technical usage, demonstrate author bias, or establish a language-induced change in biological models. The same distinction applies to the domain-specific interpretations in Section \ref{sec:domain_findings}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth]{../output/figures/anthropomorphic_framing.png}
-\caption{Inventory of the curated anthropomorphic vocabulary used by the framing analysis over the headline abstract layer ({{CORPUS_PUBLICATIONS}} open-access PubMed abstracts). \emph{Left}: number of curated marker terms per category---Hierarchical Terms, Economic Metaphors, Kinship Language, Identity Labels, and Agency Attribution; bar height encodes the count, annotated at the bar tip, with the overall total shown bottom-right. \emph{Right}: up to five example terms per category. These categories define the marker vocabularies that the pipeline's framing analysis matches in term-occurrence contexts; the counts are the sizes of the curated vocabularies, not corpus frequencies. Per-domain anthropomorphic-framing proportions derived from these vocabularies resolve at build time from \texttt{output/data/domain\_statistics.json}.}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/anthropomorphic_framing.png}
+\caption{Observed framing-marked terminology by canonical domain. Left: distinct extracted terms with at least one occurrence context matching an anthropomorphic pattern. Right: up to five terms per domain, selected by decreasing matched-context proportion, context count, and lexical ordering. Counts are neither curated vocabulary sizes nor occurrence frequencies. Occurrence-context framing proportions are exported separately.}
 \label{fig:anthropomorphic}
 \end{figure}
 
-Our ambiguity detection algorithm classifies four distinct ambiguity types—lexical, contextual, scale-dependent, and temporal—and confirms that *scale ambiguity* (where meaning shifts across biological levels of organization) and *context-dependent semantic drift* are the most prevalent patterns across the corpus (see Section \ref{sec:supplemental_analysis} for the formal multi-level ambiguity classification).
+Among assigned terms, {{CORPUS_MULTIDOMAIN_PERCENTAGE}}\% have multiple domain labels. This is a property of the classifier and corpus. Temporal semantic drift would require explicit time-indexed meaning comparison, while lexical, contextual, and scale ambiguity require independent sense annotation or validated proxies. Those measurements are not established by label overlap.

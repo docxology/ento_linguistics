@@ -1,133 +1,28 @@
-# Validation Guide — Ento-Linguistics
+# Validation guide
 
-Validation pipeline and quality gates for the Ento-Linguistic Domains project.
+Run from the repository root after installing development dependencies and NLTK resources.
 
-## Quick Validation
-
-```bash
-# Run tests then manuscript preflight
-uv run pytest tests/ -x -q && \
-uv run python scripts/_manuscript_preflight.py --strict && \
-echo "All validations passed"
-```
-
-## Test Suite
-
-```bash
-# Full suite (983 collected; 982 pass, 1 skip; ~139s)
-uv run pytest tests/ -x -q
-
-# Specific module
-uv run pytest tests/test_term_extraction.py -v
-uv run pytest tests/test_semantic_entropy.py -v
-uv run pytest tests/test_cace_scoring.py -v
-
-# With coverage report
-uv run pytest tests/ --cov=src --cov-report=html
-
-# Integration tests only
-uv run pytest tests/integration/ -v
-```
-
-## Figure Generation (Clean Slate)
-
-```bash
-# Stage 1: Build corpus
-uv run python scripts/01_build_corpus.py
-
-# Stage 2: Wipes output/figures/ and output/data/, regenerates all 11 figures
+~~~bash
+uv run pytest tests/ --cov=src --cov-report=term-missing
 uv run python scripts/02_generate_figures.py
-
-# Inspect what was generated
-ls -lh output/figures/*.png
-cat output/figures/figure_registry.json
-```
-
-### Expected Output (11 figures)
-
-| Figure | File | Min Size |
-|--------|------|----------|
-| Concept map | `output/figures/concept_map.png` | > 100 KB |
-| Terminology network | `output/figures/terminology_network.png` | > 200 KB |
-| Domain comparison | `output/figures/domain_comparison.png` | > 200 KB |
-| Domain overview grid | `output/figures/domain_overview_grid.png` | > 100 KB |
-| Domain patterns grid | `output/figures/domain_patterns_grid.png` | > 100 KB |
-| Domain overlap heatmap | `output/figures/domain_overlap_heatmap.png` | > 100 KB |
-| Concept hierarchy | `output/figures/concept_hierarchy.png` | > 100 KB |
-| Anthropomorphic framing | `output/figures/anthropomorphic_framing.png` | > 100 KB |
-| Power & Labor ambiguities | `output/figures/power_and_labor_ambiguities.png` | > 50 KB |
-| Power & Labor frequencies | `output/figures/power_and_labor_term_frequencies.png` | > 50 KB |
-| Unit of Individuality patterns | `output/figures/unit_of_individuality_patterns.png` | > 50 KB |
-
-### Expected Data Files (after `02_generate_figures.py`)
-
-| File | Content |
-|------|---------|
-| `output/data/corpus_statistics.json` | Total tokens, unique tokens, avg length, top terms |
-| `output/data/domain_statistics.json` | Per-domain term counts, confidence, bridging terms |
-| `output/data/concept_map_summary.json` | Concept counts, network metrics, relationships (e.g. 6 concepts, 9 relationships in current run) |
-| `output/data/cace_scores.json` | Per-term CACE scores (if generated) |
-
-## Manuscript Preflight
-
-```bash
-# Strict mode — fail on any missing figure or broken reference
-uv run python scripts/_manuscript_preflight.py --strict
-
-# JSON output for CI
-uv run python scripts/_manuscript_preflight.py --json
-```
-
-Checks performed:
-
-- All `\includegraphics` paths resolve to existing files in `output/figures/`
-- All `\ref{fig:...}` labels have matching `\label{fig:...}` definitions
-- Glossary markers (`<!-- BEGIN: AUTO-API-GLOSSARY -->`) are present in `98_symbols_glossary.md`
-- Bibliography command (`\bibliography{references}`) is present in `99_references.md`
-
-## PDF build (template substitution)
-
-```bash
-cd projects/ento_linguistics
+PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
 uv run python scripts/_render_pdf_override.py --strict-templates
-```
+~~~
 
-This concatenates the manuscript section list in `build_pdf()`, replaces every `{{KEY}}` via `_load_corpus_vars()` (see `../manuscript/AGENTS.md`), then Pandoc + XeLaTeX. Strict mode exits non-zero if any placeholder lacks a value—use in CI after regenerating `output/data/*.json`.
+Keep tests and regeneration sequential: some historical tests inspect generated artifacts. Development and manuscript builds must use the same source snapshot. The full analysis command regenerates figures and small data exports, preserves fingerprint-checked expensive caches, and rebuilds auxiliary source layers when their inputs or implementation change.
 
-## Quality Report
+## Gates and failure controls
 
-```bash
-# Readability, integrity, and reproducibility snapshot
-uv run python scripts/_quality_report.py
-```
+The configured floor is 90% combined statement/branch coverage. Report branch-only coverage separately rather than treating this floor as a separate branch threshold. Focused tests alone do not establish whole-suite coverage.
 
-## Pre-Commit Validation
+*tests/test_loader.py* rejects non-text and empty records. Full-text cache tests edit actual corpus text while retaining metadata and record count, verify bounded-run reuse, reject invalid limits, and ensure bounded artifacts do not satisfy a full run. *tests/test_provenance.py* rejects missing receipts, changed source/output content, altered file inventories and falsified resource hashes. *tests/test_nltk_resources.py* uses real installed files and fresh subprocesses to reject missing resources and detect changed tokenizer bytes. *tests/test_review_controls.py* checks the optimized literal counter against a separate non-overlapping matcher and verifies a real failing renderer subprocess cannot be masked by an old PDF.
 
-Before committing, verify:
+The analysis manifest is written only after required stages, variable coverage and manuscript figure checks. It binds corpus JSON, data JSON, figures and registry to the implementation, dependency lock and selected English NLTK resource contents. Missing resources fail; changed tokenizer/dictionary bytes invalidate cache and receipt signatures. The receipt records the resource hashes without vendoring them. Rendering validates the manifest before invoking Pandoc, XeLaTeX and BibTeX. Any nonzero toolchain exit fails, and final unresolved references/citations or missing glyphs fail.
 
-1. **Tests pass**: `uv run pytest tests/ -x -q`
-2. **Figures current**: Run `uv run python scripts/02_generate_figures.py` to confirm clean-slate rebuild exits 0
-3. **Preflight clean**: `uv run python scripts/_manuscript_preflight.py --strict`
-4. **No mock data**: All figure data computed from real analysis (`output/data/*.json`)
-5. **Template resolution**: `uv run python scripts/_render_pdf_override.py --strict-templates` (from `projects/ento_linguistics/`) so every `{{KEY}}` resolves after substitution
+## Manual artifact checks
 
-## CI Recommendations
+Inspect all registered figures for faithful labels, readable text, non-fabricated zeros, and stated sampling. Confirm plotted means and manuscript values against JSON. Render PDF pages with Poppler and inspect layouts, reference tables and figures; text extraction alone cannot verify visual quality.
 
-```bash
-# Minimum CI pipeline
-uv run pytest tests/ -x -q
-uv run python scripts/02_generate_figures.py
-uv run python scripts/_manuscript_preflight.py --strict --json
-uv run python scripts/_render_pdf_override.py --strict-templates
-```
+The custody audit reports all stored records and explicit gaps. It does not silently repair or fabricate provenance. A zero process exit does not establish that every source is relevant, fully reconciled, or licensed for redistribution.
 
-- Fail on any test failure or preflight error
-- Fail on any figure below minimum expected size
-- Persist `output/reports/`, `output/figures/`, and `output/data/` as artifacts for inspection
-
-## See Also
-
-- [development_workflow.md](development_workflow.md) — Environment setup and commands
-- [standards_compliance.md](standards_compliance.md) — Current quality metrics and corpus table
-- [manuscript_data_lineage.md](manuscript_data_lineage.md) — `{{KEY}}` injection and JSON sources
-- [testing_expansion_plan.md](testing_expansion_plan.md) — Test coverage roadmap
+Use *output/reports/corpus_audit.json*, *output/figures/figure_registry.json*, *output/data/analysis_manifest.json* and the run logs as the evidence trail. The dated review report records what was actually verified and remaining scientific boundaries.

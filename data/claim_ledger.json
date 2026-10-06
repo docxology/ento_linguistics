@@ -21,14 +21,14 @@
       "kind": "number",
       "value": 0.975,
       "freshness": "active",
-      "source": "src/visualization/statistical_visualization.py:1033 (Student-t 95% CI critical value via scipy.stats.t.ppf(0.975, n-1))"
+      "source": "src/visualization/statistical_visualization.py:plot_statistical_analysis (Student-t quantile 0.975; nominal intervals under independence)"
     },
     {
       "claim_id": "huber_1810_publication_year",
       "kind": "number",
       "value": 1810,
       "freshness": "active",
-      "source": "docs/manuscript/05_discussion.md (Pierre Huber, Recherches sur les moeurs des fourmis indigenes, Geneva, 1810 — historical publication year cited in the slave-term case study)"
+      "source": "docs/manuscript/references.bib:huber1810 (historical bibliography entry; not a measured result)"
     }
   ]
 }

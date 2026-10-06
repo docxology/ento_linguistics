@@ -497,13 +497,12 @@ class PubMedMiner:
 
             # Extract other fields
             abstract = data.get("abstract", "")
-            doi = (
-                data.get("elocationid", "")
-                if "DOI:" in str(data.get("elocationid", ""))
-                else None
-            )
-            if doi and doi.startswith("DOI: "):
-                doi = doi[5:]
+            doi = next((entry.get("value") for entry in data.get("articleids", [])
+                        if isinstance(entry, dict) and entry.get("idtype", "").lower() == "doi"
+                        and entry.get("value")), None)
+            if doi is None:
+                match = re.search(r"\bdoi:\s*(10\.\S+)", str(data.get("elocationid", "")), re.IGNORECASE)
+                doi = match.group(1) if match else None
 
             year = None
             pubdate = data.get("pubdate", "")

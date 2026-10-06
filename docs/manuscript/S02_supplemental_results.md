@@ -1,6 +1,8 @@
 # Supplemental Results {#sec:supplemental_results}
 
-## Pairwise Domain Comparisons
+## Exploratory Pairwise Domain Comparisons
+
+Domain groups share terms and document-derived contexts. Independence is therefore not established; BH threshold flags are numerical outputs rather than calibrated population evidence.
 
 Table \ref{tab:pairwise_domain} presents pairwise comparisons of per-term semantic entropy between all Ento-Linguistic domains using Welch's two-sample $t$-tests. Raw $p$-values are computed from the $t$-distribution with Satterthwaite-approximated degrees of freedom; adjusted $p$-values correct for {{PAIRWISE_N_COMPARISONS}} simultaneous comparisons using the Benjamini-Hochberg (BH) procedure at $q = 0.05$. Cohen's $d$ quantifies effect size, interpreted as small ($d \approx 0.2$), medium ($d \approx 0.5$), or large ($d \geq 0.8$). Domain descriptives entering these tests are per-term valid-entropy means with exclusions counted.
 
@@ -28,7 +30,7 @@ Power \& Labor & Unit of Individuality & {{PAIRWISE_POWER_AND_LABOR_UNIT_OF_INDI
 Sex \& Reproduction & Unit of Individuality & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_T}} & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_P}} & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_P_BH}} & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_D}} & {{PAIRWISE_SEX_AND_REPRODUCTION_UNIT_OF_INDIVIDUALITY_SIGNIFICANT}} \\
 \hline
 \end{tabular}
-\caption{Pairwise Welch's $t$-tests on per-term semantic entropy between Ento-Linguistic domains, with Benjamini-Hochberg adjusted $p$-values ({{CORRECTION_METHOD}} correction over {{PAIRWISE_N_COMPARISONS}} comparisons) and Cohen's $d$ effect sizes. The Sig.\ (BH) column reports BH-adjusted significance at $q = 0.05$ for each comparison. Domain descriptives feeding these tests are per-term valid-entropy means with exclusions counted. The omnibus one-way ANOVA across the six domains on {{ANOVA_METRIC}} yields $F({{ANOVA_DF1}}, {{ANOVA_DF2}}) = {{ANOVA_F}}$, {{ANOVA_P}}, $\eta^2 = {{ANOVA_ETA_SQUARED}}$, where $df_1 = k - 1$ (between-group) and $df_2 = N - k$ (within-group).}
+\caption{Exploratory pairwise Welch tests on valid per-term sentence-context entropy, with Benjamini--Hochberg adjusted $p$-values over {{PAIRWISE_N_COMPARISONS}} comparisons and standardized effect sizes. Threshold flags use $q=0.05$ without establishing calibrated population significance: domain groups overlap and share document-derived contexts. The omnibus ANOVA yields $F({{ANOVA_DF1}},{{ANOVA_DF2}})={{ANOVA_F}}$, $p$-value {{ANOVA_P}}, and $\eta^2={{ANOVA_ETA_SQUARED}}$.}
 \label{tab:pairwise_domain}
 \end{table}
 
@@ -39,31 +41,31 @@ Table \ref{tab:cace_full} presents full CACE evaluations for a representative se
 \begin{table}[h]
 \centering
 \small
-\begin{tabular}{|l|c|c|c|c|c|}
+\begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
-\textbf{Term} & \textbf{Clarity} & \textbf{Appropriateness} & \textbf{Consistency} & \textbf{Evolvability} & \textbf{Aggregate} \\
+\textbf{Term} & \textbf{C} & \textbf{A} & \textbf{Cs} & \textbf{E} & \textbf{Mean} & \textbf{Extracted} \\
 \hline
-queen & {{CACE_TERM_QUEEN_CLARITY}} & {{CACE_TERM_QUEEN_APPROPRIATENESS}} & {{CACE_TERM_QUEEN_CONSISTENCY}} & {{CACE_TERM_QUEEN_EVOLVABILITY}} & {{CACE_TERM_QUEEN_AGGREGATE}} \\
-\textit{primary reproductive} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_CLARITY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_APPROPRIATENESS}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_CONSISTENCY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_EVOLVABILITY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_AGGREGATE}} \\
+queen & {{CACE_TERM_QUEEN_CLARITY}} & {{CACE_TERM_QUEEN_APPROPRIATENESS}} & {{CACE_TERM_QUEEN_CONSISTENCY}} & {{CACE_TERM_QUEEN_EVOLVABILITY}} & {{CACE_TERM_QUEEN_AGGREGATE}} & {{CACE_TERM_QUEEN_IN_CORPUS}} \\
+\textit{primary reproductive} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_CLARITY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_APPROPRIATENESS}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_CONSISTENCY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_EVOLVABILITY}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_AGGREGATE}} & {{CACE_TERM_PRIMARY_REPRODUCTIVE_IN_CORPUS}} \\
 \hline
-worker & {{CACE_TERM_WORKER_CLARITY}} & {{CACE_TERM_WORKER_APPROPRIATENESS}} & {{CACE_TERM_WORKER_CONSISTENCY}} & {{CACE_TERM_WORKER_EVOLVABILITY}} & {{CACE_TERM_WORKER_AGGREGATE}} \\
-\textit{non-reproductive helper} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_CLARITY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_APPROPRIATENESS}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_CONSISTENCY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_EVOLVABILITY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_AGGREGATE}} \\
+worker & {{CACE_TERM_WORKER_CLARITY}} & {{CACE_TERM_WORKER_APPROPRIATENESS}} & {{CACE_TERM_WORKER_CONSISTENCY}} & {{CACE_TERM_WORKER_EVOLVABILITY}} & {{CACE_TERM_WORKER_AGGREGATE}} & {{CACE_TERM_WORKER_IN_CORPUS}} \\
+\textit{non-reproductive helper} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_CLARITY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_APPROPRIATENESS}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_CONSISTENCY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_EVOLVABILITY}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_AGGREGATE}} & {{CACE_TERM_NON_REPRODUCTIVE_HELPER_IN_CORPUS}} \\
 \hline
-slave & {{CACE_TERM_SLAVE_CLARITY}} & {{CACE_TERM_SLAVE_APPROPRIATENESS}} & {{CACE_TERM_SLAVE_CONSISTENCY}} & {{CACE_TERM_SLAVE_EVOLVABILITY}} & {{CACE_TERM_SLAVE_AGGREGATE}} \\
-\textit{host worker} & {{CACE_TERM_HOST_WORKER_CLARITY}} & {{CACE_TERM_HOST_WORKER_APPROPRIATENESS}} & {{CACE_TERM_HOST_WORKER_CONSISTENCY}} & {{CACE_TERM_HOST_WORKER_EVOLVABILITY}} & {{CACE_TERM_HOST_WORKER_AGGREGATE}} \\
+slave & {{CACE_TERM_SLAVE_CLARITY}} & {{CACE_TERM_SLAVE_APPROPRIATENESS}} & {{CACE_TERM_SLAVE_CONSISTENCY}} & {{CACE_TERM_SLAVE_EVOLVABILITY}} & {{CACE_TERM_SLAVE_AGGREGATE}} & {{CACE_TERM_SLAVE_IN_CORPUS}} \\
+\textit{host worker} & {{CACE_TERM_HOST_WORKER_CLARITY}} & {{CACE_TERM_HOST_WORKER_APPROPRIATENESS}} & {{CACE_TERM_HOST_WORKER_CONSISTENCY}} & {{CACE_TERM_HOST_WORKER_EVOLVABILITY}} & {{CACE_TERM_HOST_WORKER_AGGREGATE}} & {{CACE_TERM_HOST_WORKER_IN_CORPUS}} \\
 \hline
-caste & {{CACE_TERM_CASTE_CLARITY}} & {{CACE_TERM_CASTE_APPROPRIATENESS}} & {{CACE_TERM_CASTE_CONSISTENCY}} & {{CACE_TERM_CASTE_EVOLVABILITY}} & {{CACE_TERM_CASTE_AGGREGATE}} \\
-\textit{task group} & {{CACE_TERM_TASK_GROUP_CLARITY}} & {{CACE_TERM_TASK_GROUP_APPROPRIATENESS}} & {{CACE_TERM_TASK_GROUP_CONSISTENCY}} & {{CACE_TERM_TASK_GROUP_EVOLVABILITY}} & {{CACE_TERM_TASK_GROUP_AGGREGATE}} \\
+caste & {{CACE_TERM_CASTE_CLARITY}} & {{CACE_TERM_CASTE_APPROPRIATENESS}} & {{CACE_TERM_CASTE_CONSISTENCY}} & {{CACE_TERM_CASTE_EVOLVABILITY}} & {{CACE_TERM_CASTE_AGGREGATE}} & {{CACE_TERM_CASTE_IN_CORPUS}} \\
+\textit{task group} & {{CACE_TERM_TASK_GROUP_CLARITY}} & {{CACE_TERM_TASK_GROUP_APPROPRIATENESS}} & {{CACE_TERM_TASK_GROUP_CONSISTENCY}} & {{CACE_TERM_TASK_GROUP_EVOLVABILITY}} & {{CACE_TERM_TASK_GROUP_AGGREGATE}} & {{CACE_TERM_TASK_GROUP_IN_CORPUS}} \\
 \hline
-soldier & {{CACE_TERM_SOLDIER_CLARITY}} & {{CACE_TERM_SOLDIER_APPROPRIATENESS}} & {{CACE_TERM_SOLDIER_CONSISTENCY}} & {{CACE_TERM_SOLDIER_EVOLVABILITY}} & {{CACE_TERM_SOLDIER_AGGREGATE}} \\
-\textit{major worker} & {{CACE_TERM_MAJOR_WORKER_CLARITY}} & {{CACE_TERM_MAJOR_WORKER_APPROPRIATENESS}} & {{CACE_TERM_MAJOR_WORKER_CONSISTENCY}} & {{CACE_TERM_MAJOR_WORKER_EVOLVABILITY}} & {{CACE_TERM_MAJOR_WORKER_AGGREGATE}} \\
+soldier & {{CACE_TERM_SOLDIER_CLARITY}} & {{CACE_TERM_SOLDIER_APPROPRIATENESS}} & {{CACE_TERM_SOLDIER_CONSISTENCY}} & {{CACE_TERM_SOLDIER_EVOLVABILITY}} & {{CACE_TERM_SOLDIER_AGGREGATE}} & {{CACE_TERM_SOLDIER_IN_CORPUS}} \\
+\textit{major worker} & {{CACE_TERM_MAJOR_WORKER_CLARITY}} & {{CACE_TERM_MAJOR_WORKER_APPROPRIATENESS}} & {{CACE_TERM_MAJOR_WORKER_CONSISTENCY}} & {{CACE_TERM_MAJOR_WORKER_EVOLVABILITY}} & {{CACE_TERM_MAJOR_WORKER_AGGREGATE}} & {{CACE_TERM_MAJOR_WORKER_IN_CORPUS}} \\
 \hline
-colony & {{CACE_TERM_COLONY_CLARITY}} & {{CACE_TERM_COLONY_APPROPRIATENESS}} & {{CACE_TERM_COLONY_CONSISTENCY}} & {{CACE_TERM_COLONY_EVOLVABILITY}} & {{CACE_TERM_COLONY_AGGREGATE}} \\
-haplodiploidy & {{CACE_TERM_HAPLODIPLOIDY_CLARITY}} & {{CACE_TERM_HAPLODIPLOIDY_APPROPRIATENESS}} & {{CACE_TERM_HAPLODIPLOIDY_CONSISTENCY}} & {{CACE_TERM_HAPLODIPLOIDY_EVOLVABILITY}} & {{CACE_TERM_HAPLODIPLOIDY_AGGREGATE}} \\
-trophallaxis & {{CACE_TERM_TROPHALLAXIS_CLARITY}} & {{CACE_TERM_TROPHALLAXIS_APPROPRIATENESS}} & {{CACE_TERM_TROPHALLAXIS_CONSISTENCY}} & {{CACE_TERM_TROPHALLAXIS_EVOLVABILITY}} & {{CACE_TERM_TROPHALLAXIS_AGGREGATE}} \\
+colony & {{CACE_TERM_COLONY_CLARITY}} & {{CACE_TERM_COLONY_APPROPRIATENESS}} & {{CACE_TERM_COLONY_CONSISTENCY}} & {{CACE_TERM_COLONY_EVOLVABILITY}} & {{CACE_TERM_COLONY_AGGREGATE}} & {{CACE_TERM_COLONY_IN_CORPUS}} \\
+haplodiploidy & {{CACE_TERM_HAPLODIPLOIDY_CLARITY}} & {{CACE_TERM_HAPLODIPLOIDY_APPROPRIATENESS}} & {{CACE_TERM_HAPLODIPLOIDY_CONSISTENCY}} & {{CACE_TERM_HAPLODIPLOIDY_EVOLVABILITY}} & {{CACE_TERM_HAPLODIPLOIDY_AGGREGATE}} & {{CACE_TERM_HAPLODIPLOIDY_IN_CORPUS}} \\
+trophallaxis & {{CACE_TERM_TROPHALLAXIS_CLARITY}} & {{CACE_TERM_TROPHALLAXIS_APPROPRIATENESS}} & {{CACE_TERM_TROPHALLAXIS_CONSISTENCY}} & {{CACE_TERM_TROPHALLAXIS_EVOLVABILITY}} & {{CACE_TERM_TROPHALLAXIS_AGGREGATE}} & {{CACE_TERM_TROPHALLAXIS_IN_CORPUS}} \\
 \hline
 \end{tabular}
-\caption{CACE dimension scores for representative entomological terms. Anthropomorphic terms (queen, worker, slave, caste, soldier) consistently score lower than functional alternatives (italicized). The largest improvements arise in Appropriateness (no anthropomorphic penalty) and Clarity (reduced semantic entropy). Non-anthropomorphic technical terms (haplodiploidy, trophallaxis) score highest on Clarity due to unambiguous, single-sense usage. Note: ``colony'' receives Appropriateness $= {{CACE_TERM_COLONY_APPROPRIATENESS}}$ because it falls outside the \texttt{ANTHROPOMORPHIC\_TERMS} set used for automated scoring; its colonial and settler-historical connotations are analyzed qualitatively in Section~\ref{sec:discussion}. All values resolve at render time from the frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}).}
+\caption{Heuristic representative-term CACE scores: C is Clarity, A Appropriateness, Cs Consistency, and E Evolvability; Mean weights them equally. Extracted indicates membership in the extracted vocabulary, not phrase presence anywhere in the source text. Unextracted alternatives use fallback conventions. Defaults and vocabulary penalties are not independently measured clarity, biological accuracy, or evidence of terminology-reform benefit.}
 \label{tab:cace_full}
 \end{table}
 
@@ -87,21 +89,20 @@ Kin \& Relatedness & {{DOMAIN_KIN_AND_RELATEDNESS_ENTROPY}} & {{DOMAIN_KIN_AND_R
 \textbf{Overall} & {{CORPUS_OVERALL_ENTROPY}} & {{CORPUS_OVERALL_HIGH_ENTROPY_PCT}} & \textbf{ {{CORPUS_OVERALL_N_TERMS}} } \\
 \hline
 \end{tabular}
-\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), corresponding to terms whose usage contexts span many distinct semantic senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is set to $k = \max(2,\, \min(k_{\max},\, n{-}1,\, \max(2, \lfloor\!\sqrt{n}\rfloor)))$ with $k_{\max}=5$ to prevent degenerate one-point-per-cluster assignments; each result also reports $H_{\max} = \log_2 k$ and the normalized entropy $H/H_{\max} \in [0,1]$. The $N$ column is each domain's term count in the same artifact, and the Overall row is their exact sum; every table value resolves at render time from the artifact.}
+\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), summarizing occupancy of computational clusters without annotated senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is set to $k = \max(2,\, \min(k_{\max},\, n{-}1,\, \max(2, \lfloor\!\sqrt{n}\rfloor)))$ with $k_{\max}=5$ to prevent degenerate one-point-per-cluster assignments; each result also reports $H_{\max} = \log_2 k$ and the normalized entropy $H/H_{\max} \in [0,1]$. The $N$ column counts terms with usable entropy estimates; Overall sums valid domain memberships and can count a multi-domain term more than once. Its mean and high-entropy percentage use that same denominator; every table value resolves at render time from the artifact.}
 \label{tab:entropy_distribution}
 \end{table}
 
 ## Confidence Intervals for Domain Metrics
 
-The frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}) reports per-term valid-entropy descriptives (means and standard deviations, with exclusions counted) and the inferential results in Table \ref{tab:pairwise_domain}; it does not compute domain-level confidence intervals, so per-domain ambiguity-score and context-variability intervals are not tabulated here. Separation between domains is established inferentially by the Welch $t$-tests and the omnibus ANOVA reported in Table \ref{tab:pairwise_domain}, with per-domain entropy descriptives in Table \ref{tab:entropy_distribution} and the accompanying summary figure \texttt{statistical\_analysis.png}.
+The frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}) reports per-term valid-entropy descriptives (means and standard deviations, with exclusions counted) and the inferential results in Table \ref{tab:pairwise_domain}; it does not compute domain-level confidence intervals, so per-domain ambiguity-score and context-variability intervals are not tabulated here. Exploratory numerical differences are summarized by the Welch $t$-tests and the omnibus ANOVA reported in Table \ref{tab:pairwise_domain}, with per-domain entropy descriptives in Table \ref{tab:entropy_distribution} and the accompanying summary figure \texttt{statistical\_analysis.png}.
 
 ## Full-Text Parallel Layer
 
-To test whether the ento-linguistic patterns reported above survive beyond
-abstracts, a parallel analysis layer was run over {{FULLTEXT_DOCUMENTS}} open
+A complementary descriptive analysis was run over {{FULLTEXT_DOCUMENTS}} open
 access full texts harvested from PubMed Central (PMC). The abstract corpus
 remains the headline corpus of this study; the full-text layer is reported
-here as a robustness check. The analysis machinery is shared: the same
+here as a separate convenience sample with a higher extraction threshold. The analysis machinery is shared: the same
 terminology extraction, domain assignment, semantic-entropy, and CACE
 scoring implementations are applied to full texts, with the frozen artifact
 written to \texttt{output/data/fulltext\_analysis.json} and rendered in
@@ -119,7 +120,7 @@ Anthropomorphic framing over the same full texts is scored as the
 proportion of domain-term occurrence contexts containing an anthropomorphic
 framing marker (\texttt{add\_framing\_analysis} in
 \texttt{src/pipeline/fulltext\_pipeline.py}): {{FULLTEXT_ANTHROPOMORPHIC_OVERALL}}
-overall, with Economics a clear outlier at
+overall, with Economics at
 {{FULLTEXT_DOMAIN_ECONOMICS_ANTHROPOMORPHIC}} against
 {{FULLTEXT_DOMAIN_UNIT_OF_INDIVIDUALITY_ANTHROPOMORPHIC}} for Unit of
 Individuality and {{FULLTEXT_DOMAIN_BEHAVIOR_AND_IDENTITY_ANTHROPOMORPHIC}}
@@ -139,7 +140,7 @@ Sex \& Reproduction & {{FULLTEXT_DOMAIN_SEX_AND_REPRODUCTION_TERMS}} & {{FULLTEX
 Unit of Individuality & {{FULLTEXT_DOMAIN_UNIT_OF_INDIVIDUALITY_TERMS}} & {{FULLTEXT_DOMAIN_UNIT_OF_INDIVIDUALITY_ENTROPY}} \\
 \hline
 \end{tabular}
-\caption{Per-domain terminology in the PMC full-text parallel layer: extracted-term counts and mean semantic entropy $H(t)$, computed with the same pipeline as the abstract layer (\texttt{output/data/fulltext\_analysis.json}, \texttt{descriptives} section). Term extraction uses a higher minimum token frequency than the abstract layer because full texts are substantially longer.}
+\caption{Per-domain terminology in the PMC full-text parallel layer: extracted-term counts and mean semantic entropy $H(t)$, computed over valid estimates with the same pipeline as the abstract layer; valid-estimate counts appear in the statistical figure (\texttt{output/data/fulltext\_analysis.json}, \texttt{descriptives} section). Term extraction uses a higher minimum token frequency than the abstract layer because full texts are substantially longer.}
 \label{tab:fulltext_domain}
 \end{table}
 
@@ -193,3 +194,40 @@ texts. All frequencies are raw corpus counts from the artifacts'
 \texttt{discourse} sections (\texttt{output/data/statistical\_analysis.json}
 and \texttt{output/data/fulltext\_analysis.json}); no values in this
 subsection are literals.
+
+## Statistical and Source-Layer Figures
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/statistical_analysis.png}
+\caption{Headline valid-entropy descriptives with nominal intervals, bias-corrected standardized differences, and exploratory ANOVA. Bar annotations report valid term counts; overlapping domain memberships and shared document contexts limit population inference.}
+\label{fig:statistical_analysis}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/fulltext_analysis.png}
+\caption{Separate PMC full-text statistics over all stored records by default. Extraction thresholds and context distributions differ from the abstract layer. Nominal intervals and multiplicity-adjusted threshold flags remain exploratory.}
+\label{fig:fulltext_analysis}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/layer_comparison.png}
+\caption{Mean valid context-cluster entropy in the abstract and PMC layers, with valid-term counts. This compares distinct convenience samples and extraction thresholds; it is not a matched robustness experiment or evidence of causal language effects.}
+\label{fig:layer_comparison}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/discourse_comparison.png}
+\caption{Lexical discourse, rhetorical and persuasive-pattern counts, with analyzed-text counts shown in the legend. PMC uses an explicitly bounded text sample. Raw frequencies depend on sample size and text length and must not be read as normalized prevalence or human-validated author intent.}
+\label{fig:discourse_comparison}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/arxiv_analysis.png}
+\caption{Separate arXiv preprint-layer descriptives and exploratory comparisons. Some groups have only one valid entropy estimate, for which intervals are omitted; very small groups and nearly zero within-group variance can yield large standardized differences without establishing generalizable effects.}
+\label{fig:arxiv_analysis}
+\end{figure}

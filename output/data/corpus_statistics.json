@@ -1,52 +1,52 @@
 {
-  "total_tokens": 1000038,
-  "unique_tokens": 47230,
-  "total_characters": 10973822,
-  "avg_token_length": 7.208531075819119,
+  "total_tokens": 991026,
+  "unique_tokens": 47064,
+  "total_characters": 10874703,
+  "avg_token_length": 7.207539459106018,
   "most_common_tokens": [
     [
       "ant",
-      20538
+      20328
     ],
     [
       "specie",
-      10625
+      10552
     ],
     [
       "colony",
-      7457
+      7319
     ],
     [
       "worker",
-      6396
+      6207
     ],
     [
       "social",
-      4790
+      4688
     ],
     [
       "insect",
-      4533
+      4474
     ],
     [
       "study",
-      4484
+      4433
     ],
     [
       "nest",
-      4301
+      4269
     ],
     [
       "queen",
-      4053
+      3946
     ],
     [
       "result",
-      3694
+      3652
     ],
     [
       "may",
-      3552
+      3512
     ],
     [
       "plant",
@@ -54,36 +54,39 @@
     ],
     [
       "foraging",
-      3429
-    ],
-    [
-      "individual",
-      3211
+      3369
     ],
     [
       "two",
-      3191
+      3176
     ],
     [
       "effect",
-      3184
+      3167
+    ],
+    [
+      "individual",
+      3158
     ],
     [
       "bee",
-      3053
+      3043
     ],
     [
       "behavior",
-      3053
+      3016
     ],
     [
       "different",
-      2970
+      2952
     ],
     [
       "also",
-      2886
+      2865
     ]
   ],
-  "type_token_ratio": 0.04722820532819753
+  "type_token_ratio": 0.0474901768470252,
+  "n_documents": 7540,
+  "stored_documents": 7609,
+  "excluded_unreconciled": 69
 }

@@ -26,8 +26,7 @@ Deterministic for identical inputs (KMeans clustering is seeded inside
 the canonical entropy implementation; extraction and grouping are
 order-stable).
 
-This module is NOT wired into ``manuscript_figures`` — a later wave
-integrates the parallel layer.
+This module is wired into ``manuscript_figures`` and builds the parallel source layer.
 """
 
 from __future__ import annotations
@@ -78,9 +77,14 @@ def _document_text(record: Dict[str, Any]) -> str:
         fields skipped) so term extraction sees the same surface the
         statistics passes do.
     """
-    parts = [
-        str(record.get(field) or "") for field in ("title", "abstract", "body_text")
-    ]
+    if not isinstance(record, dict):
+        raise ValueError("Document records must be dictionaries")
+    parts = []
+    for field in ("title", "abstract", "body_text"):
+        value = record.get(field)
+        if value is not None and not isinstance(value, str):
+            raise ValueError(f"Document {field} must contain text")
+        parts.append(value or "")
     return "\n\n".join(part for part in parts if part.strip())
 
 

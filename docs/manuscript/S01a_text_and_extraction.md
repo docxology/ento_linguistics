@@ -1,203 +1,45 @@
 # Supplemental Methods: Text Processing and Term Extraction {#sec:supplemental_methods}
 
-This supplement documents the implementation architecture of the Ento-Linguistic analysis pipeline. Every entry corresponds to a real module, class, or function in `src/`. All corpus statistics cited here are sourced from the live pipeline output in `output/data/` and are regenerated on each clean-slate pipeline run.
+This section specifies the input and extraction stages used by the study. The numerical definitions and bounded components are detailed in Section \ref{sec:supplemental_infrastructure}. Developer APIs remain documented in source; template utilities are not additional research measurements.
 
----
+## Source Layers and Custody
 
-## Package Architecture
+The archived abstract input contains {{CORPUS_STORED_RECORDS}} strings. The headline analysis includes {{CORPUS_PUBLICATIONS}} strings whose SHA-256 digest maps to an identified PubMed record and excludes {{CORPUS_EXCLUDED_UNRECONCILED}} unreconciled strings. Exact digest matches to retrieved PubMed abstracts can recover metadata without changing archived text. Identification establishes a source association, not relevance to ant biology, a complete retrieval history, or independent text annotation.
 
-```text
-src/
-├── analysis/
-│   ├── cace_scoring.py         # CACE dimension scoring
-│   ├── conceptual_mapping.py   # Concept map construction & analysis
-│   ├── discourse_analysis.py   # Discourse-level analysis
-│   ├── discourse_patterns.py   # Discourse pattern detection
-│   ├── domain_analysis.py      # Six-domain specialist analysis
-│   ├── performance.py          # Pipeline performance metrics
-│   ├── persuasive_analysis.py  # Persuasive strategy analysis
-│   ├── rhetorical_analysis.py  # Rhetorical strategy & narrative analysis
-│   ├── semantic_entropy.py     # Semantic entropy H(t) computation
-│   ├── statistics.py           # Statistical tests (t-test, ANOVA, CI)
-│   ├── term_extraction.py      # Term extraction & classification
-│   └── text_analysis.py        # Text normalization & tokenization
-├── core/
-│   ├── exceptions.py           # Custom exception hierarchy
-│   ├── logging.py              # Logging infrastructure
-│   ├── markdown_integration.py # Manuscript markdown integration
-│   ├── metrics.py              # Pipeline metrics collection
-│   ├── parameters.py           # Configurable pipeline parameters
-│   ├── validation.py           # Input validation
-│   └── validation_utils.py     # Validation helpers
-├── data/
-│   ├── data_generator.py       # Synthetic data generation for testing
-│   ├── data_processing.py      # Data loading and transformation
-│   ├── literature_mining.py    # Literature corpus mining
-│   └── loader.py               # Corpus file loader
-├── pipeline/
-│   ├── reporting.py            # Pipeline output reporting
-│   └── simulation.py           # Simulation framework
-└── visualization/
-    ├── concept_visualization.py     # Multi-panel concept figures
-    ├── figure_manager.py            # Figure registry & integrity
-    ├── plots.py                     # Low-level plot utilities
-    ├── statistical_visualization.py # Statistical plots
-    └── visualization.py            # Visualization utilities
-```
+PMC records retain title, abstract, and body text in their own shard directory. BHL records retain historical OCR and era assignments. arXiv title/abstract records form a separate preprint layer. Those documents are not concatenated into the headline abstract input. The custody audit inspects every stored record and reports missing metadata, duplicate text, identifier disagreement, unused sidecar entries, and invalid text.
 
----
+Digest-indexed sidecars can retain only one source identity when several records share identical text. These collisions are reported rather than resolved by inventing metadata. Broad searches include adjacent biology, computational terminology and mixed-topic historical volumes. The PMC layer includes correction and retraction notices; repeated notice boilerplate contributes to shared body text. Individual relevance, article-type screening and license review remain incomplete.
 
-## Text Processing (`src/analysis/text_analysis.py`)
+## Normalization and Token Streams
 
-### `TextProcessor`
+TextProcessor applies Unicode normalization, lowercase conversion, word tokenization, punctuation filtering, and stop-word removal. Hyphenated and underscored tokens can remain intact. The stop vocabulary combines NLTK English stop words with configured scientific meta-language words. WordNet lemmatization is available and is used for corpus vocabulary summaries; terminology extraction disables lemmatization for its occurrence counts. Consequently a summary's most-common lemma and an extracted surface-form frequency need not have the same spelling.
 
-**Constructor parameters:**
+NLTK sentence tokenization supplies the contexts used for semantic entropy. These sentence contexts differ from the short, processed-token windows retained on extracted Term objects. English-language resources are applied to a heterogeneous stored corpus; this is not a validated multilingual processing pipeline.
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `language` | `str` | `"english"` | NLTK processing language |
-| `custom_stop_words` | `Optional[Set[str]]` | `None` | Additional domain stop-words |
+NLTK resources are separate downloaded prerequisites. The schema-2 analysis receipt binds the selected English stopword file, English punkt_tab files and WordNet dictionary bytes (the complete archive when archive-backed). The same hashes enter cache signatures; changing a selected resource requires reanalysis. These hashes identify the installed inputs without vendoring them or guaranteeing automatic restoration. Open Multilingual WordNet is outside this receipt because English lemmatization does not consume it. The source implementation and uv.lock specify Python package dependencies.
 
-Stop-word vocabulary = NLTK English stop-words ∪ `SCIENTIFIC_STOP_WORDS` (24 domain meta-language tokens: *fig, table, et, al, etc, ie, eg, vs, cf, respectively, however, therefore, thus, although, whereas, furthermore, moreover, addition, similarly, consequently, subsequently, accordingly, nevertheless, nonetheless*).
+## Candidate Extraction and Domain Assignment
 
-Scientific term protection vocabulary (preserved against tokenization splitting): *superorganism, eusocial, eusociality, hymenoptera, formicidae, myrmicinae, ponerinae, dorylinae, phylogenetic, ontogenetic, phenotypic, genotypic*.
+TerminologyExtractor counts tokens, applies a minimum frequency, and evaluates candidate filters. The headline threshold is one occurrence; the PMC threshold is twenty; arXiv and the BHL computational stack use two. Different thresholds, document lengths and source genres affect vocabulary size and prevent treating raw counts as matched layer comparisons.
 
-**Methods:**
+Candidate filters retain configured seed words of three to fifty characters before evaluating generic filters. Other candidates enter through scientific patterns, compound separators, or configured scientific substrings. They reject pure numbers but can admit unrelated substring matches and OCR artifacts. Candidate inclusion is therefore broader than biological terminology. For example, skin, making and queensland can remain candidates without receiving a domain label.
 
-| Method | Signature | Returns | Notes |
-|--------|-----------|---------|-------|
-| `normalize_text` | `(text: str) → str` | Normalized string | NFKC → lowercase → punctuation removal (retaining hyphens) → whitespace collapse |
-| `tokenize_sentences` | `(text: str) → List[str]` | Sentence list | NLTK `sent_tokenize` |
-| `tokenize_words` | `(text: str, preserve_scientific: bool) → List[str]` | Token list | NLTK `word_tokenize` + sliding-window scientific-term merge |
-| `remove_punctuation` | `(tokens: List[str]) → List[str]` | Clean tokens | Regex `[^\w\-_]` removal; retains alphanumeric content |
-| `remove_stop_words` | `(tokens: List[str]) → List[str]` | Filtered tokens | Lowercased lookup against combined stop-word set |
-| `lemmatize_tokens` | `(tokens: List[str]) → List[str]` | Lemmatized tokens | NLTK `WordNetLemmatizer.lemmatize` |
-| `process_text` | `(text: str, lemmatize=True, remove_stops=True) → List[str]` | Processed tokens | Full pipeline: normalize → tokenize → remove punct → [stop removal] → [lemmatize] |
-| `extract_ngrams` | `(tokens, n=2, min_freq=1) → Dict[str,int]` | N-gram counts | Sliding window; filters by `min_freq` |
-| `get_vocabulary_stats` | `(texts: List[str]) → Dict` | Stats dict | total_tokens, unique_tokens, total_characters, avg_token_length, most_common_tokens (top 20), type_token_ratio |
+The six DOMAIN_SEEDS vocabularies define direct assignments. Compound tokens can inherit labels from seed-word overlap; fallback lexical patterns use word boundaries. An extracted term can receive several labels. Label overlap follows from these rules and does not demonstrate temporal semantic drift or independently annotated meanings.
 
-**Corpus vocabulary statistics (current run, sourced from `output/data/corpus_statistics.json`):**
+Candidate iteration is sorted for deterministic output. The extractor stores surface text, lemma, frequency, domain labels, confidence, and deduplicated short contexts. Three-token windows around occurrences supply at most thirty stored contexts. These windows support heuristic scoring; they do not expand domain labels by co-occurrence. The available n-gram utility is not invoked by the headline extractor.
 
-| Metric | Value |
-|--------|-------|
-| Total tokens | **{{CORPUS_TOTAL_TOKENS}}** |
-| Unique token types | **{{CORPUS_UNIQUE_TOKENS}}** |
-| Type–token ratio | **{{CORPUS_TTR}}** |
-| Top 5 tokens | {{CORPUS_TOP_TERM_1}} ({{CORPUS_TOP_FREQ_1}}), {{CORPUS_TOP_TERM_2}} ({{CORPUS_TOP_FREQ_2}}), {{CORPUS_TOP_TERM_3}} ({{CORPUS_TOP_FREQ_3}}), {{CORPUS_TOP_TERM_4}} ({{CORPUS_TOP_FREQ_4}}), {{CORPUS_TOP_TERM_5}} ({{CORPUS_TOP_FREQ_5}}) |
+Extraction confidence combines configured frequency, context and classification features. It is not calibrated against human correctness labels. The pipeline does not report precision, recall, multilingual accuracy, or inter-rater reliability.
 
-### `LinguisticFeatureExtractor`
+## Document Co-occurrence and Concept Categories
 
-Regex-based framing feature extraction. Three pattern sets (16 patterns total):
+The observed terminology graph uses the hundred highest-frequency domain-assigned terms, with lexical tie-breaking. Case-insensitive whole-word searches identify presence in each document. A pair's edge weight counts documents containing both terms, regardless of repeated mentions. Shared labels do not create observed edges. The saved graph statistics describe this selected vocabulary rather than the entire field.
 
-- **Anthropomorphic** (4 patterns): `\b(choose|decide|prefer|select|opt)\b`, `\b(communicate|signal|inform|warn)\b`, `\b(cooperate|compete|negotiate|trade)\b`, `\b(recognize|identify|distinguish|know)\b`
-- **Hierarchical** (4 patterns): `\b(superior|inferior|dominant|subordinate)\b`, `\b(command|control|authority|obey)\b`, `\b(leader|follower|boss|worker)\b`, `\b(ruler|subject|governor|citizen)\b`
-- **Economic** (4 patterns): `\b(invest|profit|cost|benefit)\b`, `\b(trade|exchange|transaction|market)\b`, `\b(resource|allocation|distribution|share)\b`, `\b(value|worth|price|commodity)\b`
+The separate concept map uses six predefined categories and vocabulary-association rules. Terms can belong to several categories, so a total of term associations is not a count of unique terms. Category links summarize vocabulary overlap. Node positions, direct-link centrality, colors, and label selection are display conventions and do not establish biological hierarchy or causal dependence.
 
-`extract_framing_features(text)` → dict with raw counts + normalized densities (count / total_words).
+The overlap heatmap uses the Szymkiewicz--Simpson coefficient in Equation \ref{eq:overlap_coefficient}. Its diagonal is one by construction. A zero observed overlap does not establish conceptual separation.
 
-Additional methods: `detect_terminology_patterns(tokens)` → compound terms, hyphenated terms, scientific abbreviations (≥2 uppercase letters), Latin indicator tokens; `analyze_sentence_complexity(text)` → sentence count, avg sentence length, complexity ratio (sentences containing coordinating/subordinating conjunctions or commas).
+## Reproducible Inputs and Failure Behavior
 
----
+DataLoader rejects malformed or empty corpus input, including non-string and blank records. Required pipeline stages propagate failures. Process workers merge results in input order; ENTO_ANALYSIS_WORKERS=1 selects serial execution. Resource-related pool unavailability is logged before a serial retry, while other worker failures propagate.
 
-## Terminology Extraction (`src/analysis/term_extraction.py`)
-
-### `Term` Dataclass
-
-```python
-@dataclass
-class Term:
-    text: str               # Surface form
-    lemma: str              # WordNet lemma
-    domains: List[str]      # Ento-Linguistic domain list
-    frequency: int          # Corpus-wide occurrence count
-    contexts: List[str]     # Deduplicated context sentences
-    pos_tags: List[str]     # Part-of-speech tags
-    confidence: float       # Extraction confidence
-    semantic_entropy: float # Shannon entropy H(t) in bits
-```
-
-Serialization: `to_dict()` / `from_dict()` (backward compatible; injects `semantic_entropy=0.0` for older records).
-
-### `TerminologyExtractor`
-
-Domain seed lexicons (partial list):
-
-| Domain | Example Seeds |
-|--------|---------------|
-| `unit_of_individuality` | ant, nestmate, colony, superorganism, eusocial, individual, collective, organism |
-| `behavior_and_identity` | behavior, caste, task, forager, nurse, soldier, identity, polyethism |
-| `power_and_labor` | queen, worker, dominance, hierarchy, division of labor, subordinate, control |
-| `sex_and_reproduction` | sex, reproduction, mating, haplodiploidy, queen, egg, sperm, parthenogenesis |
-| `kin_and_relatedness` | kin, relatedness, altruism, inclusive fitness, nepotism, sibling |
-| `economics` | cost, benefit, foraging, resource, allocation, efficiency, trade, investment |
-
-Extraction: normalize → tokenize → match against domain seed sets → extend via co-occurrence proximity (3-token window) → deduplicate contexts → assign confidence. `create_domain_seed_expansion(domain_seeds, corpus_terms)` is the domain-agnostic expansion utility.
-
-**Pipeline run results (sourced from `output/data/domain_statistics.json`):**
-
-| Domain | Term Count | Total Frequency | Bridging Terms |
-|--------|------------|-----------------|----------------|
-| Power & Labor | {{DOMAIN_POWER_AND_LABOR_TERMS}} | {{DOMAIN_POWER_AND_LABOR_FREQ}} | {{DOMAIN_POWER_AND_LABOR_BRIDGING}} |
-| Unit of Individuality | {{DOMAIN_UNIT_OF_INDIVIDUALITY_TERMS}} | {{DOMAIN_UNIT_OF_INDIVIDUALITY_FREQ}} | {{DOMAIN_UNIT_OF_INDIVIDUALITY_BRIDGING}} |
-| Sex & Reproduction | {{DOMAIN_SEX_AND_REPRODUCTION_TERMS}} | {{DOMAIN_SEX_AND_REPRODUCTION_FREQ}} | {{DOMAIN_SEX_AND_REPRODUCTION_BRIDGING}} |
-| Behavior & Identity | {{DOMAIN_BEHAVIOR_AND_IDENTITY_TERMS}} | {{DOMAIN_BEHAVIOR_AND_IDENTITY_FREQ}} | {{DOMAIN_BEHAVIOR_AND_IDENTITY_BRIDGING}} |
-| Kin & Relatedness | {{DOMAIN_KIN_AND_RELATEDNESS_TERMS}} | {{DOMAIN_KIN_AND_RELATEDNESS_FREQ}} | {{DOMAIN_KIN_AND_RELATEDNESS_BRIDGING}} |
-| Economics | {{DOMAIN_ECONOMICS_TERMS}} | {{DOMAIN_ECONOMICS_FREQ}} | {{DOMAIN_ECONOMICS_BRIDGING}} |
-| **Total (all domains)** | **{{CORPUS_DOMAIN_TERMS}}** | — | — |
-
----
-
-## Semantic Entropy (`src/analysis/semantic_entropy.py`)
-
-### Constants
-
-```python
-HIGH_ENTROPY_THRESHOLD = 2.0  # bits; corresponds to ≥4 equiprobable senses
-```
-
-### `SemanticEntropyResult` Dataclass
-
-```python
-@dataclass
-class SemanticEntropyResult:
-    term: str
-    entropy_bits: float            # Shannon H(t) in bits (base 2)
-    n_clusters: int                # KMeans k actually used
-    cluster_distribution: List[float]  # Empirical p(c_i) per cluster
-    is_high_entropy: bool          # True if entropy_bits > 2.0
-    n_contexts: int                # Valid contexts used
-    h_max: float                   # log2(k): maximum attainable entropy for k clusters
-    entropy_normalized: float      # H / h_max, normalized to [0, 1]
-```
-
-### `calculate_semantic_entropy`
-
-```python
-def calculate_semantic_entropy(
-    term: str,
-    contexts: List[str],
-    max_clusters: int = 5,
-    min_contexts: int = 5,
-    random_state: int = 42,
-    threshold: float = 2.0,
-) -> SemanticEntropyResult
-```
-
-**Algorithm:**
-
-1. Filter to contexts with ≥3 whitespace-delimited words.
-2. If valid contexts < `min_contexts`: return H=0.0, n_clusters=1 (or 0 if empty).
-3. TF-IDF: `TfidfVectorizer(stop_words="english", min_df=1, max_features=1000)`.
-4. Cluster count: `k_upper = min(max_clusters, n - 1, max(2, int(np.sqrt(n))))`; `k = max(2, k_upper)` with `n = len(valid_contexts)` — guarantees `k < n` and caps `k` at the data-driven `sqrt(n)` bound; if `k < 2` return H=0.0.
-5. `KMeans(n_clusters=k, random_state=42, n_init=10)` → labels.
-6. Empirical distribution: $p_i = n_i / N$.
-7. $H =$ `scipy.stats.entropy(probabilities, base=2)`.
-8. Normalization: `h_max = log2(k)`; `entropy_normalized = entropy_bits / h_max` (0.0 when `k < 2`).
-9. Exception guard: any sklearn/scipy failure → H=0.0.
-
-### Corpus-Level Functions
-
-| Function | Returns | Description |
-|----------|---------|-------------|
-| `calculate_corpus_entropy(terms_contexts, ...)` | `Dict[str, SemanticEntropyResult]` | Runs per-term entropy for all terms |
-| `get_high_entropy_terms(results)` | `List[SemanticEntropyResult]` | Filters `is_high_entropy=True`, sorted descending by `entropy_bits` |
+Caches bind ordered record contents, project Python source, locked dependencies, and explicit development limits. Changed body text invalidates an artifact even if its metadata, record count and file modification time remain unchanged. The completed receipt binds the input/output inventory and image hashes. A receipt establishes which bytes were used, not the scientific validity of the taxonomy or proxies.

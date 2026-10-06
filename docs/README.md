@@ -1,77 +1,33 @@
-# Ento-Linguistics Project Documentation
+# Ento-Linguistics documentation
 
-Reference materials and guides for the **Ento-Linguistic Domains** research project — studying how entomological metaphors permeate and shape scientific discourse across six analytical domains.
+Current entry points are [repository README](../README.md), [validation guide](validation_guide.md), [reproducibility boundaries](reproducibility.md), and the [dated review evidence](review_20261005.md).
 
-## Key Documents
+## Run the standalone project
 
-| Document | Purpose |
-|----------|---------|
-| [AGENTS.md](AGENTS.md) | Technical overview of every doc in this directory |
-| [REVIEW_SUMMARY.md](REVIEW_SUMMARY.md) | Review summary and completed coherence edits |
-| [development_workflow.md](development_workflow.md) | Environment setup, test commands, script names, module paths |
-| [manuscript_data_lineage.md](manuscript_data_lineage.md) | Mappings of how `src/` modules populate `docs/manuscript/` contents |
-| [manuscript_style_guide.md](manuscript_style_guide.md) | Figures, citations, equations, and cross-reference examples from the actual manuscript |
-| [refactor_playbook.md](refactor_playbook.md) | Module dependency map, hotspots, and safe-change recipes |
-| [standards_compliance.md](standards_compliance.md) | Compliance matrix, live corpus table (synced to `output/data/*.json`), PDF template workflow |
-| [testing_expansion_plan.md](testing_expansion_plan.md) | Targeted testing additions across 38 test files |
-| [validation_guide.md](validation_guide.md) | Preflight, figure, and manuscript validation commands |
-
-### PDF rendering and template variables
-
-The project PDF is built by [`scripts/_render_pdf_override.py`](../scripts/_render_pdf_override.py) (not the generic template `03_render_pdf.py` alone). It concatenates the manuscript files listed in that script, substitutes every `{{KEY}}` using `_load_corpus_vars()` (JSON under `data/corpus/` and `output/data/`), then runs Pandoc and XeLaTeX. Use `--strict-templates` or `STRICT_TEMPLATE_VARS=1` so an unresolved placeholder fails the build. Variable catalog: [`../manuscript/README.md`](../manuscript/README.md) and [`../manuscript/AGENTS.md`](../manuscript/AGENTS.md). Lineage: [manuscript_data_lineage.md](manuscript_data_lineage.md).
-
-## Quick Access
-
-```bash
-# Run the full test suite
-uv run pytest tests/ -x -q
-
-# Clean-slate figure regeneration (clears output/, rebuilds all 11 figures)
+~~~bash
+uv sync --extra dev
+uv run python -m nltk.downloader -d .venv/nltk_data stopwords punkt_tab wordnet omw-1.4
+uv run pytest tests/ --cov=src --cov-report=term-missing
 uv run python scripts/02_generate_figures.py
+PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
+uv run python scripts/_render_pdf_override.py --strict-templates
+~~~
 
-# Build corpus (stage 1)
-uv run python scripts/01_build_corpus.py
+Run testing and regeneration sequentially. The manuscript renderer requires a completed content receipt; a resolved placeholder alone does not establish source freshness.
 
-# Validate manuscript figures and references
-uv run python scripts/_manuscript_preflight.py --strict
+## Evidence sources
 
-# Run the full analysis pipeline
-uv run python scripts/_analysis_pipeline.py
-```
+| Artifact | Role |
+|----------|------|
+| *output/reports/corpus_audit.json* | Source custody and explicit metadata gaps |
+| *output/data/statistical_analysis.json* | Abstract-layer valid entropy, heuristic scores and exploratory comparisons |
+| *output/data/fulltext_analysis.json* | All stored PMC records by default, with explicit discourse sampling |
+| *data/corpus/arxiv_analysis.json* | Separate preprint analysis |
+| *data/bhl/era_term_usage.json* | Complete literal frequencies, streamed extraction/framing, bounded term entropy, and recorded coverage |
+| *output/figures/figure_registry.json* | Generated figure registration |
+| *output/data/analysis_manifest.json* | Implementation, corpus and output content binding |
+| *output/pdf/ento_linguistics_combined.pdf* | Rendered manuscript after strict checks |
 
-## Project Architecture
+The six-domain taxonomy, lexical markers, context clustering and CACE scores are inspectable methods rather than independent validation of language effects. See the methods and limitations in [the manuscript](manuscript/03_methods.md).
 
-```text
-src/
-├── analysis/          # term_extraction, text_analysis, semantic_entropy, cace_scoring,
-│                      # discourse_analysis, discourse_patterns, domain_analysis,
-│                      # conceptual_mapping, persuasive_analysis, rhetorical_analysis,
-│                      # statistics, performance
-├── core/              # exceptions, logging, metrics, parameters, validation,
-│                      # validation_utils, markdown_integration, example
-├── data/              # literature_mining, loader, data_generator, data_processing
-├── pipeline/          # simulation, reporting
-└── visualization/     # concept_visualization, statistical_visualization, figure_manager,
-                       # plots, visualization
-```
-
-## Live Pipeline Stats
-
-Representative counts from `output/data/*.json` and `data/corpus/abstracts.json` after a full analysis run (re-run pipeline to refresh). The PDF manuscript does not embed these as literals—it uses `{{KEY}}` substitution at build time (see [standards_compliance.md](standards_compliance.md)).
-
-| Metric | Value |
-|--------|-------|
-| Figures generated | 11 |
-| Publications (abstracts) | 369 |
-| Tokens | 48,787 |
-| Unique token types | 7,105 |
-| Extracted terms (candidates) | 888 |
-| Domain-assigned terms | 261 |
-| Concept relationships | 9 |
-
-## See Also
-
-- [`../src/AGENTS.md`](../src/AGENTS.md) — Source code documentation
-- [`../scripts/AGENTS.md`](../scripts/AGENTS.md) — Scripts documentation
-- [`../tests/AGENTS.md`](../tests/AGENTS.md) — Test suite documentation
-- [`../manuscript/AGENTS.md`](../manuscript/AGENTS.md) — Manuscript structure
+Historical documents in this directory describe earlier corpus snapshots and template-based workflows. Their fixed counts, old parent-template commands, and earlier review verdicts must not be treated as current validation. Use the artifact definitions above and the dated report for the current standalone repository.

@@ -393,3 +393,21 @@ class TestLoadCorpusVars:
 
         assert vars_["NETWORK_CLUSTERING"] == "N/A"
         assert vars_["NETWORK_AVG_DEGREE"] == "N/A"
+
+
+def test_rendered_entropy_counts_match_valid_estimates(tmp_path, capsys):
+    root = _make_project(tmp_path)
+    path = root / 'output/data/domain_statistics.json'
+    domains = json.loads(path.read_text())
+    for entry in domains.values():
+        entry['entropy_valid_terms'] = 2
+    path.write_text(json.dumps(domains))
+    path = root / 'output/data/corpus_statistics.json'
+    stats = json.loads(path.read_text())
+    stats.update(n_documents=2, stored_documents=3, excluded_unreconciled=1)
+    path.write_text(json.dumps(stats))
+    variables = _load_corpus_vars(root)
+    assert variables['DOMAIN_POWER_AND_LABOR_N_TERMS'] == '2'
+    assert variables['CORPUS_OVERALL_N_TERMS'] == '4'
+    assert variables['CORPUS_PUBLICATIONS'] == '2'
+    assert 'Publications=2' in capsys.readouterr().out

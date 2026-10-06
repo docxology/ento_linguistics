@@ -1,127 +1,45 @@
 # Supplemental Analysis: Case Studies and Validation {#sec:supplemental_case_studies}
 
-## Validation Frameworks
+## Validation Agenda
 
-### Inter-Subjectivity Validation
+Expert classification review, interdisciplinary assessment, historical interpretation, and cross-cultural comparison are proposed validation activities. This repository does not report completed human-annotation agreement, inter-rater reliability, multilingual validation, or a prespecified subsampling and coefficient-sensitivity study. Software tests and descriptive source-layer comparisons do not substitute for those measurements.
 
-Validation incorporates multiple perspectives:
+## Historical Terminology Analysis {#sec:bhl_grounding}
 
-**Expert Validation**: Entomological domain experts review classifications
-**Peer Validation**: Interdisciplinary researchers assess cross-domain mappings
-**Historical Validation**: Analysis of terminology evolution against known conceptual shifts
-**Cross-Cultural Validation**: Comparison with non-English entomological literature
-
-### Robustness Testing
-
-Robustness analysis ensures result stability:
-
-**Subsampling Stability**: Performance across different corpus subsets
-**Parameter Sensitivity**: Robustness to algorithmic parameter variations
-**Annotation Consistency**: Agreement across multiple human annotators
-**Temporal Stability**: Consistency across publication periods
-
-## Case Study Analysis
-
-### Caste Terminology Evolution: 1850-2024
-
-Ultra-longitudinal analysis reveals century-scale conceptual evolution:
-
-**Pre-Darwinian Period (1850-1859)**: Essentialist caste categories based on morphological differences
-
-**Darwinian Synthesis (1860-1899)**: Evolutionary explanations for caste differences
-
-**Genetic Revolution (1900-1949)**: Chromosomal mechanisms underlying caste determination
-
-**Molecular Biology Era (1950-1999)**: Gene expression and hormonal control of caste differentiation
-
-**Genomic Era (2000-2024)**: Epigenetic and transcriptomic regulation of caste phenotypes \cite{chandra2021epigenetics}, accompanied by growing recognition that rigid caste categories fail to capture the labile, environmentally responsive nature of social insect development \cite{boomsma2018superorganismality}. \citet{warner2024caste} demonstrate that caste differentiation becomes increasingly *canalized* from early development through cascading gene-expression changes modulated by juvenile hormone signaling, while gene expression in *Lasius niger* is more strongly influenced by age than by caste—further undermining the fixedness implied by "caste" terminology.
-
-#### BHL Historical-Layer Grounding (1850-1970) {#sec:bhl_grounding}
-
-These period claims are anchored in measurable term usage by the
-Biodiversity Heritage Library historical full-text layer:
-{{BHL_DOCUMENTS}} ant/myrmecology documents harvested from the BHL
-mirror collection on the Internet Archive (BHL API v3 requires a
-key; see `data/bhl/README.md` for the provenance and the verbatim
-query). The era-stratified artifact `data/bhl/era_term_usage.json`,
-produced by `src/pipeline/bhl_analysis.py`, reports "caste" rising
-monotonically from {{BHL_ERA_1850_1899_CASTE_PER_10K}} per 10k
-tokens in 1850-1899 ({{BHL_ERA_1850_1899_DOCS}} documents) to
-{{BHL_ERA_1900_1949_CASTE_PER_10K}} in 1900-1949
-({{BHL_ERA_1900_1949_DOCS}} documents) and
-{{BHL_ERA_1950_1970_CASTE_PER_10K}} in 1950-1970
-({{BHL_ERA_1950_1970_DOCS}} documents) — an intensification
-consistent with the Genetic Revolution and Molecular Biology era
-framings above. The labor vocabulary shows the same arc: "worker"
-rises from {{BHL_ERA_1850_1899_WORKER_PER_10K}} to
-{{BHL_ERA_1900_1949_WORKER_PER_10K}} to
-{{BHL_ERA_1950_1970_WORKER_PER_10K}} per 10k tokens across the
-eras, while "queen" remains the anchor term throughout
-({{BHL_ERA_1850_1899_QUEEN_PER_10K}} →
-{{BHL_ERA_1900_1949_QUEEN_PER_10K}} →
-{{BHL_ERA_1950_1970_QUEEN_PER_10K}} per 10k). The integrative-era
-vocabulary is vanishingly rare in the entire stratum: "superorganism"
-registers {{BHL_ERA_1850_1899_SUPERORGANISM_PER_10K}},
-{{BHL_ERA_1900_1949_SUPERORGANISM_PER_10K}}, and
-{{BHL_ERA_1950_1970_SUPERORGANISM_PER_10K}} per 10k tokens across
-the three eras — near-zero throughout — marking it as essentially a
-post-1970 import into general monographic usage rather than a term
-the historical corpus itself carries. All numbers resolve at render
-time from the BHL_* manuscript tokens.
-
-### Superorganism Concept Evolution
-
-Table \ref{tab:superorganism_concept_evolution} traces the
-superorganism concept across seven decades of research:
-
-The BHL historical layer brackets the start of this table from
-below: across {{BHL_DOCUMENTS}} BHL-mirror documents, "superorganism"
-occurs {{BHL_ERA_1850_1899_SUPERORGANISM_PER_10K}} per 10k tokens in
-1850-1899, {{BHL_ERA_1900_1949_SUPERORGANISM_PER_10K}} in 1900-1949,
-and {{BHL_ERA_1950_1970_SUPERORGANISM_PER_10K}} in 1950-1970 — at or
-near the resolution floor throughout
-(`data/bhl/era_term_usage.json`, produced by
-`src/pipeline/bhl_analysis.py`), confirming that the concept's
-theoretical vocabulary lived outside the monographic stratum and
-entered routine usage only in the post-1970 decades traced here.
+The historical layer contains {{BHL_DOCUMENTS}} stored BHL mirror OCR documents dated into three era buckets: {{BHL_ERA_1850_1899_DOCS}} in 1850--1899, {{BHL_ERA_1900_1949_DOCS}} in 1900--1949, and {{BHL_ERA_1950_1970_DOCS}} in 1950--1970. Retrieval selects volumes containing search expressions, not a manually curated collection of ant-only works. Document titles, dates, source identifiers, queries, and retrieval information are recorded in the source sidecar.
 
 \begin{table}[h]
 \centering
-\begin{tabular}{|l|c|c|c|c|}
+\begin{tabular}{|l|r|r|r|}
 \hline
-\textbf{Era} & \textbf{Dominant Metaphor} & \textbf{Key Evidence} & \textbf{Critiques} & \textbf{Legacy} \\
+\textbf{Term} & \textbf{1850--1899} & \textbf{1900--1949} & \textbf{1950--1970} \\
 \hline
-1960s & Organismic & Division of labor analogies & Ignores individual variation & Established field \\
-1970s & Cybernetic & Communication networks & Mechanistic reductionism & Systems thinking \\
-1980s & Genetic & Kin selection theory & Haplodiploidy focus & Evolutionary framework \\
-1990s & Neuroendocrine & Pheromonal control & Colony complexity & Regulatory mechanisms \\
-2000s & Epigenetic & DNA methylation & Environmental effects & Developmental plasticity \\
-2010s & Microbiome & Symbiont communities & Host-symbiont dynamics & Extended organism concept \\
-2020s & Canalization & Cascading gene expression & Lability of ``caste'' & Terminological reform \\
+caste & {{BHL_ERA_1850_1899_CASTE_PER_10K}} & {{BHL_ERA_1900_1949_CASTE_PER_10K}} & {{BHL_ERA_1950_1970_CASTE_PER_10K}} \\
+worker & {{BHL_ERA_1850_1899_WORKER_PER_10K}} & {{BHL_ERA_1900_1949_WORKER_PER_10K}} & {{BHL_ERA_1950_1970_WORKER_PER_10K}} \\
+queen & {{BHL_ERA_1850_1899_QUEEN_PER_10K}} & {{BHL_ERA_1900_1949_QUEEN_PER_10K}} & {{BHL_ERA_1950_1970_QUEEN_PER_10K}} \\
+colony & {{BHL_ERA_1850_1899_COLONY_PER_10K}} & {{BHL_ERA_1900_1949_COLONY_PER_10K}} & {{BHL_ERA_1950_1970_COLONY_PER_10K}} \\
+superorganism & {{BHL_ERA_1850_1899_SUPERORGANISM_PER_10K}} & {{BHL_ERA_1900_1949_SUPERORGANISM_PER_10K}} & {{BHL_ERA_1950_1970_SUPERORGANISM_PER_10K}} \\
 \hline
 \end{tabular}
-\caption{Evolution of superorganism concept across research eras}
+\caption{Complete-corpus literal OCR matches per 10,000 era tokens. Differences are descriptive of the selected volumes. OCR quality, topic, language, and spelling differences limit historical interpretation.}
 \label{tab:superorganism_concept_evolution}
 \end{table}
 
-## Methodological Reflections
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/bhl_term_usage.png}
+\caption{Full-corpus historical literal frequencies for six seed terms. Each panel uses its own rate axis. Neither zeros nor changing rates establish conceptual origin, prevalence in all entomological literature, or causal influence on research.}
+\label{fig:bhl_term_usage}
+\end{figure}
 
-### Mixed-Methodology Integration
+Rare matches for superorganism cannot establish that the concept originated after 1970. Alternative spellings such as super-organism are counted differently, and earlier theoretical discussion can exist outside the sampled sources. Interpretation should be anchored in dated sources such as \citet{wheeler1911}, rather than treating an OCR absence as historical proof.
 
-Our approach integrates qualitative and quantitative methods:
+## Complete Document Coverage and Bounded Entropy
 
-**Qualitative Contributions**:
+The BHL extraction/entropy/framing stack uses {{BHL_ERA_1850_1899_STACK_DOCS}}, {{BHL_ERA_1900_1949_STACK_DOCS}}, and {{BHL_ERA_1950_1970_STACK_DOCS}} complete documents, respectively. Default extraction and framing use all era documents. Available and analyzed characters are recorded in the artifact's coverage metadata. Entropy considers twenty frequent extracted candidates per era using contexts across all documents; it is a candidate-term sample rather than an exhaustive entropy census. Candidate filtering can retain unrelated substring matches such as skin, making, or queensland; unassigned candidates enter the overall sampled entropy mean but not domain means. These are computational filter outputs, not a curated historical vocabulary. An optional development character budget produces a disclosed, separately fingerprinted document subset. Neither default storage nor that subset establishes historical representativeness.
 
-- Theoretical framework development
-- Conceptual category identification
-- Historical context analysis
-- Cross-domain relationship mapping
+Developmental evidence for canalized caste differentiation \cite{qiu2022canalized} concerns biological mechanisms and does not establish a historical linguistic trend. Evaluating that connection would require a dated, annotated corpus with source-composition controls.
 
-**Quantitative Contributions**:
+## A Reproducible Case-Study Protocol
 
-- Statistical pattern identification
-- Network structure analysis
-- Temporal trend quantification
-- Validation metric development
-
-For a discussion of methodological limitations and scope considerations, see Section \ref{sec:discussion}. Future research directions, including semantic analysis (transformer-based embeddings, multilingual extensions) and practical applications (terminology standards, peer review tools), are discussed in Section \ref{sec:conclusion}.
+A subsequent study can select a specific term, reconcile each text to its source, annotate meaning and biological referent in dated contexts, and preregister comparisons between research traditions or eras. Controls should distinguish genuine changes in use from retrieval, OCR, spelling, and genre changes. CACE judgments should be gathered independently of the automatic scoring vocabulary, with agreement and uncertainty reported.

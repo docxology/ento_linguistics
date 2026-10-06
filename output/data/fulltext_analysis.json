@@ -56590,155 +56590,161 @@
   ],
   "domain_term_counts": {
     "behavior_and_identity": {
-      "term_count": 78,
+      "term_count": 97,
       "bridging_term_count": 39,
-      "total_frequency": 82227
+      "total_frequency": 160940
     },
     "economics": {
-      "term_count": 21,
+      "term_count": 35,
       "bridging_term_count": 1,
-      "total_frequency": 25879
+      "total_frequency": 95130
     },
     "kin_and_relatedness": {
-      "term_count": 12,
+      "term_count": 24,
       "bridging_term_count": 1,
-      "total_frequency": 20408
+      "total_frequency": 41252
     },
     "power_and_labor": {
-      "term_count": 101,
+      "term_count": 119,
       "bridging_term_count": 58,
-      "total_frequency": 62659
+      "total_frequency": 171834
     },
     "sex_and_reproduction": {
-      "term_count": 68,
+      "term_count": 86,
       "bridging_term_count": 24,
-      "total_frequency": 36479
+      "total_frequency": 98292
     },
     "unit_of_individuality": {
-      "term_count": 232,
+      "term_count": 243,
       "bridging_term_count": 5,
-      "total_frequency": 83380
+      "total_frequency": 353426
     }
+  },
+  "interpretation": {
+    "tests": "exploratory comparisons of term entropies, not calibrated population inference",
+    "independence": "terms may share documents and belong to multiple domain groups",
+    "causality": "lexical matches and cluster entropy do not measure causal framing or semantic drift",
+    "cace": "heuristic scores; absent or insufficient entropy is not evidence of clarity"
   },
   "descriptives": {
     "behavior_and_identity": {
-      "n_terms": 77,
+      "n_terms": 96,
       "bridging_count": 39,
-      "entropy_mean": 2.021434217073593,
-      "entropy_sd": 0.19507566629278014,
-      "ambiguity_mean": 2.021434217073593,
-      "cace_mean": 0.5619161327236756
+      "entropy_mean": 1.965425369607111,
+      "entropy_sd": 0.2336397723314752,
+      "ambiguity_mean": 1.965425369607111,
+      "cace_mean": 0.42695614784608904
     },
     "economics": {
-      "n_terms": 21,
+      "n_terms": 35,
       "bridging_count": 1,
-      "entropy_mean": 1.8810626759456897,
-      "entropy_sd": 0.29983685788149717,
-      "ambiguity_mean": 1.8810626759456897,
-      "cace_mean": 0.5732448550479146
+      "entropy_mean": 1.7795871478086074,
+      "entropy_sd": 0.30629066172324043,
+      "ambiguity_mean": 1.7795871478086074,
+      "cace_mean": 0.4413964227822971
     },
     "kin_and_relatedness": {
-      "n_terms": 12,
+      "n_terms": 24,
       "bridging_count": 1,
-      "entropy_mean": 2.024341885033517,
-      "entropy_sd": 0.2674979219060798,
-      "ambiguity_mean": 2.024341885033517,
-      "cace_mean": 0.5828376885351789
+      "entropy_mean": 1.9768486974804091,
+      "entropy_sd": 0.2592754672103103,
+      "ambiguity_mean": 1.9768486974804091,
+      "cace_mean": 0.42873739483734935
     },
     "power_and_labor": {
-      "n_terms": 100,
+      "n_terms": 118,
       "bridging_count": 58,
-      "entropy_mean": 2.0588866015970204,
-      "entropy_sd": 0.17624876994608685,
-      "ambiguity_mean": 2.0588866015970204,
-      "cace_mean": 0.5236166444972039
+      "entropy_mean": 2.016542218323751,
+      "entropy_sd": 0.21414941637112272,
+      "ambiguity_mean": 2.016542218323751,
+      "cace_mean": 0.38682823247354603
     },
     "sex_and_reproduction": {
-      "n_terms": 68,
+      "n_terms": 86,
       "bridging_count": 24,
-      "entropy_mean": 2.0809702277593525,
-      "entropy_sd": 0.16363699030451082,
-      "ambiguity_mean": 2.0809702277593525,
-      "cace_mean": 0.5604866814090006
+      "entropy_mean": 2.0406571101601565,
+      "entropy_sd": 0.20350450496510625,
+      "ambiguity_mean": 2.0406571101601565,
+      "cace_mean": 0.41249191858025497
     },
     "unit_of_individuality": {
-      "n_terms": 230,
+      "n_terms": 241,
       "bridging_count": 5,
-      "entropy_mean": 2.041346873750113,
-      "entropy_sd": 0.19362426521125048,
-      "ambiguity_mean": 2.041346873750113,
-      "cace_mean": 0.5837697229536073
+      "entropy_mean": 2.0239515003804027,
+      "entropy_sd": 0.21060871774803155,
+      "ambiguity_mean": 2.0239515003804027,
+      "cace_mean": 0.44134035303184993
     }
   },
   "cace": {
     "behavior_and_identity": {
-      "mean": 0.5619161327236756,
-      "min": 0.44707064794446394,
-      "max": 0.673496299314128,
-      "clarity": 1.0,
-      "appropriateness": 0.79,
-      "consistency": 0.11433119756136921,
-      "evolvability": 0.3433333333333334,
+      "mean": 0.42695614784608904,
+      "min": 0.29436139770810643,
+      "max": 0.6599331216359307,
+      "clarity": 0.43176054025625477,
+      "appropriateness": 0.867,
+      "consistency": 0.09239738446143467,
+      "evolvability": 0.31666666666666665,
       "n_terms": 50
     },
     "economics": {
-      "mean": 0.5732448550479146,
-      "min": 0.5490185412019736,
-      "max": 0.6205412136532487,
-      "clarity": 1.0,
+      "mean": 0.4413964227822971,
+      "min": 0.38780390362991374,
+      "max": 0.4898761591479949,
+      "clarity": 0.4639797747564435,
       "appropriateness": 1.0,
-      "consistency": 0.07075719796943553,
-      "evolvability": 0.22222222222222224,
-      "n_terms": 21
+      "consistency": 0.06351067827750687,
+      "evolvability": 0.23809523809523805,
+      "n_terms": 35
     },
     "kin_and_relatedness": {
-      "mean": 0.5828376885351789,
-      "min": 0.5533733411760207,
-      "max": 0.6041172587963184,
-      "clarity": 1.0,
-      "appropriateness": 1.0,
-      "consistency": 0.09523964302960485,
-      "evolvability": 0.23611111111111105,
-      "n_terms": 12
+      "mean": 0.42873739483734935,
+      "min": 0.2670985118339942,
+      "max": 0.488414562446422,
+      "clarity": 0.4045636453372261,
+      "appropriateness": 0.9791666666666666,
+      "consistency": 0.08121926734550451,
+      "evolvability": 0.25,
+      "n_terms": 24
     },
     "power_and_labor": {
-      "mean": 0.5236166444972039,
-      "min": 0.41031688377873693,
-      "max": 0.661252735156887,
-      "clarity": 1.0,
-      "appropriateness": 0.633,
-      "consistency": 0.09813324465548194,
-      "evolvability": 0.36333333333333334,
+      "mean": 0.38682823247354603,
+      "min": 0.25239735800619484,
+      "max": 0.5201110805339533,
+      "clarity": 0.41245434158168387,
+      "appropriateness": 0.7180000000000001,
+      "consistency": 0.08685858831250055,
+      "evolvability": 0.3299999999999999,
       "n_terms": 50
     },
     "sex_and_reproduction": {
-      "mean": 0.5604866814090006,
-      "min": 0.475878522832912,
-      "max": 0.6538809583594929,
-      "clarity": 1.0,
-      "appropriateness": 0.7859999999999999,
-      "consistency": 0.10928005896933626,
-      "evolvability": 0.34666666666666657,
+      "mean": 0.41249191858025497,
+      "min": 0.3245572604058569,
+      "max": 0.5055262231671838,
+      "clarity": 0.3977499024459658,
+      "appropriateness": 0.8430000000000001,
+      "consistency": 0.09255110520838768,
+      "evolvability": 0.3166666666666667,
       "n_terms": 50
     },
     "unit_of_individuality": {
-      "mean": 0.5837697229536073,
-      "min": 0.5564257806215072,
-      "max": 0.6481861447098515,
-      "clarity": 1.0,
+      "mean": 0.44134035303184993,
+      "min": 0.3922876085282833,
+      "max": 0.5529494452099822,
+      "clarity": 0.42317078709820566,
       "appropriateness": 1.0,
-      "consistency": 0.09507889181442893,
-      "evolvability": 0.24,
+      "consistency": 0.08552395836252727,
+      "evolvability": 0.25666666666666665,
       "n_terms": 50
     }
   },
   "cace_terms": {
     "queen": {
-      "clarity": 1.0,
+      "clarity": 0.4564612695587036,
       "appropriateness": 0.45,
       "consistency": 0.06111467567740265,
       "evolvability": 0.5,
-      "aggregate": 0.5027786689193506,
+      "aggregate": 0.3668939863090266,
       "in_corpus": true
     },
     "primary reproductive": {
@@ -56750,11 +56756,11 @@
       "in_corpus": false
     },
     "worker": {
-      "clarity": 1.0,
+      "clarity": 0.5067534810869481,
       "appropriateness": 0.45,
       "consistency": 0.11100318939773059,
       "evolvability": 0.5,
-      "aggregate": 0.5152507973494327,
+      "aggregate": 0.39193916762116965,
       "in_corpus": true
     },
     "non-reproductive helper": {
@@ -56766,12 +56772,12 @@
       "in_corpus": false
     },
     "slave": {
-      "clarity": 1.0,
+      "clarity": 0.34977551538744966,
       "appropriateness": 0.5,
-      "consistency": 0.5,
-      "evolvability": 0.0,
-      "aggregate": 0.5,
-      "in_corpus": false
+      "consistency": 0.06342179041528934,
+      "evolvability": 0.16666666666666666,
+      "aggregate": 0.2699659931173514,
+      "in_corpus": true
     },
     "host worker": {
       "clarity": 1.0,
@@ -56782,11 +56788,11 @@
       "in_corpus": false
     },
     "caste": {
-      "clarity": 1.0,
+      "clarity": 0.4248261075686598,
       "appropriateness": 1.0,
       "consistency": 0.03669796092981145,
       "evolvability": 0.5,
-      "aggregate": 0.6341744902324529,
+      "aggregate": 0.4903810171246178,
       "in_corpus": true
     },
     "task group": {
@@ -56798,11 +56804,11 @@
       "in_corpus": false
     },
     "soldier": {
-      "clarity": 1.0,
+      "clarity": 0.4103764263770229,
       "appropriateness": 0.5,
       "consistency": 0.10932056676874126,
       "evolvability": 0.3333333333333333,
-      "aggregate": 0.48566347502551865,
+      "aggregate": 0.3382575816197744,
       "in_corpus": true
     },
     "major worker": {
@@ -56814,28 +56820,28 @@
       "in_corpus": false
     },
     "colony": {
-      "clarity": 1.0,
+      "clarity": 0.48113302775168,
       "appropriateness": 1.0,
       "consistency": 0.0698554896032293,
       "evolvability": 0.3333333333333333,
-      "aggregate": 0.6007972057341407,
+      "aggregate": 0.4710804626720606,
       "in_corpus": true
     },
     "haplodiploidy": {
-      "clarity": 1.0,
+      "clarity": 0.33945792261533336,
       "appropriateness": 1.0,
       "consistency": 0.05696942091601647,
       "evolvability": 0.16666666666666666,
-      "aggregate": 0.5559090218956707,
+      "aggregate": 0.39077350254950416,
       "in_corpus": true
     },
     "trophallaxis": {
-      "clarity": 1.0,
+      "clarity": 0.4594457962454538,
       "appropriateness": 1.0,
-      "consistency": 0.5,
-      "evolvability": 0.0,
-      "aggregate": 0.625,
-      "in_corpus": false
+      "consistency": 0.02934193172292285,
+      "evolvability": 0.3333333333333333,
+      "aggregate": 0.45553026532542745,
+      "in_corpus": true
     }
   },
   "pairwise": [
@@ -56843,205 +56849,205 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "economics",
       "metric": "semantic_entropy",
-      "t": 2.0313284671052343,
-      "df": 24.797261633400527,
-      "p": 0.053070800452496666,
-      "p_bh": 0.15921240135748999,
-      "cohens_d": 0.6300927371478388,
-      "n_a": 77,
-      "n_b": 21,
-      "significant_bh": false
+      "t": 3.2603099623672755,
+      "df": 49.16379003804406,
+      "p": 0.0020242058060274026,
+      "p_bh": 0.00759077177260276,
+      "cohens_d": 0.7250825868320454,
+      "n_a": 96,
+      "n_b": 35,
+      "significant_bh": true
     },
     {
       "domain_a": "behavior_and_identity",
       "domain_b": "kin_and_relatedness",
       "metric": "semantic_entropy",
-      "t": -0.03618467028625355,
-      "df": 12.886136103711715,
-      "p": 0.9716896428248374,
-      "p_bh": 0.9716896428248373,
-      "cohens_d": -0.014016958036747752,
-      "n_a": 77,
-      "n_b": 12,
+      "t": -0.19678989144619463,
+      "df": 32.95735149403057,
+      "p": 0.8452005135774809,
+      "p_bh": 0.8452005135774809,
+      "cohens_d": -0.04752123546013012,
+      "n_a": 96,
+      "n_b": 24,
       "significant_bh": false
     },
     {
       "domain_a": "behavior_and_identity",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -1.3201454699369453,
-      "df": 154.65849371195162,
-      "p": 0.18873696398879722,
-      "p_bh": 0.3538818074789948,
-      "cohens_d": -0.20194655191114474,
-      "n_a": 77,
-      "n_b": 100,
+      "t": -1.652145118667436,
+      "df": 195.20006410582948,
+      "p": 0.10011261035897363,
+      "p_bh": 0.18771114442307557,
+      "cohens_d": -0.2283154538048713,
+      "n_a": 96,
+      "n_b": 118,
       "significant_bh": false
     },
     {
       "domain_a": "behavior_and_identity",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -1.9979034975103058,
-      "df": 142.63961477329184,
-      "p": 0.047628550258064985,
-      "p_bh": 0.15921240135748999,
-      "cohens_d": -0.32715176315194305,
-      "n_a": 77,
-      "n_b": 68,
+      "t": -2.3215036561030122,
+      "df": 179.86508328863167,
+      "p": 0.02138047270026294,
+      "p_bh": 0.05345118175065735,
+      "cohens_d": -0.3406526885718218,
+      "n_a": 96,
+      "n_b": 86,
       "significant_bh": false
     },
     {
       "domain_a": "behavior_and_identity",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -0.7767390330079705,
-      "df": 129.71686993250404,
-      "p": 0.43872685021124513,
-      "p_bh": 0.5982638866516979,
-      "cohens_d": -0.10239684584154056,
-      "n_a": 77,
-      "n_b": 230,
+      "t": -2.133278036608624,
+      "df": 159.82378668342182,
+      "p": 0.03442834537739717,
+      "p_bh": 0.07377502580870822,
+      "cohens_d": -0.2686212084518333,
+      "n_a": 96,
+      "n_b": 241,
       "significant_bh": false
     },
     {
       "domain_a": "economics",
       "domain_b": "kin_and_relatedness",
       "metric": "semantic_entropy",
-      "t": -1.415626750832105,
-      "df": 25.293975340017404,
-      "p": 0.16908082892610118,
-      "p_bh": 0.3538818074789948,
-      "cohens_d": -0.484057928673251,
-      "n_a": 21,
-      "n_b": 12,
-      "significant_bh": false
+      "t": -2.664385800915862,
+      "df": 54.38903627419644,
+      "p": 0.010129511098701232,
+      "p_bh": 0.0303885332961037,
+      "cohens_d": -0.6753118359256625,
+      "n_a": 35,
+      "n_b": 24,
+      "significant_bh": true
     },
     {
       "domain_a": "economics",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -2.624242009159443,
-      "df": 22.983282880777942,
-      "p": 0.015168025140226986,
-      "p_bh": 0.11376018855170239,
-      "cohens_d": -0.8731696143068756,
-      "n_a": 21,
-      "n_b": 100,
-      "significant_bh": false
+      "t": -4.277248891673367,
+      "df": 44.30377328600972,
+      "p": 9.941603018679258e-05,
+      "p_bh": 0.0004970801509339629,
+      "cohens_d": -0.9905376925581078,
+      "n_a": 35,
+      "n_b": 118,
+      "significant_bh": true
     },
     {
       "domain_a": "economics",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -2.9237892872972924,
-      "df": 23.788418408020316,
-      "p": 0.007473904234263903,
-      "p_bh": 0.11210856351395855,
-      "cohens_d": -0.9753112042753351,
-      "n_a": 21,
-      "n_b": 68,
-      "significant_bh": false
+      "t": -4.642787876336907,
+      "df": 46.71119181491952,
+      "p": 2.811355892775079e-05,
+      "p_bh": 0.00036893506727774916,
+      "cohens_d": -1.0925005303694537,
+      "n_a": 35,
+      "n_b": 86,
+      "significant_bh": true
     },
     {
       "domain_a": "economics",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -2.4043680678668293,
-      "df": 21.54926962277211,
-      "p": 0.025257159098202055,
-      "p_bh": 0.1262857954910103,
-      "cohens_d": -0.7825472203425847,
-      "n_a": 21,
-      "n_b": 230,
-      "significant_bh": false
+      "t": -4.5658043861670485,
+      "df": 38.8036160082598,
+      "p": 4.919134230369989e-05,
+      "p_bh": 0.00036893506727774916,
+      "cohens_d": -1.0845014726569226,
+      "n_a": 35,
+      "n_b": 241,
+      "significant_bh": true
     },
     {
       "domain_a": "kin_and_relatedness",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -0.4361385253741738,
-      "df": 12.172262845413282,
-      "p": 0.6703713022308753,
-      "p_bh": 0.773505348727933,
-      "cohens_d": -0.18309268604260986,
-      "n_a": 12,
-      "n_b": 100,
+      "t": -0.7028282113512858,
+      "df": 29.712953878846175,
+      "p": 0.4876332982838656,
+      "p_bh": 0.5979894267881232,
+      "cohens_d": -0.17768558288025943,
+      "n_a": 24,
+      "n_b": 118,
       "significant_bh": false
     },
     {
       "domain_a": "kin_and_relatedness",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -0.7102605642185774,
-      "df": 12.491865150605589,
-      "p": 0.4905903065170064,
-      "p_bh": 0.613237883146258,
-      "cohens_d": -0.30829266288844015,
-      "n_a": 12,
-      "n_b": 68,
+      "t": -1.1137104716686783,
+      "df": 31.33772542193956,
+      "p": 0.2738730089349031,
+      "p_bh": 0.4564550148915052,
+      "cohens_d": -0.29255598727302723,
+      "n_a": 24,
+      "n_b": 86,
       "significant_bh": false
     },
     {
       "domain_a": "kin_and_relatedness",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -0.21726528650881272,
-      "df": 11.60919112063706,
-      "p": 0.8317730568391482,
-      "p_bh": 0.8911854180419444,
-      "cohens_d": -0.08578194542745847,
-      "n_a": 12,
-      "n_b": 230,
+      "t": -0.8621278108777349,
+      "df": 26.1111102414661,
+      "p": 0.39646620991803927,
+      "p_bh": 0.5654849684090343,
+      "cohens_d": -0.21814885612682686,
+      "n_a": 24,
+      "n_b": 241,
       "significant_bh": false
     },
     {
       "domain_a": "power_and_labor",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -0.8320617925704046,
-      "df": 150.86422865976564,
-      "p": 0.4066891995915094,
-      "p_bh": 0.5982638866516979,
-      "cohens_d": -0.1283567701599568,
-      "n_a": 100,
-      "n_b": 68,
+      "t": -0.8174760611425603,
+      "df": 188.4089179002353,
+      "p": 0.41468897683329176,
+      "p_bh": 0.5654849684090343,
+      "cohens_d": -0.11454995177392668,
+      "n_a": 118,
+      "n_b": 86,
       "significant_bh": false
     },
     {
       "domain_a": "power_and_labor",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": 0.8059343302439748,
-      "df": 205.67404362443602,
-      "p": 0.42121154197328536,
-      "p_bh": 0.5982638866516979,
-      "cohens_d": 0.09281208881103602,
-      "n_a": 100,
-      "n_b": 230,
+      "t": -0.30960994494252514,
+      "df": 229.01616885740154,
+      "p": 0.757139114020887,
+      "p_bh": 0.8112204793080932,
+      "cohens_d": -0.034912918050300785,
+      "n_a": 118,
+      "n_b": 241,
       "significant_bh": false
     },
     {
       "domain_a": "sex_and_reproduction",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": 1.6792241690535747,
-      "df": 127.5536976376843,
-      "p": 0.0955563450437957,
-      "p_bh": 0.23889086260948925,
-      "cohens_d": 0.2110615739357436,
-      "n_a": 68,
-      "n_b": 230,
+      "t": 0.6475193156322546,
+      "df": 154.4016865927666,
+      "p": 0.5182575032163734,
+      "p_bh": 0.5979894267881232,
+      "cohens_d": 0.07983286036135562,
+      "n_a": 86,
+      "n_b": 241,
       "significant_bh": false
     }
   ],
   "anova": {
     "metric": "semantic_entropy",
-    "F": 3.766302582808596,
+    "F": 8.63368636549705,
     "df1": 5.0,
-    "df2": 502.0,
-    "p": 0.002338597630558643,
-    "eta_squared": 0.03615663116980193
+    "df2": 594.0,
+    "p": 6.537035986008885e-08,
+    "eta_squared": 0.06775042464623107
   },
   "corrections": {
     "method": "benjamini_hochberg",
@@ -57248,35 +57254,37 @@
   },
   "framing": {
     "behavior_and_identity": {
-      "proportion": 0.006373,
-      "n_contexts": 82227
+      "proportion": 0.007779,
+      "n_contexts": 160940
     },
     "economics": {
-      "proportion": 0.095715,
-      "n_contexts": 25879
+      "proportion": 0.03593,
+      "n_contexts": 95130
     },
     "kin_and_relatedness": {
-      "proportion": 0.009457,
-      "n_contexts": 20408
+      "proportion": 0.008024,
+      "n_contexts": 41252
     },
     "power_and_labor": {
-      "proportion": 0.007724,
-      "n_contexts": 62659
+      "proportion": 0.0071,
+      "n_contexts": 171834
     },
     "sex_and_reproduction": {
-      "proportion": 0.012473,
-      "n_contexts": 36479
+      "proportion": 0.008292,
+      "n_contexts": 98292
     },
     "unit_of_individuality": {
-      "proportion": 0.00722,
-      "n_contexts": 83380
+      "proportion": 0.007365,
+      "n_contexts": 353426
     },
     "overall": {
-      "proportion": 0.016978,
-      "n_contexts": 252561
+      "proportion": 0.010659,
+      "n_contexts": 862403
     }
   },
   "corpus_fingerprint": {
+    "records_sha256": "0a844fdfa2dd9282467ec34a56e14928c3ab8cee63c02b101507c8d7452c9a0c",
+    "analysis_signature": "19d131912bfcb380131a9d779d7bf0c851f7a98f21dab40dd764cb3f77728b1a",
     "record_count": 7073,
     "provenance_sha256": "81f18c1e307d32585d60331c9fba20b6b60f77fe740672676dc49634d697052b",
     "limit": null

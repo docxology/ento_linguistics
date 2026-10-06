@@ -9,6 +9,7 @@ are written to tmp_path using JSON shapes modeled on the project's
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -290,8 +291,16 @@ class TestBuildVariableMap:
     def test_defaults_to_project_directories(self) -> None:
         """With no arguments, the real project output/corpus dirs are used."""
         variables = build_variable_map()
-        expected_pubs = str(count_publications(manuscript_variables_module.CORPUS_DIR))
-        assert variables["CORPUS_PUBLICATIONS"] == expected_pubs
+        corpus_dir = manuscript_variables_module.CORPUS_DIR
+        texts = json.loads((corpus_dir / "abstracts.json").read_text())
+        provenance = json.loads((corpus_dir / "provenance.json").read_text())["records"]
+        identified = sum(
+            str(provenance.get(hashlib.sha256(text.encode()).hexdigest(), {}).get("pmid", "")).isdigit()
+            for text in texts
+        )
+        assert variables["CORPUS_PUBLICATIONS"] == str(identified)
+        assert variables["CORPUS_STORED_RECORDS"] == str(len(texts))
+        assert variables["CORPUS_EXCLUDED_UNRECONCILED"] == str(len(texts) - identified)
         # The real project output exists and is non-trivial
         assert int(variables["CORPUS_PUBLICATIONS"]) > 0
         live_top = json.load(
@@ -686,7 +695,7 @@ class TestBhlTokens:
     ) -> None:
         """BHL_* tokens resolve through build_variable_map."""
         output_data, corpus_dir = data_dirs
-        bhl_dir = output_data.parent / "bhl_data"
+        bhl_dir = corpus_dir.parent / "bhl"
         _write_json(bhl_dir / "era_term_usage.json", self._bhl_artifact())
         monkeypatch.setattr(
             manuscript_variables_module, "BHL_DATA_DIR", bhl_dir

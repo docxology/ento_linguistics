@@ -85,6 +85,8 @@ class Term:
         contexts: List of contextual usages
         pos_tags: Part-of-speech tags for the term
         confidence: Extraction confidence score
+        semantic_entropy: Computed sentence-context entropy, or the default zero
+        entropy_status: Computation status; None until evaluated
     """
 
     text: str
@@ -95,6 +97,7 @@ class Term:
     pos_tags: List[str] = field(default_factory=list)
     confidence: float = 0.0
     semantic_entropy: float = 0.0
+    entropy_status: Optional[str] = None
 
     def add_context(self, context: str) -> None:
         """Add a usage context for this term.
@@ -116,6 +119,7 @@ class Term:
             "pos_tags": self.pos_tags,
             "confidence": self.confidence,
             "semantic_entropy": self.semantic_entropy,
+            "entropy_status": self.entropy_status,
         }
 
     @classmethod
@@ -357,11 +361,9 @@ class TerminologyExtractor:
         tokenized = map_ordered(
             _tokenize_text_task, texts, initializer=_init_worker_text_processor
         )
-        all_tokens = []
         text_contexts: List[Tuple[str, List[str]]] = []
         term_counts: Counter = Counter()
         for text, (tokens, local_counts) in zip(texts, tokenized):
-            all_tokens.extend(tokens)
             text_contexts.append((text, tokens))
             term_counts.update(local_counts)
 
@@ -383,7 +385,7 @@ class TerminologyExtractor:
                     token_positions[token].append((text_idx, pos))
 
         # Create Term objects for candidates
-        for candidate in candidate_terms:
+        for candidate in sorted(candidate_terms):
             lemma = self.text_processor.lemmatize_tokens([candidate])[0]
             term = Term(text=candidate, lemma=lemma, frequency=term_counts[candidate])
 
@@ -418,6 +420,10 @@ class TerminologyExtractor:
         # Skip pure numbers
         if token.isdigit():
             return False
+
+        # Configured vocabulary must survive the generic candidate filters.
+        if any(token.lower() in seeds for seeds in self.DOMAIN_SEEDS.values()):
+            return True
 
         # Check for scientific patterns
         for pattern in self.TERM_PATTERNS:

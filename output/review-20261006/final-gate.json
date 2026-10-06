@@ -1,0 +1,17 @@
+{
+  "verdict": "APPROVE",
+  "base_sha": "7d49231b6b4ecb97b79f05aacb0cf5098be6cf08",
+  "scope_sha256": "59b52499564f769437d5a24811c080e81c1ff0636e7584b6430383ee954366f0",
+  "analysis_signature": "19d131912bfcb380131a9d779d7bf0c851f7a98f21dab40dd764cb3f77728b1a",
+  "pdf_sha256": "4c22688cde6980fe03174779dff27cb224e547b63509ea6a0f89f5904ddc8586",
+  "manual_lane": {
+    "verdict": "PASS",
+    "report": "output/review-20261006/manual-qa.json"
+  },
+  "independent_lane": {
+    "verdict": "APPROVE",
+    "report": ".omo/evidence/ento-linguistics-empty-resource-final-gate-review.md",
+    "report_sha256": "988a369e2e453cbf653eba3bb88fd665af6428c3222b0c66df5d5f260f2ae264"
+  },
+  "scope": "Local descriptive revision; no publication or human scientific validation certificate"
+}

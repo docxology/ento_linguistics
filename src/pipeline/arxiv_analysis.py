@@ -1,6 +1,6 @@
 """arXiv preprint layer analysis (unprocessed corpus layer #1).
 
-Runs the shared Ento-Linguistic stack over the 56 arXiv preprint
+Runs the shared Ento-Linguistic stack over the stored arXiv preprint
 abstracts in ``data/corpus/arxiv_records.json`` and writes the
 ``data/corpus/arxiv_analysis.json`` artifact.  The artifact mirrors the
 frozen statistical schema of the abstract layer
@@ -30,7 +30,7 @@ Machinery reuse (documented contract):
   ``analysis.text_analysis.LinguisticFeatureExtractor
   .extract_framing_features`` API internally.
 
-Degenerate statistics (n=56 abstracts, small domains): comparisons
+Degenerate statistics (small domain groups): comparisons
 whose per-domain groups hold fewer than 2 valid per-term entropies are
 recorded in the artifact's ``skipped`` list by
 ``build_statistical_analysis`` — never fabricated as zeros.  Domains
@@ -79,7 +79,7 @@ ARTIFACT_NAME = "arxiv_analysis.json"
 
 #: Minimum token frequency for term extraction.  Abstracts are short
 #: (single paragraphs), so the threshold is far below the full-text
-#: layer's 20; with 56 abstracts a term must recur across documents to
+#: layer's 20; with a small preprint layer a term must recur across documents to
 #: be admitted, which keeps the entropy passes bounded.
 DEFAULT_MIN_TERM_FREQUENCY = 2
 
@@ -167,7 +167,10 @@ def build_arxiv_analysis(
     # DOMAIN-level entropy/ambiguity APIs are exercised inside it.
     statistics = build_statistical_analysis(terms, texts, layer=ARXIV_LAYER)
 
+    from core.provenance import records_sha256, analysis_signature
     artifact: Dict[str, Any] = {
+        "corpus_fingerprint": {"record_count": len(records), "records_sha256": records_sha256(records),
+                               "analysis_signature": analysis_signature()},
         "layer": ARXIV_LAYER,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": {

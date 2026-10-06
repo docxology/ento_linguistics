@@ -1,20 +1,7 @@
-# AGENTS.md — `ento_linguistics/src/core`
+# Core utilities
 
-> Directory `core` inside `ento_linguistics/src`. Verified by direct listing (fleet doc pass, 2026-08-29).
+This directory belongs to the standalone Ento-Linguistics repository. Follow ../../AGENTS.md and ../AGENTS.md; legacy external template paths are not operational dependencies.
 
-## Scope
-- Local-only path under `projects/ongoing/` — matched by the root `.gitignore`
-  rule `projects/*`; never commit, add, or push anything here.
-- Parent standard: see `/Volumes/external_drive/Git/template/projects/ongoing/AGENTS.md`; parent project docs: `ento_linguistics/src/AGENTS.md`.
+For provenance or resource changes, inspect callers of analysis_signature and the real-file controls in ../../tests/test_provenance.py and ../../tests/test_nltk_resources.py. Signatures must bind ordered contents and selected inputs rather than timestamps or row counts. Missing resources and corrupt receipts must fail.
 
-## Layout
-Subfolders: `__pycache__/`
-Files: `AGENTS.md`, `README.md`, `__init__.py`, `example.py`, `exceptions.py`, `logging.py`, `markdown_integration.py`, `metrics.py`, `parameters.py`, `validation.py`, `validation_utils.py`
-
-## Kind
-- Category: **misc**. 
-
-## Agent notes
-
-## Gotchas
-- None beyond the local-only rule above.
+The schema-2 analysis receipt binds corpus/export/figure inventory, Python sources, uv.lock and the selected English NLTK inputs. It is software custody evidence; it does not certify relevance, licenses, word senses or causal validity.

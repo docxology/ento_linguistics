@@ -1038,10 +1038,10 @@ class TestDomainComparisonWithTerms:
         assert filepath.exists()
         plt.close(fig)
 
-    def test_domain_comparison_cace_fallback_on_import_failure(
+    def test_domain_comparison_cace_without_terms(
         self, tmp_path: Path
     ) -> None:
-        """CACE panel falls back to confidence when scoring is unavailable."""
+        """CACE panel marks missing term input as unavailable."""
         viz = ConceptVisualizer()
         domain_data = {
             "unit_of_individuality": {"term_count": 3, "avg_confidence": 0.7,

@@ -56,18 +56,16 @@ class DataLoader:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
             
-        if isinstance(data, list):
-            # Verify list of strings
-            texts = [str(item) for item in data if item]
-            logger.info(f"Loaded {len(texts)} texts from {file_path}")
-            return texts
-        elif isinstance(data, dict) and "abstracts" in data:
-            # Handle structured format
-            texts = [str(item) for item in data["abstracts"] if item]
-            logger.info(f"Loaded {len(texts)} texts from {file_path}")
-            return texts
-        else:
+        texts = data.get("abstracts") if isinstance(data, dict) else data
+        if not isinstance(texts, list):
             raise ValueError(f"Invalid corpus format in {file_path}. Expected list or dict with 'abstracts' key.")
+        if not texts:
+            raise ValueError(f"Empty corpus in {file_path}")
+        for index, text in enumerate(texts):
+            if not isinstance(text, str) or not text.strip():
+                raise ValueError(f"Invalid corpus record {index} in {file_path}: expected non-empty text")
+        logger.info(f"Loaded {len(texts)} texts from {file_path}")
+        return texts
 
     def save_corpus(self, texts: List[str], filename: str = "corpus/custom_corpus.json") -> Path:
         """Save text corpus to JSON file.

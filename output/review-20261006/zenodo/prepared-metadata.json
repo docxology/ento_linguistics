@@ -1,0 +1,67 @@
+{
+  "title": "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology",
+  "publication_date": "2026-10-06",
+  "description": "Terms such as queen, worker, and colony connect biological descriptions to familiar social concepts. This study introduces a six-domain Ento-Linguistic framework and an open-source descriptive text-analysis pipeline. The headline layer contains 7540 source-identified abstracts from 7609 stored strings; 69 unreconciled strings are retained but excluded. This headline layer contains 991026 processed tokens and 11644 candidate terms, of which 1323 receive rule-based domain assignments. The pipeline separates observed document-level term co-occurrence from a map of 6 predefined concept categories with 15 vocabulary-overlap relationships. Among assigned terms, 11.9% receive multiple labels; this measures classification overlap rather than semantic drift. Complementary analyses use 7073 PMC full-text records, 2430 historical OCR documents, and a separate arXiv layer. TF-IDF clustering and Shannon entropy summarize sentence-context distributions, while lexical patterns identify candidate framing contexts. Clarity, Appropriateness, Consistency, and Evolvability (CACE) are proposed as heuristic evaluation dimensions. Neither cluster entropy nor marker occurrence establishes distortion of biological understanding, and CACE scores have not been validated against independent human judgments. Provenance gaps, mixed-topic retrieval, OCR errors, overlapping groups, and explicitly bounded analyses limit interpretation. The contribution is a reproducible descriptive workflow and a framework for subsequent annotated, hypothesis-driven research, rather than a causal test of language shaping scientific thought. Code and data lineage: https://github.com/docxology/ento_linguistics.\n\n\n\n\nUpdated manuscript revision: 2026-10-06. This record replaces the earlier PDF with the reanalyzed, 46-page manuscript and 17 regenerated figures. Headline analysis uses 7,540 source-identified abstracts from 7,609 archived strings; 69 unreconciled strings are excluded. Separate layers comprise 7,073 PMC records, 2,430 historical BHL documents and 61 arXiv records. Full/default BHL extraction and framing covers 2,317,721,403 OCR characters; entropy is limited to twenty candidate terms per era.\n\nThe revision corrects document co-occurrence networks, seed retention, entropy/CACE cross-artifact consistency, source custody, content-bound caches and strict artifact/render validation, and adds completed-era recovery checkpoints. Software verification passed 1,774 tests with eight external-template skips; it does not establish source relevance, licensing of individual corpus items, human sense/framing validation or causal conclusions. Repeated PMC-body custody gaps, mixed-topic retrieval and OCR limitations remain disclosed.\n\nThe attached PDF corresponds to the reviewed local source and corpus receipt, not to a newly published GitHub source release. Repository: https://github.com/docxology/ento_linguistics. PDF SHA-256: 4c22688cde6980fe03174779dff27cb224e547b63509ea6a0f89f5904ddc8586",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Friedman, Daniel Ari",
+      "orcid": "0000-0001-6232-9096",
+      "affiliation": "Active Inference Institute, APOIDEAS"
+    },
+    {
+      "name": "Chambers, Tucker Cahill",
+      "orcid": "0009-0008-3793-7872",
+      "affiliation": "APOIDEAS"
+    }
+  ],
+  "dates": [
+    {
+      "start": "2026-10-06",
+      "type": "updated",
+      "description": "Full corpus reanalysis and revised manuscript"
+    }
+  ],
+  "version": "1.1.1 (2026-10-06 revision)",
+  "language": "eng",
+  "custom": {
+    "code:codeRepository": "https://github.com/docxology/ento_linguistics",
+    "code:programmingLanguage": [
+      {
+        "id": "python",
+        "title": {
+          "en": "Python"
+        }
+      }
+    ],
+    "code:developmentStatus": {
+      "id": "active",
+      "title": {
+        "en": "Active"
+      }
+    }
+  },
+  "license": "cc-by-4.0",
+  "journal_title": "Journal of APOIDEAS",
+  "imprint_publisher": "APOIDEAS",
+  "communities": [
+    {
+      "identifier": "entomology"
+    }
+  ],
+  "upload_type": "publication",
+  "keywords": [
+    "entomology",
+    "scientific terminology",
+    "language analysis",
+    "discourse analysis",
+    "ant biology",
+    "eusociality",
+    "conceptual frameworks",
+    "active inference",
+    "terminology networks",
+    "Markov blankets",
+    "stigmergy",
+    "computational linguistics"
+  ]
+}

@@ -1,6 +1,8 @@
 """Comprehensive tests for the generate_research_figures.py script to ensure 100% coverage."""
 
 import os
+import json
+import hashlib
 import shutil
 import subprocess
 import sys
@@ -448,6 +450,12 @@ if __name__ == "__main__":
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
         shutil.copy2(script_path, test_script)
+        corpus_dir = test_root / "data" / "corpus"
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+        real_source = Path(__file__).resolve().parents[2] / "data" / "corpus" / "abstracts.json"
+        (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
+        shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
+
 
         # Run the script with PYTHONPATH pointing to the real project
         # so src.analysis, src.visualization etc. are importable
@@ -496,6 +504,12 @@ if __name__ == "__main__":
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
         shutil.copy2(script_path, test_script)
+        corpus_dir = test_root / "data" / "corpus"
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+        real_source = Path(__file__).resolve().parents[2] / "data" / "corpus" / "abstracts.json"
+        (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
+        shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
+
 
         # Include real project src/ for analysis imports
         project_root = str(Path(__file__).parent.parent.parent)
@@ -531,6 +545,12 @@ if __name__ == "__main__":
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
         shutil.copy2(script_path, test_script)
+        corpus_dir = test_root / "data" / "corpus"
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+        real_source = Path(__file__).resolve().parents[2] / "data" / "corpus" / "abstracts.json"
+        (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
+        shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
+
 
         # Deliberately exclude real project from PYTHONPATH
         env = os.environ.copy()
@@ -567,6 +587,12 @@ if __name__ == "__main__":
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
         shutil.copy2(script_path, test_script)
+        corpus_dir = test_root / "data" / "corpus"
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+        real_source = Path(__file__).resolve().parents[2] / "data" / "corpus" / "abstracts.json"
+        (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
+        shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
+
 
         project_root = str(Path(__file__).parent.parent.parent)
         repo_root = str(Path(__file__).parent.parent.parent.parent.parent)
@@ -595,6 +621,12 @@ if __name__ == "__main__":
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
         shutil.copy2(script_path, test_script)
+        corpus_dir = test_root / "data" / "corpus"
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+        real_source = Path(__file__).resolve().parents[2] / "data" / "corpus" / "abstracts.json"
+        (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
+        shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
+
 
         project_root = str(Path(__file__).parent.parent.parent)
         repo_root = str(Path(__file__).parent.parent.parent.parent.parent)
@@ -608,6 +640,10 @@ if __name__ == "__main__":
         text=True,
         env=env,)
 
+        assert result1.returncode == 0, result1.stderr
+        first_hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                        for p in (test_root / "output" / "figures").glob("*.png")}
+        assert first_hashes
         result2 = run_subprocess([sys.executable, str(test_script)],
         cwd=str(test_root),
         capture_output=True,
@@ -621,6 +657,10 @@ if __name__ == "__main__":
         # Check that domain comparison figure exists after both runs
         data_path = test_root / "output" / "figures" / "domain_comparison.png"
         assert data_path.exists()
+        second_hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                         for p in (test_root / "output" / "figures").glob("*.png")}
+        assert first_hashes == second_hashes
+
 
 
 

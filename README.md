@@ -1,378 +1,86 @@
-# Ento-Linguistic Research Project, self-contained research project examining how language shapes scientific understanding in entomology through systematic analysis of terminology networks across six Ento-Linguistic domains
+# Ento-Linguistic research
 
-## Research Overview
+A descriptive research pipeline for examining terminology across six domains: Unit of Individuality, Behavior and Identity, Power and Labor, Sex and Reproduction, Kin and Relatedness, and Economics.
 
-This project investigates the entanglement of speech and thought in entomological research by analyzing how scientific terminology creates conceptual frameworks, framing assumptions, and communication patterns that influence research practice.
+The repository contains four separate source layers: a source-identified PubMed abstract selection alongside its preserved archive, PMC full-text shards, BHL historical OCR volumes, and arXiv preprint records. Analyses report corpus frequencies, rule-based assignments, document co-occurrence, context-cluster entropy, and heuristic discourse/CACE scores. These measurements do not establish causal effects of language, independently validated senses, or field-wide representativeness.
 
-**Six Core Domains:**
+## Paper and publication
 
-1. **Unit of Individuality** - Ant vs. colony vs. superorganism
-2. **Behavior and Identity** - Foraging behavior vs. forager identity
-3. **Power & Labor** - Caste, queen, worker terminology structures
-4. **Sex & Reproduction** - Gender concepts in ant reproduction
-5. **Kin & Relatedness** - Kinship terminology in social insects
-6. **Economics** - Market logic in colony resource allocation
+[Read the updated paper](Ento_Linguistics_manuscript.pdf) · [Zenodo revision](https://zenodo.org/records/23193499) · [Concept DOI](https://doi.org/10.5281/zenodo.19574117)
 
-## Project Structure
+The 2026-10-06 revision contains 46 pages and 17 figures. Headline results use 7,540 identified abstracts from 7,609 archived strings; separate analyses cover 7,073 PMC records, 2,430 BHL documents and 61 arXiv records. Full/default BHL extraction and framing includes 2,317,721,403 OCR characters; entropy remains a twenty-candidate sample per era.
 
-```text
-./
-├── src/                    # Ento-Linguistic analysis algorithms
-├── tests/                  # Test suite (90%+ coverage; count via `uv run pytest tests/ --collect-only -q`)
-├── scripts/                # Analysis pipelines and workflows
-├── docs/manuscript/             # Research manuscript on language in entomology
-├── docs/                   # Analysis documentation and guidelines
-└── output/                 # Generated analyses, figures, and reports
-```
+Verification: 1,774 tests passed, eight external-template tests skipped; 91.93% combined statement/branch coverage. The strict PDF build and independent local revision review passed. See [revision report](docs/review_20261006.md) and [publication receipt](output/review-20261006/zenodo/publication-receipt.json). Corpus custody, relevance/licensing, OCR and human-validation limits remain disclosed in the paper.
 
-## Quick Start
+## Run locally
 
-### Install Dependencies
+Install dependencies and the NLTK data prerequisites:
 
-```bash
-uv sync
-```
+~~~bash
+uv sync --frozen --extra dev
+uv run python -m nltk.downloader -d .venv/nltk_data stopwords punkt_tab wordnet omw-1.4
+~~~
 
-### Run Tests
+NLTK resources are installed separately from the Python lock. The analysis signature and schema-2 receipt hash the actually selected English punkt_tab files, English stopwords and WordNet dictionary/archive. Resource changes invalidate cached analyses; missing resources fail instead of downloading silently. See [NLTK data installation](https://www.nltk.org/data). The pipeline requires the actual corpus files under *data/*; it does not substitute synthetic text for missing literature.
 
-```bash
+Run tests, generate analyses, inspect custody, and render the manuscript:
+
+~~~bash
 uv run pytest tests/ --cov=src --cov-report=term-missing
-```
-
-This project is located under `projects/ento_linguistics/` and is automatically discovered by the root pipeline. Run with `./run.sh --project ento_linguistics` or select from the interactive menu.
-
-### Run Analysis
-
-```bash
-uv run python scripts/01_build_corpus.py
 uv run python scripts/02_generate_figures.py
-```
+PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
+uv run python scripts/_render_pdf_override.py --strict-templates
+~~~
 
-### Build Manuscript (from template root)
+These commands run from this repository; no parent research template is required. Run tests and regeneration sequentially because some legacy tests inspect the generated artifacts. Coverage must reach the configured 90% floor. Older tests for external template infrastructure can skip when that infrastructure is absent; the standalone pipeline is verified separately by running the commands above.
 
-```bash
-uv run python scripts/03_render_pdf.py --project ento_linguistics
-```
+For CPU or memory constrained machines:
 
-## Current Status
+~~~bash
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export ENTO_ANALYSIS_WORKERS=2
+~~~
 
-Run the following to measure:
+For development only, *BHL_STACK_CHARACTER_BUDGET* sets a positive per-era whole-document character cap. It is recorded in the cache fingerprint and cannot satisfy a full run. One worker forces the serial path. Required worker failures propagate; process-pool availability failures are logged before a serial retry. The full PMC analysis is the default. *FULLTEXT_ANALYSIS_LIMIT* is an explicit positive document limit for development runs and is recorded in the fingerprint; a bounded cache cannot satisfy an unbounded run.
 
-```bash
-uv run python scripts/01_run_tests.py --project ento_linguistics
-uv run pytest tests/ --cov=src --cov-report=term-missing
-```
+To acquire or expand the stored abstract corpus, use *scripts/01_build_corpus.py*. Its growth and force options perform live retrieval; they change the research input and require subsequent complete regeneration. Source-layer harvesters and historical query definitions are documented under *data/*.
 
-Outputs in `output/reports/test_results.json` and `output/figures/figure_registry.json` provide current test counts, coverage, and figure details. Scripts in `scripts/` import from `src/` (thin orchestrators). See `src/AGENTS.md` for module details.
+## What is measured
 
-## Extension
+| Output | Definition and boundary |
+|--------|-------------------------|
+| Abstract statistics | Digest-identified PubMed abstracts; unreconciled legacy strings retained but excluded; surface-token extraction threshold one |
+| PMC statistics | All stored full texts by default; threshold twenty |
+| arXiv statistics | Separate preprint title/abstract layer; threshold two |
+| BHL literal frequencies | All stored historical documents; exact seed-phrase matches per 10,000 OCR tokens by era |
+| BHL computational stack | All stored documents by default; streamed extraction and framing; entropy restricted to twenty frequent candidates per era; coverage recorded |
+| Terminology graph | Actual document co-occurrence among the hundred most frequent domain-assigned terms |
+| Concept graph | Six predefined categories connected by shared vocabulary |
+| Domain entropy | Mean successful TF-IDF/KMeans sentence-context entropy estimates; insufficient and failed estimates excluded |
+| Discourse | Lexical proxies; PMC uses an approximately one-fifth deterministic eligible-text sample |
+| CACE | Four heuristic dimensions, with at most fifty terms in domain aggregates; not validated human judgments |
+| Framing | Fraction of extracted term-occurrence windows matching anthropomorphic patterns; not a measure of author bias |
 
-- Add logic in `src/`.
-- Import from `src/` in `scripts/`.
-- Add corresponding tests.
-- Update `docs/manuscript/` sections and `config.yaml`.
-- Run `uv run python scripts/02_generate_figures.py` then validation.
+Welch/ANOVA outputs are exploratory: domain groups overlap and share document-derived observations. Multiple labels measure classification overlap rather than semantic drift. Historical OCR frequencies do not establish a concept's date of origin.
 
-## Scientific Contributions
+## Source custody and regeneration
 
-**Ento-Linguistic Analysis Framework:**
+*output/reports/corpus_audit.json* reports missing digest provenance, duplicate text, source-ID mismatches, and unused sidecar entries. Its success means records were inspected without malformed text, not that every source is reconciled or relevant. The stored archive contains documented provenance gaps; the headline analysis excludes strings without an identified PubMed record, and broad retrieval includes adjacent biology and computational uses. Digest-indexed sidecars can collapse distinct IDs with identical text. Source bytes are preserved for reconciliation.
 
-- **Six-domain taxonomy** for analyzing terminology in entomological research
-- **Mixed-methodology approach** combining computational text analysis with theoretical discourse examination
-- **Terminology network analysis** revealing structural patterns in scientific language
-- **Domain-specific insights** into how language shapes scientific understanding
+Reusable artifacts are bound to ordered corpus content, project Python source, and *uv.lock*. A completed *output/data/analysis_manifest.json* binds corpus and output inventories and file hashes. The renderer rejects missing or changed receipts and failed toolchain commands. A receipt establishes reproducibility, not scientific validity.
 
-**Key Domains Analyzed:**
+The main pipeline generates and registers figures for all available layers. It fails on required analysis/figure/variable errors and checks manuscript figure availability. Markdown retains numerical placeholders; substitution happens during PDF rendering.
 
-1. **Unit of Individuality** - Biological vs. social individuality concepts
-2. **Behavior and Identity** - How behavioral descriptions create categorical identities
-3. **Power & Labor** - Hierarchical terminology in social insect research
-4. **Sex & Reproduction** - Gender concepts applied to insect reproductive biology
-5. **Kin & Relatedness** - Kinship terminology in social insect societies
-6. **Economics** - Market logic in colony resource allocation
+## Layout
 
-## Reproducibility & Data Availability
+- *src/analysis/*: extraction, domain analysis, entropy and heuristic scoring.
+- *src/data/*: loaders and source harvesters.
+- *src/pipeline/*: layer analyses, custody audit and rendering.
+- *src/core/*: manuscript variables, content provenance and ordered execution.
+- *src/visualization/*: manuscript and statistical figures.
+- *tests/*: numerical, real-file, local-HTTP and real-corpus checks.
+- *docs/manuscript/*: canonical manuscript, bibliography and publication metadata.
+- *output/*: generated analysis, registered figures, reports and PDF.
 
-**Reproducible Analysis:**
-
-- All computational methods include seeded randomness for deterministic results
-- codebase with test suite (count via `uv run pytest tests/ --collect-only -q`)
-- Detailed documentation of algorithms and methodological choices
-- Version-controlled environment specifications
-
-**Data Sources:**
-
-- PubMed API integration for real-time literature access
-- arXiv API for preprint literature
-- Cached search results to minimize redundant API calls
-- Structured corpus management with serialization support
-
-**Code Availability:**
-
-- Python implementation with type hints
-- Modular architecture supporting extension and reuse
-- error handling and input validation
-- Cross-platform compatibility (macOS, Linux, Windows)
-
-## Features
-
-- Test suite with real data and HTTP testing (pytest-httpserver for literature mining).
-- Modules in `src/analysis/`, `src/core/`, `src/data/`, `src/pipeline/`, `src/visualization/` with corresponding tests.
-- Deterministic outputs (fixed seeds, e.g. `random_state=42` in KMeans and generators).
-- Input validation and error handling returning `ValidationResult` objects.
-- Reproducible corpus loading from `data/corpus/abstracts.json` (grown idempotently via `scripts/01_build_corpus.py --grow`, with provenance sidecars) and synthetic data via `DataGenerator`.
-- Full-text parallel layer: PMC Open Access full texts (`data/fulltexts/` shards) analyzed with the same statistics machinery (`src/pipeline/fulltext_pipeline.py`), writing `output/data/fulltext_analysis.json` and the `fulltext_analysis.png` figure. The artifact is guarded by a corpus fingerprint (record count + provenance SHA-256): rebuilt only when the corpus changes, full corpus by default (`FULLTEXT_ANALYSIS_LIMIT` bounds quick runs), and a layer-comparison figure (`layer_comparison.png`, `fig:layer_comparison`) contrasts the abstract and full-text entropy per domain.
-- BHL historical layer: Biodiversity Heritage Library mirror texts (1850-1970) harvested keylessly from the Internet Archive (`src/data/bhl_corpus.py` → `data/bhl/`) and analyzed era-stratified (`src/pipeline/bhl_analysis.py` → `data/bhl/era_term_usage.json`), feeding the `BHL_*` manuscript tokens that ground the `S03b` era narratives.
-- arXiv preprint layer (`src/data/arxiv_corpus.py`) and OpenAlex citation enrichment (`src/data/openalex_enrichment.py`) as separate, documented source layers.
-- Figures registered in `output/figures/figure_registry.json`.
-- Inferential statistics stage: pairwise Welch $t$-tests with Benjamini–Hochberg correction and Cohen's $d$, plus one-way ANOVA (`src/pipeline/statistics_pipeline.py`), writing `output/data/statistical_analysis.json` and the `statistical_analysis.png` figure.
-- Corpus-level discourse analysis: both statistical artifacts carry a `discourse` section (discourse patterns, rhetorical strategies, argumentative structures, persuasive techniques), exposed as the `ABSTRACT_*`/`FULLTEXT_*` discourse token families, driving the S02 "Discourse and Rhetorical Layer" subsection and the `discourse_comparison.png` figure (`fig:discourse_comparison`, rendered when both layer artifacts exist).
-
-## Project Architecture
-
-```mermaid
-graph TB
-    subgraph ProjectStructure["Project Structure"]
-        SRC[src/<br/>Scientific Algorithms<br/>Data Processing<br/>Analysis & Visualization]
-        TESTS[tests/<br/>Unit Tests<br/>Integration Tests<br/>90%+ Coverage]
-        SCRIPTS[scripts/<br/>Analysis Scripts<br/>Thin Orchestrators<br/>Figure Generation]
-        MANUSCRIPT[docs/manuscript/<br/>Research Content<br/>Markdown Sections<br/>LaTeX Preamble]
-        OUTPUT[output/<br/>Generated Files<br/>PDFs, Figures, Data<br/>Disposable]
-        DOCS[docs/<br/>Project Documentation<br/>Architecture Notes<br/>Development Guides]
-    end
-
-    subgraph Workflow["Development Workflow"]
-        DEVELOP[1. Develop<br/>src/ modules<br/>with tests]
-        ORCHESTRATE[2. Create<br/>scripts/<br/>orchestrators]
-        DOCUMENT[3. Write<br/>docs/manuscript/<br/>content]
-        BUILD[4. Run<br/>pipeline<br/>generate outputs]
-    end
-
-    subgraph Pipeline["Build Pipeline"]
-        TEST_RUN[Test<br/>Coverage]
-        ANALYSIS_RUN[Analysis<br/>Execute scripts/]
-        RENDER_RUN[Render<br/>PDF generation]
-        VALIDATE_RUN[Validate<br/>Quality checks]
-        COPY_RUN[Copy<br/>Final deliverables]
-    end
-
-    SRC --> TESTS
-    SRC --> SCRIPTS
-    SCRIPTS --> OUTPUT
-    MANUSCRIPT --> OUTPUT
-    DOCS -.-> SRC
-    DOCS -.-> SCRIPTS
-
-    DEVELOP --> ORCHESTRATE
-    ORCHESTRATE --> DOCUMENT
-    DOCUMENT --> BUILD
-
-    BUILD --> TEST_RUN
-    TEST_RUN --> ANALYSIS_RUN
-    ANALYSIS_RUN --> RENDER_RUN
-    RENDER_RUN --> VALIDATE_RUN
-    VALIDATE_RUN --> COPY_RUN
-
-    classDef primary fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    classDef workflow fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef pipeline fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
-
-    class SRC,TESTS,SCRIPTS,MANUSCRIPT,OUTPUT,DOCS primary
-    class DEVELOP,ORCHESTRATE,DOCUMENT,BUILD workflow
-    class TEST_RUN,ANALYSIS_RUN,RENDER_RUN,VALIDATE_RUN,COPY_RUN pipeline
-```
-
-## Quick Usage Examples
-
-### Basic Term Extraction
-
-```python
-from src.term_extraction import TerminologyExtractor
-
-# Extract terms from entomological texts
-extractor = TerminologyExtractor()
-texts = [
-    "Ant colonies exhibit complex social behavior with division of labor.",
-    "The queen ant lays eggs while worker ants forage for food.",
-    "Eusocial insects demonstrate sophisticated communication patterns."
-]
-
-terms = extractor.extract_terms(texts, min_frequency=2)
-for term_name, term_obj in terms.items():
-    print(f"Term: {term_name}, Frequency: {term_obj.frequency}, Domains: {term_obj.domains}")
-```
-
-### Literature Mining
-
-```python
-from src.literature_mining import PubMedMiner, LiteratureCorpus
-
-# Search PubMed for entomological research
-miner = PubMedMiner()
-pmids = miner.search("ant colony behavior", max_results=50)
-
-# Fetch publication details
-publications = miner.fetch_publications(pmids[:5])  # Get first 5
-corpus = LiteratureCorpus(publications)
-
-# Analyze the corpus
-stats = corpus.get_statistics()
-print(f"Corpus contains {stats['total_publications']} publications")
-```
-
-### Domain Analysis
-
-```python
-from src.domain_analysis import DomainAnalyzer
-from src.term_extraction import TerminologyExtractor
-
-# Extract terms and analyze domains
-extractor = TerminologyExtractor()
-terms = extractor.extract_terms(texts, min_frequency=2)
-
-analyzer = DomainAnalyzer()
-domain_analyses = analyzer.analyze_all_domains(terms, texts)
-
-for domain_name, analysis in domain_analyses.items():
-    print(f"Domain: {domain_name}")
-    print(f"Key terms: {analysis.key_terms[:3]}")
-    print(f"Ambiguities found: {len(analysis.ambiguities)}")
-```
-
-## Project Layout
-
-### src/
-
-Scientific code implementing algorithms, data processing, analysis, and visualization.
-
-- `term_extraction.py` - Terminology extraction with domain classification
-- `literature_mining.py` - PubMed/arXiv search and corpus management
-- `domain_analysis.py` - Six-domain Ento-Linguistic analysis
-- `discourse_analysis.py` - Rhetorical pattern and framing analysis
-- `conceptual_mapping.py` - Concept network construction and analysis
-- `concept_visualization.py` - Network visualization (requires networkx)
-- ... and more specialized modules
-
-### tests/
-
-test suite covering src/ modules.
-
-- data testing (no mocks)
-- Integration tests
-- Performance validation
-- test count via `uv run pytest tests/ --collect-only -q`
-
-### scripts/
-
-Thin orchestrators that use src/ modules.
-
-- Import from src/
-- Orchestrate workflows
-- Generate outputs
-
-### docs/manuscript/
-
-Research manuscript in Markdown format.
-
-- Individual sections
-- References and bibliography
-- Configuration files
-
-## Development
-
-### Adding Features
-
-1. **Implement in src/**
-   - Add module to `src/`
-   - Add tests
-   - Ensure coverage requirements met
-
-2. **Use in scripts/**
-   - Import from src/
-   - Orchestrate analysis
-   - Generate figures/tables
-
-3. **Document in docs/manuscript/**
-   - Update manuscript sections
-   - Add figures and results
-   - Update configuration
-
-### Running Quality Checks
-
-```bash
-uv run pytest tests/ --cov=src --cov-report=html
-uv run pytest tests/ --cov=src --cov-fail-under=90
-```
-
-Coverage report generated in `htmlcov/index.html`.
-
-### Quality Validation
-
-- `uv run python scripts/02_generate_figures.py`
-- Markdown validation: `uv run python -m infrastructure.validation.cli markdown docs/manuscript/`
-- PDF validation after render: `uv run python -m infrastructure.validation.cli pdf output/pdf/`
-- Figure registry and integrity: see `src/core/validation.py` and `output/reports/validation_report.json`
-
-## Deployment
-
-### Standalone Use
-
-Copy this project to any location to use independently:
-
-```bash
-cp -r . /path/to/my_research
-cd /path/to/my_research
-pytest tests/ --cov=src
-```
-
-### Standalone Operation
-
-This project is designed to work as a standalone research project:
-
-```bash
-cd /path/to/project
-python3 scripts/03_render_pdf.py  # Builds manuscript PDFs
-```
-
-## Dependencies
-
-- Python 3.10+
-- NumPy, SciPy, Matplotlib, Pandas
-- pytest, pytest-cov
-
-See `pyproject.toml` for dependencies.
-
-## Documentation
-
-- `AGENTS.md` - Architecture and module documentation
-- `docs/` - Additional project-specific documentation
-- Docstrings in source code
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Import errors in scripts | Use `uv run python` for proper environment |
-| Tests fail with module not found | Ensure `tests/conftest.py` adds src/ to sys.path |
-| Coverage below 90% | Run `pytest --cov=src --cov-report=term-missing` to find gaps |
-| Figure generation fails | Run `scripts/01_build_corpus.py` first to generate data |
-| Cross-references show ?? | Check label exists in manuscript and run preflight |
-| Project not discovered by pipeline | This project is in `projects_in_progress/`, not `projects/` |
-| PubMed API failures | Check network connection; API may be rate-limited |
-
-See `output/reports/validation_report.json` and `docs/README.md` for details.
-
-## See Also
-
-- [`AGENTS.md`](AGENTS.md)
-- [`SKILL.md`](SKILL.md)
-- [`src/AGENTS.md`](src/AGENTS.md)
-- [`scripts/AGENTS.md`](scripts/AGENTS.md)
-- [`tests/AGENTS.md`](tests/AGENTS.md)
-- [`docs/manuscript/AGENTS.md`](docs/manuscript/AGENTS.md)
-- [`docs/AGENTS.md`](docs/AGENTS.md)
-- [`../../AGENTS.md`](../../AGENTS.md) - Template
-
-## License
-
-See LICENSE in the template root.
+See [validation guide](docs/validation_guide.md), [reproducibility boundaries](docs/reproducibility.md), and [review evidence](docs/review_20261005.md).

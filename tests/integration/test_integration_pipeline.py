@@ -120,6 +120,9 @@ def _setup_test_project_structure(tmp_path: Path, test_name: str) -> Path:
     # Create project structure
     project_test = test_root / "project"
     project_test.mkdir()
+    # The portable project includes the dependency lock used by content
+    # signatures; an incomplete copy must not silently bypass that guard.
+    shutil.copy2(project_root / "uv.lock", project_test / "uv.lock")
 
     # Copy project/src/ to project/src/
     src_src = project_root / "src"
@@ -152,7 +155,8 @@ def _setup_test_project_structure(tmp_path: Path, test_name: str) -> Path:
         corpus_dir = project_test / "data" / "corpus"
         corpus_dir.mkdir(parents=True, exist_ok=True)
         (corpus_dir / "abstracts.json").write_text(
-            json.dumps(_SANDBOX_FIXTURE_ABSTRACTS, indent=2), encoding="utf-8"
+            json.dumps(json.loads((data_src / "corpus" / "abstracts.json").read_text())[:200], indent=2),
+            encoding="utf-8"
         )
 
     # Regression guard: a sandbox must never receive the heavy full-text

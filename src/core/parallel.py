@@ -46,15 +46,17 @@ def map_ordered(
         Results in ``items`` order — identical to
         ``[fn(item) for item in items]``.
 
-    Falls back to the serial map if pool creation or execution fails, so a
-    restricted environment can only cost speed, never correctness.
+    Logs an OSError from unavailable pool resources before retrying serially.
+    Other worker failures propagate to the caller.
     """
-    if len(items) <= 1:
+    workers = max_workers or int(os.environ.get("ENTO_ANALYSIS_WORKERS", DEFAULT_MAX_WORKERS))
+    if workers < 1:
+        raise ValueError("ENTO_ANALYSIS_WORKERS must be positive")
+    if workers == 1 or len(items) <= 1:
         return [fn(item) for item in items]
     if len(items) < min_items:
         return [fn(item) for item in items]
     try:
-        workers = max_workers or DEFAULT_MAX_WORKERS
         context = get_context("spawn")
         chunksize = max(1, len(items) // (workers * 8))
         with ProcessPoolExecutor(
@@ -64,5 +66,7 @@ def map_ordered(
             initargs=initargs,
         ) as pool:
             return list(pool.map(fn, items, chunksize=chunksize))
-    except Exception:  # pragma: no cover - restricted-environment fallback
+    except OSError as exc:  # pragma: no cover - restricted-environment fallback
+        import logging
+        logging.getLogger(__name__).warning("Process pool unavailable; running serially: %s", exc)
         return [fn(item) for item in items]

@@ -1,0 +1,11 @@
+{
+  "data/bhl/era_term_usage.json": "exact equality excluding generated timestamps and implementation signature",
+  "data/corpus/arxiv_analysis.json": "exact equality excluding generated timestamps and implementation signature",
+  "output/data/concept_map_summary.json": "exact equality excluding generated timestamps and implementation signature",
+  "output/data/corpus_statistics.json": "exact equality excluding generated timestamps and implementation signature",
+  "output/data/domain_statistics.json": "exact equality excluding generated timestamps and implementation signature",
+  "output/data/extracted_terms.json": "exact equality excluding generated timestamps and implementation signature",
+  "output/data/fulltext_analysis.json": "exact equality excluding generated timestamps and implementation signature",
+  "output/data/statistical_analysis.json": "exact equality excluding generated timestamps and implementation signature",
+  "registered_png_bytes": "all 17 identical to the preceding build"
+}

@@ -267,7 +267,9 @@ def _load_corpus_vars(project_root: Path) -> dict:
         if stats_analysis_path.exists():
             with open(stats_analysis_path) as fh:
                 stats_artifact = json.load(fh)
-            stats_tokens = build_statistical_tokens(stats_artifact)
+            fulltext_path = project_root / "output/data/fulltext_analysis.json"
+            fulltext = json.loads(fulltext_path.read_text()) if fulltext_path.exists() else {}
+            stats_tokens = build_statistical_tokens(stats_artifact, fulltext, project_root / "data/bhl")
             vars_.update(stats_tokens)
             logger.info(
                 "  ✓ %s → %d variables (ANOVA_*/PAIRWISE_*/CORRECTION_*)",
@@ -335,11 +337,11 @@ def _load_corpus_vars(project_root: Path) -> dict:
             dstats = json.load(fh)
         
         n_domain_vars = 0
-        total_domain_terms = sum(v.get("term_count", 0) for v in dstats.values())
+        total_domain_terms = sum(v.get("entropy_valid_terms", v.get("term_count", 0)) for v in dstats.values())
         for dom, v in dstats.items():
             slug = dom.upper()
             vars_[f"DOMAIN_{slug}_TERMS"] = str(v.get("term_count", 0))
-            vars_[f"DOMAIN_{slug}_N_TERMS"] = str(v.get("term_count", 0))
+            vars_[f"DOMAIN_{slug}_N_TERMS"] = str(v.get("entropy_valid_terms", v.get("term_count", 0)))
             vars_[f"DOMAIN_{slug}_FREQ"] = str(v.get("total_frequency", 0))
             vars_[f"DOMAIN_{slug}_BRIDGING"] = str(v.get("bridging_term_count", 0))
             n_domain_vars += 4
@@ -406,7 +408,7 @@ def _load_corpus_vars(project_root: Path) -> dict:
             vars_[f"DOMAIN_{slug}_HIGH_ENTROPY_PCT"] = f"{high_pct:.1f}"
             n_ext_vars += 4
             all_entropies.append(entropy_val)
-            all_term_counts.append(v.get("term_count", 0))
+            all_term_counts.append(v.get("entropy_valid_terms", v.get("term_count", 0)))
             all_high_counts.append(v.get("high_entropy_count", 0))
 
         # Corpus-level entropy aggregates
@@ -442,6 +444,11 @@ def _load_corpus_vars(project_root: Path) -> dict:
     if "CORPUS_DRIFT_PERCENTAGE" not in vars_:
         vars_["CORPUS_DRIFT_PERCENTAGE"] = "N/A"
 
+    vars_["CORPUS_MULTIDOMAIN_PERCENTAGE"] = vars_.get("CORPUS_DRIFT_PERCENTAGE", "N/A")
+    if stats_path.exists():
+        vars_["CORPUS_PUBLICATIONS"] = str(stats.get("n_documents", vars_["CORPUS_PUBLICATIONS"]))
+        vars_["CORPUS_STORED_RECORDS"] = str(stats.get("stored_documents", len(abstracts))) if abstracts_path.exists() else "N/A"
+        vars_["CORPUS_EXCLUDED_UNRECONCILED"] = str(stats.get("excluded_unreconciled", 0))
     print(f"  Corpus template vars: {len(vars_)} variables loaded")
     print(
         f"    Publications={vars_['CORPUS_PUBLICATIONS']}, "
@@ -479,6 +486,14 @@ def _apply_corpus_vars(content: str, vars_: dict, *, strict: bool = False) -> st
     return content
 
 
+def run_latex_command(command: list[str], output_dir: Path) -> None:
+    """Run a real renderer; any nonzero status is a build failure."""
+    result = subprocess.run(command, cwd=output_dir, capture_output=True, text=True)
+    if result.returncode:
+        raise RuntimeError(f"Renderer failed ({result.returncode}): {command[0]}\n"
+                           f"{result.stdout[-4000:]}\n{result.stderr[-2000:]}")
+
+
 def build_pdf(strict_templates: bool = False) -> None:
     strict = strict_templates or os.environ.get("STRICT_TEMPLATE_VARS", "").lower() in (
         "1",
@@ -489,6 +504,11 @@ def build_pdf(strict_templates: bool = False) -> None:
     manuscript_dir = project_root / "docs" / "manuscript"
     output_dir = project_root / "output" / "pdf"
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Publication rendering requires a completed, unchanged analysis run.
+    # Resolving placeholders alone cannot detect stale or mixed outputs.
+    from core.provenance import validate_analysis_manifest
+    validate_analysis_manifest(project_root)
 
     output_file = output_dir / "ento_linguistics_combined.pdf"
 
@@ -503,13 +523,13 @@ def build_pdf(strict_templates: bool = False) -> None:
         "06_conclusion.md",
         "07_related_work.md",
         "08_acknowledgments.md",
-        "98_symbols_glossary.md",
-        "99_references.md",
         "S01a_text_and_extraction.md",
         "S01b_analysis_infrastructure.md",
         "S02_supplemental_results.md",
         "S03a_theoretical_extensions.md",
         "S03b_case_studies.md",
+        "98_symbols_glossary.md",
+        "99_references.md",
     ]
 
     # ── Parse cover page metadata from config.yaml ────────────────────
@@ -544,7 +564,7 @@ def build_pdf(strict_templates: bool = False) -> None:
             # Substitute {{CORPUS_*}} template variables with live data values
             content = _apply_corpus_vars(content, corpus_vars, strict=strict)
 
-            combined_content += content + "\n\n\\newpage\n\n"
+            combined_content += content + "\n\n\\clearpage\n\n"
 
     temp_md = output_dir / "temp_combined.md"
     with open(temp_md, "w") as f:
@@ -590,23 +610,8 @@ def build_pdf(strict_templates: bool = False) -> None:
     tex_basename = tex_file.stem
 
     def run_latex(step_label, cmd_list):
-        """Run a LaTeX toolchain command, suppressing non-error output."""
         print(f"  {step_label}...")
-        result = subprocess.run(
-            cmd_list,
-            cwd=str(output_dir),
-            capture_output=True,
-            text=True
-        )
-        if result.returncode != 0:
-            print(f"  Warning: {step_label} returned code {result.returncode}")
-            if "bibtex" in cmd_list[0].lower():
-                bbl_file = output_dir / f"{tex_basename}.bbl"
-                if bbl_file.exists() and bbl_file.stat().st_size > 0:
-                    print(f"  BibTeX produced .bbl ({bbl_file.stat().st_size} bytes) — continuing")
-                    return True
-                print(f"  STDERR: {result.stderr[-500:]}")
-                return False
+        run_latex_command(cmd_list, output_dir)
         return True
 
     print("Step 3/5: Running xelatex (pass 1)...")
@@ -633,6 +638,11 @@ def build_pdf(strict_templates: bool = False) -> None:
     run_latex("xelatex pass 3", [
         "xelatex", "-interaction=nonstopmode", tex_basename
     ])
+
+    log = (output_dir / f"{tex_basename}.log").read_text(errors="replace")
+    import re
+    if re.search(r"There were undefined references|(?:Citation|Reference).*undefined|Missing character:", log):
+        raise RuntimeError("PDF has unresolved citations/references or missing glyphs; inspect the LaTeX log")
 
     # The PDF is generated in output_dir with the tex basename
     generated_pdf = output_dir / f"{tex_basename}.pdf"

@@ -1,0 +1,58 @@
+{
+  "lane": "root manual QA",
+  "verdict": "PASS",
+  "base_sha": "7d49231b6b4ecb97b79f05aacb0cf5098be6cf08",
+  "scope_sha256": "59b52499564f769437d5a24811c080e81c1ff0636e7584b6430383ee954366f0",
+  "analysis_signature": "19d131912bfcb380131a9d779d7bf0c851f7a98f21dab40dd764cb3f77728b1a",
+  "pdf_sha256": "4c22688cde6980fe03174779dff27cb224e547b63509ea6a0f89f5904ddc8586",
+  "rows": [
+    {
+      "scenario": "Full default four-layer generation and 3 completed era checkpoints",
+      "verdict": "PASS",
+      "artifact": "generation-status.json"
+    },
+    {
+      "scenario": "Current receipt, finite JSON, decoded PNGs, registry inventory and shared entropy/CACE means",
+      "verdict": "PASS",
+      "artifact": "final-artifact-checks.json"
+    },
+    {
+      "scenario": "Exact numerical replay and all 17 PNG bytes identical to preceding visually reviewed figures",
+      "verdict": "PASS",
+      "artifact": "numerical-replay.json"
+    },
+    {
+      "scenario": "Source custody counts with explicit gaps",
+      "verdict": "PASS",
+      "artifact": "final-custody.log"
+    },
+    {
+      "scenario": "Complete suite: 1774 passed, 8 skipped, 91.93% combined coverage",
+      "verdict": "PASS",
+      "artifact": "complete-tests.log"
+    },
+    {
+      "scenario": "Strict 46-page PDF build, no final TeX glyph/reference/layout warnings",
+      "verdict": "PASS",
+      "artifact": "final-pdf-build.log"
+    },
+    {
+      "scenario": "All46pages inspected via4contacts; updated methods pages27/31 inspected fullsize; all17figures before references45-46",
+      "verdict": "PASS",
+      "artifact": "pdf-contact-1.png through pdf-contact-4.png"
+    },
+    {
+      "scenario": "Empty and ASCII/Unicode-whitespace resources rejected; valid selected ZIP resources preserved; 50 focused controls passed",
+      "verdict": "PASS",
+      "artifact": "final-resource-controls-fixed.log"
+    }
+  ],
+  "figure_visual_evidence": "Prior manual figure QA retained at output/review-20261005/verified-figures-contact-1.png through -5.png, reused only after live decoding plus exact all17 PNG byte identity.",
+  "limitations": [
+    "8 external-template tests skipped",
+    "69 unidentified archived abstracts excluded",
+    "PMC duplicate-body sidecar custody gaps retained",
+    "No individual license/relevance or human sense/framing annotation certification",
+    "Initial native exit138 remains unexplained; interrupted retry incomplete; final checkpoint-enabled run passed"
+  ]
+}

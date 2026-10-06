@@ -493,7 +493,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         ax.set_yticks(range(len(labels)))
         ax.set_yticklabels(labels, fontsize=MIN_FONT)
-        ax.set_xlabel("Effect Size (Cohen's d)", fontsize=MIN_FONT)
+        ax.set_xlabel("Bias-corrected effect size", fontsize=MIN_FONT)
         ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         ax.grid(True, alpha=0.3)
 
@@ -1020,13 +1020,16 @@ def plot_statistical_analysis(
         # between domains and invite misreading.  Student-t quantiles
         # for honest small-n intervals, falling back to the normal
         # approximation when scipy is unavailable.
-        has_sd = all("entropy_sd" in descriptives[d] for d in order)
+        has_sd = any("entropy_sd" in descriptives[d] for d in order)
         cis = None
         if has_sd:
             cis = []
             for d in order:
                 n = int(descriptives[d].get("n_terms", 0))
-                sd = float(descriptives[d]["entropy_sd"])
+                sd = float(descriptives[d].get("entropy_sd", 0))
+                if n < 2 or "entropy_sd" not in descriptives[d]:
+                    cis.append(float("nan"))
+                    continue
                 if n > 1 and sd > 0:
                     try:
                         from scipy.stats import t as student_t
@@ -1055,7 +1058,7 @@ def plot_statistical_analysis(
             ha="right",
         )
         if cis:
-            top = max(m + c for m, c in zip(means, cis))
+            top = max(m + (c if np.isfinite(c) else 0) for m, c in zip(means, cis))
         else:
             top = max(means)
         ax_entropy.set_ylim(0, top * 1.25)
@@ -1066,6 +1069,7 @@ def plot_statistical_analysis(
                 if cis
                 else 0.0
             )
+            ci = ci if np.isfinite(ci) else 0.0
             ax_entropy.annotate(
                 f"n={n_terms}",
                 # Anchor above the CI whisker cap (bar top when no CI
@@ -1080,7 +1084,7 @@ def plot_statistical_analysis(
                 fontsize=MIN_FONT,
             )
         ax_entropy.set_ylabel(
-            "Semantic Entropy (mean ± 95% CI)" if cis
+            "Entropy (mean; nominal 95% intervals)" if cis
             else "Semantic Entropy (mean)",
             fontsize=MIN_FONT,
         )
@@ -1145,7 +1149,7 @@ def plot_statistical_analysis(
                     color=_SIGNIFICANT_COLOR,
                 )
         ax_effects.set_xlabel(
-            "Cohen's d (* = BH-significant)", fontsize=MIN_FONT
+            "Bias-corrected effect size (* = BH-significant)", fontsize=MIN_FONT
         )
         ax_effects.set_title(
             "Pairwise Effect Sizes", fontsize=MIN_FONT + 2, fontweight="bold"

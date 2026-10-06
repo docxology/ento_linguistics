@@ -1007,8 +1007,13 @@ class DomainAnalyzer:
         domain_entropies: Dict[str, List[float]] = defaultdict(list)
         for term in term_list:
             result = results.get(term.text.lower())
+            term.entropy_status = result.status if result is not None else None
             if result is None or result.status != "ok":
+                term.semantic_entropy = 0.0
                 continue
+            # CACE clarity downstream must use the entropy computed here,
+            # rather than the extractor's default zero.
+            term.semantic_entropy = result.entropy_bits
             for domain in term.domains:
                 domain_entropies[domain].append(result.entropy_bits)
 

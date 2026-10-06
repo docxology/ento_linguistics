@@ -230,7 +230,8 @@ def _format_domain_descriptives(
         values = np.asarray(entropy_values, dtype=float)
         entry["entropy_mean"] = float(np.mean(values))
         # ddof=1 sample SD; a single observation has no spread, report 0.0.
-        entry["entropy_sd"] = float(np.std(values, ddof=1)) if len(values) > 1 else 0.0
+        if len(values) > 1:
+            entry["entropy_sd"] = float(np.std(values, ddof=1))
         # Wave-1 contract: the domain ambiguity score is the mean of valid
         # per-term entropies (real values; omitted entirely when no term in
         # the domain had enough contexts).
@@ -1012,6 +1013,12 @@ def build_statistical_analysis(
     }
 
     artifact: Dict[str, Any] = {
+        "interpretation": {
+            "tests": "exploratory comparisons of term entropies, not calibrated population inference",
+            "independence": "terms may share documents and belong to multiple domain groups",
+            "causality": "lexical matches and cluster entropy do not measure causal framing or semantic drift",
+            "cace": "heuristic scores; absent or insufficient entropy is not evidence of clarity",
+        },
         "descriptives": descriptives,
         "cace": cace,
         "cace_terms": cace_terms,

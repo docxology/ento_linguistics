@@ -99,6 +99,27 @@ def test_run_analysis_pipeline_real_data(results):
         assert "bridging_terms" in data
 
 
+def test_document_cooccurrences_never_invents_shared_domain_edges():
+    from analysis.term_extraction import Term
+    terms = {name: Term(text=name, lemma=name, domains=["power_and_labor"], frequency=2)
+             for name in ("queen", "worker")}
+    assert mf.document_cooccurrences(terms, ["The queen lays eggs.", "A worker forages."]) == {}
+    assert mf.document_cooccurrences(terms, ["Queen and worker interact. Queen returns."]) == {
+        ("queen", "worker"): 1}
+    assert mf.document_cooccurrences(terms, ["Queens and coworkers interact."]) == {}
+    with pytest.raises(ValueError):
+        mf.document_cooccurrences(terms, [], max_terms=1)
+
+
+def test_setup_preserves_both_expensive_caches(tmp_path):
+    data = tmp_path / "output" / "data"
+    data.mkdir(parents=True)
+    for name in ("fulltext_analysis.json", "statistical_analysis.json"):
+        (data / name).write_text('{"cache": true}')
+    mf._setup_directories(str(tmp_path))
+    assert len(list(data.glob("*.json"))) == 2
+
+
 # ── Figure generators (happy path) ───────────────────────────────────
 
 
@@ -271,6 +292,10 @@ def test_main_end_to_end(real_corpus, tmp_path, monkeypatch):
     # Framing slice: the anthropomorphic generator is data-gated on real
     # framing proportions, which need more than CORPUS_SLICE abstracts.
     monkeypatch.setattr(mf, "REAL_ABSTRACTS", real_corpus[:FRAMING_SLICE])
+    corpus_dir = tmp_path / "data" / "corpus"
+    corpus_dir.mkdir(parents=True)
+    (corpus_dir / "abstracts.json").write_text(json.dumps(real_corpus[:FRAMING_SLICE]))
+    (corpus_dir / "provenance.json").write_text((REPO_ROOT / "data/corpus/provenance.json").read_text())
 
     mf.main(project_root=str(tmp_path))
 
@@ -292,3 +317,29 @@ def test_main_end_to_end(real_corpus, tmp_path, monkeypatch):
     assert (data_dir / "domain_statistics.json").is_file()
     assert (data_dir / "extracted_terms.json").is_file()
     assert (data_dir / "concept_map_summary.json").is_file()
+
+
+def test_project_root_selects_its_own_corpus(real_corpus, tmp_path):
+    """Explicit roots must not reuse an import-time corpus from another checkout."""
+    corpus_dir = tmp_path / "data" / "corpus"
+    corpus_dir.mkdir(parents=True)
+    (corpus_dir / "abstracts.json").write_text(json.dumps(real_corpus[:3]))
+    assert mf.load_real_corpus(project_root=str(tmp_path)) == real_corpus[:3]
+    with pytest.raises(FileNotFoundError):
+        mf.load_real_corpus(project_root=str(tmp_path / "absent"))
+
+
+def test_provenance_required_excludes_unidentified_text_without_editing_it(real_corpus, tmp_path):
+    import hashlib
+    corpus_dir = tmp_path / "data" / "corpus"
+    corpus_dir.mkdir(parents=True)
+    corpus_file = corpus_dir / "abstracts.json"
+    corpus_file.write_text(json.dumps(real_corpus[:2]))
+    before = corpus_file.read_bytes()
+    digest = hashlib.sha256(real_corpus[0].encode()).hexdigest()
+    (corpus_dir / "provenance.json").write_text(json.dumps({"records": {digest: {"pmid": "41904221"}}}))
+    assert mf.load_real_corpus(str(tmp_path), require_provenance=True) == real_corpus[:1]
+    assert corpus_file.read_bytes() == before
+    (corpus_dir / "provenance.json").write_text('{"records": {}}')
+    with pytest.raises(ValueError, match="source-identified"):
+        mf.load_real_corpus(str(tmp_path), require_provenance=True)
