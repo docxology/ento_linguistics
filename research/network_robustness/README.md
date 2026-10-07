@@ -19,4 +19,4 @@ Primary methods: [Strona et al., 2014](https://doi.org/10.1038/ncomms5114) and [
 
 ## Publication
 
-The extension is included in [Ento-Linguistics v1.2.0](https://doi.org/10.5281/zenodo.23198912). Reports generated during development describe it as a new local extension of the previously published v1.1.1 paper; their original bytes are preserved by the receipts. The released manuscript and metadata identify its current publication status.
+The extension is included in [Ento-Linguistics v1.2.0](https://doi.org/10.5281/zenodo.23198912). The v1.2.1 validation patch additionally decodes the NPY and PNG files, verifies shape, finite values and graph bounds, independently reconstructs the observed graph, and recomputes all JSON summary statistics from retained traces. It checks the numerical Markdown table against those summaries. Byte receipts alone do not certify numerical or scientific validity. The guard does not prove that a decoded figure portrays every value correctly or that chains have mixed.

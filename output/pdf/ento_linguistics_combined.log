@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.18)  6 OCT 2026 15:46
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.18)  7 OCT 2026 07:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1500,11 +1500,11 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 ]
 [31] [32]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 1691.
+(Font)              scaled to size 9.0pt on input line 1701.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.00082pt on input line 1691.
+(Font)              scaled to size 9.00082pt on input line 1701.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.99904pt on input line 1691.
+(Font)              scaled to size 8.99904pt on input line 1701.
 
 
 Package microtype Warning: Unknown slot number of character

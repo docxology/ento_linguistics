@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .model import MatrixError
 from .study import Protocol, run
+from .artifacts import validate_artifacts
 
 __all__ = ["validate_receipt", "ensure_extensions"]
 
@@ -46,6 +47,8 @@ def validate_receipt(root: Path, out: Path, protocol: Protocol) -> None:
         content = (out / name).read_bytes()
         if not content or hashlib.sha256(content).hexdigest() != digest:
             raise MatrixError(f"Extension output changed: {name}")
+
+    validate_artifacts(root, out, protocol)
 
 
 def ensure_extensions(root: Path) -> None:

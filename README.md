@@ -4,11 +4,11 @@
 
 How do terms such as *queen*, *worker*, *caste*, and *colony* organize descriptions of ant biology? Ento-Linguistics provides a six-domain framework and a reproducible, descriptive analysis of scientific terminology across modern abstracts, full texts, historical OCR, and preprints.
 
-[Read the paper](Ento_Linguistics_manuscript.pdf) · [Zenodo publication](https://zenodo.org/records/23198912) · [Documentation](docs/README.md) · [Reproduce the analyses](docs/guides/workflow.md)
+[Read the paper](Ento_Linguistics_manuscript.pdf) · [Zenodo publication](https://zenodo.org/records/23215452) · [Documentation](docs/README.md) · [Reproduce the analyses](docs/guides/workflow.md)
 
 Daniel Ari Friedman and Tucker Cahill Chambers
 
-Published manuscript revision: **6 October 2026** · [Version DOI](https://doi.org/10.5281/zenodo.23198912) · [All versions](https://doi.org/10.5281/zenodo.19574117)
+Published manuscript revision: **7 October 2026** · [Version DOI](https://doi.org/10.5281/zenodo.23215452) · [All versions](https://doi.org/10.5281/zenodo.19574117)
 
 ## Version 1.2.0: network robustness and research lecture
 
@@ -16,7 +16,7 @@ The [fixed-margin network workflow](research/network_robustness/README.md) recon
 
 [The revised manuscript](Ento_Linguistics_manuscript.pdf) adds the fixed-margin method and strengthens interpretation and experimental design. Its renderer checks and, when needed, regenerates both companion protocols. The original four-layer corpus analyses remain separately receipted; this extension does not claim to recompute them.
 
-[Watch the 20-minute lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.2.0/EntoLinguistics_20min_4K.mp4) · [Download slides](https://github.com/docxology/ento_linguistics/releases/download/v1.2.0/EntoLinguistics_slides.pdf) · [All release files](https://github.com/docxology/ento_linguistics/releases/tag/v1.2.0)
+[Watch the 20-minute lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.2.1/EntoLinguistics_20min_4K.mp4) · [Download slides](https://github.com/docxology/ento_linguistics/releases/download/v1.2.1/EntoLinguistics_slides.pdf) · [All release files](https://github.com/docxology/ento_linguistics/releases/tag/v1.2.1)
 
 The 28-slide lecture uses Daniel Ari Friedman's DAF narration, timed bottom captions, six Manim animations, and original paper figures. It explains the published v1.1.1 baseline and the network extension now included in v1.2.0. Sources and production tools are maintained in LectureCreate; public media and research artifacts are archived with this release and on Zenodo.
 
@@ -107,6 +107,6 @@ Source identity and a successful build do not establish relevance, individual re
 
 ## Cite the paper
 
-Daniel Ari Friedman and Tucker Cahill Chambers. *Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology*. Manuscript revision, 6 October 2026. [doi:10.5281/zenodo.23198912](https://doi.org/10.5281/zenodo.23198912).
+Daniel Ari Friedman and Tucker Cahill Chambers. *Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology*. Manuscript revision, 7 October 2026. [doi:10.5281/zenodo.23215452](https://doi.org/10.5281/zenodo.23215452).
 
 Use the version DOI to cite this PDF, or the [concept DOI](https://doi.org/10.5281/zenodo.19574117) to refer to the evolving work. The Zenodo paper is distributed under its recorded **CC BY 4.0** license. Corpus reuse remains subject to each source's terms; availability is not blanket redistribution permission.

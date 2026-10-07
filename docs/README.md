@@ -28,3 +28,5 @@ Start with the [paper](../Ento_Linguistics_manuscript.pdf) for the research argu
 Documentation contains reusable instructions and definitions. Historical review narratives and speculative refactoring/testing plans have been removed; recorded execution and publication receipts remain under [output/review-20261006/](../output/review-20261006/). Read [verification](reference/verification.md) for how to use those records without treating an old run as a new one.
 
 Return to the [repository overview](../README.md).
+
+[Current validation patch and verification](reference/release-v1.2.1.md).

@@ -1,10 +1,10 @@
-cff-version: 1.2.0
+cff-version: 1.2.1
 message: "Please cite the paper when using this research or its lecture."
 title: "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology"
 type: software
-version: 1.2.0
-date-released: 2026-10-06
-doi: 10.5281/zenodo.23198912
+version: 1.2.1
+date-released: 2026-10-07
+doi: 10.5281/zenodo.23215452
 url: https://github.com/docxology/ento_linguistics
 authors:
   - family-names: Friedman
@@ -16,7 +16,7 @@ authors:
 preferred-citation:
   type: article
   title: "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology"
-  doi: 10.5281/zenodo.23198912
+  doi: 10.5281/zenodo.23215452
   year: 2026
   authors:
     - family-names: Friedman

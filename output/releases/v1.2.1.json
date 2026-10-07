@@ -1,0 +1,52 @@
+{
+  "version": "1.2.1",
+  "doi": "10.5281/zenodo.23215452",
+  "previous_version_doi": "10.5281/zenodo.23198912",
+  "files": {
+    "Ento_Linguistics_manuscript.pdf": {
+      "bytes": 11216627,
+      "sha256": "098953e2594fffc94c347051b7b28cce631eba6820a52381d8cda968718da8c3",
+      "md5": "311f7154708ab060dcec3c60dd1003c1"
+    },
+    "EntoLinguistics_lecture_companions.zip": {
+      "bytes": 9939639,
+      "sha256": "f47b3a40b1d0fe1edd8fcf211b7d903e207f5d783965b359fdc042bc68488f16",
+      "md5": "20019f248a874fe2223b625e7218fe14"
+    },
+    "EntoLinguistics_audio.mp3": {
+      "bytes": 16618796,
+      "sha256": "e337e689b4f39719dca9361aab40e780aade54987c56c7daa92540924028a000",
+      "md5": "be93781dd5d79b13b13127224e169b06"
+    },
+    "EntoLinguistics_network_robustness.zip": {
+      "bytes": 1329873,
+      "sha256": "90bd82bdcdd00d25bddbbc50f42d9a061a591debc23fed129e048bd81b5af92a",
+      "md5": "98029645d3c3a358ab5760705365f1fb"
+    },
+    "EntoLinguistics_slides.pdf": {
+      "bytes": 10267572,
+      "sha256": "bef07699fa90ae222c00aaa85c618cc7982f7570d821889ac81a6c3ea6f65537",
+      "md5": "d8ca162644f9a53cefc28e6fb950e4e1"
+    },
+    "EntoLinguistics_20min_4K.mp4": {
+      "bytes": 75657214,
+      "sha256": "8eb87a35eb2d8cfc781306d17c9b05061239e1af8d01c83cdcef8c257acef6c9",
+      "md5": "5856f4f0de753d379fb71583245ee118"
+    }
+  },
+  "extension_draws": 900,
+  "traces_identical_to_v1_2_0": true,
+  "core_computations_reexecuted": false,
+  "lecture_media_changed": false,
+  "verified_tests": {
+    "full": {
+      "passed": 1802,
+      "skipped": 8,
+      "warnings": 83,
+      "combined_coverage_percent": 91.45
+    },
+    "final_extension_controls": 30,
+    "lecture_production_controls": 5,
+    "artifact_validator_coverage_percent": 95.92
+  }
+}

@@ -119,7 +119,7 @@ def receipt_fixture(out):
     ]
     inputs = [root / name for name in names] + list((root / "research/network_robustness").glob("*.py"))
     for name in ["network_robustness.json", "chain_statistics.npy", "network_robustness.png", "network_robustness.md"]:
-        (out / name).write_bytes(b"numerical receipt control")
+        (out / name).write_bytes((root / "output/extensions/network_robustness" / name).read_bytes())
     receipt = {
         "protocol": asdict(Protocol()),
         "inputs": {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs},
@@ -149,4 +149,106 @@ def test_empty_extension_inventory_is_rejected(tmp_path):
     receipt["outputs"] = {}
     (tmp_path / "receipt.json").write_text(json.dumps(receipt))
     with pytest.raises(MatrixError):
+        validate_receipt(root, tmp_path, Protocol())
+
+
+@pytest.mark.parametrize("artifact", ["chain_statistics.npy", "network_robustness.json", "network_robustness.png"])
+def test_self_hashed_corruption_is_rejected(tmp_path, artifact):
+    import hashlib
+    import json
+    from research.network_robustness.receipt import validate_receipt
+    from research.network_robustness.study import Protocol
+
+    root, receipt = receipt_fixture(tmp_path)
+    target = tmp_path / artifact
+    if artifact.endswith("json"):
+        report = json.loads(target.read_text())
+        report["metrics"]["edges"]["null_mean"] += 1
+        target.write_text(json.dumps(report))
+    else:
+        target.write_bytes(b"invalid but nonempty artifact")
+    receipt["outputs"][artifact] = hashlib.sha256(target.read_bytes()).hexdigest()
+    (tmp_path / "receipt.json").write_text(json.dumps(receipt))
+    with pytest.raises(MatrixError):
+        validate_receipt(root, tmp_path, Protocol())
+
+
+@pytest.mark.parametrize(
+    "mutation", ["nan", "shape", "fractional_edges", "clustering", "status", "documents", "markdown"]
+)
+def test_self_hashed_semantic_inconsistency_is_rejected(tmp_path, mutation):
+    import hashlib
+    import json
+    from research.network_robustness.receipt import validate_receipt
+    from research.network_robustness.study import Protocol
+
+    root, receipt = receipt_fixture(tmp_path)
+    if mutation in {"nan", "shape", "fractional_edges", "clustering"}:
+        target = tmp_path / "chain_statistics.npy"
+        values = np.load(target, allow_pickle=False)
+        if mutation == "nan":
+            values[0, 0, 0] = np.nan
+        elif mutation == "shape":
+            values = values[:, :-1, :]
+        elif mutation == "fractional_edges":
+            values[0, 0, 0] = 0.5
+        else:
+            values[0, 0, 1] = 1.01
+        np.save(target, values, allow_pickle=False)
+    elif mutation == "markdown":
+        target = tmp_path / "network_robustness.md"
+        target.write_text("# Results\nNo statistics retained.\n")
+    else:
+        target = tmp_path / "network_robustness.json"
+        report = json.loads(target.read_text())
+        report[mutation] = "pending" if mutation == "status" else report[mutation] - 1
+        target.write_text(json.dumps(report))
+    receipt["outputs"][target.name] = hashlib.sha256(target.read_bytes()).hexdigest()
+    (tmp_path / "receipt.json").write_text(json.dumps(receipt))
+    with pytest.raises(MatrixError):
+        validate_receipt(root, tmp_path, Protocol())
+
+
+def test_summary_matches_analytical_three_chain_control():
+    from research.network_robustness.study import summarize
+
+    values = np.stack([np.arange(1, 21), np.arange(2, 22), np.arange(3, 23)])
+    summary = summarize(values, 11)
+    assert summary.null_mean == 11.5
+    assert summary.chain_means == (10.5, 11.5, 12.5)
+    assert (summary.null_q025, summary.null_q975) == (2, 21)
+    assert summary.rhat == pytest.approx((685 / 700) ** 0.5)
+    assert summary.upper_tail_fraction == 33 / 60
+    assert summary.lower_tail_fraction == 30 / 60
+
+
+def test_png_with_valid_checksums_but_invalid_pixel_stream_is_rejected(tmp_path):
+    import hashlib
+    import json
+    import struct
+    import zlib
+    from PIL import Image
+    from research.network_robustness.receipt import validate_receipt
+    from research.network_robustness.study import Protocol
+
+    root, receipt = receipt_fixture(tmp_path)
+    target = tmp_path / "network_robustness.png"
+    source = target.read_bytes()
+    chunks = [source[:8]]
+    offset = 8
+    while offset < len(source):
+        size = struct.unpack(">I", source[offset : offset + 4])[0]
+        kind = source[offset + 4 : offset + 8]
+        content = source[offset + 8 : offset + 8 + size]
+        if kind == b"IDAT":
+            content = b"not a zlib stream"
+        chunks.append(struct.pack(">I", len(content)) + kind + content + struct.pack(">I", zlib.crc32(kind + content)))
+        offset += size + 12
+    target.write_bytes(b"".join(chunks))
+    # PNG container/CRC verification alone accepts this broken pixel stream.
+    with Image.open(target) as figure:
+        figure.verify()
+    receipt["outputs"][target.name] = hashlib.sha256(target.read_bytes()).hexdigest()
+    (tmp_path / "receipt.json").write_text(json.dumps(receipt))
+    with pytest.raises(MatrixError, match="cannot be decoded"):
         validate_receipt(root, tmp_path, Protocol())

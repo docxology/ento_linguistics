@@ -325,7 +325,7 @@ Communication in Entomology}
 \makeatother
 \subtitle{Descriptive Corpus Analysis and a Six-Domain Framework}
 \author{Daniel Ari Friedman \and Tucker Cahill Chambers}
-\date{2026-10-06}
+\date{2026-10-07}
 
 \begin{document}
 \maketitle
@@ -1662,6 +1662,16 @@ extension implementation, dependency lock and generated outputs. It does
 not relabel cached core results as newly recomputed analyses. The
 executed report and trace array are provided as companion artifacts to
 version 1.2.0.
+
+The version 1.2.1 validation guard additionally decodes retained
+numerical traces and the companion PNG, verifies full protocol
+dimensions, finite values and graph bounds, reconstructs the observed
+graph from source-identified abstracts, and recomputes the JSON summary
+statistics from all retained draws. The Markdown result table must agree
+with those summaries. Negative controls include self-hashed corrupt
+files and inconsistent summaries. These internal-consistency checks do
+not establish chain mixing, validate lexical proxies, or certify the
+visual interpretation of a decoded figure.
 
 \clearpage
 

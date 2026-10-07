@@ -1,6 +1,6 @@
 # Fixed-margin network robustness extension
 
-This new local extension supplements the published paper. It independently reconstructs the observed network from every source-identified abstract, then randomizes the binary document/term matrix using Curveball trades. Each document keeps its selected-term count, and each term keeps its document frequency. The total projected edge weight is an analytical invariant and is checked on every retained draw.
+This extension was introduced in the published v1.2.0 paper and supplements its original descriptive network analysis. It independently reconstructs the observed network from every source-identified abstract, then randomizes the binary document/term matrix using Curveball trades. Each document keeps its selected-term count, and each term keeps its document frequency. The total projected edge weight is an analytical invariant and is checked on every retained draw.
 
 ## Protocol and results
 
