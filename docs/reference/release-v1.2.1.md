@@ -25,3 +25,7 @@ The verified 20-minute DAF lecture, audio and slides are retained unchanged. The
 The source-change guard rejected an intermediate sensitivity run after the PNG decoder was tightened. That failed attempt was retained separately; the final frozen-source execution and strict render completed successfully. The full suite was collected before the two final analytical/pixel-stream controls were added; the final 30-control run covers both additions and the final validator.
 
 [Release file identities](../../output/releases/v1.2.1.json) bind the paper and six downloadable companions.
+
+## Publication readback
+
+All six public Zenodo downloads were rehashed successfully; all six GitHub asset digests and the PDF downloaded from GitHub main matched the release manifest. Zenodo’s latest-version endpoint identifies v1.2.1. The [publication receipt](../../output/releases/v1.2.1-publication.json) records exact file identities and source commits. A fresh post-publication LectureCreate local suite passed 1,452 tests with eight skips and 93.96% combined coverage; no lecture engine or media bytes changed.
