@@ -2,11 +2,15 @@
 
 [Documentation](../README.md) → Verification and publication
 
-This page distinguishes the version 1.2.0 release from the earlier captured 6 October 2026 baseline revision. It is a reference to actual execution records, not a live status dashboard or a new scientific validation claim.
+This page distinguishes the current v1.2.1 validation patch, the v1.2.0 network extension and lecture, and the earlier captured 6 October 2026 baseline revision. It is a reference to actual execution records, not a live status dashboard or a new scientific validation claim.
+
+## Current version 1.2.1
+
+The validation patch rejects decoded-artifact and numerical inconsistencies before rendering. Both executed protocol traces match v1.2.0 exactly; the lecture media and scientific results are unchanged. See [v1.2.1 verification](release-v1.2.1.md), the [current paper](../../Ento_Linguistics_manuscript.pdf), and [Zenodo v1.2.1](https://doi.org/10.5281/zenodo.23215452).
 
 ## Version 1.2.0
 
-The new release adds an independently receipted fixed-margin comparison and a 20-minute research lecture. See [release verification](release-v1.2.0.md), the [current paper](../../Ento_Linguistics_manuscript.pdf), and [Zenodo v1.2.0](https://doi.org/10.5281/zenodo.23198912). The existing four-layer corpus computations were verified from their content receipts, not repeated or reclassified as new execution. The extension retained 600 primary and 300 protocol-sensitivity draws.
+The new release adds an independently receipted fixed-margin comparison and a 20-minute research lecture. See [release verification](release-v1.2.0.md), the [archived v1.2.0 paper](https://zenodo.org/records/23198912/files/Ento_Linguistics_manuscript.pdf), and [Zenodo v1.2.0](https://doi.org/10.5281/zenodo.23198912). The existing four-layer corpus computations were verified from their content receipts, not repeated or reclassified as new execution. The extension retained 600 primary and 300 protocol-sensitivity draws.
 
 ## Earlier baseline checks (v1.1.1)
 
