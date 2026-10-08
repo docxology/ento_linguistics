@@ -17,3 +17,7 @@ The unpublished 1.2.2-dev paper has clearer network and domain figures, a consis
 The first full suite exposed an existing vertical-bar assertion after the figure became horizontal. `failed-orientation-full-tests.log` retains that failure. The assertion now checks bar width against the same exact numerical oracle; the missing-value test now requires NaN rather than accidentally accepting bar thickness. The complete suite was rerun successfully.
 
 The prior independent approval in `output/review-main-20261008/` binds its earlier candidate, not this revision. New lecture production and its final review are recorded separately in LectureCreate. No release or DOI publication is implied.
+
+## Independent gate
+
+[Independent review](independent-gate.md): **APPROVE**, high confidence for the bounded artifact gate. It binds public candidate `55011f471b5c49953fd153e064fb8de96d0e7ed4` and LectureCreate candidate `70b5b3d8dd29eedf95807d68ed0380acdb2a319c`. Later receipt/status documentation does not change the reviewed scientific source or media. Graft navigation reported 108,430 tokens saved across the two successful queries; this is a tool-reported estimate, not a monetary saving.

@@ -1,0 +1,8 @@
+{
+  "verdict": "APPROVE",
+  "confidence": "HIGH",
+  "public_reviewed_candidate": "55011f471b5c49953fd153e064fb8de96d0e7ed4",
+  "private_reviewed_candidate": "70b5b3d8dd29eedf95807d68ed0380acdb2a319c",
+  "scope": "Bounded artifact, code and evidence gate; not independent listening, continuous watching or scientific validity",
+  "delivery": "Pending authorized push at review time"
+}

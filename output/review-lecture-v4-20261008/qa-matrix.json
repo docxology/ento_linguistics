@@ -1,0 +1,70 @@
+{
+  "public_candidate": "55011f471b5c49953fd153e064fb8de96d0e7ed4",
+  "private_candidate": "70b5b3d8dd29eedf95807d68ed0380acdb2a319c",
+  "rows": [
+    {
+      "scenario": "Paper full/default regeneration and numerical regression",
+      "evidence": [
+        "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/review-lecture-v4-20261008/generation-receipt.json",
+        "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/review-lecture-v4-20261008/artifact-comparison.json"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "Paper complete suite and coverage",
+      "evidence": [
+        "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/review-lecture-v4-20261008/tests-receipt.json",
+        "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/review-lecture-v4-20261008/coverage.json"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "Paper custody and strict rendering",
+      "evidence": [
+        "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/review-lecture-v4-20261008/render-receipt.json",
+        "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/review-lecture-v4-20261008/pdf-checks.json"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "49-page paper and17figure bounded visual QA",
+      "evidence": [
+        "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/review-lecture-v4-20261008/manual-paper-qa.json",
+        "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/review-lecture-v4-20261008/page-11.png"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "Private complete suite and static checks",
+      "evidence": [
+        "/Volumes/GitVault/Username/docxology/Private/LectureCreate/output/review-ento-v4-20261008/corrected-tests-receipt.json",
+        "/Volumes/GitVault/Username/docxology/Private/LectureCreate/output/review-ento-v4-20261008/static-final-receipt.json"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "Real speech and exact20minute encoded media",
+      "evidence": [
+        "/Volumes/GitVault/Username/docxology/Private/LectureCreate/output/ento_linguistics_v4/lecture_receipt.json",
+        "/Volumes/GitVault/Username/docxology/Private/LectureCreate/output/ento_linguistics_v4/audio-source-checks.json"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "Missing cues and tampered source rejected",
+      "evidence": [
+        "/Volumes/GitVault/Username/docxology/Private/LectureCreate/output/review-ento-v4-20261008/production-negative-controls.json",
+        "/Volumes/GitVault/Username/docxology/Private/LectureCreate/output/review-ento-v4-20261008/tampered-source-negative.log"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "scenario": "28slides,28handout pages,8scene motion andfullstreamdecode",
+      "evidence": [
+        "/Volumes/GitVault/Username/docxology/Private/LectureCreate/output/ento_linguistics_v4/manual-final-qa.json",
+        "/Volumes/GitVault/Username/docxology/Private/LectureCreate/output/ento_linguistics_v4/full-decode-receipt.json"
+      ],
+      "verdict": "PASS"
+    }
+  ]
+}

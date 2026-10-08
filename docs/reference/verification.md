@@ -8,6 +8,8 @@ This page distinguishes the unpublished 1.2.2 draft, the published v1.2.1 valida
 
 The draft at [output/pdf/ento_linguistics_combined.pdf](../../output/pdf/ento_linguistics_combined.pdf) is unpublished. The latest 8 October visualization and scholarship revision completed full/default generation, the custody audit, and strict rendering: **49 pages and 17 core figures**. The complete suite passed **1,822 tests with eight external-template skips and 92.01% combined coverage**. Eight core numerical exports match the preceding baseline after execution identity fields are excluded; both fixed-margin protocols were re-executed with byte-identical retained traces. See [current receipts and bounded layout QA](../../output/review-lecture-v4-20261008/SUMMARY.md). The paper's current SHA-256 is `686f1775d4d92e5946e2bdd3c3fa354e9d6f0e904cf1872ef7512537503e16fc`.
 
+[Independent approval of the current artifact revision](../../output/review-lecture-v4-20261008/independent-gate.md) binds candidate `55011f471b5c49953fd153e064fb8de96d0e7ed4` and the separately identified LectureCreate candidate. Later receipt/status documentation is not a new scientific audit.
+
 The [earlier continuation record](../../output/review-main-20261008/SUMMARY.md) retains its 1,820-test/92.00% run. Its [independent approval](../../output/review-main-20261008/independent-gate.md) binds candidate `c3b8574589775d52ecf917dd58c8dd759a129bc9`, not the latest visualization and scholarship changes. Neither record establishes a new release or independent scientific validation; the published v1.2.1 PDF and DOI remain unchanged.
 
 ## Published version 1.2.1
