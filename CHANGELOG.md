@@ -4,6 +4,21 @@ All notable changes to the Ento-Linguistics project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Concept DOI: [10.5281/zenodo.19574117](https://doi.org/10.5281/zenodo.19574117) — all versions are grouped under the same concept DOI.
 
+## Unreleased — 1.2.2-dev
+
+- Strengthen biological definitions, measurement limits, scholarship and proposed annotation/reader-study designs while keeping descriptive proxies separate from causal claims.
+- Correct domain labels, word-formation category denominators, weighted overlap hierarchy, display-space label placement, small-category legends, captions and Pandoc count formatting.
+- Complete the 8 October full/default analysis and strict 49-page draft render. All ten numerical exports match the published baseline after excluding receipt/time identity fields; both fixed-margin retained trace arrays remain byte-identical.
+- Record 1,820 test passes, eight external-template skips and 92.00% combined statement/branch coverage, plus independent candidate approval. See [draft verification](output/review-main-20261008/SUMMARY.md).
+- Reconcile maintained Markdown commands, corpus counts, output ownership, test requirements and draft/publication navigation. Retain byte-preserved legacy Markdown snapshots separately from current guidance.
+- Keep the published v1.2.1 PDF, media and DOI unchanged. A main-branch push is not a new manuscript release.
+
+## [1.2.1] - 2026-10-07
+
+- Reject self-hashed corrupt NPY/PNG artifacts and inconsistent fixed-margin summaries through decoded/numerical validation and real-file failure controls.
+- Re-execute both protocols; all 900 draws remain byte-identical to v1.2.0. Preserve four-layer core evidence and lecture media.
+- Publish the 47-page validation patch and read back all public file identities. See [release verification](docs/reference/release-v1.2.1.md) and DOI [10.5281/zenodo.23215452](https://doi.org/10.5281/zenodo.23215452).
+
 ## [1.2.0] - 2026-10-06
 
 - Add an independently reproduced full-abstract network comparison using Curveball trades with fixed document and term margins: 600 primary draws and 300 longer-burn/wider-spacing sensitivity draws, complete traces, vocabulary sensitivity and source/output receipts.
@@ -13,6 +28,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Update publication metadata and citation guidance for DOI 10.5281/zenodo.23198912. The Python package version is independent of the manuscript version.
 
 ## [1.1.1] - 2026-09-22
+
+This historical software-change entry retains its original date and timing observations. The later manuscript release/verification identities are recorded separately in [verification](docs/reference/verification.md); the timing below is not a current-machine guarantee.
 
 Pipeline performance: the language-analysis stages now run the same
 computations with redundant work removed and the embarrassingly parallel
@@ -82,3 +99,5 @@ Methods and statistics revision of the analysis pipeline and manuscript.
 [1.1.0]: https://doi.org/10.5281/zenodo.19574118
 
 [1.2.0]: https://doi.org/10.5281/zenodo.23198912
+
+[1.2.1]: https://doi.org/10.5281/zenodo.23215452

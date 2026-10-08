@@ -1,0 +1,95 @@
+[
+  {
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/01_build_corpus.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/_render_pdf_override.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/_analysis_pipeline.py",
+      "--list-stages"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/_analysis_pipeline.py",
+      "--stages",
+      "preflight",
+      "--dry-run"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/_domain_analysis_script.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/_generate_domain_figures.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/_manuscript_preflight.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/_quality_report.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "uv",
+      "run",
+      "pytest",
+      "tests/",
+      "--collect-only",
+      "-q"
+    ],
+    "exit_code": 0
+  }
+]

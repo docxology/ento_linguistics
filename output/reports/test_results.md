@@ -1,23 +1,5 @@
-# Test Results Summary
+# Archived test results
 
-Generated: 2026-04-15T15:04:33.382796
+This historical generic report describes an earlier template run, not the current draft. Its original dated results are preserved byte-for-byte in [the archived text](../archive/legacy-markdown/output__reports__test_results.md.txt), with [SHA-256 provenance](../archive/legacy-markdown/identities.json). Original JSON companions remain in this directory.
 
-## Infrastructure Tests
-
-- Passed: 0
-- Failed: 0
-- Skipped: 0
-
-## Project Tests
-
-- Passed: 1224
-- Failed: 0
-- Skipped: 1
-- Coverage: 93.20%
-
-## Summary
-
-- Total Passed: 1224
-- Total Failed: 0
-- Total Tests: 1225
-- Status: ✅ PASSED
+Use [current captured verification](../../docs/reference/verification.md) and the [8 October draft record](../review-main-20261008/SUMMARY.md) for actual source-bound suite, custody, rendering and independent-review results. Historical PASS labels do not establish acceptance of a later checkout.

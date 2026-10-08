@@ -3,10 +3,9 @@
 ## Overview
 
 Scripts are **thin orchestrators**: they set up paths, parse arguments, configure
-logging, and make a single delegated call into a `src/` entrypoint. All business,
-data, plotting, and analysis logic lives exclusively in `src/` (importable and
-tested). Scripts never implement algorithms themselves, and they never fail
-silently.
+logging, and make a single delegated call into a `src/` entrypoint. Reusable business,
+data, plotting, and analysis logic lives in `src/` (importable and
+tested). The standalone renderer is the paper acceptance path; several older report/preflight helpers retain optional parent-template validation, which must be reported as unavailable when absent.
 
 ## Inventory
 
@@ -53,3 +52,9 @@ Scripts **never** implement algorithms or mathematical computations directly.
 - [`AGENTS.md`](AGENTS.md) — thin-orchestrator contract
 - [`../src/AGENTS.md`](../src/AGENTS.md) — available `src/` modules
 - [`../docs/guides/development.md`](../docs/guides/development.md) — commands and workflow
+
+## Helper limitations
+
+`_manuscript_preflight.py --strict` gates missing figures, glossary markers and reference boilerplate; it does not turn every optional infrastructure diagnostic into a hard failure. `_quality_report.py` may report skipped parent-template quality/reproducibility checks. Their successful exits do not replace the standalone suite, manifest/extension validation or strict renderer. Use `--output-dir` to keep a new helper report separate from historical reports.
+
+Use real commands rather than copying the illustrative square-bracket optional arguments literally. For direct layer CLIs, run `PYTHONPATH=src uv run python -m pipeline.bhl_analysis --help` or `-m pipeline.fulltext_pipeline --help`; individual layer execution alone does not refresh the complete manifest/figures.

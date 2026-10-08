@@ -1,11 +1,7 @@
-# figures
+# Core manuscript figures
 
-Generated figure assets.
+`figure_registry.json` is the authoritative PNG inventory, captions and content hashes. The active core build has 17 PNGs; the fixed-margin companion figure is under `output/extensions/`, outside this registry.
 
-Part of `ento_linguistics/output` (EntoTech lane, local-only under `projects/ongoing/`).
+Regenerate through the core figure entry point. Check exported values, decoding, registry hashes and final-size PDF readability; a green image decoder alone does not establish faithful plotting.
 
-## Contents
-Files: `AGENTS.md`, `README.md`, `anthropomorphic_framing.png`, `concept_hierarchy.png`, `concept_map.png`, `domain_comparison.png`, `domain_overlap_heatmap.png`, `domain_overview_grid.png`, `domain_patterns_grid.png`, `figure_registry.json`, `power_and_labor_ambiguities.png`, `power_and_labor_term_frequencies.png`, `terminology_network.png`, `unit_of_individuality_patterns.png`
-
-## Usage
-- See `ento_linguistics/output/README.md` for how this directory is produced and used.
+See [output map](../README.md), [workflow](../../docs/guides/workflow.md), [validation](../../docs/guides/validation.md), and [captured verification](../../docs/reference/verification.md).

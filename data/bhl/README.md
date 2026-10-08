@@ -8,7 +8,7 @@ era-frequency observations, with source-composition and OCR limitations (see
 Generated acquisition snapshot (harvest totals are historical; use the custody audit for current analyzed counts). Last harvest run: 0 new documents from 133 candidates (2 texts fetched, 1 without text derivative, 0 out of window, 3 irrelevant, 0 failed items skipped).
 
 
-## API reality check
+## API observations recorded during acquisition
 
 - BHL API v3 (`https://www.biodiversitylibrary.org/api3`) requires an
   API key: keyless calls return `Status: unauthorized` ("'' is an
@@ -140,22 +140,22 @@ Issued against `https://archive.org/advancedsearch.php` with
    Formicidae, myrmecology/myrmecological, eusocial/eusociality,
    "social insects".
 
-## Era coverage (2460 documents)
+## Stored era coverage (2,430 documents)
 
 - Publication years: 1850-1970
-- Body text: 2,350,509,858 characters
+- Body text: 2,317,721,403 characters
 - Documents per era:
 
-- `era_1850_1899`: 1013 documents
-- `era_1900_1949`: 1247 documents
-- `era_1950_1970`: 200 documents
+- `era_1850_1899`: 996 documents
+- `era_1900_1949`: 1,237 documents
+- `era_1950_1970`: 197 documents
 
 ## Reproduction
 
 ```bash
-uv run python src/data/bhl_corpus.py
+PYTHONPATH=src uv run python -m data.bhl_corpus
 # keyed full-text upgrade (requires BHL_API_KEY; resumable):
-BHL_API_KEY=<key> uv run python src/data/bhl_corpus.py --keyed
+BHL_API_KEY="$BHL_API_KEY" PYTHONPATH=src uv run python -m data.bhl_corpus --keyed
 ```
 
 The harvester is resumable: stored `ia_identifier`s are skipped and
@@ -167,8 +167,10 @@ from data.bhl_corpus import load_corpus_records
 records = load_corpus_records(Path("data/bhl"))
 ```
 
-The era-stratified analysis is built separately:
+The era-stratified analysis can be built separately; this alone does not refresh the complete core manifest and manuscript figures. Use [the full workflow](../../docs/guides/workflow.md) after input changes:
 
 ```bash
-uv run python src/pipeline/bhl_analysis.py
+PYTHONPATH=src uv run python -m pipeline.bhl_analysis
 ```
+
+The stored totals above were recomputed from all shard records during the [8 October documentation check](../../output/review-docs-20261008/corpus-readme-checks.json). The acquisition summary records a historical harvest, not the current analyzed selection. Full/default analysis counts all stored OCR characters; entropy remains limited to twenty candidates per era. See [reproducibility](../../docs/reference/reproducibility.md) for OCR, selection and licensing limits. Endpoint behavior in the API notes was observed at harvest time and is not a live service guarantee.

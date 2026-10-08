@@ -1,19 +1,5 @@
-# AGENTS.md — `ento_linguistics/output/pdf`
+# Standalone paper build maintenance
 
-> Directory `pdf` inside `ento_linguistics/output`. Verified by direct listing (fleet doc pass, 2026-08-29).
+Follow [output guidance](../AGENTS.md) and [directory reference](README.md). Run `uv run python scripts/_render_pdf_override.py --strict-templates` after matching receipt validation. Inspect the final TeX diagnostics and rasterized pages. The top-level published PDF and external DOI/release are distinct; a local render does not replace them.
 
-## Scope
-- Local-only path under `projects/ongoing/` — matched by the root `.gitignore`
-  rule `projects/*`; never commit, add, or push anything here.
-- Parent standard: see `/Volumes/external_drive/Git/template/projects/ongoing/AGENTS.md`; parent project docs: `ento_linguistics/output/AGENTS.md`.
-
-## Layout
-Files: `AGENTS.md`, `Ento_Linguistics_DAF_TCC_v1_04-15-2026.pdf`, `README.md`, `_title_page.tex`, `ento_linguistics_combined.aux`, `ento_linguistics_combined.bbl`, `ento_linguistics_combined.blg`, `ento_linguistics_combined.log`, `ento_linguistics_combined.pdf`, `ento_linguistics_combined.tex`, `ento_linguistics_combined.toc`, `references.bib`, `temp_combined.md`
-
-## Kind
-- Category: **misc**. 
-
-## Agent notes
-
-## Gotchas
-- None beyond the local-only rule above.
+Preserve unrelated files and historical evidence; check the tracked inventory before staging. Record command status and content identity, and distinguish current execution from an archived snapshot. See [verification](../../docs/reference/verification.md) for scope and completion evidence.

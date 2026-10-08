@@ -31,7 +31,7 @@ The `scripts/` directory contains **thin orchestrators** that integrate with `sr
 - Data/model/plot logic lives in `src/`.
 - All reusable script behavior must be covered by tests in `tests/`.
 - Manually-run helpers are prefixed `_` and are **not** auto-discovered by the pipeline (which runs `01_build_corpus.py` and `02_generate_figures.py`).
-- Failures are explicit: scripts must not silently fall back when imports, paths, or registration steps fail.
+- Required-stage failures must remain explicit. Older preflight/quality helpers can report unavailable optional parent-template checks; disclose those skips and use the strict standalone renderer for paper acceptance.
 
 ## What Scripts Do / Don't Do
 

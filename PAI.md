@@ -1,44 +1,28 @@
-# PAI.md - Ento-Linguistics Context
+# Agent integration context
 
-## Purpose
+Ento-Linguistics analyzes stored scientific text through five flat Python packages under `src/`. It provides candidate extraction, six overlapping domain labels, document co-occurrence networks, predefined concept-category overlap, context-cluster entropy, and heuristic CACE/framing indicators. These outputs are descriptive proxies; they do not establish human judgments or causal effects.
 
-This project investigates **ento-linguistic** phenomena - the study of insect-related terminology and conceptual frameworks in scientific discourse.
+## Execute a real example
 
-## PAI Integration Points
+Run from the repository root with the locked environment and selected NLTK resources installed as described in [setup](docs/guides/setup.md):
 
-### Skill Compatibility
+```bash
+PYTHONPATH=src uv run python - <<'PYTHON'
+from analysis.term_extraction import TerminologyExtractor
+from analysis.conceptual_mapping import ConceptualMapper
 
-- **Text Analysis**: Natural language processing patterns
-- **Concept Mapping**: Terminology network analysis
-- **Domain Analysis**: Cross-domain linguistic comparison
-
-### Key Modules for PAI Use
-
-| Module | PAI Application |
-|--------|-----------------|
-| `term_extraction.py` | Terminology extraction from text |
-| `conceptual_mapping.py` | Concept relationship analysis |
-| `domain_analysis.py` | Cross-domain comparison |
-| `discourse_analysis.py` | Scientific discourse patterns |
-
-### Example PAI Usage
-
-```python
-from src.analysis.term_extraction import TerminologyExtractor
-from src.analysis.conceptual_mapping import ConceptualMapper
-
-# Extract domain terminology
-extractor = TerminologyExtractor()
-terms = extractor.extract_terms(texts, min_frequency=2)
-
-# Build conceptual relationships
-mapper = ConceptualMapper()
-concept_map = mapper.build_concept_map(list(terms.items()))
+texts = [
+    "The queen and worker ants belong to a colony.",
+    "Worker ants share colony tasks with nestmates.",
+]
+terms = TerminologyExtractor().extract_terms(texts, min_frequency=1)
+concept_map = ConceptualMapper().build_concept_map(terms)
+print(len(terms), len(concept_map.concepts))
+PYTHON
 ```
 
-## Agent Guidelines
+`build_concept_map` requires the dictionary of `Term` objects returned by the extractor; a list of `(name, term)` pairs is rejected. The example is a controlled demonstration, not a corpus result. Concept categories are predefined; terminology-network edges use shared documents when a source corpus is provided.
 
-- **Text Processing**: Handle large corpus analysis
-- **Visualization**: Network diagrams for concept relationships
-- **Reproducibility**: Fixed seeds for NLP operations
-- **Data Sources**: Document all corpus sources
+## Maintenance and verification
+
+Follow [project guidance](AGENTS.md), [source architecture](src/README.md), and the affected package guidance. Use real text/files/local HTTP, fixed seeds, and demonstrably failing controls. Keep corpus layers separate and preserve source provenance. [Workflow](docs/guides/workflow.md) describes generation, custody auditing, caches, and strict rendering; [reproducibility](docs/reference/reproducibility.md) defines the measurement limits. [Verification](docs/reference/verification.md) distinguishes the unpublished working draft from archived publications.

@@ -1,0 +1,32 @@
+{
+  "analysis_manifest": "PASS",
+  "generated_artifacts": "PASS",
+  "extension_protocols": "PASS",
+  "canonical_sections_checked": [
+    "docs/manuscript/03_methods.md",
+    "docs/manuscript/S02_supplemental_results.md",
+    "docs/manuscript/S03a_theoretical_extensions.md",
+    "docs/manuscript/S03b_case_studies.md",
+    "docs/manuscript/05_discussion.md",
+    "docs/manuscript/04b_domain_findings.md",
+    "docs/manuscript/07_related_work.md",
+    "docs/manuscript/99_references.md",
+    "docs/manuscript/98_symbols_glossary.md",
+    "docs/manuscript/04a_corpus_and_networks.md",
+    "docs/manuscript/06_conclusion.md",
+    "docs/manuscript/S01a_text_and_extraction.md",
+    "docs/manuscript/08_acknowledgments.md",
+    "docs/manuscript/01_abstract.md",
+    "docs/manuscript/02_introduction.md",
+    "docs/manuscript/S01b_analysis_infrastructure.md"
+  ],
+  "unknown_variable_negative_control": "PASS",
+  "duplicate_text_records": {
+    "abstract": 0,
+    "arxiv": 0,
+    "bhl_historical": 0,
+    "fulltext": 8
+  },
+  "draft_sha256": "071a42aa8ee8a4c59363171325ddae74853e8152f0b8d762fd13d4957d6e0d12",
+  "published_sha256": "098953e2594fffc94c347051b7b28cce631eba6820a52381d8cda968718da8c3"
+}

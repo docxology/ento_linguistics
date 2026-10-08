@@ -1,6 +1,6 @@
 # Documentation
 
-Start with the [paper](../Ento_Linguistics_manuscript.pdf) for the research argument, or choose a task below. Commands in these guides run from the repository root.
+Read the [published v1.2.1 paper](../Ento_Linguistics_manuscript.pdf) or the [verified unpublished 1.2.2-dev draft](../output/pdf/ento_linguistics_combined.pdf), or choose a task below. Commands in these guides run from the repository root.
 
 ## Guides: complete a task
 
@@ -25,7 +25,7 @@ Start with the [paper](../Ento_Linguistics_manuscript.pdf) for the research argu
 
 [manuscript/](manuscript/README.md) holds the canonical numbered Markdown sections, supplements, bibliography, configuration, and preamble. Its paths remain stable because the renderer uses them directly. [Methods](manuscript/03_methods.md), [corpus results](manuscript/04a_corpus_and_networks.md), and [domain findings](manuscript/04b_domain_findings.md) are useful starting points; numerical placeholders resolve in the built paper.
 
-Documentation contains reusable instructions and definitions. Historical review narratives and speculative refactoring/testing plans have been removed; recorded execution and publication receipts remain under [output/review-20261006/](../output/review-20261006/). Read [verification](reference/verification.md) for how to use those records without treating an old run as a new one.
+Documentation contains reusable instructions and definitions. Historical review narratives and speculative refactoring/testing plans have been removed; recorded execution and publication receipts remain in dated output folders. The [latest draft verification](../output/review-main-20261008/SUMMARY.md) binds the 8 October candidate; [earlier baseline records](../output/review-20261006/) retain their historical scope. Read [verification](reference/verification.md) for how to use those records without treating an old run as a new one.
 
 Return to the [repository overview](../README.md).
 

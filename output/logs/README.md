@@ -1,11 +1,7 @@
-# logs
+# Execution logs
 
-Directory `logs` inside the `ento_linguistics/output` tree of EntoTech.
+Log filenames alone do not identify current execution. Associate each log with its command, exit status, source scope, inputs and matching output receipt. Dated review folders retain more specific build/test logs.
 
-Part of `ento_linguistics/output` (EntoTech lane, local-only under `projects/ongoing/`).
+Retain stderr and nonzero failures. Preserve earlier logs before another run; never relabel them as fresh execution or suppress required-stage errors.
 
-## Contents
-Files: `AGENTS.md`, `README.md`, `pipeline.log`
-
-## Usage
-- See `ento_linguistics/output/README.md` for how this directory is produced and used.
+See [output map](../README.md), [workflow](../../docs/guides/workflow.md), [validation](../../docs/guides/validation.md), and [captured verification](../../docs/reference/verification.md).

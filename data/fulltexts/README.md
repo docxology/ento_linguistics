@@ -34,7 +34,7 @@ the headline corpus.
 Applied against `esearch db=pmc` with `retmode=json`,
 `sort=relevance`, `retmax=10000`, and the project's NCBI `tool`/`email`
 identification.  The `open access[Filter]` clause restricts hits to the
-PMC open-access subset, so every hit has a retrievable full text.
+PMC open-access subset, but each response still requires successful retrieval and body parsing; the filter is not individual license certification.
 
 ## Filters
 
@@ -61,12 +61,13 @@ PMC open-access subset, so every hit has a retrievable full text.
   provenance, so an interrupted run resumes where it stopped:
 
 ```bash
-uv run python src/data/pmc_fulltext.py
+PYTHONPATH=src uv run python -m data.pmc_fulltext
 ```
 
 - Load the whole corpus in order with the frozen helper:
 
 ```python
+from pathlib import Path
 from data.pmc_fulltext import load_fulltexts
 records = load_fulltexts(Path("data/fulltexts"))
 ```
@@ -129,5 +130,7 @@ Last harvest run: 3 new documents from 7205 candidates (0 failed batches skipped
 The analysis layer is built separately:
 
 ```bash
-uv run python src/pipeline/fulltext_pipeline.py
+PYTHONPATH=src uv run python -m pipeline.fulltext_pipeline
 ```
+
+Counts and license strings above match the stored shards in the [8 October documentation check](../../output/review-docs-20261008/corpus-readme-checks.json). License strings are raw acquisition metadata, including unknown and truncated values; they do not certify redistribution rights. The custody audit reports eight duplicate-text records; identity/relevance review remains separate. Standalone layer execution does not refresh the full core receipt or figures; use [workflow](../../docs/guides/workflow.md) for complete regeneration. The last-harvest summary is historical.

@@ -2,9 +2,9 @@
 
 [Documentation](../README.md) → Manuscript
 
-This directory is the canonical source for [the published paper](../../Ento_Linguistics_manuscript.pdf). Read that PDF for resolved numbers; the Markdown deliberately retains computational placeholders.
+This directory is the canonical source for the [current unpublished draft](../../output/pdf/ento_linguistics_combined.pdf). The Markdown deliberately retains computational placeholders; read the built PDF for resolved numbers. The [published paper](../../Ento_Linguistics_manuscript.pdf) is an archived release, not a render of every later edit.
 
-The working source is **1.2.2-dev**, an unpublished editorial revision. The linked top-level PDF and [v1.2.1 DOI](https://doi.org/10.5281/zenodo.23215452) identify the archived publication, not this revised source. Read the locally rendered PDF for the updated argument and bibliography.
+The working source is **1.2.2-dev**, an unpublished revision with editorial, figure and rendering corrections. The linked top-level PDF and [v1.2.1 DOI](https://doi.org/10.5281/zenodo.23215452) identify the archived publication, not this revised source. Read the locally rendered PDF for the updated argument and bibliography.
 
 ## Reading map
 

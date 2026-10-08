@@ -1,11 +1,7 @@
-# data
+# Core analysis exports
 
-`data/` of the parent project.
+The generator writes corpus/domain statistics, extracted terms, concept-map summaries, full-text analysis and statistical analysis here. `analysis_manifest.json` binds actual corpus/export/figure inventory, source implementation, dependency lock and selected NLTK contents. It is written only after required stages pass.
 
-Part of `ento_linguistics/output` (EntoTech lane, local-only under `projects/ongoing/`).
+Regenerate with `uv run python scripts/02_generate_figures.py`; validate the content manifest before rendering. Do not hand-edit derived numerical results or forge matching receipt hashes.
 
-## Contents
-Files: `AGENTS.md`, `README.md`, `concept_map_summary.json`, `corpus_statistics.json`, `domain_statistics.json`, `extracted_terms.json`
-
-## Usage
-- See `ento_linguistics/output/README.md` for how this directory is produced and used.
+See [output map](../README.md), [workflow](../../docs/guides/workflow.md), [validation](../../docs/guides/validation.md), and [captured verification](../../docs/reference/verification.md).

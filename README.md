@@ -10,7 +10,7 @@ Daniel Ari Friedman and Tucker Cahill Chambers
 
 Published manuscript revision: **7 October 2026** · [Version DOI](https://doi.org/10.5281/zenodo.23215452) · [All versions](https://doi.org/10.5281/zenodo.19574117)
 
-The working manuscript is **1.2.2-dev**, an unpublished revision. It strengthens biological definitions, measurement validation and the proposed reader-study design; reports the fixed-margin network comparison in the Results with injected values and its figure; and corrects figure presentation, citation style and the bibliography. [The local build](output/pdf/ento_linguistics_combined.pdf) is separate from the published paper above. Its analysis inputs and numerical results are unchanged.
+The working manuscript is **1.2.2-dev**, an unpublished revision. It strengthens biological definitions, measurement validation and the proposed reader-study design; reports the fixed-margin network comparison in the Results with injected values and its figure; and corrects figure presentation, citation style and the bibliography. [The local build](output/pdf/ento_linguistics_combined.pdf) is separate from the published paper above. Its analysis inputs and numerical results are unchanged. The [8 October verification record](output/review-main-20261008/SUMMARY.md) covers the 49-page draft, 17 core figures, complete suite and independent approval.
 
 ## Network robustness and research lecture
 
@@ -86,7 +86,7 @@ The build writes [output/pdf/ento_linguistics_combined.pdf](output/pdf/ento_ling
 uv run pytest tests/ --cov=src --cov-report=term-missing
 ~~~
 
-Run tests and generation sequentially. The configured coverage floor is **90% combined statement/branch coverage**. The published v1.2.1 validation run recorded **1,802 passed, eight external-template skips, and 91.45% combined coverage**; these are captured results, not a claim that every later checkout has been rerun.
+Run tests and generation sequentially. The configured coverage floor is **90% combined statement/branch coverage**. The published v1.2.1 validation run recorded **1,802 passed, eight external-template skips, and 91.45% combined coverage**; these are captured results, not a claim that every later checkout has been rerun. The latest recorded draft run passed **1,820 tests with eight skips and 92.00% combined coverage**, with [independent candidate approval](output/review-main-20261008/independent-gate.md).
 
 Content receipts bind actual corpus, source, dependency-lock, NLTK resource, and output bytes. The strict renderer rejects stale receipts and unresolved placeholders. [Validation](docs/guides/validation.md) explains numerical controls, custody checks, figure inspection, and PDF verification.
 

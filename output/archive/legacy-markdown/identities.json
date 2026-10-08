@@ -1,0 +1,22 @@
+[
+  {
+    "original": "output/pdf/_combined_manuscript.md",
+    "archive": "output/archive/legacy-markdown/output__pdf___combined_manuscript.md.txt",
+    "sha256": "5aa893c72656b12ae96fdde7fc2899b51e45fe8c9c607be0ec46492f0a72e8fd"
+  },
+  {
+    "original": "output/web/_combined_manuscript.md",
+    "archive": "output/archive/legacy-markdown/output__web___combined_manuscript.md.txt",
+    "sha256": "5aa893c72656b12ae96fdde7fc2899b51e45fe8c9c607be0ec46492f0a72e8fd"
+  },
+  {
+    "original": "output/reports/test_results.md",
+    "archive": "output/archive/legacy-markdown/output__reports__test_results.md.txt",
+    "sha256": "df837c0ce3a5cb82664b1f618e3bfde970c5ccf7fb774197a3bd5a51f65d78f3"
+  },
+  {
+    "original": "output/reports/validation_report.md",
+    "archive": "output/archive/legacy-markdown/output__reports__validation_report.md.txt",
+    "sha256": "5a574d63bf37f1834c7d6bb6250b27b5d1758c6d9e4af4bf7142661ddb566a63"
+  }
+]

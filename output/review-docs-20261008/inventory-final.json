@@ -1,0 +1,554 @@
+{
+  "files": [
+    {
+      "path": ".omo/evidence/ento-editorial-20261007-final-gate-review.md",
+      "sha256": "69fe03e012df276a3ce0d634e6e86cbd5b8d9d2100f8d7ddf96be399197c8599",
+      "lines": 28,
+      "links": 0
+    },
+    {
+      "path": ".omo/evidence/ento-linguistics-continuation-20261006-gate-review.md",
+      "sha256": "621d64c39ddd32add81951ac39dc182e9ffe450371810d8e4ee5452070bab2d9",
+      "lines": 84,
+      "links": 0
+    },
+    {
+      "path": ".omo/evidence/ento-linguistics-empty-resource-final-gate-review.md",
+      "sha256": "988a369e2e453cbf653eba3bb88fd665af6428c3222b0c66df5d5f260f2ae264",
+      "lines": 60,
+      "links": 0
+    },
+    {
+      "path": ".omo/evidence/ento-linguistics-local-revision-gate-review.md",
+      "sha256": "02434719ca67768ec201f8b11de323e75c2a28ac9d178902c662a709ccd10537",
+      "lines": 58,
+      "links": 0
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "25ea26379249f18ab840b8d4bdbaf07de23d1be651a47341958db3271987755a",
+      "lines": 32,
+      "links": 10
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "e0741412e6af2d17ebdf1f77b98eeb6dca445df0a15836afb7302ca403455c6c",
+      "lines": 103,
+      "links": 11
+    },
+    {
+      "path": "PAI.md",
+      "sha256": "422b694619861cd1c1514a34936508327e616018c57124f64b6f12252eea08c5",
+      "lines": 28,
+      "links": 6
+    },
+    {
+      "path": "README.md",
+      "sha256": "22c86806aaccdb8b28df7d23675b9251f72736404b3b249446aa793d2397aff1",
+      "lines": 114,
+      "links": 34
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "6aa8c6f31caf7eb5f7ffa4ce613383d171d5f5e78793fad0e42ddc119abedeb1",
+      "lines": 16,
+      "links": 7
+    },
+    {
+      "path": "data/AGENTS.md",
+      "sha256": "0050cc052f96ab82d0a8a6ec087c7f602766aac783dbfad5f0115210e1ba2386",
+      "lines": 7,
+      "links": 3
+    },
+    {
+      "path": "data/README.md",
+      "sha256": "66a0d588a0f433e2c01f710781ce2b16137faa2b66285fcb58c426f0d921668f",
+      "lines": 20,
+      "links": 3
+    },
+    {
+      "path": "data/bhl/README.md",
+      "sha256": "2200c8624a66f9e342a005fafd8ba6d5bb97848e4f7907794025109e01347549",
+      "lines": 176,
+      "links": 3
+    },
+    {
+      "path": "data/corpus/AGENTS.md",
+      "sha256": "bd0ff7fe7f334ea2213be3c6fe8905c5de49142c15327e9b136beb4ea15cace5",
+      "lines": 7,
+      "links": 4
+    },
+    {
+      "path": "data/corpus/README.md",
+      "sha256": "c82e674e082ce6f35cfaca089e2bbd220c686619297f40688b29c4b56be0e30a",
+      "lines": 27,
+      "links": 3
+    },
+    {
+      "path": "data/fulltexts/README.md",
+      "sha256": "6798714d39bff4b82a77215fc4ccb416ebf2248d4dc765ad826d3739d29f5100",
+      "lines": 136,
+      "links": 2
+    },
+    {
+      "path": "docs/AGENTS.md",
+      "sha256": "9b11721a4ae79610bbac8e0bf55951ad7332f0c5b845bcd2d67f262bc6247b57",
+      "lines": 12,
+      "links": 5
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "5b63c380d0871800d407cd1b6a88db83ace1989e8bebcd3141f8edb23b5bdc23",
+      "lines": 32,
+      "links": 20
+    },
+    {
+      "path": "docs/guides/authoring.md",
+      "sha256": "dc37fded67fdd247cae71c79b90858ac98226fd9cfd06fbc0dbf7877967bb252",
+      "lines": 50,
+      "links": 3
+    },
+    {
+      "path": "docs/guides/development.md",
+      "sha256": "3f9dfc62ac9d79895bce06fe5085a6999aed35f461c989a082f29b2c8f0d369f",
+      "lines": 52,
+      "links": 3
+    },
+    {
+      "path": "docs/guides/setup.md",
+      "sha256": "dd06a0d91e82c36627f58516fbe802282316223d15bceca3ce79778784569ade",
+      "lines": 50,
+      "links": 5
+    },
+    {
+      "path": "docs/guides/validation.md",
+      "sha256": "a0341dd00f0fae6e5bca1eadae8e3b62e0f51104681873b300a671afdcdccbd7",
+      "lines": 42,
+      "links": 2
+    },
+    {
+      "path": "docs/guides/workflow.md",
+      "sha256": "8ab522031d694f87a6d5eb68f173dfe4b2c43f6b6231f55247250870564ba04d",
+      "lines": 55,
+      "links": 6
+    },
+    {
+      "path": "docs/manuscript/01_abstract.md",
+      "sha256": "085b4098af8d3669a8a2c6cdb0d44e0676bfb8c77c9c83820532111e4cb20c9e",
+      "lines": 3,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/02_introduction.md",
+      "sha256": "e9ac38a3f68451eabfac8e30a0f05e6dd424d2073c19e54654374f5449ebea1a",
+      "lines": 40,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/03_methods.md",
+      "sha256": "7ccd2f7327aa3e614cd537c5e833c2e41dc02c10284ef01c559274dcd8079dea",
+      "lines": 103,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/04a_corpus_and_networks.md",
+      "sha256": "3cc862bb3338fe836104bff5369878f512e47e6ec174ba7735963f6faeeba7cb",
+      "lines": 92,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/04b_domain_findings.md",
+      "sha256": "44c2217b3ef2cff278f90b912ea8a4e9d404e832b08a55c9706c12ef3d7a65e0",
+      "lines": 75,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/05_discussion.md",
+      "sha256": "4540a2b5805ee68af3bd0b0f2c9ce85c170b05adc3df4748ddcf51e7d144bbad",
+      "lines": 59,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/06_conclusion.md",
+      "sha256": "9c8e27140f78328623d36f4553943f49008ee51cc541a0b3fe400f404ffb1dc7",
+      "lines": 15,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/07_related_work.md",
+      "sha256": "324b62fa660a517aeb75f939700f930b34944ec57304ed44ed94c81365be4640",
+      "lines": 37,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/08_acknowledgments.md",
+      "sha256": "7ef6b3acaed4a7bea0813a396c48aeb5f88f5161c91d237cc6af5de9b8014876",
+      "lines": 24,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/98_symbols_glossary.md",
+      "sha256": "7023d9c71c48b9989f8245371c3b6873a396f6ee60242d830a9e4867c39c2e4f",
+      "lines": 62,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/99_references.md",
+      "sha256": "ed7fd834f3d03d5a36890fc072dda06fd0916c7de8db6737bdbdd02183cbd8c5",
+      "lines": 6,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/AGENTS.md",
+      "sha256": "ad5ba6a3e3f2ee430fc5acddbd87d0e355b6f7047b4db41689eafaf12f6732da",
+      "lines": 14,
+      "links": 3
+    },
+    {
+      "path": "docs/manuscript/README.md",
+      "sha256": "da9c1d20ff34d005b19369aa920b61c58a79cb866dee3be600ec61c4f6a9c92b",
+      "lines": 34,
+      "links": 27
+    },
+    {
+      "path": "docs/manuscript/S01a_text_and_extraction.md",
+      "sha256": "4a4aaf4f5845d3b81ebc75f1fbaf72334bfbf3a9a4a006a77cfa4040ab3b3f52",
+      "lines": 45,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/S01b_analysis_infrastructure.md",
+      "sha256": "a4934339116c10f16e8f3f4863cd7728c937f8829779a1c4819182dc44634273",
+      "lines": 69,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/S02_supplemental_results.md",
+      "sha256": "2d4ed953e77425438af0daefd5481c84081319d6163a409169c966a4dd4558a1",
+      "lines": 226,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/S03a_theoretical_extensions.md",
+      "sha256": "37de5170b00ec8b5a4a0a763dfd1d0847cf9d8b9164f999cffe0369f735d2d2e",
+      "lines": 58,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/S03b_case_studies.md",
+      "sha256": "dc718181b294c0ecc77a942eee13ab68e10257f345100f6c06fbd232e6beefaa",
+      "lines": 45,
+      "links": 0
+    },
+    {
+      "path": "docs/manuscript/preamble.md",
+      "sha256": "a9d0fde8521082fc1ef51aa66f3a70516f2f8c3687f0c5688d789dd9f9461c3d",
+      "lines": 9,
+      "links": 4
+    },
+    {
+      "path": "docs/reference/architecture.md",
+      "sha256": "71fe56881bb04709c8bdbc6a4b043fc2c09baac54a84974b4ef9d737e413d4fe",
+      "lines": 43,
+      "links": 22
+    },
+    {
+      "path": "docs/reference/data-lineage.md",
+      "sha256": "fae0762b2e689d6e9537d1511842eed9383db5b39cb4ebc3e41d200f9290a362",
+      "lines": 21,
+      "links": 6
+    },
+    {
+      "path": "docs/reference/release-v1.2.0.md",
+      "sha256": "23d07a67909e294f560cd86224000000d909f119b5244b1e21738e5af972a0a6",
+      "lines": 22,
+      "links": 4
+    },
+    {
+      "path": "docs/reference/release-v1.2.1.md",
+      "sha256": "8e3ad83a689e28f155de118d04cb9c57e72fd573386766601adfc867e6d200d9",
+      "lines": 31,
+      "links": 5
+    },
+    {
+      "path": "docs/reference/reproducibility.md",
+      "sha256": "7da5ef30ad670431aa39b117ccc9272a04adcb530cef944bbda260370e884e54",
+      "lines": 48,
+      "links": 4
+    },
+    {
+      "path": "docs/reference/verification.md",
+      "sha256": "79fc71a36f87439c1d7c988a3c3a90f3c21ab3f03af7319c08072d1d0c0b2421",
+      "lines": 51,
+      "links": 25
+    },
+    {
+      "path": "output/.checkpoints/AGENTS.md",
+      "sha256": "ce785c2acb7608182b4fc13bef3978267e47e384a06482c89da2106c6e8c9b23",
+      "lines": 5,
+      "links": 3
+    },
+    {
+      "path": "output/.checkpoints/README.md",
+      "sha256": "dd2be1d8a484fb6b62a1027829124557a4574220d1804e335456403168911e4c",
+      "lines": 7,
+      "links": 4
+    },
+    {
+      "path": "output/AGENTS.md",
+      "sha256": "383cbcf4e0f300d3ac67f4a01d218bf97af1052f841ce378ab53f98fd7f4a920",
+      "lines": 7,
+      "links": 5
+    },
+    {
+      "path": "output/README.md",
+      "sha256": "75f288e0ef4e7e754bc8811949c1c816a3673355793c94c2cab5b9af354c817e",
+      "lines": 18,
+      "links": 10
+    },
+    {
+      "path": "output/data/AGENTS.md",
+      "sha256": "463ce491fb402c24d2e7a30c58877a53c44e39a0864c3418b1f2e1673244bee5",
+      "lines": 5,
+      "links": 3
+    },
+    {
+      "path": "output/data/README.md",
+      "sha256": "620ebb464d3a57afd37b8012fe0eccfd52c7e7c661f144d9d6f5af0caa13961c",
+      "lines": 7,
+      "links": 4
+    },
+    {
+      "path": "output/extensions/network_robustness/network_robustness.md",
+      "sha256": "a809bbbffead57af1d678a0297311e91f9d6606a393506c57b693706de40c78f",
+      "lines": 24,
+      "links": 2
+    },
+    {
+      "path": "output/extensions/network_robustness/sensitivity/network_robustness.md",
+      "sha256": "0fe445843e1a632fb9fedea58e897e48145e5b0955e2eb964a3d7bdeefa6d3d7",
+      "lines": 24,
+      "links": 2
+    },
+    {
+      "path": "output/figures/AGENTS.md",
+      "sha256": "c17488ae358fe89c68c1a76f07bbb9066628af2845aa40aeeb3a37d638574f4c",
+      "lines": 5,
+      "links": 3
+    },
+    {
+      "path": "output/figures/README.md",
+      "sha256": "fae0e70a88b8bc3f30a835e73667fad51be6854d97ae6936c6c7e376bc1d07cc",
+      "lines": 7,
+      "links": 4
+    },
+    {
+      "path": "output/logs/AGENTS.md",
+      "sha256": "e56b093f07df5752ce04a46f4bd42e3feb0714f736549e89d8c1a92dc514ff5c",
+      "lines": 5,
+      "links": 3
+    },
+    {
+      "path": "output/logs/README.md",
+      "sha256": "65ad5057a4f0c346c95370a41e29c4bddb73fb512b4223310fbfb9a3c70619ed",
+      "lines": 7,
+      "links": 4
+    },
+    {
+      "path": "output/pdf/AGENTS.md",
+      "sha256": "b10674e3c71e8d08de258ce7faf4b30eab0b80aa752acff4038e46bf355a543a",
+      "lines": 5,
+      "links": 3
+    },
+    {
+      "path": "output/pdf/README.md",
+      "sha256": "b3d5b3bbb88985ef019e106810495bd6fff21b68484e375c9bab9f89e470a2ee",
+      "lines": 7,
+      "links": 4
+    },
+    {
+      "path": "output/pdf/_combined_manuscript.md",
+      "sha256": "0a3a6114aada2cb9901abae84c798645d3f541617bb2dbdf4c0d602c8a751647",
+      "lines": 5,
+      "links": 6
+    },
+    {
+      "path": "output/pdf/temp_combined.md",
+      "sha256": "3366d969d535ee4611c6221401151639ffd126a689948280bae144a0f677ae70",
+      "lines": 1031,
+      "links": 0
+    },
+    {
+      "path": "output/reports/AGENTS.md",
+      "sha256": "df2e767096c3b23c5343cbb512a748a728d92f115f6a0a664e488a8704395cf0",
+      "lines": 5,
+      "links": 3
+    },
+    {
+      "path": "output/reports/README.md",
+      "sha256": "35b351e12ee51b8fa9ddfb5e8fd39ba64059345a79b260911f07c5025956793d",
+      "lines": 7,
+      "links": 4
+    },
+    {
+      "path": "output/reports/test_results.md",
+      "sha256": "032f629ec67b8011b8643766cf9d4eb69e4f649af3fa26d187909e510cb4fa0b",
+      "lines": 5,
+      "links": 4
+    },
+    {
+      "path": "output/reports/validation_report.md",
+      "sha256": "7c6283bcf6ffea5e54284431ae9ccb9abf8496becc8c8d3b8148a6cb23b26642",
+      "lines": 5,
+      "links": 4
+    },
+    {
+      "path": "output/review-docs-20261008/SUMMARY.md",
+      "sha256": "058ab2e3a417fa18cbdc70edf7f87e58becee079c16d1e16aea1f3998979b8dd",
+      "lines": 23,
+      "links": 8
+    },
+    {
+      "path": "output/review-main-20261008/SUMMARY.md",
+      "sha256": "ec155288783b83b186af740a3a969eca3f88c6b5997f50078482c22a79af4526",
+      "lines": 14,
+      "links": 12
+    },
+    {
+      "path": "output/review-main-20261008/independent-gate.md",
+      "sha256": "e4e1daea9e6f200ee59147ab83c7eb4b047f53fc61bc448cf2ed05b352ece661",
+      "lines": 79,
+      "links": 2
+    },
+    {
+      "path": "output/web/_combined_manuscript.md",
+      "sha256": "25a8dd2cd7e8b3bd6ec8ed5a54bb2c724930c3fdd17e504444ea3515e958d342",
+      "lines": 5,
+      "links": 6
+    },
+    {
+      "path": "research/network_robustness/AGENTS.md",
+      "sha256": "56fb19fb7156fb9c5227f5abf3c199f8dcb315feaba6ce3eb674594d9e5465cb",
+      "lines": 7,
+      "links": 0
+    },
+    {
+      "path": "research/network_robustness/README.md",
+      "sha256": "9fc97370e0fa2603b1e4c8fc52e62e5dbf08a334371bd9ac56d7fac5096c1878",
+      "lines": 22,
+      "links": 4
+    },
+    {
+      "path": "scripts/AGENTS.md",
+      "sha256": "11b036a52f5fe824eb37e152717de5c9f14e8b6cebd947fd9efecd5fef9cecd1",
+      "lines": 47,
+      "links": 4
+    },
+    {
+      "path": "scripts/README.md",
+      "sha256": "2407e5ffe00fa2760fd86800b026f032c368d475dd6c6a6727dcbd2e10df9139",
+      "lines": 60,
+      "links": 5
+    },
+    {
+      "path": "src/AGENTS.md",
+      "sha256": "67f44358625b39f531c1d417c3eed760ec7401afed97975bb81ab277604fbdcd",
+      "lines": 11,
+      "links": 6
+    },
+    {
+      "path": "src/README.md",
+      "sha256": "743d63905db94bfedb9ae4bfcd90fbf3e940095b97f222c65242c87c3a71a2f7",
+      "lines": 29,
+      "links": 7
+    },
+    {
+      "path": "src/analysis/AGENTS.md",
+      "sha256": "af7c426e99398282fb7f49342a8f2f29759f94079ea752ac9328c51276c05cef",
+      "lines": 7,
+      "links": 4
+    },
+    {
+      "path": "src/analysis/README.md",
+      "sha256": "f0673081d14d3dcb88f32adb80186417cc7ab3aed80e893407eaf783dd45417a",
+      "lines": 5,
+      "links": 5
+    },
+    {
+      "path": "src/core/AGENTS.md",
+      "sha256": "b0c5a051225c931849abc93746233d31cc78cf0de9cb7629402bdceab349489f",
+      "lines": 7,
+      "links": 0
+    },
+    {
+      "path": "src/core/README.md",
+      "sha256": "d5bea7906959e78e36dee2234a459cb059a56d23cd6998417dda565aeb9f3ac7",
+      "lines": 5,
+      "links": 5
+    },
+    {
+      "path": "src/data/AGENTS.md",
+      "sha256": "33b9dfa6d3c8cdd2f2f14a7093e70cc9df999e4a3a76d6629bea0b065deeaf32",
+      "lines": 7,
+      "links": 3
+    },
+    {
+      "path": "src/data/README.md",
+      "sha256": "e6183d0e59d26082b57d128718881be6d3728091dafc5eb0d9efcf6d216005dc",
+      "lines": 5,
+      "links": 5
+    },
+    {
+      "path": "src/pipeline/AGENTS.md",
+      "sha256": "8860c9e8c140dc05da7a0c1dbe8defeef143a0c1718db24d53cf79e28aea0dc9",
+      "lines": 9,
+      "links": 6
+    },
+    {
+      "path": "src/pipeline/README.md",
+      "sha256": "0377b8e0f504f9ae8f9cb8add3f3af326ff98a4ae9a012bc11b2b777914bc924",
+      "lines": 25,
+      "links": 5
+    },
+    {
+      "path": "src/visualization/AGENTS.md",
+      "sha256": "b4dfa7bf2700ec7be20682288968514883d45fb5c6021ad3cac0e1213a5d71d7",
+      "lines": 7,
+      "links": 3
+    },
+    {
+      "path": "src/visualization/README.md",
+      "sha256": "fbbac979034d02dfba1d57d0c0e3ad9219d3a4986f2c7936bde02690b5037f25",
+      "lines": 5,
+      "links": 5
+    },
+    {
+      "path": "tests/AGENTS.md",
+      "sha256": "48caa8f39c332bfeb2b92b7e177418bd3d04b464a30a8d250a05af194835acbb",
+      "lines": 26,
+      "links": 7
+    },
+    {
+      "path": "tests/README.md",
+      "sha256": "77ab1f926323bb3009fe83d4e7bb689217e107701c4b5cbd5a7382373545eaa9",
+      "lines": 30,
+      "links": 7
+    },
+    {
+      "path": "tests/integration/AGENTS.md",
+      "sha256": "77d221afaedc84bd4fdb9d99f269b115f93e9ad9811292e8c5e53539087230e1",
+      "lines": 9,
+      "links": 6
+    },
+    {
+      "path": "tests/integration/README.md",
+      "sha256": "89dfec6e2f8299af1e64accdc493a0328cae2b9817b405647b7c5e800eb7907f",
+      "lines": 14,
+      "links": 3
+    }
+  ],
+  "total": 91,
+  "local_link_issues": [],
+  "pandoc_warnings": [],
+  "negative_controls": "PASS"
+}

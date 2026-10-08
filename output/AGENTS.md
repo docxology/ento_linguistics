@@ -1,20 +1,7 @@
-# AGENTS.md — `ento_linguistics/output`
+# Output maintenance
 
-> Directory `output` inside `ento_linguistics`. Verified by direct listing (fleet doc pass, 2026-08-29).
+Follow [project guidance](../AGENTS.md) and [artifact map](README.md). Selected files here are tracked public research artifacts; old parent-template local-only rules do not apply to this standalone repository.
 
-## Scope
-- Local-only path under `projects/ongoing/` — matched by the root `.gitignore`
-  rule `projects/*`; never commit, add, or push anything here.
-- Parent standard: see `/Volumes/external_drive/Git/template/projects/ongoing/AGENTS.md`; parent project docs: `ento_linguistics/AGENTS.md`.
+Regenerate managed data and figures through the active generator. Preserve dated logs, failed receipts, independent reviews, release records and source snapshots. Never treat the whole output tree as disposable. Inspect `git status` before staging; do not publish temporary test trees, private campaign logs or unrelated scratch files.
 
-## Layout
-Subfolders: `.checkpoints/`, `data/`, `figures/`, `logs/`, `pdf/`, `reports/`
-Files: `.DS_Store`, `AGENTS.md`, `README.md`
-
-## Kind
-- Category: **misc**. 
-
-## Agent notes
-
-## Gotchas
-- None beyond the local-only rule above.
+A completed core manifest, separately receipted extension, rendered draft and published release have different identities. Validate matching contents and source scope before reusing evidence. Do not rewrite a historical review to imply approval of a new candidate. [Workflow](../docs/guides/workflow.md), [validation](../docs/guides/validation.md), and [verification](../docs/reference/verification.md) define regeneration and completion checks.

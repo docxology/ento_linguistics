@@ -1,11 +1,7 @@
-# pdf
+# Standalone paper build
 
-Directory `pdf` inside the `ento_linguistics/output` tree of EntoTech.
+`ento_linguistics_combined.pdf` is the active unpublished 1.2.2-dev draft (49 pages in the recorded 8 October build). `temp_combined.md` is the resolved Markdown input written by the current renderer; generated TeX, bibliography and logs support its build. `_combined_manuscript.md` is a retained legacy snapshot navigation file, not the active renderer input.
 
-Part of `ento_linguistics/output` (EntoTech lane, local-only under `projects/ongoing/`).
+Run `uv run python scripts/_render_pdf_override.py --strict-templates` after matching receipt validation. Inspect the final TeX diagnostics and rasterized pages. The top-level published PDF and external DOI/release are distinct; a local render does not replace them.
 
-## Contents
-Files: `AGENTS.md`, `Ento_Linguistics_DAF_TCC_v1_04-15-2026.pdf`, `README.md`, `_title_page.tex`, `ento_linguistics_combined.aux`, `ento_linguistics_combined.bbl`, `ento_linguistics_combined.blg`, `ento_linguistics_combined.log`, `ento_linguistics_combined.pdf`, `ento_linguistics_combined.tex`, `ento_linguistics_combined.toc`, `references.bib`, `temp_combined.md`
-
-## Usage
-- See `ento_linguistics/output/README.md` for how this directory is produced and used.
+See [output map](../README.md), [workflow](../../docs/guides/workflow.md), [validation](../../docs/guides/validation.md), and [captured verification](../../docs/reference/verification.md).

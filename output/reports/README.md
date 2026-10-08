@@ -1,11 +1,7 @@
-# reports
+# Custody and historical reports
 
-Directory `reports` inside the `ento_linguistics/output` tree of EntoTech.
+`corpus_audit.json` reports current stored record identity, gaps, duplicate text and optional analysis-receipt agreement. `test_results.md` (April 2026) and `validation_report.md` (September 2026) are archived generic reports, not current draft acceptance. Their original JSON companions and archived bytes retain historical scope.
 
-Part of `ento_linguistics/output` (EntoTech lane, local-only under `projects/ongoing/`).
+Run `PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis` for current custody. Read the matching final test/render logs in the verification reference rather than inferring current success from historical report filenames.
 
-## Contents
-Files: `AGENTS.md`, `README.md`, `diagnostics.json`, `output_statistics.json`, `output_statistics.txt`, `telemetry.json`, `telemetry.txt`, `test_results.json`, `test_results.md`, `validation_report.json`, `validation_report.md`
-
-## Usage
-- See `ento_linguistics/output/README.md` for how this directory is produced and used.
+See [output map](../README.md), [workflow](../../docs/guides/workflow.md), [validation](../../docs/guides/validation.md), and [captured verification](../../docs/reference/verification.md).

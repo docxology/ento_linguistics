@@ -6,9 +6,9 @@ This page distinguishes the unpublished 1.2.2 draft, the published v1.2.1 valida
 
 ## Unpublished 1.2.2 draft
 
-The draft at [output/pdf/ento_linguistics_combined.pdf](../../output/pdf/ento_linguistics_combined.pdf) is unpublished. The 8 October continuation completed full/default generation, the custody audit, and strict rendering: 49 pages and 17 figures. The complete suite passed 1,820 tests with eight external-template skips; combined coverage was 92.00% (93.44% statements, 87.57% branches). See the [captured verification summary](../../output/review-main-20261008/SUMMARY.md) and its command receipts, negative controls, artifact comparisons, and bounded page QA. This does not establish a new release or independent scientific validation; the published v1.2.1 PDF and DOI remain unchanged.
+The draft at [output/pdf/ento_linguistics_combined.pdf](../../output/pdf/ento_linguistics_combined.pdf) is unpublished. The 8 October continuation completed full/default generation, the custody audit, and strict rendering: 49 pages and 17 figures. The complete suite passed 1,820 tests with eight external-template skips; combined coverage was 92.00% (93.44% statements, 87.57% branches). See the [captured verification summary](../../output/review-main-20261008/SUMMARY.md) and its command receipts, negative controls, artifact comparisons, and bounded page QA. [Independent approval](../../output/review-main-20261008/independent-gate.md) binds candidate `c3b8574589775d52ecf917dd58c8dd759a129bc9`; the following evidence-only commit and later documentation updates do not constitute a newly audited scientific source. This does not establish a new release or independent scientific validation; the published v1.2.1 PDF and DOI remain unchanged.
 
-## Current version 1.2.1
+## Published version 1.2.1
 
 The validation patch rejects decoded-artifact and numerical inconsistencies before rendering. Both executed protocol traces match v1.2.0 exactly; the lecture media and scientific results are unchanged. See [v1.2.1 verification](release-v1.2.1.md), the [current paper](../../Ento_Linguistics_manuscript.pdf), and [Zenodo v1.2.1](https://doi.org/10.5281/zenodo.23215452).
 
