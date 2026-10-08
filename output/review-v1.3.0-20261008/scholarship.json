@@ -1,0 +1,15 @@
+{
+  "invocation": "uv run python .omo/evidence/complexity-scholarship-20261008/verify_note.py",
+  "checks": {
+    "newman2003_bibliography": true,
+    "ladyman2013_bibliography": true,
+    "relative_links": true,
+    "newman_projection_source": true,
+    "simon_visual_artifacts": true,
+    "bounded_ladyman_access": true,
+    "all_note_content_present": true
+  },
+  "note_sha256": "e6df29b0f99e31d444113c60d9d597fe0ca196db93d397988827306043dad33a",
+  "note_bytes": 7975,
+  "status": "PASS"
+}

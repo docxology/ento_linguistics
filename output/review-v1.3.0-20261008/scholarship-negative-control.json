@@ -1,0 +1,6 @@
+{
+  "scenario": "Incorrect DOI metadata must fail the same exact-field comparison used by verify_note.py",
+  "positive_matches": true,
+  "negative_matches": false,
+  "status": "PASS"
+}
