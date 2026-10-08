@@ -1,0 +1,17 @@
+{
+  "candidate_sha": "c3b8574589775d52ecf917dd58c8dd759a129bc9",
+  "manual_qa": {
+    "verdict": "PASS",
+    "evidence": "manual-qa.json",
+    "pdf_sha256": "071a42aa8ee8a4c59363171325ddae74853e8152f0b8d762fd13d4957d6e0d12"
+  },
+  "gate_review": {
+    "verdict": "APPROVE",
+    "candidate_sha": "c3b8574589775d52ecf917dd58c8dd759a129bc9",
+    "evidence": "independent-gate.md",
+    "report_sha256": "e4e1daea9e6f200ee59147ab83c7eb4b047f53fc61bc448cf2ed05b352ece661",
+    "independent_affected_tests_passed": 143
+  },
+  "recorded_at": "2026-10-08T16:56:29.313183+00:00",
+  "later_commit_scope": "Evidence record only; approval binds candidate source/assets, not a newly audited source revision."
+}
