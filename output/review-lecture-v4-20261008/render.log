@@ -1,0 +1,40 @@
+Regenerating network extension: Extension input changed: output/data/analysis_manifest.json
+Reproduced 7540 documents, 100 terms, 4232 edges
+Seed 42: 50/200 samples
+Seed 42: 100/200 samples
+Seed 42: 150/200 samples
+Seed 42: 200/200 samples
+Seed 43: 50/200 samples
+Seed 43: 100/200 samples
+Seed 43: 150/200 samples
+Seed 43: 200/200 samples
+Seed 44: 50/200 samples
+Seed 44: 100/200 samples
+Seed 44: 150/200 samples
+Seed 44: 200/200 samples
+Regenerating network extension: Extension input changed: output/data/analysis_manifest.json
+Reproduced 7540 documents, 100 terms, 4232 edges
+Seed 52: 50/100 samples
+Seed 52: 100/100 samples
+Seed 53: 50/100 samples
+Seed 53: 100/100 samples
+Seed 54: 50/100 samples
+Seed 54: 100/100 samples
+  Generated _title_page.tex (20 lines)
+  Cover metadata: title='Ento-Linguistics: Language, Ambiguity, and Scienti...', 2 author(s), date='2026-10-07 – Editorial draft 1.2.2-dev (unpublished)', doi=''
+  Corpus template vars: 23716 variables loaded
+    Publications=7540, Tokens=991026, Unique=47064
+Step 1/5: Generating LaTeX source with Pandoc...
+Command: pandoc /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/pdf/temp_combined.md -o /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/pdf/ento_linguistics_combined.tex --from=markdown+citations+raw_tex --standalone --include-in-header=/Volumes/GitVault/Username/docxology/Public/ento_linguistics/docs/manuscript/preamble.tex --natbib --number-sections --toc --toc-depth=2 --variable geometry:margin=0.85in
+  Post-processed: natbib options + red hyperlinks (hidelinks patch)
+  LaTeX source generated: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/pdf/ento_linguistics_combined.tex
+Step 2/5: Copied bibliography to build directory
+Step 3/5: Running xelatex (pass 1)...
+  xelatex pass 1...
+Step 4/5: Running bibtex (resolving citations)...
+  bibtex...
+Step 5/5: Running xelatex (passes 2-3)...
+  xelatex pass 2...
+  xelatex pass 3...
+
+PDF built successfully: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/pdf/ento_linguistics_combined.pdf (10.4 MB)

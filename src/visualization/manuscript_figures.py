@@ -1141,7 +1141,8 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
                     (
                     'Observed document co-occurrence among the hundred most frequent domain-assigned '
                     'terms. Node area uses a square-root frequency scale; line widths map shared-document '
-                    'counts to a bounded range. Up to twenty frequent terms are considered for '
+                    'counts to a bounded range. A companion ranking shows the ten strongest pairs. '
+                    'Up to twenty frequent terms are considered for '
                     'collision-filtered labels.'
                     )
                 ),

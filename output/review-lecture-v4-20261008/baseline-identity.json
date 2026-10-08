@@ -1,0 +1,32 @@
+{
+  "commit": "f07b732f6fa11cf96c6a0c6d1bba7306188d0adc",
+  "files": {
+    "output/figures/domain_comparison.png": "d2bbf017c447c50d84294d5c44293940ff66ef6729087a745494fcafaeb428c8",
+    "output/figures/concept_hierarchy.png": "826304787584a7c6cdf2bdecb70fc205504d20e6a8e731308bbdb77799b4e0ee",
+    "output/figures/arxiv_analysis.png": "278d3f8d8d8a14b47e58fb7fcae31a94be7dd468ee66ed9e73a03d12f84bd1cb",
+    "output/figures/fulltext_analysis.png": "7c2fbe116d726618fffd782a0442524e21123a476b3648bdfaaa27e52efe7083",
+    "output/figures/domain_patterns_grid.png": "8fa940ed21ba33c0c01a16630484c09dfb34bfe4306b2280ec1f229d09d0d550",
+    "output/figures/discourse_comparison.png": "9dbd732c473a1b06ed618fdc031e5c87803ac4281186a22ddace52d34819543f",
+    "output/figures/power_and_labor_term_frequencies.png": "eca2cb0d750a7949ea37053cdea892587c0f46ba8bd660eb3ebf5b8abfe9a295",
+    "output/figures/concept_map.png": "ec8bcef8dc7c2877d2355a104c0d77c915935c9b168b5a204a486ce41bc06318",
+    "output/figures/layer_comparison.png": "f57f2a6d289af98f0b4f990c9750812b96d9eda41156781beab92da5d7ef72bc",
+    "output/figures/domain_overlap_heatmap.png": "98b49bed2f04936e08d8f238335e203cae193d5df1acee78896daf17d9c2db39",
+    "output/figures/terminology_network.png": "990ed7c8f819f9456a26333c75622fb6714c022dfb016ec477da7a56666a92c0",
+    "output/figures/anthropomorphic_framing.png": "ae7dfebe1b5611d4a1e80bcbf65d9e6c261bee8e6750ae3ddc90a06f710f82ef",
+    "output/figures/domain_overview_grid.png": "055c056ecd89b2d71734a7a5d43dd7afa7d8002226e22a91ee5e601a9c40148f",
+    "output/figures/statistical_analysis.png": "94e94582230afba4bda808212a4b9901d76abee2c0c829f894682d1d3abb3c3f",
+    "output/figures/unit_of_individuality_patterns.png": "aeef445cc7b9107ebcac22255d33d629d4982bc9e6a05a000b3bd6bbb2d7158b",
+    "output/figures/power_and_labor_ambiguities.png": "2f4538ae550b88362b91c91614e45f8edc6672de2926056dd2b8b06641693723",
+    "output/figures/bhl_term_usage.png": "3d0ff405ac2ff8c10d5d51a5e404e12fa163058f17e9e6d7c6b3933987282460",
+    "output/data/concept_map_summary.json": "f5fd9586fa631c13e6f6b11df466dcbb834b49851b1ba6b7366b49a19c18a68c",
+    "output/data/statistical_analysis.json": "58ff664e7c07fac3be7f1d3e0c2a731348eb6e4977124defa17a170eb96b5e91",
+    "output/data/fulltext_analysis.json": "6f8f738addf8e70390a45e80da2da84aa1642e6fa54e3c57bef808d9af2b2dc9",
+    "output/data/domain_statistics.json": "8d35742c36db5fcb7bb9209bb06e63c19df2041e39b97e915f238915a3eda7c4",
+    "output/data/analysis_manifest.json": "bcd5aadff04c7910f5db67409cce917f63ec1a8be1275d11a731fb88941bd0dc",
+    "output/data/extracted_terms.json": "eb1cfd321d0910ce64b829dee88877f34bcf7a2f92c15597754b289e25f3b44c",
+    "output/data/corpus_statistics.json": "40083ffeb6a3d876c50167cfb89c78627ad90c38075a306cebdd912ec6a6c38a",
+    "data/bhl/era_term_usage.json": "6e32ed2e4b7c030710e21576bfda4bcd9ef25d4f63593539eca89140ab74b0b8",
+    "data/corpus/arxiv_analysis.json": "edde7975bfb5a685b3f6697df64f542b7230e25e98ff15e3389516be2f33d5f0",
+    "output/pdf/ento_linguistics_combined.pdf": "071a42aa8ee8a4c59363171325ddae74853e8152f0b8d762fd13d4957d6e0d12"
+  }
+}

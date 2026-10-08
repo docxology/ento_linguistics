@@ -6,7 +6,7 @@
     "section": "experimental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "94e94582230afba4bda808212a4b9901d76abee2c0c829f894682d1d3abb3c3f"
+      "sha256": "f3937168d6fd11394deb8608a590c65c925a28bcefc4e4beb749932ca1bd35de"
     }
   },
   "fig:fulltext_analysis": {
@@ -16,7 +16,7 @@
     "section": "supplemental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "7c2fbe116d726618fffd782a0442524e21123a476b3648bdfaaa27e52efe7083"
+      "sha256": "42f09de37db63555ea56d585e341cc4f4a0fc9a6e0e96de411963a1dee0bed9c"
     }
   },
   "fig:layer_comparison": {
@@ -26,7 +26,7 @@
     "section": "supplemental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "f57f2a6d289af98f0b4f990c9750812b96d9eda41156781beab92da5d7ef72bc"
+      "sha256": "0946a683ad96b344af65c0dca9a42c00a5ff677aa4cb2b2fa66e971f3dcc995c"
     }
   },
   "fig:discourse_comparison": {
@@ -46,7 +46,7 @@
     "section": "supplemental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "278d3f8d8d8a14b47e58fb7fcae31a94be7dd468ee66ed9e73a03d12f84bd1cb"
+      "sha256": "ec1cbe25bb4a61b1685c64edf053d96eabce77c52620b3b7918bc897b5666eab"
     }
   },
   "fig:bhl_term_usage": {
@@ -66,17 +66,17 @@
     "section": "introduction",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "ec8bcef8dc7c2877d2355a104c0d77c915935c9b168b5a204a486ce41bc06318"
+      "sha256": "15929f458b027e4981f4f58fd7c896b8517b95614a6e4065f0c238012d1cc807"
     }
   },
   "fig:terminology_network": {
     "filename": "terminology_network.png",
-    "caption": "Observed document co-occurrence among the hundred most frequent domain-assigned terms. Node area uses a square-root frequency scale; line widths map shared-document counts to a bounded range. Up to twenty frequent terms are considered for collision-filtered labels.",
+    "caption": "Observed document co-occurrence among the hundred most frequent domain-assigned terms. Node area uses a square-root frequency scale; line widths map shared-document counts to a bounded range. A companion ranking shows the ten strongest pairs. Up to twenty frequent terms are considered for collision-filtered labels.",
     "label": "fig:terminology_network",
     "section": "experimental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "990ed7c8f819f9456a26333c75622fb6714c022dfb016ec477da7a56666a92c0"
+      "sha256": "b6733b8903fef8c4152671dc09969fff362c6a029dd2ce225fe82593e65dfebe"
     }
   },
   "fig:domain_comparison": {
@@ -86,7 +86,7 @@
     "section": "experimental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "d2bbf017c447c50d84294d5c44293940ff66ef6729087a745494fcafaeb428c8"
+      "sha256": "bee0c94759652012b7148f36b3b417c4078067f8c5e8fcde804222f5f9b0da66"
     }
   },
   "fig:domain_overlap": {
@@ -106,7 +106,7 @@
     "section": "discussion",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "ae7dfebe1b5611d4a1e80bcbf65d9e6c261bee8e6750ae3ddc90a06f710f82ef"
+      "sha256": "b69b3b7d06af7c5a7958f1ac6b94f59cb21a5a55f53f2a26e95e8c8c7068ab46"
     }
   },
   "fig:concept_hierarchy": {
@@ -156,7 +156,7 @@
     "section": null,
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "055c056ecd89b2d71734a7a5d43dd7afa7d8002226e22a91ee5e601a9c40148f"
+      "sha256": "2d24d8421bf4ab941979b2c41adcb620ef787bc0a59aaaf8dc99cbe87da0a516"
     }
   },
   "fig:domain_patterns_grid": {
@@ -166,7 +166,7 @@
     "section": null,
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "8fa940ed21ba33c0c01a16630484c09dfb34bfe4306b2280ec1f229d09d0d550"
+      "sha256": "a2f3ed6787a54f6e21163b5f193051feffa396b274d35d7e0c1800cc32231628"
     }
   }
 }

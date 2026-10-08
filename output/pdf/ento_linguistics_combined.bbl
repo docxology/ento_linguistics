@@ -1,4 +1,4 @@
-\begin{thebibliography}{37}
+\begin{thebibliography}{41}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -47,6 +47,13 @@ Jacob Cohen.
 \newblock Lawrence Erlbaum Associates, Hillsdale, NJ, 2nd edition, 1988.
 \newblock ISBN 978-0805802832.
 
+\bibitem[Couzin(2009)]{couzin2009collective}
+Iain~D. Couzin.
+\newblock Collective cognition in animal groups.
+\newblock \emph{Trends in Cognitive Sciences}, 13\penalty0 (1):\penalty0
+  36--43, 2009.
+\newblock \doi{10.1016/j.tics.2008.10.002}.
+
 \bibitem[{Entomological Society of America}(2024)]{betternamesproject2024}
 {Entomological Society of America}.
 \newblock Better common names: Addressing racist, colonial, and otherwise
@@ -58,6 +65,13 @@ Jacob Cohen.
 Norman Fairclough.
 \newblock \emph{Discourse and Social Change}.
 \newblock Polity Press, Cambridge, UK, 1992.
+
+\bibitem[Feinerman and Korman(2017)]{feinerman2017cognition}
+Ofer Feinerman and Amos Korman.
+\newblock Individual versus collective cognition in social insects.
+\newblock \emph{Journal of Experimental Biology}, 220\penalty0 (1):\penalty0
+  73--82, 2017.
+\newblock \doi{10.1242/jeb.143891}.
 
 \bibitem[Friedman et~al.(2021)Friedman, Tschantz, Ramstead, Friston, and
   Constant]{friedman2021active}
@@ -93,6 +107,12 @@ Deborah~M. Gordon.
 \newblock Princeton University Press, Princeton, NJ, 2010.
 \newblock ISBN 978-0691138794.
 
+\bibitem[Gordon(2014)]{gordon2014ecology}
+Deborah~M. Gordon.
+\newblock The ecology of collective behavior.
+\newblock \emph{PLOS Biology}, 12\penalty0 (3):\penalty0 e1001805, 2014.
+\newblock \doi{10.1371/journal.pbio.1001805}.
+
 \bibitem[Gordon(2019)]{gordon2019ecology}
 Deborah~M. Gordon.
 \newblock The ecology of collective behavior in ants.
@@ -104,6 +124,14 @@ Deborah~M. Gordon.
 \newblock \emph{The Ecology of Collective Behavior}.
 \newblock Princeton University Press, Princeton, NJ, 2023.
 \newblock ISBN 978-0691232157.
+
+\bibitem[Greene et~al.(2013)Greene, Pinter-Wollman, and
+  Gordon]{greene2013chemical}
+Michael~J. Greene, Noa Pinter-Wollman, and Deborah~M. Gordon.
+\newblock Interactions with combined chemical cues inform harvester ant
+  foragers' decisions to leave the nest in search of food.
+\newblock \emph{PLOS ONE}, 8\penalty0 (1):\penalty0 e52219, 2013.
+\newblock \doi{10.1371/journal.pone.0052219}.
 
 \bibitem[Grimmer and Stewart(2013)]{grimmer2013text}
 Justin Grimmer and Brandon~M. Stewart.

@@ -1,0 +1,15 @@
+{
+  "tracked_maintained_markdown_files": 63,
+  "local_links_checked": 289,
+  "errors": [],
+  "negative_control": {
+    "input": "[negative control](deliberately-absent-link-target)",
+    "detected_errors": [
+      {
+        "file": "README.md",
+        "target": "deliberately-absent-link-target"
+      }
+    ]
+  },
+  "scope": "Maintained Markdown including data guidance; historical generated evidence retains captured claims"
+}

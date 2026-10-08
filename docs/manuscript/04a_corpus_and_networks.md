@@ -39,7 +39,7 @@ Whole-word matches are case-insensitive, and repeated mentions within a document
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/terminology_network.png}
-\caption{Observed document co-occurrence among the hundred highest-frequency domain-assigned terms in the {{CORPUS_PUBLICATIONS}}-abstract layer. Nodes represent terms, node area uses a square-root frequency scale, color identifies the primary domain, and edge width scales shared-document counts to a bounded display range (Eq.~\ref{eq:network_edge_weight}). Isolated nodes are omitted from the display and up to twenty frequent terms are considered for collision-filtered labels. Layout and dense regions have no causal or hierarchical interpretation.}
+\caption{Observed document co-occurrence among the hundred highest-frequency domain-assigned terms in the {{CORPUS_PUBLICATIONS}}-abstract layer. Nodes represent terms, node area uses a square-root frequency scale, color identifies the primary domain, and edge width scales shared-document counts to a bounded display range (Eq.~\ref{eq:network_edge_weight}). Isolated nodes are omitted from the display and up to twenty frequent terms are considered for collision-filtered labels. The right panel ranks the ten strongest observed pairs by shared-document count, with lexical tie-breaking. All observed edges remain in the left graph, whose unweighted layout reduces visual concentration around frequent pairs. Layout and dense regions have no causal or hierarchical interpretation.}
 \label{fig:terminology_network}
 \end{figure}
 

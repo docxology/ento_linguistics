@@ -1,0 +1,19 @@
+{
+  "pdf_sha256": "686f1775d4d92e5946e2bdd3c3fa354e9d6f0e904cf1872ef7512537503e16fc",
+  "bytes": 10895518,
+  "tex_diagnostics": [],
+  "text_checks": "PASS",
+  "protocol_arrays": [
+    {
+      "path": "output/extensions/network_robustness/chain_statistics.npy",
+      "sha256": "b5d447949b0dd62a38c6138639b70ccf4cbae30483fc31e462125efd35b449a8",
+      "byte_identical": true
+    },
+    {
+      "path": "output/extensions/network_robustness/sensitivity/chain_statistics.npy",
+      "sha256": "7007afe2fd1ce12060790448f7996c5d4fab556392155435b061ae628a916409",
+      "byte_identical": true
+    }
+  ],
+  "published_pdf_unchanged": true
+}

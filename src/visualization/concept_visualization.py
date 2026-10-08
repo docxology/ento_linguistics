@@ -440,9 +440,11 @@ class ConceptVisualizer:
         Returns:
             Matplotlib figure object
         """
-        fig, ax = plt.subplots(figsize=self.figsize)
+        fig, (ax, pair_ax) = plt.subplots(1, 2, figsize=(19, 10),
+                                           gridspec_kw={"width_ratios": [1.2, 1]})
 
         if not HAS_NETWORKX:
+            pair_ax.axis("off")
             ax.text(0.5, 0.5, "networkx not available\nInstall with: pip install networkx",
                     ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT)
             ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
@@ -482,6 +484,7 @@ class ConceptVisualizer:
 
         if len(G.nodes()) == 0:
             # No connected terms
+            pair_ax.axis("off")
             ax.text(
                 0.5,
                 0.5,
@@ -498,7 +501,7 @@ class ConceptVisualizer:
             return fig
 
         # Calculate layout
-        pos = nx.spring_layout(G, k=0.5, iterations=50, seed=42)
+        pos = nx.spring_layout(G, k=0.5, iterations=100, seed=42, weight=None)
 
         # Draw nodes
         max_frequency = max(G.nodes[node]["frequency"] for node in G.nodes())
@@ -519,6 +522,31 @@ class ConceptVisualizer:
                 G, pos, width=edge_weights, edge_color="gray", alpha=0.18, ax=ax
             )
 
+        ranked_pairs = sorted(G.edges(data=True),
+                              key=lambda edge: (-edge[2]["weight"],
+                                                tuple(sorted(edge[:2]))))[:10]
+        pair_values = [edge[2]["weight"] for edge in ranked_pairs]
+        pair_names = [" + ".join(sorted(edge[:2])) for edge in ranked_pairs]
+        bars = pair_ax.barh(range(len(ranked_pairs)), pair_values,
+                            height=0.62, color="#24485B")
+        pair_ax.set_yticks(range(len(ranked_pairs)), pair_names, fontsize=MIN_FONT)
+        pair_ax.invert_yaxis()
+        pair_ax.set_xlim(0, max(pair_values, default=1) * 1.24)
+        for bar, value in zip(bars, pair_values):
+            pair_ax.annotate(f"{value:,.0f}",
+                             (value, bar.get_y() + bar.get_height() / 2),
+                             xytext=(7, 0), textcoords="offset points",
+                             va="center", fontsize=MIN_FONT, fontweight="bold")
+        pair_ax.set_xlabel("Abstracts containing both terms", fontsize=MIN_FONT)
+        pair_ax.set_title("Ten strongest observed pairs", loc="left",
+                          fontsize=MIN_FONT + 2, fontweight="bold", pad=18)
+        pair_ax.grid(axis="x", alpha=0.18)
+        pair_ax.set_axisbelow(True)
+        for side in ("top", "right", "left"):
+            pair_ax.spines[side].set_visible(False)
+        pair_ax.tick_params(axis="y", length=0)
+        pair_ax.tick_params(axis="x", labelsize=MIN_FONT)
+
         # Draw labels (only for important terms).
         # Density tradeoff: large corpora yield hundreds of nodes; labelling
         # every node would be illegible, so only the top-20 terms by corpus
@@ -536,25 +564,35 @@ class ConceptVisualizer:
         ax.margins(0.08)
         ax.axis("off")
         # Add legend
-        self._add_domain_legend(ax)
+        legend_elements = [plt.Rectangle((0, 0), 1, 1, facecolor=color,
+                                         label=domain_display_name(domain))
+                           for domain, color in self.DOMAIN_COLORS.items()]
+        ax.legend(handles=legend_elements, loc="upper center", ncol=2,
+                  bbox_to_anchor=(0.5, -0.025), frameon=False,
+                  fontsize=MIN_FONT)
 
         # Subtitle sits just above the axes; pad per title line so
         # multi-line titles never collide with the subtitle text.
         ax.set_title(
-            title,
+            "Observed co-occurrence topology",
             fontsize=MIN_FONT + 2, fontweight="bold",
             pad=24 + 20 * title.count("\n"),
         )
         subtitle = ax.text(
             0.5, 1.005,
-            f"Labels: 0 collision-filtered from {len(important_terms)} "
-            f"frequency-ranked candidates ({G.number_of_nodes()} nodes)",
+            f"{G.number_of_nodes():,} terms · {G.number_of_edges():,} observed edges\n"
+            f"0 labels from {len(important_terms)} frequent candidates",
             transform=ax.transAxes, ha="center", va="bottom",
             fontsize=MIN_FONT, color="#666666", fontstyle="italic",
         )
         ax.axis("off")
 
-        plt.tight_layout()
+        fig.suptitle(title, fontsize=MIN_FONT + 4, fontweight="bold", y=0.995)
+        fig.text(0.5, 0.005,
+                 "All observed edges remain in the graph. Pair ranking uses shared-document counts; "
+                 "layout is unweighted and has no biological hierarchy.",
+                 ha="center", fontsize=MIN_FONT, color="#526271")
+        plt.tight_layout(rect=(0, 0.045, 1, 0.89), w_pad=4.0)
 
         fig.canvas.draw()
         anns = place_labels(
@@ -578,8 +616,8 @@ class ConceptVisualizer:
             t: t for t, a_ in zip(important_terms, anns) if a_ is not None
         }
         subtitle.set_text(
-            f"Labels: {len(label_dict)} collision-filtered from {len(important_terms)} "
-            f"frequency-ranked candidates ({G.number_of_nodes()} nodes)"
+            f"{G.number_of_nodes():,} terms · {G.number_of_edges():,} observed edges\n"
+            f"{len(label_dict)} labels from {len(important_terms)} frequent candidates"
         )
 
         if filepath:
@@ -614,7 +652,7 @@ class ConceptVisualizer:
         filepath: Optional[Path] = None,
         terms: Optional[Dict[str, Any]] = None,
     ) -> plt.Figure:
-        """Create a 2×3 comparison plot across all six Ento-Linguistic domains.
+        """Create a six-panel horizontal comparison plot across all six Ento-Linguistic domains.
 
         Panels:
           (0,0) Term count per domain
@@ -633,42 +671,45 @@ class ConceptVisualizer:
         """
 
         domains = ordered_domains(domain_data.keys())
-        short_labels = [domain_display_name(d, wrap=True) for d in domains]
+        short_labels = [domain_display_name(d) for d in domains]
         domain_colors = [self.DOMAIN_COLORS.get(d, "#7f7f7f") for d in domains]
 
-        fig, axes = plt.subplots(3, 2, figsize=(16, 18))
+        fig, axes = plt.subplots(3, 2, figsize=(19, 13))
         fig.suptitle(
-            "Ento-Linguistic Domain Comparison (Full Corpus Terminology)",
+            "Six domains: vocabulary, context and heuristic scores",
             fontsize=MIN_FONT + 4,
             fontweight="bold",
-            y=1.01,
+            y=0.995,
         )
 
-        def _bar(ax, values, ylabel, title, *, fmt=".0f"):
-            """Helper: draw a bar chart with value labels."""
-            bars = ax.bar(range(len(domains)), values, color=domain_colors, alpha=0.82,
-                          edgecolor="white", linewidth=0.5)
-            for bar, v in zip(bars, values):
-                ax.annotate(
-                    f"{v:{fmt}}" if np.isfinite(v) else "n/a",
-                    xy=(bar.get_x() + bar.get_width() / 2,
-                        bar.get_height() if np.isfinite(v) else 0),
-                    xytext=(0, 3), textcoords="offset points",
-                    ha="center", va="bottom",
-                    fontsize=MIN_FONT, fontweight="bold")
-            # ~15% headroom so value labels never touch the panel title.
+        def _bar(ax, values, ylabel, title, *, fmt=",.0f"):
+            """Draw aligned horizontal bars with exact values and readable labels."""
+            bars = ax.barh(range(len(domains)), values, color=domain_colors,
+                           height=0.62, edgecolor="white", linewidth=0.5)
             finite = [v for v in values if np.isfinite(v)]
-            if finite and max(finite) > 0:
-                ax.set_ylim(0, max(finite) * 1.15)
-            ax.set_xticks(range(len(domains)))
-            ax.set_xticklabels(short_labels, fontsize=MIN_FONT, rotation=30, ha="right")
-            ax.set_ylabel(ylabel, fontsize=MIN_FONT)
-            ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold", pad=14)
+            maximum = max(finite, default=0.0)
+            ax.set_xlim(0, max(maximum * 1.22, 0.1))
+            for bar, value in zip(bars, values):
+                printed = f"{value:{fmt}}" if np.isfinite(value) else "n/a"
+                ax.annotate(printed,
+                            xy=(value if np.isfinite(value) else 0,
+                                bar.get_y() + bar.get_height() / 2),
+                            xytext=(7, 0), textcoords="offset points",
+                            ha="left", va="center", fontsize=MIN_FONT,
+                            fontweight="bold", color="#263746")
+            ax.set_yticks(range(len(domains)))
+            ax.set_yticklabels(short_labels, fontsize=MIN_FONT)
+            ax.set_ylim(-0.6, len(domains) - 0.4)
+            ax.invert_yaxis()
+            ax.set_xlabel(ylabel, fontsize=MIN_FONT)
+            ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold", loc="left", pad=12)
             ax.spines["top"].set_visible(False)
             ax.spines["right"].set_visible(False)
-            ax.grid(axis="y", alpha=0.3)
+            ax.spines["left"].set_visible(False)
+            ax.tick_params(axis="y", length=0)
+            ax.tick_params(axis="x", labelsize=MIN_FONT)
+            ax.grid(axis="x", alpha=0.18)
             ax.set_axisbelow(True)
-            ax.tick_params(axis="y", labelsize=MIN_FONT)
 
         # Panel (0,0): term counts
         term_counts = [domain_data[d].get("term_count", 0) for d in domains]
@@ -676,7 +717,7 @@ class ConceptVisualizer:
 
         # Panel (0,1): avg confidence
         conf = [float(domain_data[d].get("avg_confidence", 0.0)) for d in domains]
-        _bar(axes[0, 1], conf, "Confidence Score", "Average Extraction Confidence", fmt=".3f")
+        _bar(axes[0, 1], conf, "Rule score (0–1)", "Extraction rule score", fmt=".3f")
 
         # Panel (1,0): total frequency
         freq = [domain_data[d].get("total_frequency", 0) for d in domains]
@@ -719,7 +760,7 @@ class ConceptVisualizer:
                 )
                 entropy_vals.append(float(raw) if raw else 0.0)
         _bar(axes[1, 1], entropy_vals, "Mean H(t) bits",
-             "Semantic Entropy (Ambiguity) per Domain", fmt=".2f")
+             "Sentence-context occupancy entropy", fmt=".2f")
 
         # Panel (2,0): bridging term count
         bridging = []
@@ -746,7 +787,11 @@ class ConceptVisualizer:
         _bar(axes[2, 1], cace_vals, "Mean CACE Score [0–1]",
              "CACE Aggregate Score per Domain", fmt=".3f")
 
-        plt.tight_layout()
+        fig.text(0.5, 0.012,
+                 "Assignments overlap; extraction confidence and CACE are heuristics. "
+                 "Entropy does not independently validate word senses.",
+                 ha="center", fontsize=MIN_FONT, color="#526271")
+        plt.tight_layout(rect=(0, 0.055, 1, 0.96), h_pad=2.0, w_pad=3.0)
 
         if filepath:
             fig.savefig(filepath, dpi=300, bbox_inches="tight")

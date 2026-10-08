@@ -25,7 +25,7 @@ Read the [published v1.2.1 paper](../Ento_Linguistics_manuscript.pdf) or the [ve
 
 [manuscript/](manuscript/README.md) holds the canonical numbered Markdown sections, supplements, bibliography, configuration, and preamble. Its paths remain stable because the renderer uses them directly. [Methods](manuscript/03_methods.md), [corpus results](manuscript/04a_corpus_and_networks.md), and [domain findings](manuscript/04b_domain_findings.md) are useful starting points; numerical placeholders resolve in the built paper.
 
-Documentation contains reusable instructions and definitions. Historical review narratives and speculative refactoring/testing plans have been removed; recorded execution and publication receipts remain in dated output folders. The [latest draft verification](../output/review-main-20261008/SUMMARY.md) binds the 8 October candidate; [earlier baseline records](../output/review-20261006/) retain their historical scope. Read [verification](reference/verification.md) for how to use those records without treating an old run as a new one.
+Documentation contains reusable instructions and definitions. Historical review narratives and speculative refactoring/testing plans have been removed; recorded execution and publication receipts remain in dated output folders. The [latest draft verification](../output/review-lecture-v4-20261008/SUMMARY.md) records the visualization and scholarship revision; [earlier baseline records](../output/review-20261006/) retain their historical scope. Read [verification](reference/verification.md) for how to use those records without treating an old run as a new one.
 
 Return to the [repository overview](../README.md).
 

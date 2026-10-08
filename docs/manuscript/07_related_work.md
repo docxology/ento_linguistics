@@ -32,6 +32,12 @@ The Free Energy Principle and Active Inference supply theoretical vocabulary for
 
 Theoretical perspectives on eusociality and biological individuality \citep{nowak2010evolution, boomsma2018superorganismality} motivate careful definition of units and mechanisms. The Environment-Centric Active Inference extensions in the supplement remain proposed constructions requiring explicit models and empirical testing.
 
+## Collective Behavior and Complex Systems
+
+Collective-behavior research supplies a mechanistic counterpart to the terminology framework. \citet{couzin2009collective} relates group-level response to social interaction, individual state and environmental modification. \citet{feinerman2017cognition} distinguishes collective responses supported by individual information from outcomes that require interactions across a scale gap. These accounts motivate asking which entity holds information and which process combines it; a colony-level description alone does not identify the computation.
+
+Ecological conditions also matter to how interaction processes regulate activity \citep{gordon2014ecology}. In an experimental harvester-ant example, combined food and forager chemical cues on mimics increased outgoing foraging activity \citep{greene2013chemical}. Such experiments link a defined intervention to an observed response. They illustrate the level of biological evidence needed for a mechanistic claim, rather than validating any particular lexical label. The corpus network instead records pairs of expressions in documents: its vertices, edges and timescale differ from those of a measured ant-interaction network. Similar graph vocabulary should prompt an explicit comparison of observational units before a mechanism is transferred between fields.
+
 ## Positioning This Work
 
 This repository contributes a six-domain descriptive workflow with auditable source layers, inspectable computational definitions, regenerable figures and receipt-bound values. CACE is a proposed evaluation framework, not a validated measure or intervention. Its independent validation would require annotated meanings, blinded judgments, measured agreement, and tests of sensitivity and communication outcomes. The distinction between implemented measurement, theoretical motivation, and unperformed validation is part of the contribution.

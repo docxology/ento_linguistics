@@ -38,10 +38,11 @@
 \contentsline {subsection}{\numberline {6.2}Network Structure and Its Conditional Reference}{23}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Biological Precision and Terminological Continuity}{23}{subsection.6.3}%
 \contentsline {subsection}{\numberline {6.4}Active Inference as a Theoretical Perspective}{24}{subsection.6.4}%
-\contentsline {subsection}{\numberline {6.5}Practical Use of CACE}{24}{subsection.6.5}%
-\contentsline {subsection}{\numberline {6.6}Cross-Domain Communication}{24}{subsection.6.6}%
-\contentsline {subsection}{\numberline {6.7}Measurement Validation and Terminology Intervention}{24}{subsection.6.7}%
-\contentsline {subsection}{\numberline {6.8}Limitations}{25}{subsection.6.8}%
+\contentsline {subsection}{\numberline {6.5}A Complex Systems Reading of Terminology}{24}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}Practical Use of CACE}{24}{subsection.6.6}%
+\contentsline {subsection}{\numberline {6.7}Cross-Domain Communication}{25}{subsection.6.7}%
+\contentsline {subsection}{\numberline {6.8}Measurement Validation and Terminology Intervention}{25}{subsection.6.8}%
+\contentsline {subsection}{\numberline {6.9}Limitations}{25}{subsection.6.9}%
 \contentsline {section}{\numberline {7}Conclusion}{26}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Future Directions}{26}{subsection.7.1}%
 \contentsline {section}{\numberline {8}Related Work}{27}{section.8}%
@@ -50,7 +51,8 @@
 \contentsline {subsection}{\numberline {8.3}Computational Mapping and Source-Layer Analysis}{27}{subsection.8.3}%
 \contentsline {subsection}{\numberline {8.4}Validation and Experimental Evidence}{27}{subsection.8.4}%
 \contentsline {subsection}{\numberline {8.5}Active Inference and Colony Modeling}{28}{subsection.8.5}%
-\contentsline {subsection}{\numberline {8.6}Positioning This Work}{28}{subsection.8.6}%
+\contentsline {subsection}{\numberline {8.6}Collective Behavior and Complex Systems}{28}{subsection.8.6}%
+\contentsline {subsection}{\numberline {8.7}Positioning This Work}{28}{subsection.8.7}%
 \contentsline {section}{\numberline {9}Acknowledgments}{29}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Institutional Support}{29}{subsection.9.1}%
 \contentsline {subsection}{\numberline {9.2}Collaborations}{29}{subsection.9.2}%

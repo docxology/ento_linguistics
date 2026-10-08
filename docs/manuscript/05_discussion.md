@@ -28,6 +28,12 @@ Interpreting terminology as a prior is an analogy here; as the Introduction stat
 
 The Environment-Centric Active Inference and related multiscale proposals in Section \ref{sec:supplemental_analysis} should be read as theoretical extensions. They require explicit models and empirical tests before supporting biological or linguistic conclusions.
 
+## A Complex Systems Reading of Terminology
+
+The framework can organize questions about scale, connectivity and feedback without treating a lexical graph as a biological system. For each passage, specify the units (individuals, tasks, interactions or colonies), the relevant state variables, the observation timescale and the coupling being measured. The paper's three networks must remain distinct: observed term co-occurrence, configured category overlap and the biological interactions discussed by the underlying literature. A dense term graph does not supply evidence that the ants have an equally dense communication graph.
+
+This distinction supports productive comparison rather than automatic analogy. A mechanism-based account of task allocation can connect the Power and Labor vocabulary to questions about local information and regulation, while biological individuality asks whether the reported outcome is measured at individual or colony scale. The next empirical step is to annotate these mechanistic commitments in source passages and test agreement on held-out documents. Only then can the framework assess whether a terminology choice helps readers recover the actual units, coupling and conditions of a study. Expanding to other taxa, genres or languages requires a new measurement-validation assessment; reproducible software alone does not establish transportability.
+
 ## Practical Use of CACE
 
 CACE makes evaluation criteria inspectable: clarity of operational definitions, suitability of metaphors, consistency of use, and adaptability to new findings. Its numerical implementation is a heuristic instantiation. Penalizing membership in a predefined anthropomorphic vocabulary partly encodes the desired ranking; a favorable score is not independent validation of a replacement term.

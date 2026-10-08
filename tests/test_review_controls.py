@@ -152,7 +152,7 @@ def test_cace_figure_uses_the_statistical_sample():
     assert len(selected) > 50
     expected = float(np.mean([score.aggregate for score in _domain_cace_scores(selected)]))
     fig = ConceptVisualizer().create_domain_comparison_plot({domain: {'term_count':len(selected)}}, terms=terms)
-    actual = fig.axes[5].patches[0].get_height()
+    actual = fig.axes[5].patches[0].get_width()
     plt.close(fig)
     assert actual == pytest.approx(expected)
 
@@ -161,11 +161,12 @@ def test_missing_cace_data_is_not_a_confidence_score():
     import matplotlib.pyplot as plt
     from visualization.concept_visualization import ConceptVisualizer
     fig = ConceptVisualizer().create_domain_comparison_plot({'economics': {'avg_confidence':0.9}})
-    values = [patch.get_height() for patch in fig.axes[5].patches]
+    values = [patch.get_width() for patch in fig.axes[5].patches]
     labels = [text.get_text() for text in fig.axes[5].texts]
     plt.close(fig)
     assert 'n/a' in labels
-    assert 0.9 not in values and 0.5 not in values
+    import numpy as np
+    assert all(np.isnan(value) for value in values)
 
 
 def test_entropy_reuse_does_not_keep_an_old_value_for_an_excluded_term():

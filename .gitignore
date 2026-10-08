@@ -13,3 +13,7 @@ output/simulations/
 
 # macOS Finder metadata
 .DS_Store
+
+# Local credentials
+/.env
+/.env.*

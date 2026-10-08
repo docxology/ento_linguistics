@@ -6,10 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## Unreleased — 1.2.2-dev
 
+- Redesign the observed terminology network with an exact strongest-pair ranking; make all six domain-comparison panels horizontal and use consistent domain colors.
+- Add verified primary collective-behavior scholarship and a complex-systems reading that separates units, state, coupling, timescale and biological evidence from lexical association.
+- Regenerate all layers and strictly render the current 49-page draft: 1,822 tests passed, eight skips, 92.01% combined coverage. Numerical outputs and retained fixed-margin traces remain unchanged; see [latest receipts](output/review-lecture-v4-20261008/SUMMARY.md).
+
 - Strengthen biological definitions, measurement limits, scholarship and proposed annotation/reader-study designs while keeping descriptive proxies separate from causal claims.
 - Correct domain labels, word-formation category denominators, weighted overlap hierarchy, display-space label placement, small-category legends, captions and Pandoc count formatting.
 - Complete the 8 October full/default analysis and strict 49-page draft render. All ten numerical exports match the published baseline after excluding receipt/time identity fields; both fixed-margin retained trace arrays remain byte-identical.
-- Record 1,820 test passes, eight external-template skips and 92.00% combined statement/branch coverage, plus independent candidate approval. See [draft verification](output/review-main-20261008/SUMMARY.md).
+- Earlier continuation: record 1,820 test passes, eight external-template skips and 92.00% combined statement/branch coverage, plus independent candidate approval. See [draft verification](output/review-main-20261008/SUMMARY.md).
 - Reconcile maintained Markdown commands, corpus counts, output ownership, test requirements and draft/publication navigation. Retain byte-preserved legacy Markdown snapshots separately from current guidance.
 - Keep the published v1.2.1 PDF, media and DOI unchanged. A main-branch push is not a new manuscript release.
 

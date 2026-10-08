@@ -141,12 +141,12 @@ def classify_word_formation(text: str) -> str:
 
 # Single shared domain palette keyed by canonical domain names.
 DOMAIN_PALETTE: Dict[str, str] = {
-    "unit_of_individuality": "#1f77b4",  # Blue
-    "behavior_and_identity": "#ff7f0e",  # Orange
-    "power_and_labor": "#2ca02c",  # Green
-    "sex_and_reproduction": "#d62728",  # Red
-    "kin_and_relatedness": "#9467bd",  # Purple
-    "economics": "#8c564b",  # Brown
+    "unit_of_individuality": "#0072B2",
+    "behavior_and_identity": "#E69F00",
+    "power_and_labor": "#009E73",
+    "sex_and_reproduction": "#D55E00",
+    "kin_and_relatedness": "#CC79A7",
+    "economics": "#6554A4",
 }
 
 # Neutral colour for nodes whose domains are missing or non-canonical.

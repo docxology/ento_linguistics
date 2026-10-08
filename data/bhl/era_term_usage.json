@@ -1,6 +1,6 @@
 {
   "corpus_fingerprint": {
-    "analysis_signature": "d30c303d6764ead8cc322145f5b9e67ee754beba06ad5f61700e67c423284aac",
+    "analysis_signature": "32c56d399aaf479977c6b0e710b374c3076044e4bb5fb8b52c39db7071180b7d",
     "record_count": 2430,
     "records_sha256": "3a661d88389a4add50147bf919d93b4adeddda5abae702a97b99a5d9c60acc5a",
     "stack_character_budget": null
@@ -809,7 +809,7 @@
       "tokens": 15759454
     }
   },
-  "generated": "2026-10-08T16:28:03+00:00",
+  "generated": "2026-10-08T18:43:23+00:00",
   "layer": "bhl_historical",
   "skipped": [],
   "source": {

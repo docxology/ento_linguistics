@@ -205,7 +205,7 @@ Whole-word matches are case-insensitive, and repeated mentions within a document
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/terminology_network.png}
-\caption{Observed document co-occurrence among the hundred highest-frequency domain-assigned terms in the 7540-abstract layer. Nodes represent terms, node area uses a square-root frequency scale, color identifies the primary domain, and edge width scales shared-document counts to a bounded display range (Eq.~\ref{eq:network_edge_weight}). Isolated nodes are omitted from the display and up to twenty frequent terms are considered for collision-filtered labels. Layout and dense regions have no causal or hierarchical interpretation.}
+\caption{Observed document co-occurrence among the hundred highest-frequency domain-assigned terms in the 7540-abstract layer. Nodes represent terms, node area uses a square-root frequency scale, color identifies the primary domain, and edge width scales shared-document counts to a bounded display range (Eq.~\ref{eq:network_edge_weight}). Isolated nodes are omitted from the display and up to twenty frequent terms are considered for collision-filtered labels. The right panel ranks the ten strongest observed pairs by shared-document count, with lexical tie-breaking. All observed edges remain in the left graph, whose unweighted layout reduces visual concentration around frequent pairs. Layout and dense regions have no causal or hierarchical interpretation.}
 \label{fig:terminology_network}
 \end{figure}
 
@@ -369,6 +369,12 @@ Interpreting terminology as a prior is an analogy here; as the Introduction stat
 
 The Environment-Centric Active Inference and related multiscale proposals in Section \ref{sec:supplemental_analysis} should be read as theoretical extensions. They require explicit models and empirical tests before supporting biological or linguistic conclusions.
 
+## A Complex Systems Reading of Terminology
+
+The framework can organize questions about scale, connectivity and feedback without treating a lexical graph as a biological system. For each passage, specify the units (individuals, tasks, interactions or colonies), the relevant state variables, the observation timescale and the coupling being measured. The paper's three networks must remain distinct: observed term co-occurrence, configured category overlap and the biological interactions discussed by the underlying literature. A dense term graph does not supply evidence that the ants have an equally dense communication graph.
+
+This distinction supports productive comparison rather than automatic analogy. A mechanism-based account of task allocation can connect the Power and Labor vocabulary to questions about local information and regulation, while biological individuality asks whether the reported outcome is measured at individual or colony scale. The next empirical step is to annotate these mechanistic commitments in source passages and test agreement on held-out documents. Only then can the framework assess whether a terminology choice helps readers recover the actual units, coupling and conditions of a study. Expanding to other taxa, genres or languages requires a new measurement-validation assessment; reproducible software alone does not establish transportability.
+
 ## Practical Use of CACE
 
 CACE makes evaluation criteria inspectable: clarity of operational definitions, suitability of metaphors, consistency of use, and adaptability to new findings. Its numerical implementation is a heuristic instantiation. Penalizing membership in a predefined anthropomorphic vocabulary partly encodes the desired ranking; a favorable score is not independent validation of a replacement term.
@@ -454,6 +460,12 @@ Experimental metaphor research supplies a complementary way to investigate reade
 The Free Energy Principle and Active Inference supply theoretical vocabulary for generative modeling \citep{friston2010free, friston2013life, clark2013whatever, kirchhoff2018markov}. The Active Inferants framework supplies a simulated ant-foraging example \citep{friedman2021active}; model behavior alone cannot establish how terminology choices affect scientific reasoning.
 
 Theoretical perspectives on eusociality and biological individuality \citep{nowak2010evolution, boomsma2018superorganismality} motivate careful definition of units and mechanisms. The Environment-Centric Active Inference extensions in the supplement remain proposed constructions requiring explicit models and empirical testing.
+
+## Collective Behavior and Complex Systems
+
+Collective-behavior research supplies a mechanistic counterpart to the terminology framework. \citet{couzin2009collective} relates group-level response to social interaction, individual state and environmental modification. \citet{feinerman2017cognition} distinguishes collective responses supported by individual information from outcomes that require interactions across a scale gap. These accounts motivate asking which entity holds information and which process combines it; a colony-level description alone does not identify the computation.
+
+Ecological conditions also matter to how interaction processes regulate activity \citep{gordon2014ecology}. In an experimental harvester-ant example, combined food and forager chemical cues on mimics increased outgoing foraging activity \citep{greene2013chemical}. Such experiments link a defined intervention to an observed response. They illustrate the level of biological evidence needed for a mechanistic claim, rather than validating any particular lexical label. The corpus network instead records pairs of expressions in documents: its vertices, edges and timescale differ from those of a measured ant-interaction network. Similar graph vocabulary should prompt an explicit comparison of observational units before a mechanism is transferred between fields.
 
 ## Positioning This Work
 

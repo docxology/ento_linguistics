@@ -1,0 +1,1 @@
+{"pid": 59536, "started_at": 1791483964.729604, "command": ["uv", "run", "python", "scripts/02_generate_figures.py"]}

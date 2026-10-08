@@ -1,0 +1,29 @@
+{
+  "sources": [
+    {
+      "key": "couzin2009collective",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19058992/",
+      "doi": "10.1016/j.tics.2008.10.002",
+      "role": "Review: individual/group connection, not a corpus mechanism estimate"
+    },
+    {
+      "key": "feinerman2017cognition",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5226334/",
+      "doi": "10.1242/jeb.143891",
+      "role": "Review: individual/collective cognition and scale gaps"
+    },
+    {
+      "key": "gordon2014ecology",
+      "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001805",
+      "doi": "10.1371/journal.pbio.1001805",
+      "role": "Ecological perspective on collective behavior"
+    },
+    {
+      "key": "greene2013chemical",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0052219",
+      "doi": "10.1371/journal.pone.0052219",
+      "role": "Original cue-manipulation experiment; separate from lexical corpus evidence"
+    }
+  ],
+  "interpretation": "Mechanistic literature supplies context and research questions, not new corpus results or validated lexical causal effects."
+}

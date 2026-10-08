@@ -1273,3 +1273,33 @@ class TestConceptHierarchyStrength:
         path = mf.generate_concept_hierarchy({"concept_map": cm}, str(tmp_path))
         assert Path(path).is_file()
         plt.close("all")
+
+
+def test_observed_pair_ranking_uses_actual_edge_counts() -> None:
+    """Ranking and labels preserve independent shared-document counts and ties."""
+    visualizer = ConceptVisualizer()
+    terms = {name: {"domains": ["unit_of_individuality"], "frequency": 20}
+             for name in ["worker", "queen", "colony"]}
+    relationships = {("worker", "queen"): 3, ("queen", "colony"): 5,
+                     ("worker", "colony"): 3}
+    fig = visualizer.visualize_terminology_network(terms, relationships)
+    rank_ax = fig.axes[1]
+    assert [p.get_width() for p in rank_ax.patches] == [5, 3, 3]
+    assert [label.get_text() for label in rank_ax.get_yticklabels()] == [
+        "colony + queen", "colony + worker", "queen + worker"]
+    assert {text.get_text() for text in rank_ax.texts} == {"5", "3"}
+    plt.close(fig)
+
+
+def test_domain_horizontal_bars_preserve_counts_and_missing_cace() -> None:
+    """Counts have a common readable row order; absent scoring inputs say n/a."""
+    data = {"economics": {"term_count": 5},
+            "unit_of_individuality": {"term_count": 12}}
+    fig = ConceptVisualizer().create_domain_comparison_plot(data)
+    count_ax = fig.axes[0]
+    assert [bar.get_width() for bar in count_ax.patches] == [12, 5]
+    assert [label.get_text() for label in count_ax.get_yticklabels()] == [
+        "Unit of Individuality", "Economics"]
+    assert all(label.get_rotation() == 0 for label in count_ax.get_yticklabels())
+    assert [text.get_text() for text in fig.axes[5].texts] == ["n/a", "n/a"]
+    plt.close(fig)

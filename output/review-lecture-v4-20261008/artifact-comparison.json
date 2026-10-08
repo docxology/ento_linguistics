@@ -1,0 +1,39 @@
+{
+  "numerical_exports": [
+    {
+      "path": "data/bhl/era_term_usage.json",
+      "numerical_contents_equal": true
+    },
+    {
+      "path": "data/corpus/arxiv_analysis.json",
+      "numerical_contents_equal": true
+    },
+    {
+      "path": "output/data/concept_map_summary.json",
+      "numerical_contents_equal": true
+    },
+    {
+      "path": "output/data/corpus_statistics.json",
+      "numerical_contents_equal": true
+    },
+    {
+      "path": "output/data/domain_statistics.json",
+      "numerical_contents_equal": true
+    },
+    {
+      "path": "output/data/extracted_terms.json",
+      "numerical_contents_equal": true
+    },
+    {
+      "path": "output/data/fulltext_analysis.json",
+      "numerical_contents_equal": true
+    },
+    {
+      "path": "output/data/statistical_analysis.json",
+      "numerical_contents_equal": true
+    }
+  ],
+  "source_scope_unchanged": true,
+  "manifest": "PASS",
+  "generated_artifacts": "PASS"
+}
