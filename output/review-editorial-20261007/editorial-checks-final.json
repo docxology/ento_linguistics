@@ -1,0 +1,8 @@
+{
+  "relative_links": "all maintained links resolve",
+  "numerical_placeholders": "all ordered sequences match HEAD",
+  "citation_keys": 35,
+  "BHL_shards": "guide paths match src/data/bhl_corpus.py bhl_shard_*.json",
+  "source_code_data_and_lock": "unchanged",
+  "first_round": "rejected; findings corrected and recorded separately"
+}

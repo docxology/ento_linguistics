@@ -1,0 +1,24 @@
+{
+  "new_references": [
+    {
+      "key": "grimmer2013text",
+      "primary_record": "https://www.cambridge.org/core/journals/political-analysis/article/text-as-data-the-promise-and-pitfalls-of-automatic-content-analysis-methods-for-political-texts/F7AAC8B2909441603FEB25C156448F20",
+      "verified": "authors, year, title, journal, volume 21, issue 3, pages 267-297, DOI 10.1093/pan/mps028; question-specific validation"
+    },
+    {
+      "key": "thibodeau2011metaphors",
+      "primary_record": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0016782",
+      "verified": "authors, year, title, journal, volume 6, issue 2, e16782, DOI; crime-reasoning experiment is a precedent, not ant-terminology evidence"
+    }
+  ],
+  "reused_references": [
+    {
+      "key": "villet1992caste",
+      "primary_record": "https://www.tandfonline.com/doi/abs/10.1080/08927014.1992.9523134"
+    },
+    {
+      "key": "ravary2007",
+      "metadata_record": "https://pubmed.ncbi.nlm.nih.gov/17629482/"
+    }
+  ]
+}

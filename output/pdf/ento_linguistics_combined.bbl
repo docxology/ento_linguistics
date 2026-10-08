@@ -1,4 +1,4 @@
-\begin{thebibliography}{32}
+\begin{thebibliography}{35}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -98,6 +98,13 @@ Deborah~M. Gordon.
 \newblock \emph{The Ecology of Collective Behavior}.
 \newblock Princeton University Press, Princeton, NJ, 2023.
 \newblock ISBN 978-0691232157.
+
+\bibitem[Grimmer and Stewart(2013)]{grimmer2013text}
+Justin Grimmer and Brandon~M. Stewart.
+\newblock Text as data: The promise and pitfalls of automatic content analysis
+  methods for political texts.
+\newblock \emph{Political Analysis}, 21\penalty0 (3):\penalty0 267--297, 2013.
+\newblock \doi{10.1093/pan/mps028}.
 
 \bibitem[Hacking(1999)]{hacking1999social}
 Ian Hacking.
@@ -208,6 +215,19 @@ Seirian Sumner, Emily Bell, and Daisy Taylor.
 \newblock A molecular concept of caste in insect societies.
 \newblock \emph{Current Opinion in Insect Science}, 25:\penalty0 42--50, 2018.
 \newblock \doi{10.1016/j.cois.2017.11.010}.
+
+\bibitem[Thibodeau and Boroditsky(2011)]{thibodeau2011metaphors}
+Paul~H. Thibodeau and Lera Boroditsky.
+\newblock Metaphors we think with: The role of metaphor in reasoning.
+\newblock \emph{PLoS ONE}, 6\penalty0 (2):\penalty0 e16782, 2011.
+\newblock \doi{10.1371/journal.pone.0016782}.
+
+\bibitem[Villet(1992)]{villet1992caste}
+Martin~H. Villet.
+\newblock Definitions of {``}caste{''} in social insects.
+\newblock \emph{Ethology Ecology \& Evolution}, 4\penalty0 (3):\penalty0
+  213--224, 1992.
+\newblock \doi{10.1080/08927014.1992.9523134}.
 
 \bibitem[Wheeler(1911)]{wheeler1911}
 William~Morton Wheeler.

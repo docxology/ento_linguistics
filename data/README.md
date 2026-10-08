@@ -1,22 +1,20 @@
-# data
+# Stored research sources
 
-`data/` of the parent project.
+The corpus has four separately analyzed layers:
 
-Part of `ento_linguistics` (EntoTech lane, local-only under `projects/ongoing/`).
+| Layer | Source files | Provenance and analysis |
+| --- | --- | --- |
+| Headline abstracts | `corpus/abstracts.json` | Digest-indexed `corpus/provenance.json`; only identified PubMed strings enter headline results |
+| PMC | `fulltexts/fulltexts_*.json` | Full-text records and associated provenance; includes notices and repeated boilerplate |
+| BHL | `bhl/bhl_shard_*.json` | Historical mirror OCR, provenance, era counts, and analysis exports |
+| arXiv | `corpus/arxiv_records.json` | Preprint records with nested source metadata; analyzed separately |
 
-## Corpus abstracts
-`corpus/abstracts.json` holds the literature corpus used by the analysis
-pipeline: a plain JSON list of abstract text strings (907 records as of the
-2026-09-15 growth; previously 369). Growth is append-only; the pre-growth
-snapshot is `corpus/abstracts_backup.json`, and PubMed PMIDs/DOIs for every
-appended record are recorded in `corpus/provenance.json` (source: PubMed
-E-utilities, retrieved 2026-09-15). Queries, per-query counts, the dedupe
-rule, and the reproduction command are documented in
-`corpus/README.md`. All corpus files are versioned in git.
+See [data lineage](../docs/reference/data-lineage.md) for output paths and selection boundaries. Derive counts and custody gaps from the current audit:
 
-## Contents
-Subfolders: `corpus/`
-Files: `AGENTS.md`, `README.md`
+```bash
+PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
+```
 
-## Usage
-- See `ento_linguistics/README.md` for how this directory is produced and used.
+The audit checks source identity and artifact agreement. Relevance screening, article-type review, and reuse permissions require additional assessment. Preserve source strings and unresolved provenance rather than rewriting them to make counts agree.
+
+For acquisition, use [the corpus guide](corpus/README.md); for reproduction, use [workflow](../docs/guides/workflow.md). Acquisition changes research inputs and requires affected analysis regeneration. Stored data and historical snapshots retain their source identities.

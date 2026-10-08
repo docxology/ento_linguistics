@@ -12,7 +12,13 @@ The observed graph has clustering coefficient {{NETWORK_CLUSTERING}}, while {{CO
 
 A dense co-occurrence graph needs a reference that accounts for vocabulary selection and document-level opportunity. The companion fixed-margin extension preserves selected-term counts within documents and the document frequency of each term. In the executed finite-chain comparisons, the observed graph has fewer edges and lower clustering than the randomized reference. The same direction appears under the longer-burn, wider-spacing sensitivity protocol. The substantive interpretation is concentration of co-occurrence relative to those margins, rather than exceptional density attributable to terminology alone. Topic, genre and other sources of document organization remain possible explanations. A graph's visual density is therefore an observation to explain, not evidence of conceptual bias by itself.
 
-The extension also makes vocabulary sensitivity explicit. Changing the frequency-ranked subset changes the projection and the amount of connectivity it can display. Interpretation should state the selected vocabulary, the incidence margins and the comparison model. The new extension supplements the version 1.2.0 manuscript revision; its separately receipted output is not represented as a result already contained in the earlier published version.
+The extension also makes vocabulary sensitivity explicit. Changing the frequency-ranked subset changes the projection and the amount of connectivity it can display. Interpretation should state the selected vocabulary, the incidence margins and the comparison model. The comparison has a separate receipt from the four-layer corpus analysis, making its computational inputs and outputs independently inspectable.
+
+## Biological Precision and Terminological Continuity
+
+A terminology decision has several possible costs: obscuring a biological distinction, inviting an unsupported analogy, or making relevant literature harder to retrieve. These costs need not move together. For example, replacing a developmental category with a task description may lose information even when the replacement sounds less anthropomorphic. Definitions of caste and evidence for experience-dependent division of labor address distinct biological questions \cite{villet1992caste, ravary2007}; a useful glossary should preserve that distinction.
+
+The practical unit of revision is therefore a defined use in a passage. Authors can specify the organism or collective being measured, the criteria for category membership, and the mechanism supported by their observations. Linking an alternative expression to established indexing vocabulary can retain discoverability. CACE can structure that review, but its aggregate should accompany the definition and evidential rationale rather than decide which expression is biologically correct.
 
 ## Active Inference as a Theoretical Perspective
 
@@ -37,6 +43,8 @@ Domain overlap can help select terms for shared glossaries and explicit operatio
 ## Measurement Validation and Terminology Intervention
 
 Two study designs separate measurement quality from communication effects. Independent annotation of source contexts can test whether occupancy entropy and lexical indicators track reader-labeled meanings and discourse functions after accounting for term frequency, document length and topic. Agreement and uncertainty should be reported at the level of the annotated observation.
+
+Metaphor experiments offer a methodological precedent: Thibodeau and Boroditsky manipulated crime descriptions and examined subsequent reasoning \cite{thibodeau2011metaphors}. Their setting differs from entomological expertise and technical usage, so their findings motivate a study design here rather than establish an effect of ant terminology.
 
 A randomized reader study can hold biological evidence constant while varying an established label, a proposed alternative and an explicit operational definition. Prespecified outcomes include inference accuracy, confidence calibration, recall and literature retrieval. This design tests a terminology effect directly. Comparing its outcomes with CACE rankings then evaluates the scoring proposal using evidence outside the scheme. Researchers and students can be included as prespecified groups rather than assumed to interpret a term identically.
 

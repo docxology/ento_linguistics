@@ -13,7 +13,7 @@ silently.
 | Script | Purpose | Delegates to | Command |
 |--------|---------|--------------|---------|
 | `01_build_corpus.py` | Build/refresh the literature corpus (cached; `--force` re-fetches) | `src/pipeline/corpus_build.py` | `uv run python scripts/01_build_corpus.py` |
-| `02_generate_figures.py` | **Main entry point** — clean slate, regenerate all 11 figures + data, fill manuscript variables | `src/visualization/manuscript_figures.py` | `uv run python scripts/02_generate_figures.py` |
+| `02_generate_figures.py` | **Main entry point** — regenerate registered core figures and data, validate manuscript variables | `src/visualization/manuscript_figures.py` | `uv run python scripts/02_generate_figures.py` |
 | `_analysis_pipeline.py` | End-to-end run: corpus → figures → preflight (stage selection + dry run) | the three scripts above | `uv run python scripts/_analysis_pipeline.py [--stages corpus figures preflight] [--dry-run]` |
 | `_conceptual_mapping_script.py` | Concept mapping and network generation | `src/pipeline/conceptual_mapping_pipeline.py` | `uv run python scripts/_conceptual_mapping_script.py` |
 | `_convert_corpus.py` | Convert literature corpus JSON to plain abstracts list | `src/data/loader.py` (`convert_corpus`) | `uv run python scripts/_convert_corpus.py` |
@@ -29,28 +29,13 @@ silently.
 | `_render_pdf_override.py` | Combined PDF via Pandoc/XeLaTeX; `{{KEY}}` substitution | `src/pipeline/rendering.py` | `uv run python scripts/_render_pdf_override.py --strict-templates` |
 | `_scientific_simulation.py` | Simulation workflows | `src/pipeline/simulation.py`, `src/data/data_generator.py` | `uv run python scripts/_scientific_simulation.py` |
 
-## Deleted Scripts (remediation wave 2, 2026-09-14)
+## Execution and outputs
 
-| Script | Verdict | Reason |
-|--------|---------|--------|
-| `_generate_missing_figures.py` | Deleted | Imported a non-existent module and duplicated `02_generate_figures.py`. |
-| `_generate_scientific_figures.py` | Deleted | Overlapped `02_generate_figures.py`; unseeded RNG; paths that could never resolve. |
+`02_generate_figures.py` rebuilds the managed `output/figures/` and `output/data/` directories. Expensive source-layer analyses can reuse matching fingerprints and completed BHL-era checkpoints. Preserve evidence outside those directories before a deliberate cold recomputation. See [workflow](../docs/guides/workflow.md).
 
-Analysis/report/plot logic from `_conceptual_mapping_script.py`,
-`_discourse_analysis_script.py`, `_domain_analysis_script.py`,
-`_generate_domain_figures.py`, `_literature_analysis_pipeline.py`, and
-`01_build_corpus.py` moved into `src/pipeline/` (see
-[`../src/pipeline/AGENTS.md`](../src/pipeline/AGENTS.md)); each script is now a
-thin wrapper.
+`_manuscript_preflight.py` and `_quality_report.py` default to `docs/manuscript` and resolve paths from the project root. Numerical placeholders remain in Markdown and resolve during rendering. `_render_pdf_override.py` validates both network companions and writes `output/pdf/ento_linguistics_combined.pdf`.
 
-## Notes
-
-> `02_generate_figures.py` wipes `output/figures/` and `output/data/` on every
-> run, then regenerates all outputs from scratch.
->
-> `_manuscript_preflight.py` and `_quality_report.py` default to
-> `docs/manuscript` and derive all other paths from the project root, not the
-> CWD. The rendered PDF artifact is `output/pdf/ento_linguistics_combined.pdf`.
+The fixed-margin extension is implemented in [research/network_robustness/](../research/network_robustness/README.md), with its own receipts and figure. It is separate from the core figure generator.
 
 ## Thin Orchestrator Pattern
 
@@ -65,6 +50,6 @@ Scripts **never** implement algorithms or mathematical computations directly.
 
 ## See Also
 
-- [`AGENTS.md`](AGENTS.md) — thin-orchestrator contract and keep/delete verdicts
+- [`AGENTS.md`](AGENTS.md) — thin-orchestrator contract
 - [`../src/AGENTS.md`](../src/AGENTS.md) — available `src/` modules
 - [`../docs/guides/development.md`](../docs/guides/development.md) — commands and workflow

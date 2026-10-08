@@ -211,14 +211,13 @@ Run `uv run pytest tests/ --cov=src --cov-report=term-missing` for current cover
 
 ### Automatic Execution
 
-Project tests run automatically during the build pipeline:
+Run the standalone suite explicitly before the paper build:
 
 ```bash
-# Stage 1: Run Tests
-python3 scripts/01_run_tests.py
+uv run pytest tests/ --cov=src --cov-report=term-missing
 ```
 
-This executes both infrastructure and project tests with coverage validation.
+The renderer validates analysis receipts and toolchain outputs; it does not run the complete test suite. Tests requiring an external parent template may skip and must be reported separately.
 
 ### Pre-commit Validation
 

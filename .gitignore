@@ -1,8 +1,15 @@
 # Python build artifacts
 __pycache__/
 *.py[cod]
+*.egg-info/
 
 # Virtual environments
 .venv/
 .coverage
 output/simulations/
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+
+# macOS Finder metadata
+.DS_Store

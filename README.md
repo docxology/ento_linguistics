@@ -10,11 +10,13 @@ Daniel Ari Friedman and Tucker Cahill Chambers
 
 Published manuscript revision: **7 October 2026** · [Version DOI](https://doi.org/10.5281/zenodo.23215452) · [All versions](https://doi.org/10.5281/zenodo.19574117)
 
-## Version 1.2.0: network robustness and research lecture
+The working manuscript is **1.2.2-dev**, an unpublished editorial revision strengthening biological definitions, measurement validation, and the proposed reader-study design. [The local build](output/pdf/ento_linguistics_combined.pdf) is separate from the published paper above. Its analysis inputs and numerical results are unchanged.
+
+## Network robustness and research lecture
 
 The [fixed-margin network workflow](research/network_robustness/README.md) reconstructs the published abstract network and compares it with randomizations preserving document/term incidence margins. Both a primary protocol and a longer-burn/wider-spacing protocol have been executed. Their reports, traces, figures and independent receipts are under output/extensions/network_robustness/.
 
-[The revised manuscript](Ento_Linguistics_manuscript.pdf) adds the fixed-margin method and strengthens interpretation and experimental design. Its renderer checks and, when needed, regenerates both companion protocols. The original four-layer corpus analyses remain separately receipted; this extension does not claim to recompute them.
+[The revised manuscript](Ento_Linguistics_manuscript.pdf) adds the fixed-margin method and strengthens interpretation and experimental design. Its renderer checks and, when needed, regenerates both companion protocols, including decoded-artifact validation. The original four-layer corpus analyses remain separately receipted; this extension does not claim to recompute them.
 
 [Watch the 20-minute lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.2.1/EntoLinguistics_20min_4K.mp4) · [Download slides](https://github.com/docxology/ento_linguistics/releases/download/v1.2.1/EntoLinguistics_slides.pdf) · [All release files](https://github.com/docxology/ento_linguistics/releases/tag/v1.2.1)
 
@@ -48,7 +50,7 @@ Edges in this terminology network count documents containing both terms among th
 
 Full/default BHL processing covers **2,317,721,403 OCR characters**. Layers differ in genre, retrieval, language, and extraction threshold; their raw counts are not matched comparisons. Broad retrieval, OCR errors, repeated PMC bodies, overlapping domain groups, and incomplete relevance/license annotation remain documented limitations.
 
-The published paper contains **46 pages and 17 figures**. See the [data lineage](docs/reference/data-lineage.md) for the exports behind each result and the [verification reference](docs/reference/verification.md) for measured build evidence.
+The published v1.2.1 paper contains **47 pages**. Its figures include the separately receipted network comparison. See the [data lineage](docs/reference/data-lineage.md) for the exports behind each result and the [verification reference](docs/reference/verification.md) for measured build evidence.
 
 ## Get started
 
@@ -84,7 +86,7 @@ The build writes [output/pdf/ento_linguistics_combined.pdf](output/pdf/ento_ling
 uv run pytest tests/ --cov=src --cov-report=term-missing
 ~~~
 
-Run tests and generation sequentially. The configured coverage floor is **90% combined statement/branch coverage**. The 6 October revision recorded **1,774 passed, eight external-template skips, and 91.93% combined coverage**; these are captured results, not a claim that every later checkout has been rerun.
+Run tests and generation sequentially. The configured coverage floor is **90% combined statement/branch coverage**. The published v1.2.1 validation run recorded **1,802 passed, eight external-template skips, and 91.45% combined coverage**; these are captured results, not a claim that every later checkout has been rerun.
 
 Content receipts bind actual corpus, source, dependency-lock, NLTK resource, and output bytes. The strict renderer rejects stale receipts and unresolved placeholders. [Validation](docs/guides/validation.md) explains numerical controls, custody checks, figure inspection, and PDF verification.
 

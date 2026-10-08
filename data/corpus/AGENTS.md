@@ -1,19 +1,7 @@
-# AGENTS.md — `ento_linguistics/data/corpus`
+# Corpus selection and provenance
 
-> Directory `corpus` inside `ento_linguistics/data`. Verified by direct listing (fleet doc pass, 2026-08-29).
+Follow [project standards](../../AGENTS.md) and [data guidance](../AGENTS.md). Preserve archived abstract bytes and their order. Headline results require identified PubMed provenance; keep unreconciled strings archived and excluded. Keep preprint records separate.
 
-## Scope
-- Local-only path under `projects/ongoing/` — matched by the root `.gitignore`
-  rule `projects/*`; never commit, add, or push anything here.
-- Parent standard: see `/Volumes/external_drive/Git/template/projects/ongoing/AGENTS.md`; parent project docs: `ento_linguistics/data/AGENTS.md`.
+Before input or metadata changes, read [data lineage](../../docs/reference/data-lineage.md) and [corpus procedures](README.md). Verify recovered associations by exact text digests and actual identifiers. Record missing or collapsed metadata explicitly; source identity does not establish relevance or license permission.
 
-## Layout
-Files: `AGENTS.md`, `README.md`, `abstracts.json`, `abstracts_backup.json`
-
-## Kind
-- Category: **misc**. 
-
-## Agent notes
-
-## Gotchas
-- None beyond the local-only rule above.
+Run the custody audit and affected real-input tests after changes, regenerate affected analyses, and render against a valid receipt. Preserve historical snapshots and retrieval records.

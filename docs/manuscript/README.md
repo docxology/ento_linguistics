@@ -4,6 +4,8 @@
 
 This directory is the canonical source for [the published paper](../../Ento_Linguistics_manuscript.pdf). Read that PDF for resolved numbers; the Markdown deliberately retains computational placeholders.
 
+The working source is **1.2.2-dev**, an unpublished editorial revision. The linked top-level PDF and [v1.2.1 DOI](https://doi.org/10.5281/zenodo.23215452) identify the archived publication, not this revised source. Read the locally rendered PDF for the updated argument and bibliography.
+
 ## Reading map
 
 | Part | Sections |

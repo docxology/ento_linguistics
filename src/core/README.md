@@ -1,12 +1,5 @@
-# core
+# Core modules
 
-Directory `core` inside the `ento_linguistics/src` tree of EntoTech.
+This package belongs to the standalone Ento-Linguistics source tree. Read [source architecture](../README.md) for module organization and [package guidance](AGENTS.md) before changes.
 
-Part of `ento_linguistics/src` (EntoTech lane, local-only under `projects/ongoing/`).
-
-## Contents
-Subfolders: `__pycache__/`
-Files: `AGENTS.md`, `README.md`, `__init__.py`, `example.py`, `exceptions.py`, `logging.py`, `markdown_integration.py`, `metrics.py`, `parameters.py`, `validation.py`, `validation_utils.py`
-
-## Usage
-- See `ento_linguistics/src/README.md` for how this directory is produced and used.
+[Data lineage](../../docs/reference/data-lineage.md) connects computations to source layers and exports. [Reproducibility](../../docs/reference/reproducibility.md) defines the implemented measurements, sampling, and interpretation limits. Run Python and tests through `uv run` from the repository root; use the [development guide](../../docs/guides/development.md) for commands.

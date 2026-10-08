@@ -1,0 +1,12 @@
+{
+  "base_commit": "a5d8e275a56e04d81bc671471464398ab6400046",
+  "working_tree_scope": "40 maintained files, hashes in source-scope-final.json",
+  "manual_qa": "PASS",
+  "independent_review": "APPROVE",
+  "review_report": ".omo/evidence/ento-editorial-20261007-final-gate-review.md",
+  "focused_tests": 77,
+  "strict_pdf_pages": 47,
+  "fresh_full_suite": false,
+  "scientific_recomputation": false,
+  "publication": "unpublished 1.2.2-dev; archived v1.2.1 untouched"
+}

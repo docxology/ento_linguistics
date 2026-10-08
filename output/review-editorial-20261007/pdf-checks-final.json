@@ -1,0 +1,10 @@
+{
+  "pages": 47,
+  "pdf_sha256": "ecce452d5abe9c381bdbf788705056af4e9a213880ca6f651c80fd682e76092c",
+  "draft_identity": true,
+  "occupied_normalization_and_zero_convention_rendered": true,
+  "heuristic_evolvability_rendered": true,
+  "undefined_references_citations_missing_glyphs_overfull_boxes": false,
+  "remaining_warnings": "microtype protrusion slots and float h-to-ht adjustment",
+  "text_check": "whitespace and table column layout accounted for; confirmed visually"
+}

@@ -1,11 +1,11 @@
 # BHL Historical Full-Text Corpus (1850-1970) — data/bhl
 
-Biodiversity Heritage Library historical layer grounding the
-manuscript's S03b longitudinal claims (see
+Biodiversity Heritage Library historical OCR layer supporting descriptive
+era-frequency observations, with source-composition and OCR limitations (see
 `docs/manuscript/S03b_case_studies.md` and
 `src/pipeline/bhl_analysis.py`).
 
-Last harvest run: 0 new documents from 133 candidates (2 texts fetched, 1 without text derivative, 0 out of window, 3 irrelevant, 0 failed items skipped).
+Generated acquisition snapshot (harvest totals are historical; use the custody audit for current analyzed counts). Last harvest run: 0 new documents from 133 candidates (2 texts fetched, 1 without text derivative, 0 out of window, 3 irrelevant, 0 failed items skipped).
 
 
 ## API reality check

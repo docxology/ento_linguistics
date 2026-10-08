@@ -12,6 +12,12 @@ Established terms support literature discovery and can carry precise operational
 
 CACE---Clarity, Appropriateness, Consistency, and Evolvability---is introduced as an explicit set of evaluation questions. Its numerical scoring rules are one inspectable implementation, rather than an independently validated measure of understanding. The biological mechanism, intended referent, reader population, and definition supplied by an author remain central to evaluating terminology.
 
+## From Labels to Biological Explanation
+
+A useful terminology analysis separates the expression, its referent, and the mechanism invoked to explain that referent. *Worker* can identify a reproductive category or describe an individual performing a task; neither usage alone specifies how task allocation is regulated. Definitions of caste have themselves been examined as a conceptual problem \cite{villet1992caste}, while experimental work shows that individual experience can contribute to persistent division of labor \cite{ravary2007}. These examples locate the research question in the relationship between definitions and evidence, rather than in a presumption that social vocabulary is necessarily inaccurate.
+
+The six domains provide questions to ask of a passage: what entity is described, at which biological scale, using which observable criteria, and with what explanatory commitment? Frequency and co-occurrence help locate passages for this inquiry. Assessing whether a label obscures a mechanism requires examining those passages and evaluating readers' inferences. This distinction makes the framework useful for comparative reading without treating the taxonomy as a discovered ontology.
+
 ## Six Analytical Domains
 
 The framework defines six overlapping domains:

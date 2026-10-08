@@ -1,0 +1,37 @@
+[
+  [
+    ".omo/evidence/ento-linguistics-continuation-20261006-gate-review.md",
+    "\"_copy_resources\"",
+    "temporary_resource_root"
+  ],
+  [
+    ".omo/evidence/ento-linguistics-continuation-20261006-gate-review.md",
+    "\"_signature\"",
+    "temporary_resource_root"
+  ],
+  [
+    "tests/integration/AGENTS.md",
+    "`../unit/AGENTS.md`",
+    "../unit/AGENTS.md"
+  ],
+  [
+    "tests/integration/AGENTS.md",
+    "`../../../scripts/AGENTS.md`",
+    "../../../scripts/AGENTS.md"
+  ],
+  [
+    "tests/integration/AGENTS.md",
+    "`../../../../docs/development/TESTING_GUIDE.md`",
+    "../../../../docs/development/TESTING_GUIDE.md"
+  ],
+  [
+    "tests/integration/README.md",
+    "feature_function",
+    "data, tmp_path"
+  ],
+  [
+    "tests/integration/README.md",
+    "../../../../tests/infrastructure/",
+    "../../../../tests/infrastructure/"
+  ]
+]

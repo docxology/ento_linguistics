@@ -4,6 +4,8 @@ This work provides a six-domain framework and a reproducible descriptive pipelin
 
 The {{CORPUS_MULTIDOMAIN_PERCENTAGE}}\% of assigned terms with multiple labels measures classification overlap, not semantic drift. The {{CORPUS_CONCEPT_COUNT}} concept categories are predefined rather than discovered. Complementary source layers extend the descriptive scope without establishing that language causes bias, that a terminology reform improves scientific modeling, or that numerical CACE rankings are independently validated.
 
+The fixed-margin comparison sharpens the network contribution: visual density must be interpreted relative to document and term incidence, and the executed reference indicates more concentrated co-occurrence than those margins alone would predict. It supplies a conditional descriptive comparison without identifying a linguistic cause. The broader contribution is a method for keeping biological definitions, lexical observations, and proposed communication effects distinguishable while investigating their relationships.
+
 ## Future Directions
 
 The immediate research priorities are source reconciliation, document-level relevance and license review, and independent annotation of senses and framing. A frozen annotated corpus would support tests of extraction accuracy, agreement between annotators, context-count sensitivity, and statistical models accounting for shared documents and overlapping domain labels.

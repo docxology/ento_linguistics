@@ -1,0 +1,12 @@
+{
+  "gate_approved_tree": "source-scope-final.json (40 files, 0 hash mismatches on resumption)",
+  "post_gate_changes": [
+    "docs/reference/architecture.md: replace 'Legacy helpers' sentence with the actual role of data_generator.py",
+    "src/ento_linguistic_research.egg-info/: untracked stale build artifact ('local-only under projects/ongoing/'); *.egg-info/ and .DS_Store ignored"
+  ],
+  "full_suite": {"log": "full-suite-final.log", "passed": 1804, "skipped": 8, "failed": 0, "combined_coverage": "91.96%"},
+  "sandboxed_attempt": "full-suite-sandboxed-denied.log: 77 PermissionError on /tmp writes from the agent sandbox, not code failures",
+  "custody": "Analysis receipt matches current corpus, implementation, and outputs (before and after the suite)",
+  "pdf_sha256": "ecce452d5abe9c381bdbf788705056af4e9a213880ca6f651c80fd682e76092c",
+  "publication": "unpublished 1.2.2-dev; archived v1.2.1 and top-level PDF untouched"
+}

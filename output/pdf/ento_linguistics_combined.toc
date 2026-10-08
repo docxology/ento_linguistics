@@ -2,8 +2,9 @@
 \contentsline {section}{\numberline {2}Introduction}{4}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Terminology as a Research Question}{4}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}The Challenge of Terminological Reform}{4}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Six Analytical Domains}{4}{subsection.2.3}%
-\contentsline {subsection}{\numberline {2.4}Research Approach}{5}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.3}From Labels to Biological Explanation}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Six Analytical Domains}{4}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Research Approach}{5}{subsection.2.5}%
 \contentsline {section}{\numberline {3}Methods}{6}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Data Acquisition}{6}{subsection.3.1}%
 \contentsline {subsubsection}{\numberline {3.1.1}Search Strategy and Source Selection}{6}{subsubsection.3.1.1}%
@@ -12,12 +13,13 @@
 \contentsline {subsection}{\numberline {3.2}Statistical Analysis}{7}{subsection.3.2}%
 \contentsline {subsubsection}{\numberline {3.2.1}Term Extraction and Classification}{7}{subsubsection.3.2.1}%
 \contentsline {subsubsection}{\numberline {3.2.2}Semantic Entropy}{7}{subsubsection.3.2.2}%
-\contentsline {subsubsection}{\numberline {3.2.3}Domain-Level Statistical Tests}{7}{subsubsection.3.2.3}%
-\contentsline {subsubsection}{\numberline {3.2.4}Conceptual Network Analysis}{8}{subsubsection.3.2.4}%
-\contentsline {subsubsection}{\numberline {3.2.5}Rhetorical and Discourse Analysis}{8}{subsubsection.3.2.5}%
-\contentsline {subsubsection}{\numberline {3.2.6}CACE Evaluation}{8}{subsubsection.3.2.6}%
-\contentsline {subsubsection}{\numberline {3.2.7}Historical Analysis and Coverage}{9}{subsubsection.3.2.7}%
-\contentsline {subsubsection}{\numberline {3.2.8}Validation and Reproducibility}{9}{subsubsection.3.2.8}%
+\contentsline {subsubsection}{\numberline {3.2.3}Measurement Targets and Validation}{7}{subsubsection.3.2.3}%
+\contentsline {subsubsection}{\numberline {3.2.4}Domain-Level Statistical Tests}{8}{subsubsection.3.2.4}%
+\contentsline {subsubsection}{\numberline {3.2.5}Conceptual Network Analysis}{8}{subsubsection.3.2.5}%
+\contentsline {subsubsection}{\numberline {3.2.6}Rhetorical and Discourse Analysis}{8}{subsubsection.3.2.6}%
+\contentsline {subsubsection}{\numberline {3.2.7}CACE Evaluation}{8}{subsubsection.3.2.7}%
+\contentsline {subsubsection}{\numberline {3.2.8}Historical Analysis and Coverage}{9}{subsubsection.3.2.8}%
+\contentsline {subsubsection}{\numberline {3.2.9}Validation and Reproducibility}{9}{subsubsection.3.2.9}%
 \contentsline {section}{\numberline {4}Results: Corpus Analysis and Terminology Networks}{10}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Terminology Extraction Across Domains}{10}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Terminology Network Structure}{10}{subsection.4.2}%
@@ -33,19 +35,21 @@
 \contentsline {section}{\numberline {6}Discussion}{21}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Language and Scientific Practice}{21}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Network Structure and Its Conditional Reference}{21}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Active Inference as a Theoretical Perspective}{21}{subsection.6.3}%
-\contentsline {subsection}{\numberline {6.4}Practical Use of CACE}{22}{subsection.6.4}%
-\contentsline {subsection}{\numberline {6.5}Cross-Domain Communication}{22}{subsection.6.5}%
-\contentsline {subsection}{\numberline {6.6}Measurement Validation and Terminology Intervention}{22}{subsection.6.6}%
-\contentsline {subsection}{\numberline {6.7}Limitations}{22}{subsection.6.7}%
+\contentsline {subsection}{\numberline {6.3}Biological Precision and Terminological Continuity}{21}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Active Inference as a Theoretical Perspective}{22}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Practical Use of CACE}{22}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}Cross-Domain Communication}{22}{subsection.6.6}%
+\contentsline {subsection}{\numberline {6.7}Measurement Validation and Terminology Intervention}{22}{subsection.6.7}%
+\contentsline {subsection}{\numberline {6.8}Limitations}{23}{subsection.6.8}%
 \contentsline {section}{\numberline {7}Conclusion}{24}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Future Directions}{24}{subsection.7.1}%
 \contentsline {section}{\numberline {8}Related Work}{25}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Scientific Language and Categories}{25}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Terminology in Social-Insect Research}{25}{subsection.8.2}%
 \contentsline {subsection}{\numberline {8.3}Computational Mapping and Source-Layer Analysis}{25}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Active Inference and Colony Modeling}{25}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}Positioning This Work}{26}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.4}Validation and Experimental Evidence}{25}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Active Inference and Colony Modeling}{26}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Positioning This Work}{26}{subsection.8.6}%
 \contentsline {section}{\numberline {9}Acknowledgments}{27}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Institutional Support}{27}{subsection.9.1}%
 \contentsline {subsection}{\numberline {9.2}Collaborations}{27}{subsection.9.2}%
@@ -71,7 +75,7 @@
 \contentsline {subsection}{\numberline {12.4}Confidence Intervals for Domain Metrics}{33}{subsection.12.4}%
 \contentsline {subsection}{\numberline {12.5}Full-Text Parallel Layer}{34}{subsection.12.5}%
 \contentsline {subsection}{\numberline {12.6}Discourse and Rhetorical Layer}{34}{subsection.12.6}%
-\contentsline {subsection}{\numberline {12.7}Statistical and Source-Layer Figures}{35}{subsection.12.7}%
+\contentsline {subsection}{\numberline {12.7}Statistical and Source-Layer Figures}{36}{subsection.12.7}%
 \contentsline {section}{\numberline {13}Supplemental Analysis: Theoretical Extensions}{39}{section.13}%
 \contentsline {subsection}{\numberline {13.1}Individuality and Conditional Independence}{39}{subsection.13.1}%
 \contentsline {subsection}{\numberline {13.2}A Proposed Framing Score}{39}{subsection.13.2}%

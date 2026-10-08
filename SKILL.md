@@ -1,48 +1,16 @@
-# Skill Descriptor — Ento-Linguistic Research Project
+# Ento-Linguistics project capabilities
 
-## Project Overview
+This standalone repository provides descriptive analysis of scientific terminology across identified PubMed abstracts and separate PMC, BHL OCR, and arXiv layers.
 
-Research project examining the entanglement of speech and thought in entomology. Investigates how scientific terminology creates conceptual frameworks across six Ento-Linguistic domains.
+- Extract candidate vocabulary and assign six predefined, overlapping domains.
+- Construct observed document co-occurrence networks and separate concept-category overlap maps.
+- Compute sentence-context cluster occupancy entropy and rule-based framing indicators.
+- Inspect heuristic CACE dimensions and their missing-data conventions.
+- Compare the selected abstract network with separately receipted fixed-margin randomizations.
+- Build a manuscript whose numerical placeholders resolve against content-bound exports.
 
-## Capabilities
+These capabilities do not establish author intent, validated word senses, causal framing effects, or intervention benefits. See [measurement definitions and limits](docs/reference/reproducibility.md).
 
-- **Terminology Extraction**: Extract domain-specific terms from entomological literature
-- **Domain Analysis**: Analyze terminology patterns across six core domains (Unit of Individuality, Behavior & Identity, Power & Labor, Sex & Reproduction, Kin & Relatedness, Economics)
-- **Concept Mapping**: Build and visualize concept networks with similarity analysis and centrality metrics
-- **Discourse Analysis**: Quantitative rhetorical pattern analysis and framing effect measurement
-- **CACE Scoring**: Evaluate terminology using Clarity, Appropriateness, Consistency, Evolvability framework
-- **Literature Mining**: Collect and process scientific literature from PubMed; arXiv preprint harvesting (`src/data/arxiv_corpus.py`) and OpenAlex citation enrichment (`src/data/openalex_enrichment.py`) as separate source layers
-- **Full-Text Analysis**: Parallel PMC Open Access full-text layer (`src/pipeline/fulltext_pipeline.py`) reusing the abstract-layer statistics machinery
+Use [workflow](docs/guides/workflow.md) for corpus analysis and strict rendering, [setup](docs/guides/setup.md) for dependencies, and [development](docs/guides/development.md) for real-input verification. The paper source and archived publication have distinct identities; see [verification](docs/reference/verification.md).
 
-## Use Cases
-
-1. **Analyze entomological terminology**: Use `src/analysis/term_extraction.py` to extract domain-specific terms
-2. **Build concept networks**: Use `src/analysis/conceptual_mapping.py` for network construction
-3. **Run analysis pipeline**: Execute `scripts/01_build_corpus.py` then `scripts/02_generate_figures.py`
-4. **Validate manuscript**: Run `scripts/_manuscript_preflight.py --strict`
-
-## Integration Points
-
-- Requires Python 3.10+, numpy, scipy, pandas, matplotlib, spacy, networkx
-- Test coverage: 90%+ required
-- Uses pytest-httpserver for HTTP testing (no mocks)
-
-## Current Status
-
-- **Location**: `template/projects/ongoing/EntoTech/ento_linguistics/` (active project)
-- **Tests**: count via `uv run pytest tests/ --collect-only -q` (the last recorded full run in `output/reports/test_results.json` reports 1224 passed / 1 skipped)
-- **Coverage**: measured by `uv run pytest tests/ --cov=src` (project enforces 90%+)
-- **Figures**: 13 generated (including `statistical_analysis.png` and `fulltext_analysis.png`)
-
-## Promotion to Active
-
-To move to `projects/` for pipeline execution:
-```bash
-mv projects_in_progress/ento_linguistics projects/ento_linguistics
-```
-
-## See Also
-
-- [`AGENTS.md`](AGENTS.md) - Full project documentation
-- [`docs/README.md`](docs/README.md) - Quick reference guide
-- [`src/AGENTS.md`](src/AGENTS.md) - Scientific code documentation
+Follow [project guidance](AGENTS.md) and [source guidance](src/AGENTS.md) when changing behavior. Derive test and figure inventories from the actual suite and registry rather than static counts.

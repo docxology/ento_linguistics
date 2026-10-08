@@ -1,21 +1,7 @@
-# AGENTS.md — `ento_linguistics/data`
+# Corpus maintenance
 
-> `data/` of the parent project. Verified by direct listing (fleet doc pass, 2026-08-29).
+Follow [project standards](../AGENTS.md). Preserve source text, identifiers, retrieval metadata, digest-indexed sidecars, and unresolved associations. Acquisition and analysis are different operations: inspect `scripts/01_build_corpus.py --help` before changing input data, then regenerate affected analyses and validate receipts.
 
-## Scope
-- Local-only path under `projects/ongoing/` — matched by the root `.gitignore`
-  rule `projects/*`; never commit, add, or push anything here.
-- Parent standard: see `/Volumes/external_drive/Git/template/projects/ongoing/AGENTS.md`; parent project docs: `ento_linguistics/AGENTS.md`.
+Read [data lineage](../docs/reference/data-lineage.md) for the separate PubMed, PMC, BHL OCR, and arXiv layers. Source identity is distinct from relevance and reuse permission. Inspect [corpus guidance](corpus/AGENTS.md) before changing headline selection or provenance.
 
-## Layout
-Subfolders: `corpus/`
-Files: `AGENTS.md`, `README.md`
-
-## Kind
-- Category: **src**. `data/` of the parent project.
-
-## Agent notes
-- See the parent project's AGENTS.md/README.md for the authoritative description.
-
-## Gotchas
-- None beyond the local-only rule above.
+Use real-input tests and explicit custody checks. Never invent missing metadata or silently replace archived strings. Bounded development selections require separate fingerprints and coverage descriptions.

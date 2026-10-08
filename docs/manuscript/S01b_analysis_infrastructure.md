@@ -46,7 +46,7 @@ Coverage records available and analyzed documents and characters. An explicit po
 
 ## Execution and Artifact Verification
 
-The standalone sequence installs locked dependencies and NLTK resources, runs tests, generates figures, checks custody, and renders the manuscript. Testing and generation run sequentially because some legacy tests consume exports.
+The standalone sequence installs locked dependencies and NLTK resources, runs tests, generates figures, checks custody, and renders the manuscript. Testing and generation run sequentially because some integration tests consume generated exports.
 
 The analysis signature also hashes the selected English NLTK tokenizer, stopwords and WordNet contents. The receipt records these resource hashes without machine-specific installation paths. Missing resources fail, and changed resources invalidate caches. These content hashes do not vendor or automatically restore external resource downloads.
 

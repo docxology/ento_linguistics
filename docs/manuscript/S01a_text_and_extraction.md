@@ -1,6 +1,6 @@
 # Supplemental Methods: Text Processing and Term Extraction {#sec:supplemental_methods}
 
-This section specifies the input and extraction stages used by the study. The numerical definitions and bounded components are detailed in Section \ref{sec:supplemental_infrastructure}. Developer APIs remain documented in source; template utilities are not additional research measurements.
+This section specifies the input and extraction stages used by the study. The numerical definitions and bounded components are detailed in Section \ref{sec:supplemental_infrastructure}. Developer APIs remain documented in source; support utilities are not additional research measurements.
 
 ## Source Layers and Custody
 

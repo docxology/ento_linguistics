@@ -1,0 +1,210 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.0.1, pluggy-1.6.0
+rootdir: /Volumes/GitVault/Username/docxology/Public/ento_linguistics
+configfile: pyproject.toml
+plugins: xdist-3.8.0, pytest_httpserver-1.1.3, cov-7.0.0
+collected 1812 items
+
+tests/integration/test_example_figure.py ...........                     [  0%]
+tests/integration/test_full_pipeline.py ......                           [  0%]
+tests/integration/test_generate_research_figures.py ...........          [  1%]
+tests/integration/test_integration_pipeline.py ssssssss                  [  1%]
+tests/test_artifact_integrity.py ........                                [  2%]
+tests/test_arxiv_analysis.py ............                                [  3%]
+tests/test_arxiv_corpus.py .....................                         [  4%]
+tests/test_bhl_analysis.py .................................             [  6%]
+tests/test_bhl_checkpoints.py .......                                    [  6%]
+tests/test_bhl_corpus.py ............................................... [  9%]
+........                                                                 [  9%]
+tests/test_cace_scoring.py ............................................. [ 11%]
+........................................................................ [ 15%]
+.......................................................................  [ 19%]
+tests/test_concept_visualization.py .................................... [ 21%]
+................................                                         [ 23%]
+tests/test_conceptual_mapping.py ....................................... [ 25%]
+......................................                                   [ 27%]
+tests/test_conceptual_mapping_pipeline.py ..............                 [ 28%]
+tests/test_corpus_build.py ...........                                   [ 29%]
+tests/test_data_generator.py ................                            [ 30%]
+tests/test_data_processing.py .......................................... [ 32%]
+..                                                                       [ 32%]
+tests/test_discourse_analysis.py ....................................... [ 34%]
+..........                                                               [ 35%]
+tests/test_discourse_patterns.py .......................                 [ 36%]
+tests/test_discourse_pipeline.py .........                               [ 37%]
+tests/test_domain_analysis.py .................................          [ 38%]
+tests/test_domain_analysis_pipeline.py ..............                    [ 39%]
+tests/test_domain_figures.py .................................           [ 41%]
+tests/test_exceptions.py .............                                   [ 42%]
+tests/test_figure_manager.py ........................                    [ 43%]
+tests/test_fulltext_pipeline.py ...................                      [ 44%]
+tests/test_literature_mining.py ........................................ [ 46%]
+......................................                                   [ 48%]
+tests/test_literature_pipeline.py ...............                        [ 49%]
+tests/test_loader.py ................                                    [ 50%]
+tests/test_logging.py ............................                       [ 52%]
+tests/test_manuscript_figures.py ..........................              [ 53%]
+tests/test_manuscript_preflight.py ..................                    [ 54%]
+tests/test_manuscript_variables.py ..................................... [ 56%]
+..                                                                       [ 56%]
+tests/test_metrics.py .............................................      [ 59%]
+tests/test_network_robustness_extension.py ............................. [ 60%]
+.                                                                        [ 60%]
+tests/test_nltk_resources.py ........                                    [ 61%]
+tests/test_openalex_enrichment.py .............                          [ 61%]
+tests/test_package_imports.py ........                                   [ 62%]
+tests/test_parameters.py ............................                    [ 63%]
+tests/test_performance.py ..................................             [ 65%]
+tests/test_persuasive_analysis.py .....................................  [ 67%]
+tests/test_pipeline_init.py ......                                       [ 68%]
+tests/test_plots.py .......................................              [ 70%]
+tests/test_pmc_fulltext.py ....................................          [ 72%]
+tests/test_provenance.py .......                                         [ 72%]
+tests/test_quality_report.py ........                                    [ 73%]
+tests/test_rendering.py ....................                             [ 74%]
+tests/test_reporting.py ........................................         [ 76%]
+tests/test_review_controls.py ....................                       [ 77%]
+tests/test_rhetorical_analysis.py ............................           [ 79%]
+tests/test_semantic_entropy.py ....................                      [ 80%]
+tests/test_simulation.py .................................               [ 82%]
+tests/test_statistical_analysis_figure.py .......................        [ 83%]
+tests/test_statistical_visualization.py ................................ [ 85%]
+........................................                                 [ 87%]
+tests/test_statistics.py ............................................... [ 89%]
+............                                                             [ 90%]
+tests/test_statistics_pipeline.py ....................................   [ 92%]
+tests/test_term_extraction.py .......................................... [ 94%]
+............                                                             [ 95%]
+tests/test_text_analysis.py .....................                        [ 96%]
+tests/test_validation.py ................................                [ 98%]
+tests/test_visualization.py ............................                 [100%]
+
+=============================== warnings summary ===============================
+tests/test_bhl_checkpoints.py::test_checkpointed_build_matches_independent_literal_counts
+tests/test_bhl_checkpoints.py::test_changed_era_does_not_reuse_its_checkpoint
+tests/test_bhl_checkpoints.py::test_tampered_completed_era_fails_instead_of_certifying_it
+tests/test_bhl_checkpoints.py::test_development_checkpoint_cannot_satisfy_full_default
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/sklearn/base.py:1336: ConvergenceWarning: Number of distinct clusters (3) found smaller than n_clusters (4). Possibly due to duplicate points in X.
+    return fit_method(estimator, *args, **kwargs)
+
+tests/test_bhl_checkpoints.py::test_checkpointed_build_matches_independent_literal_counts
+tests/test_bhl_checkpoints.py::test_changed_era_does_not_reuse_its_checkpoint
+tests/test_bhl_checkpoints.py::test_tampered_completed_era_fails_instead_of_certifying_it
+tests/test_bhl_checkpoints.py::test_development_checkpoint_cannot_satisfy_full_default
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/sklearn/base.py:1336: ConvergenceWarning: Number of distinct clusters (2) found smaller than n_clusters (4). Possibly due to duplicate points in X.
+    return fit_method(estimator, *args, **kwargs)
+
+tests/test_bhl_checkpoints.py::test_checkpointed_build_matches_independent_literal_counts
+tests/test_bhl_checkpoints.py::test_changed_era_does_not_reuse_its_checkpoint
+tests/test_bhl_checkpoints.py::test_tampered_completed_era_fails_instead_of_certifying_it
+tests/test_bhl_checkpoints.py::test_development_checkpoint_cannot_satisfy_full_default
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/sklearn/base.py:1336: ConvergenceWarning: Number of distinct clusters (1) found smaller than n_clusters (3). Possibly due to duplicate points in X.
+    return fit_method(estimator, *args, **kwargs)
+
+tests/test_bhl_checkpoints.py::test_checkpointed_build_matches_independent_literal_counts
+tests/test_bhl_checkpoints.py::test_changed_era_does_not_reuse_its_checkpoint
+tests/test_bhl_checkpoints.py::test_tampered_completed_era_fails_instead_of_certifying_it
+tests/test_bhl_checkpoints.py::test_development_checkpoint_cannot_satisfy_full_default
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/sklearn/base.py:1336: ConvergenceWarning: Number of distinct clusters (2) found smaller than n_clusters (3). Possibly due to duplicate points in X.
+    return fit_method(estimator, *args, **kwargs)
+
+tests/test_bhl_checkpoints.py::test_checkpointed_build_matches_independent_literal_counts
+tests/test_bhl_checkpoints.py::test_changed_era_does_not_reuse_its_checkpoint
+tests/test_bhl_checkpoints.py::test_tampered_completed_era_fails_instead_of_certifying_it
+tests/test_bhl_checkpoints.py::test_development_checkpoint_cannot_satisfy_full_default
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/sklearn/base.py:1336: ConvergenceWarning: Number of distinct clusters (4) found smaller than n_clusters (5). Possibly due to duplicate points in X.
+    return fit_method(estimator, *args, **kwargs)
+
+tests/test_domain_figures.py: 11 warnings
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/src/pipeline/domain_figures.py:267: MatplotlibDeprecationWarning:
+  
+  The get_cmap function was deprecated in Matplotlib 3.7 and will be removed in 3.11. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap()`` or ``pyplot.get_cmap()`` instead.
+
+tests/test_domain_figures.py: 10 warnings
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/src/pipeline/domain_figures.py:341: MatplotlibDeprecationWarning:
+  
+  The get_cmap function was deprecated in Matplotlib 3.7 and will be removed in 3.11. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap()`` or ``pyplot.get_cmap()`` instead.
+
+tests/test_fulltext_pipeline.py: 20 warnings
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/sklearn/base.py:1336: ConvergenceWarning:
+  
+  Number of distinct clusters (1) found smaller than n_clusters (3). Possibly due to duplicate points in X.
+
+tests/test_fulltext_pipeline.py: 20 warnings
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/sklearn/base.py:1336: ConvergenceWarning:
+  
+  Number of distinct clusters (2) found smaller than n_clusters (3). Possibly due to duplicate points in X.
+
+tests/test_metrics.py::TestCalculateConsistency::test_zero_variance_is_nan
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/numpy/lib/_function_base_impl.py:3065: RuntimeWarning:
+  
+  invalid value encountered in divide
+
+tests/test_metrics.py::TestCalculateConsistency::test_zero_variance_is_nan
+  /Volumes/GitVault/Username/docxology/Public/ento_linguistics/.venv/lib/python3.14/site-packages/numpy/lib/_function_base_impl.py:3066: RuntimeWarning:
+  
+  invalid value encountered in divide
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.14.7-final-0 _______________
+
+Name                                             Stmts   Miss Branch BrPart   Cover   Missing
+---------------------------------------------------------------------------------------------
+src/analysis/cace_scoring.py                        97      5     14      1  94.59%   235, 242-247
+src/analysis/conceptual_mapping.py                 361     15    152      7  95.32%   373-377, 447, 527, 569->571, 571->573, 637, 644, 670-679, 937-939, 970-979
+src/analysis/discourse_analysis.py                  91      2     28      4  94.96%   100, 107, 123->114, 244->243
+src/analysis/discourse_patterns.py                  68      0     26      0 100.00%
+src/analysis/domain_analysis.py                    348     40    120     12  85.04%   127, 129, 149->148, 650, 654, 673-678, 828, 1120, 1138-1189, 1222->1230, 1259-1262, 1295-1296, 1330-1331, 1353
+src/analysis/performance.py                        111      0     44      1  99.35%   103->107
+src/analysis/persuasive_analysis.py                153      3     64      3  97.24%   370, 454, 478
+src/analysis/rhetorical_analysis.py                128      3     56      4  96.20%   152, 290, 303->305, 322
+src/analysis/semantic_entropy.py                    60      5      6      1  90.91%   167, 207-218
+src/analysis/statistics.py                         157      6     60      6  94.47%   69, 205, 238, 294, 319, 352
+src/analysis/term_extraction.py                    192      1    100      5  97.95%   52->exit, 132->134, 667->666, 698->697, 764
+src/analysis/text_analysis.py                      128      3     52      5  95.56%   79, 157->164, 238->242, 415, 421
+src/core/exceptions.py                               9      0      0      0 100.00%
+src/core/logging.py                                 51      0     18      0 100.00%
+src/core/manuscript_variables.py                   329      3    124      8  97.57%   520->522, 523->527, 532->529, 539->541, 545->547, 637, 645, 663
+src/core/metrics.py                                140      4     52      3  96.35%   156, 161-163, 182->186
+src/core/nltk_resources.py                          62      5     28     10  83.33%   31, 34->39, 36->34, 40, 49, 52->57, 54->52, 58, 74->73, 76
+src/core/parallel.py                                20      1      6      1  92.31%   54
+src/core/parameters.py                             123      1     52      3  97.71%   92, 310->exit, 333->exit
+src/core/provenance.py                              86      1     34      1  98.33%   105
+src/core/validation.py                             148     10     38      3  91.94%   85-98, 363-371, 418->420
+src/core/validation_utils.py                       111     32     10      1  71.07%   80-82, 98-99, 115-122, 143-144, 163-164, 178-190, 211-212, 216-223, 251-252, 256, 265-269
+src/data/arxiv_corpus.py                           194     10     68     15  89.69%   81-82, 148-150, 156->154, 167, 182->184, 188->193, 190->193, 198->204, 200->198, 206->209, 241->247, 244->243, 248->256, 253->250, 364, 381-382, 478
+src/data/bhl_corpus.py                             490     32    152     19  91.74%   263, 274-277, 329, 439, 450->452, 499-500, 641, 662, 665, 752->751, 775, 786, 820, 927, 1060-1061, 1125, 1227->1229, 1265->1272, 1305->1315, 1469-1479, 1503-1540
+src/data/data_generator.py                          28      0     14      0 100.00%
+src/data/data_processing.py                        141      0     78      0 100.00%
+src/data/literature_mining.py                      368      7    138     11  96.44%   32-33, 159->161, 168->156, 454->456, 458->450, 461->441, 923, 925, 932, 933->935, 941-943
+src/data/loader.py                                  61      2     22      2  95.18%   109, 111
+src/data/openalex_enrichment.py                    100      2     24      0  96.77%   76-77
+src/data/pmc_fulltext.py                           357     39    116     22  84.99%   220->219, 225->224, 379, 401, 411->408, 427->425, 429-436, 458, 467-468, 472, 501, 570-580, 659, 663-666, 720, 743, 753, 759-763, 775->799, 810->817, 901, 910-913, 937->939, 1131->1134
+src/pipeline/arxiv_analysis.py                      58      0      8      1  98.48%   194->196
+src/pipeline/bhl_analysis.py                       233      7     84      6  95.27%   278, 295->294, 388->390, 593-595, 601, 624-633
+src/pipeline/bhl_artifact.py                        68      0     22      0 100.00%
+src/pipeline/conceptual_mapping_pipeline.py        197      2     56      3  98.02%   305->314, 315->325, 358-359
+src/pipeline/corpus_audit.py                        70     27     28      3  59.18%   38, 55->59, 58, 81-99, 110-125
+src/pipeline/corpus_build.py                       203      8     52     12  92.16%   107->111, 109-110, 224->229, 227->229, 291, 295, 297, 299->301, 319, 482, 488, 490->494, 507->514
+src/pipeline/discourse_pipeline.py                 124      0     28      3  98.03%   292->315, 316->345, 328->345
+src/pipeline/domain_analysis_pipeline.py           160      6     32      2  95.83%   421-424, 571-573
+src/pipeline/domain_figures.py                     247     16     64      9  91.96%   108-109, 156, 209->213, 215->219, 223->227, 229->232, 259-260, 312-313, 374-375, 474-475, 571-572, 609-611
+src/pipeline/fulltext_pipeline.py                  164      3     62      3  97.35%   352, 487, 492
+src/pipeline/literature_pipeline.py                223      4     36      6  96.14%   283->280, 421->415, 445->513, 451-453, 463, 681->687
+src/pipeline/rendering.py                          340     89     86      5  74.65%   19-20, 62-63, 268-274, 285-286, 308->307, 311->316, 421-422, 498-657
+src/pipeline/reporting.py                          205      5     86      0  98.28%   18, 75-76, 86-87
+src/pipeline/simulation.py                         150      5     36      0  97.31%   32-33, 108, 120, 132
+src/pipeline/statistics_pipeline.py                302     13    128     13  93.95%   290, 383->385, 403, 405, 432, 435, 438, 529, 534->540, 544, 581-584, 614, 686->680
+src/visualization/_style.py                         36      1      6      1  95.24%   149
+src/visualization/concept_visualization.py         747     41    238     22  92.99%   34-36, 117-124, 153->152, 295->301, 389-396, 420->419, 439-440, 457->469, 528, 627-629, 879, 884-886, 1090-1091, 1168->1172, 1230-1235, 1324, 1328->1326, 1357, 1360->1354, 1543->1557, 1579->1603, 1609->1625, 1654-1660, 1780->1779
+src/visualization/figure_manager.py                 93      1     28      2  97.52%   101, 190->196
+src/visualization/manuscript_figures.py            859    190    240     53  75.71%   27-28, 39-42, 48-51, 71, 82, 85-90, 95, 112, 131-135, 220->219, 233->232, 277->276, 370-371, 404-405, 430-431, 458-459, 505->508, 509-514, 539->526, 543-547, 556-557, 588->594, 606-607, 648-649, 720-721, 781-782, 904-905, 936-937, 967-968, 1068-1069, 1402->1396, 1416-1419, 1450, 1473-1484, 1497-1505, 1556-1557, 1573-1574, 1601-1603, 1637, 1647-1652, 1695-1696, 1754-1765, 1779, 1792-1799, 1813-1814, 1817-1818, 1822-1834, 1840-1855, 1869, 1882, 1905-1906, 1924-1925, 1942-1944, 1947-2010, 2015-2018, 2028-2029, 2032->2035, 2036->2039, 2040->2043, 2044->2047, 2048->2051, 2052->2055, 2056->2059, 2060->2063, 2064->2067, 2068->2071, 2072->2075, 2113, 2123-2124, 2132-2135
+src/visualization/plots.py                         167      0     52      0 100.00%
+src/visualization/statistical_visualization.py     559      7    154     18  96.49%   91->137, 177->223, 187->192, 668->685, 687->700, 702->715, 717->737, 739->763, 1025->1044, 1031-1032, 1037-1038, 1041, 1043, 1063, 1183->1185, 1192->1197, 1580->1585, 1582->1580, 1585->1590
+src/visualization/visualization.py                  79      2     34      0  98.23%   21-22
+---------------------------------------------------------------------------------------------
+TOTAL                                             9996    659   3256    310  91.96%
+Required test coverage of 90.0% reached. Total coverage: 91.96%
+=========== 1804 passed, 8 skipped, 83 warnings in 651.53s (0:10:51) ===========
+exit=0

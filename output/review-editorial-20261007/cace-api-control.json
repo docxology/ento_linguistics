@@ -1,0 +1,7 @@
+{
+  "old_positional_call_rejected": "unsupported operand type(s) for /: 'list' and 'float'",
+  "explicit_keyword_call_valid": true,
+  "clarity_matches_independent_formula": true,
+  "contexts": "first three archived abstract strings",
+  "purpose": "API control; not a new corpus analysis"
+}

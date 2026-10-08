@@ -1,12 +1,11 @@
 # AGENTS.md — `ento_linguistics/src/pipeline`
 
 > Pipeline stage modules: importable business logic for the thin orchestrator
-> scripts in `scripts/`. Verified by direct listing (OrchFix, 2026-09-14).
+> scripts in `scripts/`.
 
 ## Scope
-- Local-only path under `projects/ongoing/` — matched by the root `.gitignore`
-  rule `projects/*`; never commit, add, or push anything here.
-- Parent standard: see `projects/ongoing/AGENTS.md`; parent project docs: `ento_linguistics/src/AGENTS.md`.
+
+Follow ../../AGENTS.md and ../AGENTS.md. This standalone package owns importable workflow computation; scripts provide command interfaces. For corpus and receipt changes, read ../../docs/reference/data-lineage.md. For rendering changes, read ../../docs/guides/authoring.md and verify failed subprocess and unresolved-placeholder controls.
 
 ## Layout
 Files: `AGENTS.md`, `README.md`, `__init__.py`, `corpus_build.py`,

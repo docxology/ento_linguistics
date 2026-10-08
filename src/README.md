@@ -1,104 +1,29 @@
-# Project Source Code
+# Source architecture
 
-Research-specific algorithms, data generation, and analysis functions for the Ento-Linguistic research project. This directory contains **36 modules** organized across **5 subpackage** directories.
+Five packages own text analysis, source loading, workflow computation, artifact validation, and visualization. Scripts delegate to these modules; the separately receipted fixed-margin extension lives in `research/network_robustness/`.
 
-## Directory Structure
+| Package | Responsibility | Key entry points |
+| --- | --- | --- |
+| `analysis/` | Candidate extraction, domain assignment, context-cluster entropy, heuristic CACE and lexical indicators | `term_extraction.py`, `semantic_entropy.py`, `cace_scoring.py` |
+| `core/` | Validation, manuscript variables, content signatures, resources, and shared utilities | `provenance.py`, `manuscript_variables.py`, `nltk_resources.py` |
+| `data/` | Corpus loaders, retrieval, sidecars, and controlled data generation | `loader.py`, `literature_mining.py`, `bhl_corpus.py`, `arxiv_corpus.py` |
+| `pipeline/` | Layer analysis, custody auditing, statistics, and paper rendering | `statistics_pipeline.py`, `fulltext_pipeline.py`, `bhl_analysis.py`, `corpus_audit.py`, `rendering.py` |
+| `visualization/` | Core manuscript figures and registry management | `manuscript_figures.py`, `figure_manager.py`, `concept_visualization.py` |
 
-```text
-src/
-├── __init__.py
-├── analysis/              # Text analysis, NLP, and domain-specific modules
-│   ├── cace_scoring.py        # CACE (Clarity, Appropriateness, Consistency, Evolvability) framework
-│   ├── conceptual_mapping.py  # Concept maps, hierarchies, cross-domain bridges
-│   ├── discourse_analysis.py  # Discourse pattern detection (hedging, authority, etc.)
-│   ├── discourse_patterns.py  # Argumentative structure extraction
-│   ├── domain_analysis.py     # Six-domain Ento-Linguistic framework analysis
-│   ├── performance.py         # Convergence analysis, complexity estimation, benchmarking
-│   ├── persuasive_analysis.py # Persuasive technique detection and effectiveness
-│   ├── rhetorical_analysis.py # Rhetorical strategy quantification
-│   ├── semantic_entropy.py    # TF-IDF + KMeans + Shannon entropy for term ambiguity
-│   ├── statistics.py          # Welch t-test, ANOVA, Benjamini-Hochberg, confidence intervals
-│   ├── term_extraction.py     # Automated terminology extraction with domain seeds
-│   └── text_analysis.py       # NLP feature extraction (POS, readability, vocabulary)
-├── core/                  # Core utilities, validation, metrics
-│   ├── example.py             # Example arithmetic functions (template/testing)
-│   ├── exceptions.py          # Custom exceptions with context and suggestions
-│   ├── logging.py             # Structured logging with stage/progress tracking
-│   ├── markdown_integration.py # Markdown section detection and figure insertion
-│   ├── metrics.py             # Scientific metrics: RMSE, PSNR, SSIM, SNR, coherence
-│   ├── parameters.py          # Parameter management with constraints, sweeps, serialization
-│   ├── validation.py          # Validation framework (bounds, sanity, convergence, markdown)
-│   └── validation_utils.py    # Infrastructure validation wrappers (markdown, figures, PDF)
-├── data/                  # Data loading, generation, literature mining
-│   ├── data_generator.py      # Synthetic data generation with configurable distributions
-│   ├── data_processing.py     # Data cleaning, normalization, outlier removal
-│   ├── literature_mining.py   # PubMed/arXiv API miners with caching
-│   └── loader.py              # Corpus loading from files and data directories
-├── pipeline/              # Simulation and reporting
-│   ├── reporting.py           # Report generation (Markdown, LaTeX, HTML, JSON)
-│   └── simulation.py          # Configurable simulation engine with checkpointing
-└── visualization/         # Visualization and figure generation
-    ├── concept_visualization.py  # Concept maps, terminology networks, domain visualizations
-    ├── figure_manager.py         # Figure registry with cross-referencing and validation
-    ├── plots.py                  # Core plotting utilities (convergence, comparison, etc.)
-    ├── statistical_visualization.py # Statistical plots (distributions, correlations, heatmaps)
-    └── visualization.py          # Multi-panel figure engine with configurable layouts
-```
+## Implemented measurements
 
-## Key Analytical Components
+Term extraction assigns six predefined, overlapping domains. Short extraction windows support heuristic scoring; sentence contexts support entropy. TF-IDF and seeded KMeans partition usable sentence contexts, with the bounded square-root cluster rule specified in [methods](../docs/manuscript/03_methods.md). The normalized entropy denominator uses occupied clusters, with zero for a single occupied cluster. These partitions are not independently annotated word senses.
 
-### CACE Scoring Framework (`analysis/cace_scoring.py`)
-Four-dimension evaluation protocol for terminological quality:
-- **Clarity**: Inverse of semantic entropy (low ambiguity = high clarity)
-- **Appropriateness**: Penalizes anthropomorphic terms (queen, worker, slave, etc.)
-- **Consistency**: Cross-context usage stability via cosine similarity
-- **Evolvability**: Multi-domain and multi-scale applicability
+The observed terminology network counts shared documents; the separate conceptual map encodes configured category/vocabulary overlap. CACE uses inspectable Clarity, Appropriateness, Consistency, and Evolvability rules. Its penalties, weights, and missing-data conventions are heuristic choices. Lexical framing matches are not measured causal effects or author intention. See [reproducibility](../docs/reference/reproducibility.md) for complete definitions and limits.
 
-### Semantic Entropy (`analysis/semantic_entropy.py`)
-Information-theoretic measure of term ambiguity:
-1. Extract usage contexts via sliding window
-2. Compute TF-IDF vectors for each context
-3. Cluster contexts via KMeans (k = min(5, |contexts|))
-4. Calculate Shannon entropy over cluster distribution
+## APIs and execution
 
-### Six-Domain Framework (`analysis/domain_analysis.py`)
-Decomposes entomological terminology into analytically tractable themes:
-1. Unit of Individuality
-2. Behavior & Identity
-3. Power & Labor
-4. Sex & Reproduction
-5. Kin & Relatedness
-6. Economics
+With `src/` on the import path, packages use names such as `analysis.term_extraction` and `pipeline.rendering`. `evaluate_term_cace` accepts a numerical `semantic_entropy` as its second argument and a separate `contexts` keyword. Use explicit keywords to distinguish measured entropy, short extraction contexts, and domain labels; disclose defaults for missing estimates.
 
-## Key Principles
-
-- **No mocks** - all functions use real computations and data
-- **Deterministic** - reproducible results with fixed seeds (`random_state=42`)
-- **Tested** - 90%+ test coverage required for all modules
-- **Thin orchestrator** - scripts import from here; no business logic in scripts
-
-## Usage in Scripts
-
-```python
-from analysis.term_extraction import TerminologyExtractor
-from analysis.domain_analysis import DomainAnalyzer
-from analysis.cace_scoring import evaluate_term_cace
-from visualization.concept_visualization import ConceptVisualizer
-
-extractor = TerminologyExtractor()
-terms = extractor.extract_terms(texts)
-cace = evaluate_term_cace("queen", contexts, domains=["Power & Labor"])
-```
-
-## Testing
+Run maintained commands from the repository root through `uv run`. See [script interfaces](../scripts/README.md), [workflow](../docs/guides/workflow.md), and [development](../docs/guides/development.md). For complete measured source coverage:
 
 ```bash
-cd /path/to/ento_linguistics
-.venv/bin/python -m pytest tests/ --cov=src --cov-report=term-missing --cov-fail-under=90
+uv run pytest tests/ --cov=src --cov-report=term-missing
 ```
 
-## See Also
-
-- [AGENTS.md](AGENTS.md) - Detailed module documentation
-- [../tests/](../tests/) - Test suite
-- [../scripts/](../scripts/) - Analysis scripts
+The configured floor is 90% combined statement/branch coverage. Captured publication results are recorded in [verification](../docs/reference/verification.md). Public APIs require type hints and documented behavior; tests use real inputs and fixed seeds. Read [source maintenance](AGENTS.md) and the affected package's AGENTS.md before changing computation.

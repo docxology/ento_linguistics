@@ -20,6 +20,12 @@ Computational literature mapping supplies methods for examining connections amon
 
 Source-layer comparisons are also descriptive. Abstracts, full texts, historical volumes and preprints differ in access, genre, length, topic and extraction threshold. An observed difference between layers is not automatically a robustness result or a historical change in meaning.
 
+## Validation and Experimental Evidence
+
+Grimmer and Stewart's account of automated content analysis emphasizes validation tailored to the substantive question \cite{grimmer2013text}. Its relevance here is methodological: word counts and computational categories require an explicit connection to the construct they are intended to measure. Our receipt system checks computational custody and agreement; independently annotated contexts would address whether the outputs capture biological meanings and discourse functions.
+
+Experimental metaphor research supplies a complementary way to investigate reader responses. Thibodeau and Boroditsky studied how contrasting crime metaphors affected reasoning \cite{thibodeau2011metaphors}. That evidence concerns a different topic and participant setting. It supports using controlled language manipulations to formulate testable questions, while leaving the effects of technical ant terminology on specialists and students unresolved. Connecting these traditions requires both measurement validation and a direct communication experiment.
+
 ## Active Inference and Colony Modeling
 
 The Free Energy Principle and Active Inference supply theoretical vocabulary for generative modeling \cite{friston2010free, friston2013life, clark2013whatever, kirchhoff2018markov}. The Active Inferants framework supplies a simulated ant-foraging example \cite{friedman2021active}; it does not experimentally compare terminology choices. Model behavior therefore cannot independently establish that hierarchical vocabulary caused modeling errors.

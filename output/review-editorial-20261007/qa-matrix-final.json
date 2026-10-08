@@ -1,0 +1,42 @@
+[
+  {
+    "scenario": "Strict paper build",
+    "observed": "exit 0; 47 pages; draft identity present; all bibliography keys render",
+    "artifact": "render.log"
+  },
+  {
+    "scenario": "Focused regression and failure controls",
+    "observed": "77 passed; existing rendering/preflight/variables tests; full suite not rerun",
+    "artifact": "focused-tests.log"
+  },
+  {
+    "scenario": "Current corpus custody and receipt",
+    "observed": "receipt matches; 69 archived abstract strings unreconciled; eight duplicate PMC texts disclosed",
+    "artifact": "custody.log"
+  },
+  {
+    "scenario": "Documentation links and negative control",
+    "observed": "maintained relative links resolve; intentional broken-link control detected; numerical placeholder sequences unchanged; 35 citation keys resolve",
+    "artifact": "editorial-checks.json"
+  },
+  {
+    "scenario": "PDF page inspection",
+    "observed": "47 page thumbnails reviewed; pages 4,7,21,25,46,47 examined individually; no clipping or overlaps observed",
+    "artifact": "contact-1.png through contact-4.png and page-*.png"
+  },
+  {
+    "scenario": "Publication and PDF integrity",
+    "observed": "published top-level PDF unchanged; draft has no assigned DOI; no unresolved placeholders or overfull boxes; microtype/float warnings retained",
+    "artifact": "pdf-checks.json"
+  },
+  {
+    "scenario": "Rejected-review corrections",
+    "observed": "old CACE call fails; explicit keyword call passes real-text and analytical control; BHL shard paths and occupied-cluster normalization now agree with implementation",
+    "artifact": "cace-api-control.json; editorial-checks-final.json"
+  },
+  {
+    "scenario": "Final draft PDF",
+    "observed": "47 pages; final normalization caption page35 and glossary pages43-44 visually checked; no layout defects; final text/diagnostics pass",
+    "artifact": "render-final.log; pdf-checks-final.json; final-normalization-35.png; final-glossary-43.png; final-glossary-44.png"
+  }
+]

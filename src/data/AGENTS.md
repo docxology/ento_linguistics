@@ -1,21 +1,7 @@
-# AGENTS.md — `ento_linguistics/src/data`
+# Data-source maintenance
 
-> `data/` of the parent project. Verified by direct listing (fleet doc pass, 2026-08-29).
+Follow [project standards](../../AGENTS.md) and [source guidance](../AGENTS.md). Use real local HTTP and temporary files to verify acquisition, pagination, decoding, metadata, and failure paths. Preserve exact source bytes and digest custody when recovering provenance.
 
-## Scope
-- Local-only path under `projects/ongoing/` — matched by the root `.gitignore`
-  rule `projects/*`; never commit, add, or push anything here.
-- Parent standard: see `/Volumes/external_drive/Git/template/projects/ongoing/AGENTS.md`; parent project docs: `ento_linguistics/src/AGENTS.md`.
+Read [data lineage](../../docs/reference/data-lineage.md) before changing source selection or layer exports. Keep PMC, BHL, arXiv, and the identified headline abstracts separate. Synthetic generators support controlled numerical tests and demonstrations; their outputs are not literature observations.
 
-## Layout
-Subfolders: `__pycache__/`
-Files: `AGENTS.md`, `README.md`, `__init__.py`, `data_generator.py`, `data_processing.py`, `literature_mining.py`, `loader.py`
-
-## Kind
-- Category: **src**. `data/` of the parent project.
-
-## Agent notes
-- See the parent project's AGENTS.md/README.md for the authoritative description.
-
-## Gotchas
-- None beyond the local-only rule above.
+Input changes require regeneration and fresh receipts. Report missing source metadata, article-type screening, relevance review, and license annotation as distinct unresolved tasks when applicable.

@@ -9,7 +9,7 @@ Current data lineage is content-bound rather than a fixed historical row count. 
 | Abstracts | *data/corpus/abstracts.json*, digest-indexed provenance | *output/data/statistical_analysis.json* and headline exports | Only digest-identified PubMed strings enter headline analysis; originals remain archived |
 | PMC | *data/fulltexts/fulltexts_*.json* and provenance | *output/data/fulltext_analysis.json* | All stored records by default; explicit discourse sampling and development limit |
 | arXiv | *data/corpus/arxiv_records.json* and nested provenance records | *data/corpus/arxiv_analysis.json* | Separate preprint layer |
-| BHL | *data/bhl/corpus_*.json* and provenance | *data/bhl/era_term_usage.json* | All documents for literal rates, extraction and framing by default; twenty-term entropy sample per era |
+| BHL | *data/bhl/bhl_shard_*.json* and provenance | *data/bhl/era_term_usage.json* | All documents for literal rates, extraction and framing by default; twenty-term entropy sample per era |
 
 The custody audit records malformed input, missing digests, repeated body text, source-ID mismatch, and unused metadata. A digest-indexed mapping can collapse different IDs sharing identical text; record count alone does not establish custody. Source identity does not establish relevance, licensing, or annotation validity.
 

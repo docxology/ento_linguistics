@@ -29,7 +29,7 @@ flowchart LR
 | pipeline/ | Source-layer orchestration, recovery, custody, and PDF rendering | [BHL recovery](../../src/pipeline/bhl_artifact.py), [custody audit](../../src/pipeline/corpus_audit.py), [renderer](../../src/pipeline/rendering.py) |
 | visualization/ | Shared analysis-to-figure orchestration, charts, and registry | [manuscript figures](../../src/visualization/manuscript_figures.py), [statistical plots](../../src/visualization/statistical_visualization.py) |
 
-Package names above are relative to src/. Legacy helpers and synthetic-data utilities remain available; their presence does not mean the manuscript pipeline uses synthetic source text.
+Package names above are relative to src/. The synthetic-data generator ([data_generator](../../src/data/data_generator.py)) serves tests and the [simulation script](../../scripts/_scientific_simulation.py); the manuscript pipeline analyzes only stored source text.
 
 ## Public workflow entry points
 

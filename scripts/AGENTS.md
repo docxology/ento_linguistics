@@ -9,8 +9,8 @@ The `scripts/` directory contains **thin orchestrators** that integrate with `sr
 | Script | Pattern | Delegates to | Output |
 |--------|---------|--------------|--------|
 | `01_build_corpus.py` | Stage 01 Thin Orchestrator | `src/pipeline/corpus_build.py` | `data/corpus/abstracts.json`, `output/data/corpus_statistics.json` |
-| `02_generate_figures.py` | Stage 02 Thin Orchestrator | `src/visualization/manuscript_figures.py` | 11 PNGs in `output/figures/`, JSONs in `output/data/`, filled manuscript variables |
-| `_analysis_pipeline.py` | End-to-end orchestrator (corpus → figures → preflight) | the three scripts above | Stage sequencing, dry-run and stage selection |
+| `02_generate_figures.py` | Stage 02 Thin Orchestrator | `src/visualization/manuscript_figures.py` | Registered PNGs in `output/figures/`, JSONs in `output/data/`, validated manuscript variables |
+| `_analysis_pipeline.py` | End-to-end orchestrator (corpus → figures → preflight) | corpus, figures, and preflight entry points | Stage sequencing, dry-run and stage selection |
 | `_conceptual_mapping_script.py` | Thin Orchestrator | `src/pipeline/conceptual_mapping_pipeline.py` | Concept map figures/data |
 | `_convert_corpus.py` | Thin Orchestrator | `src/data/loader.py` (`convert_corpus`) | `data/corpus/abstracts.json` |
 | `_discourse_analysis_script.py` | Thin Orchestrator | `src/pipeline/discourse_pipeline.py` | Discourse analysis outputs |
@@ -24,22 +24,6 @@ The `scripts/` directory contains **thin orchestrators** that integrate with `sr
 | `_register_manuscript_figures.py` | Registry sync from actual PNGs | `src/visualization/figure_manager.py` | `output/figures/figure_registry.json` |
 | `_render_pdf_override.py` | Thin Orchestrator | `src/pipeline/rendering.py` | `output/pdf/ento_linguistics_combined.pdf` |
 | `_scientific_simulation.py` | Demo driver | `src/pipeline/simulation.py`, `src/data/data_generator.py` | Simulation outputs |
-
-## Keep / Delete / Move Verdicts (remediation wave 2, 2026-09-14)
-
-| Former script | Verdict | Rationale |
-|---------------|---------|-----------|
-| `_generate_missing_figures.py` | **DELETED** | Imported a non-existent module (`generate_research_figures`) and duplicated `02_generate_figures.py` plotting. |
-| `_generate_scientific_figures.py` | **DELETED** | Fully overlapped `02_generate_figures.py`; used unseeded RNG and referenced infrastructure/manuscript paths that could never resolve. |
-| `_conceptual_mapping_script.py` (628 lines) | **MOVED** to `src/pipeline/conceptual_mapping_pipeline.py`; script is now a ~20-line wrapper. |
-| `_discourse_analysis_script.py` (384 lines) | **MOVED** to `src/pipeline/discourse_pipeline.py`. |
-| `_domain_analysis_script.py` (565 lines) | **MOVED** to `src/pipeline/domain_analysis_pipeline.py`. |
-| `_generate_domain_figures.py` (628 lines) | **MOVED** to `src/pipeline/domain_figures.py`. |
-| `_literature_analysis_pipeline.py` (718 lines) | **MOVED** to `src/pipeline/literature_pipeline.py`. |
-| `01_build_corpus.py` (~90 lines of logic) | **MOVED** to `src/pipeline/corpus_build.py`; script is a thin wrapper. |
-| `_analysis_pipeline.py` | **REWRITTEN** | All 7 stage commands referenced non-existent script names; now sequences the real stages `corpus` → `figures` → `preflight`. |
-| `_register_manuscript_figures.py` | **REWRITTEN** | Dropped the hardcoded stale metadata table (with duplicate labels); figures are derived from actual PNGs in `output/figures/` merged with existing registry metadata; failures skip with a logged reason. |
-| `_manuscript_preflight.py` / `_quality_report.py` | **FIXED** | Defaults now resolve from the project root (`docs/manuscript`, `output/reports`, `output/pdf/ento_linguistics_combined.pdf`); the silent `except Exception: reproducibility = {}` was replaced with explicit error aggregation. |
 
 ## Design Contract
 

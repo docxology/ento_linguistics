@@ -11,8 +11,8 @@ This glossary defines the mathematical notation and domain-specific terminology 
 | $w(u,v)$ | Observed number of documents containing both terms $u$ and $v$ | Eq. \ref{eq:network_edge_weight} |
 | $H(t)$ | Semantic entropy of term $t$ in bits (Shannon entropy over usage-context clusters) | Eq. \ref{eq:semantic_entropy} |
 | $H^*$ | Configured threshold (2.0 bits); not an independently calibrated sense threshold | Eq. \ref{eq:semantic_entropy} |
-| $H_{\max}$ | Maximum attainable entropy for $k$ clusters, $\log_2 k$ | Eq. \ref{eq:semantic_entropy} |
-| $\hat{H}(t)$ | Normalized semantic entropy $H(t) / H_{\max} \in [0,1]$ | Eq. \ref{eq:semantic_entropy} |
+| $H_{\max}$ | Entropy ceiling for occupied clusters, $\log_2 k_{\mathrm{occupied}}$; zero for a single occupied cluster | Eq. \ref{eq:semantic_entropy} |
+| $\hat{H}(t)$ | Normalized entropy $H(t) / H_{\max}$ when $H_{\max}>0$; zero for one occupied cluster | Eq. \ref{eq:semantic_entropy} |
 | $p_i$ | Empirical proportion of contexts assigned to semantic cluster $i$ | Eq. \ref{eq:semantic_entropy} |
 | $k$ | Requested number of computational clusters ($k$-means, $k = \max(2,\ \min(k_{\max},\ n{-}1,\ \max(2, \lfloor\!\sqrt{n}\rfloor)))$; $k_{\max}=5$, $n=|C_t|$; $k < n$) | Eq. \ref{eq:semantic_entropy} |
 | $C_t$ | Set of valid usage contexts of term $t$ (sentences with $\geq 3$ words) | Eq. \ref{eq:semantic_entropy} |
@@ -24,7 +24,7 @@ This glossary defines the mathematical notation and domain-specific terminology 
 | $\text{Clarity}(t)$ | CACE Clarity score: $\min(1,\max(0,1-H(t)/3.32))$ | Eq. \ref{eq:cace_clarity} |
 | $\text{Appropriateness}(t)$ | CACE Appropriateness score (penalizes anthropomorphic terms) | Eq. \ref{eq:cace_appropriateness} |
 | $\text{Consistency}(t)$ | CACE Consistency score: mean pairwise cosine similarity of context vectors | Eq. \ref{eq:cace_consistency} |
-| $\text{Evolvability}(t)$ | CACE Evolvability score: mean of calibrated domain-breadth and scale-marker components | Eq. \ref{eq:cace_evolvability} |
+| $\text{Evolvability}(t)$ | CACE Evolvability score: mean of heuristic domain-breadth and scale-marker components | Eq. \ref{eq:cace_evolvability} |
 | $\mathcal{A}$ | Set of anthropomorphic terms (queen, king, slave, worker, soldier, nurse, ...) | Eq. \ref{eq:cace_appropriateness} |
 | $F_{\mathrm{frame}}(D, T)$ | Proposed bounded annotated framing score for domain $D$ and term set $T$ | Supplemental Eq. \ref{eq:discursive_framing} |
 | $M_{ij}$ | Cross-domain mapping strength between domains $D_i$ and $D_j$ | Supplemental Eq. \ref{eq:cross_domain_mapping} |
