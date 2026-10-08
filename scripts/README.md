@@ -32,7 +32,7 @@ tested). The standalone renderer is the paper acceptance path; several older rep
 
 `02_generate_figures.py` rebuilds the managed `output/figures/` and `output/data/` directories. Expensive source-layer analyses can reuse matching fingerprints and completed BHL-era checkpoints. Preserve evidence outside those directories before a deliberate cold recomputation. See [workflow](../docs/guides/workflow.md).
 
-`_manuscript_preflight.py` and `_quality_report.py` default to `docs/manuscript` and resolve paths from the project root. Numerical placeholders remain in Markdown and resolve during rendering. `_render_pdf_override.py` validates both network companions and writes `output/pdf/ento_linguistics_combined.pdf`.
+`_manuscript_preflight.py` and `_quality_report.py` default to `docs/manuscript` and resolve paths from the project root. Numerical placeholders remain in Markdown and resolve during rendering. `_render_pdf_override.py` validates the fixed-margin companions and the separately recomputed network-reading report and writes `output/pdf/ento_linguistics_combined.pdf`.
 
 The fixed-margin extension is implemented in [research/network_robustness/](../research/network_robustness/README.md), with its own receipts and figure. It is separate from the core figure generator.
 
@@ -58,3 +58,5 @@ Scripts **never** implement algorithms or mathematical computations directly.
 `_manuscript_preflight.py --strict` gates missing figures, glossary markers and reference boilerplate; it does not turn every optional infrastructure diagnostic into a hard failure. `_quality_report.py` may report skipped parent-template quality/reproducibility checks. Their successful exits do not replace the standalone suite, manifest/extension validation or strict renderer. Use `--output-dir` to keep a new helper report separate from historical reports.
 
 Use real commands rather than copying the illustrative square-bracket optional arguments literally. For direct layer CLIs, run `PYTHONPATH=src uv run python -m pipeline.bhl_analysis --help` or `-m pipeline.fulltext_pipeline --help`; individual layer execution alone does not refresh the complete manifest/figures.
+
+Run `PYTHONPATH=src uv run python -m research.network_reading.study --root .` after core generation and before strict rendering when its source or consumed inputs changed. This module owns its separately receipted report, curves and graphical abstract.

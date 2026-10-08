@@ -13,3 +13,6 @@ The immediate research priorities are source reconciliation, document-level rele
 Longitudinal analysis should distinguish changes in source composition and OCR quality from changes in terminology. Multilingual comparisons require language-specific normalization and definitions. Reader or author experiments could then evaluate whether operational definitions and alternative terms improve comprehension or mechanistic explanation.
 
 CACE offers explicit evaluation questions for such studies. Its current scores provide an inspectable starting point, with design choices and missing-data conventions disclosed. Active Inference and multiscale interpretations remain theoretical proposals until connected to specified models and empirical measurements. The repository contributes tools and auditable descriptive results for that work.
+
+
+The complexity theme connects precise units, cross-disciplinary exchange and validated transfer. Architecture specifies what is represented; Fertilization exchanges questions while preserving evidence boundaries; Expansion tests measurement in new settings. The vocabulary--threshold diagnostic and graphical abstract make that program explicit. Reproducible representation is an executed contribution, whereas annotated meaning, reader effects and biological dynamics remain separate validation targets.

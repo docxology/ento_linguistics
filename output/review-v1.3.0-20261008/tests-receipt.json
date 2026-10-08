@@ -1,0 +1,14 @@
+{
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=json:output/review-v1.3.0-20261008/coverage.json"
+  ],
+  "exit_code": 0,
+  "started_at_epoch": 1791493674.40506,
+  "finished_at_epoch": 1791494086.9293802
+}

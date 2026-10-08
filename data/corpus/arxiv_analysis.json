@@ -176,7 +176,7 @@
     }
   },
   "corpus_fingerprint": {
-    "analysis_signature": "32c56d399aaf479977c6b0e710b374c3076044e4bb5fb8b52c39db7071180b7d",
+    "analysis_signature": "266f1e4c7c2e506270d371b8fd1811d8e24129e09c5ccb7607cb77629c4e579d",
     "record_count": 61,
     "records_sha256": "ea83d4d890eb09e7a0adde59e61f3c0c290175f92ae6622c4623e7bbf4a66db2"
   },
@@ -1308,7 +1308,7 @@
       "proportion": 0.0
     }
   },
-  "generated": "2026-10-08T18:29:58+00:00",
+  "generated": "2026-10-08T20:53:02+00:00",
   "interpretation": {
     "cace": "heuristic scores; absent or insufficient entropy is not evidence of clarity",
     "causality": "lexical matches and cluster entropy do not measure causal framing or semantic drift",

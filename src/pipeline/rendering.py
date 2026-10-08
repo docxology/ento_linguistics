@@ -607,6 +607,10 @@ def build_pdf(strict_templates: bool = False) -> None:
     # Load corpus statistics for template variable substitution
     corpus_vars = _load_corpus_vars(project_root)
     corpus_vars.update(_load_extension_vars(project_root))
+    if any("{{NETREAD_" in (manuscript_dir / name).read_text()
+           for name in files if (manuscript_dir / name).is_file()):
+        from research.network_reading.study import template_values
+        corpus_vars.update(template_values(project_root))
 
     # Verify files exist and concatenate
     input_files = []

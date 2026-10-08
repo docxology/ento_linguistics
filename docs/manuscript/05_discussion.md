@@ -63,3 +63,10 @@ The second borrows the manipulation logic of metaphor experiments (Section \ref{
 7. **Unmeasured theory.** No fitted generative model, empirical Markov-blanket estimation, term-reform intervention, or independent human validation is reported.
 
 These boundaries support a focused next study: a frozen, fully reconciled corpus with independent annotations and prespecified document-level analysis, followed by a controlled evaluation of operational terminology.
+
+
+## Complexity as an Explicit Modeling Question
+
+Complexity connects the paper's questions about organization, information and scale while requiring a defined target system and measurement. Accounts of complex systems distinguish candidate features and mathematical measures rather than supplying a universal interpretation of density or entropy \citep{ladyman2013complex}. A complete graph has maximal density and a short description; dense word co-occurrence alone does not establish emergence, adaptation or collective cognition. One-mode projection itself can create local clustering \citep{newman2003structure}. The new representation diagnostic consequently reports how graph statistics depend on vocabulary and edge thresholds, without converting them into biological properties.
+
+Architecture asks which units and relations a passage specifies. Simon's near-decomposability account concerns relatively weak coupling between subsystems and different short- and long-run behavior \citep{simon1962architecture}; overlapping lexical domains do not demonstrate those dynamical conditions. Fertilization exchanges questions and models across collective behavior, network science and terminology research while retaining their observational units. Expansion asks whether measurement transfers to new taxa, genres, languages and readers after held-out validation. These three themes support a complex-systems research program; the executed corpus analyses do not by themselves complete it.

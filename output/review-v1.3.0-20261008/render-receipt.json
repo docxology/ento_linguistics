@@ -1,0 +1,29 @@
+[
+  {
+    "stage": "custody",
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "-m",
+      "pipeline.corpus_audit",
+      "--require-analysis"
+    ],
+    "exit_code": 0,
+    "started_at_epoch": 1791494836.310615,
+    "finished_at_epoch": 1791494853.157297
+  },
+  {
+    "stage": "render",
+    "command": [
+      "uv",
+      "run",
+      "python",
+      "scripts/_render_pdf_override.py",
+      "--strict-templates"
+    ],
+    "exit_code": 0,
+    "started_at_epoch": 1791494853.1575801,
+    "finished_at_epoch": 1791495018.168134
+  }
+]

@@ -4,25 +4,23 @@
 
 How do terms such as *queen*, *worker*, *caste*, and *colony* organize descriptions of ant biology? Ento-Linguistics provides a six-domain framework and a reproducible, descriptive analysis of scientific terminology across modern abstracts, full texts, historical OCR, and preprints.
 
-[Read the paper](Ento_Linguistics_manuscript.pdf) · [Zenodo publication](https://zenodo.org/records/23215452) · [Documentation](docs/README.md) · [Reproduce the analyses](docs/guides/workflow.md)
+[Read the v1.3.0 paper](Ento_Linguistics_manuscript.pdf) · [Paper and lecture release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0) · [Documentation](docs/README.md) · [Reproduce the analyses](docs/guides/workflow.md)
 
 Daniel Ari Friedman and Tucker Cahill Chambers
 
-Published manuscript revision: **7 October 2026** · [Version DOI](https://doi.org/10.5281/zenodo.23215452) · [All versions](https://doi.org/10.5281/zenodo.19574117)
+**Version 1.3.0 — Complexity, representation and scientific communication.** The graphical abstract distinguishes biological processes from observed scientific discourse and computational proxies. The [network-reading method](research/network_reading/README.md) reports a declared grid of vocabulary sizes and shared-document thresholds, retaining isolates and exposing density denominators. Source-checked complexity scholarship strengthens questions about units, coupling, feedback and scale. Density, clustering, entropy and heuristic CACE retain separate interpretation limits.
 
-The working manuscript is **1.2.2-dev**, an unpublished revision. It strengthens biological definitions, measurement validation and the proposed reader-study design; reports the fixed-margin network comparison in the Results with injected values and its figure; and corrects figure presentation, citation style and the bibliography. [The local build](output/pdf/ento_linguistics_combined.pdf) is separate from the published paper above. The improved network figure ranks observed co-occurring pairs beside the graph; six horizontal panels make domain labels and quantities readable. Complex-systems scholarship distinguishes biological interactions from document co-occurrence. Full/default regeneration preserved the numerical results. The [latest verification record](output/review-lecture-v4-20261008/SUMMARY.md) covers the 49-page draft, 17 core figures, complete suite, bounded layout checks and [independent approval](output/review-lecture-v4-20261008/independent-gate.md) of candidate `55011f4`.
+The six-domain framework, four source layers and [fixed-margin comparison](research/network_robustness/README.md) remain separately receipted. The [current verification record](output/review-v1.3.0-20261008/SUMMARY.md) identifies the exact source, checks and artifact scope. The software package version and research-edition version are distinct.
 
-## Network robustness and research lecture
+## Matched research lecture
 
-The [fixed-margin network workflow](research/network_robustness/README.md) reconstructs the published abstract network and compares it with randomizations preserving document/term incidence margins. Both a primary protocol and a longer-burn/wider-spacing protocol have been executed. Their reports, traces, figures and independent receipts are under output/extensions/network_robustness/.
+[Watch the 20-minute lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.3.0/EntoLinguistics_20min_4K.mp4) · [Download slides](https://github.com/docxology/ento_linguistics/releases/download/v1.3.0/EntoLinguistics_slides.pdf) · [All release files](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0)
 
-[The revised manuscript](Ento_Linguistics_manuscript.pdf) adds the fixed-margin method and strengthens interpretation and experimental design. Its renderer checks and, when needed, regenerates both companion protocols, including decoded-artifact validation. The original four-layer corpus analyses remain separately receipted; this extension does not claim to recompute them.
+The 29-slide fifth edition begins with the paper's graphical abstract and uses DAF narration, provider-timed captions and nine real Manim scenes. Complexity / Complex Systems connects the methods and scholarship. Architecture, Fertilization, Expansion supports transitions without replacing the results. LectureCreate pins the exact public source commit, version, paper SHA-256 and analysis signature; synchronization rejects dirty sources, stale public PDFs or a differently authored lecture version.
 
-[Watch the 20-minute lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.2.1/EntoLinguistics_20min_4K.mp4) · [Download slides](https://github.com/docxology/ento_linguistics/releases/download/v1.2.1/EntoLinguistics_slides.pdf) · [All release files](https://github.com/docxology/ento_linguistics/releases/tag/v1.2.1)
+## Archived publication identities
 
-The 28-slide lecture uses Daniel Ari Friedman's DAF narration, timed bottom captions, six Manim animations, and original paper figures. It explains the published v1.1.1 baseline and the network extension now included in v1.2.0. Sources and production tools are maintained in LectureCreate; public media and research artifacts are archived with this release and on Zenodo.
-
-A locally rendered fourth edition in LectureCreate uses the current unpublished draft, redesigned plates and eight Manim scenes. Its complex-systems focus is supported by Architecture, Fertilization, Expansion as a transition theme. The complete 20-minute DAF render and source bindings passed [independent artifact review](output/review-lecture-v4-20261008/independent-gate.md); it has not replaced the archived release media.
+[Zenodo v1.2.1](https://doi.org/10.5281/zenodo.23215452), [its GitHub release](https://github.com/docxology/ento_linguistics/releases/tag/v1.2.1) and [the concept DOI](https://doi.org/10.5281/zenodo.19574117) preserve prior versions. The earlier third-edition public media and fourth-edition local draft retain their own identities. The new GitHub research edition does not borrow a previous version DOI.
 
 ## What this project studies
 
@@ -69,6 +67,7 @@ Read the existing paper without running analyses. To reproduce the stored corpus
 
 ~~~bash
 uv run python scripts/02_generate_figures.py
+PYTHONPATH=src uv run python -m research.network_reading.study --root .
 PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
 ~~~
 
@@ -88,7 +87,7 @@ The build writes [output/pdf/ento_linguistics_combined.pdf](output/pdf/ento_ling
 uv run pytest tests/ --cov=src --cov-report=term-missing
 ~~~
 
-Run tests and generation sequentially. The configured coverage floor is **90% combined statement/branch coverage**. The published v1.2.1 validation run recorded **1,802 passed, eight external-template skips, and 91.45% combined coverage**; these are captured results, not a claim that every later checkout has been rerun. The latest recorded draft run passed **1,822 tests with eight skips and 92.01% combined coverage**; see [current receipts and page QA](output/review-lecture-v4-20261008/SUMMARY.md). [Current independent approval](output/review-lecture-v4-20261008/independent-gate.md) binds candidate `55011f4`; later receipt/status documentation is a separate scope.
+Run tests and generation sequentially. The configured coverage floor is **90% combined statement/branch coverage**. The published v1.2.1 validation run recorded **1,802 passed, eight external-template skips, and 91.45% combined coverage**; these are captured results, not a claim that every later checkout has been rerun. The v1.3.0 full run passed **1,833 tests with eight skips and 91.98% combined coverage**; see [current receipts and bounded QA](output/review-v1.3.0-20261008/SUMMARY.md). Earlier independent approvals retain their exact candidate scope.
 
 Content receipts bind actual corpus, source, dependency-lock, NLTK resource, and output bytes. The strict renderer rejects stale receipts and unresolved placeholders. [Validation](docs/guides/validation.md) explains numerical controls, custody checks, figure inspection, and PDF verification.
 

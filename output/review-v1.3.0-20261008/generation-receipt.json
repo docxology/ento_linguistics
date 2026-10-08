@@ -1,0 +1,12 @@
+{
+  "command": [
+    "uv",
+    "run",
+    "python",
+    "scripts/02_generate_figures.py"
+  ],
+  "exit_code": 0,
+  "started_at_epoch": 1791492541.2268548,
+  "finished_at_epoch": 1791493618.638407,
+  "source_matches": true
+}

@@ -1,0 +1,19 @@
+{
+  "pdf_sha256": "c6588539b0ca5e11aaf5fd9ca32037a599bc0a5d171da69c31dd9c6abdba48d3",
+  "pages": 52,
+  "core_numeric_regression": {
+    "output/data/concept_map_summary.json": true,
+    "output/data/statistical_analysis.json": true,
+    "output/data/fulltext_analysis.json": true,
+    "output/data/domain_statistics.json": true,
+    "output/data/extracted_terms.json": true,
+    "output/data/corpus_statistics.json": true,
+    "data/corpus/arxiv_analysis.json": true,
+    "data/bhl/era_term_usage.json": true
+  },
+  "retained_trace_bytes": {
+    "output/extensions/network_robustness/chain_statistics.npy": true,
+    "output/extensions/network_robustness/sensitivity/chain_statistics.npy": true
+  },
+  "analysis_signature": "266f1e4c7c2e506270d371b8fd1811d8e24129e09c5ccb7607cb77629c4e579d"
+}

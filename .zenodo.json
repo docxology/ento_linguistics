@@ -1,7 +1,6 @@
 {
   "title": "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology",
-  "version": "1.2.1",
-  "doi": "10.5281/zenodo.23215452",
+  "version": "1.3.0",
   "license": "cc-by-4.0",
   "creators": [
     {
@@ -25,9 +24,12 @@
     "conceptual frameworks",
     "active inference",
     "terminology networks",
-    "computational linguistics"
+    "computational linguistics",
+    "complex systems",
+    "complexity",
+    "representation sensitivity"
   ],
-  "description": "Descriptive Ento-Linguistic corpus analyses with a six-domain framework, a fixed-margin terminology-network comparison, and a 20-minute research lecture. Version 1.2.0 adds 600 primary and 300 protocol-sensitivity draws, full traces and independent provenance. The comparison is conditional on the selected vocabulary and convenience corpus; it does not measure causal language effects or author intent. Paper and media: CC BY 4.0; source corpus materials remain subject to their providers' terms. Version 1.2.1 validates decoded retained traces, reconstructs observed statistics and checks report consistency; the statistical model and lecture media are unchanged.",
+  "description": "Ento-Linguistics v1.3.0 adds a receipted vocabulary and shared-document-threshold diagnostic, a graphical abstract and a synchronized 20-minute complex-systems research lecture. Architecture, Fertilization, Expansion supports questions about units, cross-disciplinary exchange and validated transfer. Six overlapping terminology domains and four separate source layers retain their descriptive scope. Fixed-margin comparisons and heuristic entropy/CACE measures remain distinct from biological interactions, validated meaning or causal reader effects. Paper figures are CC BY 4.0; software and authored narration are MIT; source corpus materials retain their providers terms. Previous version DOIs preserve earlier artifact identities.",
   "access_right": "open",
   "upload_type": "publication",
   "publication_type": "preprint",

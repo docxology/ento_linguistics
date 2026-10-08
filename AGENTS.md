@@ -17,13 +17,14 @@ Run from the repository root, with tests and generation sequential:
 ```bash
 uv run pytest tests/ --cov=src --cov-report=term-missing
 uv run python scripts/02_generate_figures.py
+PYTHONPATH=src uv run python -m research.network_reading.study --root .
 PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
 uv run python scripts/_render_pdf_override.py --strict-templates
 ```
 
-`scripts/01_build_corpus.py` handles acquisition; inspect its help before changing the stored corpus. `scripts/02_generate_figures.py` delegates the four-layer analysis and figure build to `src/visualization/manuscript_figures.py`. The renderer delegates to `src/pipeline/rendering.py` and verifies the separately receipted fixed-margin companions in `research/network_robustness/`. Underscore-prefixed scripts are manually invoked entry points; the renderer is part of the paper workflow.
+`scripts/01_build_corpus.py` handles acquisition; inspect its help before changing the stored corpus. `scripts/02_generate_figures.py` delegates the four-layer analysis and figure build to `src/visualization/manuscript_figures.py`. The renderer delegates to `src/pipeline/rendering.py` and verifies the separately receipted fixed-margin companions in `research/network_robustness/` and vocabulary/threshold diagnostics in `research/network_reading/`. Underscore-prefixed scripts are manually invoked entry points; the renderer is part of the paper workflow.
 
-The generated paper is `output/pdf/ento_linguistics_combined.pdf`. The top-level PDF and external releases have separate publication identities. A local revision must identify itself as unpublished until a new release exists; retain archived DOI and release records as provenance.
+The generated paper is `output/pdf/ento_linguistics_combined.pdf`. The top-level PDF and external releases have separate publication identities. Release versions must identify the exact reviewed source/PDF/media set. Retain archived DOI and release records; do not assign an earlier version DOI to a new GitHub edition.
 
 ## Evidence and outputs
 

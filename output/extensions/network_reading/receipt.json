@@ -1,0 +1,18 @@
+{
+  "inputs": {
+    "data/corpus/abstracts.json": "58f0a024ebbaf5f8ed27f071163f34ed9e1bc08c5c9623e13f516b1a99f5d35e",
+    "data/corpus/provenance.json": "0832b7532dba3a3d282531e4d0dd124470413cd83d7f1e80fba2f11d54a6045a",
+    "output/data/extracted_terms.json": "eb1cfd321d0910ce64b829dee88877f34bcf7a2f92c15597754b289e25f3b44c",
+    "output/data/concept_map_summary.json": "f5fd9586fa631c13e6f6b11df466dcbb834b49851b1ba6b7366b49a19c18a68c",
+    "output/data/analysis_manifest.json": "c46f64e8b03bd3e5b29e639593cef07a85b252af51165c91e1d97c81953804b6",
+    "uv.lock": "26659240350361d885870f8ab3b6623072ee39905e3f1d4a63bbc42288df8c41",
+    "research/network_reading/study.py": "3f14732a75398fcaa66266761afe007f2c7c9c0bcc157a54d014debbcd5f5ac3",
+    "research/network_robustness/study.py": "b265b0ad91c7b4abd8f32ca5cc33b3c3ccc226d1a7534f48e4264decfc237041",
+    "research/network_robustness/model.py": "23475586e2fc352a5d0057c2fc542f124f3f7ccc1fc8ff314e38dfc19042493a"
+  },
+  "outputs": {
+    "network_reading.json": "686f5286a2a13238cbcf612fd8a244c0cd25e793eec90f5437b3a9f8132dd0c5",
+    "network_reading.png": "9e00812581eff4f3eca7e1ecbdcc0472a0d80a9d0f0e8f405c16dcb3c2a6e096",
+    "graphical_abstract.png": "b0fe6167cc34b7ce79620d5901c8dfa22610ca7ce6593a7160b81b9fb788ec50"
+  }
+}

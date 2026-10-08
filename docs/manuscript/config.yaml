@@ -3,9 +3,9 @@
 
 paper:
   title: "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology"
-  subtitle: "Descriptive Corpus Analysis and a Six-Domain Framework"
-  version: "1.2.2-dev" # Unpublished editorial revision
-  date: "2026-10-07 – Editorial draft 1.2.2-dev (unpublished)" # Rendered revision identity
+  subtitle: "Complex Systems, Measurement, and a Six-Domain Framework"
+  version: "1.3.0" # GitHub research edition; preserve earlier DOI identities
+  date: "2026-10-08 – Version 1.3.0" # Public research-edition identity
 
 # Author information
 authors:
@@ -22,8 +22,8 @@ authors:
 
 # Publication information (optional)
 publication:
-  doi: "" # This unpublished draft has no assigned DOI
-  version_doi: "" # No version DOI assigned to this local revision
+  doi: "" # This GitHub edition has no separately verified DOI yet
+  version_doi: "" # No new version DOI assigned here
   zenodo_record_url: "" # Published versions are linked in the repository documentation
   journal: "" # Journal name if published
   volume: "" # Journal volume
@@ -43,6 +43,9 @@ keywords:
   - "terminology networks"
   - "Markov blankets"
   - "stigmergy"
+  - "complex systems"
+  - "complexity"
+  - "representation sensitivity"
   - "computational linguistics"
 
 # Additional metadata

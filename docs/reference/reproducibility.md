@@ -46,3 +46,10 @@ Logs, source custody records, registered figures and a successful PDF build must
 The current analysis includes the conditional comparison and its independently receipted companion artifacts. The published top-level PDF and Zenodo version are release artifacts; subsequent local manuscript renders do not automatically replace them.
 
 The v1.2.1 extension guard checks decoded numerical artifacts in addition to byte identity. It verifies full chain dimensions, finite statistics and graph bounds, reconstructs the observed graph from the identified abstracts, replays all summary statistics, checks the Markdown result table, and decodes the PNG. Self-hashed corrupt artifacts and inconsistent reports fail. These checks establish internal agreement; they do not certify mixing, causal interpretation, or the scientific validity of lexical proxies.
+
+
+## Representation sensitivity and complexity
+
+[The network-reading diagnostic](../../research/network_reading/README.md) changes vocabulary size and inclusive shared-document threshold on the verified incidence representation. It keeps isolates and exposes each density denominator; the complete declared grid is reported. Its receipt binds inputs, implementation and plots, and the renderer recomputes the report rather than accepting self-hashed values. It adds no null draws or population uncertainty intervals.
+
+Complex systems provides questions about units, coupling, information, feedback and scale. Density, connectedness and sentence-cluster occupancy do not constitute a universal complexity index. The [source-checked scholarship](../research/complexity-scholarship.md) distinguishes conditional near-decomposability, affiliation projection and biological mechanisms. Transfer across source layers or reader groups requires independent validation.

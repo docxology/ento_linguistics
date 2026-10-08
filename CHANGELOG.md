@@ -4,6 +4,13 @@ All notable changes to the Ento-Linguistics project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Concept DOI: [10.5281/zenodo.19574117](https://doi.org/10.5281/zenodo.19574117) — all versions are grouped under the same concept DOI.
 
+## [1.3.0] — 2026-10-08
+
+- Add a separately receipted vocabulary/threshold diagnostic with isolates retained, explicit density denominators, component/document coverage and numerical replay before rendering.
+- Add a source-derived graphical abstract and verified Simon, Newman and Ladyman complexity scholarship; distinguish biological mechanisms, discourse representations and measurement proxies.
+- Match the public paper and fifth-edition 20-minute lecture: 29 slides, nine real animations, DAF narration and source-version synchronization guards.
+- Preserve archived PDFs, prior media and version DOIs. Full/default core regeneration passed; 1,833 public tests and 91.98% combined coverage are recorded separately from earlier draft checks.
+
 ## Unreleased — 1.2.2-dev
 
 - Redesign the observed terminology network with an exact strongest-pair ranking; make all six domain-comparison panels horizontal and use consistent domain colors.

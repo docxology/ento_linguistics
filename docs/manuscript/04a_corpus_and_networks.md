@@ -56,6 +56,17 @@ Selected terms therefore co-occur in fewer distinct pairs, with less closed tria
 \label{fig:network_robustness}
 \end{figure}
 
+### Vocabulary and Edge-Threshold Diagnostic
+
+Across the declared {{NETREAD_CELLS}} vocabulary--threshold combinations on the same {{NETREAD_DOCUMENTS}} identified abstracts, the 100-term graph at a one-document threshold has density {{NETREAD_BASE_DENSITY}}. Requiring at least twenty shared documents retains {{NETREAD_THRESHOLD20_EDGES}} edges and gives density {{NETREAD_THRESHOLD20_DENSITY}}. Figure \ref{fig:network_reading} displays the full grid, including mean local clustering with isolates retained. These are deterministic descriptions of selected representations, not uncertainty intervals or evidence that one threshold recovers true semantic relations. Clustering need not decrease when edges are removed: changing neighborhoods also changes local triangle denominators. The curves separate these topological summaries rather than interpreting either as biological complexity.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{../output/extensions/network_reading/network_reading.png}
+\caption{Vocabulary and minimum-shared-document sensitivity. Curves use nested frequency-ranked vocabularies and inclusive thresholds. The denominator includes all selected pairs, and clustering includes isolates as zero. Each point is recomputed from the same identified abstract layer; no new randomization or biological-network inference is represented.}
+\label{fig:network_reading}
+\end{figure}
+
 Domain-assignment overlap is a different quantity, displayed separately in Figure \ref{fig:domain_overlap}.
 
 \begin{figure}[h]

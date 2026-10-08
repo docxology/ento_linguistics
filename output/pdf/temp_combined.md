@@ -2,13 +2,21 @@
 author:
 - Daniel Ari Friedman
 - Tucker Cahill Chambers
-date: "2026-10-07 \u2013 Editorial draft 1.2.2-dev (unpublished)"
-subtitle: Descriptive Corpus Analysis and a Six-Domain Framework
+date: "2026-10-08 \u2013 Version 1.3.0"
+subtitle: Complex Systems, Measurement, and a Six-Domain Framework
 title: 'Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology'
 ---
 # Abstract {#sec:abstract}
 
-Terms such as *queen*, *worker*, and *colony* connect biological descriptions to familiar social concepts. This study introduces a six-domain Ento-Linguistic framework and an open-source descriptive text-analysis pipeline. The headline layer contains 7540 source-identified abstracts from 7609 stored strings; 69 unreconciled strings are retained but excluded. This headline layer contains 991,026 processed tokens and 11,644 candidate terms, of which 1323 receive rule-based domain assignments. The pipeline separates observed document-level term co-occurrence from a map of 6 predefined concept categories with 15 vocabulary-overlap relationships. Among assigned terms, 11.9% receive multiple labels; this measures classification overlap rather than semantic drift. Complementary analyses use 7073 PMC full-text records, 2430 historical OCR documents, and a separate arXiv layer. TF-IDF clustering and Shannon entropy summarize sentence-context distributions, while lexical patterns identify candidate framing contexts. A separately receipted fixed-margin comparison finds fewer edges and lower clustering in the selected-term graph than in its finite-chain randomized reference, indicating concentration of co-occurrence relative to the preserved incidence margins. Clarity, Appropriateness, Consistency, and Evolvability (CACE) are proposed as heuristic evaluation dimensions. Neither cluster entropy nor marker occurrence establishes distortion of biological understanding, and CACE scores have not been validated against independent human judgments. Provenance gaps, mixed-topic retrieval, OCR errors, overlapping groups, and explicitly bounded analyses limit interpretation. The contribution is a reproducible descriptive workflow and a framework for subsequent annotated, hypothesis-driven research, rather than a causal test of language shaping scientific thought. Code and data lineage: https://github.com/docxology/ento_linguistics.
+Terms such as *queen*, *worker*, and *colony* connect biological descriptions to familiar social concepts. This study introduces a six-domain Ento-Linguistic framework and an open-source descriptive text-analysis pipeline. The headline layer contains 7540 source-identified abstracts from 7609 stored strings; 69 unreconciled strings are retained but excluded. This headline layer contains 991,026 processed tokens and 11,644 candidate terms, of which 1323 receive rule-based domain assignments. The pipeline separates observed document-level term co-occurrence from a map of 6 predefined concept categories with 15 vocabulary-overlap relationships. Among assigned terms, 11.9% receive multiple labels; this measures classification overlap rather than semantic drift. Complementary analyses use 7073 PMC full-text records, 2430 historical OCR documents, and a separate arXiv layer. TF-IDF clustering and Shannon entropy summarize sentence-context distributions, while lexical patterns identify candidate framing contexts. A separately receipted fixed-margin comparison finds fewer edges and lower clustering in the selected-term graph than in its finite-chain randomized reference, indicating concentration of co-occurrence relative to the preserved incidence margins. Clarity, Appropriateness, Consistency, and Evolvability (CACE) are proposed as heuristic evaluation dimensions. Neither cluster entropy nor marker occurrence establishes distortion of biological understanding, and CACE scores have not been validated against independent human judgments. A deterministic vocabulary--threshold diagnostic makes the dependence of density and clustering on network representation explicit. Complexity motivates questions about units, coupling, feedback and scale; it is not inferred from a dense lexical projection. Provenance gaps, mixed-topic retrieval, OCR errors, overlapping groups, and explicitly bounded analyses limit interpretation. The contribution is a reproducible descriptive workflow and a framework for subsequent annotated, hypothesis-driven research, rather than a causal test of language shaping scientific thought. Code and data lineage: https://github.com/docxology/ento_linguistics.
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_reading/graphical_abstract.png}
+\caption{Graphical abstract. Biological processes, scientific discourse and computational representations have distinct observational units. The six overlapping domains organize questions; observed textual proxies and proposed validation designs retain separate evidential roles. Arrows in the biological lane are schematic, not a fitted model or newly measured interaction network.}
+\label{fig:graphical_abstract}
+\end{figure}
 
 
 \clearpage
@@ -53,6 +61,9 @@ The headline computation analyzes 7540 source-identified abstracts, yielding 991
 Active Inference and multiscale modeling provide a theoretical perspective \citep{friston2010free, friedman2021active}, but the present pipeline does not fit a generative model of scientific language or measure variational free energy. A Markov blanket specifies conditional-independence relationships in a model; it is not a lexical security filter or a biological boundary established by terminology alone.
 
 The contribution is a descriptive workflow, a proposed taxonomy, and explicit questions for subsequent validation. Historical OCR frequencies provide dated source-layer observations rather than proof of conceptual origins or causal reform. Methods and limitations state source custody gaps, convenience-sample retrieval, statistical dependence, and bounded analyses so that interpretation remains tied to the evidence actually produced.
+
+
+Complex systems supplies an organizing question: which units, relations, feedbacks and timescales does a scientific passage specify? Network representations and dynamics address different problems \citep{newman2003structure}, while different complexity measures require different targets and assumptions \citep{ladyman2013complex}. This study therefore keeps observed biological mechanisms, lexical descriptions and computational proxies distinct. The v1.3.0 representation diagnostic makes vocabulary and edge-threshold dependence inspectable; separate validation is required before transferring those measures to meaning, communication or biological organization.
 
 
 \clearpage
@@ -162,6 +173,15 @@ All 2430 stored BHL documents enter literal seed-term frequencies per 10,000 OCR
 Tests exercise numerical examples, real files, corpus slices, and local HTTP servers. Negative controls reject malformed text, stale content, missing receipts, and failed renderer commands. They establish software behavior, not scientific validity of the proxy measures. Python dependencies are resolved by uv.lock; NLTK resources are separate prerequisites. Content fingerprints bind analyses to ordered records, project source, and locked dependencies. A completed manifest binds input and output files; rendering rejects changed artifacts and nonzero toolchain exits.
 
 
+## Network Representation Sensitivity {#sec:network_reading}
+
+Using the verified document--term incidence and stable frequency ranking, we examine nested vocabularies of 25, 50, 75 and 100 terms at inclusive shared-document thresholds of 1, 2, 5, 10 and 20. This declared representation grid complements the fixed-margin reference; it is neither a tuned model nor a random sample. Projection and dynamics address distinct questions \citep{newman2003structure}.
+
+Every selected term remains a node, including isolates. An edge exists when $w(u,v)\geq\tau$, and density is $\rho_{n,\tau}=2|E_{n,\tau}|/[n(n-1)]$. Mean local unweighted clustering is zero for degree-zero/one nodes. Component count, largest-component size, isolates and documents containing any selected term are exported. Changing vocabulary size changes both possible pairs and selected incidences; density across sizes need not be monotone.
+
+The separate receipt binds inputs, implementation, lock and all outputs. Validation reconstructs the baseline and replays the report. No additional null model, bootstrap, uncertainty interval or community optimization is executed. The statistics diagnose representation dependence, not semantic validity or biological complexity.
+
+
 \clearpage
 
 # Results: Corpus Analysis and Terminology Networks {#sec:experimental_results}
@@ -220,6 +240,17 @@ Selected terms therefore co-occur in fewer distinct pairs, with less closed tria
 \includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_robustness/network_robustness.png}
 \caption{Fixed-margin comparison for the abstract terminology network. Top: retained-chain traces of projected edge count and mean local clustering for 3 seeds. Bottom: distributions of the 600 retained draws, with the observed value marked. Every draw preserves each abstract's selected-term count and each term's document frequency. The reference is conditional on the frequency-ranked vocabulary and the convenience corpus.}
 \label{fig:network_robustness}
+\end{figure}
+
+### Vocabulary and Edge-Threshold Diagnostic
+
+Across the declared 20 vocabulary--threshold combinations on the same 7540 identified abstracts, the 100-term graph at a one-document threshold has density 0.8549. Requiring at least twenty shared documents retains 1191 edges and gives density 0.2406. Figure \ref{fig:network_reading} displays the full grid, including mean local clustering with isolates retained. These are deterministic descriptions of selected representations, not uncertainty intervals or evidence that one threshold recovers true semantic relations. Clustering need not decrease when edges are removed: changing neighborhoods also changes local triangle denominators. The curves separate these topological summaries rather than interpreting either as biological complexity.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_reading/network_reading.png}
+\caption{Vocabulary and minimum-shared-document sensitivity. Curves use nested frequency-ranked vocabularies and inclusive thresholds. The denominator includes all selected pairs, and clustering includes isolates as zero. Each point is recomputed from the same identified abstract layer; no new randomization or biological-network inference is represented.}
+\label{fig:network_reading}
 \end{figure}
 
 Domain-assignment overlap is a different quantity, displayed separately in Figure \ref{fig:domain_overlap}.
@@ -406,6 +437,13 @@ The second borrows the manipulation logic of metaphor experiments (Section \ref{
 These boundaries support a focused next study: a frozen, fully reconciled corpus with independent annotations and prespecified document-level analysis, followed by a controlled evaluation of operational terminology.
 
 
+## Complexity as an Explicit Modeling Question
+
+Complexity connects the paper's questions about organization, information and scale while requiring a defined target system and measurement. Accounts of complex systems distinguish candidate features and mathematical measures rather than supplying a universal interpretation of density or entropy \citep{ladyman2013complex}. A complete graph has maximal density and a short description; dense word co-occurrence alone does not establish emergence, adaptation or collective cognition. One-mode projection itself can create local clustering \citep{newman2003structure}. The new representation diagnostic consequently reports how graph statistics depend on vocabulary and edge thresholds, without converting them into biological properties.
+
+Architecture asks which units and relations a passage specifies. Simon's near-decomposability account concerns relatively weak coupling between subsystems and different short- and long-run behavior \citep{simon1962architecture}; overlapping lexical domains do not demonstrate those dynamical conditions. Fertilization exchanges questions and models across collective behavior, network science and terminology research while retaining their observational units. Expansion asks whether measurement transfers to new taxa, genres, languages and readers after held-out validation. These three themes support a complex-systems research program; the executed corpus analyses do not by themselves complete it.
+
+
 \clearpage
 
 # Conclusion {#sec:conclusion}
@@ -423,6 +461,9 @@ The immediate research priorities are source reconciliation, document-level rele
 Longitudinal analysis should distinguish changes in source composition and OCR quality from changes in terminology. Multilingual comparisons require language-specific normalization and definitions. Reader or author experiments could then evaluate whether operational definitions and alternative terms improve comprehension or mechanistic explanation.
 
 CACE offers explicit evaluation questions for such studies. Its current scores provide an inspectable starting point, with design choices and missing-data conventions disclosed. Active Inference and multiscale interpretations remain theoretical proposals until connected to specified models and empirical measurements. The repository contributes tools and auditable descriptive results for that work.
+
+
+The complexity theme connects precise units, cross-disciplinary exchange and validated transfer. Architecture specifies what is represented; Fertilization exchanges questions while preserving evidence boundaries; Expansion tests measurement in new settings. The vocabulary--threshold diagnostic and graphical abstract make that program explicit. Reproducible representation is an executed contribution, whereas annotated meaning, reader effects and biological dynamics remain separate validation targets.
 
 
 \clearpage
@@ -470,6 +511,11 @@ Ecological conditions also matter to how interaction processes regulate activity
 ## Positioning This Work
 
 This repository contributes a six-domain descriptive workflow with auditable source layers, inspectable computational definitions, regenerable figures and receipt-bound values. CACE is a proposed evaluation framework, not a validated measure or intervention. Its independent validation would require annotated meanings, blinded judgments, measured agreement, and tests of sensitivity and communication outcomes. The distinction between implemented measurement, theoretical motivation, and unperformed validation is part of the contribution.
+
+
+## Complexity, Representations, and Dynamics
+
+Simon \citep{simon1962architecture} motivates explicit units, coupling and timescales in hierarchical systems. Newman \citep{newman2003structure} distinguishes network structure, models and dynamical processes, including clustering induced by affiliation projection. Ladyman and colleagues \citep{ladyman2013complex} compare candidate features and different measures of complexity. Together these sources support precise modeling questions rather than equating a lexical graph with the biological system it describes. The present contribution is an auditable discourse representation and its sensitivity analysis; testing biological dynamics or readers' inferences requires separate observations and designs.
 
 
 \clearpage

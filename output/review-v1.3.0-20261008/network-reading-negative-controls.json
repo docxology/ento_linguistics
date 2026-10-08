@@ -1,0 +1,14 @@
+[
+  {
+    "case": "self-hashed-number",
+    "rejected": "Network-reading report disagrees with reconstructed observations"
+  },
+  {
+    "case": "missing-inventory",
+    "rejected": "Incomplete network-reading receipt inventory"
+  },
+  {
+    "case": "self-hashed-tiny-png",
+    "rejected": "Invalid network-reading figure format or geometry"
+  }
+]

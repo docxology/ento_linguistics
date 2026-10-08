@@ -21,7 +21,7 @@ CORPUS_DIR = PROJECT_DIR / "data" / "corpus"
 # consumes the completed core analysis receipt, so its values cannot exist when
 # generation validates the manuscript; the strict renderer resolves them from
 # the extension's own receipted reports (pipeline.rendering._load_extension_vars).
-RENDER_STAGE_PREFIXES = ("NULLNET_",)
+RENDER_STAGE_PREFIXES = ("NULLNET_", "NETREAD_")
 # Figures from the same extension, validated by its receipt and by the renderer.
 RENDER_STAGE_FIGURE_DIR = "output/extensions/"
 

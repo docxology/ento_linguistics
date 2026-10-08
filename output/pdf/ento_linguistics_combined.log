@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.18)  8 OCT 2026 12:09
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.9.18)  8 OCT 2026 14:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1385,11 +1385,15 @@ Package microtype Warning: Unknown slot number of character
 (microtype)                (or a number) in protrusion list
 (microtype)                `LMR-it'.
 
-[3] [4
+File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/exten
+sions/network_reading/graphical_abstract.png Graphic file (type bmp)
+</Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions
+/network_reading/graphical_abstract.png>
+[3] [4] [5
 
-] [5] [6
+] [6] [7
 
-] [7] [8] [9]
+] [8] [9] [10]
 File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figur
 es/terminology_network.png Graphic file (type bmp)
 </Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/te
@@ -1398,13 +1402,17 @@ rminology_network.png>
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[10
+[11
 
 ]
 File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/exten
 sions/network_robustness/network_robustness.png Graphic file (type bmp)
 </Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions
 /network_robustness/network_robustness.png>
+File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/exten
+sions/network_reading/network_reading.png Graphic file (type bmp)
+</Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions
+/network_reading/network_reading.png>
 File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figur
 es/domain_overlap_heatmap.png Graphic file (type bmp)
 </Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/do
@@ -1424,14 +1432,16 @@ File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figur
 es/concept_map.png Graphic file (type bmp)
 </Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/co
 ncept_map.png>
+[12] [13]
 File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figur
 es/anthropomorphic_framing.png Graphic file (type bmp)
 </Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/an
 thropomorphic_framing.png>
 
+
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[11] [12] [13] [14] [15] [16] [17
+[14] [15] [16] [17] [18
 
 ]
 File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figur
@@ -1477,32 +1487,32 @@ wer_and_labor_ambiguities.png>
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[18] [19] [20] [21] [22] [23
+[19] [20] [21] [22] [23] [24
 
-] [24] [25] [26
+] [25] [26] [27] [28
 
-] [27
+] [29
 
-] [28] [29
+] [30] [31
 
-] [30
+] [32
 
-] [31] [32
+] [33]
+[34
 
-]
-[33] [34]
+] [35] [36]
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 9.0pt on input line 1878.
+(Font)              scaled to size 9.0pt on input line 1998.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 6.0pt on input line 1878.
+(Font)              scaled to size 6.0pt on input line 1998.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 9.00082pt on input line 1878.
+(Font)              scaled to size 9.00082pt on input line 1998.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 6.00055pt on input line 1878.
+(Font)              scaled to size 6.00055pt on input line 1998.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 8.99904pt on input line 1878.
+(Font)              scaled to size 8.99904pt on input line 1998.
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 1878.
+(Font)              scaled to size 5.99936pt on input line 1998.
 
 
 Package microtype Warning: Unknown slot number of character
@@ -1518,13 +1528,13 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[35
+[37
 
 ]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[36] [37]
+[38] [39]
 File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figur
 es/statistical_analysis.png Graphic file (type bmp)
 </Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/st
@@ -1545,11 +1555,11 @@ File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figur
 es/arxiv_analysis.png Graphic file (type bmp)
 </Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/ar
 xiv_analysis.png>
- [38
+ [40
 
-] [39] [40] [41
+] [41] [42] [43
 
-] [42]
+] [44]
 File: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figur
 es/bhl_term_usage.png Graphic file (type bmp)
 </Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/bh
@@ -1558,16 +1568,16 @@ l_term_usage.png>
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[43
+[45
 
-] [44]
-ignored: Infinite glue shrinkage found in box being split [45
+] [46]
+ignored: Infinite glue shrinkage found in box being split [47
 
 ]
-ignored: Infinite glue shrinkage found in box being split [46] [47] (./ento_linguistics
-_combined.bbl [48
+ignored: Infinite glue shrinkage found in box being split [48] [49] (./ento_linguistics
+_combined.bbl [50
 
-]) [49]
+] [51]) [52]
 (./ento_linguistics_combined.aux)
  ***********
 LaTeX2e <2025-11-01>
@@ -1575,12 +1585,12 @@ L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25942 strings out of 468168
- 496070 string characters out of 5432815
+ 25985 strings out of 468168
+ 498832 string characters out of 5432815
  1165068 words of memory out of 64000000
- 54297 multiletter control sequences out of 15000+600000
+ 54337 multiletter control sequences out of 15000+600000
  651255 words of font info for 109 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  90i,9n,114p,1018b,726s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on ento_linguistics_combined.pdf (49 pages).
+Output written on ento_linguistics_combined.pdf (52 pages).

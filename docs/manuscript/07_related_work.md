@@ -41,3 +41,8 @@ Ecological conditions also matter to how interaction processes regulate activity
 ## Positioning This Work
 
 This repository contributes a six-domain descriptive workflow with auditable source layers, inspectable computational definitions, regenerable figures and receipt-bound values. CACE is a proposed evaluation framework, not a validated measure or intervention. Its independent validation would require annotated meanings, blinded judgments, measured agreement, and tests of sensitivity and communication outcomes. The distinction between implemented measurement, theoretical motivation, and unperformed validation is part of the contribution.
+
+
+## Complexity, Representations, and Dynamics
+
+Simon \citep{simon1962architecture} motivates explicit units, coupling and timescales in hierarchical systems. Newman \citep{newman2003structure} distinguishes network structure, models and dynamical processes, including clustering induced by affiliation projection. Ladyman and colleagues \citep{ladyman2013complex} compare candidate features and different measures of complexity. Together these sources support precise modeling questions rather than equating a lexical graph with the biological system it describes. The present contribution is an auditable discourse representation and its sensitivity analysis; testing biological dynamics or readers' inferences requires separate observations and designs.

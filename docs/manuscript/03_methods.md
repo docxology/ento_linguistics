@@ -101,3 +101,12 @@ All {{BHL_DOCUMENTS}} stored BHL documents enter literal seed-term frequencies p
 ### Validation and Reproducibility
 
 Tests exercise numerical examples, real files, corpus slices, and local HTTP servers. Negative controls reject malformed text, stale content, missing receipts, and failed renderer commands. They establish software behavior, not scientific validity of the proxy measures. Python dependencies are resolved by uv.lock; NLTK resources are separate prerequisites. Content fingerprints bind analyses to ordered records, project source, and locked dependencies. A completed manifest binds input and output files; rendering rejects changed artifacts and nonzero toolchain exits.
+
+
+## Network Representation Sensitivity {#sec:network_reading}
+
+Using the verified document--term incidence and stable frequency ranking, we examine nested vocabularies of 25, 50, 75 and 100 terms at inclusive shared-document thresholds of 1, 2, 5, 10 and 20. This declared representation grid complements the fixed-margin reference; it is neither a tuned model nor a random sample. Projection and dynamics address distinct questions \citep{newman2003structure}.
+
+Every selected term remains a node, including isolates. An edge exists when $w(u,v)\geq\tau$, and density is $\rho_{n,\tau}=2|E_{n,\tau}|/[n(n-1)]$. Mean local unweighted clustering is zero for degree-zero/one nodes. Component count, largest-component size, isolates and documents containing any selected term are exported. Changing vocabulary size changes both possible pairs and selected incidences; density across sizes need not be monotone.
+
+The separate receipt binds inputs, implementation, lock and all outputs. Validation reconstructs the baseline and replays the report. No additional null model, bootstrap, uncertainty interval or community optimization is executed. The statistics diagnose representation dependence, not semantic validity or biological complexity.

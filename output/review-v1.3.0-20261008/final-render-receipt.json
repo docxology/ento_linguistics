@@ -1,0 +1,7 @@
+{
+  "command": "uv run python scripts/_render_pdf_override.py --strict-templates",
+  "exit_code": 0,
+  "log": "render-final-layout.log.gz",
+  "pdf_sha256": "c6588539b0ca5e11aaf5fd9ca32037a599bc0a5d171da69c31dd9c6abdba48d3",
+  "pages": 52
+}

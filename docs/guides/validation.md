@@ -7,6 +7,7 @@ Run from the repository root after installing development dependencies and NLTK 
 ~~~bash
 uv run pytest tests/ --cov=src --cov-report=term-missing
 uv run python scripts/02_generate_figures.py
+PYTHONPATH=src uv run python -m research.network_reading.study --root .
 PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
 uv run python scripts/_render_pdf_override.py --strict-templates
 ~~~

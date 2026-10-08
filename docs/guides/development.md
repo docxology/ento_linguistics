@@ -20,6 +20,7 @@ Reproduce a defect before changing its implementation. Use real files, actual te
 ~~~bash
 PYTHONPATH=src uv run pytest tests/test_provenance.py tests/test_nltk_resources.py --no-cov
 uv run python scripts/02_generate_figures.py
+PYTHONPATH=src uv run python -m research.network_reading.study --root .
 uv run pytest tests/ --cov=src --cov-report=term-missing
 PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
 uv run python scripts/_render_pdf_override.py --strict-templates

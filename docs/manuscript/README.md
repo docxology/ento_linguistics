@@ -2,9 +2,9 @@
 
 [Documentation](../README.md) → Manuscript
 
-This directory is the canonical source for the [current unpublished draft](../../output/pdf/ento_linguistics_combined.pdf). The Markdown deliberately retains computational placeholders; read the built PDF for resolved numbers. The [published paper](../../Ento_Linguistics_manuscript.pdf) is an archived release, not a render of every later edit.
+This directory is the canonical source for [Ento-Linguistics v1.3.0](../../Ento_Linguistics_manuscript.pdf). The Markdown retains computational placeholders; the built PDF resolves them from verified core and extension exports. The current edition adds a graphical abstract, vocabulary/threshold sensitivity methods and source-checked Complexity / Complex Systems framing.
 
-The working source is **1.2.2-dev**, an unpublished revision with editorial, figure and rendering corrections. The linked top-level PDF and [v1.2.1 DOI](https://doi.org/10.5281/zenodo.23215452) identify the archived publication, not this revised source. Read the locally rendered PDF for the updated argument and bibliography.
+[The v1.3.0 GitHub release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0) identifies the matched paper and lecture artifacts. The [v1.2.1 DOI](https://doi.org/10.5281/zenodo.23215452) retains the earlier archived paper and media identity; it is not the DOI of the new edition.
 
 ## Reading map
 
@@ -23,7 +23,7 @@ The renderer orders main sections, supplements, glossary, then bibliography. REA
 
 Follow [manuscript authoring](../guides/authoring.md) for variables, captions, equations, and citations. The active configuration is [config.yaml](config.yaml); [references.bib](references.bib) and [preamble.tex](preamble.tex) provide bibliography and styling.
 
-From the repository root, after valid analysis generation:
+From the repository root, after valid core and network-reading generation:
 
 ~~~bash
 uv run python scripts/_render_pdf_override.py --strict-templates

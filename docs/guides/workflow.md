@@ -8,9 +8,12 @@ Complete [setup](setup.md) first. Run commands from the repository root and keep
 
 ~~~bash
 uv run python scripts/02_generate_figures.py
+PYTHONPATH=src uv run python -m research.network_reading.study --root .
 ~~~
 
-The generator processes the identified abstract selection and separate PMC, BHL, and arXiv layers, exports statistics, generates registered figures, checks manuscript variables, and writes a completed analysis manifest only after required stages succeed.
+The separate network-reading command validates the completed core receipt, reconstructs the selected incidence and writes the declared vocabulary/threshold grid and graphical abstract. Rerun it after its implementation or consumed inputs change; strict rendering rejects a stale or absent extension.
+
+The core generator processes the identified abstract selection and separate PMC, BHL, and arXiv layers, exports statistics, generates registered figures, checks manuscript variables, and writes a completed analysis manifest only after required stages succeed.
 
 It reuses expensive layer artifacts when ordered input contents, source code, dependency lock, selected NLTK resources, and relevant development bounds match their fingerprints. Running the generator is therefore not always a cold recomputation. Preserve prior results outside the managed artifact directories before deliberately removing reusable caches for a cold run.
 
