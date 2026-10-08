@@ -1,0 +1,8 @@
+{
+  "lane": "independent-gate",
+  "verdict": "APPROVE",
+  "public_candidate": "d18bb1812c37cb7bf802e690d1b8d1bed2738a26",
+  "lecture_candidate": "a3669c1eea841e9689202f7cd080bd60f07c1310",
+  "report_sha256": "7f9aefa2efe4a967917bfbde56613a2d4d6f5437c58aed6bb78cdf1869c10759",
+  "scope": "Bounded software/content/media gate; remote publication readback remains separate"
+}

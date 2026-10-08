@@ -10,3 +10,7 @@ The 52-page research edition has 20 figures: 17 core figures, the fixed-margin c
 - All 52 physical page layouts were rasterized and inspected; critical new pages were inspected at full-page size. No unresolved templates, undefined citations, missing glyphs or overfull boxes. Earlier layout failure and corrected captures remain locally under `before-method-tightening/`.
 
 See the JSON receipts and compressed command logs alongside this file. Raster captures remain in the local review directory. This record covers software execution, content custody, numerical regression and bounded layout QA. Independent review and public release readback are recorded separately when completed. Earlier DOI editions retain their archived identities; no new DOI is claimed.
+
+## Independent gate
+
+[Independent review](independent-gate.md): **APPROVE** for public candidate `d18bb1812c37cb7bf802e690d1b8d1bed2738a26` and matched LectureCreate candidate `a3669c1eea841e9689202f7cd080bd60f07c1310`. The reviewer reproduced every diagnostic setting with a separate numerical oracle and verified source, retained trace, media and prepared archive hashes. Subsequent receipt/status-only commits do not change those reviewed source or media bytes. External publication readback remains separate.
