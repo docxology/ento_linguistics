@@ -1,0 +1,16 @@
+{
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=json:output/review-main-20261008/coverage.json",
+    "--basetemp=output/review-main-20261008/tmp-final-tests/pytest"
+  ],
+  "exit_code": 0,
+  "started_at_epoch": 1791477045.754333,
+  "finished_at_epoch": 1791477456.23815,
+  "temporary_files_on_gitvault": true
+}

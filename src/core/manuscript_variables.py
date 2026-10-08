@@ -17,6 +17,14 @@ MANUSCRIPT_DIR = PROJECT_DIR / "docs" / "manuscript"
 OUTPUT_DATA_DIR = PROJECT_DIR / "output" / "data"
 CORPUS_DIR = PROJECT_DIR / "data" / "corpus"
 
+# Placeholders filled only at render time. The fixed-margin network extension
+# consumes the completed core analysis receipt, so its values cannot exist when
+# generation validates the manuscript; the strict renderer resolves them from
+# the extension's own receipted reports (pipeline.rendering._load_extension_vars).
+RENDER_STAGE_PREFIXES = ("NULLNET_",)
+# Figures from the same extension, validated by its receipt and by the renderer.
+RENDER_STAGE_FIGURE_DIR = "output/extensions/"
+
 def load_json(path: Path) -> dict:
     """Load a JSON file, returning empty dict if missing."""
     if not path.exists():
@@ -52,6 +60,23 @@ def _fmt_stat(value) -> str:
     if value is None:
         return ""
     return f"{float(value):.4f}"
+
+
+def _fmt_count(value) -> str:
+    """Format a count-like statistic (degrees of freedom, a median of counts).
+
+    Whole values print as integers; a half-integer median keeps one decimal.
+    Missing values return an empty string, as in ``_fmt_stat``.
+
+    Example::
+
+        _fmt_count(350.0)  # "350"
+        _fmt_count(5624.5)  # "5624.5"
+    """
+    if value is None:
+        return ""
+    number = float(value)
+    return str(int(number)) if number.is_integer() else f"{number:.1f}"
 
 
 def _fmt_p(value) -> str:
@@ -314,8 +339,8 @@ def build_statistical_tokens(
     if anova:
         variables["ANOVA_METRIC"] = str(anova.get("metric", ""))
         variables["ANOVA_F"] = _fmt_stat(anova.get("F"))
-        variables["ANOVA_DF1"] = _fmt_stat(anova.get("df1"))
-        variables["ANOVA_DF2"] = _fmt_stat(anova.get("df2"))
+        variables["ANOVA_DF1"] = _fmt_count(anova.get("df1"))
+        variables["ANOVA_DF2"] = _fmt_count(anova.get("df2"))
         variables["ANOVA_P"] = _fmt_p(anova.get("p"))
         variables["ANOVA_ETA_SQUARED"] = _fmt_stat(anova.get("eta_squared"))
 
@@ -424,7 +449,7 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
     ]
     if token_counts:
         variables["FULLTEXT_TOTAL_TOKENS"] = str(sum(token_counts))
-        variables["FULLTEXT_MEDIAN_TOKENS"] = _fmt_stat(statistics.median(token_counts))
+        variables["FULLTEXT_MEDIAN_TOKENS"] = _fmt_count(statistics.median(token_counts))
     for domain, entry in (fulltext_artifact.get("descriptives") or {}).items():
         slug = str(domain).upper()
         variables[f"FULLTEXT_DOMAIN_{slug}_TERMS"] = str(entry.get("n_terms", 0))
@@ -497,6 +522,11 @@ def _build_discourse_tokens(artifact: Optional[dict], prefix: str) -> dict:
     - ``<PREFIX>_DISCOURSE_SAMPLE_FRACTION``: ``sample_fraction`` (4
       decimals; 1.0 = full corpus, 0.2 = the full-text layer's
       deterministic 20% sample).
+    - ``<PREFIX>_DISCOURSE_SAMPLE_PERCENT``: the same fraction as a
+      percentage of length-eligible texts (1 decimal).
+    - ``<PREFIX>_DISCOURSE_EXCLUDED_MIN_LENGTH`` and
+      ``<PREFIX>_DISCOURSE_MIN_TEXT_LENGTH``: texts below the character
+      minimum, and that minimum.
     - ``<PREFIX>_PATTERNS_<SLUG>``: per-pattern ``frequency`` for every
       key the section carries (e.g. ``PATTERNS_HIERARCHICAL_FRAMING``).
     - ``<PREFIX>_RHETORICAL_<SLUG>``: per-strategy ``frequency`` for
@@ -524,6 +554,11 @@ def _build_discourse_tokens(artifact: Optional[dict], prefix: str) -> dict:
         variables[f"{prefix}_DISCOURSE_SAMPLE_FRACTION"] = _fmt_stat(
             sample_fraction
         )
+        variables[f"{prefix}_DISCOURSE_SAMPLE_PERCENT"] = f"{float(sample_fraction) * 100:.1f}"
+    for source_key, token in (("n_texts_excluded_min_length", "EXCLUDED_MIN_LENGTH"),
+                              ("min_text_length", "MIN_TEXT_LENGTH")):
+        if discourse.get(source_key) is not None:
+            variables[f"{prefix}_DISCOURSE_{token}"] = str(int(discourse[source_key]))
     for section, value_key in (("patterns", "frequency"), ("rhetorical", "frequency")):
         members: dict = discourse.get(section) or {}
         for key in _discourse_order(section, members):

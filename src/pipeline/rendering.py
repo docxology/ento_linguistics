@@ -141,11 +141,13 @@ def _write_title_page_tex(
         if a.get("email"):
             detail_bits.append(r"{\ttfamily " + a["email"] + r"}")
         if a.get("orcid"):
-            detail_bits.append("ORCID: " + a["orcid"])
+            detail_bits.append("ORCID:~" + a["orcid"])
+        # One detail per line: a joined email/ORCID line wraps mid-identifier
+        # in narrow two-author columns.
         if detail_bits:
             inner.append(
                 r"      {\footnotesize "
-                + r" \enspace $\cdot$ \enspace ".join(detail_bits)
+                + r"\\ ".join(detail_bits)
                 + r"}"
             )
         box = (
@@ -458,6 +460,69 @@ def _load_corpus_vars(project_root: Path) -> dict:
     return vars_
 
 
+def _load_extension_vars(project_root: Path) -> dict:
+    """Load fixed-margin network comparison values for template substitution.
+
+    Reads the primary and sensitivity ``network_robustness.json`` reports that
+    ``research.network_robustness.receipt.ensure_extensions`` validates before
+    rendering. A missing report contributes no variables, so strict rendering
+    fails on the unresolved ``{{NULLNET_*}}`` placeholders instead of printing
+    a fallback value.
+
+    Example::
+
+        _load_extension_vars(root)["NULLNET_EDGES_OBSERVED"]  # e.g. "4232"
+    """
+    import json
+
+    logger = logging.getLogger("render_pdf.template_vars")
+    base = project_root / "output" / "extensions" / "network_robustness"
+    vars_: dict = {}
+    for prefix, path in (("NULLNET", base / "network_robustness.json"),
+                         ("NULLNET_SENS", base / "sensitivity" / "network_robustness.json")):
+        if not path.exists():
+            logger.warning("  ✗ %s NOT FOUND — %s_* variables unavailable", path, prefix)
+            continue
+        report = json.loads(path.read_text(encoding="utf-8"))
+        protocol = report["protocol"]
+        vars_[f"{prefix}_DOCUMENTS"] = str(report["documents"])
+        vars_[f"{prefix}_TERMS"] = str(len(report["vocabulary"]))
+        vars_[f"{prefix}_CHAINS"] = str(len(protocol["seeds"]))
+        vars_[f"{prefix}_DRAWS_PER_CHAIN"] = str(protocol["samples_per_chain"])
+        vars_[f"{prefix}_DRAWS"] = str(protocol["samples_per_chain"] * len(protocol["seeds"]))
+        vars_[f"{prefix}_BURN_SWEEPS"] = str(protocol["burn_sweeps"])
+        vars_[f"{prefix}_SPACING_SWEEPS"] = str(protocol["spacing_sweeps"])
+        edges, clustering = report["metrics"]["edges"], report["metrics"]["clustering"]
+        vars_[f"{prefix}_EDGES_OBSERVED"] = str(int(edges["observed"]))
+        vars_[f"{prefix}_EDGES_NULL_MEAN"] = f"{edges['null_mean']:.1f}"
+        vars_[f"{prefix}_EDGES_Q025"] = str(int(edges["null_q025"]))
+        vars_[f"{prefix}_EDGES_Q975"] = str(int(edges["null_q975"]))
+        vars_[f"{prefix}_EDGES_RHAT"] = f"{edges['rhat']:.3f}"
+        vars_[f"{prefix}_CLUSTERING_OBSERVED"] = f"{clustering['observed']:.3f}"
+        vars_[f"{prefix}_CLUSTERING_NULL_MEAN"] = f"{clustering['null_mean']:.3f}"
+        vars_[f"{prefix}_CLUSTERING_Q025"] = f"{clustering['null_q025']:.3f}"
+        vars_[f"{prefix}_CLUSTERING_Q975"] = f"{clustering['null_q975']:.3f}"
+        vars_[f"{prefix}_CLUSTERING_RHAT"] = f"{clustering['rhat']:.3f}"
+        logger.info("  ✓ %s → 17 variables (%s_*)", path.name, prefix)
+    return vars_
+
+
+def _group_digits(value: str) -> str:
+    """Group pure integers of five or more digits in thousands for print.
+
+    Plain commas survive Pandoc conversion in ordinary Markdown, raw TeX,
+    and math. Four-digit values (years, most counts) and decimals are unchanged.
+
+    Example::
+
+        _group_digits("44507505")  # "44,507,505"
+        _group_digits("7540")      # "7540"
+    """
+    if not (len(value) >= 5 and value.isdigit()):
+        return value
+    return f"{int(value):,}"
+
+
 def _apply_corpus_vars(content: str, vars_: dict, *, strict: bool = False) -> str:
     """Substitute {{KEY}} placeholders with corpus statistics values.
 
@@ -470,7 +535,7 @@ def _apply_corpus_vars(content: str, vars_: dict, *, strict: bool = False) -> st
 
     logger = logging.getLogger("render_pdf.template_vars")
     for key, value in vars_.items():
-        content = content.replace("{{" + key + "}}", value)
+        content = content.replace("{{" + key + "}}", _group_digits(value))
 
     # Warn about any unreplaced template variables
     remaining = re.findall(r"\{\{([A-Z0-9_]+)\}\}", content)
@@ -541,6 +606,7 @@ def build_pdf(strict_templates: bool = False) -> None:
 
     # Load corpus statistics for template variable substitution
     corpus_vars = _load_corpus_vars(project_root)
+    corpus_vars.update(_load_extension_vars(project_root))
 
     # Verify files exist and concatenate
     input_files = []
@@ -560,6 +626,7 @@ def build_pdf(strict_templates: bool = False) -> None:
 
             content = content.replace("../figures/", abs_figures + "/")
             content = content.replace("../output/figures/", abs_figures + "/")
+            content = content.replace("../output/", str(output_dir.parent).replace("\\", "/") + "/")
 
             # Substitute {{CORPUS_*}} template variables with live data values
             content = _apply_corpus_vars(content, corpus_vars, strict=strict)

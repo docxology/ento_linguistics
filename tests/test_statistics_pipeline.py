@@ -418,8 +418,8 @@ class TestManuscriptVariableTokens:
         """ANOVA tokens render the frozen names with 4-decimal formatting."""
         assert stat_tokens["ANOVA_METRIC"] == "semantic_entropy"
         assert stat_tokens["ANOVA_F"] == "2.5000"
-        assert stat_tokens["ANOVA_DF1"] == "5.0000"
-        assert stat_tokens["ANOVA_DF2"] == "24.0000"
+        assert stat_tokens["ANOVA_DF1"] == "5"
+        assert stat_tokens["ANOVA_DF2"] == "24"
         assert stat_tokens["ANOVA_P"] == "<0.0001"
         assert stat_tokens["ANOVA_ETA_SQUARED"] == "0.3400"
 

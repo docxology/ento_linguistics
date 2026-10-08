@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: ento_linguistics_combined.aux
 The style file: plainnat.bst
 Database file #1: references.bib
-You've used 35 entries,
+You've used 37 entries,
             2773 wiz_defined-function locations,
-            822 strings with 10455 characters,
-and the built_in function-call counts, 14396 in all, are:
-= -- 1306
-> -- 648
-< -- 27
-+ -- 230
-- -- 195
-* -- 1115
-:= -- 2272
-add.period$ -- 128
-call.type$ -- 35
-change.case$ -- 159
-chr.to.int$ -- 35
-cite$ -- 70
-duplicate$ -- 705
-empty$ -- 1302
-format.name$ -- 242
-if$ -- 2996
+            837 strings with 10739 characters,
+and the built_in function-call counts, 15102 in all, are:
+= -- 1374
+> -- 668
+< -- 29
++ -- 238
+- -- 201
+* -- 1163
+:= -- 2386
+add.period$ -- 136
+call.type$ -- 37
+change.case$ -- 167
+chr.to.int$ -- 37
+cite$ -- 74
+duplicate$ -- 745
+empty$ -- 1372
+format.name$ -- 250
+if$ -- 3145
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 44
-newline$ -- 206
-num.names$ -- 141
-pop$ -- 316
+missing$ -- 47
+newline$ -- 218
+num.names$ -- 149
+pop$ -- 330
 preamble$ -- 1
-purify$ -- 134
+purify$ -- 140
 quote$ -- 0
-skip$ -- 487
+skip$ -- 512
 stack$ -- 0
-substring$ -- 584
-swap$ -- 35
+substring$ -- 607
+swap$ -- 37
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 330
+type$ -- 347
 warning$ -- 0
-while$ -- 144
+while$ -- 152
 width$ -- 0
-write$ -- 507
+write$ -- 538

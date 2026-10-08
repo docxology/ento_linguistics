@@ -16,17 +16,17 @@ TextProcessor applies Unicode normalization, lowercase conversion, word tokeniza
 
 NLTK sentence tokenization supplies the contexts used for semantic entropy. These sentence contexts differ from the short, processed-token windows retained on extracted Term objects. English-language resources are applied to a heterogeneous stored corpus; this is not a validated multilingual processing pipeline.
 
-NLTK resources are separate downloaded prerequisites. The schema-2 analysis receipt binds the selected English stopword file, English punkt_tab files and WordNet dictionary bytes (the complete archive when archive-backed). The same hashes enter cache signatures; changing a selected resource requires reanalysis. These hashes identify the installed inputs without vendoring them or guaranteeing automatic restoration. Open Multilingual WordNet is outside this receipt because English lemmatization does not consume it. The source implementation and uv.lock specify Python package dependencies.
+NLTK resources are separate downloaded prerequisites. The analysis receipt binds the selected English stopword file, English punkt_tab files and WordNet dictionary bytes (the complete archive when archive-backed). The same hashes enter cache signatures; changing a selected resource requires reanalysis. These hashes identify the installed inputs without vendoring them or guaranteeing automatic restoration. Open Multilingual WordNet is outside this receipt because English lemmatization does not consume it. The source implementation and uv.lock specify Python package dependencies.
 
 ## Candidate Extraction and Domain Assignment
 
-TerminologyExtractor counts tokens, applies a minimum frequency, and evaluates candidate filters. The headline threshold is one occurrence; the PMC threshold is twenty; arXiv and the BHL computational stack use two. Different thresholds, document lengths and source genres affect vocabulary size and prevent treating raw counts as matched layer comparisons.
+TerminologyExtractor counts tokens, applies the layer-specific minimum frequency listed in Methods, and evaluates candidate filters.
 
 Candidate filters retain configured seed words of three to fifty characters before evaluating generic filters. Other candidates enter through scientific patterns, compound separators, or configured scientific substrings. They reject pure numbers but can admit unrelated substring matches and OCR artifacts. Candidate inclusion is therefore broader than biological terminology. For example, skin, making and queensland can remain candidates without receiving a domain label.
 
 The six DOMAIN_SEEDS vocabularies define direct assignments. Compound tokens can inherit labels from seed-word overlap; fallback lexical patterns use word boundaries. An extracted term can receive several labels. Label overlap follows from these rules and does not demonstrate temporal semantic drift or independently annotated meanings.
 
-Candidate iteration is sorted for deterministic output. The extractor stores surface text, lemma, frequency, domain labels, confidence, and deduplicated short contexts. Three-token windows around occurrences supply at most thirty stored contexts. These windows support heuristic scoring; they do not expand domain labels by co-occurrence. The available n-gram utility is not invoked by the headline extractor.
+Candidate iteration is sorted for deterministic output. The extractor stores surface text, lemma, frequency, domain labels, confidence, and deduplicated short contexts.
 
 Extraction confidence combines configured frequency, context and classification features. It is not calibrated against human correctness labels. The pipeline does not report precision, recall, multilingual accuracy, or inter-rater reliability.
 

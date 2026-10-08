@@ -2,7 +2,11 @@
 
 [Documentation](../README.md) → Verification and publication
 
-This page distinguishes the current v1.2.1 validation patch, the v1.2.0 network extension and lecture, and the earlier captured 6 October 2026 baseline revision. It is a reference to actual execution records, not a live status dashboard or a new scientific validation claim.
+This page distinguishes the unpublished 1.2.2 draft, the published v1.2.1 validation patch, the v1.2.0 network extension and lecture, and the earlier captured 6 October 2026 baseline revision. It is a reference to actual execution records, not a live status dashboard or a new scientific validation claim.
+
+## Unpublished 1.2.2 draft
+
+The draft at [output/pdf/ento_linguistics_combined.pdf](../../output/pdf/ento_linguistics_combined.pdf) is unpublished. The 8 October continuation completed full/default generation, the custody audit, and strict rendering: 49 pages and 17 figures. The complete suite passed 1,820 tests with eight external-template skips; combined coverage was 92.00% (93.44% statements, 87.57% branches). See the [captured verification summary](../../output/review-main-20261008/SUMMARY.md) and its command receipts, negative controls, artifact comparisons, and bounded page QA. This does not establish a new release or independent scientific validation; the published v1.2.1 PDF and DOI remain unchanged.
 
 ## Current version 1.2.1
 

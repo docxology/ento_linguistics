@@ -22,13 +22,14 @@ _logger = get_logger(__name__)
 
 
 def _repo_root() -> Path:
-    """Return the repository root, derived from this file's location.
+    """Return the directory four levels above ``src/core/``.
 
-    Walks up from ``validation_utils.py``:
-    core/ -> src/ -> ento_linguistics/ -> projects/ -> template/
+    When this repository is checked out inside the optional sibling template
+    workspace, that directory holds its ``infrastructure`` package. In a
+    standalone checkout the package is absent and dependent checks are skipped.
 
     Returns:
-        Path to the repository root
+        Path four levels above ``src/core/``
     """
     return Path(__file__).resolve().parent.parent.parent.parent.parent
 

@@ -25,7 +25,7 @@ __all__ = [
 
 # Infrastructure integration
 try:
-    # simulation.py -> pipeline/ -> src/ -> ento_linguistics/ -> projects_archive/ -> template/
+    # Optional sibling template workspace; standalone checkouts use stdlib logging.
     repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
     sys.path.insert(0, str(repo_root))
     from infrastructure.core import get_logger

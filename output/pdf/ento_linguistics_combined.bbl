@@ -1,4 +1,4 @@
-\begin{thebibliography}{35}
+\begin{thebibliography}{37}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -12,7 +12,7 @@ Brent Berlin.
 \newblock Princeton University Press, Princeton, NJ, 1992.
 
 \bibitem[Boomsma and Gawne(2018)]{boomsma2018superorganismality}
-Jacobus~J Boomsma and Richard Gawne.
+Jacobus~J. Boomsma and Richard Gawne.
 \newblock Superorganismality and caste differentiation as points of no return:
   how the major evolutionary transitions were lost in translation.
 \newblock \emph{Biological Reviews}, 93\penalty0 (1):\penalty0 28--54, 2018.
@@ -28,7 +28,7 @@ Corrie~Jacobien Carstens, Annabell Berger, and Giovanni Strona.
 
 \bibitem[Chen(2006)]{chen2006citespace}
 Chaomei Chen.
-\newblock Citespace {II}: Detecting and visualizing emerging trends and
+\newblock {CiteSpace} {II}: Detecting and visualizing emerging trends and
   transient patterns in scientific literature.
 \newblock \emph{Journal of the American Society for Information Science and
   Technology}, 57\penalty0 (3):\penalty0 359--377, 2006.
@@ -36,17 +36,23 @@ Chaomei Chen.
 
 \bibitem[Clark(2013)]{clark2013whatever}
 Andy Clark.
-\newblock Whatever next? predictive brains, situated agents, and the future of
-  cognitive science.
+\newblock Whatever next? {P}redictive brains, situated agents, and the future
+  of cognitive science.
 \newblock \emph{Behavioral and Brain Sciences}, 36\penalty0 (3):\penalty0
   181--204, 2013.
+
+\bibitem[Cohen(1988)]{cohen1988statistical}
+Jacob Cohen.
+\newblock \emph{Statistical Power Analysis for the Behavioral Sciences}.
+\newblock Lawrence Erlbaum Associates, Hillsdale, NJ, 2nd edition, 1988.
+\newblock ISBN 978-0805802832.
 
 \bibitem[{Entomological Society of America}(2024)]{betternamesproject2024}
 {Entomological Society of America}.
 \newblock Better common names: Addressing racist, colonial, and otherwise
-  problematic common names, 2024.
+  problematic common names.
+\newblock ESA Common Names, 2024.
 \newblock URL \url{https://entsoc.org/better-common-names}.
-\newblock Public submissions accepted for proposed name changes.
 
 \bibitem[Fairclough(1992)]{fairclough1992}
 Norman Fairclough.
@@ -57,8 +63,8 @@ Norman Fairclough.
   Constant]{friedman2021active}
 Daniel~Ari Friedman, Alec Tschantz, Maxwell J.~D. Ramstead, Karl Friston, and
   Axel Constant.
-\newblock Active inferants: An active inference framework for ant colony
-  behavior.
+\newblock {A}ctive {I}nferants: An {A}ctive {I}nference framework for ant
+  colony behavior.
 \newblock \emph{Frontiers in Behavioral Neuroscience}, 15:\penalty0 647732,
   2021.
 \newblock \doi{10.3389/fnbeh.2021.647732}.
@@ -77,7 +83,7 @@ Karl Friston.
 
 \bibitem[Gordon(1992)]{gordon1992wittgenstein}
 Deborah~M. Gordon.
-\newblock Wittgenstein and ant-watching.
+\newblock {W}ittgenstein and ant-watching.
 \newblock \emph{Biology and Philosophy}, 7\penalty0 (1):\penalty0 13--25, 1992.
 \newblock \doi{10.1007/BF00130161}.
 
@@ -113,13 +119,13 @@ Ian Hacking.
 \newblock ISBN 978-0674004122.
 
 \bibitem[Herbers(2006)]{herbers2006}
-Joan~M Herbers.
+Joan~M. Herbers.
 \newblock The loaded language of science.
 \newblock \emph{The Chronicle of Higher Education}, 52\penalty0 (41):\penalty0
   B13, 2006.
 
 \bibitem[Herbers(2007)]{herbers2007}
-Joan~M Herbers.
+Joan~M. Herbers.
 \newblock Watch your language! {R}acially loaded metaphors in scientific
   research.
 \newblock \emph{BioScience}, 57\penalty0 (2):\penalty0 104--105, 2007.
@@ -129,8 +135,8 @@ Joan~M Herbers.
   Kiverstein]{kirchhoff2018markov}
 Michael Kirchhoff, Thomas Parr, Ensor Palacios, Karl Friston, and Julian
   Kiverstein.
-\newblock The markov blankets of life: autonomy, active inference and the free
-  energy principle.
+\newblock The {M}arkov blankets of life: autonomy, active inference and the
+  free energy principle.
 \newblock \emph{Journal of the Royal Society Interface}, 15\penalty0
   (138):\penalty0 20170792, 2018.
 
@@ -157,7 +163,7 @@ Helen~E. Longino.
 \newblock Princeton University Press, Princeton, NJ, 1990.
 
 \bibitem[Nowak et~al.(2010)Nowak, Tarnita, and Wilson]{nowak2010evolution}
-Martin~A Nowak, Corina~E Tarnita, and Edward~O Wilson.
+Martin~A. Nowak, Corina~E. Tarnita, and Edward~O. Wilson.
 \newblock The evolution of eusociality.
 \newblock \emph{Nature}, 466\penalty0 (7310):\penalty0 1057--1062, 2010.
 \newblock \doi{10.1038/nature09205}.
@@ -195,7 +201,7 @@ Charlotte Sleigh.
 
 \bibitem[Steen(2017)]{steen2017deliberate}
 Gerard~J. Steen.
-\newblock Deliberate metaphor theory: Basic assumptions, main tenets, and
+\newblock {D}eliberate {M}etaphor {T}heory: Basic assumptions, main tenets, and
   recent developments.
 \newblock \emph{Intercultural Pragmatics}, 14\penalty0 (1):\penalty0 1--24,
   2017.
@@ -228,6 +234,13 @@ Martin~H. Villet.
 \newblock \emph{Ethology Ecology \& Evolution}, 4\penalty0 (3):\penalty0
   213--224, 1992.
 \newblock \doi{10.1080/08927014.1992.9523134}.
+
+\bibitem[Vis(2026)]{vis2026colony}
+Janice Vis.
+\newblock Whose colony?: {R}ethinking terminology and insect relations.
+\newblock \emph{Environmental Humanities}, 18\penalty0 (1):\penalty0 78--95,
+  2026.
+\newblock \doi{10.1215/22011919-12211216}.
 
 \bibitem[Wheeler(1911)]{wheeler1911}
 William~Morton Wheeler.

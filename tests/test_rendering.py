@@ -13,6 +13,7 @@ from pathlib import Path
 import pytest
 
 from pipeline.rendering import (
+    _load_extension_vars,
     _apply_corpus_vars,
     _build_frontmatter,
     _load_corpus_vars,
@@ -138,7 +139,7 @@ class TestBuildFrontmatter:
         assert "\\textbf{Jane Doe}" in tex
         assert "University of Somewhere" in tex
         assert "jane@example.edu" in tex
-        assert "ORCID: 0000-0002-0000-0000" in tex
+        assert "ORCID:~0000-0002-0000-0000" in tex
         # DOI block
         assert "\\href{https://doi.org/10.1234/ento.2026}{10.1234/ento.2026}" in tex
         # PDF metadata synced from config
@@ -411,3 +412,74 @@ def test_rendered_entropy_counts_match_valid_estimates(tmp_path, capsys):
     assert variables['CORPUS_OVERALL_N_TERMS'] == '4'
     assert variables['CORPUS_PUBLICATIONS'] == '2'
     assert 'Publications=2' in capsys.readouterr().out
+
+
+def _write_extension_report(path: Path, *, seeds: list[int], samples: int) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({
+        "documents": 7540, "vocabulary": ["ant", "colony", "queen"],
+        "protocol": {"samples_per_chain": samples, "burn_sweeps": 10, "spacing_sweeps": 1, "seeds": seeds},
+        "metrics": {
+            "edges": {"observed": 4232, "null_mean": 4519.59, "null_q025": 4486.0,
+                      "null_q975": 4558.0, "rhat": 1.001153},
+            "clustering": {"observed": 0.894841, "null_mean": 0.932318, "null_q025": 0.928068,
+                           "null_q975": 0.937206, "rhat": 0.999139},
+        },
+    }))
+
+
+def test_extension_vars_format_both_protocols(tmp_path):
+    base = tmp_path / "output/extensions/network_robustness"
+    _write_extension_report(base / "network_robustness.json", seeds=[42, 43, 44], samples=200)
+    _write_extension_report(base / "sensitivity/network_robustness.json", seeds=[52, 53, 54], samples=100)
+    variables = _load_extension_vars(tmp_path)
+    assert variables["NULLNET_DRAWS"] == "600"
+    assert variables["NULLNET_SENS_DRAWS"] == "300"
+    assert variables["NULLNET_TERMS"] == "3"
+    assert variables["NULLNET_EDGES_NULL_MEAN"] == "4519.6"
+    assert variables["NULLNET_EDGES_Q025"] == "4486"
+    assert variables["NULLNET_CLUSTERING_OBSERVED"] == "0.895"
+    assert variables["NULLNET_CLUSTERING_Q975"] == "0.937"
+    assert variables["NULLNET_EDGES_RHAT"] == "1.001"
+
+
+def test_missing_extension_report_leaves_placeholders_for_strict_failure(tmp_path):
+    assert _load_extension_vars(tmp_path) == {}
+    with pytest.raises(SystemExit):
+        _apply_corpus_vars("{{NULLNET_EDGES_OBSERVED}}", _load_extension_vars(tmp_path), strict=True)
+
+
+def test_generation_defers_exactly_the_extension_namespace(tmp_path):
+    from core.manuscript_variables import RENDER_STAGE_PREFIXES
+
+    base = tmp_path / "output/extensions/network_robustness"
+    _write_extension_report(base / "network_robustness.json", seeds=[42], samples=2)
+    _write_extension_report(base / "sensitivity/network_robustness.json", seeds=[52], samples=2)
+    keys = _load_extension_vars(tmp_path)
+    assert keys and all(key.startswith(RENDER_STAGE_PREFIXES) for key in keys)
+    assert not any(key.startswith(RENDER_STAGE_PREFIXES) for key in ("CORPUS_PUBLICATIONS", "NETWORK_CLUSTERING"))
+
+
+def test_large_integers_are_grouped_for_print():
+    rendered = _apply_corpus_vars(
+        "{{A}} tokens in {{B}} records ({{C}}), p {{D}}",
+        {"A": "44507505", "B": "7540", "C": "10552", "D": "0.0278"},
+    )
+    assert rendered == "44,507,505 tokens in 7540 records (10,552), p 0.0278"
+
+
+def test_grouped_counts_survive_real_pandoc_conversion(tmp_path):
+    """Grouping must remain punctuation rather than visible escaped braces."""
+    import subprocess
+
+    content = _apply_corpus_vars(
+        "Count {{COUNT}}. Mathematical count ${{COUNT}}$.", {"COUNT": "29224"},
+    )
+    source = tmp_path / "counts.md"
+    source.write_text(content, encoding="utf-8")
+    result = subprocess.run(
+        ["pandoc", str(source), "--from=markdown+raw_tex", "--to=latex"],
+        check=True, capture_output=True, text=True,
+    )
+    assert "Count 29,224." in result.stdout
+    assert r"\{" not in result.stdout and r"\}" not in result.stdout

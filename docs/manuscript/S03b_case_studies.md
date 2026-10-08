@@ -38,7 +38,7 @@ Rare matches for superorganism cannot establish that the concept originated afte
 
 The BHL extraction/entropy/framing stack uses {{BHL_ERA_1850_1899_STACK_DOCS}}, {{BHL_ERA_1900_1949_STACK_DOCS}}, and {{BHL_ERA_1950_1970_STACK_DOCS}} complete documents, respectively. Default extraction and framing use all era documents. Available and analyzed characters are recorded in the artifact's coverage metadata. Entropy considers twenty frequent extracted candidates per era using contexts across all documents; it is a candidate-term sample rather than an exhaustive entropy census. Candidate filtering can retain unrelated substring matches such as skin, making, or queensland; unassigned candidates enter the overall sampled entropy mean but not domain means. These are computational filter outputs, not a curated historical vocabulary. An optional development character budget produces a disclosed, separately fingerprinted document subset. Neither default storage nor that subset establishes historical representativeness.
 
-Developmental evidence for canalized caste differentiation \cite{qiu2022canalized} concerns biological mechanisms and does not establish a historical linguistic trend. Evaluating that connection would require a dated, annotated corpus with source-composition controls.
+Developmental evidence for canalized caste differentiation \citep{qiu2022canalized} concerns biological mechanisms and does not establish a historical linguistic trend. Evaluating that connection would require a dated, annotated corpus with source-composition controls.
 
 ## A Reproducible Case-Study Protocol
 

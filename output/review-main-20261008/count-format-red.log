@@ -1,0 +1,27 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.0.1, pluggy-1.6.0
+rootdir: /Volumes/GitVault/Username/docxology/Public/ento_linguistics
+configfile: pyproject.toml
+plugins: xdist-3.8.0, pytest_httpserver-1.1.3, cov-7.0.0
+collected 25 items / 23 deselected / 2 selected
+
+tests/test_rendering.py FF                                               [100%]
+
+=================================== FAILURES ===================================
+__________________ test_large_integers_are_grouped_for_print ___________________
+tests/test_rendering.py:468: in test_large_integers_are_grouped_for_print
+    assert rendered == "44,507,505 tokens in 7540 records (10,552), p 0.0278"
+E   AssertionError: assert '44{,}507{,}5...52), p 0.0278' == '44,507,505 t...52), p 0.0278'
+E     
+E     - 44,507,505 tokens in 7540 records (10,552), p 0.0278
+E     + 44{,}507{,}505 tokens in 7540 records (10{,}552), p 0.0278
+E     ?   + +   + +                              + +
+______________ test_grouped_counts_survive_real_pandoc_conversion ______________
+tests/test_rendering.py:484: in test_grouped_counts_survive_real_pandoc_conversion
+    assert "Count 29,224." in result.stdout
+E   AssertionError: assert 'Count 29,224.' in 'Count 29\\{,\\}224. Mathematical count \\(29{,}224\\).\n'
+E    +  where 'Count 29\\{,\\}224. Mathematical count \\(29{,}224\\).\n' = CompletedProcess(args=['pandoc', '/private/var/folders/vc/rgmbpjpj0dbg61vr54xjskc80000gn/T/pytest-of-4d/pytest-328/tes...wn+raw_tex', '--to=latex'], returncode=0, stdout='Count 29\\{,\\}224. Mathematical count \\(29{,}224\\).\n', stderr='').stdout
+=========================== short test summary info ============================
+FAILED tests/test_rendering.py::test_large_integers_are_grouped_for_print - A...
+FAILED tests/test_rendering.py::test_grouped_counts_survive_real_pandoc_conversion
+======================= 2 failed, 23 deselected in 0.30s =======================

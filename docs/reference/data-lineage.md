@@ -10,6 +10,7 @@ Current data lineage is content-bound rather than a fixed historical row count. 
 | PMC | *data/fulltexts/fulltexts_*.json* and provenance | *output/data/fulltext_analysis.json* | All stored records by default; explicit discourse sampling and development limit |
 | arXiv | *data/corpus/arxiv_records.json* and nested provenance records | *data/corpus/arxiv_analysis.json* | Separate preprint layer |
 | BHL | *data/bhl/bhl_shard_*.json* and provenance | *data/bhl/era_term_usage.json* | All documents for literal rates, extraction and framing by default; twenty-term entropy sample per era |
+| Fixed-margin network reference | Identified abstracts, extracted terms, concept-map summary and the core analysis receipt | *output/extensions/network_robustness/network_robustness.json* (primary) and *sensitivity/network_robustness.json*, bound by their own *receipt.json* | Conditional on the frequency-ranked vocabulary; rendered as `NULLNET_*` and `NULLNET_SENS_*` values in Results |
 
 The custody audit records malformed input, missing digests, repeated body text, source-ID mismatch, and unused metadata. A digest-indexed mapping can collapse different IDs sharing identical text; record count alone does not establish custody. Source identity does not establish relevance, licensing, or annotation validity.
 

@@ -1,0 +1,8 @@
+{
+  "command": "uv run python scripts/02_generate_figures.py",
+  "exit_code": 0,
+  "started_at_epoch": 1791475806.400576,
+  "finished_at_epoch": 1791476897.717728,
+  "analysis_signature": "d30c303d6764ead8cc322145f5b9e67ee754beba06ad5f61700e67c423284aac",
+  "default_bounds": true
+}

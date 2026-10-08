@@ -6,7 +6,7 @@
     "section": "experimental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "f4c6dbf35665ab934b13a285ca8549e2ee340965899a912ec06d0d632c0ec6c8"
+      "sha256": "94e94582230afba4bda808212a4b9901d76abee2c0c829f894682d1d3abb3c3f"
     }
   },
   "fig:fulltext_analysis": {
@@ -16,7 +16,7 @@
     "section": "supplemental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "e3f9e768c89f3bce66175039cadd5d5dac4a4ad6258bf7576f7f7cd3abd273cd"
+      "sha256": "7c2fbe116d726618fffd782a0442524e21123a476b3648bdfaaa27e52efe7083"
     }
   },
   "fig:layer_comparison": {
@@ -26,7 +26,7 @@
     "section": "supplemental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "34ec37f583efd0ab02c2a9f19d1c3aad95f805e579948d93c0d60b146b5fee80"
+      "sha256": "f57f2a6d289af98f0b4f990c9750812b96d9eda41156781beab92da5d7ef72bc"
     }
   },
   "fig:discourse_comparison": {
@@ -36,7 +36,7 @@
     "section": "supplemental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "ed4bcf196ed857ae1d10e1ef0e221b0a9c4109f11646d02ec50f42b2babf5bcc"
+      "sha256": "9dbd732c473a1b06ed618fdc031e5c87803ac4281186a22ddace52d34819543f"
     }
   },
   "fig:arxiv_analysis": {
@@ -46,7 +46,7 @@
     "section": "supplemental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "7089415f6331bfe46f27e4d637440b930e933701193f2ad4ac8a1f10d5be8303"
+      "sha256": "278d3f8d8d8a14b47e58fb7fcae31a94be7dd468ee66ed9e73a03d12f84bd1cb"
     }
   },
   "fig:bhl_term_usage": {
@@ -66,7 +66,7 @@
     "section": "introduction",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "9ed6bc96cf35fd44e479236bd4bddc2443b835899084b864602925d272814e45"
+      "sha256": "ec8bcef8dc7c2877d2355a104c0d77c915935c9b168b5a204a486ce41bc06318"
     }
   },
   "fig:terminology_network": {
@@ -76,7 +76,7 @@
     "section": "experimental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "e55954ee60457ff8d9294ce92c240e3b1ac64bb6ba08e13c7e034c88233f47e8"
+      "sha256": "990ed7c8f819f9456a26333c75622fb6714c022dfb016ec477da7a56666a92c0"
     }
   },
   "fig:domain_comparison": {
@@ -86,7 +86,7 @@
     "section": "experimental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "98cb814fcd14c46827848de28beaf43d3b6020acdbce023d04c06220ce4fdaae"
+      "sha256": "d2bbf017c447c50d84294d5c44293940ff66ef6729087a745494fcafaeb428c8"
     }
   },
   "fig:domain_overlap": {
@@ -96,7 +96,7 @@
     "section": "experimental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "f14762b3e750cb6f23237396d1e14740fde8dd06d0b4907e9fd7d85e1c79a9c7"
+      "sha256": "98b49bed2f04936e08d8f238335e203cae193d5df1acee78896daf17d9c2db39"
     }
   },
   "fig:anthropomorphic": {
@@ -106,7 +106,7 @@
     "section": "discussion",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "4beae937cfa6be9b6359e61b016773dd3cfcdc5e188357c40a2db0ceeb4fe93f"
+      "sha256": "ae7dfebe1b5611d4a1e80bcbf65d9e6c261bee8e6750ae3ddc90a06f710f82ef"
     }
   },
   "fig:concept_hierarchy": {
@@ -116,7 +116,7 @@
     "section": "discussion",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "bd94d6a7f39c9d66ba85a18745ece449cb478e74f39b282cf87fe63129c8c0fe"
+      "sha256": "826304787584a7c6cdf2bdecb70fc205504d20e6a8e731308bbdb77799b4e0ee"
     }
   },
   "fig:unit_individuality_patterns": {
@@ -126,7 +126,7 @@
     "section": "experimental_results",
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "e325c85a3f1d9fcf330c0500bf6a8cd6772e425cce8aa728cb2d0240f59c5592"
+      "sha256": "aeef445cc7b9107ebcac22255d33d629d4982bc9e6a05a000b3bd6bbb2d7158b"
     }
   },
   "fig:power_labor_frequencies": {
@@ -136,7 +136,7 @@
     "section": null,
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "95da340f7f5dce3a28bfe72e0a6d46c931e68e849a8d99ebad6f825324f112b0"
+      "sha256": "eca2cb0d750a7949ea37053cdea892587c0f46ba8bd660eb3ebf5b8abfe9a295"
     }
   },
   "fig:power_labor_ambiguities": {
@@ -146,7 +146,7 @@
     "section": null,
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "42bbfcf93388275a0e13c50a2783e89ed19bd235626d343565d6cb236f2cc32f"
+      "sha256": "2f4538ae550b88362b91c91614e45f8edc6672de2926056dd2b8b06641693723"
     }
   },
   "fig:domain_overview_grid": {
@@ -156,7 +156,7 @@
     "section": null,
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "622d7102795c0c0db56b8473e5dfe1c848513c45255d7a028c5c61e22d263785"
+      "sha256": "055c056ecd89b2d71734a7a5d43dd7afa7d8002226e22a91ee5e601a9c40148f"
     }
   },
   "fig:domain_patterns_grid": {
@@ -166,7 +166,7 @@
     "section": null,
     "generated_by": "src/visualization/manuscript_figures.py",
     "metadata": {
-      "sha256": "f3988b7f0963d5122f80973078ba9c33b03e4f5e2beaaa54b2c054e9da854c97"
+      "sha256": "8fa940ed21ba33c0c01a16630484c09dfb34bfe4306b2280ec1f229d09d0d550"
     }
   }
 }

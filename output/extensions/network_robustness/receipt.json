@@ -4,19 +4,19 @@
     "data/corpus/provenance.json": "0832b7532dba3a3d282531e4d0dd124470413cd83d7f1e80fba2f11d54a6045a",
     "output/data/extracted_terms.json": "eb1cfd321d0910ce64b829dee88877f34bcf7a2f92c15597754b289e25f3b44c",
     "output/data/concept_map_summary.json": "f5fd9586fa631c13e6f6b11df466dcbb834b49851b1ba6b7366b49a19c18a68c",
-    "output/data/analysis_manifest.json": "f968f4bde6455358591273644387d99cecef66d6518c58cdd720bb1b650a64ce",
+    "output/data/analysis_manifest.json": "bcd5aadff04c7910f5db67409cce917f63ec1a8be1275d11a731fb88941bd0dc",
     "uv.lock": "26659240350361d885870f8ab3b6623072ee39905e3f1d4a63bbc42288df8c41",
     "research/network_robustness/__main__.py": "0ae17f0b8b274e3486237792e5572093e59dac4f186e12de14a488272810b8a3",
     "research/network_robustness/artifacts.py": "01fd29a05f068336df0bcd5df275e30a0843d493f5ca2946fc2274de32fa6503",
     "research/network_robustness/model.py": "23475586e2fc352a5d0057c2fc542f124f3f7ccc1fc8ff314e38dfc19042493a",
     "research/network_robustness/receipt.py": "7119d0f808776a54e1a3b1f5f94aa92508b091da55a3b2ee6fd06b8f87bfbb5a",
-    "research/network_robustness/report.py": "6ae9e9b818349dd370542f77a8f5f6a420d9e69a2bce9db75f6c49628c0a3002",
+    "research/network_robustness/report.py": "501d4ade11872b27f1480b73aa5835ecc940a7e57dd387659db8a63c0153e3b8",
     "research/network_robustness/study.py": "b265b0ad91c7b4abd8f32ca5cc33b3c3ccc226d1a7534f48e4264decfc237041"
   },
   "outputs": {
     "chain_statistics.npy": "b5d447949b0dd62a38c6138639b70ccf4cbae30483fc31e462125efd35b449a8",
     "network_robustness.json": "80c947d421e80e34c7be350a12791fddf8b8073c1390537bfebfa35c7c1acbe3",
-    "network_robustness.md": "f5bc654855de29f1b846fa19d1f6935d746fd7001c9a86a81b9ed04f58b98cd7",
+    "network_robustness.md": "a809bbbffead57af1d678a0297311e91f9d6606a393506c57b693706de40c78f",
     "network_robustness.png": "cbd27f017dac9143fbd4d9ef65ce7b9fb9c5a18cdccd015cc228c739399bc231"
   },
   "protocol": {

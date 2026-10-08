@@ -15,12 +15,9 @@ This glossary defines the mathematical notation and domain-specific terminology 
 | $\hat{H}(t)$ | Normalized entropy $H(t) / H_{\max}$ when $H_{\max}>0$; zero for one occupied cluster | Eq. \ref{eq:semantic_entropy} |
 | $p_i$ | Empirical proportion of contexts assigned to semantic cluster $i$ | Eq. \ref{eq:semantic_entropy} |
 | $k$ | Requested number of computational clusters ($k$-means, $k = \max(2,\ \min(k_{\max},\ n{-}1,\ \max(2, \lfloor\!\sqrt{n}\rfloor)))$; $k_{\max}=5$, $n=|C_t|$; $k < n$) | Eq. \ref{eq:semantic_entropy} |
-| $C_t$ | Set of valid usage contexts of term $t$ (sentences with $\geq 3$ words) | Eq. \ref{eq:semantic_entropy} |
+| $C_t$ | Set of valid usage contexts of term $t$ (sentences with more than three words) | Eq. \ref{eq:semantic_entropy} |
 | $S_t$ | Set of biological scale levels expressed in term $t$'s contexts | Eq. \ref{eq:cace_evolvability} |
 | $w_{AB}$ | Overlap coefficient (Szymkiewicz--Simpson) between concept sets $A$ and $B$ | Eq. \ref{eq:overlap_coefficient} |
-| $w_\text{base}$ | Base overlap-coefficient weight in composite relationship strength | Sec. \ref{sec:methodology} |
-| $r_\text{term}$ | Term-overlap ratio component of composite relationship strength | Sec. \ref{sec:methodology} |
-| $r_\text{domain}$ | Domain-overlap ratio component of composite relationship strength | Sec. \ref{sec:methodology} |
 | $\text{Clarity}(t)$ | CACE Clarity score: $\min(1,\max(0,1-H(t)/3.32))$ | Eq. \ref{eq:cace_clarity} |
 | $\text{Appropriateness}(t)$ | CACE Appropriateness score (penalizes anthropomorphic terms) | Eq. \ref{eq:cace_appropriateness} |
 | $\text{Consistency}(t)$ | CACE Consistency score: mean pairwise cosine similarity of context vectors | Eq. \ref{eq:cace_consistency} |
@@ -42,7 +39,6 @@ This glossary defines the mathematical notation and domain-specific terminology 
 | **Generative Model** | A probabilistic model of how sensory data is generated from latent causes. | Sec. \ref{sec:discussion} |
 | **Markov Blanket** | Variables rendering specified internal and external variables conditionally independent in a probability model. | Sec. \ref{sec:supplemental_analysis} |
 | **Semantic Entropy** | Shannon entropy $H(t)$ over the cluster distribution of a term's usage contexts; describes computational cluster occupancy without independently validated senses. | Sec. \ref{sec:methodology} |
-| **Stigmergy** | A mechanism of indirect coordination where agents modify the environment to stimulate the actions of others. | Sec. \ref{sec:introduction} |
 | **Superorganism** | A colony-level organismic concept; its biological interpretation is not established by a term's frequency or by an assumed blanket. | Sec. \ref{sec:introduction}; Sec. \ref{sec:experimental_results} |
 | **Variational Free Energy** | A variational bound on negative log model evidence under a specified probabilistic model; not measured by this corpus pipeline. | Sec. \ref{sec:discussion} |
 

@@ -10,7 +10,7 @@ Daniel Ari Friedman and Tucker Cahill Chambers
 
 Published manuscript revision: **7 October 2026** · [Version DOI](https://doi.org/10.5281/zenodo.23215452) · [All versions](https://doi.org/10.5281/zenodo.19574117)
 
-The working manuscript is **1.2.2-dev**, an unpublished editorial revision strengthening biological definitions, measurement validation, and the proposed reader-study design. [The local build](output/pdf/ento_linguistics_combined.pdf) is separate from the published paper above. Its analysis inputs and numerical results are unchanged.
+The working manuscript is **1.2.2-dev**, an unpublished revision. It strengthens biological definitions, measurement validation and the proposed reader-study design; reports the fixed-margin network comparison in the Results with injected values and its figure; and corrects figure presentation, citation style and the bibliography. [The local build](output/pdf/ento_linguistics_combined.pdf) is separate from the published paper above. Its analysis inputs and numerical results are unchanged.
 
 ## Network robustness and research lecture
 

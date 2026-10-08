@@ -23,9 +23,23 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 try:
-    from ._style import MIN_FONT, publication_style
+    from ._style import (
+        CANONICAL_DOMAINS,
+        MIN_FONT,
+        classify_word_formation,
+        domain_display_name,
+        place_labels,
+        publication_style,
+    )
 except (ImportError, ValueError):
-    from visualization._style import MIN_FONT, publication_style
+    from visualization._style import (
+        CANONICAL_DOMAINS,
+        MIN_FONT,
+        classify_word_formation,
+        domain_display_name,
+        place_labels,
+        publication_style,
+    )
 
 # ── Project root (src/visualization/manuscript_figures.py → project) ──
 _PROJECT_ROOT = os.path.dirname(
@@ -514,16 +528,9 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
         return ""
     # Domain slugs get manuscript-style display labels so the category
     # column stays readable.
-    display_labels = {
-        "unit_of_individuality": "Unit of Individuality",
-        "behavior_and_identity": "Behavior & Identity",
-        "power_and_labor": "Power & Labor",
-        "sex_and_reproduction": "Sex & Reproduction",
-        "kin_and_relatedness": "Kin & Relatedness",
-        "economics": "Economics",
-    }
     anthropomorphic_data: Dict[str, List[str]] = {}
-    for domain in sorted({d for entry in framing_terms.values() for d in entry.get("domains", [])}):
+    present_domains = {d for entry in framing_terms.values() for d in entry.get("domains", [])}
+    for domain in [d for d in CANONICAL_DOMAINS if d in present_domains] + sorted(present_domains - set(CANONICAL_DOMAINS)):
         framed_terms = [
             term
             for term, entry in framing_terms.items()
@@ -537,7 +544,7 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
             )
         )
         if framed_terms:
-            anthropomorphic_data[display_labels.get(domain, domain)] = framed_terms
+            anthropomorphic_data[domain_display_name(domain)] = framed_terms
 
     if not anthropomorphic_data:
         logger.warning(
@@ -546,7 +553,7 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
         )
         return ""
 
-    viz = ConceptVisualizer(figsize=(14, 10))
+    viz = ConceptVisualizer(figsize=(16, 10))
     viz.create_anthropomorphic_analysis_plot(
         anthropomorphic_data=anthropomorphic_data,
         filepath=filepath,
@@ -560,7 +567,7 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
 
 
 def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
-    """Generate concept_hierarchy.png as a 2-panel centrality figure.
+    """Generate concept_hierarchy.png as a 2-panel overlap-strength figure.
 
     Args:
         results: Analysis pipeline results
@@ -574,29 +581,20 @@ def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
     concept_map = results["concept_map"]
     filepath = Path(figure_dir) / "concept_hierarchy.png"
 
-    # Build centrality from connection count
+    # Weighted degree (strength): the concept categories form a complete
+    # graph, so unweighted degree is identical (n-1) for every concept.
+    # Strength = sum of overlap-coefficient weights to the other concepts.
     centrality_scores = {}
     term_counts: Dict[str, int] = {}
     for concept_name in concept_map.concepts:
-        connections = len(concept_map.get_connected_concepts(concept_name))
-        centrality_scores[concept_name] = connections
-        # Count terms mapped into this concept
+        centrality_scores[concept_name] = float(sum(
+            weight for _, weight in concept_map.get_connected_concepts(concept_name)
+        ))
         term_counts[concept_name] = len(concept_map.concepts[concept_name].terms)
-    # Core = above-average centrality; peripheral = below
-    core_concepts = []
-    peripheral_concepts = []
-    if centrality_scores:
-        vals = list(centrality_scores.values())
-        threshold = sum(vals) / len(vals)
-        core_concepts = [c for c, s in centrality_scores.items() if s > threshold]
-        peripheral_concepts = [c for c, s in centrality_scores.items() if s <= threshold]
 
     hierarchy_data = {
         "centrality_scores": centrality_scores,
-        "core_concepts": core_concepts,
-        "peripheral_concepts": peripheral_concepts,
         "term_counts": term_counts,
-        "hierarchy_depth": 2,
     }
 
     viz = ConceptVisualizer(figsize=(18, 10))
@@ -624,7 +622,6 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
     import numpy as np
 
     terms = results["terms"]
-    domain_analyses = results["domain_analyses"]
     domain = "unit_of_individuality"
     filepath = Path(figure_dir) / "unit_of_individuality_patterns.png"
 
@@ -637,23 +634,17 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
         return ""
 
     # ── Left panel: term formation patterns ──
-    analysis = domain_analyses.get(domain)
-    if analysis and hasattr(analysis, "term_patterns") and analysis.term_patterns:
-        patterns_data = analysis.term_patterns
-    else:
-        # Derive from POS tags in extracted terms
-        patterns_data = {}
-        for t in domain_terms.values():
-            for tag in t.pos_tags:
-                key = tag.title()
-                patterns_data[key] = patterns_data.get(key, 0) + 1
-
-    if not patterns_data:
-        patterns_data = dict(Counter(
-            "compound" if "-" in name or "_" in name
-            else "multi_word" if " " in name else "single_word"
-            for name in domain_terms
-        ))
+    # Shared classifier (same as domain_patterns_grid). The analysis
+    # stage's ``term_patterns`` is NOT used: it counts non-exclusive
+    # feature hits (compound / numeric / capitalised ...) and never counts
+    # plain single words, so its shares are not a partition of the terms.
+    formation_counts = Counter(classify_word_formation(name) for name in domain_terms)
+    patterns_data = {
+        label: formation_counts[label]
+        for label, _ in sorted(
+            formation_counts.items(), key=lambda kv: (-kv[1], kv[0])
+        )
+    }
 
     pattern_labels = list(patterns_data.keys())
     pattern_sizes = list(patterns_data.values())
@@ -681,14 +672,26 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
 
     # Pie chart
-    pie_colors = plt.cm.Set2(np.linspace(0, 1, max(len(pattern_labels), 1)))
+    formation_palette = {
+        "Single word": "#4e79a7", "Multiword phrase": "#f28e2b",
+        "Hyphenated compound": "#59a14f", "Underscore compound": "#e15759",
+        "Contains digits": "#b07aa1",
+    }
+    pie_colors = [formation_palette.get(lab, "#bab0ac") for lab in pattern_labels]
     wedges, texts, autotexts = ax1.pie(
-        pattern_sizes, labels=pattern_labels, colors=pie_colors,
-        autopct="%1.1f%%", startangle=90, textprops={"fontsize": MIN_FONT},
+        pattern_sizes, colors=pie_colors,
+        autopct=lambda pct: f"{pct:.1f}%" if pct >= 3 else "",
+        startangle=90, textprops={"fontsize": MIN_FONT},
     )
     for at in autotexts:
         at.set_fontweight("bold")
-    ax1.set_title("Term Formation Patterns", fontsize=MIN_FONT + 2, fontweight="bold")
+    ax1.legend(
+        wedges, [f"{label} ({count})" for label, count in zip(pattern_labels, pattern_sizes)],
+        loc="upper center", bbox_to_anchor=(0.5, -0.03),
+        fontsize=MIN_FONT, frameon=False,
+    )
+    ax1.set_title("Term Formation Patterns", fontsize=MIN_FONT + 2,
+                  fontweight="bold", pad=14)
 
     # Bar chart
     scales = list(scale_counts.keys())
@@ -697,16 +700,20 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
     bars = ax2.bar(range(len(scales)), counts, color=bar_colors,
                    edgecolor="white", linewidth=0.5)
     for bar, c in zip(bars, counts):
-        ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.2,
-                 str(c), ha="center", va="bottom", fontsize=MIN_FONT,
-                 fontweight="bold")
+        ax2.annotate(str(c),
+                     xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                     xytext=(0, 4), textcoords="offset points",
+                     ha="center", va="bottom", fontsize=MIN_FONT,
+                     fontweight="bold")
     ax2.set_xticks(range(len(scales)))
     ax2.set_xticklabels(
         scales, fontsize=MIN_FONT, rotation=30, ha="right",
         rotation_mode="anchor",
     )
     ax2.set_ylabel("Number of Terms", fontsize=MIN_FONT)
-    ax2.set_title("Scale-Level Distribution", fontsize=MIN_FONT + 2, fontweight="bold")
+    ax2.set_title("Scale-Level Distribution", fontsize=MIN_FONT + 2,
+                  fontweight="bold", pad=14)
+    ax2.set_ylim(0, max(max(counts), 1) * 1.15)
     ax2.spines["top"].set_visible(False)
     ax2.spines["right"].set_visible(False)
 
@@ -761,15 +768,18 @@ def generate_power_labor_term_frequencies(results: Dict[str, Any], figure_dir: s
                   linewidth=0.5)
 
     for bar, freq in zip(bars, freqs):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.3,
-                str(freq), ha="center", va="bottom", fontsize=MIN_FONT,
-                fontweight="bold")
+        ax.annotate(str(freq),
+                    xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                    xytext=(0, 4), textcoords="offset points",
+                    ha="center", va="bottom", fontsize=MIN_FONT,
+                    fontweight="bold")
 
     ax.set_xticks(range(len(names)))
     ax.set_xticklabels(names, rotation=45, ha="right", fontsize=MIN_FONT)
     ax.set_ylabel("Frequency in Corpus", fontsize=MIN_FONT)
+    ax.set_ylim(0, max(freqs) * 1.15)
     ax.set_title("Term Frequency Distribution — Power & Labor",
-                 fontsize=MIN_FONT + 2, fontweight="bold")
+                 fontsize=MIN_FONT + 2, fontweight="bold", pad=12)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
@@ -861,8 +871,10 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
 
     med_ent = float(np.median(entropies))
     ax1.axvline(med_ent, color="#888", linestyle="--", linewidth=1, alpha=0.6)
-    ax1.text(med_ent, len(names) - 0.3, f"median {med_ent:.2f}",
-             fontsize=MIN_FONT, color="#555", ha="center")
+    # Median label sits in headroom above the first bar, clear of all bars.
+    ax1.set_ylim(len(names) - 0.5, -1.4)
+    ax1.text(med_ent, -0.75, f"median {med_ent:.2f}",
+             fontsize=MIN_FONT, color="#555", ha="center", va="center")
 
     # ── Right panel: frequency vs entropy scatter ────────────────────
     sc_sizes = [max(40, c * 8) for c in n_ctx]
@@ -870,24 +882,6 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
     scatter = ax2.scatter(freqs, entropies, s=sc_sizes, c=entropies,
                           cmap="Purples", edgecolors="#333", linewidths=0.5,
                           alpha=0.85, vmin=0, vmax=max_ent)
-    annotations = [
-        ax2.annotate(name, (f, e), xytext=(4, 3), textcoords="offset points",
-                     fontsize=MIN_FONT, color="#333")
-        for name, f, e in zip(names, freqs, entropies)
-    ]
-    # Deterministic label de-overlap: draw once, measure the rendered
-    # 16pt label boxes, and drop any label that overlaps one already
-    # placed (top-entropy labels win — the list is entropy-sorted).
-    # The dropped points stay readable in the left panel's ranked bars.
-    fig.canvas.draw()
-    placed_boxes: list = []
-    for ann in annotations:
-        bbox = ann.get_window_extent(fig.canvas.get_renderer())
-        if any(bbox.overlaps(other) for other in placed_boxes):
-            ann.remove()
-        else:
-            placed_boxes.append(bbox)
-
     ax2.set_xlabel("Corpus Frequency", fontsize=MIN_FONT)
     ax2.set_ylabel("Semantic Entropy H(t) (bits)", fontsize=MIN_FONT)
     ax2.set_title("Frequency vs Entropy", fontsize=MIN_FONT + 2, fontweight="bold")
@@ -897,6 +891,20 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
     fig.colorbar(scatter, ax=ax2, label="H(t) bits", shrink=0.75)
 
     plt.tight_layout()
+    # Deterministic label placement (shared helper): offsets are searched
+    # so no label overlaps another label or marker; labels that cannot be
+    # placed cleanly are dropped (the point stays readable in the left
+    # panel's ranked bars).
+    fig.canvas.draw()
+    place_labels(
+        ax2,
+        list(zip(names, zip(freqs, entropies))),
+        avoid_points=[tuple(pt) for pt in ax2.transData.transform(
+            np.column_stack([freqs, entropies]))],
+        drop_on_fail=True,
+        fontsize=MIN_FONT, color="#333",
+    )
+
     fig.savefig(filepath, dpi=300, bbox_inches="tight")
     plt.close(fig)
 
@@ -1374,7 +1382,7 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
             # e.g., unit_of_individuality -> unit_individuality
             # e.g., power_and_labor -> power_labor
             label_base = domain.replace("_and_", "_").replace("unit_of_", "unit_")
-            d_title = domain.replace("_", " ").title()
+            d_title = domain_display_name(domain)
             
             # Register all 3 types if not already manually defined
             display_map = {
@@ -2095,7 +2103,11 @@ def main(project_root: Optional[str] = None) -> None:
 
     # ── Fill manuscript template variables ─────────────────────────────
     try:
-        from core.manuscript_variables import build_variable_map, fill_manuscript
+        from core.manuscript_variables import (
+            RENDER_STAGE_PREFIXES,
+            build_variable_map,
+            fill_manuscript,
+        )
         logger.info("▶ Filling manuscript template variables...")
         variables = build_variable_map(
             output_data_dir=Path(project_root) / "output" / "data",
@@ -2108,7 +2120,8 @@ def main(project_root: Optional[str] = None) -> None:
         manuscript_path = Path(project_root) / "docs" / "manuscript"
         unresolved = sorted({key for path in manuscript_path.glob("*.md")
                              for key in re.findall(r"\{\{([A-Z0-9_]+)\}\}", path.read_text())
-                             if key not in variables})
+                             if key not in variables
+                             and not key.startswith(RENDER_STAGE_PREFIXES)})
         if unresolved:
             raise ValueError(f"Unresolved manuscript variables: {unresolved}")
         results_fill = fill_manuscript(
@@ -2127,9 +2140,12 @@ def main(project_root: Optional[str] = None) -> None:
     validate_generated_artifacts(Path(project_root))
     logger.info("Local JSON, PNG and registry integrity validation passed")
 
+    from core.manuscript_variables import RENDER_STAGE_FIGURE_DIR
     from core.provenance import write_analysis_manifest
     for path in (Path(project_root) / "docs" / "manuscript").glob("*.md"):
         for image in re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", path.read_text()):
+            if RENDER_STAGE_FIGURE_DIR in image:
+                continue
             figure = Path(figure_dir) / Path(image).name
             if not figure.is_file() or figure.stat().st_size == 0:
                 raise ValueError(f"Missing manuscript figure: {figure.name}")

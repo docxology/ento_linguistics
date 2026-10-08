@@ -1,6 +1,6 @@
 # Conclusion {#sec:conclusion}
 
-This work provides a six-domain framework and a reproducible descriptive pipeline for examining terminology in scientific text. Across {{CORPUS_PUBLICATIONS}} stored abstracts, the pipeline processes {{CORPUS_TOTAL_TOKENS}} tokens and extracts {{CORPUS_CANDIDATE_TERMS}} candidate terms, with {{CORPUS_DOMAIN_TERMS}} receiving domain assignments. Observed document co-occurrence, predefined conceptual-category overlap, sentence-context entropy, and heuristic framing and CACE scores are reported as distinct quantities.
+This work provides a six-domain framework and a reproducible descriptive pipeline for examining terminology in scientific text. Across {{CORPUS_PUBLICATIONS}} source-identified abstracts, the pipeline processes {{CORPUS_TOTAL_TOKENS}} tokens and extracts {{CORPUS_CANDIDATE_TERMS}} candidate terms, with {{CORPUS_DOMAIN_TERMS}} receiving domain assignments. Observed document co-occurrence, predefined conceptual-category overlap, sentence-context entropy, and heuristic framing and CACE scores are reported as distinct quantities.
 
 The {{CORPUS_MULTIDOMAIN_PERCENTAGE}}\% of assigned terms with multiple labels measures classification overlap, not semantic drift. The {{CORPUS_CONCEPT_COUNT}} concept categories are predefined rather than discovered. Complementary source layers extend the descriptive scope without establishing that language causes bias, that a terminology reform improves scientific modeling, or that numerical CACE rankings are independently validated.
 

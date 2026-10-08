@@ -1,7 +1,7 @@
 """Data loading utilities for Ento-Linguistic analysis.
 
 This module provides functionality for loading real entomological text corpora
-from local storage or external sources, replacing synthetic generation.
+from local storage or external sources.
 """
 
 from __future__ import annotations

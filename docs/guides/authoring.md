@@ -35,6 +35,8 @@ PYTHONPATH=src uv run python -m pipeline.corpus_audit --require-analysis
 uv run python scripts/_render_pdf_override.py --strict-templates
 ~~~
 
+Generation rejects any placeholder its variable map cannot resolve, except the `NULLNET_*` namespace. Those fixed-margin values come from the network extension, which runs after the core receipt exists; the strict renderer resolves them from the extension's receipted reports and fails if any is missing.
+
 The final receipt must match the current sources, corpus, selected NLTK resources and registered artifacts. A successful render establishes artifact coherence, not scientific validity. See [reproducibility](../reference/reproducibility.md) for unresolved custody, relevance, license and annotation limits.
 
 ## Scope of an edit

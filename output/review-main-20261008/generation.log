@@ -1,0 +1,92 @@
+INFO - visualization.manuscript_figures -   🗑️  Cleared stale output: output/figures/
+INFO - visualization.manuscript_figures -   🗑️  Cleared stale output: output/data/
+INFO - visualization.manuscript_figures -   ✅ Output directories initialised (clean slate)
+INFO - visualization.manuscript_figures - ======================================================================
+INFO - visualization.manuscript_figures -   Ento-Linguistic Research Figure Generation Pipeline
+INFO - visualization.manuscript_figures - ======================================================================
+INFO - visualization.manuscript_figures -   Output: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output
+INFO - visualization.manuscript_figures -   Corpus: 7540 real abstracts
+INFO - visualization.manuscript_figures - 
+INFO - visualization.manuscript_figures - ▶ Running analysis pipeline...
+INFO - visualization.manuscript_figures - Step 1/4: Processing text corpus...
+INFO - visualization.manuscript_figures -   Corpus: 7540 documents, 991026 tokens
+INFO - visualization.manuscript_figures - Step 2/4: Extracting terminology...
+INFO - visualization.manuscript_figures -   Extracted 11644 terms across 6 domains
+INFO - visualization.manuscript_figures - Step 3/4: Building concept map...
+INFO - visualization.manuscript_figures -   6 concepts, 15 relationships
+INFO - visualization.manuscript_figures - Step 4/4: Analyzing domains...
+INFO - visualization.manuscript_figures - 
+INFO - visualization.manuscript_figures - ▶ Generating figures...
+INFO - visualization.manuscript_figures - ▶ Building statistical analysis artifact...
+INFO - visualization.manuscript_figures -   ✅ statistical_analysis.json: 15 pairwise tests, 0 skipped
+INFO - visualization.manuscript_figures - ▶ Building full-text analysis artifact...
+INFO - visualization.manuscript_figures -   ✅ fulltext_analysis.json: 7073 documents, 15 pairwise tests, 0 skipped
+INFO - visualization.manuscript_figures - Rebuilding auxiliary layer: arxiv_analysis.png (61 documents)
+INFO - visualization.manuscript_figures - Rebuilding auxiliary layer: bhl_term_usage.png (2430 documents)
+INFO - visualization.manuscript_figures -   ✅ statistical_analysis.json already carries a discourse section — skipping recompute
+INFO - visualization.manuscript_figures -   ✅ fulltext_analysis.json already carries a discourse section — skipping recompute
+INFO - visualization.manuscript_figures -   ✅ concept_map.png (574.4 KB)
+INFO - visualization.manuscript_figures -   ✅ terminology_network.png (1282.8 KB)
+INFO - visualization.manuscript_figures -   ✅ domain_comparison.png (1104.1 KB)
+INFO - visualization.manuscript_figures -   ✅ domain_overlap_heatmap.png (398.7 KB)
+INFO - visualization.manuscript_figures -   ✅ anthropomorphic_framing.png (557.6 KB)
+INFO - visualization.manuscript_figures -   ✅ concept_hierarchy.png (412.5 KB)
+INFO - visualization.manuscript_figures -   ✅ unit_of_individuality_patterns.png (356.0 KB)
+INFO - visualization.manuscript_figures -   ✅ power_and_labor_term_frequencies.png (289.2 KB)
+INFO - visualization.manuscript_figures -   ✅ power_and_labor_ambiguities.png (561.4 KB)
+INFO - visualization.manuscript_figures -   ✅ domain_overview_grid.png (958.5 KB)
+INFO - visualization.manuscript_figures -   ✅ domain_patterns_grid.png (678.3 KB)
+INFO - visualization.manuscript_figures - 
+INFO - visualization.manuscript_figures - 
+📊 Saved 4 data files to /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/data
+INFO - visualization.manuscript_figures -    - corpus_statistics.json
+INFO - visualization.manuscript_figures -    - domain_statistics.json
+INFO - visualization.manuscript_figures -    - extracted_terms.json
+INFO - visualization.manuscript_figures -    - concept_map_summary.json
+INFO - visualization.manuscript_figures - ✅ Registered 17 figures with FigureManager
+INFO - visualization.manuscript_figures - 
+INFO - visualization.manuscript_figures - ======================================================================
+INFO - visualization.manuscript_figures -   ✅ Generated 17 research figures
+INFO - visualization.manuscript_figures -      - statistical_analysis.png
+INFO - visualization.manuscript_figures -      - fulltext_analysis.png
+INFO - visualization.manuscript_figures -      - layer_comparison.png
+INFO - visualization.manuscript_figures -      - discourse_comparison.png
+INFO - visualization.manuscript_figures -      - arxiv_analysis.png
+INFO - visualization.manuscript_figures -      - bhl_term_usage.png
+INFO - visualization.manuscript_figures -      - concept_map.png
+INFO - visualization.manuscript_figures -      - terminology_network.png
+INFO - visualization.manuscript_figures -      - domain_comparison.png
+INFO - visualization.manuscript_figures -      - domain_overlap_heatmap.png
+INFO - visualization.manuscript_figures -      - anthropomorphic_framing.png
+INFO - visualization.manuscript_figures -      - concept_hierarchy.png
+INFO - visualization.manuscript_figures -      - unit_of_individuality_patterns.png
+INFO - visualization.manuscript_figures -      - power_and_labor_term_frequencies.png
+INFO - visualization.manuscript_figures -      - power_and_labor_ambiguities.png
+INFO - visualization.manuscript_figures -      - domain_overview_grid.png
+INFO - visualization.manuscript_figures -      - domain_patterns_grid.png
+INFO - visualization.manuscript_figures -   ✅ Saved 4 data files
+INFO - visualization.manuscript_figures -   📁 All outputs: /Volumes/GitVault/Username/docxology/Public/ento_linguistics/output
+INFO - visualization.manuscript_figures - ======================================================================
+INFO - visualization.manuscript_figures - ▶ Filling manuscript template variables...
+INFO - visualization.manuscript_figures -   ✅ 338 placeholder occurrences resolvable across 10 files (dry run; canonical files unchanged)
+INFO - visualization.manuscript_figures - Local JSON, PNG and registry integrity validation passed
+Integration with src/ modules demonstrated
+  WARNING: Unknown variable {{NULLNET_CHAINS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_DRAWS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_DOCUMENTS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_TERMS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_NULL_MEAN}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_Q025}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_Q975}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_NULL_MEAN}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_Q025}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_Q975}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_OBSERVED}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_OBSERVED}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_SENS_DRAWS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_SENS_EDGES_NULL_MEAN}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_SENS_CLUSTERING_NULL_MEAN}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_RHAT}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_RHAT}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CHAINS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_DRAWS}} in 04a_corpus_and_networks.md

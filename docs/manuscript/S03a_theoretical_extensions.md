@@ -4,7 +4,7 @@ These are proposed constructions, not additional experimental results. The repos
 
 ## Individuality and Conditional Independence
 
-A Markov blanket specifies a conditional-independence relation between internal variables $\mu$ and external variables $\eta$, conditional on variables $B$ \cite{friston2013life, kirchhoff2018markov}:
+A Markov blanket specifies a conditional-independence relation between internal variables $\mu$ and external variables $\eta$, conditional on variables $B$ \citep{friston2013life, kirchhoff2018markov}:
 
 \begin{equation}\label{eq:markov_blanket}
 P(\mu\mid\eta,B)=P(\mu\mid B).
@@ -12,7 +12,7 @@ P(\mu\mid\eta,B)=P(\mu\mid B).
 
 This relation is an assumption or a property to establish for a specified probability model, on the support where the conditional distributions are defined. A biological application requires named variables, dynamics, observations, and tests of the proposed conditional independence. A sensory/active decomposition requires further modeling assumptions.
 
-An ant's sensory and motor variables, or colony-level interaction variables, could enter candidate models at different scales. Neither the cuticle, a nest entrance, nor a pheromone field automatically establishes a blanket. Likewise, calling a colony a superorganism is not equivalent to proving this factorization. The Active Inferants simulation provides related modeling context \cite{friedman2021active}, without validating a blanket inferred from terminology in this study.
+An ant's sensory and motor variables, or colony-level interaction variables, could enter candidate models at different scales. Neither the cuticle, a nest entrance, nor a pheromone field automatically establishes a blanket. Likewise, calling a colony a superorganism is not equivalent to proving this factorization. The Active Inferants simulation provides related modeling context \citep{friedman2021active}, without validating a blanket inferred from terminology in this study.
 
 ## A Proposed Framing Score
 

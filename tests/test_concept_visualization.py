@@ -1109,3 +1109,167 @@ class TestRenderDeterminism:
         first = viz._select_label_positions(pos, ["a", "b", "c"])
         second = viz._select_label_positions(pos, ["a", "b", "c"])
         assert first == second == {"a": (0.0, 0.0), "c": (0.9, 0.9)}
+
+
+class TestSharedFigureHelpers:
+    """Shared domain naming, ordering, and word-formation classification."""
+
+    def test_label_placement_measures_initialized_display_coordinates(self):
+        """Spacious labels remain visible and their rendered boxes do not overlap."""
+        from visualization._style import place_labels
+
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.set_xlim(0, 1)
+        ax.set_ylim(0, 1)
+        labels = place_labels(
+            ax, [("alpha label", (0.4, 0.5)), ("beta label", (0.6, 0.5))],
+            fontsize=16, drop_on_fail=True,
+        )
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        assert all(label is not None for label in labels)
+        boxes = [label.get_window_extent(renderer) for label in labels]
+        assert not boxes[0].overlaps(boxes[1])
+        assert all(ax.get_window_extent(renderer).contains(box.x0, box.y0) for box in boxes)
+        plt.close(fig)
+
+    def test_label_placement_drops_labels_when_every_candidate_is_blocked(self):
+        from visualization._style import place_labels
+
+        fig, ax = plt.subplots()
+        fig.canvas.draw()
+        labels = place_labels(
+            ax, [("blocked", (0.5, 0.5))],
+            avoid_boxes=[ax.get_window_extent()], drop_on_fail=True,
+        )
+        assert labels == [None]
+        plt.close(fig)
+
+    def test_label_offsets_iterator_is_reused_for_each_label(self):
+        from visualization._style import place_labels
+
+        fig, ax = plt.subplots(figsize=(8, 6))
+        labels = place_labels(
+            ax, [("alpha", (0.25, 0.5)), ("beta", (0.75, 0.5))],
+            offsets=iter([(8, 6, "left", "bottom")]), drop_on_fail=True,
+        )
+        assert all(label is not None for label in labels)
+        plt.close(fig)
+
+    def test_domain_display_names(self):
+        from visualization._style import CANONICAL_DOMAINS, domain_display_name
+
+        assert [domain_display_name(d) for d in CANONICAL_DOMAINS] == [
+            "Unit of Individuality",
+            "Behavior & Identity",
+            "Power & Labor",
+            "Sex & Reproduction",
+            "Kin & Relatedness",
+            "Economics",
+        ]
+        assert domain_display_name("behavior_and_identity", wrap=True) == "Behavior &\nIdentity"
+        assert domain_display_name("some_new_domain") == "Some New Domain"
+
+    def test_ordered_domains_canonical_first(self):
+        from visualization._style import ordered_domains
+
+        got = ordered_domains(["economics", "zzz_extra", "power_and_labor", "unit_of_individuality"])
+        assert got == ["unit_of_individuality", "power_and_labor", "economics", "zzz_extra"]
+
+    def test_classify_word_formation_is_a_partition(self):
+        from visualization._style import WORD_FORMATION_LABELS, classify_word_formation
+
+        cases = {
+            "ant": "Single word",
+            "division of labor": "Multiword phrase",
+            "queen-worker": "Hyphenated compound",
+            "queen_worker": "Underscore compound",
+            "f1 hybrid": "Contains digits",
+        }
+        for text, label in cases.items():
+            assert classify_word_formation(text) == label
+            assert label in WORD_FORMATION_LABELS
+
+    def test_small_word_formation_categories_remain_readable(self):
+        """Rare categories must remain named without rendered text overlap."""
+        from analysis.term_extraction import Term
+        from visualization._style import WORD_FORMATION_LABELS
+
+        names = [f"queen-{chr(97 + i // 26)}{chr(97 + i % 26)}" for i in range(96)]
+        names += ["ant", "nest", "brood", "egg", "f1"]
+        terms = {name: Term(text=name, lemma=name, frequency=3,
+                            domains=["unit_of_individuality"]) for name in names}
+        fig = ConceptVisualizer().create_domain_patterns_grid(terms)
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        labels = [text for text in fig.axes[0].findobj(matplotlib.text.Text)
+                  if any(text.get_text().startswith(label) for label in WORD_FORMATION_LABELS)]
+        assert len(labels) == 3
+        boxes = [text.get_window_extent(renderer) for text in labels]
+        assert not any(a.overlaps(b) for i, a in enumerate(boxes) for b in boxes[i + 1:])
+        plt.close(fig)
+
+    def test_pie_and_grid_agree_on_unit_of_individuality(self, tmp_path):
+        """Both word-formation figures use the shared classifier."""
+        from analysis.term_extraction import Term
+        from visualization import manuscript_figures as mf
+        from visualization._style import classify_word_formation
+
+        names = ["ant", "colony", "social", "queen-worker", "nest-site", "caste-specific"]
+        terms = {n: Term(text=n, lemma=n, domains=["unit_of_individuality"], frequency=3)
+                 for n in names}
+        results = {"terms": terms, "domain_analyses": {}}
+        path = mf.generate_unit_of_individuality_patterns(results, str(tmp_path))
+        assert Path(path).is_file()
+        counts = {}
+        for n in names:
+            counts[classify_word_formation(n)] = counts.get(classify_word_formation(n), 0) + 1
+        # single words are present and counted (the old analysis-stage
+        # pattern counter never counted them)
+        assert counts["Single word"] == 3 and counts["Hyphenated compound"] == 3
+        fig = ConceptVisualizer().create_domain_patterns_grid(terms)
+        texts = [t.get_text() for ax in fig.axes for t in ax.findobj(matplotlib.text.Text)]
+        assert "Single word (3)" in texts and "Hyphenated compound (3)" in texts
+        plt.close("all")
+
+
+class TestConceptHierarchyStrength:
+    """Weighted-degree semantics of the concept hierarchy figure."""
+
+    def test_bars_use_weighted_degree_not_constant_degree(self):
+        viz = ConceptVisualizer()
+        data = {
+            "centrality_scores": {"biological_individuality": 1.41, "kinship_systems": 0.04,
+                                  "resource_economics": 0.79},
+            "term_counts": {"biological_individuality": 88, "kinship_systems": 83,
+                            "resource_economics": 28},
+        }
+        fig = viz.visualize_concept_hierarchy(data)
+        ax1, ax2 = fig.axes[:2]
+        assert fig._suptitle.get_text() == "Concept Category Overlap Strength"
+        assert ax1.get_xlabel() == "Weighted degree (sum of overlap coefficients)"
+        assert ax2.get_title() == "Overlap strength vs. associated terms"
+        labels = [t.get_text() for t in ax1.get_yticklabels()]
+        assert labels == ["Biological Individuality", "Resource Economics", "Kinship Systems"]
+        widths = [p.get_width() for p in ax1.patches]
+        assert len(set(widths)) == 3
+        assert ax1.get_legend() is None
+        # every point is labelled
+        scatter_labels = {t.get_text() for t in ax2.texts}
+        assert scatter_labels == set(labels)
+        plt.close(fig)
+
+    def test_generate_concept_hierarchy_uses_overlap_weights(self, tmp_path):
+        from visualization import manuscript_figures as mf
+
+        cm = ConceptMap()
+        for name, n in (("a_x", 3), ("b_y", 2), ("c_z", 1)):
+            cm.add_concept(Concept(name=name, description=name,
+                                   terms={f"{name}{i}" for i in range(n)},
+                                   domains={"economics"}))
+        cm.concept_relationships[("a_x", "b_y")] = 0.5
+        cm.concept_relationships[("a_x", "c_z")] = 0.25
+        cm.concept_relationships[("b_y", "c_z")] = 0.0
+        path = mf.generate_concept_hierarchy({"concept_map": cm}, str(tmp_path))
+        assert Path(path).is_file()
+        plt.close("all")

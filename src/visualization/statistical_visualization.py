@@ -25,6 +25,7 @@ try:
         DOMAIN_PALETTE,
         FALLBACK_COLOR,
         MIN_FONT,
+        domain_display_name,
         publication_style,
         save_and_verify,
     )
@@ -34,6 +35,7 @@ except (ImportError, ValueError):
         DOMAIN_PALETTE,
         FALLBACK_COLOR,
         MIN_FONT,
+        domain_display_name,
         publication_style,
         save_and_verify,
     )
@@ -1053,7 +1055,7 @@ def plot_statistical_analysis(
         )
         ax_entropy.set_xticks(range(len(order)))
         ax_entropy.set_xticklabels(
-            [d.replace("_", " ").title() for d in order],
+            [domain_display_name(d) for d in order],
             rotation=30,
             ha="right",
         )
@@ -1327,7 +1329,7 @@ def plot_layer_comparison(
         )
         ax.set_xticks(xpos)
         ax.set_xticklabels(
-            [d.replace("_", " ").title() for d in order],
+            [domain_display_name(d) for d in order],
             rotation=30,
             ha="right",
         )
@@ -1545,31 +1547,34 @@ def plot_discourse_comparison(
         )
         plotted = [v for v in abstract_values + fulltext_values if v > 0]
         top = max(abstract_values + fulltext_values)
-        if plotted and top >= _LOG_SCALE_RATIO * min(plotted):
+        use_symlog = bool(plotted) and top >= _LOG_SCALE_RATIO * min(plotted)
+        if use_symlog:
             ax.set_yscale("symlog", linthresh=1)
             ax.set_ylabel("Frequency (symlog scale)", fontsize=MIN_FONT)
         else:
-            ax.set_ylim(0, top * 1.25 if top > 0 else 1.0)
+            ax.set_ylim(0, top * 1.3 if top > 0 else 1.0)
             ax.set_ylabel("Frequency", fontsize=MIN_FONT)
+        # Value labels are rotated 90 degrees so neighbouring bars' labels
+        # (e.g. "1038" beside "1090") can never overprint each other.
         for bars, values in ((bars_a, abstract_values), (bars_f, fulltext_values)):
             for bar, value in zip(bars, values):
                 ax.annotate(
                     f"{value:.0f}",
                     xy=(bar.get_x() + bar.get_width() / 2, value),
-                    xytext=(0, 3),
+                    xytext=(0, 4),
                     textcoords="offset points",
                     ha="center",
                     va="bottom",
+                    rotation=90,
                     fontsize=MIN_FONT,
                 )
-        # Symlog panels auto-scale without accounting for the value
-        # annotations above the tallest bar; widen the top so the
-        # labels are never clipped.  Linear panels already reserve
-        # 25% headroom via set_ylim above.
-        if plotted and top >= _LOG_SCALE_RATIO * min(plotted):
-            lo, hi = ax.get_ylim()
-            ax.set_ylim(lo, hi * 2.0)
-        ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
+        # Headroom for the (vertical) labels above the tallest bar.
+        lo, hi = ax.get_ylim()
+        if use_symlog:
+            ax.set_ylim(lo, hi * 12.0)
+        else:
+            ax.set_ylim(lo, hi * 1.15)
+        ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold", pad=10)
         ax.grid(True, axis="y", alpha=0.3)
         has_bars = True
     if has_bars:

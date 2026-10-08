@@ -22,7 +22,9 @@ Economics & {{DOMAIN_ECONOMICS_TERMS}} & {{DOMAIN_ECONOMICS_FREQ}} & {{DOMAIN_EC
 \label{tab:terminology_extraction}
 \end{table}
 
-The processed vocabulary has type-token ratio {{CORPUS_TTR}}. Its most frequent recorded tokens are {{CORPUS_TOP_TERM_1}} ({{CORPUS_TOP_FREQ_1}}), {{CORPUS_TOP_TERM_2}} ({{CORPUS_TOP_FREQ_2}}), and {{CORPUS_TOP_TERM_3}} ({{CORPUS_TOP_FREQ_3}}). Frequency identifies recurring lexical material; it does not establish its conceptual importance or the intentions of authors.
+Among assigned terms, {{CORPUS_MULTIDOMAIN_PERCENTAGE}}\% have multiple domain labels. This is a property of the classifier and corpus. Temporal semantic drift would require explicit time-indexed meaning comparison, while lexical, contextual, and scale ambiguity require independent sense annotation or validated proxies. Those measurements are not established by label overlap.
+
+The processed vocabulary has type-token ratio {{CORPUS_TTR}}. Its most frequent WordNet lemmas are {{CORPUS_TOP_TERM_1}} ({{CORPUS_TOP_FREQ_1}}), {{CORPUS_TOP_TERM_2}} ({{CORPUS_TOP_FREQ_2}}), and {{CORPUS_TOP_TERM_3}} ({{CORPUS_TOP_FREQ_3}}). Lemmatization reduces inflected forms and can truncate words such as *species* to *specie*; extracted terms retain surface forms (Supplemental Section \ref{sec:supplemental_methods}). Frequency identifies recurring lexical material; it does not establish its conceptual importance or the intentions of authors.
 
 ## Terminology Network Structure
 
@@ -32,7 +34,7 @@ The observed terminology graph uses the hundred most frequent domain-assigned te
 w(u,v)=\sum_{d=1}^{N}\mathbf{1}[u\in d]\mathbf{1}[v\in d].
 \end{equation}
 
-Whole-word matches are case-insensitive, and repeated mentions within a document do not add weight. No edge is inferred from shared labels or extraction order. The graph has clustering coefficient {{NETWORK_CLUSTERING}} under the generated network-summary definition; this statistic does not measure conceptual coherence, communication quality, or resistance to reform.
+Whole-word matches are case-insensitive, and repeated mentions within a document do not add weight. No edge is inferred from shared labels or extraction order. The graph has mean local (unweighted) clustering coefficient {{NETWORK_CLUSTERING}}; this statistic does not measure conceptual coherence, communication quality, or resistance to reform.
 
 \begin{figure}[h]
 \centering
@@ -41,12 +43,25 @@ Whole-word matches are case-insensitive, and repeated mentions within a document
 \label{fig:terminology_network}
 \end{figure}
 
+### Comparison with a Fixed-Margin Reference
+
+Density and clustering depend on how many selected terms each abstract contains and how many abstracts contain each term. A Curveball randomization of the binary document--term incidence matrix preserves both margins (Supplemental Section \ref{sec:fixed_margin}). Over {{NULLNET_CHAINS}} chains and {{NULLNET_DRAWS}} retained draws for the {{NULLNET_DOCUMENTS}} source-identified abstracts and {{NULLNET_TERMS}} terms, the randomized reference averages {{NULLNET_EDGES_NULL_MEAN}} edges (central 95\% of draws {{NULLNET_EDGES_Q025}}--{{NULLNET_EDGES_Q975}}) and mean local clustering {{NULLNET_CLUSTERING_NULL_MEAN}} ({{NULLNET_CLUSTERING_Q025}}--{{NULLNET_CLUSTERING_Q975}}). The observed graph has {{NULLNET_EDGES_OBSERVED}} edges and clustering {{NULLNET_CLUSTERING_OBSERVED}}, below both envelopes (Figure \ref{fig:network_robustness}). A sensitivity protocol with longer burn-in, wider spacing and different seeds ({{NULLNET_SENS_DRAWS}} draws) gives reference means of {{NULLNET_SENS_EDGES_NULL_MEAN}} edges and {{NULLNET_SENS_CLUSTERING_NULL_MEAN}} clustering. Between-chain $\hat R$ is {{NULLNET_EDGES_RHAT}} for edges and {{NULLNET_CLUSTERING_RHAT}} for clustering; this diagnostic does not prove mixing.
+
+Selected terms therefore co-occur in fewer distinct pairs, with less closed triadic structure, than their margins alone would produce: co-occurrence is concentrated among particular pairs. The envelopes describe the sampled conditional reference rather than uncertainty in the observed values, and the comparison does not identify a linguistic cause.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{../output/extensions/network_robustness/network_robustness.png}
+\caption{Fixed-margin comparison for the abstract terminology network. Top: retained-chain traces of projected edge count and mean local clustering for {{NULLNET_CHAINS}} seeds. Bottom: distributions of the {{NULLNET_DRAWS}} retained draws, with the observed value marked. Every draw preserves each abstract's selected-term count and each term's document frequency. The reference is conditional on the frequency-ranked vocabulary and the convenience corpus.}
+\label{fig:network_robustness}
+\end{figure}
+
 Domain-assignment overlap is a different quantity, displayed separately in Figure \ref{fig:domain_overlap}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/domain_overlap_heatmap.png}
-\caption{Szymkiewicz--Simpson overlap coefficients between domain-assigned vocabularies (Eq.~\ref{eq:overlap_coefficient}). Each cell counts shared terms divided by the smaller vocabulary size. Values reflect the current lexical classifier; observed zeros do not establish conceptual isolation.}
+\caption{Szymkiewicz--Simpson overlap coefficients between domain-assigned vocabularies (Eq.~\ref{eq:overlap_coefficient}). Each cell shows shared terms as a percentage of the smaller vocabulary; the diagonal is 100 by definition. Values reflect the current lexical classifier; observed zeros do not establish conceptual isolation.}
 \label{fig:domain_overlap}
 \end{figure}
 
@@ -72,8 +87,6 @@ Lexical markers identify contexts for further qualitative examination. They do n
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{../output/figures/anthropomorphic_framing.png}
-\caption{Observed framing-marked terminology by canonical domain. Left: distinct extracted terms with at least one occurrence context matching an anthropomorphic pattern. Right: up to five terms per domain, selected by decreasing matched-context proportion, context count, and lexical ordering. Counts are neither curated vocabulary sizes nor occurrence frequencies. Occurrence-context framing proportions are exported separately.}
+\caption{Observed framing-marked terminology by canonical domain. Top: distinct extracted terms with at least one occurrence context matching an anthropomorphic pattern. Bottom: up to six terms per domain, selected by decreasing matched-context proportion, context count, and lexical ordering. Counts are neither curated vocabulary sizes nor occurrence frequencies. Occurrence-context framing proportions are exported separately.}
 \label{fig:anthropomorphic}
 \end{figure}
-
-Among assigned terms, {{CORPUS_MULTIDOMAIN_PERCENTAGE}}\% have multiple domain labels. This is a property of the classifier and corpus. Temporal semantic drift would require explicit time-indexed meaning comparison, while lexical, contextual, and scale ambiguity require independent sense annotation or validated proxies. Those measurements are not established by label overlap.

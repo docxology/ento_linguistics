@@ -426,7 +426,7 @@ class TestFulltextStatisticalTokens:
 
         assert variables["FULLTEXT_DOCUMENTS"] == "3"
         assert variables["FULLTEXT_TOTAL_TOKENS"] == "601"
-        assert variables["FULLTEXT_MEDIAN_TOKENS"] == "200.0000"
+        assert variables["FULLTEXT_MEDIAN_TOKENS"] == "200"
         assert variables["FULLTEXT_DOMAIN_ECONOMICS_TERMS"] == "6"
         assert variables["FULLTEXT_DOMAIN_ECONOMICS_ENTROPY"] == "2.1685"
         assert variables["FULLTEXT_DOMAIN_POWER_AND_LABOR_TERMS"] == "15"
@@ -830,6 +830,9 @@ class TestDiscourseTokens:
         tokens = build_statistical_tokens(artifact)
         assert tokens["ABSTRACT_DISCOURSE_N_ANALYZED"] == "99"
         assert tokens["ABSTRACT_DISCOURSE_SAMPLE_FRACTION"] == "0.9900"
+        assert tokens["ABSTRACT_DISCOURSE_SAMPLE_PERCENT"] == "99.0"
+        assert tokens["ABSTRACT_DISCOURSE_EXCLUDED_MIN_LENGTH"] == "1"
+        assert tokens["ABSTRACT_DISCOURSE_MIN_TEXT_LENGTH"] == "200"
         assert tokens["ABSTRACT_PATTERNS_HIERARCHICAL_FRAMING"] == "311"
         assert tokens["ABSTRACT_PATTERNS_ECONOMIC_METAPHORS"] == "235"
         # Non-canonical pattern keys still emit (emit for keys that exist).
@@ -1025,3 +1028,11 @@ class TestBhlExpandedTokens:
                     tokens[f"BHL_{era_upper}_FRAMING"]
                     == f"{float(overall['proportion']):.4f}"
                 )
+
+
+def test_count_formatting_keeps_integers_and_half_medians():
+    from core.manuscript_variables import _fmt_count
+
+    assert _fmt_count(350.0) == "350"
+    assert _fmt_count(5624.5) == "5624.5"
+    assert _fmt_count(None) == ""

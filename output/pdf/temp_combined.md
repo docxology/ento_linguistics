@@ -2,13 +2,13 @@
 author:
 - Daniel Ari Friedman
 - Tucker Cahill Chambers
-date: 2026-10-07 - Editorial draft 1.2.2-dev (unpublished)
+date: "2026-10-07 \u2013 Editorial draft 1.2.2-dev (unpublished)"
 subtitle: Descriptive Corpus Analysis and a Six-Domain Framework
 title: 'Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology'
 ---
 # Abstract {#sec:abstract}
 
-Terms such as *queen*, *worker*, and *colony* connect biological descriptions to familiar social concepts. This study introduces a six-domain Ento-Linguistic framework and an open-source descriptive text-analysis pipeline. The headline layer contains 7540 source-identified abstracts from 7609 stored strings; 69 unreconciled strings are retained but excluded. This headline layer contains 991026 processed tokens and 11644 candidate terms, of which 1323 receive rule-based domain assignments. The pipeline separates observed document-level term co-occurrence from a map of 6 predefined concept categories with 15 vocabulary-overlap relationships. Among assigned terms, 11.9% receive multiple labels; this measures classification overlap rather than semantic drift. Complementary analyses use 7073 PMC full-text records, 2430 historical OCR documents, and a separate arXiv layer. TF-IDF clustering and Shannon entropy summarize sentence-context distributions, while lexical patterns identify candidate framing contexts. A separately receipted fixed-margin comparison finds fewer edges and lower clustering in the selected-term graph than in its finite-chain randomized reference, indicating concentration of co-occurrence relative to the preserved incidence margins. Clarity, Appropriateness, Consistency, and Evolvability (CACE) are proposed as heuristic evaluation dimensions. Neither cluster entropy nor marker occurrence establishes distortion of biological understanding, and CACE scores have not been validated against independent human judgments. Provenance gaps, mixed-topic retrieval, OCR errors, overlapping groups, and explicitly bounded analyses limit interpretation. The contribution is a reproducible descriptive workflow and a framework for subsequent annotated, hypothesis-driven research, rather than a causal test of language shaping scientific thought. Code and data lineage: https://github.com/docxology/ento_linguistics.
+Terms such as *queen*, *worker*, and *colony* connect biological descriptions to familiar social concepts. This study introduces a six-domain Ento-Linguistic framework and an open-source descriptive text-analysis pipeline. The headline layer contains 7540 source-identified abstracts from 7609 stored strings; 69 unreconciled strings are retained but excluded. This headline layer contains 991,026 processed tokens and 11,644 candidate terms, of which 1323 receive rule-based domain assignments. The pipeline separates observed document-level term co-occurrence from a map of 6 predefined concept categories with 15 vocabulary-overlap relationships. Among assigned terms, 11.9% receive multiple labels; this measures classification overlap rather than semantic drift. Complementary analyses use 7073 PMC full-text records, 2430 historical OCR documents, and a separate arXiv layer. TF-IDF clustering and Shannon entropy summarize sentence-context distributions, while lexical patterns identify candidate framing contexts. A separately receipted fixed-margin comparison finds fewer edges and lower clustering in the selected-term graph than in its finite-chain randomized reference, indicating concentration of co-occurrence relative to the preserved incidence margins. Clarity, Appropriateness, Consistency, and Evolvability (CACE) are proposed as heuristic evaluation dimensions. Neither cluster entropy nor marker occurrence establishes distortion of biological understanding, and CACE scores have not been validated against independent human judgments. Provenance gaps, mixed-topic retrieval, OCR errors, overlapping groups, and explicitly bounded analyses limit interpretation. The contribution is a reproducible descriptive workflow and a framework for subsequent annotated, hypothesis-driven research, rather than a causal test of language shaping scientific thought. Code and data lineage: https://github.com/docxology/ento_linguistics.
 
 
 \clearpage
@@ -19,17 +19,17 @@ Terms such as *queen*, *worker*, and *colony* connect biological descriptions to
 
 Scientific terminology connects observations, categories, and explanatory models. In social-insect research, familiar labels such as queen, worker, caste, kin, and colony can serve technical functions while retaining ordinary-language connotations. The relevant question is when those connotations help communication, when explicit definitions are needed, and how either possibility can be studied without inferring beliefs from word counts alone.
 
-Philosophical and linguistic work supplies motivation for examining terminology within scientific practice \cite{latour1987, longino1990, lakoff1980metaphors}. Entomological discussions of categories and loaded metaphors provide field-specific context \cite{gordon1992wittgenstein, herbers2006, herbers2007}. These perspectives motivate empirical questions; they do not make every conventional term misleading or demonstrate that a replacement improves scientific understanding.
+Philosophical and linguistic work supplies motivation for examining terminology within scientific practice \citep{latour1987, longino1990, lakoff1980metaphors}. Entomological discussions of categories and loaded metaphors provide field-specific context \citep{gordon1992wittgenstein, herbers2006, herbers2007}. These perspectives motivate empirical questions; they do not make every conventional term misleading or demonstrate that a replacement improves scientific understanding.
 
 ## The Challenge of Terminological Reform
 
-Established terms support literature discovery and can carry precise operational meanings. Proposed alternatives therefore require context-specific comparison rather than automatic replacement. A task-based description may be useful for a behavioral observation without replacing a developmentally defined caste category. Molecular and developmental research makes that distinction especially important \cite{sumner2018molecular, qiu2022canalized}.
+Established terms support literature discovery and can carry precise operational meanings. Proposed alternatives therefore require context-specific comparison rather than automatic replacement. A task-based description may be useful for a behavioral observation without replacing a developmentally defined caste category. Molecular and developmental research makes that distinction especially important \citep{sumner2018molecular, qiu2022canalized}.
 
 CACE---Clarity, Appropriateness, Consistency, and Evolvability---is introduced as an explicit set of evaluation questions. Its numerical scoring rules are one inspectable implementation, rather than an independently validated measure of understanding. The biological mechanism, intended referent, reader population, and definition supplied by an author remain central to evaluating terminology.
 
 ## From Labels to Biological Explanation
 
-A useful terminology analysis separates the expression, its referent, and the mechanism invoked to explain that referent. *Worker* can identify a reproductive category or describe an individual performing a task; neither usage alone specifies how task allocation is regulated. Definitions of caste have themselves been examined as a conceptual problem \cite{villet1992caste}, while experimental work shows that individual experience can contribute to persistent division of labor \cite{ravary2007}. These examples locate the research question in the relationship between definitions and evidence, rather than in a presumption that social vocabulary is necessarily inaccurate.
+A useful terminology analysis separates the expression, its referent, and the mechanism invoked to explain that referent. *Worker* can identify a developmental caste (typically non-reproductive females) or describe an individual performing a task; neither usage alone specifies how task allocation is regulated. Definitions of caste have themselves been examined as a conceptual problem \citep{villet1992caste}, while experimental work shows that individual experience can contribute to persistent division of labor \citep{ravary2007}. These examples locate the research question in the relationship between definitions and evidence, rather than in a presumption that social vocabulary is necessarily inaccurate.
 
 The six domains provide questions to ask of a passage: what entity is described, at which biological scale, using which observable criteria, and with what explanatory commitment? Frequency and co-occurrence help locate passages for this inquiry. Assessing whether a label obscures a mechanism requires examining those passages and evaluating readers' inferences. This distinction makes the framework useful for comparative reading without treating the taxonomy as a discovered ontology.
 
@@ -48,9 +48,9 @@ These are predefined organizational categories. A term receiving several labels 
 
 ## Research Approach
 
-The headline computation analyzes 7540 stored abstracts, yielding 991026 processed tokens and 11644 candidates, of which 1323 receive domain assignments. Complementary PMC, BHL, and arXiv layers retain separate source identities. The workflow distinguishes corpus frequencies, observed document co-occurrence, vocabulary overlap, context-cluster entropy, and heuristic scores.
+The headline computation analyzes 7540 source-identified abstracts, yielding 991,026 processed tokens and 11,644 candidates, of which 1323 receive domain assignments. Complementary PMC, BHL, and arXiv layers retain separate source identities. The workflow distinguishes corpus frequencies, observed document co-occurrence, vocabulary overlap, context-cluster entropy, and heuristic scores.
 
-Active Inference and multiscale modeling provide a theoretical perspective \cite{friston2010free, friedman2021active}, but the present pipeline does not fit a generative model of scientific language or measure variational free energy. A Markov blanket specifies conditional-independence relationships in a model; it is not a lexical security filter or a biological boundary established by terminology alone.
+Active Inference and multiscale modeling provide a theoretical perspective \citep{friston2010free, friedman2021active}, but the present pipeline does not fit a generative model of scientific language or measure variational free energy. A Markov blanket specifies conditional-independence relationships in a model; it is not a lexical security filter or a biological boundary established by terminology alone.
 
 The contribution is a descriptive workflow, a proposed taxonomy, and explicit questions for subsequent validation. Historical OCR frequencies provide dated source-layer observations rather than proof of conceptual origins or causal reform. Methods and limitations state source custody gaps, convenience-sample retrieval, statistical dependence, and bounded analyses so that interpretation remains tied to the evidence actually produced.
 
@@ -76,9 +76,9 @@ Three complementary layers remain separate: PMC title, abstract, and body text i
 | Stored abstract strings | 7609 |
 | Source-identified analyzed abstracts | 7540 |
 | Unreconciled strings excluded | 69 |
-| Processed tokens | 991026 |
-| Unique token types | 47064 |
-| Candidate terms | 11644 |
+| Processed tokens | 991,026 |
+| Unique token types | 47,064 |
+| Candidate terms | 11,644 |
 | Domain-assigned terms | 1323 |
 
 These are archived-input and selected-corpus counts, not estimates of all entomological literature. Broad searches retrieve adjacent biological topics and algorithmic uses of ant terminology; a keyword match does not establish relevance to ant biology. Historical volumes can contain substantial non-entomological material. The PMC input also includes correction and retraction notices, including standardized repeated notice text. Article-type, retraction-status and relevance screening are not complete. The custody audit in *output/reports/corpus_audit.json* records missing digest provenance, repeated text, identifier mismatches, and unused sidecar entries. Gaps are retained and disclosed; undocumented source identities are not inferred. Exact text-digest matches to retrieved PubMed abstracts can recover metadata without rewriting text. This establishes source identity rather than ant-topic relevance. Digest-keyed sidecars retain only one metadata entry when several records contain identical text. Relevance annotation and complete source reconciliation are needed before treating a layer as a curated field-wide sample.
@@ -107,9 +107,9 @@ H(t)=-\sum_{i=1}^{k}p_i\log_2p_i.
 
 The requested cluster count is $k=\max(2,\min(5,n-1,\max(2,\lfloor\sqrt{n}\rfloor)))$; occupied clusters may be fewer. Normalized entropy divides by $\log_2 k_{\mathrm{occupied}}$, with zero for a single occupied cluster. Only successfully computed estimates enter domain means; insufficient-context and computation failures are recorded as exclusions. Domain figures and statistical descriptives share this sentence-context calculation. The $H>2$ bits flag is exploratory, without independent calibration. Clusters are computational partitions, not annotated word senses; high entropy does not by itself demonstrate ambiguity or temporal semantic drift.
 
-### Measurement Targets and Validation
+### Measurement Targets and Validation {#sec:measurement_validation}
 
-Each computational quantity has a defined observational unit. Frequencies count processed occurrences; network edges count shared documents; domain overlap counts classifier memberships; entropy summarizes sentence-context cluster occupancy. Framing markers and CACE scores apply configured rules to selected contexts and terms. None directly measures an author's intention or a reader's understanding. Problem-specific validation is a central requirement of automated text analysis \cite{grimmer2013text}; reproducible calculation and valid interpretation address different questions.
+Each computational quantity has a defined observational unit. Frequencies count processed occurrences; network edges count shared documents; domain overlap counts classifier memberships; entropy summarizes sentence-context cluster occupancy. Framing markers and CACE scores apply configured rules to selected contexts and terms. None directly measures an author's intention or a reader's understanding. Problem-specific validation is a central requirement of automated text analysis \citep{grimmer2013text}; reproducible calculation and valid interpretation address different questions.
 
 A future evaluation should freeze annotation rules before inspecting score rankings and retain a held-out set of source contexts. Annotation should distinguish biological referent, task versus developmental category, technical definition, figurative use, and uncertainty. Sampling should include frequent and rare terms, assigned and unassigned candidates, and contexts without marker matches. These strata allow false positives and false negatives to be examined, rather than assessing only examples selected by the pipeline. Agreement, adjudication rules, and performance by source layer should be reported. This is a proposed validation design, not an executed component of the current analysis.
 
@@ -125,7 +125,7 @@ The conceptual map assigns terms to six predefined categories. Its 15 links summ
 w_{AB}=\frac{|A\cap B|}{\min(|A|,|B|)}.
 \end{equation}
 
-The terminology graph counts actual documents containing each pair among the hundred most frequent domain-assigned terms, breaking frequency ties lexically. Whole-word matching is case-insensitive; repeated mentions within a document count once. Shared labels never create an observed edge. Document co-occurrence does not establish a semantic or causal relationship. The separate overlap heatmap summarizes classifier assignments.
+The terminology graph counts actual documents containing each pair among the hundred most frequent domain-assigned terms, breaking frequency ties lexically. Whole-word matching is case-insensitive; repeated mentions within a document count once. Shared labels never create an observed edge. Document co-occurrence does not establish a semantic or causal relationship. The separate overlap heatmap summarizes classifier assignments. A fixed-margin Curveball randomization of the binary document--term incidence matrix supplies a conditional reference for the projected edge count and mean local clustering (Supplemental Section \ref{sec:fixed_margin}).
 
 ### Rhetorical and Discourse Analysis
 
@@ -151,7 +151,7 @@ Four heuristic dimensions define CACE:
 \mathrm{Evolvability}(t)=\tfrac12\min(1,|D(t)|/3)+\tfrac12\min(1,|S_t|/3).
 \end{equation}
 
-The implemented Clarity normalization constant is 3.32, approximately $\log_2 10$; it is a design choice rather than the five-cluster ceiling. Here $\mathcal A$ is the configured anthropomorphic vocabulary, $D(t)$ the domain assignments, and $S_t$ scale-marker categories found in contexts. The aggregate is their arithmetic mean. Domain CACE aggregates and their figure use the same up-to-fifty-term sample, ordered by decreasing frequency and lexical tie-break, and at most ten short extraction contexts per term. Computed entropy enters Clarity where available. Default zero entropy for unavailable estimates and Consistency of 0.5 for fewer than two contexts are conventions, not evidence of clarity or consistency. Weights and thresholds are design choices; no completed coefficient sensitivity study, inter-rater reliability measurement, or independent predictive validation is claimed.
+The implemented Clarity normalization constant is 3.32, approximately $\log_2 10$; it is a design choice rather than the five-cluster ceiling. Here $\mathcal A$ is the configured anthropomorphic vocabulary, $\mathbf x_i$ the TF-IDF vector of the $i$-th of $n$ short extraction contexts, $D(t)$ the domain assignments, and $S_t$ scale-marker categories found in contexts. The aggregate is their arithmetic mean. Domain CACE aggregates and their figure use the same up-to-fifty-term sample, ordered by decreasing frequency and lexical tie-break, and at most ten short extraction contexts per term. Computed entropy enters Clarity where available. Default zero entropy for unavailable estimates and Consistency of 0.5 for fewer than two contexts are conventions, not evidence of clarity or consistency. Weights and thresholds are design choices; no completed coefficient sensitivity study, inter-rater reliability measurement, or independent predictive validation is claimed.
 
 ### Historical Analysis and Coverage
 
@@ -159,7 +159,7 @@ All 2430 stored BHL documents enter literal seed-term frequencies per 10,000 OCR
 
 ### Validation and Reproducibility
 
-Tests exercise numerical examples, real files, corpus slices, and local HTTP servers. Negative controls reject malformed text, stale content, missing receipts, and failed renderer commands. They establish software behavior, not scientific validity of the proxy measures. Python dependencies are resolved by uv.lock; NLTK resources are separate prerequisites. Corpus values remain manuscript placeholders. Content fingerprints bind analyses to ordered records, project source, and locked dependencies. A completed manifest binds input and output files; rendering rejects changed artifacts and nonzero toolchain exits.
+Tests exercise numerical examples, real files, corpus slices, and local HTTP servers. Negative controls reject malformed text, stale content, missing receipts, and failed renderer commands. They establish software behavior, not scientific validity of the proxy measures. Python dependencies are resolved by uv.lock; NLTK resources are separate prerequisites. Content fingerprints bind analyses to ordered records, project source, and locked dependencies. A completed manifest binds input and output files; rendering rejects changed artifacts and nonzero toolchain exits.
 
 
 \clearpage
@@ -168,7 +168,7 @@ Tests exercise numerical examples, real files, corpus slices, and local HTTP ser
 
 ## Terminology Extraction Across Domains
 
-Analysis of the source-identified headline layer yields 11644 candidate terms from 7540 abstracts and 991026 processed tokens. Of these candidates, 1323 receive domain assignments. These counts exclude 69 unreconciled archived strings; broad retrieval still limits relevance and representativeness.
+Analysis of the source-identified headline layer yields 11,644 candidate terms from 7540 abstracts and 991,026 processed tokens. Of these candidates, 1323 receive domain assignments. These counts exclude 69 unreconciled archived strings; broad retrieval still limits relevance and representativeness.
 
 \begin{table}[h]
 \centering
@@ -176,9 +176,9 @@ Analysis of the source-identified headline layer yields 11644 candidate terms fr
 \hline
 \textbf{Domain} & \textbf{Terms} & \textbf{Frequency} & \textbf{Bridging terms} \\
 \hline
-Unit of Individuality & 526 & 27813 & 24 \\
-Behavior \& Identity & 262 & 16896 & 91 \\
-Power \& Labor & 294 & 12306 & 138 \\
+Unit of Individuality & 526 & 27,813 & 24 \\
+Behavior \& Identity & 262 & 16,896 & 91 \\
+Power \& Labor & 294 & 12,306 & 138 \\
 Sex \& Reproduction & 244 & 9165 & 61 \\
 Kin \& Relatedness & 83 & 3957 & 4 \\
 Economics & 78 & 4458 & 3 \\
@@ -188,7 +188,9 @@ Economics & 78 & 4458 & 3 \\
 \label{tab:terminology_extraction}
 \end{table}
 
-The processed vocabulary has type-token ratio 0.0475. Its most frequent recorded tokens are ant (20328), specie (10552), and colony (7319). Frequency identifies recurring lexical material; it does not establish its conceptual importance or the intentions of authors.
+Among assigned terms, 11.9\% have multiple domain labels. This is a property of the classifier and corpus. Temporal semantic drift would require explicit time-indexed meaning comparison, while lexical, contextual, and scale ambiguity require independent sense annotation or validated proxies. Those measurements are not established by label overlap.
+
+The processed vocabulary has type-token ratio 0.0475. Its most frequent WordNet lemmas are ant (20,328), specie (10,552), and colony (7319). Lemmatization reduces inflected forms and can truncate words such as *species* to *specie*; extracted terms retain surface forms (Supplemental Section \ref{sec:supplemental_methods}). Frequency identifies recurring lexical material; it does not establish its conceptual importance or the intentions of authors.
 
 ## Terminology Network Structure
 
@@ -198,7 +200,7 @@ The observed terminology graph uses the hundred most frequent domain-assigned te
 w(u,v)=\sum_{d=1}^{N}\mathbf{1}[u\in d]\mathbf{1}[v\in d].
 \end{equation}
 
-Whole-word matches are case-insensitive, and repeated mentions within a document do not add weight. No edge is inferred from shared labels or extraction order. The graph has clustering coefficient 0.8948 under the generated network-summary definition; this statistic does not measure conceptual coherence, communication quality, or resistance to reform.
+Whole-word matches are case-insensitive, and repeated mentions within a document do not add weight. No edge is inferred from shared labels or extraction order. The graph has mean local (unweighted) clustering coefficient 0.8948; this statistic does not measure conceptual coherence, communication quality, or resistance to reform.
 
 \begin{figure}[h]
 \centering
@@ -207,12 +209,25 @@ Whole-word matches are case-insensitive, and repeated mentions within a document
 \label{fig:terminology_network}
 \end{figure}
 
+### Comparison with a Fixed-Margin Reference
+
+Density and clustering depend on how many selected terms each abstract contains and how many abstracts contain each term. A Curveball randomization of the binary document--term incidence matrix preserves both margins (Supplemental Section \ref{sec:fixed_margin}). Over 3 chains and 600 retained draws for the 7540 source-identified abstracts and 100 terms, the randomized reference averages 4519.6 edges (central 95\% of draws 4486--4558) and mean local clustering 0.932 (0.928--0.937). The observed graph has 4232 edges and clustering 0.895, below both envelopes (Figure \ref{fig:network_robustness}). A sensitivity protocol with longer burn-in, wider spacing and different seeds (300 draws) gives reference means of 4518.5 edges and 0.932 clustering. Between-chain $\hat R$ is 1.001 for edges and 0.999 for clustering; this diagnostic does not prove mixing.
+
+Selected terms therefore co-occur in fewer distinct pairs, with less closed triadic structure, than their margins alone would produce: co-occurrence is concentrated among particular pairs. The envelopes describe the sampled conditional reference rather than uncertainty in the observed values, and the comparison does not identify a linguistic cause.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_robustness/network_robustness.png}
+\caption{Fixed-margin comparison for the abstract terminology network. Top: retained-chain traces of projected edge count and mean local clustering for 3 seeds. Bottom: distributions of the 600 retained draws, with the observed value marked. Every draw preserves each abstract's selected-term count and each term's document frequency. The reference is conditional on the frequency-ranked vocabulary and the convenience corpus.}
+\label{fig:network_robustness}
+\end{figure}
+
 Domain-assignment overlap is a different quantity, displayed separately in Figure \ref{fig:domain_overlap}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_overlap_heatmap.png}
-\caption{Szymkiewicz--Simpson overlap coefficients between domain-assigned vocabularies (Eq.~\ref{eq:overlap_coefficient}). Each cell counts shared terms divided by the smaller vocabulary size. Values reflect the current lexical classifier; observed zeros do not establish conceptual isolation.}
+\caption{Szymkiewicz--Simpson overlap coefficients between domain-assigned vocabularies (Eq.~\ref{eq:overlap_coefficient}). Each cell shows shared terms as a percentage of the smaller vocabulary; the diagonal is 100 by definition. Values reflect the current lexical classifier; observed zeros do not establish conceptual isolation.}
 \label{fig:domain_overlap}
 \end{figure}
 
@@ -238,11 +253,9 @@ Lexical markers identify contexts for further qualitative examination. They do n
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/anthropomorphic_framing.png}
-\caption{Observed framing-marked terminology by canonical domain. Left: distinct extracted terms with at least one occurrence context matching an anthropomorphic pattern. Right: up to five terms per domain, selected by decreasing matched-context proportion, context count, and lexical ordering. Counts are neither curated vocabulary sizes nor occurrence frequencies. Occurrence-context framing proportions are exported separately.}
+\caption{Observed framing-marked terminology by canonical domain. Top: distinct extracted terms with at least one occurrence context matching an anthropomorphic pattern. Bottom: up to six terms per domain, selected by decreasing matched-context proportion, context count, and lexical ordering. Counts are neither curated vocabulary sizes nor occurrence frequencies. Occurrence-context framing proportions are exported separately.}
 \label{fig:anthropomorphic}
 \end{figure}
-
-Among assigned terms, 11.9\% have multiple domain labels. This is a property of the classifier and corpus. Temporal semantic drift would require explicit time-indexed meaning comparison, while lexical, contextual, and scale ambiguity require independent sense annotation or validated proxies. Those measurements are not established by label overlap.
 
 
 \clearpage
@@ -253,25 +266,25 @@ The six domains organize descriptive outputs and questions for qualitative inter
 
 ## Unit of Individuality
 
-This vocabulary includes references to individuals, colonies, and collective organization. Its mean computed sentence-context entropy is 1.55 bits. Frequency and word-formation panels describe extracted surface forms, while the scale panel counts keyword matches in term names. These counts do not estimate biological boundaries or conditional independence. Figures \ref{fig:domain_overview_grid}, \ref{fig:domain_patterns_grid}, and \ref{fig:unit_individuality_patterns} support inspection of the extraction.
+This vocabulary includes references to individuals, colonies, and collective organization. Its mean computed sentence-context entropy is 1.55 bits. Frequency and word-formation panels describe extracted surface forms, while the scale panel counts keyword matches in term names. These counts do not estimate biological boundaries. Figures \ref{fig:domain_overview_grid}, \ref{fig:domain_patterns_grid}, and \ref{fig:unit_individuality_patterns} support inspection of the extraction.
 
 ## Power \& Labor
 
-Power and Labor contains 294 assigned terms and 138 terms with multiple labels. Its occurrence-context anthropomorphic-marker proportion is 1.2\%, rather than a percentage of authors or publications using misleading language. Discussions of loaded terminology motivate contextual examination \cite{herbers2006, herbers2007}. Molecular work on caste \cite{sumner2018molecular} and developmental canalization \cite{qiu2022canalized} also make it important to distinguish developmental phenotypes from temporary task categories; canalization is not evidence that every caste identity is labile.
+Power and Labor contains 294 assigned terms and 138 terms with multiple labels. Its occurrence-context anthropomorphic-marker proportion is 1.2\%, rather than a percentage of authors or publications using misleading language. Discussions of loaded terminology motivate contextual examination \citep{herbers2006, herbers2007}. Molecular work on caste \citep{sumner2018molecular} and developmental canalization \citep{qiu2022canalized} also make it important to distinguish developmental phenotypes from temporary task categories.
 
-Figures \ref{fig:power_labor_frequencies} and \ref{fig:power_labor_ambiguities} show observed term frequency and context-cluster entropy. Figure \ref{fig:concept_hierarchy} ranks predefined concept categories by their direct graph connections; it does not show a biological hierarchy or term-level betweenness.
+Figures \ref{fig:power_labor_frequencies} and \ref{fig:power_labor_ambiguities} show observed term frequency and context-cluster entropy. Figure \ref{fig:concept_hierarchy} ranks predefined concept categories by summed vocabulary overlap; it does not show a biological hierarchy or term-level betweenness.
 
 ## Behavior \& Identity
 
-The mean computed sentence-context entropy is 1.74 bits. Task labels provide useful candidates for context annotation. Evidence of behavioral flexibility in ants \cite{ravary2007, gordon2010} motivates asking when a label denotes an observation, a persistent propensity, or a morphological category. The corpus statistics alone do not establish that categorical labels obscure that flexibility.
+The mean computed sentence-context entropy is 1.74 bits. Task labels provide useful candidates for context annotation. Evidence of behavioral flexibility in ants \citep{ravary2007, gordon2010} motivates asking when a label denotes an observation, a persistent propensity, or a morphological category. The corpus statistics alone do not establish that categorical labels obscure that flexibility.
 
 ## Sex \& Reproduction
 
-This domain groups reproductive and developmental terminology. Its mean computed entropy is 1.74 bits. The presence of paired labels does not demonstrate a binary-opposition graph or the importation of mammalian sex determination. Reproductive systems and caste development vary across taxa, and the epigenetic review \cite{oldroyd2021epigenetics} provides background rather than validation of a lexical classifier.
+This domain groups reproductive and developmental terminology. Its mean computed entropy is 1.74 bits. The presence of paired labels does not by itself demonstrate a conceptual opposition. Reproductive systems and caste development vary across taxa, and the epigenetic review \citep{oldroyd2021epigenetics} provides background rather than validation of a lexical classifier.
 
 ## Kin \& Relatedness
 
-The mean computed entropy is 1.75 bits. Relatedness terms require biological and demographic context: numerical coefficients depend on pedigrees, mating systems, and population structure. The present outputs do not estimate those quantities, measure competition between evolutionary explanations, or demonstrate that conflict terminology is underrepresented.
+The mean computed entropy is 1.75 bits. Relatedness terms require biological and demographic context: numerical coefficients depend on pedigrees, mating systems, and population structure. The present outputs do not estimate those quantities.
 
 ## Economics
 
@@ -279,19 +292,19 @@ The classifier assigns 78 terms to Economics, with 3 receiving multiple labels. 
 
 ## Historical Interpretation
 
-Historical readings of caste and superorganism terminology provide context \cite{wheeler1911, gordon1992wittgenstein, boomsma2018superorganismality}. The BHL era analysis in Section \ref{sec:bhl_grounding} reports literal OCR frequencies and explicitly sampled stack outputs. Changes in those rates do not independently establish changes in conceptual commitments, the origin of a concept, or progress toward more accurate biological explanation.
+Historical readings of caste and superorganism terminology provide context \citep{wheeler1911, gordon1992wittgenstein, boomsma2018superorganismality}. The BHL era analysis in Section \ref{sec:bhl_grounding} reports literal OCR frequencies and explicitly sampled stack outputs. Changes in those rates do not independently establish changes in conceptual commitments, the origin of a concept, or progress toward more accurate biological explanation.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_overview_grid.png}
-\caption{Ten highest-frequency extracted terms per domain. Bar length is corpus frequency and color is the attached sentence-context entropy estimate. Zero-valued defaults for insufficient contexts must not be interpreted as evidence of unambiguous meaning. These are descriptive extraction outputs from the stored abstract layer.}
+\caption{Ten highest-frequency extracted terms per domain. Bar length is corpus frequency and color is the attached sentence-context entropy estimate. Zero-valued defaults for insufficient contexts must not be interpreted as evidence of unambiguous meaning. These are descriptive extraction outputs from the source-identified abstract layer.}
 \label{fig:domain_overview_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_patterns_grid.png}
-\caption{Surface word-formation composition of assigned vocabularies. Donut areas summarize word, hyphenated-compound, and multi-word categories where present. The headline extractor does not independently add n-grams, so availability of a category in the plotting utility does not establish its extraction.}
+\caption{Surface word-formation composition of assigned vocabularies. Each term is assigned to exactly one surface category (single word, multi-word phrase, hyphenated or underscore compound, or containing digits), using the same classifier as Figure \ref{fig:unit_individuality_patterns}. The headline extractor does not independently add n-grams, so availability of a category in the plotting utility does not establish its extraction.}
 \label{fig:domain_patterns_grid}
 \end{figure}
 
@@ -305,14 +318,14 @@ Historical readings of caste and superorganism terminology provide context \cite
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/concept_hierarchy.png}
-\caption{Direct-link centrality of predefined concept categories (left) and centrality against associated-term counts (right). Colors separate categories above versus at or below mean centrality. The display does not represent a biological command hierarchy.}
+\caption{Overlap strength of the six predefined concept categories: each category's weighted degree, the sum of its overlap coefficients with the other categories (Eq.~\ref{eq:overlap_coefficient}), ranked (left) and plotted against associated-term counts (right). Every category links to every other, so unweighted degree would not distinguish them. The display does not represent a biological command hierarchy.}
 \label{fig:concept_hierarchy}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/power_and_labor_term_frequencies.png}
-\caption{The fifteen highest-frequency assigned Power and Labor terms in the stored abstract layer. Frequency is annotated; color tracks rank. These observations do not quantify hierarchical control or bias.}
+\caption{The fifteen highest-frequency assigned Power and Labor terms in the source-identified abstract layer. Frequency is annotated; color tracks rank. These observations do not quantify hierarchical control or bias.}
 \label{fig:power_labor_frequencies}
 \end{figure}
 
@@ -330,9 +343,9 @@ Historical readings of caste and superorganism terminology provide context \cite
 
 ## Language and Scientific Practice
 
-The descriptive outputs organize terminology into a framework for examining the relationship between language and biological explanation. They are compatible with asking whether scientific metaphors influence inquiry \cite{latour1987, longino1990, lakoff1980metaphors}, but do not test that causal hypothesis. Keyword frequency, sentence-cluster entropy, and co-occurrence identify lexical patterns rather than researchers' beliefs, decisions, or errors.
+The descriptive outputs organize terminology into a framework for examining the relationship between language and biological explanation. They are compatible with asking whether scientific metaphors influence inquiry \citep{latour1987, longino1990, lakoff1980metaphors}, but do not test that causal hypothesis. Keyword frequency, sentence-cluster entropy, and co-occurrence identify lexical patterns rather than researchers' beliefs, decisions, or errors.
 
-Terms such as *queen*, *worker*, and *caste* deserve contextual scrutiny because biological roles and ordinary-language connotations can differ. Existing discussions of terminology reform provide a substantive motivation \cite{herbers2006, herbers2007}. The present corpus analysis neither establishes that terminology delayed particular discoveries nor measures the adoption of alternatives across the field. Such claims would require dated source analysis and evidence about research decisions.
+Terms such as *queen*, *worker*, and *caste* deserve contextual scrutiny because biological roles and ordinary-language connotations can differ. Existing discussions of terminology reform provide a substantive motivation \citep{herbers2006, herbers2007}. The present corpus analysis neither establishes that terminology delayed particular discoveries nor measures the adoption of alternatives across the field. Such claims would require dated source analysis and evidence about research decisions.
 
 The observed graph has clustering coefficient 0.8948, while 11.9\% of assigned terms receive multiple labels. Neither quantity demonstrates self-reinforcing conceptual bias. Co-occurrence can arise because papers discuss several biological processes together; label overlap also follows from the predefined lexicons. A visualization's arrangement must not be read as a human-style command hierarchy.
 
@@ -340,19 +353,19 @@ The observed graph has clustering coefficient 0.8948, while 11.9\% of assigned t
 
 A dense co-occurrence graph needs a reference that accounts for vocabulary selection and document-level opportunity. The companion fixed-margin extension preserves selected-term counts within documents and the document frequency of each term. In the executed finite-chain comparisons, the observed graph has fewer edges and lower clustering than the randomized reference. The same direction appears under the longer-burn, wider-spacing sensitivity protocol. The substantive interpretation is concentration of co-occurrence relative to those margins, rather than exceptional density attributable to terminology alone. Topic, genre and other sources of document organization remain possible explanations. A graph's visual density is therefore an observation to explain, not evidence of conceptual bias by itself.
 
-The extension also makes vocabulary sensitivity explicit. Changing the frequency-ranked subset changes the projection and the amount of connectivity it can display. Interpretation should state the selected vocabulary, the incidence margins and the comparison model. The comparison has a separate receipt from the four-layer corpus analysis, making its computational inputs and outputs independently inspectable.
+The extension also makes vocabulary sensitivity explicit. Changing the frequency-ranked subset changes the projection and the amount of connectivity it can display. Interpretation should state the selected vocabulary, the incidence margins and the comparison model. The comparison is separately receipted, so its inputs and outputs can be inspected independently of the corpus analysis.
 
 ## Biological Precision and Terminological Continuity
 
-A terminology decision has several possible costs: obscuring a biological distinction, inviting an unsupported analogy, or making relevant literature harder to retrieve. These costs need not move together. For example, replacing a developmental category with a task description may lose information even when the replacement sounds less anthropomorphic. Definitions of caste and evidence for experience-dependent division of labor address distinct biological questions \cite{villet1992caste, ravary2007}; a useful glossary should preserve that distinction.
+A terminology decision has several possible costs: obscuring a biological distinction, inviting an unsupported analogy, or making relevant literature harder to retrieve. These costs need not move together. For example, replacing a developmental category with a task description may lose information even when the replacement sounds less anthropomorphic. The Introduction's distinction between a definitional question (what counts as a caste) and a mechanistic one (how experience shapes division of labor) is the distinction a useful glossary should preserve.
 
 The practical unit of revision is therefore a defined use in a passage. Authors can specify the organism or collective being measured, the criteria for category membership, and the mechanism supported by their observations. Linking an alternative expression to established indexing vocabulary can retain discoverability. CACE can structure that review, but its aggregate should accompany the definition and evidential rationale rather than decide which expression is biologically correct.
 
 ## Active Inference as a Theoretical Perspective
 
-Active Inference offers a vocabulary for discussing generative models, inference, and action \cite{friston2010free, clark2013whatever}. In the Active Inferants study, a simulated ant-foraging model reproduces selected colony phenomena in a laboratory-inspired setting \cite{friedman2021active}. This provides an example of mechanistic modeling without a centralized controller; it does not experimentally compare terminology choices or establish the empirical adequacy of every biological assumption.
+Active Inference offers a vocabulary for discussing generative models, inference, and action \citep{friston2010free, clark2013whatever}. In the Active Inferants study, a simulated ant-foraging model reproduces selected colony phenomena in a laboratory-inspired setting \citep{friedman2021active}. This provides an example of mechanistic modeling without a centralized controller; it does not experimentally compare terminology choices or establish the empirical adequacy of every biological assumption.
 
-Interpreting terminology as a prior is an analogy here. This repository does not fit an Active Inference model of scientific language, estimate variational free energy from the corpus, or infer Markov blankets from ant behavioral data. Whether an ant or colony admits a useful blanket description depends on specified state variables, dynamics, and conditional-independence assumptions \cite{friston2013life, kirchhoff2018markov}; it cannot be settled by changing a noun.
+Interpreting terminology as a prior is an analogy here; as the Introduction states, no Active Inference model is fitted to the corpus. Whether an ant or colony admits a useful blanket description depends on specified state variables, dynamics, and conditional-independence assumptions \citep{friston2013life, kirchhoff2018markov}; it cannot be settled by changing a noun.
 
 The Environment-Centric Active Inference and related multiscale proposals in Section \ref{sec:supplemental_analysis} should be read as theoretical extensions. They require explicit models and empirical tests before supporting biological or linguistic conclusions.
 
@@ -360,7 +373,7 @@ The Environment-Centric Active Inference and related multiscale proposals in Sec
 
 CACE makes evaluation criteria inspectable: clarity of operational definitions, suitability of metaphors, consistency of use, and adaptability to new findings. Its numerical implementation is a heuristic instantiation. Penalizing membership in a predefined anthropomorphic vocabulary partly encodes the desired ranking; a favorable score is not independent validation of a replacement term.
 
-The representative-term table includes terms absent from the extraction. Their scores are derived from text features and fallback conventions, as recorded by the in-corpus flag. In particular, a zero default entropy for an unattested term must not be interpreted as demonstrated specificity. Comparisons between *slave* and *host worker* illustrate these rules, rather than measuring a change in readers' comprehension or research outcomes.
+The representative-term table includes terms absent from the extraction. Their scores are derived from text features and fallback conventions, as recorded in the Extracted column. In particular, a zero default entropy for an unattested term must not be interpreted as demonstrated specificity. Comparisons between *slave* and *host worker* illustrate these rules, rather than measuring a change in readers' comprehension or research outcomes.
 
 The computed aggregate values are 0.30 and 0.47, respectively, with Appropriateness 0.50 and 0.40. These values remain useful for inspecting the scoring implementation. Independent assessment should compare definitions and context-specific biological accuracy, collect blinded judgments, measure agreement, and test sensitivity to the chosen weights before treating the scores as a prescriptive standard.
 
@@ -370,11 +383,9 @@ Domain overlap can help select terms for shared glossaries and explicit operatio
 
 ## Measurement Validation and Terminology Intervention
 
-Two study designs separate measurement quality from communication effects. Independent annotation of source contexts can test whether occupancy entropy and lexical indicators track reader-labeled meanings and discourse functions after accounting for term frequency, document length and topic. Agreement and uncertainty should be reported at the level of the annotated observation.
+Two study designs separate measurement quality from communication effects. The first is the annotation design specified in Section \ref{sec:measurement_validation}: it tests whether occupancy entropy and lexical indicators track reader-labeled meanings and discourse functions after accounting for term frequency, document length and topic, with agreement and uncertainty reported at the level of the annotated observation.
 
-Metaphor experiments offer a methodological precedent: Thibodeau and Boroditsky manipulated crime descriptions and examined subsequent reasoning \cite{thibodeau2011metaphors}. Their setting differs from entomological expertise and technical usage, so their findings motivate a study design here rather than establish an effect of ant terminology.
-
-A randomized reader study can hold biological evidence constant while varying an established label, a proposed alternative and an explicit operational definition. Prespecified outcomes include inference accuracy, confidence calibration, recall and literature retrieval. This design tests a terminology effect directly. Comparing its outcomes with CACE rankings then evaluates the scoring proposal using evidence outside the scheme. Researchers and students can be included as prespecified groups rather than assumed to interpret a term identically.
+The second borrows the manipulation logic of metaphor experiments (Section \ref{sec:related_work}). A randomized reader study can hold biological evidence constant while varying an established label, a proposed alternative and an explicit operational definition. Prespecified outcomes include inference accuracy, confidence calibration, recall and literature retrieval. This design tests a terminology effect directly. Comparing its outcomes with CACE rankings then evaluates the scoring proposal using evidence outside the scheme. Researchers and students can be included as prespecified groups rather than assumed to interpret a term identically.
 
 ## Limitations
 
@@ -393,7 +404,7 @@ These boundaries support a focused next study: a frozen, fully reconciled corpus
 
 # Conclusion {#sec:conclusion}
 
-This work provides a six-domain framework and a reproducible descriptive pipeline for examining terminology in scientific text. Across 7540 stored abstracts, the pipeline processes 991026 tokens and extracts 11644 candidate terms, with 1323 receiving domain assignments. Observed document co-occurrence, predefined conceptual-category overlap, sentence-context entropy, and heuristic framing and CACE scores are reported as distinct quantities.
+This work provides a six-domain framework and a reproducible descriptive pipeline for examining terminology in scientific text. Across 7540 source-identified abstracts, the pipeline processes 991,026 tokens and extracts 11,644 candidate terms, with 1323 receiving domain assignments. Observed document co-occurrence, predefined conceptual-category overlap, sentence-context entropy, and heuristic framing and CACE scores are reported as distinct quantities.
 
 The 11.9\% of assigned terms with multiple labels measures classification overlap, not semantic drift. The 6 concept categories are predefined rather than discovered. Complementary source layers extend the descriptive scope without establishing that language causes bias, that a terminology reform improves scientific modeling, or that numerical CACE rankings are independently validated.
 
@@ -414,39 +425,39 @@ CACE offers explicit evaluation questions for such studies. Its current scores p
 
 ## Scientific Language and Categories
 
-Philosophy of science and discourse research provide context for studying terminology as part of research practice \cite{kuhn1996, latour1987, longino1990, fairclough1992, wodak2009methods}. Conceptual and deliberate-metaphor frameworks supply complementary questions about ordinary connotations and communicative intention \cite{lakoff1980metaphors, steen2017deliberate}. This study draws motivation from those traditions, while keeping computational lexical proxies separate from claims about thought, intention, or causal influence.
+Philosophy of science and discourse research provide context for studying terminology as part of research practice \citep{kuhn1996, latour1987, longino1990, fairclough1992, wodak2009methods}. Conceptual and deliberate-metaphor frameworks supply complementary questions about ordinary connotations and communicative intention \citep{lakoff1980metaphors, steen2017deliberate}. This study draws motivation from those traditions, while keeping computational lexical proxies separate from claims about thought, intention, or causal influence.
 
-Work on scientific classification and cultural histories offers additional context \cite{berlin1992, hacking1999social, sleigh2007ants}. The present six-domain taxonomy is a proposed analytic organization; it is not independently established as exhaustive or uniquely appropriate.
+Work on scientific classification and cultural histories offers additional context \citep{berlin1992, hacking1999social, sleigh2007ants}. The present six-domain taxonomy is a proposed analytic organization; it is not independently established as exhaustive or uniquely appropriate.
 
 ## Terminology in Social-Insect Research
 
-Debates over caste categories and descriptions of ant behavior motivate explicit definitions \cite{gordon1992wittgenstein, boomsma2018superorganismality}. Research on collective behavior provides biological context for distinguishing task allocation from an assumed centralized controller \cite{gordon2010, gordon2019ecology, gordon2023ecology}. The descriptive corpus pipeline does not itself test those mechanisms.
+Debates over caste categories and descriptions of ant behavior motivate explicit definitions \citep{gordon1992wittgenstein, boomsma2018superorganismality}. Research on collective behavior provides biological context for distinguishing task allocation from an assumed centralized controller \citep{gordon2010, gordon2019ecology, gordon2023ecology}. The descriptive corpus pipeline does not itself test those mechanisms.
 
-Discussions of racially loaded language in social-insect research provide a substantive case for examining terminology choices \cite{herbers2006, herbers2007}. The ESA Better Common Names Project is a related institutional initiative \cite{betternamesproject2024}. Neither the current frequency analysis nor CACE scoring measures the adoption or effects of these reforms.
+Discussions of racially loaded language in social-insect research provide a substantive case for examining terminology choices \citep{herbers2006, herbers2007}. The ESA Better Common Names Project is a related institutional initiative \citep{betternamesproject2024}, and the term *colony* itself has been examined for its settler-colonial connotations \citep{vis2026colony}. Neither the current frequency analysis nor CACE scoring measures the adoption or effects of these reforms.
 
-Molecular accounts of caste and epigenetic mechanisms \cite{sumner2018molecular, oldroyd2021epigenetics} and developmental canalization research \cite{qiu2022canalized} reinforce the need to distinguish developmental processes from temporary behavioral labels. Canalization must not be interpreted as proof that every caste category is labile. The historical superorganism literature \cite{wheeler1911} and later conceptual analysis \cite{boomsma2018superorganismality} also caution against dating a concept's origin from an absent OCR match.
+Molecular accounts of caste and epigenetic mechanisms \citep{sumner2018molecular, oldroyd2021epigenetics} and developmental canalization research \citep{qiu2022canalized} reinforce the need to distinguish developmental processes from temporary behavioral labels. Canalization must not be interpreted as proof that every caste category is labile. The historical superorganism literature \citep{wheeler1911} and later conceptual analysis \citep{boomsma2018superorganismality} also caution against dating a concept's origin from an absent OCR match.
 
 ## Computational Mapping and Source-Layer Analysis
 
-Computational literature mapping supplies methods for examining connections among terms and publications \cite{chen2006citespace}. Here, document co-occurrence is kept separate from vocabulary-overlap relationships between predefined concepts. TF-IDF/KMeans occupancy entropy is used as a descriptive measure of context distributions, without claiming independent sense annotation or validated linguistic ambiguity.
+Computational literature mapping supplies methods for examining connections among terms and publications \citep{chen2006citespace}. Here, document co-occurrence is kept separate from vocabulary-overlap relationships between predefined concepts. TF-IDF/KMeans occupancy entropy is used as a descriptive measure of context distributions, without claiming independent sense annotation or validated linguistic ambiguity.
 
 Source-layer comparisons are also descriptive. Abstracts, full texts, historical volumes and preprints differ in access, genre, length, topic and extraction threshold. An observed difference between layers is not automatically a robustness result or a historical change in meaning.
 
 ## Validation and Experimental Evidence
 
-Grimmer and Stewart's account of automated content analysis emphasizes validation tailored to the substantive question \cite{grimmer2013text}. Its relevance here is methodological: word counts and computational categories require an explicit connection to the construct they are intended to measure. Our receipt system checks computational custody and agreement; independently annotated contexts would address whether the outputs capture biological meanings and discourse functions.
+\citet{grimmer2013text} emphasize, for automated content analysis, validation tailored to the substantive question. Its relevance here is methodological: word counts and computational categories require an explicit connection to the construct they are intended to measure. This study's receipts establish computational custody, not construct validity; Section \ref{sec:measurement_validation} specifies the annotation design that would address the latter.
 
-Experimental metaphor research supplies a complementary way to investigate reader responses. Thibodeau and Boroditsky studied how contrasting crime metaphors affected reasoning \cite{thibodeau2011metaphors}. That evidence concerns a different topic and participant setting. It supports using controlled language manipulations to formulate testable questions, while leaving the effects of technical ant terminology on specialists and students unresolved. Connecting these traditions requires both measurement validation and a direct communication experiment.
+Experimental metaphor research supplies a complementary way to investigate reader responses. \citet{thibodeau2011metaphors} studied how contrasting crime metaphors affected reasoning. That evidence concerns a different topic and participant setting. It supports using controlled language manipulations to formulate testable questions, while leaving the effects of technical ant terminology on specialists and students unresolved. Connecting these traditions requires both measurement validation and a direct communication experiment.
 
 ## Active Inference and Colony Modeling
 
-The Free Energy Principle and Active Inference supply theoretical vocabulary for generative modeling \cite{friston2010free, friston2013life, clark2013whatever, kirchhoff2018markov}. The Active Inferants framework supplies a simulated ant-foraging example \cite{friedman2021active}; it does not experimentally compare terminology choices. Model behavior therefore cannot independently establish that hierarchical vocabulary caused modeling errors.
+The Free Energy Principle and Active Inference supply theoretical vocabulary for generative modeling \citep{friston2010free, friston2013life, clark2013whatever, kirchhoff2018markov}. The Active Inferants framework supplies a simulated ant-foraging example \citep{friedman2021active}; model behavior alone cannot establish how terminology choices affect scientific reasoning.
 
-Theoretical perspectives on eusociality and biological individuality \cite{nowak2010evolution, boomsma2018superorganismality} motivate careful definition of units and mechanisms. The Environment-Centric Active Inference extensions in the supplement remain proposed constructions requiring explicit models and empirical testing.
+Theoretical perspectives on eusociality and biological individuality \citep{nowak2010evolution, boomsma2018superorganismality} motivate careful definition of units and mechanisms. The Environment-Centric Active Inference extensions in the supplement remain proposed constructions requiring explicit models and empirical testing.
 
 ## Positioning This Work
 
-This repository contributes a six-domain descriptive workflow with auditable source layers, inspectable computational definitions, registered figures, and content-bound manuscript values. CACE is a proposed evaluation framework, not a historically validated intervention. Its independent validation would require annotated meanings, blinded judgments, measured agreement, and tests of sensitivity and communication outcomes. The distinction between implemented measurement, theoretical motivation, and unperformed validation is part of the contribution.
+This repository contributes a six-domain descriptive workflow with auditable source layers, inspectable computational definitions, regenerable figures and receipt-bound values. CACE is a proposed evaluation framework, not a validated measure or intervention. Its independent validation would require annotated meanings, blinded judgments, measured agreement, and tests of sensitivity and communication outcomes. The distinction between implemented measurement, theoretical motivation, and unperformed validation is part of the contribution.
 
 
 \clearpage
@@ -457,18 +468,18 @@ We gratefully acknowledge the contributions of individuals and institutions that
 
 ## Institutional Support
 
-This work was conducted at the Active Inference Institute. We thank the Institute for providing the research environment and collaborative infrastructure that supported the development of the Ento-Linguistic framework.
+This work was conducted at the Active Inference Institute and APOIDEAS. We thank the Institute for providing the research environment and collaborative infrastructure that supported the development of the Ento-Linguistic framework.
 
 ## Collaborations
 
-We thank colleagues and collaborators for valuable discussions and feedback throughout the development of this work, particularly regarding the theoretical framework for understanding constitutive effects of scientific language and the design of the mixed-methodology approach.
+We thank colleagues and collaborators for valuable discussions and feedback throughout the development of this work, particularly regarding the six-domain framework and the design of the descriptive pipeline.
 
 ## Data and Software
 
 This research builds upon open-source software tools and publicly available datasets. We acknowledge:
 
 - Python scientific computing stack (NumPy, SciPy, Matplotlib, NetworkX)
-- Natural Language Toolkit (NLTK) for text processing and scikit-learn for validation
+- Natural Language Toolkit (NLTK) for text processing and scikit-learn for TF-IDF vectorization and clustering
 - LaTeX and Pandoc for document preparation
 - Published entomological literature informing the domain terminology seeds
 
@@ -497,17 +508,17 @@ TextProcessor applies Unicode normalization, lowercase conversion, word tokeniza
 
 NLTK sentence tokenization supplies the contexts used for semantic entropy. These sentence contexts differ from the short, processed-token windows retained on extracted Term objects. English-language resources are applied to a heterogeneous stored corpus; this is not a validated multilingual processing pipeline.
 
-NLTK resources are separate downloaded prerequisites. The schema-2 analysis receipt binds the selected English stopword file, English punkt_tab files and WordNet dictionary bytes (the complete archive when archive-backed). The same hashes enter cache signatures; changing a selected resource requires reanalysis. These hashes identify the installed inputs without vendoring them or guaranteeing automatic restoration. Open Multilingual WordNet is outside this receipt because English lemmatization does not consume it. The source implementation and uv.lock specify Python package dependencies.
+NLTK resources are separate downloaded prerequisites. The analysis receipt binds the selected English stopword file, English punkt_tab files and WordNet dictionary bytes (the complete archive when archive-backed). The same hashes enter cache signatures; changing a selected resource requires reanalysis. These hashes identify the installed inputs without vendoring them or guaranteeing automatic restoration. Open Multilingual WordNet is outside this receipt because English lemmatization does not consume it. The source implementation and uv.lock specify Python package dependencies.
 
 ## Candidate Extraction and Domain Assignment
 
-TerminologyExtractor counts tokens, applies a minimum frequency, and evaluates candidate filters. The headline threshold is one occurrence; the PMC threshold is twenty; arXiv and the BHL computational stack use two. Different thresholds, document lengths and source genres affect vocabulary size and prevent treating raw counts as matched layer comparisons.
+TerminologyExtractor counts tokens, applies the layer-specific minimum frequency listed in Methods, and evaluates candidate filters.
 
 Candidate filters retain configured seed words of three to fifty characters before evaluating generic filters. Other candidates enter through scientific patterns, compound separators, or configured scientific substrings. They reject pure numbers but can admit unrelated substring matches and OCR artifacts. Candidate inclusion is therefore broader than biological terminology. For example, skin, making and queensland can remain candidates without receiving a domain label.
 
 The six DOMAIN_SEEDS vocabularies define direct assignments. Compound tokens can inherit labels from seed-word overlap; fallback lexical patterns use word boundaries. An extracted term can receive several labels. Label overlap follows from these rules and does not demonstrate temporal semantic drift or independently annotated meanings.
 
-Candidate iteration is sorted for deterministic output. The extractor stores surface text, lemma, frequency, domain labels, confidence, and deduplicated short contexts. Three-token windows around occurrences supply at most thirty stored contexts. These windows support heuristic scoring; they do not expand domain labels by co-occurrence. The available n-gram utility is not invoked by the headline extractor.
+Candidate iteration is sorted for deterministic output. The extractor stores surface text, lemma, frequency, domain labels, confidence, and deduplicated short contexts.
 
 Extraction confidence combines configured frequency, context and classification features. It is not calibrated against human correctness labels. The pipeline does not report precision, recall, multilingual accuracy, or inter-rater reliability.
 
@@ -580,7 +591,7 @@ The standalone sequence installs locked dependencies and NLTK resources, runs te
 
 The analysis signature also hashes the selected English NLTK tokenizer, stopwords and WordNet contents. The receipt records these resource hashes without machine-specific installation paths. Missing resources fail, and changed resources invalidate caches. These content hashes do not vendor or automatically restore external resource downloads.
 
-Numerical values remain placeholders in canonical Markdown. The generator checks finite/nonempty JSON, decodable PNGs, registry hashes, figure inventory and manuscript figure availability before writing its receipt. Rendering validates the receipt, rejects unresolved placeholders, and requires successful Pandoc, XeLaTeX and BibTeX execution. Undefined citations/references and missing glyphs fail the final build.
+Reported values are injected from receipted artifacts at render time. The generator checks finite/nonempty JSON, decodable PNGs, registry hashes, figure inventory and manuscript figure availability before writing its receipt. Rendering validates the receipt, rejects unresolved placeholders, and requires successful Pandoc, XeLaTeX and BibTeX execution. Undefined citations/references and missing glyphs fail the final build.
 
 Software tests use actual corpus slices, numerical examples, real files, local HTTP and real subprocesses. Negative controls establish that malformed input, stale artifacts and failing commands are rejected. Those checks establish software behavior and provenance, not source relevance, individual reuse rights, human-validation outcomes or causal scientific conclusions.
 
@@ -588,15 +599,15 @@ Software tests use actual corpus slices, numerical examples, real files, local H
 Completed BHL eras are saved atomically in local recovery checkpoints. Each checkpoint binds the ordered era records, implementation/dependency/resource signature and any development bound, plus a digest of the completed result. A matching checkpoint can resume a disrupted run; changed inputs or bounds require recomputation, and corrupted matching results fail. The final four-layer receipt is still written only after all required stages complete.
 
 
-## Fixed-Margin Network Robustness Extension
+## Fixed-Margin Network Robustness Extension {#sec:fixed_margin}
 
-A separately receipted companion workflow reconstructs the abstract terminology network from the frozen identified records and the same frequency-ranked vocabulary. It randomizes the binary document--term incidence matrix with Curveball trades \cite{strona2014curveball, carstens2018curveball}. A trade retains common terms in both selected documents and uniformly repartitions their exclusive terms while preserving both row sizes. Consequently, each term retains its document frequency and each document retains its number of selected terms. Self-loop and other no-op transitions remain part of the chain. The total weight of the projected graph equals the sum of the number of term pairs in each document; this quantity is an invariant of the conditioning margins.
+A separately receipted companion workflow reconstructs the abstract terminology network from the frozen identified records and the same frequency-ranked vocabulary. It randomizes the binary document--term incidence matrix with Curveball trades \citep{strona2014curveball, carstens2018curveball}. A trade retains common terms in both selected documents and uniformly repartitions their exclusive terms while preserving both row sizes. Consequently, each term retains its document frequency and each document retains its number of selected terms. Self-loop and other no-op transitions remain part of the chain. The total weight of the projected graph equals the sum of the number of term pairs in each document; this quantity is an invariant of the conditioning margins.
 
 Every retained draw checks the two margins and the weight invariant. The workflow reports projected edge count, mean local unweighted clustering, retained-chain traces, between-chain diagnostics and empirical conditional distributions. It also evaluates observed projections under smaller vocabulary subsets of the same ranking. A second protocol uses longer burn-in and spacing with different seeds. These checks assess structural interpretation and sampling sensitivity. Finite correlated draws and between-chain agreement do not prove convergence to the stationary distribution. Conditional null envelopes describe the sampled reference and are distinct from population confidence intervals.
 
-The companion implementation is in research/network\_robustness/. Its receipt binds the published-core input receipt, exact source inputs, extension implementation, dependency lock and generated outputs. It does not relabel cached core results as newly recomputed analyses. The executed report and trace array are provided as companion artifacts to version 1.2.0.
+The companion implementation is in research/network\_robustness/. Its receipt binds the published-core input receipt, exact source inputs, extension implementation, dependency lock and generated outputs. It does not relabel cached core results as newly recomputed analyses. The executed report and trace array are provided as companion artifacts.
 
-The version 1.2.1 validation guard additionally decodes retained numerical traces and the companion PNG, verifies full protocol dimensions, finite values and graph bounds, reconstructs the observed graph from source-identified abstracts, and recomputes the JSON summary statistics from all retained draws. The Markdown result table must agree with those summaries. Negative controls include self-hashed corrupt files and inconsistent summaries. These internal-consistency checks do not establish chain mixing, validate lexical proxies, or certify the visual interpretation of a decoded figure.
+A validation guard additionally decodes retained numerical traces and the companion PNG, verifies full protocol dimensions, finite values and graph bounds, reconstructs the observed graph from source-identified abstracts, and recomputes the JSON summary statistics from all retained draws. The companion report's result table must agree with those summaries, and the values reported in the Results section are injected from the same summaries. Negative controls include self-hashed corrupt files and inconsistent summaries. These internal-consistency checks do not establish chain mixing, validate lexical proxies, or certify the visual interpretation of a decoded figure.
 
 
 \clearpage
@@ -605,16 +616,14 @@ The version 1.2.1 validation guard additionally decodes retained numerical trace
 
 ## Exploratory Pairwise Domain Comparisons
 
-Domain groups share terms and document-derived contexts. Independence is therefore not established; BH threshold flags are numerical outputs rather than calibrated population evidence.
-
-Table \ref{tab:pairwise_domain} presents pairwise comparisons of per-term semantic entropy between all Ento-Linguistic domains using Welch's two-sample $t$-tests. Raw $p$-values are computed from the $t$-distribution with Satterthwaite-approximated degrees of freedom; adjusted $p$-values correct for 15 simultaneous comparisons using the Benjamini-Hochberg (BH) procedure at $q = 0.05$. Cohen's $d$ quantifies effect size, interpreted as small ($d \approx 0.2$), medium ($d \approx 0.5$), or large ($d \geq 0.8$). Domain descriptives entering these tests are per-term valid-entropy means with exclusions counted.
+Table \ref{tab:pairwise_domain} presents pairwise comparisons of per-term semantic entropy between all Ento-Linguistic domains using Welch's two-sample $t$-tests. Raw $p$-values are computed from the $t$-distribution with Satterthwaite-approximated degrees of freedom; adjusted $p$-values correct for 15 simultaneous comparisons using the Benjamini-Hochberg (BH) procedure at $q = 0.05$. The effect size $d$ is a small-sample bias-corrected (Hedges-type) standardized difference. Conventional benchmarks of about 0.2, 0.5 and 0.8 \citep{cohen1988statistical} are rules of thumb that are not calibrated for these overlapping, dependent groups. Domain descriptives entering these tests are per-term valid-entropy means with exclusions counted.
 
 \begin{table}[h]
 \centering
 \small
 \begin{tabular}{|l|l|c|c|c|c|c|}
 \hline
-\textbf{Domain A} & \textbf{Domain B} & \textbf{$t$} & \textbf{$p$ (raw)} & \textbf{$p$ (BH)} & \textbf{Cohen's $d$} & \textbf{Sig.\ (BH)} \\
+\textbf{Domain A} & \textbf{Domain B} & \textbf{$t$} & \textbf{$p$ (raw)} & \textbf{$p$ (BH)} & \textbf{Std.\ diff.\ $d$} & \textbf{Sig.\ (BH)} \\
 \hline
 Behavior \& Identity & Economics & -1.1741 & 0.2453 & 0.3984 & -0.2613 & no \\
 Behavior \& Identity & Kin \& Relatedness & -0.1247 & 0.9014 & 0.9798 & -0.0316 & no \\
@@ -633,7 +642,7 @@ Power \& Labor & Unit of Individuality & 1.1426 & 0.2549 & 0.3984 & 0.1691 & no 
 Sex \& Reproduction & Unit of Individuality & 2.2489 & 0.0263 & 0.1244 & 0.3564 & no \\
 \hline
 \end{tabular}
-\caption{Exploratory pairwise Welch tests on valid per-term sentence-context entropy, with Benjamini--Hochberg adjusted $p$-values over 15 comparisons and standardized effect sizes. Threshold flags use $q=0.05$ without establishing calibrated population significance: domain groups overlap and share document-derived contexts. The omnibus ANOVA yields $F(5.0000,350.0000)=2.5470$, $p$-value 0.0278, and $\eta^2=0.0351$.}
+\caption{Exploratory pairwise Welch tests on valid per-term sentence-context entropy, with Benjamini--Hochberg adjusted $p$-values over 15 comparisons and standardized effect sizes. Threshold flags use $q=0.05$; domain groups share terms and contexts, so the flags are exploratory (Supplemental Section \ref{sec:supplemental_infrastructure}). The omnibus ANOVA yields $F(5,350)=2.5470$, $p$-value 0.0278, and $\eta^2=0.0351$.}
 \label{tab:pairwise_domain}
 \end{table}
 
@@ -692,13 +701,13 @@ Kin \& Relatedness & 1.75 & 45.5 & 22 \\
 \textbf{Overall} & 1.67 & 38.8 & \textbf{ 356 } \\
 \hline
 \end{tabular}
-\caption{Distribution of semantic entropy $H(t)$ across Ento-Linguistic domains, computed from pipeline output in \texttt{output/data/domain\_statistics.json}. High-entropy terms are those exceeding the $H > 2.0$ bits threshold (per \texttt{src/analysis/semantic\_entropy.py}), summarizing occupancy of computational clusters without annotated senses. Entropy is calculated via TF-IDF vectorization of each term's corpus contexts followed by KMeans clustering (with $k < n$ contexts; see Eq.~\ref{eq:semantic_entropy}). The number of clusters is set to $k = \max(2,\, \min(k_{\max},\, n{-}1,\, \max(2, \lfloor\!\sqrt{n}\rfloor)))$ with $k_{\max}=5$ to prevent degenerate one-point-per-cluster assignments; each result also reports the occupied count $k_{\mathrm{occupied}}$, its ceiling $H_{\max} = \log_2 k_{\mathrm{occupied}}$, and normalized entropy $H/H_{\max} \in [0,1]$, with zero when a single cluster is occupied. The $N$ column counts terms with usable entropy estimates; Overall sums valid domain memberships and can count a multi-domain term more than once. Its mean and high-entropy percentage use that same denominator; every table value resolves at render time from the artifact.}
+\caption{Distribution of sentence-context entropy $H(t)$ across Ento-Linguistic domains (Eq.~\ref{eq:semantic_entropy}; cluster-count rule in Methods). High-entropy terms exceed $H > 2.0$ bits; the statistic summarizes occupancy of computational clusters, not annotated senses. Normalized entropy divides by $\log_2 k_{\mathrm{occupied}}$ and is zero when one cluster is occupied. $N$ counts terms with usable estimates; Overall sums valid domain memberships, so a multi-domain term can count more than once, and its mean and high-entropy percentage use that same denominator.}
 \label{tab:entropy_distribution}
 \end{table}
 
-## Confidence Intervals for Domain Metrics
+## Interval Reporting
 
-The frozen statistics artifact (\texttt{output/data/statistical\_analysis.json}) reports per-term valid-entropy descriptives (means and standard deviations, with exclusions counted) and the inferential results in Table \ref{tab:pairwise_domain}; it does not compute domain-level confidence intervals, so per-domain ambiguity-score and context-variability intervals are not tabulated here. Exploratory numerical differences are summarized by the Welch $t$-tests and the omnibus ANOVA reported in Table \ref{tab:pairwise_domain}, with per-domain entropy descriptives in Table \ref{tab:entropy_distribution} and the accompanying summary figure \texttt{statistical\_analysis.png}.
+The statistics artifact reports per-term valid-entropy descriptives (means and standard deviations, with exclusions counted) and the inferential results in Table \ref{tab:pairwise_domain}; it does not compute domain-level confidence intervals, so per-domain ambiguity-score and context-variability intervals are not tabulated here. Exploratory numerical differences are summarized by the Welch $t$-tests and the omnibus ANOVA reported in Table \ref{tab:pairwise_domain}, with per-domain entropy descriptives in Table \ref{tab:entropy_distribution} and the summary in Figure \ref{fig:statistical_analysis}.
 
 ## Full-Text Parallel Layer
 
@@ -707,22 +716,20 @@ access full texts harvested from PubMed Central (PMC). The abstract corpus
 remains the headline corpus of this study; the full-text layer is reported
 here as a separate convenience sample with a higher extraction threshold. The analysis machinery is shared: the same
 terminology extraction, domain assignment, semantic-entropy, and CACE
-scoring implementations are applied to full texts, with the frozen artifact
-written to \texttt{output/data/fulltext\_analysis.json} and rendered in
-figure \texttt{fulltext\_analysis.png}.
+scoring implementations are applied to full texts (Figure
+\ref{fig:fulltext_analysis}).
 
-The layer comprises 44507505 tokens of running text, with a
-per-document median of 5624.0000 tokens. Table
+The layer comprises 44,507,505 tokens of running text, with a
+per-document median of 5624 tokens. Table
 \ref{tab:fulltext_domain} reports per-domain term counts and mean semantic
 entropy over the full texts; 15 pairwise Welch
 $t$-tests (Benjamini-Hochberg corrected, as in Table
 \ref{tab:pairwise_domain}) accompany the omnibus one-way ANOVA on per-term
-semantic entropy, $F = 8.6337$, <0.0001.
+semantic entropy, $F = 8.6337$, $p$-value <0.0001.
 
 Anthropomorphic framing over the same full texts is scored as the
 proportion of domain-term occurrence contexts containing an anthropomorphic
-framing marker (\texttt{add\_framing\_analysis} in
-\texttt{src/pipeline/fulltext\_pipeline.py}): 0.0107
+framing marker, using the same patterns as the abstract layer: 0.0107
 overall, with Economics at
 0.0359 against
 0.0074 for Unit of
@@ -743,29 +750,24 @@ Sex \& Reproduction & 86 & 2.0407 \\
 Unit of Individuality & 241 & 2.0240 \\
 \hline
 \end{tabular}
-\caption{Per-domain terminology in the PMC full-text parallel layer: extracted-term counts and mean semantic entropy $H(t)$, computed over valid estimates with the same pipeline as the abstract layer; valid-estimate counts appear in the statistical figure (\texttt{output/data/fulltext\_analysis.json}, \texttt{descriptives} section). Term extraction uses a higher minimum token frequency than the abstract layer because full texts are substantially longer.}
+\caption{Per-domain terminology in the PMC full-text parallel layer: extracted-term counts and mean semantic entropy $H(t)$, computed over valid estimates with the same pipeline as the abstract layer; valid-estimate counts appear in Figure \ref{fig:fulltext_analysis}. Term extraction uses a higher minimum token frequency than the abstract layer because full texts are substantially longer.}
 \label{tab:fulltext_domain}
 \end{table}
 
 ## Discourse and Rhetorical Layer
 
-Both statistical artifacts additionally carry a corpus-level
-``discourse`` section --- discourse patterns, rhetorical strategies,
-argumentative structures, and persuasive techniques --- computed by the
-shared discourse stage (\texttt{add\_discourse\_analysis} in
-\texttt{src/pipeline/statistics\_pipeline.py}) after the statistics
-stages. The abstract layer's discourse pass covers
-7524 texts (sample fraction
-1.0000). The full-text layer's
-discourse pass covers 1415 of its
-7073 texts --- a deterministic
-0.2001 sample disclosed here because
-full texts exceed the discourse pass's minimum-length bound far less
-often than abstracts but are subsampled to keep the pass bounded.
-Both layers' discourse dimensions are compared in figure
-\texttt{discourse\_comparison.png} (registered as
-\texttt{fig:discourse\_comparison}); panels spanning orders of
-magnitude use a symlog frequency axis.
+A shared discourse stage counts rule-based markers of discourse patterns,
+rhetorical strategies, argumentative structures, and persuasive techniques
+in both layers. Texts shorter than 200
+characters are excluded. The abstract pass therefore covers
+7524 texts (16
+excluded as too short; 100.0\% of the
+eligible texts). The full-text pass covers 1415
+of 7073 texts, a deterministic
+20.0\% sample of eligible texts drawn to keep
+the pass computationally bounded. Figure \ref{fig:discourse_comparison}
+compares the two layers; panels spanning orders of magnitude use a symlog
+frequency axis.
 
 Discourse patterns occur 1271
 times as hierarchical framing in the abstract layer against
@@ -777,11 +779,11 @@ full-text layer, with 1038 versus
 and 27 versus
 33 scale-ambiguous constructions.
 
-Rhetorical strategies show the same abstract-to-full-text expansion:
+Rhetorical-strategy marker counts in the two layers are:
 1563 anecdotal markers in the abstract
 layer versus 9229 in full texts,
 244 versus
-29224 authority markers,
+29,224 authority markers,
 446 versus
 1793 analogies, and
 1141 versus
@@ -790,15 +792,17 @@ layer versus 9229 in full texts,
 The argumentative-structure pass identifies
 1786 argumentative structures in the abstract
 layer versus 1300 in the full-text sample.
-Metaphorical language, the dominant persuasive technique, occurs
+Metaphorical-language markers occur
 3800 times in the abstract layer
-against 20772 occurrences in full
-texts. All frequencies are raw corpus counts from the artifacts'
-\texttt{discourse} sections (\texttt{output/data/statistical\_analysis.json}
-and \texttt{output/data/fulltext\_analysis.json}); no values in this
-subsection are literals.
+against 20,772 occurrences in full
+texts. All frequencies are raw marker counts. The layers differ in size
+and sampling, so these counts are not prevalence comparisons.
+
+\clearpage
 
 ## Statistical and Source-Layer Figures
+
+Figures \ref{fig:statistical_analysis}--\ref{fig:arxiv_analysis} summarize the headline statistics, the PMC full-text layer, the cross-layer comparison, the discourse markers and the separate arXiv preprint layer.
 
 \begin{figure}[htbp]
 \centering
@@ -844,7 +848,7 @@ These are proposed constructions, not additional experimental results. The repos
 
 ## Individuality and Conditional Independence
 
-A Markov blanket specifies a conditional-independence relation between internal variables $\mu$ and external variables $\eta$, conditional on variables $B$ \cite{friston2013life, kirchhoff2018markov}:
+A Markov blanket specifies a conditional-independence relation between internal variables $\mu$ and external variables $\eta$, conditional on variables $B$ \citep{friston2013life, kirchhoff2018markov}:
 
 \begin{equation}\label{eq:markov_blanket}
 P(\mu\mid\eta,B)=P(\mu\mid B).
@@ -852,7 +856,7 @@ P(\mu\mid\eta,B)=P(\mu\mid B).
 
 This relation is an assumption or a property to establish for a specified probability model, on the support where the conditional distributions are defined. A biological application requires named variables, dynamics, observations, and tests of the proposed conditional independence. A sensory/active decomposition requires further modeling assumptions.
 
-An ant's sensory and motor variables, or colony-level interaction variables, could enter candidate models at different scales. Neither the cuticle, a nest entrance, nor a pheromone field automatically establishes a blanket. Likewise, calling a colony a superorganism is not equivalent to proving this factorization. The Active Inferants simulation provides related modeling context \cite{friedman2021active}, without validating a blanket inferred from terminology in this study.
+An ant's sensory and motor variables, or colony-level interaction variables, could enter candidate models at different scales. Neither the cuticle, a nest entrance, nor a pheromone field automatically establishes a blanket. Likewise, calling a colony a superorganism is not equivalent to proving this factorization. The Active Inferants simulation provides related modeling context \citep{friedman2021active}, without validating a blanket inferred from terminology in this study.
 
 ## A Proposed Framing Score
 
@@ -940,7 +944,7 @@ Rare matches for superorganism cannot establish that the concept originated afte
 
 The BHL extraction/entropy/framing stack uses 996, 1237, and 197 complete documents, respectively. Default extraction and framing use all era documents. Available and analyzed characters are recorded in the artifact's coverage metadata. Entropy considers twenty frequent extracted candidates per era using contexts across all documents; it is a candidate-term sample rather than an exhaustive entropy census. Candidate filtering can retain unrelated substring matches such as skin, making, or queensland; unassigned candidates enter the overall sampled entropy mean but not domain means. These are computational filter outputs, not a curated historical vocabulary. An optional development character budget produces a disclosed, separately fingerprinted document subset. Neither default storage nor that subset establishes historical representativeness.
 
-Developmental evidence for canalized caste differentiation \cite{qiu2022canalized} concerns biological mechanisms and does not establish a historical linguistic trend. Evaluating that connection would require a dated, annotated corpus with source-composition controls.
+Developmental evidence for canalized caste differentiation \citep{qiu2022canalized} concerns biological mechanisms and does not establish a historical linguistic trend. Evaluating that connection would require a dated, annotated corpus with source-composition controls.
 
 ## A Reproducible Case-Study Protocol
 
@@ -966,12 +970,9 @@ This glossary defines the mathematical notation and domain-specific terminology 
 | $\hat{H}(t)$ | Normalized entropy $H(t) / H_{\max}$ when $H_{\max}>0$; zero for one occupied cluster | Eq. \ref{eq:semantic_entropy} |
 | $p_i$ | Empirical proportion of contexts assigned to semantic cluster $i$ | Eq. \ref{eq:semantic_entropy} |
 | $k$ | Requested number of computational clusters ($k$-means, $k = \max(2,\ \min(k_{\max},\ n{-}1,\ \max(2, \lfloor\!\sqrt{n}\rfloor)))$; $k_{\max}=5$, $n=|C_t|$; $k < n$) | Eq. \ref{eq:semantic_entropy} |
-| $C_t$ | Set of valid usage contexts of term $t$ (sentences with $\geq 3$ words) | Eq. \ref{eq:semantic_entropy} |
+| $C_t$ | Set of valid usage contexts of term $t$ (sentences with more than three words) | Eq. \ref{eq:semantic_entropy} |
 | $S_t$ | Set of biological scale levels expressed in term $t$'s contexts | Eq. \ref{eq:cace_evolvability} |
 | $w_{AB}$ | Overlap coefficient (Szymkiewicz--Simpson) between concept sets $A$ and $B$ | Eq. \ref{eq:overlap_coefficient} |
-| $w_\text{base}$ | Base overlap-coefficient weight in composite relationship strength | Sec. \ref{sec:methodology} |
-| $r_\text{term}$ | Term-overlap ratio component of composite relationship strength | Sec. \ref{sec:methodology} |
-| $r_\text{domain}$ | Domain-overlap ratio component of composite relationship strength | Sec. \ref{sec:methodology} |
 | $\text{Clarity}(t)$ | CACE Clarity score: $\min(1,\max(0,1-H(t)/3.32))$ | Eq. \ref{eq:cace_clarity} |
 | $\text{Appropriateness}(t)$ | CACE Appropriateness score (penalizes anthropomorphic terms) | Eq. \ref{eq:cace_appropriateness} |
 | $\text{Consistency}(t)$ | CACE Consistency score: mean pairwise cosine similarity of context vectors | Eq. \ref{eq:cace_consistency} |
@@ -993,7 +994,6 @@ This glossary defines the mathematical notation and domain-specific terminology 
 | **Generative Model** | A probabilistic model of how sensory data is generated from latent causes. | Sec. \ref{sec:discussion} |
 | **Markov Blanket** | Variables rendering specified internal and external variables conditionally independent in a probability model. | Sec. \ref{sec:supplemental_analysis} |
 | **Semantic Entropy** | Shannon entropy $H(t)$ over the cluster distribution of a term's usage contexts; describes computational cluster occupancy without independently validated senses. | Sec. \ref{sec:methodology} |
-| **Stigmergy** | A mechanism of indirect coordination where agents modify the environment to stimulate the actions of others. | Sec. \ref{sec:introduction} |
 | **Superorganism** | A colony-level organismic concept; its biological interpretation is not established by a term's frequency or by an assumed blanket. | Sec. \ref{sec:introduction}; Sec. \ref{sec:experimental_results} |
 | **Variational Free Energy** | A variational bound on negative log model evidence under a specified probabilistic model; not measured by this corpus pipeline. | Sec. \ref{sec:discussion} |
 
@@ -1022,6 +1022,8 @@ This glossary defines the mathematical notation and domain-specific terminology 
 # References {#sec:references}
 
 
+<!-- natbib would otherwise print a second, unnumbered heading below the section title. -->
+\renewcommand{\bibsection}{}
 \bibliography{references}
 
 

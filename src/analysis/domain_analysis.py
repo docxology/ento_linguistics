@@ -626,13 +626,18 @@ class DomainAnalyzer:
         return [term for term, _ in term_counts.most_common(top_n)]
 
     def _analyze_term_patterns(self, terms: List[Term]) -> Dict[str, int]:
-        """Analyze linguistic patterns in terms.
+        """Count linguistic features in terms.
+
+        Features are non-exclusive (a term can be both compound and numeric)
+        and plain single words are not counted, so the counts are not a
+        partition of the terms and must not be shown as shares. Figures use
+        ``visualization._style.classify_word_formation`` for that.
 
         Args:
             terms: List of terms to analyze
 
         Returns:
-            Dictionary of pattern counts
+            Dictionary of feature counts
         """
         patterns = Counter()
 

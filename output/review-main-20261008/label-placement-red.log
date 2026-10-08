@@ -1,0 +1,18 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.0.1, pluggy-1.6.0
+rootdir: /Volumes/GitVault/Username/docxology/Public/ento_linguistics
+configfile: pyproject.toml
+plugins: xdist-3.8.0, pytest_httpserver-1.1.3, cov-7.0.0
+collected 76 items / 74 deselected / 2 selected
+
+tests/test_concept_visualization.py F.                                   [100%]
+
+=================================== FAILURES ===================================
+_ TestSharedFigureHelpers.test_label_placement_measures_initialized_display_coordinates _
+tests/test_concept_visualization.py:1130: in test_label_placement_measures_initialized_display_coordinates
+    assert all(label is not None for label in labels)
+E   assert False
+E    +  where False = all(<generator object TestSharedFigureHelpers.test_label_placement_measures_initialized_display_coordinates.<locals>.<genexpr> at 0x11616ef60>)
+=========================== short test summary info ============================
+FAILED tests/test_concept_visualization.py::TestSharedFigureHelpers::test_label_placement_measures_initialized_display_coordinates
+================== 1 failed, 1 passed, 74 deselected in 1.96s ==================

@@ -1,0 +1,45 @@
+{
+  "analysis_signature": "d30c303d6764ead8cc322145f5b9e67ee754beba06ad5f61700e67c423284aac",
+  "numerical_exports_unchanged": [
+    "data/bhl/era_term_usage.json",
+    "data/corpus/arxiv_analysis.json",
+    "output/data/concept_map_summary.json",
+    "output/data/corpus_statistics.json",
+    "output/data/domain_statistics.json",
+    "output/data/extracted_terms.json",
+    "output/data/fulltext_analysis.json",
+    "output/data/statistical_analysis.json",
+    "output/extensions/network_robustness/network_robustness.json",
+    "output/extensions/network_robustness/sensitivity/network_robustness.json"
+  ],
+  "figures": 17,
+  "all_figures_byte_identical_to_pre_contract_build": true,
+  "bhl_coverage": {
+    "era_1850_1899": {
+      "character_budget": null,
+      "characters_analyzed": 1111036600,
+      "characters_available": 1111036600,
+      "documents_analyzed": 996,
+      "documents_available": 996,
+      "selection": "all stored era documents"
+    },
+    "era_1900_1949": {
+      "character_budget": null,
+      "characters_analyzed": 1080342870,
+      "characters_available": 1080342870,
+      "documents_analyzed": 1237,
+      "documents_available": 1237,
+      "selection": "all stored era documents"
+    },
+    "era_1950_1970": {
+      "character_budget": null,
+      "characters_analyzed": 126341933,
+      "characters_available": 126341933,
+      "documents_analyzed": 197,
+      "documents_available": 197,
+      "selection": "all stored era documents"
+    }
+  },
+  "source_scope_unchanged": true,
+  "published_pdf_sha256": "098953e2594fffc94c347051b7b28cce631eba6820a52381d8cda968718da8c3"
+}
