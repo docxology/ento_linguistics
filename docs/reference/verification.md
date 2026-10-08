@@ -10,6 +10,8 @@ The current paper has 52 pages, a graphical abstract and a separately receipted 
 
 The public GitHub edition is matched to the fifth-edition LectureCreate source bundle. A previous version DOI must not identify these new paper/media bytes; existing Zenodo records preserve their original scope.
 
+See [v1.3.0 release verification](release-v1.3.0.md) for the matched lecture, independent gate and downloaded asset readback.
+
 ## Earlier unpublished 1.2.2 draft
 
 The draft at [captured 1.2.2-dev draft](https://github.com/docxology/ento_linguistics/blob/470b4ed59d5a2c903feb73b37dfda3f27eb3683f/output/pdf/ento_linguistics_combined.pdf) was unpublished. That 8 October visualization and scholarship revision completed full/default generation, the custody audit, and strict rendering: **49 pages and 17 core figures**. The complete suite passed **1,822 tests with eight external-template skips and 92.01% combined coverage**. Eight core numerical exports match the preceding baseline after execution identity fields are excluded; both fixed-margin protocols were re-executed with byte-identical retained traces. See [current receipts and bounded layout QA](../../output/review-lecture-v4-20261008/SUMMARY.md). Its captured SHA-256 is `686f1775d4d92e5946e2bdd3c3fa354e9d6f0e904cf1872ef7512537503e16fc`.

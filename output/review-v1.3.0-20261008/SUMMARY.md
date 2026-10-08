@@ -14,3 +14,7 @@ See the JSON receipts and compressed command logs alongside this file. Raster ca
 ## Independent gate
 
 [Independent review](independent-gate.md): **APPROVE** for public candidate `d18bb1812c37cb7bf802e690d1b8d1bed2738a26` and matched LectureCreate candidate `a3669c1eea841e9689202f7cd080bd60f07c1310`. The reviewer reproduced every diagnostic setting with a separate numerical oracle and verified source, retained trace, media and prepared archive hashes. Subsequent receipt/status-only commits do not change those reviewed source or media bytes. External publication readback remains separate.
+
+## Publication readback
+
+[GitHub v1.3.0](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0) is published. All seven downloaded files match the reviewed local assets and release manifest. [The publication receipt](../releases/v1.3.0-publication.json) records exact source commits and hashes. Private hosted jobs were blocked before execution by the account Actions budget; local checks and actual production passed.

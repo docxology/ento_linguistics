@@ -1,0 +1,36 @@
+{
+  "version": "1.3.0",
+  "paper_source_commit": "5b75355f79100cc2485c95854146c362310a9f60",
+  "analysis_signature": "266f1e4c7c2e506270d371b8fd1811d8e24129e09c5ccb7607cb77629c4e579d",
+  "lecture_source_bundle_sha256": "a8eaa8796bf557a1292ad78134ab94efa189d1d83803a718414cb45752f89eaf",
+  "assets": {
+    "Ento_Linguistics_manuscript.pdf": {
+      "sha256": "c6588539b0ca5e11aaf5fd9ca32037a599bc0a5d171da69c31dd9c6abdba48d3",
+      "bytes": 11534127
+    },
+    "EntoLinguistics_audio.mp3": {
+      "sha256": "6273e5e197f7d21f7d742f4963d6fe61872151ba67dbbc9154b44d9e37340d11",
+      "bytes": 17429180
+    },
+    "EntoLinguistics_companions.zip": {
+      "sha256": "9c934c48a1bc434317fbad5fb03eab534dbcc2533cdbb1e01d9e25da54d72d51",
+      "bytes": 13806481
+    },
+    "EntoLinguistics_slides.pdf": {
+      "sha256": "86950169b53c0ff27f6e16f25a54a9ff4dd3aa722a72e61a8607f2f4e0993447",
+      "bytes": 13554323
+    },
+    "EntoLinguistics_network_methods.zip": {
+      "sha256": "381b15213dece3925600755cdf07c1bf73a3b084b8d4beed8cf4165d60e68208",
+      "bytes": 1916558
+    },
+    "EntoLinguistics_20min_4K.mp4": {
+      "sha256": "285d30fb4fe0a5c652904114ca4a8ea6bc907c00794c68e0e522978ea12b6ee7",
+      "bytes": 86080635
+    }
+  },
+  "public_review_candidate": "d18bb1812c37cb7bf802e690d1b8d1bed2738a26",
+  "lecture_source_commit": "a3669c1eea841e9689202f7cd080bd60f07c1310",
+  "release_target_commit": "16a5607dd64f495caf6a50e10c53a5e56e79b1c1",
+  "lecture_delivery_commit": "de11b8ab442d0915b869d0749e85ca16ec82c553"
+}
