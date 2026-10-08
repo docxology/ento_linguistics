@@ -1,0 +1,60 @@
+# Independent documentation gate
+
+recommendation: APPROVE
+
+candidate: ddd8d0558a740bcf98e26a47d08ea479b7455362
+
+baseline: aacf9efdd420576238ab544b33dad3d879ae506c
+
+blockers: []
+
+originalIntent: Proceed with the repository work and ensure all tracked Markdown on GitHub is accurate, complete and coherent, continuing the strict independent-review requirement.
+
+desiredOutcome: Maintained instructions match actual interfaces and corpus artifacts; current draft and published release are clearly distinguished; historical evidence remains intact and does not masquerade as current guidance.
+
+userOutcomeReview: APPROVE this exact documentation candidate. The maintained guidance, executable example, stored-corpus counts, relative navigation and draft/release identities satisfy the supplied documentation scope. This is not approval of future unknown source, a new publication, or scientific validity.
+
+## Criteria
+
+- D1: Inventory every tracked Markdown file and verify local navigation and documentation coherence.
+- D2: Document actual commands, API inputs, corpus counts, test requirements and output ownership accurately.
+- D3: Preserve unrelated scientific artifacts and historical evidence; distinguish captured checks, current draft and published release.
+- D4: Support success claims with inspected artifacts and real negative controls, applying programming and remove-ai-slops perspectives.
+
+These IDs label the supplied request and repository documentation completion rules, not additional requirements.
+
+## Direct reproduction
+
+Read-only audit used the locked detached checkout `../ento_linguistics-docs-review-20261008`. HEAD was the candidate and status remained clean. `omo-agent-toolkit ulw-loop status --json` returned `ULW_LOOP_PLAN_MISSING`; this report uses the fallback evidence path. Only this report is written in the coordinator checkout.
+
+Commands used `PYTHONDONTWRITEBYTECODE=1`, `PYTHONPATH=src` when needed, and `uv run --no-project --python ../ento_linguistics/.venv/bin/python`; no environment sync, generation or acquisition was performed.
+
+1. Independently parsed all 91 inventory Markdown paths using real Pandoc JSON output. All 91 SHA-256 values match inventory-final.json; zero parser warnings and zero missing/local-only link issues. Imported the checker without calling its writing main. A real missing path returns `missing`; the existing untracked worktree `.git` file returns `local_only`. No candidate fixture was created.
+2. Inspected the complete changed-file inventory and documentation delta, maintained guides, source/package guidance, acquisition summaries, output guides and historical-scope navigation. No production Python, executable tests, dependency lock, scientific JSON, figure, protocol trace, numbered canonical manuscript or PDF changed. The added Python is a bounded evidence checker, not production analysis.
+3. Executed the PAI example: 4 terms and 6 concepts. The old list-of-pairs input raises `ValueError: terms must be a dictionary`. This reproduces api-example.log.
+4. Executed help for acquisition, strict renderer, preflight and quality helper: all exit 0. Inspected parser implementations and retained logs for stage listing/dry run and other helper options. The retained collection log ends `1828 tests collected in 2.23s`, exit 0. The actual pipeline directory has 16 Python files, including the package initializer; the module map covers all 15 functional modules.
+5. Ran `validate_analysis_manifest` and `validate_generated_artifacts` against the candidate: PASS.
+6. Independently loaded every PMC shard: 7,073 records, 273,559,168 body characters, 1,093 journals, years 1873–2026; every raw license-string count equals corpus-readme-checks.json.
+7. Independently loaded every BHL shard: 2,430 records, 2,317,721,403 full-text characters, era counts 996/1,237/197; equals the receipt and corrected README. An initial reviewer probe incorrectly used PMC's `body_text` key for BHL and failed with `KeyError: 'body_text'`; inspection showed BHL's `full_text` field and the corrected direct probe passed. This was a reviewer probe error, not a candidate defect.
+8. Compared each of four archival text copies against its original baseline Git blob: exact bytes and recorded SHA-256 match.
+9. Independently hashed both PDFs: draft `071a42aa8ee8a4c59363171325ddae74853e8152f0b8d762fd13d4957d6e0d12`; published `098953e2594fffc94c347051b7b28cce631eba6820a52381d8cda968718da8c3`.
+10. Loaded actual core and extension variables and strictly substituted all 16 canonical manuscript sections: PASS. `{{GATE_UNKNOWN_VALUE}}` raised SystemExit(1), with unresolved-variable diagnostics.
+11. Inspected retained full-suite evidence: final-tests.log lines 1963–1966 records 92.00% combined coverage, 1,820 passed, eight skipped, 83 warnings, 407.96 seconds. The prior independent gate explicitly binds c3b8574589775d52ecf917dd58c8dd759a129bc9 and distinguishes subsequent evidence/documentation changes.
+
+## Programming and remove-ai-slops pass
+
+Consulted both installed skill files and directly inspected the diff, evidence checker and relevant unchanged production API/parser/validator seams. There are no new executable tests to overfit, no deletion-only tests, tests merely pinning requested removals, tautological tests, or implementation-mirroring tests in this documentation delta. No unnecessary production extraction, parsing, normalization, dependency or abstraction was introduced. Prose is appropriately reviewed rather than frozen by phrase-count tests. The real link/API/template controls distinguish successful behavior from concrete failures.
+
+The 66-line evidence checker has a clear bounded responsibility. Its recursive Pandoc AST traversal uses Any and mutable module-level inventory state, rather than the programming skill's stricter typed boundary model. Its `assert` controls can be disabled by optimized Python, and its standalone main writes a local fixture/receipt. These are maintenance notes, not demonstrated failures under its documented execution or stated candidate criteria; this reviewer avoided its writing main and reproduced the negative outcomes directly. No broad exception swallowing or invented success fallback was found.
+
+The evidence directory has no separate current-documentation-candidate code-review report or separately named manual-QA matrix. SUMMARY.md, command/corpus/artifact receipts and the inventories provide the executor/notepad evidence. The prior `output/review-main-20261008/independent-gate.md` explicitly covers both skills and overfit categories for its own earlier source candidate, not this one. This direct pass supplies current documentation coverage; absent duplicate report coverage is not a blocker.
+
+Nonblocking clarity note: scripts/README.md's helper paragraph says to use `--output-dir` for a new helper report. This option is supported by `_quality_report.py`, the helper that writes reports, while `_manuscript_preflight.py` emits stdout and has no such option. Naming the report helper explicitly would make this instruction less ambiguous; no concrete preflight command with that unsupported option is documented.
+
+## Checked artifacts and exact gaps
+
+Checked every path/hash/link in `output/review-docs-20261008/inventory-final.json`, the full documentation diff from the baseline, root/docs/changed package guidance, maintained setup/workflow/authoring/development/validation/reference guides, source/test maps and output navigation.
+
+Inspected `output/review-docs-20261008/{SUMMARY.md,inventory-final.json,inventory-initial.json,inventory-first-final-failure.json,corpus-readme-checks.json,command-receipts.json,command-checks.log,artifact-checks.json,api-example.log,audit.py}`; archive identities and all four archived bytes; prior `output/review-main-20261008/{SUMMARY.md,independent-gate.md,final-tests.log}`; relevant real API/parser/provenance/template implementations and pyproject.toml. SUMMARY.md is the notepad equivalent. The initial/final inventory history retains the actual missing-summary-link failure rather than presenting it as a pass.
+
+Exact limits: all Markdown was inventoried/hash-checked/Pandoc-parsed and current maintained prose/delta inspected; this is not a fresh line-by-line scientific/bibliographic review of unchanged canonical manuscript or historical reports. External URL availability, record-level licensing/relevance, human validation, full bibliography, fresh heavy generation/full test execution, new PDF visual inspection, and publication are outside this documentation gate and remain unclaimed. Both extension protocol validators were not separately rerun here; their retained checks and unchanged artifacts were inspected, and actual extension variable loading succeeded. No stated documentation criterion requires these unrelated reruns. No specific criterion failure was found.

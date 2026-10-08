@@ -1,0 +1,16 @@
+{
+  "candidate_sha": "ddd8d0558a740bcf98e26a47d08ea479b7455362",
+  "baseline_sha": "aacf9efdd420576238ab544b33dad3d879ae506c",
+  "manual_documentation_qa": {
+    "verdict": "PASS",
+    "evidence": "SUMMARY.md",
+    "inventory": "inventory-final.json",
+    "markdown_files": 91
+  },
+  "independent_gate": {
+    "verdict": "APPROVE",
+    "evidence": "independent-gate.txt",
+    "sha256": "d301fd51a9ea080b2c9334d4069151fa6cbf649901ef70792b539a8747925662"
+  },
+  "later_commit_scope": "Evidence only; approval binds exact documentation candidate. No new scientific source audit/publication is implied."
+}
