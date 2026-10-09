@@ -1,0 +1,27 @@
+{
+  "recorded_at": "2026-10-09T18:12:47.013273+00:00",
+  "recorded_by": "claude-opus-5-5 (owner turn after codex 503)",
+  "reviewer_provider": "codex",
+  "reviewer_model": "gpt-6.1-sol",
+  "taskId": "node:delegated-task:command%3Amcp%3A70123781-aa0f-4f26-ae6c-6fd4364cb125%3Adelegate-task%3Aento-resume-20261009-independent-acceptance-eaa2f91",
+  "verdict": "APPROVE",
+  "scope": "resumed reconciliation and qualified validation only",
+  "reviewed_head": "eaa2f91652a87acb9b43d5f1ca0aac5322f18722",
+  "origin_main": "eaa2f91652a87acb9b43d5f1ca0aac5322f18722",
+  "tracked_clean": true,
+  "paper_sha256": "c6588539b0ca5e11aaf5fd9ca32037a599bc0a5d171da69c31dd9c6abdba48d3",
+  "placeholders": 362,
+  "citation_keys": 44,
+  "excluded": [
+    "private LectureCreate code",
+    "storage/backup admission",
+    "new publication",
+    "fresh full-suite/coverage claims",
+    "general scientific validity"
+  ],
+  "custody_qualifications": {
+    "abstracts_without_provenance": 69,
+    "pmc_duplicate_text": 8,
+    "pmc_identifier_mismatches": 8
+  }
+}

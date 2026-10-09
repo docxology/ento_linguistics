@@ -1,0 +1,16 @@
+START current core analysis receipt, implementation and NLTK binding
+PASS current core analysis receipt, implementation and NLTK binding
+START decoded JSON, figures and complete registry inventory
+PASS decoded JSON, figures and complete registry inventory
+START primary fixed-margin receipt and retained numerical summaries
+PASS primary fixed-margin receipt and retained numerical summaries
+START sensitivity fixed-margin receipt and retained numerical summaries
+PASS sensitivity fixed-margin receipt and retained numerical summaries
+START all declared vocabulary and threshold settings reconstructed
+PASS all declared vocabulary and threshold settings reconstructed
+START fresh read-only four-layer custody audit
+PASS fresh read-only four-layer custody audit
+  Corpus template vars: 23716 variables loaded
+    Publications=7540, Tokens=991026, Unique=47064
+  ⚠ 1 Unreplaced template variable(s): RESUME_UNKNOWN_VARIABLE
+ERROR: Unreplaced template variable(s): RESUME_UNKNOWN_VARIABLE

@@ -1,0 +1,14 @@
+{
+  "head": "eaa2f91652a87acb9b43d5f1ca0aac5322f18722",
+  "old_run": "completed generator log retained, including unknown extension-variable warnings; subsequent v1.3.0 generation/render/test/gate/publication receipts supersede historical continuation",
+  "old_generation_log_sha256": "4253504178073678d3a42bb34d3ab20b1a61119e9a62361d886e9e02859bddeb",
+  "v1_3_generation_receipt": "output/review-v1.3.0-20261008/generation-receipt.json",
+  "v1_3_generation_receipt_sha256": "5efa886b08f75f2dde21c8ca54dbac01e51499d8d4262d98fa8d10a8cd5dd2b5",
+  "v1_3_generation_exit": 0,
+  "scientific_source_and_export_diff_from_published_pin": "empty",
+  "fresh_focused_controls": 48,
+  "fresh_controls_log_sha256": "ade60d940a59d014411a9f51b50f2975d4b85b74232b24974f161cf00f376e28",
+  "no_replay_no_frozen_overwrite": true,
+  "validation_only_scope": true,
+  "read_limits": "original cleanup chat unavailable; current user authorization and recovery-owner position1029 corroborate resume; no native storage admission or quiescence certification inferred"
+}

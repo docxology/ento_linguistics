@@ -1,0 +1,52 @@
+{
+  "recorded_at": "2026-10-09T16:43:54.786327+00:00",
+  "head": "eaa2f91652a87acb9b43d5f1ca0aac5322f18722",
+  "model": "gpt-6.1-sol",
+  "validated_current_stages": [
+    "current core analysis receipt, implementation and NLTK binding",
+    "decoded JSON, figures and complete registry inventory",
+    "primary fixed-margin receipt and retained numerical summaries",
+    "sensitivity fixed-margin receipt and retained numerical summaries",
+    "all declared vocabulary and threshold settings reconstructed",
+    "fresh read-only four-layer custody audit"
+  ],
+  "prior_checker_exit": 1,
+  "prior_checker_disposition": "actual six stage checks passed; deliberately missing template emitted SystemExit1, which the harness incorrectly caught as ValueError; original attempt/log preserved",
+  "prior_checker_log_sha256": "c4830f3db85630682dd424b87e20863cd401895b81e35761d8eabb7011d41e09",
+  "strict_template_control": {
+    "exception": "SystemExit",
+    "code": 1
+  },
+  "paper_sections": 16,
+  "placeholder_occurrences": 362,
+  "fresh_focused_controls": 48,
+  "custody": {
+    "abstract": {
+      "records": 7609,
+      "records_without_provenance": 69,
+      "duplicate_text_records": 0,
+      "provenance_id_mismatches": 0
+    },
+    "fulltext": {
+      "records": 7073,
+      "records_without_provenance": 0,
+      "duplicate_text_records": 8,
+      "provenance_id_mismatches": 8
+    },
+    "bhl_historical": {
+      "records": 2430,
+      "records_without_provenance": 0,
+      "duplicate_text_records": 0,
+      "provenance_id_mismatches": 0
+    },
+    "arxiv": {
+      "records": 61,
+      "records_without_provenance": 0,
+      "duplicate_text_records": 0,
+      "provenance_id_mismatches": 0
+    }
+  },
+  "head_source_frozen_outputs_unchanged": true,
+  "new_generation_pdf_publication_or_cross_repo_input_change": false,
+  "fresh_full_suite_or_new_coverage_claim": false
+}

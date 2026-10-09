@@ -1,0 +1,12 @@
+{
+  "head": "eaa2f91652a87acb9b43d5f1ca0aac5322f18722",
+  "original_status_entries_still_present": 20471,
+  "failed_generator_witnesses_unchanged": 4,
+  "tracked_clean": true,
+  "no_recovery_storage_operation": true,
+  "private_lecture_source_not_modified": true,
+  "source_input_output_mutations": "none; additive evidence and isolated tmp only",
+  "fresh_controls": 48,
+  "paper_placeholders": 362,
+  "full_generation_render_suite_coverage_not_repeated": true
+}

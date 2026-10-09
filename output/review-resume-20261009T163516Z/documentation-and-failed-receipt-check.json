@@ -1,0 +1,14 @@
+{
+  "maintained_navigation_files": 40,
+  "missing_relative_links": {},
+  "deliberate_missing_link_control": "rejected",
+  "cited_keys_resolved": 44,
+  "duplicate_bibliography_keys": false,
+  "failed_generation_witnesses": {
+    "output/review-20261008/generation-attempt1-unresolved-render-vars.log": "0b98ec8f259fb72c5789ff360e8c4c4f1a077fa32b543c89b2b70dc9efae54f3",
+    "output/review-20261008/generation-attempt2-missing-extension-figure.log": "fb91c7b7e5574d8dde08ae1b9f23ab1af682d68c903bc397587359bc0880c82f",
+    "output/review-20261008/generation-attempt3-pre-format-fix.log": "b4b425de53450339bc04531fc511e8229c3bfead2eee26844b9f3286c9855330",
+    "output/review-20261008/generation-attempt4-superseded-killed.log": "f95ca288dbd5d32b4f33fd27cfa13281d01c1db7c5e80f6256a58cfcb4f397ee"
+  },
+  "scope": "current local links/citation inventory, not new external scholarly validation"
+}

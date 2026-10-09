@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-09T16:43:37.241219+00:00",
+  "lecture_owner": "mcp:1e74e50a-3cfa-43b0-b752-03174ebc7b0b",
+  "message_position": 354,
+  "owner_acknowledged_public_head": "eaa2f91652a87acb9b43d5f1ca0aac5322f18722",
+  "public_paper_sha256": "c6588539b0ca5e11aaf5fd9ca32037a599bc0a5d171da69c31dd9c6abdba48d3",
+  "frozen_v5_public_source": "5b75355f79100cc2485c95854146c362310a9f60",
+  "frozen_v5_lecture_source": "a3669c1eea841e9689202f7cd080bd60f07c1310",
+  "lecture_owner_reported_current_head": "e774a24",
+  "lecture_candidate_manifest": "examples/ento_linguistics/verification/20261009-continuation/candidate-review2-manifest.json",
+  "lecture_candidate_patch_sha256": "3243d1bf830abcc4f36bce01e76e2439e05ba4bb4a391dcab094cc3ec6457151",
+  "lecture_candidate_files": 14,
+  "owner_statement": "No Ento inputs changed; no additional job started by coordination message",
+  "qualification": "source-bound owner acknowledgment; not an independent audit of its private worktree",
+  "future_input_changes": "require a new exact-source agreement before change"
+}

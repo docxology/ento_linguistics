@@ -1,0 +1,13 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.0.1, pluggy-1.6.0
+rootdir: /Volumes/GitVault/Username/docxology/Public/ento_linguistics
+configfile: pyproject.toml
+plugins: xdist-3.8.0, pytest_httpserver-1.1.3, cov-7.0.0
+collected 48 items
+
+tests/test_provenance.py .......                                         [ 14%]
+tests/test_network_reading.py ...........                                [ 37%]
+tests/test_network_robustness_extension.py ............................. [ 97%]
+.                                                                        [100%]
+
+======================== 48 passed in 134.43s (0:02:14) ========================

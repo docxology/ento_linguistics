@@ -1,0 +1,924 @@
+{
+  "scope": "read-only candidate identification; data/ unmodified",
+  "records": 69,
+  "exact": 55,
+  "normalized_only": 0,
+  "unidentified": 14,
+  "items": [
+    {
+      "index": 1,
+      "sha256": "917ed83a1be531624044315620133e0179347aff1d12620c927200fe35776fd8",
+      "candidates_searched": [
+        "41885839"
+      ],
+      "identified": null
+    },
+    {
+      "index": 9,
+      "sha256": "7ed9eaf46c0e39fc1cd1c1a121dd8730816a5715b71f411c6add68b7ee9555be",
+      "candidates_searched": [
+        "41070840"
+      ],
+      "identified": {
+        "pmid": "41070840",
+        "doi": "10.1111/mec.70127",
+        "title": "Inter-Caste Comparison Reveals a Unique Bioenergetic Signature in Long-Lived Ant Queens.",
+        "year": "2025",
+        "journal": "Molecular ecology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 18,
+      "sha256": "9d7c8faeffa0b1848a7ab87905f60872263bb44113fc3b8aebe2ec0e13e260ba",
+      "candidates_searched": [
+        "40234261"
+      ],
+      "identified": {
+        "pmid": "40234261",
+        "doi": "10.1007/s00705-025-06285-7",
+        "title": "Prevalence, geographic distribution, and transmission pathway of Camponotus yamaokai virus.",
+        "year": "2025",
+        "journal": "Archives of virology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 33,
+      "sha256": "42c4094df59c77a6e1f54c0d194b704908a58012b21556a68a66505f5976879a",
+      "candidates_searched": [
+        "38176676"
+      ],
+      "identified": {
+        "pmid": "38176676",
+        "doi": "10.1016/j.jip.2023.108056",
+        "title": "Effect of Solenopsis invicta virus 3 on brood mortality and egg hatch in Solenopsis invicta.",
+        "year": "2024",
+        "journal": "Journal of invertebrate pathology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 53,
+      "sha256": "e4ad10d1bbf66f505d183dece33089acbe4fb701b9d87c87155df9d18ec80ec1",
+      "candidates_searched": [
+        "41642986"
+      ],
+      "identified": {
+        "pmid": "41642986",
+        "doi": "10.1073/pnas.2530826123",
+        "title": "Environmental conditions shape the global distribution of ant societies.",
+        "year": "2026",
+        "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 57,
+      "sha256": "ab27d93da69303675c348a1e0c6705879ba6c81198702621d24970449f31cb14",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 62,
+      "sha256": "c157389f7185b4bca20556ed46de7c64d7c61eaad9d367e32817f9c0e0b84d48",
+      "candidates_searched": [
+        "41330896"
+      ],
+      "identified": {
+        "pmid": "41330896",
+        "doi": "10.1038/s41467-025-66175-z",
+        "title": "Altruistic disease signalling in ant colonies.",
+        "year": "2025",
+        "journal": "Nature communications",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 63,
+      "sha256": "459af6b33e740f868c5928405b74d280d6a200300aa9bc0dc56588d05f07c1da",
+      "candidates_searched": [
+        "41277549"
+      ],
+      "identified": {
+        "pmid": "41277549",
+        "doi": "10.1111/brv.70107",
+        "title": "Conflict over caste fate in insect societies.",
+        "year": "2026",
+        "journal": "Biological reviews of the Cambridge Philosophical Society",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 66,
+      "sha256": "fe2ce0f26808c3ecc9691e630ba6cbb4e778529036dae59be0436e5c5610b0f0",
+      "candidates_searched": [
+        "41242573"
+      ],
+      "identified": {
+        "pmid": "41242573",
+        "doi": "10.1016/j.beproc.2025.105305",
+        "title": "Behavioural plasticity in a solitary foraging ant: Effect of experience and food distribution.",
+        "year": "2026",
+        "journal": "Behavioural processes",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 67,
+      "sha256": "0b1e23fd9753ce1c12b6973d59929bdf672b738a095f140cdcd053f7aa2cd03e",
+      "candidates_searched": [
+        "41183499"
+      ],
+      "identified": {
+        "pmid": "41183499",
+        "doi": "10.1093/jeb/voaf129",
+        "title": "Climate and parasite pressure jointly shape traits mediating the coevolution between an ant social parasite and its host.",
+        "year": "2026",
+        "journal": "Journal of evolutionary biology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 76,
+      "sha256": "ef51d8505df6b6396ae70df711de7491e4ca9e15a918ad3f6731719ad9d0961c",
+      "candidates_searched": [
+        "40751832"
+      ],
+      "identified": {
+        "pmid": "40751832",
+        "doi": "10.1007/s10886-025-01635-w",
+        "title": "Reduced Cuticular Hydrocarbon Production in a Unicolonial Population of the Ant, Nylanderia fulva, Is Associated with Low Desiccation Resistance in its Invasive Range.",
+        "year": "2025",
+        "journal": "Journal of chemical ecology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 80,
+      "sha256": "4ad0808293e8bbc00ba1044994c2c482f9b7c0ac9c8ac47f088dfb0344fc4252",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 89,
+      "sha256": "4fa0f472c68523941f7e43ea76318644647e1ce1021aead7f770bb17c0088239",
+      "candidates_searched": [
+        "39837525"
+      ],
+      "identified": {
+        "pmid": "39837525",
+        "doi": "10.1098/rspb.2024.2534",
+        "title": "Ontogeny of energy use in harvester ant colonies, and the metabolic expense of colony growth.",
+        "year": "2025",
+        "journal": "Proceedings. Biological sciences",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 92,
+      "sha256": "97c0cf9ec186d065c29105cd48acbdd1b463808f0d94e3c18bf426ded5836c44",
+      "candidates_searched": [
+        "39585927"
+      ],
+      "identified": {
+        "pmid": "39585927",
+        "doi": "10.1371/journal.pcbi.1012623",
+        "title": "Socially driven negative feedback regulates activity and energy use in ant colonies.",
+        "year": "2024",
+        "journal": "PLoS computational biology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 96,
+      "sha256": "9b7360a2ca848bb6fe767d17bce404213184598685d125a9c9aa84d9c3703c86",
+      "candidates_searched": [
+        "26850231"
+      ],
+      "identified": {
+        "pmid": "26850231",
+        "doi": "10.1002/cne.23975",
+        "title": "Olfactory pathway of the hornet Vespa velutina: New insights into the evolution of the hymenopteran antennal lobe.",
+        "year": "2016",
+        "journal": "The Journal of comparative neurology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 101,
+      "sha256": "e8cb0b86f6ad86150889df194b121afd02fbfc8413553e367cb2fbf0024d6028",
+      "candidates_searched": [
+        "40803318"
+      ],
+      "identified": {
+        "pmid": "40803318",
+        "doi": "10.1016/j.cub.2025.07.038",
+        "title": "Superefficient teamwork in weaver ants.",
+        "year": "2025",
+        "journal": "Current biology : CB",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 103,
+      "sha256": "b8dc32f7f1d06908c4bf38af585af2a7367ad7d59ce97f703dd01491a8e89083",
+      "candidates_searched": [
+        "40109114"
+      ],
+      "identified": {
+        "pmid": "40109114",
+        "doi": "10.1098/rstb.2023.0264",
+        "title": "Specialism and generalism in social animals in variable environments.",
+        "year": "2025",
+        "journal": "Philosophical transactions of the Royal Society of London. Series B, Biological sciences",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 108,
+      "sha256": "d889e83b78d161895e9ca42896c321cc43c9f3e6e6bb9adc7f8d5d38fa093502",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 112,
+      "sha256": "86769f46774d671e0a69f48e4fb62b9b972a4ad9cb21365424f11517ecd9973e",
+      "candidates_searched": [
+        "37243539"
+      ],
+      "identified": {
+        "pmid": "37243539",
+        "doi": "10.1093/gbe/evad095",
+        "title": "Worker Reproduction and Caste Polymorphism Impact Genome Evolution and Social Genes Across the Ants.",
+        "year": "2023",
+        "journal": "Genome biology and evolution",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 114,
+      "sha256": "645667aa2e1c1462a85e7dc0c6d1ac19bce1642442dc33f3a65e44f598005569",
+      "candidates_searched": [
+        "36765120"
+      ],
+      "identified": {
+        "pmid": "36765120",
+        "doi": "10.1038/s41598-023-29246-z",
+        "title": "Family before work: task reversion in workers of the red imported fire ant, Solenopsis invicta in the presence of brood.",
+        "year": "2023",
+        "journal": "Scientific reports",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 126,
+      "sha256": "082a4551b151d175aebc33bfadaac5381dfa88a20f84b93207e0931dc085f4f4",
+      "candidates_searched": [
+        "34918204"
+      ],
+      "identified": {
+        "pmid": "34918204",
+        "doi": "10.3758/s13420-021-00503-3",
+        "title": "Rescue specialists in Cataglyphis piliscapa ants: The nature and development of ant first responders.",
+        "year": "2022",
+        "journal": "Learning & behavior",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 130,
+      "sha256": "f6bd31f4ab468d8367d2f52d6473224c269120fe814d6ef48a40149c89b0245a",
+      "candidates_searched": [
+        "34406688"
+      ],
+      "identified": {
+        "pmid": "34406688",
+        "doi": "10.1111/mec.16101",
+        "title": "A remarkable legion of guests: Diversity and host specificity of army ant symbionts.",
+        "year": "2021",
+        "journal": "Molecular ecology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 133,
+      "sha256": "0b05e26d3b99f3d1650fbbb876f8c1c8f1f735c6fd8016f8ec5e9299b5bf8fee",
+      "candidates_searched": [
+        "34102082"
+      ],
+      "identified": {
+        "pmid": "34102082",
+        "doi": "10.1098/rsif.2021.0318",
+        "title": "Mandibular morphology, task specialization and bite mechanics in ",
+        "year": "2021",
+        "journal": "Journal of the Royal Society, Interface",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 136,
+      "sha256": "7fb92c4feb5065cac6756ad3113b55a939a5d444018aff145c994f08e02c2208",
+      "candidates_searched": [
+        "33888758"
+      ],
+      "identified": {
+        "pmid": "33888758",
+        "doi": "10.1038/s41598-021-88005-0",
+        "title": "Division of labor in work shifts by leaf-cutting ants.",
+        "year": "2021",
+        "journal": "Scientific reports",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 137,
+      "sha256": "8f03079a40a292c1ba7791481802887bee6cb6f52f75e90fc6f6a6ce4f6fe63c",
+      "candidates_searched": [
+        "33730550"
+      ],
+      "identified": {
+        "pmid": "33730550",
+        "doi": "10.1016/j.cub.2020.05.038",
+        "title": "Ant behavioral maturation is mediated by a stochastic transition between two fundamental states.",
+        "year": "2021",
+        "journal": "Current biology : CB",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 139,
+      "sha256": "d3d108477fed68132dee4b01bbe03b7961638586e52b0eaff085409d72b4f713",
+      "candidates_searched": [
+        "33602869"
+      ],
+      "identified": {
+        "pmid": "33602869",
+        "doi": "10.1101/gad.343699.120",
+        "title": "Early behavioral and molecular events leading to caste switching in the ant ",
+        "year": "2021",
+        "journal": "Genes & development",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 147,
+      "sha256": "b7cb7193c8b94d80938167d9d32380c6cb93b23352369df713eafe0cfd72e547",
+      "candidates_searched": [
+        "29967301"
+      ],
+      "identified": {
+        "pmid": "29967301",
+        "doi": "10.1098/rstb.2017.0237",
+        "title": "Exploring nest structures of acorn dwelling ants with X-ray microtomography and surface-based three-dimensional visibility graph analysis.",
+        "year": "2018",
+        "journal": "Philosophical transactions of the Royal Society of London. Series B, Biological sciences",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 148,
+      "sha256": "da36b7c2e70b2f3fe69725c4b89e3ab9ae2a4b4a32dab71ce63c66d97add00ef",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 153,
+      "sha256": "58298c4b43945f37506a83ac32db423cce1d369d636f6dc29c3f025f07699da3",
+      "candidates_searched": [
+        "20514130"
+      ],
+      "identified": {
+        "pmid": "20514130",
+        "doi": "10.2976/1.3223356",
+        "title": "Stochastic variation: from single cells to superorganisms.",
+        "year": "2009",
+        "journal": "HFSP journal",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 156,
+      "sha256": "d67e5391a46e5e544feb8a391288d2d5df158158c47321ddf5122e28dbfe0440",
+      "candidates_searched": [
+        "12146794"
+      ],
+      "identified": {
+        "pmid": "12146794",
+        "doi": "10.1007/s00114-002-0316-0",
+        "title": "A colony-level response to disease control in a leaf-cutting ant.",
+        "year": "2002",
+        "journal": "Die Naturwissenschaften",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 167,
+      "sha256": "4655fb85944702e48e9648dc14de908bc77b4efeaa9e056ee39c813a0f421685",
+      "candidates_searched": [
+        "26445661"
+      ],
+      "identified": {
+        "pmid": "26445661",
+        "doi": "10.1002/ece3.1681",
+        "title": "Queen execution increases relatedness among workers of the invasive Argentine ant, Linepithema humile.",
+        "year": "2015",
+        "journal": "Ecology and evolution",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 168,
+      "sha256": "e67f1d5be0cd1171a7de58d06b3aea598b3954dd54b631c6717164fe096f2137",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 175,
+      "sha256": "004a0f2a1e80f728001edf6820c11182c5c41b26dafccd5fa117917a841bf989",
+      "candidates_searched": [
+        "21123270"
+      ],
+      "identified": {
+        "pmid": "21123270",
+        "doi": "10.1098/rspb.2010.2295",
+        "title": "Kin-informative recognition cues in ants.",
+        "year": "2011",
+        "journal": "Proceedings. Biological sciences",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 182,
+      "sha256": "faba6b94d05991f5ee91c9deeee420ebd2114bdef68134689f82c67d7971ad44",
+      "candidates_searched": [
+        "16676159"
+      ],
+      "identified": {
+        "pmid": "16676159",
+        "doi": "10.1007/s00114-006-0121-2",
+        "title": "A reassessment of the mating system characteristics of the army ant Eciton burchellii.",
+        "year": "2006",
+        "journal": "Die Naturwissenschaften",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 186,
+      "sha256": "5875270eebd78b6aba739c12056217bc120f5609b1c3472f03807dd946f5dfe1",
+      "candidates_searched": [
+        "14561293"
+      ],
+      "identified": {
+        "pmid": "14561293",
+        "doi": "10.1098/rspb.2003.2461",
+        "title": "Absence of nepotism in the harassment of duelling queens by honeybee workers.",
+        "year": "2003",
+        "journal": "Proceedings. Biological sciences",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 189,
+      "sha256": "e8642a24d7ca8c31feaab1b9a6a086022af3d829d207ee5409dcfde5684961ce",
+      "candidates_searched": [
+        "11989685"
+      ],
+      "identified": {
+        "pmid": "11989685",
+        "doi": "10.1111/j.0014-3820.2002.tb01366.x",
+        "title": "Why do some social insect queens mate with several males? Testing the sex-ratio manipulation hypothesis in Lasius niger.",
+        "year": "2002",
+        "journal": "Evolution; international journal of organic evolution",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 194,
+      "sha256": "bec31dcfd8ef40f542a609b29293d3b0cf57b249f6163cea271f38a1a9751534",
+      "candidates_searched": [
+        "11430657"
+      ],
+      "identified": {
+        "pmid": "11430657",
+        "doi": "10.1554/0014-3820(2001)055[0976:pgacso]2.0.co;2",
+        "title": "Population genetics and colony structure of the Argentine ant (Linepithema humile) in its native and introduced ranges.",
+        "year": "2001",
+        "journal": "Evolution; international journal of organic evolution",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 196,
+      "sha256": "4290e83398bc5af150acc6a1a10c54cb85763b46bc9b30552b331ae8fd62a7c6",
+      "candidates_searched": [
+        "9378143"
+      ],
+      "identified": {
+        "pmid": "9378143",
+        "doi": "10.1002/elps.1150180934",
+        "title": "Molecular advances in understanding social insect population structure.",
+        "year": "1997",
+        "journal": "Electrophoresis",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 206,
+      "sha256": "2814c28e95d48edde7518bc2b7228d4e5389ad5062a9ddd8e5592f0eb1fed310",
+      "candidates_searched": [
+        "22108863"
+      ],
+      "identified": {
+        "pmid": "22108863",
+        "doi": "10.1007/s10886-011-0038-x",
+        "title": "Do cuticular hydrocarbons provide sufficient information for optimal sex allocation in the ant Formica exsecta?",
+        "year": "2011",
+        "journal": "Journal of chemical ecology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 212,
+      "sha256": "c2aa2fd482229a1156c318af137b2fb4fe0e692731ebcd6b101c03b13374faf3",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 213,
+      "sha256": "08aeba605fb391d8a65bb2401f44b7b75e011b2b3f626e065349c7eb06026870",
+      "candidates_searched": [
+        "19018270"
+      ],
+      "identified": {
+        "pmid": "19018270",
+        "doi": "10.1038/hdy.2008.72",
+        "title": "Population genetic structure, worker reproduction and thelytokous parthenogenesis in the desert ant Cataglyphis sabulosa.",
+        "year": "2008",
+        "journal": "Heredity",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 233,
+      "sha256": "23dee32d03dca977a58e3717643abf23cee2e7cd76b8d91eb40d88e492e14562",
+      "candidates_searched": [
+        "41875859"
+      ],
+      "identified": {
+        "pmid": "41875859",
+        "doi": "10.1016/j.cub.2026.02.008",
+        "title": "Insect navigation: Lunar lunacy tamed by an ant.",
+        "year": "2026",
+        "journal": "Current biology : CB",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 235,
+      "sha256": "0071c004fe30d69742e85172592244c5d809631db4b8da5277cde9bf0c57f30e",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 238,
+      "sha256": "c09cfce8bd243fd9deb88e8fba112db72b25b8405c0d9d6392c7b3999d618d1c",
+      "candidates_searched": [
+        "41667084"
+      ],
+      "identified": {
+        "pmid": "41667084",
+        "doi": "10.1098/rsif.2025.0838",
+        "title": "Tuning regimes in ant foraging dynamics depend on the existence of bistability.",
+        "year": "2026",
+        "journal": "Journal of the Royal Society, Interface",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 251,
+      "sha256": "6eee90634b39840c16899966ec50b39d678ec79b3e353500845c5f2c5e046b61",
+      "candidates_searched": [
+        "41032382"
+      ],
+      "identified": {
+        "pmid": "41032382",
+        "doi": "10.1093/jee/toaf241",
+        "title": "The potential of the small big-headed ant (Pheidole parva) (Hymenoptera: Formicidae) as a biocontrol agent for the Asian citrus psyllid, Diaphorina citri (Hemiptera: Liviidae).",
+        "year": "2025",
+        "journal": "Journal of economic entomology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 253,
+      "sha256": "85d615d2a819de7bafd858e2671b3865645efce0083aa0223e08892624d88acf",
+      "candidates_searched": [
+        "40990791"
+      ],
+      "identified": {
+        "pmid": "40990791",
+        "doi": "10.1590/1519-6984.295068",
+        "title": "The nest architecture of the leaf-cutting ant Atta sexdens (Hymenoptera: Formicidae).",
+        "year": "2025",
+        "journal": "Brazilian journal of biology = Revista brasleira de biologia",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 256,
+      "sha256": "885cca7723bf6fed0076459dc0f12d0b297466a471a4cd8beb4517093661b2c9",
+      "candidates_searched": [
+        "40743393"
+      ],
+      "identified": {
+        "pmid": "40743393",
+        "doi": "10.1073/pnas.2506930122",
+        "title": "Foraging ants as liquid brains: Movement heterogeneity shapes collective efficiency.",
+        "year": "2025",
+        "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 261,
+      "sha256": "d36f5b89f7f494c8b83457be744ef8c3ce63dc1af73629d405222bcb345d7a6f",
+      "candidates_searched": [
+        "40313369"
+      ],
+      "identified": {
+        "pmid": "40313369",
+        "doi": "10.3389/finsc.2025.1581307",
+        "title": "The role of dopamine in foraging decisions in social insects.",
+        "year": "2025",
+        "journal": "Frontiers in insect science",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 262,
+      "sha256": "45ffb306c457494f821e9a3f6e770f24767d4c10ba1151cbc9aadc61524e9fe1",
+      "candidates_searched": [
+        "40304800"
+      ],
+      "identified": {
+        "pmid": "40304800",
+        "doi": "10.1007/s00442-025-05720-5",
+        "title": "Ant foraging: optimizing self-organization as a solution to a traveling salesman problem.",
+        "year": "2025",
+        "journal": "Oecologia",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 263,
+      "sha256": "a725a20d889da2b0d34854e6d006003432129e69977c21083acdcbd5b426660e",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 267,
+      "sha256": "9bca923df0d7f014ba9bd156e2aed64f0021dc168780c8490f0251dd89545c3d",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 269,
+      "sha256": "f7f457a7e7ca8954bad6544e8fec5f700f322afac7f5bfa97b90a9dd29e136a9",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 280,
+      "sha256": "b301c9d90795e01963c5fab522bf79e31a3ab01c0661b8e5c7c78430c81fca8a",
+      "candidates_searched": [
+        "28764664"
+      ],
+      "identified": null
+    },
+    {
+      "index": 282,
+      "sha256": "d89a8019ef61941519ff16705652015ff99733e679854213ba61282ad340017a",
+      "candidates_searched": [],
+      "identified": null
+    },
+    {
+      "index": 284,
+      "sha256": "182f294a05c762a19a12fdace4d0102824da7bfd634df09bbd080ef49cdc3cf6",
+      "candidates_searched": [
+        "19948140"
+      ],
+      "identified": {
+        "pmid": "19948140",
+        "doi": "10.1016/j.cub.2009.09.038",
+        "title": "Social insects: rearing temperature affects ant thermoregulatory behaviour.",
+        "year": "2009",
+        "journal": "Current biology : CB",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 286,
+      "sha256": "22ef1b63fe7c3236402bf5ca92186538c94bb1ba606d5bf560e39b443c97ed51",
+      "candidates_searched": [
+        "19018663"
+      ],
+      "identified": {
+        "pmid": "19018663",
+        "doi": "10.1371/journal.pbio.0060285",
+        "title": "Specialization does not predict individual efficiency in an ant.",
+        "year": "2008",
+        "journal": "PLoS biology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 289,
+      "sha256": "dab00603e1700fa48e5f579dbac6be7c0763c1f040e73f395de8932338a9c6ea",
+      "candidates_searched": [
+        "12835840"
+      ],
+      "identified": {
+        "pmid": "12835840",
+        "doi": "10.1007/s00114-003-0426-3",
+        "title": "Size-correlated division of labour and spatial distribution of workers in the driver ant, Dorylus molestus.",
+        "year": "2003",
+        "journal": "Die Naturwissenschaften",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 300,
+      "sha256": "34a8531d2064ffd0992b811caa437c353bf585a7068c70cbcea15af0d89e8070",
+      "candidates_searched": [
+        "35862804"
+      ],
+      "identified": {
+        "pmid": "35862804",
+        "doi": "10.1128/msphere.00989-21",
+        "title": "Trachymyrmex septentrionalis Ant Microbiome Assembly Is Unique to Individual Colonies and Castes.",
+        "year": "2022",
+        "journal": "mSphere",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 307,
+      "sha256": "de8c0da82162e172291b2c7ab6803d649bd75cfdcb8050790cd85c2840bb733d",
+      "candidates_searched": [
+        "33235272"
+      ],
+      "identified": {
+        "pmid": "33235272",
+        "doi": "10.1038/s41598-020-77574-1",
+        "title": "Reproductive inhibition among nestmate queens in the invasive Argentine ant.",
+        "year": "2020",
+        "journal": "Scientific reports",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 309,
+      "sha256": "600e775367387cebb87764d09e29b38230a56c82e1bc6c7acc6f751700e56980",
+      "candidates_searched": [
+        "31320714"
+      ],
+      "identified": {
+        "pmid": "31320714",
+        "doi": "10.1038/s41598-019-46972-5",
+        "title": "Factors triggering queen executions in the Argentine ant.",
+        "year": "2019",
+        "journal": "Scientific reports",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 311,
+      "sha256": "6426e73d409a5be21ff54572add752e46fc715d7c954e57466618a3faf340852",
+      "candidates_searched": [
+        "29566664"
+      ],
+      "identified": null
+    },
+    {
+      "index": 318,
+      "sha256": "0b372d32a424085ec8b780b19df60df28b4becc4f9c89ba13bf95ae8e254c00f",
+      "candidates_searched": [
+        "27551065"
+      ],
+      "identified": {
+        "pmid": "27551065",
+        "doi": "10.1073/pnas.1606128113",
+        "title": "Nutrition mediates the expression of cultivar-farmer conflict in a fungus-growing ant.",
+        "year": "2016",
+        "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 325,
+      "sha256": "88297b940e1cbade112b8e2b5a8e15644338216ce822c80fd3287c69bc30c146",
+      "candidates_searched": [
+        "24039827"
+      ],
+      "identified": {
+        "pmid": "24039827",
+        "doi": "10.1371/journal.pone.0072941",
+        "title": "Social and population structure in the ant Cataglyphis emmae.",
+        "year": "2013",
+        "journal": "PloS one",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 329,
+      "sha256": "2b72af4f27a93edddfa0c37d13b1f21b470cd3a60e4258fd6b49ec7a4d5a28d4",
+      "candidates_searched": [
+        "23662630"
+      ],
+      "identified": {
+        "pmid": "23662630",
+        "doi": "10.1111/jeb.12162",
+        "title": "The evolution of queen pheromones in the ant genus Lasius.",
+        "year": "2013",
+        "journal": "Journal of evolutionary biology",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 332,
+      "sha256": "3fb713d5e3809da5b7e08b5d7a5c73b36c331d0db871d9ed28ff88e1984642e8",
+      "candidates_searched": [
+        "41860892"
+      ],
+      "identified": {
+        "pmid": "41860892",
+        "doi": "10.1371/journal.pone.0335300",
+        "title": "Ant parasitoidism in checkered beetles: Phyllobaenus obscurus developing inside intact cocoons of two species of the Ectatomma ruidum species complex.",
+        "year": "2026",
+        "journal": "PloS one",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 336,
+      "sha256": "27810e87135107dd4bbbde829d2a253e8fb2de596eee3fd37416a58d3946bc16",
+      "candidates_searched": [
+        "40642433"
+      ],
+      "identified": {
+        "pmid": "40642433",
+        "doi": "10.3897/zookeys.1243.145744",
+        "title": "\ufeff",
+        "year": "2025",
+        "journal": "ZooKeys",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 342,
+      "sha256": "fec0038d069ce21a9efddaef2fdd0409b59e66e48ee5564fc479334988519568",
+      "candidates_searched": [
+        "39423184"
+      ],
+      "identified": {
+        "pmid": "39423184",
+        "doi": "10.1371/journal.pone.0308712",
+        "title": "Taxonomy of the Palearctic socially parasitic Temnothorax (Myrmoxenus) ants (Hymenoptera: Formicidae).",
+        "year": "2024",
+        "journal": "PloS one",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 355,
+      "sha256": "4022dabcab9430b2811346ae304e72d6ee8bded1c921f6d9331a9c5ab61c8e66",
+      "candidates_searched": [
+        "36977384"
+      ],
+      "identified": {
+        "pmid": "36977384",
+        "doi": "10.1016/j.cub.2023.02.019",
+        "title": "Evolution: A social parasite was born from a virgin.",
+        "year": "2023",
+        "journal": "Current biology : CB",
+        "match": "exact"
+      }
+    },
+    {
+      "index": 367,
+      "sha256": "a45651e1ec204c446b5204b863c9af884cc17d1101ee08bf9063ce4bb77ee3fb",
+      "candidates_searched": [
+        "34668533"
+      ],
+      "identified": {
+        "pmid": "34668533",
+        "doi": "10.1093/molbev/msab305",
+        "title": "Convergent Loss of Chemoreceptors across Independent Origins of Slave-Making in Ants.",
+        "year": "2022",
+        "journal": "Molecular biology and evolution",
+        "match": "exact"
+      }
+    }
+  ]
+}

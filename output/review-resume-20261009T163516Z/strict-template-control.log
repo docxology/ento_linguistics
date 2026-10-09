@@ -1,0 +1,6 @@
+  Corpus template vars: 23716 variables loaded
+    Publications=7540, Tokens=991026, Unique=47064
+  ⚠ 1 Unreplaced template variable(s): RESUME_UNKNOWN_VARIABLE
+ERROR: Unreplaced template variable(s): RESUME_UNKNOWN_VARIABLE
+PASS: every current paper placeholder resolves; missing variable raises SystemExit(1).
+PASS: original source and all witnessed frozen hashes unchanged.
