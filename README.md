@@ -12,6 +12,8 @@ Daniel Ari Friedman and Tucker Cahill Chambers
 
 The six-domain framework, four source layers and [fixed-margin comparison](research/network_robustness/README.md) remain separately receipted. The [current verification record](output/review-v1.3.0-20261008/SUMMARY.md) identifies the exact source, checks and artifact scope. The software package version and research-edition version are distinct.
 
+**Unreleased on `main` (1.3.1 candidate).** A second exact-text PubMed reconciliation admits 59 more archived abstracts, and PMC correction, erratum and retraction notices are excluded from full-text analysis while staying in the stored shards. All layers were regenerated; the [candidate verification record](output/review-v1.3.1-20261009/SUMMARY.md) lists every changed value. The published v1.3.0 PDF, media and DOI are unchanged.
+
 ## Matched research lecture
 
 [Watch the 20-minute lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.3.0/EntoLinguistics_20min_4K.mp4) · [Download slides](https://github.com/docxology/ento_linguistics/releases/download/v1.3.0/EntoLinguistics_slides.pdf) · [All release files](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0)
@@ -41,14 +43,14 @@ The implemented analyses measure word frequencies, rule-based domain assignments
 
 Edges in this terminology network count documents containing both terms among the hundred most frequent domain-assigned terms. The separate concept map connects six predefined categories by shared vocabulary. See [methods and interpretation](docs/reference/reproducibility.md) before interpreting either graph.
 
-| Source layer | Published revision | Analysis boundary |
+| Source layer | Current analysis on `main` | Analysis boundary |
 | --- | --- | --- |
-| PubMed abstracts | 7,540 identified abstracts from 7,609 archived strings | 69 unreconciled strings retained but excluded from headline results |
-| PMC | 7,073 records | Full-text analysis; deterministic discourse sample |
+| PubMed abstracts | 7,599 identified abstracts from 7,609 archived strings | 10 unreconciled strings retained but excluded from headline results (v1.3.0: 7,540 and 69) |
+| PMC | 6,997 analyzed of 7,073 stored records | 76 title-marked correction/retraction notices and retracted items excluded; deterministic discourse sample (v1.3.0 analyzed all 7,073) |
 | BHL | 2,430 historical documents | All documents for literal counts, extraction, and framing; twenty entropy candidates per era |
 | arXiv | 61 records | Separate preprint layer |
 
-Full/default BHL processing covers **2,317,721,403 OCR characters**. Layers differ in genre, retrieval, language, and extraction threshold; their raw counts are not matched comparisons. Broad retrieval, OCR errors, repeated PMC bodies, overlapping domain groups, and incomplete relevance/license annotation remain documented limitations.
+Full/default BHL processing covers **2,317,721,403 OCR characters**. Layers differ in genre, retrieval, language, and extraction threshold; their raw counts are not matched comparisons. Broad retrieval, OCR errors, title-rule notice screening, overlapping domain groups, and incomplete relevance/license annotation remain documented limitations.
 
 The published v1.2.1 paper contains **47 pages**. Its figures include the separately receipted network comparison. See the [data lineage](docs/reference/data-lineage.md) for the exports behind each result and the [verification reference](docs/reference/verification.md) for measured build evidence.
 
