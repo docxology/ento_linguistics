@@ -71,55 +71,55 @@
         },
         {
           "file": "abstracts.json",
-          "record": 9,
-          "sha256": "7ed9eaf46c0e39fc1cd1c1a121dd8730816a5715b71f411c6add68b7ee9555be"
-        },
-        {
-          "file": "abstracts.json",
-          "record": 18,
-          "sha256": "9d7c8faeffa0b1848a7ab87905f60872263bb44113fc3b8aebe2ec0e13e260ba"
-        },
-        {
-          "file": "abstracts.json",
-          "record": 33,
-          "sha256": "42c4094df59c77a6e1f54c0d194b704908a58012b21556a68a66505f5976879a"
-        },
-        {
-          "file": "abstracts.json",
-          "record": 53,
-          "sha256": "e4ad10d1bbf66f505d183dece33089acbe4fb701b9d87c87155df9d18ec80ec1"
-        },
-        {
-          "file": "abstracts.json",
           "record": 57,
           "sha256": "ab27d93da69303675c348a1e0c6705879ba6c81198702621d24970449f31cb14"
         },
         {
           "file": "abstracts.json",
-          "record": 62,
-          "sha256": "c157389f7185b4bca20556ed46de7c64d7c61eaad9d367e32817f9c0e0b84d48"
+          "record": 108,
+          "sha256": "d889e83b78d161895e9ca42896c321cc43c9f3e6e6bb9adc7f8d5d38fa093502"
         },
         {
           "file": "abstracts.json",
-          "record": 63,
-          "sha256": "459af6b33e740f868c5928405b74d280d6a200300aa9bc0dc56588d05f07c1da"
+          "record": 148,
+          "sha256": "da36b7c2e70b2f3fe69725c4b89e3ab9ae2a4b4a32dab71ce63c66d97add00ef"
         },
         {
           "file": "abstracts.json",
-          "record": 66,
-          "sha256": "fe2ce0f26808c3ecc9691e630ba6cbb4e778529036dae59be0436e5c5610b0f0"
+          "record": 168,
+          "sha256": "e67f1d5be0cd1171a7de58d06b3aea598b3954dd54b631c6717164fe096f2137"
         },
         {
           "file": "abstracts.json",
-          "record": 67,
-          "sha256": "0b1e23fd9753ce1c12b6973d59929bdf672b738a095f140cdcd053f7aa2cd03e"
+          "record": 235,
+          "sha256": "0071c004fe30d69742e85172592244c5d809631db4b8da5277cde9bf0c57f30e"
+        },
+        {
+          "file": "abstracts.json",
+          "record": 263,
+          "sha256": "a725a20d889da2b0d34854e6d006003432129e69977c21083acdcbd5b426660e"
+        },
+        {
+          "file": "abstracts.json",
+          "record": 267,
+          "sha256": "9bca923df0d7f014ba9bd156e2aed64f0021dc168780c8490f0251dd89545c3d"
+        },
+        {
+          "file": "abstracts.json",
+          "record": 269,
+          "sha256": "f7f457a7e7ca8954bad6544e8fec5f700f322afac7f5bfa97b90a9dd29e136a9"
+        },
+        {
+          "file": "abstracts.json",
+          "record": 282,
+          "sha256": "d89a8019ef61941519ff16705652015ff99733e679854213ba61282ad340017a"
         }
       ],
       "missing_ids": 0,
-      "provenance_entries": 7540,
+      "provenance_entries": 7599,
       "provenance_id_mismatches": 0,
       "records": 7609,
-      "records_without_provenance": 69,
+      "records_without_provenance": 10,
       "unused_provenance_entries": 0
     },
     "arxiv": {

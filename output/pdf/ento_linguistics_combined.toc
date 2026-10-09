@@ -21,82 +21,82 @@
 \contentsline {subsubsection}{\numberline {3.2.8}Historical Analysis and Coverage}{10}{subsubsection.3.2.8}%
 \contentsline {subsubsection}{\numberline {3.2.9}Validation and Reproducibility}{10}{subsubsection.3.2.9}%
 \contentsline {subsection}{\numberline {3.3}Network Representation Sensitivity}{10}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Results: Corpus Analysis and Terminology Networks}{11}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Terminology Extraction Across Domains}{11}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Terminology Network Structure}{11}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}Comparison with a Fixed-Margin Reference}{11}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}Vocabulary and Edge-Threshold Diagnostic}{12}{subsubsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.3}Framing Analysis}{14}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Results: Domain-Specific Findings}{18}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Unit of Individuality}{18}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Power \& Labor}{18}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Behavior \& Identity}{18}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Sex \& Reproduction}{18}{subsection.5.4}%
-\contentsline {subsection}{\numberline {5.5}Kin \& Relatedness}{18}{subsection.5.5}%
-\contentsline {subsection}{\numberline {5.6}Economics}{18}{subsection.5.6}%
-\contentsline {subsection}{\numberline {5.7}Historical Interpretation}{19}{subsection.5.7}%
-\contentsline {section}{\numberline {6}Discussion}{24}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Language and Scientific Practice}{24}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Network Structure and Its Conditional Reference}{24}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Biological Precision and Terminological Continuity}{24}{subsection.6.3}%
-\contentsline {subsection}{\numberline {6.4}Active Inference as a Theoretical Perspective}{25}{subsection.6.4}%
-\contentsline {subsection}{\numberline {6.5}A Complex Systems Reading of Terminology}{25}{subsection.6.5}%
-\contentsline {subsection}{\numberline {6.6}Practical Use of CACE}{25}{subsection.6.6}%
-\contentsline {subsection}{\numberline {6.7}Cross-Domain Communication}{26}{subsection.6.7}%
-\contentsline {subsection}{\numberline {6.8}Measurement Validation and Terminology Intervention}{26}{subsection.6.8}%
-\contentsline {subsection}{\numberline {6.9}Limitations}{26}{subsection.6.9}%
-\contentsline {subsection}{\numberline {6.10}Complexity as an Explicit Modeling Question}{27}{subsection.6.10}%
-\contentsline {section}{\numberline {7}Conclusion}{28}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Future Directions}{28}{subsection.7.1}%
-\contentsline {section}{\numberline {8}Related Work}{29}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Scientific Language and Categories}{29}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Terminology in Social-Insect Research}{29}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Computational Mapping and Source-Layer Analysis}{29}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Validation and Experimental Evidence}{29}{subsection.8.4}%
-\contentsline {subsection}{\numberline {8.5}Active Inference and Colony Modeling}{30}{subsection.8.5}%
-\contentsline {subsection}{\numberline {8.6}Collective Behavior and Complex Systems}{30}{subsection.8.6}%
-\contentsline {subsection}{\numberline {8.7}Positioning This Work}{30}{subsection.8.7}%
-\contentsline {subsection}{\numberline {8.8}Complexity, Representations, and Dynamics}{30}{subsection.8.8}%
-\contentsline {section}{\numberline {9}Acknowledgments}{31}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Institutional Support}{31}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Collaborations}{31}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Data and Software}{31}{subsection.9.3}%
-\contentsline {section}{\numberline {10}Supplemental Methods: Text Processing and Term Extraction}{32}{section.10}%
-\contentsline {subsection}{\numberline {10.1}Source Layers and Custody}{32}{subsection.10.1}%
-\contentsline {subsection}{\numberline {10.2}Normalization and Token Streams}{32}{subsection.10.2}%
-\contentsline {subsection}{\numberline {10.3}Candidate Extraction and Domain Assignment}{32}{subsection.10.3}%
-\contentsline {subsection}{\numberline {10.4}Document Co-occurrence and Concept Categories}{33}{subsection.10.4}%
-\contentsline {subsection}{\numberline {10.5}Reproducible Inputs and Failure Behavior}{33}{subsection.10.5}%
-\contentsline {section}{\numberline {11}Supplemental Methods: Statistical and Scoring Infrastructure}{34}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Sentence-context Entropy}{34}{subsection.11.1}%
-\contentsline {subsection}{\numberline {11.2}Exploratory Comparisons and Intervals}{34}{subsection.11.2}%
-\contentsline {subsection}{\numberline {11.3}Shared CACE Sample and Scores}{34}{subsection.11.3}%
-\contentsline {subsection}{\numberline {11.4}Framing and Discourse Proxies}{35}{subsection.11.4}%
-\contentsline {subsection}{\numberline {11.5}Historical OCR and Layer Coverage}{35}{subsection.11.5}%
-\contentsline {subsection}{\numberline {11.6}Execution and Artifact Verification}{35}{subsection.11.6}%
-\contentsline {subsection}{\numberline {11.7}Fixed-Margin Network Robustness Extension}{36}{subsection.11.7}%
-\contentsline {section}{\numberline {12}Supplemental Results}{37}{section.12}%
-\contentsline {subsection}{\numberline {12.1}Exploratory Pairwise Domain Comparisons}{37}{subsection.12.1}%
-\contentsline {subsection}{\numberline {12.2}CACE Scoring for Key Terms}{37}{subsection.12.2}%
-\contentsline {subsection}{\numberline {12.3}Semantic Entropy Distribution}{37}{subsection.12.3}%
-\contentsline {subsection}{\numberline {12.4}Interval Reporting}{37}{subsection.12.4}%
-\contentsline {subsection}{\numberline {12.5}Full-Text Parallel Layer}{38}{subsection.12.5}%
-\contentsline {subsection}{\numberline {12.6}Discourse and Rhetorical Layer}{39}{subsection.12.6}%
-\contentsline {subsection}{\numberline {12.7}Statistical and Source-Layer Figures}{40}{subsection.12.7}%
-\contentsline {section}{\numberline {13}Supplemental Analysis: Theoretical Extensions}{43}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Individuality and Conditional Independence}{43}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}A Proposed Framing Score}{43}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Ambiguity Annotation}{43}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Cross-Domain Mapping}{43}{subsection.13.4}%
-\contentsline {subsection}{\numberline {13.5}Temporal Networks}{44}{subsection.13.5}%
-\contentsline {subsection}{\numberline {13.6}Multiscale Interpretation}{44}{subsection.13.6}%
-\contentsline {section}{\numberline {14}Supplemental Analysis: Case Studies and Validation}{45}{section.14}%
-\contentsline {subsection}{\numberline {14.1}Validation Agenda}{45}{subsection.14.1}%
-\contentsline {subsection}{\numberline {14.2}Historical Terminology Analysis}{45}{subsection.14.2}%
-\contentsline {subsection}{\numberline {14.3}Complete Document Coverage and Bounded Entropy}{45}{subsection.14.3}%
-\contentsline {subsection}{\numberline {14.4}A Reproducible Case-Study Protocol}{45}{subsection.14.4}%
-\contentsline {section}{\numberline {15}Symbols and Notation Glossary}{47}{section.15}%
-\contentsline {subsection}{\numberline {15.1}Mathematical Notation}{47}{subsection.15.1}%
-\contentsline {subsection}{\numberline {15.2}Theoretical Terms}{48}{subsection.15.2}%
-\contentsline {subsection}{\numberline {15.3}Pipeline Modules}{48}{subsection.15.3}%
-\contentsline {section}{\numberline {16}References}{50}{section.16}%
+\contentsline {section}{\numberline {4}Results: Corpus Analysis and Terminology Networks}{12}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Terminology Extraction Across Domains}{12}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Terminology Network Structure}{12}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Comparison with a Fixed-Margin Reference}{12}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Vocabulary and Edge-Threshold Diagnostic}{13}{subsubsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.3}Framing Analysis}{15}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Results: Domain-Specific Findings}{19}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Unit of Individuality}{19}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Power \& Labor}{19}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Behavior \& Identity}{19}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Sex \& Reproduction}{19}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Kin \& Relatedness}{19}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Economics}{19}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}Historical Interpretation}{20}{subsection.5.7}%
+\contentsline {section}{\numberline {6}Discussion}{25}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Language and Scientific Practice}{25}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Network Structure and Its Conditional Reference}{25}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Biological Precision and Terminological Continuity}{25}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Active Inference as a Theoretical Perspective}{26}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}A Complex Systems Reading of Terminology}{26}{subsection.6.5}%
+\contentsline {subsection}{\numberline {6.6}Practical Use of CACE}{26}{subsection.6.6}%
+\contentsline {subsection}{\numberline {6.7}Cross-Domain Communication}{27}{subsection.6.7}%
+\contentsline {subsection}{\numberline {6.8}Measurement Validation and Terminology Intervention}{27}{subsection.6.8}%
+\contentsline {subsection}{\numberline {6.9}Limitations}{27}{subsection.6.9}%
+\contentsline {subsection}{\numberline {6.10}Complexity as an Explicit Modeling Question}{28}{subsection.6.10}%
+\contentsline {section}{\numberline {7}Conclusion}{29}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Future Directions}{29}{subsection.7.1}%
+\contentsline {section}{\numberline {8}Related Work}{30}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Scientific Language and Categories}{30}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Terminology in Social-Insect Research}{30}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Computational Mapping and Source-Layer Analysis}{30}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Validation and Experimental Evidence}{30}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}Active Inference and Colony Modeling}{31}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Collective Behavior and Complex Systems}{31}{subsection.8.6}%
+\contentsline {subsection}{\numberline {8.7}Positioning This Work}{31}{subsection.8.7}%
+\contentsline {subsection}{\numberline {8.8}Complexity, Representations, and Dynamics}{31}{subsection.8.8}%
+\contentsline {section}{\numberline {9}Acknowledgments}{32}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Institutional Support}{32}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Collaborations}{32}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Data and Software}{32}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Supplemental Methods: Text Processing and Term Extraction}{33}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Source Layers and Custody}{33}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Normalization and Token Streams}{33}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Candidate Extraction and Domain Assignment}{33}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}Document Co-occurrence and Concept Categories}{34}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}Reproducible Inputs and Failure Behavior}{34}{subsection.10.5}%
+\contentsline {section}{\numberline {11}Supplemental Methods: Statistical and Scoring Infrastructure}{35}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Sentence-context Entropy}{35}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}Exploratory Comparisons and Intervals}{35}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}Shared CACE Sample and Scores}{35}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}Framing and Discourse Proxies}{36}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}Historical OCR and Layer Coverage}{36}{subsection.11.5}%
+\contentsline {subsection}{\numberline {11.6}Execution and Artifact Verification}{36}{subsection.11.6}%
+\contentsline {subsection}{\numberline {11.7}Fixed-Margin Network Robustness Extension}{37}{subsection.11.7}%
+\contentsline {section}{\numberline {12}Supplemental Results}{38}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Exploratory Pairwise Domain Comparisons}{38}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}CACE Scoring for Key Terms}{38}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Semantic Entropy Distribution}{38}{subsection.12.3}%
+\contentsline {subsection}{\numberline {12.4}Interval Reporting}{38}{subsection.12.4}%
+\contentsline {subsection}{\numberline {12.5}Full-Text Parallel Layer}{39}{subsection.12.5}%
+\contentsline {subsection}{\numberline {12.6}Discourse and Rhetorical Layer}{40}{subsection.12.6}%
+\contentsline {subsection}{\numberline {12.7}Statistical and Source-Layer Figures}{41}{subsection.12.7}%
+\contentsline {section}{\numberline {13}Supplemental Analysis: Theoretical Extensions}{44}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Individuality and Conditional Independence}{44}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}A Proposed Framing Score}{44}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Ambiguity Annotation}{44}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Cross-Domain Mapping}{44}{subsection.13.4}%
+\contentsline {subsection}{\numberline {13.5}Temporal Networks}{45}{subsection.13.5}%
+\contentsline {subsection}{\numberline {13.6}Multiscale Interpretation}{45}{subsection.13.6}%
+\contentsline {section}{\numberline {14}Supplemental Analysis: Case Studies and Validation}{46}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Validation Agenda}{46}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Historical Terminology Analysis}{46}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}Complete Document Coverage and Bounded Entropy}{46}{subsection.14.3}%
+\contentsline {subsection}{\numberline {14.4}A Reproducible Case-Study Protocol}{46}{subsection.14.4}%
+\contentsline {section}{\numberline {15}Symbols and Notation Glossary}{48}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Mathematical Notation}{48}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Theoretical Terms}{49}{subsection.15.2}%
+\contentsline {subsection}{\numberline {15.3}Pipeline Modules}{49}{subsection.15.3}%
+\contentsline {section}{\numberline {16}References}{51}{section.16}%

@@ -42,7 +42,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from analysis.term_extraction import TerminologyExtractor
 from analysis.text_analysis import LinguisticFeatureExtractor, TextProcessor
 from core.parallel import map_ordered
-from data.pmc_fulltext import load_fulltexts
+from data.pmc_fulltext import exclude_editorial_notices, load_fulltexts
 from pipeline.statistics_pipeline import build_statistical_analysis
 
 __all__ = [
@@ -484,9 +484,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     output_path = args.output or project_root / "output" / "data" / "fulltext_analysis.json"
 
     if corpus_path.is_dir():
-        fulltexts = load_fulltexts(corpus_path)
+        stored = load_fulltexts(corpus_path)
     else:
-        fulltexts = json.loads(corpus_path.read_text(encoding="utf-8"))
+        stored = json.loads(corpus_path.read_text(encoding="utf-8"))
+    fulltexts, notices = exclude_editorial_notices(stored)
     if args.merge_framing:
         if not output_path.exists():
             parser.error(
@@ -498,6 +499,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         artifact = build_fulltext_analysis(
             fulltexts, min_term_frequency=args.min_term_frequency
         )
+        artifact["stored_records"] = len(stored)
+        artifact["excluded_editorial_notices"] = [
+            {"pmcid": record.get("pmcid"), "title": record.get("title")}
+            for record in notices
+        ]
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(

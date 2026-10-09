@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "documents": 7540,
+  "documents": 7599,
   "vocabulary": [
     "ant",
     "social",
@@ -31,8 +31,8 @@
     "resource",
     "aggression",
     "efficiency",
-    "dominant",
     "collective",
+    "dominant",
     "division",
     "trail",
     "offspring",
@@ -45,11 +45,11 @@
     "regulation",
     "plasticity",
     "benefit",
+    "sperm",
     "eusociality",
     "alarm",
-    "sperm",
-    "cost",
     "labor",
+    "cost",
     "conflict",
     "egg",
     "specialization",
@@ -59,24 +59,24 @@
     "forager",
     "allocation",
     "emergence",
-    "ant-plant",
     "productivity",
+    "ant-plant",
     "return",
     "symbiont",
-    "optimization",
     "polymorphism",
+    "optimization",
     "exploitation",
     "minor",
     "trade-off",
     "exchange",
     "diploid",
-    "identity",
     "colony-level",
+    "identity",
     "soldier",
     "organism",
     "oviposition",
-    "power",
     "polygyny",
+    "power",
     "subordinate",
     "nurse",
     "society",
@@ -90,18 +90,18 @@
     "grooming",
     "superorganism",
     "sister",
-    "hierarchy",
     "caste-specific",
+    "hierarchy",
     "polyandry",
     "supply",
+    "switching",
     "non-nestmate",
     "non-reproductive",
-    "switching",
     "colony-specific",
-    "haploid",
     "larva",
+    "haploid",
     "host-parasite",
-    "nest-mates"
+    "polyethism"
   ],
   "protocol": {
     "sizes": [
@@ -130,7 +130,7 @@
       "components": 1,
       "largest_component_terms": 25,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7161
+      "documents_with_selected_terms": 7220
     },
     {
       "terms": 25,
@@ -142,7 +142,7 @@
       "components": 1,
       "largest_component_terms": 25,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7161
+      "documents_with_selected_terms": 7220
     },
     {
       "terms": 25,
@@ -154,7 +154,7 @@
       "components": 1,
       "largest_component_terms": 25,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7161
+      "documents_with_selected_terms": 7220
     },
     {
       "terms": 25,
@@ -166,7 +166,7 @@
       "components": 1,
       "largest_component_terms": 25,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7161
+      "documents_with_selected_terms": 7220
     },
     {
       "terms": 25,
@@ -178,7 +178,7 @@
       "components": 1,
       "largest_component_terms": 25,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7161
+      "documents_with_selected_terms": 7220
     },
     {
       "terms": 50,
@@ -190,7 +190,7 @@
       "components": 1,
       "largest_component_terms": 50,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7250
+      "documents_with_selected_terms": 7309
     },
     {
       "terms": 50,
@@ -202,163 +202,163 @@
       "components": 1,
       "largest_component_terms": 50,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7250
+      "documents_with_selected_terms": 7309
     },
     {
       "terms": 50,
       "threshold_documents": 5,
-      "edges": 1120,
+      "edges": 1121,
       "possible_pairs": 1225,
-      "density": 0.9142857142857143,
-      "mean_local_clustering": 0.9416548969182165,
+      "density": 0.9151020408163265,
+      "mean_local_clustering": 0.9423661939710665,
       "components": 1,
       "largest_component_terms": 50,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7250
+      "documents_with_selected_terms": 7309
     },
     {
       "terms": 50,
       "threshold_documents": 10,
-      "edges": 1004,
+      "edges": 1011,
       "possible_pairs": 1225,
-      "density": 0.8195918367346938,
-      "mean_local_clustering": 0.8943970969834618,
+      "density": 0.8253061224489796,
+      "mean_local_clustering": 0.8979285295961157,
       "components": 1,
       "largest_component_terms": 50,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7250
+      "documents_with_selected_terms": 7309
     },
     {
       "terms": 50,
       "threshold_documents": 20,
-      "edges": 824,
+      "edges": 832,
       "possible_pairs": 1225,
-      "density": 0.6726530612244898,
-      "mean_local_clustering": 0.8507802526774797,
+      "density": 0.6791836734693878,
+      "mean_local_clustering": 0.8524434410796462,
       "components": 1,
       "largest_component_terms": 50,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7250
+      "documents_with_selected_terms": 7309
     },
     {
       "terms": 75,
       "threshold_documents": 1,
-      "edges": 2615,
+      "edges": 2618,
       "possible_pairs": 2775,
-      "density": 0.9423423423423424,
-      "mean_local_clustering": 0.9533653020855233,
+      "density": 0.9434234234234234,
+      "mean_local_clustering": 0.9541463105581989,
       "components": 1,
       "largest_component_terms": 75,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7305
+      "documents_with_selected_terms": 7364
     },
     {
       "terms": 75,
       "threshold_documents": 2,
-      "edges": 2473,
+      "edges": 2481,
       "possible_pairs": 2775,
-      "density": 0.8911711711711712,
-      "mean_local_clustering": 0.9208846733672778,
+      "density": 0.894054054054054,
+      "mean_local_clustering": 0.9219427731105366,
       "components": 1,
       "largest_component_terms": 75,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7305
+      "documents_with_selected_terms": 7364
     },
     {
       "terms": 75,
       "threshold_documents": 5,
-      "edges": 2029,
+      "edges": 2040,
       "possible_pairs": 2775,
-      "density": 0.7311711711711711,
-      "mean_local_clustering": 0.8596413744896133,
+      "density": 0.7351351351351352,
+      "mean_local_clustering": 0.860774316438909,
       "components": 1,
       "largest_component_terms": 75,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7305
+      "documents_with_selected_terms": 7364
     },
     {
       "terms": 75,
       "threshold_documents": 10,
-      "edges": 1552,
+      "edges": 1572,
       "possible_pairs": 2775,
-      "density": 0.5592792792792792,
-      "mean_local_clustering": 0.838752088372527,
+      "density": 0.5664864864864865,
+      "mean_local_clustering": 0.841017244295629,
       "components": 1,
       "largest_component_terms": 75,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7305
+      "documents_with_selected_terms": 7364
     },
     {
       "terms": 75,
       "threshold_documents": 20,
-      "edges": 1075,
+      "edges": 1089,
       "possible_pairs": 2775,
-      "density": 0.38738738738738737,
-      "mean_local_clustering": 0.8451725848283935,
+      "density": 0.3924324324324324,
+      "mean_local_clustering": 0.8448845752877057,
       "components": 1,
       "largest_component_terms": 75,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7305
+      "documents_with_selected_terms": 7364
     },
     {
       "terms": 100,
       "threshold_documents": 1,
-      "edges": 4232,
+      "edges": 4235,
       "possible_pairs": 4950,
-      "density": 0.8549494949494949,
-      "mean_local_clustering": 0.8948410090462227,
+      "density": 0.8555555555555555,
+      "mean_local_clustering": 0.8954555891646945,
       "components": 1,
       "largest_component_terms": 100,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7314
+      "documents_with_selected_terms": 7373
     },
     {
       "terms": 100,
       "threshold_documents": 2,
-      "edges": 3696,
+      "edges": 3702,
       "possible_pairs": 4950,
-      "density": 0.7466666666666667,
-      "mean_local_clustering": 0.854468536830396,
+      "density": 0.7478787878787879,
+      "mean_local_clustering": 0.8545687886777277,
       "components": 1,
       "largest_component_terms": 100,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7314
+      "documents_with_selected_terms": 7373
     },
     {
       "terms": 100,
       "threshold_documents": 5,
-      "edges": 2681,
+      "edges": 2703,
       "possible_pairs": 4950,
-      "density": 0.5416161616161617,
-      "mean_local_clustering": 0.8267056863966664,
+      "density": 0.546060606060606,
+      "mean_local_clustering": 0.8268115104691938,
       "components": 1,
       "largest_component_terms": 100,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7314
+      "documents_with_selected_terms": 7373
     },
     {
       "terms": 100,
       "threshold_documents": 10,
-      "edges": 1880,
+      "edges": 1908,
       "possible_pairs": 4950,
-      "density": 0.3797979797979798,
-      "mean_local_clustering": 0.8376285166691356,
+      "density": 0.38545454545454544,
+      "mean_local_clustering": 0.8384410081174072,
       "components": 1,
       "largest_component_terms": 100,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7314
+      "documents_with_selected_terms": 7373
     },
     {
       "terms": 100,
       "threshold_documents": 20,
-      "edges": 1191,
+      "edges": 1211,
       "possible_pairs": 4950,
-      "density": 0.2406060606060606,
-      "mean_local_clustering": 0.8619685932726173,
+      "density": 0.24464646464646464,
+      "mean_local_clustering": 0.8618580705073291,
       "components": 1,
       "largest_component_terms": 100,
       "isolated_terms": 0,
-      "documents_with_selected_terms": 7314
+      "documents_with_selected_terms": 7373
     }
   ],
   "interpretation": "Representation sensitivity, not a scalar complexity measure or biological network."

@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.0.1, pluggy-1.6.0
+rootdir: /Volumes/GitVault/Local/worktrees/ento_linguistics-v1.3.1
+configfile: pyproject.toml
+plugins: xdist-3.8.0, pytest_httpserver-1.1.3, cov-7.0.0
+collected 1854 items / 1 error
+
+==================================== ERRORS ====================================
+_______ ERROR collecting tests/integration/test_integration_pipeline.py ________
+tests/integration/test_integration_pipeline.py:202: in <module>
+    not _infrastructure_available(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/integration/test_integration_pipeline.py:178: in _infrastructure_available
+    repo_root, cli_script, _ = _get_infrastructure_paths()
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/integration/test_integration_pipeline.py:50: in _get_infrastructure_paths
+    repo_root = _find_repo_root()
+                ^^^^^^^^^^^^^^^^^
+tests/integration/test_integration_pipeline.py:38: in _find_repo_root
+    raise RuntimeError(
+E   RuntimeError: Could not locate template/ repo root (no infrastructure/__init__.py found in any parent directory).
+=========================== short test summary info ============================
+ERROR tests/integration/test_integration_pipeline.py - RuntimeError: Could no...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 11.80s ===============================
+exit=2

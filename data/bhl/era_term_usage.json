@@ -1,6 +1,6 @@
 {
   "corpus_fingerprint": {
-    "analysis_signature": "266f1e4c7c2e506270d371b8fd1811d8e24129e09c5ccb7607cb77629c4e579d",
+    "analysis_signature": "cccd458da90fbb3f0dea1700401720624f753c3154e9aa3796c004265960147b",
     "record_count": 2430,
     "records_sha256": "3a661d88389a4add50147bf919d93b4adeddda5abae702a97b99a5d9c60acc5a",
     "stack_character_budget": null
@@ -809,11 +809,11 @@
       "tokens": 15759454
     }
   },
-  "generated": "2026-10-08T21:06:44+00:00",
+  "generated": "2026-10-09T22:26:29+00:00",
   "layer": "bhl_historical",
   "skipped": [],
   "source": {
-    "data_dir": "/Volumes/GitVault/Username/docxology/Public/ento_linguistics/data/bhl",
+    "data_dir": "/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/data/bhl",
     "documents": 2430,
     "harvester": "src/data/bhl_corpus.py",
     "matching": "deterministic token-window matching over normalized (NFC, lowercased, hyphen-break-joined) OCR text; frequencies per 10k era tokens, 4 decimals",

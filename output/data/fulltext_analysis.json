@@ -1,6 +1,6 @@
 {
   "layer": "fulltext",
-  "n_documents": 7073,
+  "n_documents": 6997,
   "min_term_frequency": 20,
   "documents": [
     {
@@ -1570,14 +1570,6 @@
       "journal": "Insects",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 4290
-    },
-    {
-      "pmcid": "PMC5509369",
-      "doi": "10.1371/journal.pone.0181737",
-      "year": 2017,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 146
     },
     {
       "pmcid": "PMC10231122",
@@ -8604,14 +8596,6 @@
       "token_count": 5044
     },
     {
-      "pmcid": "PMC12220982",
-      "doi": "10.1371/journal.pone.0327682",
-      "year": 2025,
-      "journal": "PLOS One",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 77
-    },
-    {
       "pmcid": "PMC5331987",
       "doi": "10.1371/journal.pone.0171419",
       "year": 2017,
@@ -8650,14 +8634,6 @@
       "journal": "Cureus",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 1090
-    },
-    {
-      "pmcid": "PMC4072796",
-      "doi": "10.1371/journal.pone.0101856",
-      "year": 2014,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 84
     },
     {
       "pmcid": "PMC10511714",
@@ -9812,14 +9788,6 @@
       "token_count": 7193
     },
     {
-      "pmcid": "PMC5619813",
-      "doi": "10.1371/journal.pone.0185878",
-      "year": 2017,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 61
-    },
-    {
       "pmcid": "PMC3237465",
       "doi": "10.1371/journal.pone.0028571",
       "year": 2011,
@@ -10052,14 +10020,6 @@
       "token_count": 5249
     },
     {
-      "pmcid": "PMC4986979",
-      "doi": "10.1371/journal.pone.0161520",
-      "year": 2016,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 80
-    },
-    {
       "pmcid": "PMC2813646",
       "doi": "10.5144/0256-4947.2009.207",
       "year": 2009,
@@ -10260,14 +10220,6 @@
       "token_count": 10971
     },
     {
-      "pmcid": "PMC6423308",
-      "doi": "10.3897/zookeys.829.33316",
-      "year": 2019,
-      "journal": "ZooKeys",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 208
-    },
-    {
       "pmcid": "PMC7819567",
       "doi": "10.1111/eva.13083",
       "year": 2020,
@@ -10282,14 +10234,6 @@
       "journal": "Current Opinion in Insect Science",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 2969
-    },
-    {
-      "pmcid": "PMC4364664",
-      "doi": "10.1371/journal.pone.0118389",
-      "year": 2015,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 135
     },
     {
       "pmcid": "PMC7601630",
@@ -10786,14 +10730,6 @@
       "journal": "Insects",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 5563
-    },
-    {
-      "pmcid": "PMC5672694",
-      "doi": "10.3897/zookeys.691.15088",
-      "year": 2017,
-      "journal": "ZooKeys",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 860
     },
     {
       "pmcid": "PMC7017801",
@@ -23260,14 +23196,6 @@
       "token_count": 5606
     },
     {
-      "pmcid": "PMC8562325",
-      "doi": "10.1093/jisesa/ieab083",
-      "year": 2021,
-      "journal": "Journal of Insect Science",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 138
-    },
-    {
       "pmcid": "PMC7746706",
       "doi": "10.1038/s41405-020-00056-z",
       "year": 2020,
@@ -23354,14 +23282,6 @@
       "journal": "Scientific Reports",
       "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
       "token_count": 10244
-    },
-    {
-      "pmcid": "PMC7297866",
-      "doi": "10.1007/s10265-020-01193-0",
-      "year": 2020,
-      "journal": "Journal of Plant Research",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 170
     },
     {
       "pmcid": "PMC7589502",
@@ -24562,14 +24482,6 @@
       "journal": "Behavioral Ecology",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 4763
-    },
-    {
-      "pmcid": "PMC8368042",
-      "doi": "10.1038/s41598-021-96295-7",
-      "year": 2021,
-      "journal": "Scientific Reports",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 269
     },
     {
       "pmcid": "PMC13100160",
@@ -29884,28 +29796,12 @@
       "token_count": 5306
     },
     {
-      "pmcid": "PMC4937766",
-      "doi": "10.1038/srep29331",
-      "year": 2016,
-      "journal": "Scientific Reports",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 224
-    },
-    {
       "pmcid": "PMC4086054",
       "doi": "10.3897/zookeys.414.7542",
       "year": 2014,
       "journal": "ZooKeys",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 3016
-    },
-    {
-      "pmcid": "PMC3935804",
-      "doi": "10.1371/annotation/832d6104-4f9f-42eb-88a5-b2b1fc4480ca",
-      "year": 2010,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 37
     },
     {
       "pmcid": "PMC7327805",
@@ -30212,28 +30108,12 @@
       "token_count": 4627
     },
     {
-      "pmcid": "PMC7657651",
-      "doi": "10.7554/eLife.64678",
-      "year": 2020,
-      "journal": "eLife",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 614
-    },
-    {
       "pmcid": "PMC10666818",
       "doi": "10.1177/15330338231212082",
       "year": 2023,
       "journal": "Technology in Cancer Research & Treatment",
       "license": "https://creativecommons.org/licenses/by-nc/4.0/",
       "token_count": 4957
-    },
-    {
-      "pmcid": "PMC10510440",
-      "doi": "10.1098/rspb.2023.1983",
-      "year": 2023,
-      "journal": "Proceedings of the Royal Society B: Biological Sciences",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 574
     },
     {
       "pmcid": "PMC11234563",
@@ -30244,28 +30124,12 @@
       "token_count": 4960
     },
     {
-      "pmcid": "PMC6408610",
-      "doi": "10.1098/rspb.2019.0265",
-      "year": 2019,
-      "journal": "Proceedings of the Royal Society B: Biological Sciences",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 108
-    },
-    {
       "pmcid": "PMC12196283",
       "doi": "10.3390/ph18060924",
       "year": 2025,
       "journal": "Pharmaceuticals",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 3893
-    },
-    {
-      "pmcid": "PMC13045827",
-      "doi": "10.1093/cz/zoaf078",
-      "year": 2026,
-      "journal": "Current Zoology",
-      "license": "https://creativecommons.org/licenses/by-nc/4.0/",
-      "token_count": 63
     },
     {
       "pmcid": "PMC3402202",
@@ -30420,14 +30284,6 @@
       "token_count": 3315
     },
     {
-      "pmcid": "PMC4997753",
-      "doi": "10.1186/s13059-016-1048-3",
-      "year": 2016,
-      "journal": "Genome Biology",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 59
-    },
-    {
       "pmcid": "PMC4453236",
       "doi": "10.3897/zookeys.505.9566",
       "year": 2015,
@@ -30442,14 +30298,6 @@
       "journal": "Scientific Reports",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 2846
-    },
-    {
-      "pmcid": "PMC11839789",
-      "doi": "10.1007/s00114-025-01969-1",
-      "year": 2025,
-      "journal": "Die Naturwissenschaften",
-      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "token_count": 254
     },
     {
       "pmcid": "PMC10136990",
@@ -30874,22 +30722,6 @@
       "journal": "ZooKeys",
       "license": "https://creativecommons.org/licenses/by/3.0/",
       "token_count": 3267
-    },
-    {
-      "pmcid": "PMC4580628",
-      "doi": "10.1371/journal.pone.0139151",
-      "year": 2015,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 117
-    },
-    {
-      "pmcid": "PMC4938126",
-      "doi": "10.1371/journal.pone.0159284",
-      "year": 2016,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 84
     },
     {
       "pmcid": "PMC6787775",
@@ -31418,14 +31250,6 @@
       "journal": "PLoS ONE",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 4355
-    },
-    {
-      "pmcid": "PMC6208041",
-      "doi": "10.1186/s12915-018-0604-6",
-      "year": 2018,
-      "journal": "BMC Biology",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 1192
     },
     {
       "pmcid": "PMC13267302",
@@ -32324,14 +32148,6 @@
       "token_count": 7004
     },
     {
-      "pmcid": "PMC10031430",
-      "doi": "10.1098/rsbl.2023.0059",
-      "year": 2023,
-      "journal": "Biology Letters",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 891
-    },
-    {
       "pmcid": "PMC12648793",
       "doi": "10.1186/s12993-025-00307-9",
       "year": 2025,
@@ -33092,14 +32908,6 @@
       "token_count": 10415
     },
     {
-      "pmcid": "PMC4507993",
-      "doi": "10.1371/journal.pone.0133455",
-      "year": 2015,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 99
-    },
-    {
       "pmcid": "PMC8033339",
       "doi": "10.21037/atm-20-1592",
       "year": 2021,
@@ -33140,14 +32948,6 @@
       "token_count": 1503
     },
     {
-      "pmcid": "PMC8206357",
-      "doi": "10.1038/s41467-021-23950-y",
-      "year": 2021,
-      "journal": "Nature Communications",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 69
-    },
-    {
       "pmcid": "PMC10546469",
       "doi": "10.1016/j.cell.2023.07.022",
       "year": 2023,
@@ -33162,14 +32962,6 @@
       "journal": "Ecology",
       "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
       "token_count": 1852
-    },
-    {
-      "pmcid": "PMC4065090",
-      "doi": "10.1371/journal.pone.0101031",
-      "year": 2014,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 122
     },
     {
       "pmcid": "PMC10130704",
@@ -33202,14 +32994,6 @@
       "journal": "Communications Biology",
       "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
       "token_count": 1602
-    },
-    {
-      "pmcid": "PMC4823625",
-      "doi": "10.1155/2016/5960614",
-      "year": 2016,
-      "journal": "The Scientific World Journal",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 69
     },
     {
       "pmcid": "PMC13066768",
@@ -33282,14 +33066,6 @@
       "journal": "Ecology and Evolution",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 4565
-    },
-    {
-      "pmcid": "PMC4108420",
-      "doi": "10.1371/journal.pone.0103803",
-      "year": 2014,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 173
     },
     {
       "pmcid": "PMC3060118",
@@ -33844,28 +33620,12 @@
       "token_count": 3050
     },
     {
-      "pmcid": "PMC4359164",
-      "doi": "10.1371/journal.pone.0121606",
-      "year": 2015,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 72
-    },
-    {
       "pmcid": "PMC1665652",
       "doi": "10.1371/journal.ppat.0020127",
       "year": 2006,
       "journal": "PLoS Pathogens",
       "license": "unknown",
       "token_count": 6753
-    },
-    {
-      "pmcid": "PMC5373076",
-      "doi": "10.1038/srep45613",
-      "year": 2017,
-      "journal": "Scientific Reports",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 63
     },
     {
       "pmcid": "PMC5896731",
@@ -33900,14 +33660,6 @@
       "token_count": 9427
     },
     {
-      "pmcid": "PMC10199839",
-      "doi": "10.1007/s10482-023-01815-2",
-      "year": 2023,
-      "journal": "Antonie Van Leeuwenhoek",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 538
-    },
-    {
       "pmcid": "PMC3600700",
       "doi": "10.1186/1756-8935-6-S1-P55",
       "year": 2013,
@@ -33924,28 +33676,12 @@
       "token_count": 4995
     },
     {
-      "pmcid": "PMC4188816",
-      "doi": "10.1371/journal.pone.0110725",
-      "year": 2014,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 86
-    },
-    {
       "pmcid": "PMC3305048",
       "doi": "10.1186/1532-429X-14-S1-P286",
       "year": 2012,
       "journal": "Journal of Cardiovascular Magnetic Resonance",
       "license": "https://creativecommons.org/licenses/by/2.0/",
       "token_count": 545
-    },
-    {
-      "pmcid": "PMC9123049",
-      "doi": "10.1007/s10482-022-01729-5",
-      "year": 2022,
-      "journal": "Antonie Van Leeuwenhoek",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 88
     },
     {
       "pmcid": "PMC12304091",
@@ -33972,14 +33708,6 @@
       "token_count": 7821
     },
     {
-      "pmcid": "PMC3825769",
-      "doi": "10.1371/annotation/b18fcad6-597e-4ba9-86bc-f21030ed3a1b",
-      "year": 2013,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 129
-    },
-    {
       "pmcid": "PMC12742385",
       "doi": "10.1093/cz/zoaf036",
       "year": 2025,
@@ -33994,14 +33722,6 @@
       "journal": "Journal of Insect Science",
       "license": "https://creativecommons.org/licenses/by/2.5/",
       "token_count": 3748
-    },
-    {
-      "pmcid": "PMC3896872",
-      "doi": "10.7554/eLife.02322",
-      "year": 2014,
-      "journal": "eLife",
-      "license": "https://creativecommons.org/licenses/by/3.0/",
-      "token_count": 92
     },
     {
       "pmcid": "PMC13535097",
@@ -34020,28 +33740,12 @@
       "token_count": 1205
     },
     {
-      "pmcid": "PMC11903870",
-      "doi": "10.1038/s41598-025-93294-w",
-      "year": 2025,
-      "journal": "Scientific Reports",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 80
-    },
-    {
       "pmcid": "PMC7365800",
       "doi": "10.1128/MRA.00703-20",
       "year": 2020,
       "journal": "Microbiology Resource Announcements",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 775
-    },
-    {
-      "pmcid": "PMC6168498",
-      "doi": "10.1093/jisesa/iey091",
-      "year": 2018,
-      "journal": "Journal of Insect Science",
-      "license": "oup-standard",
-      "token_count": 65
     },
     {
       "pmcid": "PMC11978848",
@@ -34066,14 +33770,6 @@
       "journal": "Journal of Insect Science",
       "license": "https://creativecommons.org/licenses/by-nc/4.0/",
       "token_count": 2739
-    },
-    {
-      "pmcid": "PMC10462608",
-      "doi": "10.1038/s41598-023-41140-2",
-      "year": 2023,
-      "journal": "Scientific Reports",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 155
     },
     {
       "pmcid": "PMC10268221",
@@ -34156,28 +33852,12 @@
       "token_count": 5940
     },
     {
-      "pmcid": "PMC8751342",
-      "doi": "10.1186/s12983-021-00443-8",
-      "year": 2022,
-      "journal": "Frontiers in Zoology",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 279
-    },
-    {
       "pmcid": "PMC8789241",
       "doi": "10.18632/oncotarget.28182",
       "year": 2022,
       "journal": "Oncotarget",
       "license": "https://creativecommons.org/licenses/by/3.0/",
       "token_count": 4059
-    },
-    {
-      "pmcid": "PMC10945214",
-      "doi": "10.1002/ece3.11134",
-      "year": 2024,
-      "journal": "Ecology and Evolution",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 241
     },
     {
       "pmcid": "PMC7719552",
@@ -34188,28 +33868,12 @@
       "token_count": 7442
     },
     {
-      "pmcid": "PMC3859197",
-      "doi": "10.1371/annotation/f55d34cc-7d25-442e-94cd-13338ca85b4d",
-      "year": 2013,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 81
-    },
-    {
       "pmcid": "PMC5592917",
       "doi": "10.1534/g3.117.043687",
       "year": 2017,
       "journal": "G3: Genes|Genomes|Genetics",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 5012
-    },
-    {
-      "pmcid": "PMC13048432",
-      "doi": "10.1371/journal.pone.0346404",
-      "year": 2026,
-      "journal": "PLOS One",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 73
     },
     {
       "pmcid": "PMC4109457",
@@ -34244,14 +33908,6 @@
       "token_count": 10699
     },
     {
-      "pmcid": "PMC3983266",
-      "doi": "10.1371/journal.pone.0095408",
-      "year": 2014,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 66
-    },
-    {
       "pmcid": "PMC6169885",
       "doi": "10.1101/gr.236497.118",
       "year": 2018,
@@ -34284,14 +33940,6 @@
       "token_count": 5264
     },
     {
-      "pmcid": "PMC4657946",
-      "doi": "10.1371/journal.pone.0143901",
-      "year": 2015,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 74
-    },
-    {
       "pmcid": "PMC11748690",
       "doi": "10.1016/j.jbc.2024.108047",
       "year": 2025,
@@ -34322,14 +33970,6 @@
       "journal": "Antioxidants",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 7144
-    },
-    {
-      "pmcid": "PMC10575542",
-      "doi": "10.1371/journal.pone.0292601",
-      "year": 2023,
-      "journal": "PLOS One",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 6530
     },
     {
       "pmcid": "PMC10926263",
@@ -34796,44 +34436,12 @@
       "token_count": 4714
     },
     {
-      "pmcid": "PMC10412398",
-      "doi": "10.1155/2023/9879368",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 265
-    },
-    {
       "pmcid": "PMC12753090",
       "doi": "10.1371/journal.pone.0339583",
       "year": 2025,
       "journal": "PLOS One",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 7530
-    },
-    {
-      "pmcid": "PMC10322430",
-      "doi": "10.1155/2023/9839457",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 266
-    },
-    {
-      "pmcid": "PMC6350996",
-      "doi": "10.1371/journal.pone.0211749",
-      "year": 2019,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 58
-    },
-    {
-      "pmcid": "PMC10599813",
-      "doi": "10.1155/2023/9831926",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 266
     },
     {
       "pmcid": "PMC9255344",
@@ -34844,108 +34452,12 @@
       "token_count": 1786
     },
     {
-      "pmcid": "PMC10371664",
-      "doi": "10.1155/2023/9780275",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 265
-    },
-    {
-      "pmcid": "PMC10732725",
-      "doi": "10.1155/2023/9782123",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 167
-    },
-    {
-      "pmcid": "PMC4571116",
-      "doi": "10.1186/s12862-015-0444-8",
-      "year": 2015,
-      "journal": "BMC Evolutionary Biology",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 672
-    },
-    {
-      "pmcid": "PMC10791199",
-      "doi": "10.1155/2024/9878397",
-      "year": 2024,
-      "journal": "BioMed Research International",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 270
-    },
-    {
       "pmcid": "PMC8630993",
       "doi": "10.1007/s00265-021-03095-0",
       "year": 2021,
       "journal": "Behavioral Ecology and Sociobiology",
       "license": "This article is made available via the PMC Open Access Subset for unrestricted research re-use and secondary analysis in any form or by any means with acknowledgement of the original source. These per",
       "token_count": 6841
-    },
-    {
-      "pmcid": "PMC13528999",
-      "doi": "10.1371/journal.pone.0357379",
-      "year": 2026,
-      "journal": "PLOS One",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 180
-    },
-    {
-      "pmcid": "PMC12977492",
-      "doi": "10.1128/mbio.00225-26",
-      "year": 2026,
-      "journal": "mBio",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 87
-    },
-    {
-      "pmcid": "PMC10396609",
-      "doi": "10.1155/2023/9857270",
-      "year": 2023,
-      "journal": "Journal of Environmental and Public Health",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 267
-    },
-    {
-      "pmcid": "PMC10396612",
-      "doi": "10.1155/2023/9863014",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 266
-    },
-    {
-      "pmcid": "PMC10322469",
-      "doi": "10.1155/2023/9758953",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 268
-    },
-    {
-      "pmcid": "PMC10322637",
-      "doi": "10.1155/2023/9876067",
-      "year": 2023,
-      "journal": "Journal of Environmental and Public Health",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 267
-    },
-    {
-      "pmcid": "PMC10396644",
-      "doi": "10.1155/2023/9760710",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 268
-    },
-    {
-      "pmcid": "PMC10232081",
-      "doi": "10.1155/2023/9813405",
-      "year": 2023,
-      "journal": "Journal of Healthcare Engineering",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 268
     },
     {
       "pmcid": "PMC6791180",
@@ -35020,14 +34532,6 @@
       "token_count": 4355
     },
     {
-      "pmcid": "PMC10412148",
-      "doi": "10.1155/2023/9768798",
-      "year": 2023,
-      "journal": "Computational Intelligence and Neuroscience",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 320
-    },
-    {
       "pmcid": "PMC13474723",
       "doi": "10.1186/s13049-026-01673-7",
       "year": 2026,
@@ -35060,14 +34564,6 @@
       "token_count": 927
     },
     {
-      "pmcid": "PMC12756965",
-      "doi": "10.3389/fpsyg.2025.1760893",
-      "year": 2025,
-      "journal": "Frontiers in Psychology",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 37
-    },
-    {
       "pmcid": "PMC12527825",
       "doi": "10.1093/jisesa/ieaf089",
       "year": 2025,
@@ -35082,14 +34578,6 @@
       "journal": "Animals : an Open Access Journal from MDPI",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 6480
-    },
-    {
-      "pmcid": "PMC10802937",
-      "doi": "10.1371/journal.pone.0297737",
-      "year": 2024,
-      "journal": "PLOS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 57
     },
     {
       "pmcid": "PMC13301827",
@@ -35116,44 +34604,12 @@
       "token_count": 6936
     },
     {
-      "pmcid": "PMC10718933",
-      "doi": "10.1155/2023/9762850",
-      "year": 2023,
-      "journal": "Journal of Healthcare Engineering",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 172
-    },
-    {
-      "pmcid": "PMC9622490",
-      "doi": "10.21037/atm-2022-35",
-      "year": 2022,
-      "journal": "Annals of Translational Medicine",
-      "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-      "token_count": 94
-    },
-    {
-      "pmcid": "PMC6008322",
-      "doi": "10.1038/s41467-018-04935-w",
-      "year": 2018,
-      "journal": "Nature Communications",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 87
-    },
-    {
       "pmcid": "PMC12787954",
       "doi": "10.3390/s26010072",
       "year": 2025,
       "journal": "Sensors (Basel, Switzerland)",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 8433
-    },
-    {
-      "pmcid": "PMC6590955",
-      "doi": "10.1371/journal.pone.0219036",
-      "year": 2019,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 40
     },
     {
       "pmcid": "PMC13214847",
@@ -35178,14 +34634,6 @@
       "journal": "Ancient Science of Life",
       "license": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
       "token_count": 1897
-    },
-    {
-      "pmcid": "PMC7678974",
-      "doi": "10.1371/journal.pone.0242952",
-      "year": 2020,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 119
     },
     {
       "pmcid": "PMC13515231",
@@ -35804,36 +35252,12 @@
       "token_count": 4385
     },
     {
-      "pmcid": "PMC6386294",
-      "doi": "10.1371/journal.pone.0213042",
-      "year": 2019,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 134
-    },
-    {
       "pmcid": "PMC4736944",
       "doi": "10.1098/rsos.150599",
       "year": 2016,
       "journal": "Royal Society Open Science",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 9390
-    },
-    {
-      "pmcid": "PMC5199044",
-      "doi": "10.1371/journal.pone.0168957",
-      "year": 2016,
-      "journal": "PLoS ONE",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 99
-    },
-    {
-      "pmcid": "PMC7000382",
-      "doi": "10.1038/s41598-020-57950-7",
-      "year": 2020,
-      "journal": "Scientific Reports",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 51
     },
     {
       "pmcid": "PMC12731144",
@@ -36844,14 +36268,6 @@
       "token_count": 5812
     },
     {
-      "pmcid": "PMC6008447",
-      "doi": "10.1038/s41598-018-28018-4",
-      "year": 2018,
-      "journal": "Scientific Reports",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 71
-    },
-    {
       "pmcid": "PMC4485198",
       "doi": "10.1038/srep10982",
       "year": 2015,
@@ -36962,14 +36378,6 @@
       "journal": "International Journal of Molecular Sciences",
       "license": "https://creativecommons.org/licenses/by/4.0/",
       "token_count": 4644
-    },
-    {
-      "pmcid": "PMC5915407",
-      "doi": "10.1038/s41598-018-24984-x",
-      "year": 2018,
-      "journal": "Scientific Reports",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 60
     },
     {
       "pmcid": "PMC4264003",
@@ -47428,14 +46836,6 @@
       "token_count": 2892
     },
     {
-      "pmcid": "PMC10903853",
-      "doi": "10.1371/journal.pone.0299334",
-      "year": 2024,
-      "journal": "PLOS One",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 9686
-    },
-    {
       "pmcid": "PMC11179181",
       "doi": "10.22038/AJP.2023.23389",
       "year": 2024,
@@ -55692,14 +55092,6 @@
       "token_count": 4897
     },
     {
-      "pmcid": "PMC5981323",
-      "doi": "10.1038/s41467-018-04598-7",
-      "year": 2018,
-      "journal": "Nature Communications",
-      "license": "https://creativecommons.org/licenses/by/4.0/",
-      "token_count": 94
-    },
-    {
       "pmcid": "PMC6347836",
       "doi": "10.1186/s12864-018-5402-6",
       "year": 2019,
@@ -56592,32 +55984,32 @@
     "behavior_and_identity": {
       "term_count": 97,
       "bridging_term_count": 39,
-      "total_frequency": 160940
+      "total_frequency": 160897
     },
     "economics": {
       "term_count": 35,
       "bridging_term_count": 1,
-      "total_frequency": 95130
+      "total_frequency": 95006
     },
     "kin_and_relatedness": {
       "term_count": 24,
       "bridging_term_count": 1,
-      "total_frequency": 41252
+      "total_frequency": 41240
     },
     "power_and_labor": {
       "term_count": 119,
       "bridging_term_count": 58,
-      "total_frequency": 171834
+      "total_frequency": 171764
     },
     "sex_and_reproduction": {
       "term_count": 86,
       "bridging_term_count": 24,
-      "total_frequency": 98292
+      "total_frequency": 98267
     },
     "unit_of_individuality": {
       "term_count": 243,
       "bridging_term_count": 5,
-      "total_frequency": 353426
+      "total_frequency": 353269
     }
   },
   "interpretation": {
@@ -56630,108 +56022,108 @@
     "behavior_and_identity": {
       "n_terms": 96,
       "bridging_count": 39,
-      "entropy_mean": 1.965425369607111,
-      "entropy_sd": 0.2336397723314752,
-      "ambiguity_mean": 1.965425369607111,
-      "cace_mean": 0.42695614784608904
+      "entropy_mean": 1.970019400623361,
+      "entropy_sd": 0.22481346676218503,
+      "ambiguity_mean": 1.970019400623361,
+      "cace_mean": 0.42629195059072755
     },
     "economics": {
       "n_terms": 35,
       "bridging_count": 1,
-      "entropy_mean": 1.7795871478086074,
-      "entropy_sd": 0.30629066172324043,
-      "ambiguity_mean": 1.7795871478086074,
-      "cace_mean": 0.4413964227822971
+      "entropy_mean": 1.7970015600058915,
+      "entropy_sd": 0.29333468669658896,
+      "ambiguity_mean": 1.7970015600058915,
+      "cace_mean": 0.44008509656262207
     },
     "kin_and_relatedness": {
       "n_terms": 24,
       "bridging_count": 1,
-      "entropy_mean": 1.9768486974804091,
-      "entropy_sd": 0.2592754672103103,
-      "ambiguity_mean": 1.9768486974804091,
-      "cace_mean": 0.42873739483734935
+      "entropy_mean": 1.9878135410927202,
+      "entropy_sd": 0.2396369736994583,
+      "ambiguity_mean": 1.9878135410927202,
+      "cace_mean": 0.4279117289026873
     },
     "power_and_labor": {
       "n_terms": 118,
       "bridging_count": 58,
-      "entropy_mean": 2.016542218323751,
-      "entropy_sd": 0.21414941637112272,
-      "ambiguity_mean": 2.016542218323751,
-      "cace_mean": 0.38682823247354603
+      "entropy_mean": 2.0101825568862886,
+      "entropy_sd": 0.2254605557518708,
+      "ambiguity_mean": 2.0101825568862886,
+      "cace_mean": 0.3875747982516908
     },
     "sex_and_reproduction": {
       "n_terms": 86,
       "bridging_count": 24,
-      "entropy_mean": 2.0406571101601565,
-      "entropy_sd": 0.20350450496510625,
-      "ambiguity_mean": 2.0406571101601565,
-      "cace_mean": 0.41249191858025497
+      "entropy_mean": 2.0380500311285648,
+      "entropy_sd": 0.20203052605791247,
+      "ambiguity_mean": 2.0380500311285648,
+      "cace_mean": 0.41282958243073226
     },
     "unit_of_individuality": {
       "n_terms": 241,
       "bridging_count": 5,
-      "entropy_mean": 2.0239515003804027,
-      "entropy_sd": 0.21060871774803155,
-      "ambiguity_mean": 2.0239515003804027,
-      "cace_mean": 0.44134035303184993
+      "entropy_mean": 2.027435880752025,
+      "entropy_sd": 0.20325896332312562,
+      "ambiguity_mean": 2.027435880752025,
+      "cace_mean": 0.44019171121881057
     }
   },
   "cace": {
     "behavior_and_identity": {
-      "mean": 0.42695614784608904,
+      "mean": 0.42629195059072755,
       "min": 0.29436139770810643,
       "max": 0.6599331216359307,
-      "clarity": 0.43176054025625477,
+      "clarity": 0.42910375123480876,
       "appropriateness": 0.867,
       "consistency": 0.09239738446143467,
       "evolvability": 0.31666666666666665,
       "n_terms": 50
     },
     "economics": {
-      "mean": 0.4413964227822971,
+      "mean": 0.44008509656262207,
       "min": 0.38780390362991374,
-      "max": 0.4898761591479949,
-      "clarity": 0.4639797747564435,
+      "max": 0.489060851219656,
+      "clarity": 0.45873446987774347,
       "appropriateness": 1.0,
       "consistency": 0.06351067827750687,
       "evolvability": 0.23809523809523805,
       "n_terms": 35
     },
     "kin_and_relatedness": {
-      "mean": 0.42873739483734935,
+      "mean": 0.4279117289026873,
       "min": 0.2670985118339942,
-      "max": 0.488414562446422,
-      "clarity": 0.4045636453372261,
+      "max": 0.48826625813370544,
+      "clarity": 0.40126098159857815,
       "appropriateness": 0.9791666666666666,
       "consistency": 0.08121926734550451,
       "evolvability": 0.25,
       "n_terms": 24
     },
     "power_and_labor": {
-      "mean": 0.38682823247354603,
+      "mean": 0.3875747982516908,
       "min": 0.25239735800619484,
-      "max": 0.5201110805339533,
-      "clarity": 0.41245434158168387,
+      "max": 0.5365135937784097,
+      "clarity": 0.4154406046942627,
       "appropriateness": 0.7180000000000001,
       "consistency": 0.08685858831250055,
       "evolvability": 0.3299999999999999,
       "n_terms": 50
     },
     "sex_and_reproduction": {
-      "mean": 0.41249191858025497,
+      "mean": 0.41282958243073226,
       "min": 0.3245572604058569,
-      "max": 0.5055262231671838,
-      "clarity": 0.3977499024459658,
+      "max": 0.5022243667435169,
+      "clarity": 0.39910055784787496,
       "appropriateness": 0.8430000000000001,
       "consistency": 0.09255110520838768,
       "evolvability": 0.3166666666666667,
       "n_terms": 50
     },
     "unit_of_individuality": {
-      "mean": 0.44134035303184993,
+      "mean": 0.44019171121881057,
       "min": 0.3922876085282833,
-      "max": 0.5529494452099822,
-      "clarity": 0.42317078709820566,
+      "max": 0.5257738560593548,
+      "clarity": 0.4185762198460484,
       "appropriateness": 1.0,
       "consistency": 0.08552395836252727,
       "evolvability": 0.25666666666666665,
@@ -56740,11 +56132,11 @@
   },
   "cace_terms": {
     "queen": {
-      "clarity": 0.4564612695587036,
+      "clarity": 0.5025969663356055,
       "appropriateness": 0.45,
       "consistency": 0.06111467567740265,
       "evolvability": 0.5,
-      "aggregate": 0.3668939863090266,
+      "aggregate": 0.37842791050325203,
       "in_corpus": true
     },
     "primary reproductive": {
@@ -56756,11 +56148,11 @@
       "in_corpus": false
     },
     "worker": {
-      "clarity": 0.5067534810869481,
+      "clarity": 0.5058337751762377,
       "appropriateness": 0.45,
       "consistency": 0.11100318939773059,
       "evolvability": 0.5,
-      "aggregate": 0.39193916762116965,
+      "aggregate": 0.3917092411434921,
       "in_corpus": true
     },
     "non-reproductive helper": {
@@ -56788,11 +56180,11 @@
       "in_corpus": false
     },
     "caste": {
-      "clarity": 0.4248261075686598,
+      "clarity": 0.4542299659055694,
       "appropriateness": 1.0,
       "consistency": 0.03669796092981145,
       "evolvability": 0.5,
-      "aggregate": 0.4903810171246178,
+      "aggregate": 0.49773198170884525,
       "in_corpus": true
     },
     "task group": {
@@ -56820,11 +56212,11 @@
       "in_corpus": false
     },
     "colony": {
-      "clarity": 0.48113302775168,
+      "clarity": 0.47887342566354285,
       "appropriateness": 1.0,
       "consistency": 0.0698554896032293,
       "evolvability": 0.3333333333333333,
-      "aggregate": 0.4710804626720606,
+      "aggregate": 0.4705155621500263,
       "in_corpus": true
     },
     "haplodiploidy": {
@@ -56849,11 +56241,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "economics",
       "metric": "semantic_entropy",
-      "t": 3.2603099623672755,
-      "df": 49.16379003804406,
-      "p": 0.0020242058060274026,
-      "p_bh": 0.00759077177260276,
-      "cohens_d": 0.7250825868320454,
+      "t": 3.166836354250504,
+      "df": 49.311955792772835,
+      "p": 0.002643537110464921,
+      "p_bh": 0.009913264164243454,
+      "cohens_d": 0.7028208632772601,
       "n_a": 96,
       "n_b": 35,
       "significant_bh": true
@@ -56862,11 +56254,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "kin_and_relatedness",
       "metric": "semantic_entropy",
-      "t": -0.19678989144619463,
-      "df": 32.95735149403057,
-      "p": 0.8452005135774809,
-      "p_bh": 0.8452005135774809,
-      "cohens_d": -0.04752123546013012,
+      "t": -0.3293396318939639,
+      "df": 33.83813348620095,
+      "p": 0.7439289273467915,
+      "p_bh": 0.7439289273467915,
+      "cohens_d": -0.07762278757943655,
       "n_a": 96,
       "n_b": 24,
       "significant_bh": false
@@ -56875,11 +56267,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -1.652145118667436,
-      "df": 195.20006410582948,
-      "p": 0.10011261035897363,
-      "p_bh": 0.18771114442307557,
-      "cohens_d": -0.2283154538048713,
+      "t": -1.2981186673789467,
+      "df": 203.4629291789902,
+      "p": 0.19571613636936547,
+      "p_bh": 0.36696775569256024,
+      "cohens_d": -0.17773574072027828,
       "n_a": 96,
       "n_b": 118,
       "significant_bh": false
@@ -56888,11 +56280,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -2.3215036561030122,
-      "df": 179.86508328863167,
-      "p": 0.02138047270026294,
-      "p_bh": 0.05345118175065735,
-      "cohens_d": -0.3406526885718218,
+      "t": -2.150158520918681,
+      "df": 179.99746066985452,
+      "p": 0.032877037682962434,
+      "p_bh": 0.0704507950349195,
+      "cohens_d": -0.3160467448936142,
       "n_a": 96,
       "n_b": 86,
       "significant_bh": false
@@ -56901,11 +56293,11 @@
       "domain_a": "behavior_and_identity",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -2.133278036608624,
-      "df": 159.82378668342182,
-      "p": 0.03442834537739717,
-      "p_bh": 0.07377502580870822,
-      "cohens_d": -0.2686212084518333,
+      "t": -2.1734046629066737,
+      "df": 160.215967600968,
+      "p": 0.031218234210194436,
+      "p_bh": 0.0704507950349195,
+      "cohens_d": -0.2733241187596409,
       "n_a": 96,
       "n_b": 241,
       "significant_bh": false
@@ -56914,11 +56306,11 @@
       "domain_a": "economics",
       "domain_b": "kin_and_relatedness",
       "metric": "semantic_entropy",
-      "t": -2.664385800915862,
-      "df": 54.38903627419644,
-      "p": 0.010129511098701232,
-      "p_bh": 0.0303885332961037,
-      "cohens_d": -0.6753118359256625,
+      "t": -2.7395670265830803,
+      "df": 55.15534333607484,
+      "p": 0.008271023811624402,
+      "p_bh": 0.024813071434873206,
+      "cohens_d": -0.6898555910144085,
       "n_a": 35,
       "n_b": 24,
       "significant_bh": true
@@ -56927,11 +56319,11 @@
       "domain_a": "economics",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -4.277248891673367,
-      "df": 44.30377328600972,
-      "p": 9.941603018679258e-05,
-      "p_bh": 0.0004970801509339629,
-      "cohens_d": -0.9905376925581078,
+      "t": -3.9660506893314427,
+      "df": 46.544070644129725,
+      "p": 0.0002503510778037032,
+      "p_bh": 0.001251755389018516,
+      "cohens_d": -0.8750587697829083,
       "n_a": 35,
       "n_b": 118,
       "significant_bh": true
@@ -56940,11 +56332,11 @@
       "domain_a": "economics",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -4.642787876336907,
-      "df": 46.71119181491952,
-      "p": 2.811355892775079e-05,
-      "p_bh": 0.00036893506727774916,
-      "cohens_d": -1.0925005303694537,
+      "t": -4.450871937402596,
+      "df": 47.68391029364053,
+      "p": 5.1289014264384036e-05,
+      "p_bh": 0.000459867707220309,
+      "cohens_d": -1.0332572803609168,
       "n_a": 35,
       "n_b": 86,
       "significant_bh": true
@@ -56953,11 +56345,11 @@
       "domain_a": "economics",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -4.5658043861670485,
-      "df": 38.8036160082598,
-      "p": 4.919134230369989e-05,
-      "p_bh": 0.00036893506727774916,
-      "cohens_d": -1.0845014726569226,
+      "t": -4.493456575550482,
+      "df": 38.88022087374309,
+      "p": 6.13156942960412e-05,
+      "p_bh": 0.000459867707220309,
+      "cohens_d": -1.0615303782470868,
       "n_a": 35,
       "n_b": 241,
       "significant_bh": true
@@ -56966,11 +56358,11 @@
       "domain_a": "kin_and_relatedness",
       "domain_b": "power_and_labor",
       "metric": "semantic_entropy",
-      "t": -0.7028282113512858,
-      "df": 29.712953878846175,
-      "p": 0.4876332982838656,
-      "p_bh": 0.5979894267881232,
-      "cohens_d": -0.17768558288025943,
+      "t": -0.4209696486895999,
+      "df": 31.824448510566242,
+      "p": 0.6766067263614264,
+      "p_bh": 0.7251828409332871,
+      "cohens_d": -0.09764739081884613,
       "n_a": 24,
       "n_b": 118,
       "significant_bh": false
@@ -56979,11 +56371,11 @@
       "domain_a": "kin_and_relatedness",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -1.1137104716686783,
-      "df": 31.33772542193956,
-      "p": 0.2738730089349031,
-      "p_bh": 0.4564550148915052,
-      "cohens_d": -0.29255598727302723,
+      "t": -0.9381637965084271,
+      "df": 32.68123193666163,
+      "p": 0.3550423819755971,
+      "p_bh": 0.5332858927634911,
+      "cohens_d": -0.23687628680072761,
       "n_a": 24,
       "n_b": 86,
       "significant_bh": false
@@ -56992,11 +56384,11 @@
       "domain_a": "kin_and_relatedness",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -0.8621278108777349,
-      "df": 26.1111102414661,
-      "p": 0.39646620991803927,
-      "p_bh": 0.5654849684090343,
-      "cohens_d": -0.21814885612682686,
+      "t": -0.7824677335510092,
+      "df": 26.40074284759584,
+      "p": 0.44090200268451585,
+      "p_bh": 0.6012300036607034,
+      "cohens_d": -0.19114666985661596,
       "n_a": 24,
       "n_b": 241,
       "significant_bh": false
@@ -57005,11 +56397,11 @@
       "domain_a": "power_and_labor",
       "domain_b": "sex_and_reproduction",
       "metric": "semantic_entropy",
-      "t": -0.8174760611425603,
-      "df": 188.4089179002353,
-      "p": 0.41468897683329176,
-      "p_bh": 0.5654849684090343,
-      "cohens_d": -0.11454995177392668,
+      "t": -0.9261455758005721,
+      "df": 193.50963080776745,
+      "p": 0.35552392850899406,
+      "p_bh": 0.5332858927634911,
+      "cohens_d": -0.12858918592940805,
       "n_a": 118,
       "n_b": 86,
       "significant_bh": false
@@ -57018,11 +56410,11 @@
       "domain_a": "power_and_labor",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": -0.30960994494252514,
-      "df": 229.01616885740154,
-      "p": 0.757139114020887,
-      "p_bh": 0.8112204793080932,
-      "cohens_d": -0.034912918050300785,
+      "t": -0.7030693041442991,
+      "df": 212.2606636730857,
+      "p": 0.482782968745198,
+      "p_bh": 0.6034787109314975,
+      "cohens_d": -0.0816775817664023,
       "n_a": 118,
       "n_b": 241,
       "significant_bh": false
@@ -57031,11 +56423,11 @@
       "domain_a": "sex_and_reproduction",
       "domain_b": "unit_of_individuality",
       "metric": "semantic_entropy",
-      "t": 0.6475193156322546,
-      "df": 154.4016865927666,
-      "p": 0.5182575032163734,
-      "p_bh": 0.5979894267881232,
-      "cohens_d": 0.07983286036135562,
+      "t": 0.4175962765540297,
+      "df": 150.53759934404897,
+      "p": 0.6768373182044014,
+      "p_bh": 0.7251828409332871,
+      "cohens_d": 0.05218153607766349,
       "n_a": 86,
       "n_b": 241,
       "significant_bh": false
@@ -57043,11 +56435,11 @@
   ],
   "anova": {
     "metric": "semantic_entropy",
-    "F": 8.63368636549705,
+    "F": 7.740873336248025,
     "df1": 5.0,
     "df2": 594.0,
-    "p": 6.537035986008885e-08,
-    "eta_squared": 0.06775042464623107
+    "p": 4.561378909261839e-07,
+    "eta_squared": 0.06117290905428441
   },
   "corrections": {
     "method": "benjamini_hochberg",
@@ -57055,33 +56447,33 @@
   },
   "skipped": [],
   "discourse": {
-    "n_texts": 7073,
+    "n_texts": 6997,
     "n_texts_excluded_min_length": 0,
-    "n_texts_analyzed": 1415,
+    "n_texts_analyzed": 1400,
     "min_text_length": 200,
-    "sample_fraction": 0.200057,
+    "sample_fraction": 0.200086,
     "patterns": {
       "anthropomorphic_framing": {
-        "frequency": 47,
+        "frequency": 52,
         "rhetorical_function": "Imposes human-like agency on insect societies",
         "domains": [
           "behavior_and_identity"
         ],
         "examples": [
           "Found 1 anthropomorphic constructions",
-          "Found 2 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
+          "Found 1 anthropomorphic constructions",
           "Found 4 anthropomorphic constructions",
-          "Found 1 anthropomorphic constructions",
-          "Found 1 anthropomorphic constructions",
-          "Found 3 anthropomorphic constructions",
-          "Found 1 anthropomorphic constructions",
           "Found 1 anthropomorphic constructions",
           "Found 1 anthropomorphic constructions",
           "Found 1 anthropomorphic constructions"
         ]
       },
       "economic_metaphors": {
-        "frequency": 1090,
+        "frequency": 1088,
         "rhetorical_function": "Applies market logic to biological processes",
         "domains": [
           "economics"
@@ -57100,7 +56492,7 @@
         ]
       },
       "hierarchical_framing": {
-        "frequency": 1108,
+        "frequency": 1098,
         "rhetorical_function": "Structures social relationships as human-like hierarchies",
         "domains": [
           "power_and_labor"
@@ -57119,20 +56511,20 @@
         ]
       },
       "scale_ambiguity": {
-        "frequency": 33,
+        "frequency": 22,
         "rhetorical_function": "Creates confusion about biological levels of analysis",
         "domains": [
           "unit_of_individuality"
         ],
         "examples": [
           "Found 3 scale-ambiguous constructions",
-          "Found 1 scale-ambiguous constructions",
-          "Found 5 scale-ambiguous constructions",
           "Found 3 scale-ambiguous constructions",
           "Found 1 scale-ambiguous constructions",
           "Found 1 scale-ambiguous constructions",
           "Found 1 scale-ambiguous constructions",
           "Found 1 scale-ambiguous constructions",
+          "Found 2 scale-ambiguous constructions",
+          "Found 3 scale-ambiguous constructions",
           "Found 1 scale-ambiguous constructions",
           "Found 1 scale-ambiguous constructions"
         ]
@@ -57140,40 +56532,40 @@
     },
     "rhetorical": {
       "analogy": {
-        "frequency": 1793,
-        "text_count": 679
+        "frequency": 1944,
+        "text_count": 673
       },
       "anecdotal": {
-        "frequency": 9229,
-        "text_count": 1302
+        "frequency": 9446,
+        "text_count": 1299
       },
       "authority": {
-        "frequency": 29224,
-        "text_count": 1061
+        "frequency": 30330,
+        "text_count": 1058
       },
       "generalization": {
-        "frequency": 4228,
-        "text_count": 1002
+        "frequency": 4204,
+        "text_count": 1035
       }
     },
     "argumentative": {
-      "n_structures": 1300,
+      "n_structures": 1292,
       "n_with_evidence": 70,
-      "n_with_warrant": 1263,
-      "n_with_qualification": 1296,
-      "n_with_discourse_markers": 1300,
-      "mean_discourse_markers": 16.311538,
+      "n_with_warrant": 1251,
+      "n_with_qualification": 1289,
+      "n_with_discourse_markers": 1292,
+      "mean_discourse_markers": 16.196594,
       "top_discourse_markers": {
-        "however": 1253,
-        "but": 1242,
-        "may": 1199,
-        "could": 1106,
-        "due to": 1061,
-        "therefore": 1057,
-        "thus": 1033,
-        "although": 1031,
-        "because": 995,
-        "according to": 882
+        "but": 1233,
+        "however": 1232,
+        "may": 1193,
+        "could": 1098,
+        "therefore": 1052,
+        "due to": 1037,
+        "thus": 1019,
+        "although": 1014,
+        "because": 971,
+        "according to": 860
       },
       "example_claims": [
         [
@@ -57215,7 +56607,7 @@
     },
     "persuasive": {
       "authoritative_citations": {
-        "usage_frequency": 29224,
+        "usage_frequency": 30330,
         "context_relevance": 0,
         "heuristic_impact_index": 1.0,
         "heuristic_effectiveness_band": "highly_effective",
@@ -57223,7 +56615,7 @@
         "usage_distribution": {}
       },
       "metaphorical_language": {
-        "usage_frequency": 20772,
+        "usage_frequency": 21140,
         "context_relevance": 0,
         "heuristic_impact_index": 1.0,
         "heuristic_effectiveness_band": "highly_effective",
@@ -57231,7 +56623,7 @@
         "usage_distribution": {}
       },
       "quantitative_emphasis": {
-        "usage_frequency": 1396,
+        "usage_frequency": 1281,
         "context_relevance": 0,
         "heuristic_impact_index": 1.0,
         "heuristic_effectiveness_band": "highly_effective",
@@ -57239,14 +56631,14 @@
         "usage_distribution": {}
       },
       "rhetorical_questions": {
-        "usage_frequency": 230,
-        "context_relevance": 195,
+        "usage_frequency": 219,
+        "context_relevance": 191,
         "heuristic_impact_index": 1.0,
         "heuristic_effectiveness_band": "highly_effective",
         "success_examples": [
           "how",
-          "how",
-          "how"
+          "when",
+          "when"
         ],
         "usage_distribution": {}
       }
@@ -57254,38 +56646,345 @@
   },
   "framing": {
     "behavior_and_identity": {
-      "proportion": 0.007779,
-      "n_contexts": 160940
+      "proportion": 0.007775,
+      "n_contexts": 160897
     },
     "economics": {
-      "proportion": 0.03593,
-      "n_contexts": 95130
+      "proportion": 0.035945,
+      "n_contexts": 95006
     },
     "kin_and_relatedness": {
-      "proportion": 0.008024,
-      "n_contexts": 41252
+      "proportion": 0.008026,
+      "n_contexts": 41240
     },
     "power_and_labor": {
-      "proportion": 0.0071,
-      "n_contexts": 171834
+      "proportion": 0.007103,
+      "n_contexts": 171764
     },
     "sex_and_reproduction": {
-      "proportion": 0.008292,
-      "n_contexts": 98292
+      "proportion": 0.008294,
+      "n_contexts": 98267
     },
     "unit_of_individuality": {
-      "proportion": 0.007365,
-      "n_contexts": 353426
+      "proportion": 0.007363,
+      "n_contexts": 353269
     },
     "overall": {
-      "proportion": 0.010659,
-      "n_contexts": 862403
+      "proportion": 0.010657,
+      "n_contexts": 862003
     }
   },
+  "stored_records": 7073,
+  "excluded_editorial_notices": [
+    {
+      "pmcid": "PMC5509369",
+      "title": "Correction: Rediscovery of the enigmatic fungus-farming ant \"Mycetosoritis\" asper Mayr (Hymenoptera: Formicidae): Implications for taxonomy, phylogeny, and the evolution of agriculture in ants"
+    },
+    {
+      "pmcid": "PMC12220982",
+      "title": "Correction: Taxonomy of the Palearctic socially parasitic Temnothorax (Myrmoxenus) ants (Hymenoptera: Formicidae)"
+    },
+    {
+      "pmcid": "PMC4072796",
+      "title": "Correction: Ants of the Genus Solenopsis Westwood 1840 (Hymenoptera: Formicidae) in the Arabian Peninsula with Description of a New Species, Solenopsis elhawagryi"
+    },
+    {
+      "pmcid": "PMC5619813",
+      "title": "Correction: Dispersal strategies in the highly polygynous ant Crematogaster (Orthocrema) pygmaea Forel (Formicidae: Myrmicinae)"
+    },
+    {
+      "pmcid": "PMC4986979",
+      "title": "Correction: Revision and Microtomography of the Pheidole knowlesi Group, an Endemic Ant Radiation in Fiji (Hymenoptera, Formicidae, Myrmicinae)"
+    },
+    {
+      "pmcid": "PMC6423308",
+      "title": "Corrigendum: Revision of the ant genus Melophorus (Hymenoptera, Formicidae). ZooKeys 700: 1\u2013420 (2017). https://doi.org/10.3897/zookeys.700.11784"
+    },
+    {
+      "pmcid": "PMC4364664",
+      "title": "Correction: First Record of the Myrmicine Ant Genus Meranoplus Smith, 1853 (Hymenoptera: Formicidae) from the Arabian Peninsula with Description of a New Species and Notes on the Zoogeography of Southwestern Kingdom Saudi Arabia"
+    },
+    {
+      "pmcid": "PMC5672694",
+      "title": "Corrigenda: Je\u0161ovnik A, Schultz TR (2017) Revision of the fungus-farming ant genus Sericomyrmex Mayr (Hymenoptera, Formicidae, Myrmicinae). ZooKeys 670: 1\u2013109. https://doi.org/10.3897/zookeys.670.11839"
+    },
+    {
+      "pmcid": "PMC8562325",
+      "title": "Corrigendum to: Development and Characterization of Novel Polymorphic Microsatellite Markers for Tapinoma indicum (Hymenoptera: Formicidae)"
+    },
+    {
+      "pmcid": "PMC7297866",
+      "title": "Correction to: Extraforal nectary-bearing plant Mallotus japonicus uses diferent types of extraforal nectaries to establish efective defense by ants"
+    },
+    {
+      "pmcid": "PMC8368042",
+      "title": "Author Correction: Viral load, not food availability or temperature, predicts colony longevity in an invasive eusocial wasp with plastic life history"
+    },
+    {
+      "pmcid": "PMC4937766",
+      "title": "Corrigendum: Follower ants in a tandem pair are not always na\u00efve"
+    },
+    {
+      "pmcid": "PMC3935804",
+      "title": "Correction: Species Diversity and Distribution Patterns of the Ants of Amazonian Ecuador"
+    },
+    {
+      "pmcid": "PMC7657651",
+      "title": "Correction: Genomic architecture and evolutionary antagonism drive allelic expression bias in the social supergene of red fire ants"
+    },
+    {
+      "pmcid": "PMC10510440",
+      "title": "Correction to: \u2018Developmental biomechanics and age polyethism in leaf-cutter ants\u2019 (2023) by P\u00fcffel et al."
+    },
+    {
+      "pmcid": "PMC6408610",
+      "title": "Correction to: \u2018Infrastructure construction without information exchange: the trail clearing mechanism in Atta leafcutter ants\u2019"
+    },
+    {
+      "pmcid": "PMC13045827",
+      "title": "Correction to: Are Sepsis flies Batesian mimics of ants?"
+    },
+    {
+      "pmcid": "PMC4997753",
+      "title": "Erratum to: Comparative transcriptomics reveals the conserved building blocks involved in parallel evolution of diverse phenotypic traits in ants"
+    },
+    {
+      "pmcid": "PMC11839789",
+      "title": "Correction: The long proboscis of the aphid Stomaphis yanonis (Aphididae Lachninae) is advantageous for avoiding predation by tending ants"
+    },
+    {
+      "pmcid": "PMC4580628",
+      "title": "Correction: Enrichment and Broad Representation of Plant Biomass-Degrading Enzymes in the Specialized Hyphal Swellings of Leucoagaricus gongylophorus, the Fungal Symbiont of Leaf-Cutter Ants"
+    },
+    {
+      "pmcid": "PMC4938126",
+      "title": "Correction: The Antsy Social Network: Determinants of Nest Structure and Arrangement in Asian Weaver Ants"
+    },
+    {
+      "pmcid": "PMC6208041",
+      "title": "Correction to: The introduction history of invasive garden ants in Europe: integrating genetic, chemical and behavioural approaches"
+    },
+    {
+      "pmcid": "PMC10031430",
+      "title": "Retraction: An Eocene army ant"
+    },
+    {
+      "pmcid": "PMC4507993",
+      "title": "Correction: Visual Navigation during Colony Emigration by the Ant Temnothorax rugatulus"
+    },
+    {
+      "pmcid": "PMC8206357",
+      "title": "Publisher Correction: Relaxed selection underlies genome erosion in socially parasitic ant species"
+    },
+    {
+      "pmcid": "PMC4065090",
+      "title": "Correction: Time-Ordered Networks Reveal Limitations to Information Flow in Ant Colonies"
+    },
+    {
+      "pmcid": "PMC4823625",
+      "title": "Retracted: An Improved Ant Colony Optimization Approach for Optimization of Process Planning"
+    },
+    {
+      "pmcid": "PMC4108420",
+      "title": "Correction: Identification and Expression of Capa Gene in the Fire Ant, Solenopsis invicta"
+    },
+    {
+      "pmcid": "PMC4359164",
+      "title": "Correction: A Metatranscriptomic Approach to the Identification of Microbiota Associated with the Ant Formica exsecta"
+    },
+    {
+      "pmcid": "PMC5373076",
+      "title": "Corrigendum: Host-ant specificity of endangered large blue butterflies (Phengaris spp., Lepidoptera: Lycaenidae) in Japan"
+    },
+    {
+      "pmcid": "PMC10199839",
+      "title": "Correction: Amycolatopsis camponoti sp. nov., new tetracenomycin\u2011producing actinomycete isolated from carpenter ant Camponotus vagus"
+    },
+    {
+      "pmcid": "PMC4188816",
+      "title": "Correction: Are Local Filters Blind to Provenance? Ant Seed Predation Suppresses Exotic Plants More than Natives"
+    },
+    {
+      "pmcid": "PMC9123049",
+      "title": "Correction to: Amycolatopsis camponoti sp. nov., new tetracenomycin-producing actinomycete isolated from carpenter ant Camponotus vagus"
+    },
+    {
+      "pmcid": "PMC3825769",
+      "title": "Correction: Compound Eye Adaptations for Diurnal and Nocturnal Lifestyle in the Intertidal Ant, Polyrhachis sokolova"
+    },
+    {
+      "pmcid": "PMC3896872",
+      "title": "Correction: Evolution of thorax architecture in ant castes highlights trade-off between flight and ground behaviors"
+    },
+    {
+      "pmcid": "PMC11903870",
+      "title": "Publisher Correction: HDL-ACO hybrid deep learning and ant colony optimization for ocular optical coherence tomography image classification"
+    },
+    {
+      "pmcid": "PMC6168498",
+      "title": "Erratum to: \u201cTrophic ecology of the armadillo ant, Tatuidris tatusia, assessed by stable isotopes and behavioral observations\u201d"
+    },
+    {
+      "pmcid": "PMC10462608",
+      "title": "Author Correction: 3D smooth path planning of AUV based on improved ant colony optimization considering heading switching pressure"
+    },
+    {
+      "pmcid": "PMC8751342",
+      "title": "Correction to: Multiple phenotypic traits as triggers of host attacks towards ant symbionts: body size, morphological gestalt, and chemical mimicry accuracy"
+    },
+    {
+      "pmcid": "PMC10945214",
+      "title": "Correction to \u201cTesting the predictive value of functional traits in diverse ant communities\u201d"
+    },
+    {
+      "pmcid": "PMC3859197",
+      "title": "Correction: Caste-Specific Expression Patterns of Immune Response and Chemosensory Related Genes in the Leaf-Cutting Ant, Atta vollenweideri"
+    },
+    {
+      "pmcid": "PMC13048432",
+      "title": "Retraction: Gastrointestinal tract disorders classification using ensemble of InceptionNet and proposed GITNet based deep feature with ant colony optimization"
+    },
+    {
+      "pmcid": "PMC3983266",
+      "title": "Correction: The Role of Fusion in Ant Chromosome Evolution: Insights from Cytogenetic Analysis Using a Molecular Phylogenetic Approach in the Genus Mycetophylax"
+    },
+    {
+      "pmcid": "PMC4657946",
+      "title": "Correction: The Role of Non-Foraging Nests in Polydomous Wood Ant Colonies"
+    },
+    {
+      "pmcid": "PMC10575542",
+      "title": "RETRACTED: Gastrointestinal tract disorders classification using ensemble of InceptionNet and proposed GITNet based deep feature with ant colony optimization"
+    },
+    {
+      "pmcid": "PMC10412398",
+      "title": "Retracted: Neural Network Optimal Routing Algorithm Based on Genetic Ant Colony in IPv6 Environment"
+    },
+    {
+      "pmcid": "PMC10322430",
+      "title": "Retracted: Heterogeneous Multi UAV Mission Planning Based on Ant Colony Algorithm Powered BP Neural Network"
+    },
+    {
+      "pmcid": "PMC6350996",
+      "title": "Correction: Origanum vulgare terpenoids modulate Myrmica scabrinodis brain biogenic amines and ant behaviour"
+    },
+    {
+      "pmcid": "PMC10599813",
+      "title": "Retracted: Cloud Computing Load Balancing Mechanism Taking into Account Load Balancing Ant Colony Optimization Algorithm"
+    },
+    {
+      "pmcid": "PMC10371664",
+      "title": "Retracted: Integration of Green Innovation Capabilities of Enterprises Based on Ant Colony Optimization Algorithm"
+    },
+    {
+      "pmcid": "PMC10732725",
+      "title": "Retracted: Key Technologies of Lightweight Materials for New Energy Vehicles Based on Ant Colony Algorithm"
+    },
+    {
+      "pmcid": "PMC4571116",
+      "title": "Erratum to: Phylogeography of the sand dune ant Mycetophylax simplex along the Brazilian Atlantic Forest coast: remarkably low mtDNA diversity and shallow population structure"
+    },
+    {
+      "pmcid": "PMC10791199",
+      "title": "Retracted: Ant Colony Optimization-Enabled CNN Deep Learning Technique for Accurate Detection of Cervical Cancer"
+    },
+    {
+      "pmcid": "PMC13528999",
+      "title": "Correction: Real environment obstacle circular edge expansion design robot path planning based on ant colony algorithm"
+    },
+    {
+      "pmcid": "PMC12977492",
+      "title": "Erratum for Green et al., \u201cIsolation and characterization of mollicute symbionts from a fungus-growing ant reveals high niche overlap leading to co-exclusion\u201d"
+    },
+    {
+      "pmcid": "PMC10396609",
+      "title": "Retracted: Ant Colony Algorithm-Based Audit Supervision to Promote the Optimization of New Infrastructure Investment Environment"
+    },
+    {
+      "pmcid": "PMC10396612",
+      "title": "Retracted: Construction of Financial Management Early Warning Model Based on Improved Ant Colony Neural Network"
+    },
+    {
+      "pmcid": "PMC10322469",
+      "title": "Retracted: Automatic Film Label Acquisition Method Based on Improved Neural Networks Optimized by Mutation Ant Colony Algorithm"
+    },
+    {
+      "pmcid": "PMC10322637",
+      "title": "Retracted: A Decision Model for Public Economic Environment Monitoring and Management Decision Using Improved Ant Colony Algorithm"
+    },
+    {
+      "pmcid": "PMC10396644",
+      "title": "Retracted: A Hybrid Algorithm of Ant Colony and Benders Decomposition for Large-Scale Mixed Integer Linear Programming"
+    },
+    {
+      "pmcid": "PMC10232081",
+      "title": "Retracted: Monitoring System-Based Flying IoT in Public Health and Sports Using Ant-Enabled Energy-Aware Routing"
+    },
+    {
+      "pmcid": "PMC10412148",
+      "title": "Retracted: The Influence of Martial Arts on Spine CT Image Morphological Structure Based on Optimized Ant Colony Algorithm"
+    },
+    {
+      "pmcid": "PMC12756965",
+      "title": "Correction: The family, school and community linkage of improving adolescent physical fitness and health: based on the ANT"
+    },
+    {
+      "pmcid": "PMC10802937",
+      "title": "Correction: Gastrointestinal tract disorders classification using ensemble of InceptionNet and proposed GITNet based deep feature with ant colony optimization"
+    },
+    {
+      "pmcid": "PMC10718933",
+      "title": "Retracted: Predictive Analysis and Evaluation Model of Chronic Liver Disease Based on BP Neural Network with Improved Ant Colony Algorithm"
+    },
+    {
+      "pmcid": "PMC9622490",
+      "title": "Retraction: application of hybrid particle swarm and ant colony optimization algorithms to obtain the optimum homomorphic wavelet image fusion"
+    },
+    {
+      "pmcid": "PMC6008322",
+      "title": "Author Correction: Herbivorous turtle ants obtain essential nutrients from a conserved nitrogen-recycling gut microbiome"
+    },
+    {
+      "pmcid": "PMC6590955",
+      "title": "Correction: Division of labor and brain evolution in insect societies: Neurobiology of extreme specialization in the turtle ant Cephalotes varians"
+    },
+    {
+      "pmcid": "PMC7678974",
+      "title": "Correction: A Species delimitation approach to uncover cryptic species in the South American fire ant decapitating flies (Diptera: Phoridae: Pseudacteon)"
+    },
+    {
+      "pmcid": "PMC6386294",
+      "title": "Correction: Community Sampling and Integrative Taxonomy Reveal New Species and Host Specificity in the Army Ant-Associated Beetle Genus Tetradonia (Coleoptera, Staphylinidae, Aleocharinae)"
+    },
+    {
+      "pmcid": "PMC5199044",
+      "title": "Correction: Community Sampling and Integrative Taxonomy Reveal New Species and Host Specificity in the Army Ant-Associated Beetle Genus Tetradonia (Coleoptera, Staphylinidae, Aleocharinae)"
+    },
+    {
+      "pmcid": "PMC7000382",
+      "title": "Publisher Correction: The Interplay between Incipient Species and Social Polymorphism in the Desert Ant Cataglyphis"
+    },
+    {
+      "pmcid": "PMC6008447",
+      "title": "Author Correction: Controlling invasive ant species: a theoretical strategy for efficient monitoring in the early stage of invasion"
+    },
+    {
+      "pmcid": "PMC5915407",
+      "title": "Author Correction: Declaration of local chemical eradication of the Argentine ant: Bayesian estimation with a multinomial-mixture model"
+    },
+    {
+      "pmcid": "PMC10903853",
+      "title": "RETRACTED: Optimising barrier placement for intrusion detection and prevention in WSNs"
+    },
+    {
+      "pmcid": "PMC5981323",
+      "title": "Author Correction: Spatial fidelity of workers predicts collective response to disturbance in a social insect"
+    }
+  ],
   "corpus_fingerprint": {
-    "records_sha256": "0a844fdfa2dd9282467ec34a56e14928c3ab8cee63c02b101507c8d7452c9a0c",
-    "analysis_signature": "266f1e4c7c2e506270d371b8fd1811d8e24129e09c5ccb7607cb77629c4e579d",
-    "record_count": 7073,
+    "records_sha256": "713595dddd3de29580bc3b5029832dd49f6dc82195335b8c3b4bb33f036ad573",
+    "analysis_signature": "cccd458da90fbb3f0dea1700401720624f753c3154e9aa3796c004265960147b",
+    "record_count": 6997,
     "provenance_sha256": "81f18c1e307d32585d60331c9fba20b6b60f77fe740672676dc49634d697052b",
     "limit": null
   }

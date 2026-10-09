@@ -98,7 +98,9 @@ The statistics artifact reports per-term valid-entropy descriptives (means and s
 ## Full-Text Parallel Layer
 
 A complementary descriptive analysis was run over {{FULLTEXT_DOCUMENTS}} open
-access full texts harvested from PubMed Central (PMC). The abstract corpus
+access full texts harvested from PubMed Central (PMC), after excluding
+{{FULLTEXT_EXCLUDED_NOTICES}} correction, erratum and retraction notices and retracted items
+from {{FULLTEXT_STORED_RECORDS}} stored records. The abstract corpus
 remains the headline corpus of this study; the full-text layer is reported
 here as a separate convenience sample with a higher extraction threshold. The analysis machinery is shared: the same
 terminology extraction, domain assignment, semantic-entropy, and CACE

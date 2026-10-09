@@ -1,0 +1,96 @@
+INFO - visualization.manuscript_figures -   🗑️  Cleared stale output: output/figures/
+INFO - visualization.manuscript_figures -   🗑️  Cleared stale output: output/data/
+INFO - visualization.manuscript_figures -   ✅ Output directories initialised (clean slate)
+INFO - visualization.manuscript_figures - ======================================================================
+INFO - visualization.manuscript_figures -   Ento-Linguistic Research Figure Generation Pipeline
+INFO - visualization.manuscript_figures - ======================================================================
+INFO - visualization.manuscript_figures -   Output: /Volumes/GitVault/Local/worktrees/ento_linguistics-v1.3.1/output
+INFO - visualization.manuscript_figures -   Corpus: 7599 real abstracts
+INFO - visualization.manuscript_figures - 
+INFO - visualization.manuscript_figures - ▶ Running analysis pipeline...
+INFO - visualization.manuscript_figures - Step 1/4: Processing text corpus...
+INFO - visualization.manuscript_figures -   Corpus: 7599 documents, 998645 tokens
+INFO - visualization.manuscript_figures - Step 2/4: Extracting terminology...
+INFO - visualization.manuscript_figures -   Extracted 11700 terms across 6 domains
+INFO - visualization.manuscript_figures - Step 3/4: Building concept map...
+INFO - visualization.manuscript_figures -   6 concepts, 15 relationships
+INFO - visualization.manuscript_figures - Step 4/4: Analyzing domains...
+INFO - visualization.manuscript_figures - 
+INFO - visualization.manuscript_figures - ▶ Generating figures...
+INFO - visualization.manuscript_figures -   ✅ statistical_analysis.json is fresh for corpus fingerprint 58f0a024ebba — skipping regeneration (7599 abstracts)
+INFO - visualization.manuscript_figures -   ✅ statistical_analysis.json: 15 pairwise tests, 0 skipped
+INFO - visualization.manuscript_figures -   ✅ fulltext_analysis.json is fresh for corpus fingerprint {'records_sha256': '713595dddd3de29580bc3b5029832dd49f6dc82195335b8c3b4bb33f036ad573', 'analysis_signature': '8590d69db3f29d492596d4dd6080b7a6c947276ff772f4927dd6f3b3721897fc', 'record_count': 6997, 'provenance_sha256': '81f18c1e307d32585d60331c9fba20b6b60f77fe740672676dc49634d697052b', 'limit': None} — skipping regeneration (6997 documents)
+INFO - visualization.manuscript_figures - Rebuilding auxiliary layer: bhl_term_usage.png (2430 documents)
+INFO - visualization.manuscript_figures -   ✅ statistical_analysis.json already carries a discourse section — skipping recompute
+INFO - visualization.manuscript_figures -   ✅ fulltext_analysis.json already carries a discourse section — skipping recompute
+INFO - visualization.manuscript_figures -   ✅ concept_map.png (576.6 KB)
+INFO - visualization.manuscript_figures -   ✅ terminology_network.png (775.4 KB)
+INFO - visualization.manuscript_figures -   ✅ domain_comparison.png (760.2 KB)
+INFO - visualization.manuscript_figures -   ✅ domain_overlap_heatmap.png (402.3 KB)
+INFO - visualization.manuscript_figures -   ✅ anthropomorphic_framing.png (558.5 KB)
+INFO - visualization.manuscript_figures -   ✅ concept_hierarchy.png (412.8 KB)
+INFO - visualization.manuscript_figures -   ✅ unit_of_individuality_patterns.png (356.9 KB)
+INFO - visualization.manuscript_figures -   ✅ power_and_labor_term_frequencies.png (287.5 KB)
+INFO - visualization.manuscript_figures -   ✅ power_and_labor_ambiguities.png (554.4 KB)
+INFO - visualization.manuscript_figures -   ✅ domain_overview_grid.png (962.6 KB)
+INFO - visualization.manuscript_figures -   ✅ domain_patterns_grid.png (681.0 KB)
+INFO - visualization.manuscript_figures - 
+INFO - visualization.manuscript_figures - 
+📊 Saved 4 data files to /Volumes/GitVault/Local/worktrees/ento_linguistics-v1.3.1/output/data
+INFO - visualization.manuscript_figures -    - corpus_statistics.json
+INFO - visualization.manuscript_figures -    - domain_statistics.json
+INFO - visualization.manuscript_figures -    - extracted_terms.json
+INFO - visualization.manuscript_figures -    - concept_map_summary.json
+INFO - visualization.manuscript_figures - ✅ Registered 17 figures with FigureManager
+INFO - visualization.manuscript_figures - 
+INFO - visualization.manuscript_figures - ======================================================================
+INFO - visualization.manuscript_figures -   ✅ Generated 17 research figures
+INFO - visualization.manuscript_figures -      - statistical_analysis.png
+INFO - visualization.manuscript_figures -      - fulltext_analysis.png
+INFO - visualization.manuscript_figures -      - layer_comparison.png
+INFO - visualization.manuscript_figures -      - discourse_comparison.png
+INFO - visualization.manuscript_figures -      - arxiv_analysis.png
+INFO - visualization.manuscript_figures -      - bhl_term_usage.png
+INFO - visualization.manuscript_figures -      - concept_map.png
+INFO - visualization.manuscript_figures -      - terminology_network.png
+INFO - visualization.manuscript_figures -      - domain_comparison.png
+INFO - visualization.manuscript_figures -      - domain_overlap_heatmap.png
+INFO - visualization.manuscript_figures -      - anthropomorphic_framing.png
+INFO - visualization.manuscript_figures -      - concept_hierarchy.png
+INFO - visualization.manuscript_figures -      - unit_of_individuality_patterns.png
+INFO - visualization.manuscript_figures -      - power_and_labor_term_frequencies.png
+INFO - visualization.manuscript_figures -      - power_and_labor_ambiguities.png
+INFO - visualization.manuscript_figures -      - domain_overview_grid.png
+INFO - visualization.manuscript_figures -      - domain_patterns_grid.png
+INFO - visualization.manuscript_figures -   ✅ Saved 4 data files
+INFO - visualization.manuscript_figures -   📁 All outputs: /Volumes/GitVault/Local/worktrees/ento_linguistics-v1.3.1/output
+INFO - visualization.manuscript_figures - ======================================================================
+INFO - visualization.manuscript_figures - ▶ Filling manuscript template variables...
+INFO - visualization.manuscript_figures -   ✅ 342 placeholder occurrences resolvable across 10 files (dry run; canonical files unchanged)
+INFO - visualization.manuscript_figures - Local JSON, PNG and registry integrity validation passed
+Integration with src/ modules demonstrated
+  WARNING: Unknown variable {{NULLNET_CHAINS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_DRAWS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_DOCUMENTS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_TERMS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_NULL_MEAN}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_Q025}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_Q975}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_NULL_MEAN}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_Q025}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_Q975}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_OBSERVED}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_OBSERVED}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_SENS_DRAWS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_SENS_EDGES_NULL_MEAN}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_SENS_CLUSTERING_NULL_MEAN}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_EDGES_RHAT}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CLUSTERING_RHAT}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_CHAINS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NULLNET_DRAWS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NETREAD_CELLS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NETREAD_DOCUMENTS}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NETREAD_BASE_DENSITY}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NETREAD_THRESHOLD20_EDGES}} in 04a_corpus_and_networks.md
+  WARNING: Unknown variable {{NETREAD_THRESHOLD20_DENSITY}} in 04a_corpus_and_networks.md
+exit=0

@@ -1,7 +1,7 @@
 {
   "status": "completed",
   "layer": "identified abstracts",
-  "documents": 7540,
+  "documents": 7599,
   "vocabulary": [
     "ant",
     "social",
@@ -32,8 +32,8 @@
     "resource",
     "aggression",
     "efficiency",
-    "dominant",
     "collective",
+    "dominant",
     "division",
     "trail",
     "offspring",
@@ -46,11 +46,11 @@
     "regulation",
     "plasticity",
     "benefit",
+    "sperm",
     "eusociality",
     "alarm",
-    "sperm",
-    "cost",
     "labor",
+    "cost",
     "conflict",
     "egg",
     "specialization",
@@ -60,24 +60,24 @@
     "forager",
     "allocation",
     "emergence",
-    "ant-plant",
     "productivity",
+    "ant-plant",
     "return",
     "symbiont",
-    "optimization",
     "polymorphism",
+    "optimization",
     "exploitation",
     "minor",
     "trade-off",
     "exchange",
     "diploid",
-    "identity",
     "colony-level",
+    "identity",
     "soldier",
     "organism",
     "oviposition",
-    "power",
     "polygyny",
+    "power",
     "subordinate",
     "nurse",
     "society",
@@ -91,18 +91,18 @@
     "grooming",
     "superorganism",
     "sister",
-    "hierarchy",
     "caste-specific",
+    "hierarchy",
     "polyandry",
     "supply",
+    "switching",
     "non-nestmate",
     "non-reproductive",
-    "switching",
     "colony-specific",
-    "haploid",
     "larva",
+    "haploid",
     "host-parasite",
-    "nest-mates"
+    "polyethism"
   ],
   "method": "Curveball binary incidence trades with fixed document and term margins",
   "protocol": {
@@ -116,36 +116,36 @@
     ]
   },
   "observed": {
-    "edges": 4232,
-    "clustering": 0.8948410090462227,
-    "total_weight": 109548
+    "edges": 4235,
+    "clustering": 0.8954555891646946,
+    "total_weight": 111941
   },
   "metrics": {
     "edges": {
-      "observed": 4232,
-      "null_mean": 4518.4766666666665,
-      "null_q025": 4483.475,
-      "null_q975": 4550.05,
+      "observed": 4235,
+      "null_mean": 4534.5,
+      "null_q025": 4502.0,
+      "null_q975": 4567.0,
       "chain_means": [
-        4516.9,
-        4519.83,
-        4518.7
+        4532.72,
+        4537.16,
+        4533.62
       ],
-      "rhat": 0.9988952631166768,
+      "rhat": 1.0037262294246463,
       "upper_tail_fraction": 1.0,
       "lower_tail_fraction": 0.0
     },
     "clustering": {
-      "observed": 0.8948410090462227,
-      "null_mean": 0.9321343172762482,
-      "null_q025": 0.9278116164846335,
-      "null_q975": 0.9362645390169823,
+      "observed": 0.8954555891646946,
+      "null_mean": 0.9342036148402614,
+      "null_q025": 0.9300630114541949,
+      "null_q975": 0.9387314644735204,
       "chain_means": [
-        0.9318757091142742,
-        0.932259558576795,
-        0.9322676841376759
+        0.9339700355280643,
+        0.9346127082873239,
+        0.9340281007053952
       ],
-      "rhat": 1.0005168700693652,
+      "rhat": 1.0070958718451573,
       "upper_tail_fraction": 1.0,
       "lower_tail_fraction": 0.0
     }
@@ -154,17 +154,17 @@
     "25": {
       "edges": 300,
       "clustering": 1.0,
-      "total_weight": 48763
+      "total_weight": 49759
     },
     "50": {
       "edges": 1206,
       "clustering": 0.9863855761833651,
-      "total_weight": 81930
+      "total_weight": 83715
     },
     "100": {
-      "edges": 4232,
-      "clustering": 0.8948410090462227,
-      "total_weight": 109548
+      "edges": 4235,
+      "clustering": 0.8954555891646946,
+      "total_weight": 111941
     }
   },
   "limits": [

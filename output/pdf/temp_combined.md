@@ -8,12 +8,12 @@ title: 'Ento-Linguistics: Language, Ambiguity, and Scientific Communication in E
 ---
 # Abstract {#sec:abstract}
 
-Terms such as *queen*, *worker*, and *colony* connect biological descriptions to familiar social concepts. This study introduces a six-domain Ento-Linguistic framework and an open-source descriptive text-analysis pipeline. The headline layer contains 7540 source-identified abstracts from 7609 stored strings; 69 unreconciled strings are retained but excluded. This headline layer contains 991,026 processed tokens and 11,644 candidate terms, of which 1323 receive rule-based domain assignments. The pipeline separates observed document-level term co-occurrence from a map of 6 predefined concept categories with 15 vocabulary-overlap relationships. Among assigned terms, 11.9% receive multiple labels; this measures classification overlap rather than semantic drift. Complementary analyses use 7073 PMC full-text records, 2430 historical OCR documents, and a separate arXiv layer. TF-IDF clustering and Shannon entropy summarize sentence-context distributions, while lexical patterns identify candidate framing contexts. A separately receipted fixed-margin comparison finds fewer edges and lower clustering in the selected-term graph than in its finite-chain randomized reference, indicating concentration of co-occurrence relative to the preserved incidence margins. Clarity, Appropriateness, Consistency, and Evolvability (CACE) are proposed as heuristic evaluation dimensions. Neither cluster entropy nor marker occurrence establishes distortion of biological understanding, and CACE scores have not been validated against independent human judgments. A deterministic vocabulary--threshold diagnostic makes the dependence of density and clustering on network representation explicit. Complexity motivates questions about units, coupling, feedback and scale; it is not inferred from a dense lexical projection. Provenance gaps, mixed-topic retrieval, OCR errors, overlapping groups, and explicitly bounded analyses limit interpretation. The contribution is a reproducible descriptive workflow and a framework for subsequent annotated, hypothesis-driven research, rather than a causal test of language shaping scientific thought. Code and data lineage: https://github.com/docxology/ento_linguistics.
+Terms such as *queen*, *worker*, and *colony* connect biological descriptions to familiar social concepts. This study introduces a six-domain Ento-Linguistic framework and an open-source descriptive text-analysis pipeline. The headline layer contains 7599 source-identified abstracts from 7609 stored strings; 10 unreconciled strings are retained but excluded. This headline layer contains 998,645 processed tokens and 11,700 candidate terms, of which 1330 receive rule-based domain assignments. The pipeline separates observed document-level term co-occurrence from a map of 6 predefined concept categories with 15 vocabulary-overlap relationships. Among assigned terms, 11.9% receive multiple labels; this measures classification overlap rather than semantic drift. Complementary analyses use 6997 PMC full-text records, 2430 historical OCR documents, and a separate arXiv layer. TF-IDF clustering and Shannon entropy summarize sentence-context distributions, while lexical patterns identify candidate framing contexts. A separately receipted fixed-margin comparison finds fewer edges and lower clustering in the selected-term graph than in its finite-chain randomized reference, indicating concentration of co-occurrence relative to the preserved incidence margins. Clarity, Appropriateness, Consistency, and Evolvability (CACE) are proposed as heuristic evaluation dimensions. Neither cluster entropy nor marker occurrence establishes distortion of biological understanding, and CACE scores have not been validated against independent human judgments. A deterministic vocabulary--threshold diagnostic makes the dependence of density and clustering on network representation explicit. Complexity motivates questions about units, coupling, feedback and scale; it is not inferred from a dense lexical projection. Provenance gaps, mixed-topic retrieval, OCR errors, overlapping groups, and explicitly bounded analyses limit interpretation. The contribution is a reproducible descriptive workflow and a framework for subsequent annotated, hypothesis-driven research, rather than a causal test of language shaping scientific thought. Code and data lineage: https://github.com/docxology/ento_linguistics.
 
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_reading/graphical_abstract.png}
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/extensions/network_reading/graphical_abstract.png}
 \caption{Graphical abstract. Biological processes, scientific discourse and computational representations have distinct observational units. The six overlapping domains organize questions; observed textual proxies and proposed validation designs retain separate evidential roles. Arrows in the biological lane are schematic, not a fitted model or newly measured interaction network.}
 \label{fig:graphical_abstract}
 \end{figure}
@@ -56,7 +56,7 @@ These are predefined organizational categories. A term receiving several labels 
 
 ## Research Approach
 
-The headline computation analyzes 7540 source-identified abstracts, yielding 991,026 processed tokens and 11,644 candidates, of which 1323 receive domain assignments. Complementary PMC, BHL, and arXiv layers retain separate source identities. The workflow distinguishes corpus frequencies, observed document co-occurrence, vocabulary overlap, context-cluster entropy, and heuristic scores.
+The headline computation analyzes 7599 source-identified abstracts, yielding 998,645 processed tokens and 11,700 candidates, of which 1330 receive domain assignments. Complementary PMC, BHL, and arXiv layers retain separate source identities. The workflow distinguishes corpus frequencies, observed document co-occurrence, vocabulary overlap, context-cluster entropy, and heuristic scores.
 
 Active Inference and multiscale modeling provide a theoretical perspective \citep{friston2010free, friedman2021active}, but the present pipeline does not fit a generative model of scientific language or measure variational free energy. A Markov blanket specifies conditional-independence relationships in a model; it is not a lexical security filter or a biological boundary established by terminology alone.
 
@@ -85,14 +85,14 @@ Three complementary layers remain separate: PMC title, abstract, and body text i
 | Headline metric | Value |
 |-----------------|-------|
 | Stored abstract strings | 7609 |
-| Source-identified analyzed abstracts | 7540 |
-| Unreconciled strings excluded | 69 |
-| Processed tokens | 991,026 |
-| Unique token types | 47,064 |
-| Candidate terms | 11,644 |
-| Domain-assigned terms | 1323 |
+| Source-identified analyzed abstracts | 7599 |
+| Unreconciled strings excluded | 10 |
+| Processed tokens | 998,645 |
+| Unique token types | 47,216 |
+| Candidate terms | 11,700 |
+| Domain-assigned terms | 1330 |
 
-These are archived-input and selected-corpus counts, not estimates of all entomological literature. Broad searches retrieve adjacent biological topics and algorithmic uses of ant terminology; a keyword match does not establish relevance to ant biology. Historical volumes can contain substantial non-entomological material. The PMC input also includes correction and retraction notices, including standardized repeated notice text. Article-type, retraction-status and relevance screening are not complete. The custody audit in *output/reports/corpus_audit.json* records missing digest provenance, repeated text, identifier mismatches, and unused sidecar entries. Gaps are retained and disclosed; undocumented source identities are not inferred. Exact text-digest matches to retrieved PubMed abstracts can recover metadata without rewriting text. This establishes source identity rather than ant-topic relevance. Digest-keyed sidecars retain only one metadata entry when several records contain identical text. Relevance annotation and complete source reconciliation are needed before treating a layer as a curated field-wide sample.
+These are archived-input and selected-corpus counts, not estimates of all entomological literature. Broad searches retrieve adjacent biological topics and algorithmic uses of ant terminology; a keyword match does not establish relevance to ant biology. Historical volumes can contain substantial non-entomological material. Of 7073 stored PMC records, 76 whose titles mark them as correction, erratum or retraction notices or as retracted items remain archived but are excluded from analysis. This removes the standardized repeated notice text. A title rule is not a complete article-type or retraction-status screen, and relevance screening is not complete. The custody audit in *output/reports/corpus_audit.json* records missing digest provenance, repeated text, identifier mismatches, and unused sidecar entries. Gaps are retained and disclosed; undocumented source identities are not inferred. Exact text-digest matches to retrieved PubMed abstracts can recover metadata without rewriting text. This establishes source identity rather than ant-topic relevance. Digest-keyed sidecars retain only one metadata entry when several records contain identical text. Relevance annotation and complete source reconciliation are needed before treating a layer as a curated field-wide sample.
 
 TextProcessor normalizes text, tokenizes with NLTK, filters punctuation and stop words, and optionally lemmatizes with WordNet. Extraction disables lemmatization when counting surface-form terms. NLTK datasets are installed separately from Python dependencies; selected English tokenizer, stopword and WordNet contents are bound into analysis signatures and receipts. Article-level licenses require individual checking; indexing in PubMed/PMC does not establish reuse permission.
 
@@ -188,7 +188,7 @@ The separate receipt binds inputs, implementation, lock and all outputs. Validat
 
 ## Terminology Extraction Across Domains
 
-Analysis of the source-identified headline layer yields 11,644 candidate terms from 7540 abstracts and 991,026 processed tokens. Of these candidates, 1323 receive domain assignments. These counts exclude 69 unreconciled archived strings; broad retrieval still limits relevance and representativeness.
+Analysis of the source-identified headline layer yields 11,700 candidate terms from 7599 abstracts and 998,645 processed tokens. Of these candidates, 1330 receive domain assignments. These counts exclude 10 unreconciled archived strings; broad retrieval still limits relevance and representativeness.
 
 \begin{table}[h]
 \centering
@@ -196,12 +196,12 @@ Analysis of the source-identified headline layer yields 11,644 candidate terms f
 \hline
 \textbf{Domain} & \textbf{Terms} & \textbf{Frequency} & \textbf{Bridging terms} \\
 \hline
-Unit of Individuality & 526 & 27,813 & 24 \\
-Behavior \& Identity & 262 & 16,896 & 91 \\
-Power \& Labor & 294 & 12,306 & 138 \\
-Sex \& Reproduction & 244 & 9165 & 61 \\
-Kin \& Relatedness & 83 & 3957 & 4 \\
-Economics & 78 & 4458 & 3 \\
+Unit of Individuality & 530 & 28,194 & 24 \\
+Behavior \& Identity & 262 & 17,119 & 91 \\
+Power \& Labor & 295 & 12,533 & 139 \\
+Sex \& Reproduction & 245 & 9334 & 62 \\
+Kin \& Relatedness & 84 & 4040 & 4 \\
+Economics & 79 & 4508 & 3 \\
 \hline
 \end{tabular}
 \caption{Rule-based domain assignments and corpus frequencies. A term can receive several labels, so domain counts and frequencies are not mutually exclusive. Bridging means multiple labels, not an observed transfer of meaning.}
@@ -210,7 +210,7 @@ Economics & 78 & 4458 & 3 \\
 
 Among assigned terms, 11.9\% have multiple domain labels. This is a property of the classifier and corpus. Temporal semantic drift would require explicit time-indexed meaning comparison, while lexical, contextual, and scale ambiguity require independent sense annotation or validated proxies. Those measurements are not established by label overlap.
 
-The processed vocabulary has type-token ratio 0.0475. Its most frequent WordNet lemmas are ant (20,328), specie (10,552), and colony (7319). Lemmatization reduces inflected forms and can truncate words such as *species* to *specie*; extracted terms retain surface forms (Supplemental Section \ref{sec:supplemental_methods}). Frequency identifies recurring lexical material; it does not establish its conceptual importance or the intentions of authors.
+The processed vocabulary has type-token ratio 0.0473. Its most frequent WordNet lemmas are ant (20,494), specie (10,620), and colony (7436). Lemmatization reduces inflected forms and can truncate words such as *species* to *specie*; extracted terms retain surface forms (Supplemental Section \ref{sec:supplemental_methods}). Frequency identifies recurring lexical material; it does not establish its conceptual importance or the intentions of authors.
 
 ## Terminology Network Structure
 
@@ -220,35 +220,35 @@ The observed terminology graph uses the hundred most frequent domain-assigned te
 w(u,v)=\sum_{d=1}^{N}\mathbf{1}[u\in d]\mathbf{1}[v\in d].
 \end{equation}
 
-Whole-word matches are case-insensitive, and repeated mentions within a document do not add weight. No edge is inferred from shared labels or extraction order. The graph has mean local (unweighted) clustering coefficient 0.8948; this statistic does not measure conceptual coherence, communication quality, or resistance to reform.
+Whole-word matches are case-insensitive, and repeated mentions within a document do not add weight. No edge is inferred from shared labels or extraction order. The graph has mean local (unweighted) clustering coefficient 0.8955; this statistic does not measure conceptual coherence, communication quality, or resistance to reform.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/terminology_network.png}
-\caption{Observed document co-occurrence among the hundred highest-frequency domain-assigned terms in the 7540-abstract layer. Nodes represent terms, node area uses a square-root frequency scale, color identifies the primary domain, and edge width scales shared-document counts to a bounded display range (Eq.~\ref{eq:network_edge_weight}). Isolated nodes are omitted from the display and up to twenty frequent terms are considered for collision-filtered labels. The right panel ranks the ten strongest observed pairs by shared-document count, with lexical tie-breaking. All observed edges remain in the left graph, whose unweighted layout reduces visual concentration around frequent pairs. Layout and dense regions have no causal or hierarchical interpretation.}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/terminology_network.png}
+\caption{Observed document co-occurrence among the hundred highest-frequency domain-assigned terms in the 7599-abstract layer. Nodes represent terms, node area uses a square-root frequency scale, color identifies the primary domain, and edge width scales shared-document counts to a bounded display range (Eq.~\ref{eq:network_edge_weight}). Isolated nodes are omitted from the display and up to twenty frequent terms are considered for collision-filtered labels. The right panel ranks the ten strongest observed pairs by shared-document count, with lexical tie-breaking. All observed edges remain in the left graph, whose unweighted layout reduces visual concentration around frequent pairs. Layout and dense regions have no causal or hierarchical interpretation.}
 \label{fig:terminology_network}
 \end{figure}
 
 ### Comparison with a Fixed-Margin Reference
 
-Density and clustering depend on how many selected terms each abstract contains and how many abstracts contain each term. A Curveball randomization of the binary document--term incidence matrix preserves both margins (Supplemental Section \ref{sec:fixed_margin}). Over 3 chains and 600 retained draws for the 7540 source-identified abstracts and 100 terms, the randomized reference averages 4519.6 edges (central 95\% of draws 4486--4558) and mean local clustering 0.932 (0.928--0.937). The observed graph has 4232 edges and clustering 0.895, below both envelopes (Figure \ref{fig:network_robustness}). A sensitivity protocol with longer burn-in, wider spacing and different seeds (300 draws) gives reference means of 4518.5 edges and 0.932 clustering. Between-chain $\hat R$ is 1.001 for edges and 0.999 for clustering; this diagnostic does not prove mixing.
+Density and clustering depend on how many selected terms each abstract contains and how many abstracts contain each term. A Curveball randomization of the binary document--term incidence matrix preserves both margins (Supplemental Section \ref{sec:fixed_margin}). Over 3 chains and 600 retained draws for the 7599 source-identified abstracts and 100 terms, the randomized reference averages 4533.6 edges (central 95\% of draws 4501--4568) and mean local clustering 0.934 (0.930--0.939). The observed graph has 4235 edges and clustering 0.895, below both envelopes (Figure \ref{fig:network_robustness}). A sensitivity protocol with longer burn-in, wider spacing and different seeds (300 draws) gives reference means of 4534.5 edges and 0.934 clustering. Between-chain $\hat R$ is 1.006 for edges and 1.003 for clustering; this diagnostic does not prove mixing.
 
 Selected terms therefore co-occur in fewer distinct pairs, with less closed triadic structure, than their margins alone would produce: co-occurrence is concentrated among particular pairs. The envelopes describe the sampled conditional reference rather than uncertainty in the observed values, and the comparison does not identify a linguistic cause.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_robustness/network_robustness.png}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/extensions/network_robustness/network_robustness.png}
 \caption{Fixed-margin comparison for the abstract terminology network. Top: retained-chain traces of projected edge count and mean local clustering for 3 seeds. Bottom: distributions of the 600 retained draws, with the observed value marked. Every draw preserves each abstract's selected-term count and each term's document frequency. The reference is conditional on the frequency-ranked vocabulary and the convenience corpus.}
 \label{fig:network_robustness}
 \end{figure}
 
 ### Vocabulary and Edge-Threshold Diagnostic
 
-Across the declared 20 vocabulary--threshold combinations on the same 7540 identified abstracts, the 100-term graph at a one-document threshold has density 0.8549. Requiring at least twenty shared documents retains 1191 edges and gives density 0.2406. Figure \ref{fig:network_reading} displays the full grid, including mean local clustering with isolates retained. These are deterministic descriptions of selected representations, not uncertainty intervals or evidence that one threshold recovers true semantic relations. Clustering need not decrease when edges are removed: changing neighborhoods also changes local triangle denominators. The curves separate these topological summaries rather than interpreting either as biological complexity.
+Across the declared 20 vocabulary--threshold combinations on the same 7599 identified abstracts, the 100-term graph at a one-document threshold has density 0.8556. Requiring at least twenty shared documents retains 1211 edges and gives density 0.2446. Figure \ref{fig:network_reading} displays the full grid, including mean local clustering with isolates retained. These are deterministic descriptions of selected representations, not uncertainty intervals or evidence that one threshold recovers true semantic relations. Clustering need not decrease when edges are removed: changing neighborhoods also changes local triangle denominators. The curves separate these topological summaries rather than interpreting either as biological complexity.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_reading/network_reading.png}
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/extensions/network_reading/network_reading.png}
 \caption{Vocabulary and minimum-shared-document sensitivity. Curves use nested frequency-ranked vocabularies and inclusive thresholds. The denominator includes all selected pairs, and clustering includes isolates as zero. Each point is recomputed from the same identified abstract layer; no new randomization or biological-network inference is represented.}
 \label{fig:network_reading}
 \end{figure}
@@ -257,14 +257,14 @@ Domain-assignment overlap is a different quantity, displayed separately in Figur
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_overlap_heatmap.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/domain_overlap_heatmap.png}
 \caption{Szymkiewicz--Simpson overlap coefficients between domain-assigned vocabularies (Eq.~\ref{eq:overlap_coefficient}). Each cell shows shared terms as a percentage of the smaller vocabulary; the diagonal is 100 by definition. Values reflect the current lexical classifier; observed zeros do not establish conceptual isolation.}
 \label{fig:domain_overlap}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_comparison.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/domain_comparison.png}
 \caption{Six descriptive panels show distinct term counts, mean extraction confidence, total frequency, mean successfully computed sentence-context entropy, bridging counts, and heuristic CACE means over up to fifty selected terms per domain. Extraction confidence is a configured score rather than calibrated classification accuracy. Entropy and CACE sample definitions are specified in Methods; missing entropy does not establish zero ambiguity.}
 \label{fig:domain_comparison}
 \end{figure}
@@ -272,7 +272,7 @@ Domain-assignment overlap is a different quantity, displayed separately in Figur
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/concept_map.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/concept_map.png}
 \caption{Six predefined concept categories connected by vocabulary overlap. Node size summarizes associated terms, which can appear in several categories; the subtitle totals term associations rather than unique terms. Edge weights are classifier-defined overlaps, not observed causal connections or a discovered biological ontology.}
 \label{fig:concept_map}
 \end{figure}
@@ -283,7 +283,7 @@ Lexical markers identify contexts for further qualitative examination. They do n
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/anthropomorphic_framing.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/anthropomorphic_framing.png}
 \caption{Observed framing-marked terminology by canonical domain. Top: distinct extracted terms with at least one occurrence context matching an anthropomorphic pattern. Bottom: up to six terms per domain, selected by decreasing matched-context proportion, context count, and lexical ordering. Counts are neither curated vocabulary sizes nor occurrence frequencies. Occurrence-context framing proportions are exported separately.}
 \label{fig:anthropomorphic}
 \end{figure}
@@ -301,7 +301,7 @@ This vocabulary includes references to individuals, colonies, and collective org
 
 ## Power \& Labor
 
-Power and Labor contains 294 assigned terms and 138 terms with multiple labels. Its occurrence-context anthropomorphic-marker proportion is 1.2\%, rather than a percentage of authors or publications using misleading language. Discussions of loaded terminology motivate contextual examination \citep{herbers2006, herbers2007}. Molecular work on caste \citep{sumner2018molecular} and developmental canalization \citep{qiu2022canalized} also make it important to distinguish developmental phenotypes from temporary task categories.
+Power and Labor contains 295 assigned terms and 139 terms with multiple labels. Its occurrence-context anthropomorphic-marker proportion is 1.2\%, rather than a percentage of authors or publications using misleading language. Discussions of loaded terminology motivate contextual examination \citep{herbers2006, herbers2007}. Molecular work on caste \citep{sumner2018molecular} and developmental canalization \citep{qiu2022canalized} also make it important to distinguish developmental phenotypes from temporary task categories.
 
 Figures \ref{fig:power_labor_frequencies} and \ref{fig:power_labor_ambiguities} show observed term frequency and context-cluster entropy. Figure \ref{fig:concept_hierarchy} ranks predefined concept categories by summed vocabulary overlap; it does not show a biological hierarchy or term-level betweenness.
 
@@ -311,15 +311,15 @@ The mean computed sentence-context entropy is 1.74 bits. Task labels provide use
 
 ## Sex \& Reproduction
 
-This domain groups reproductive and developmental terminology. Its mean computed entropy is 1.74 bits. The presence of paired labels does not by itself demonstrate a conceptual opposition. Reproductive systems and caste development vary across taxa, and the epigenetic review \citep{oldroyd2021epigenetics} provides background rather than validation of a lexical classifier.
+This domain groups reproductive and developmental terminology. Its mean computed entropy is 1.73 bits. The presence of paired labels does not by itself demonstrate a conceptual opposition. Reproductive systems and caste development vary across taxa, and the epigenetic review \citep{oldroyd2021epigenetics} provides background rather than validation of a lexical classifier.
 
 ## Kin \& Relatedness
 
-The mean computed entropy is 1.75 bits. Relatedness terms require biological and demographic context: numerical coefficients depend on pedigrees, mating systems, and population structure. The present outputs do not estimate those quantities.
+The mean computed entropy is 1.76 bits. Relatedness terms require biological and demographic context: numerical coefficients depend on pedigrees, mating systems, and population structure. The present outputs do not estimate those quantities.
 
 ## Economics
 
-The classifier assigns 78 terms to Economics, with 3 receiving multiple labels. Its mean computed entropy is 1.86 bits. Low overlap can follow directly from lexicon design; a zero overlap does not establish a closed conceptual subsystem. Terms such as allocation (210 occurrences), investment (271), resource (579), and resources (711) warrant examination of their operational definitions. Statistical or ecological compounds matching a seed word can be classification errors rather than evidence of economic framing.
+The classifier assigns 79 terms to Economics, with 3 receiving multiple labels. Its mean computed entropy is 1.85 bits. Low overlap can follow directly from lexicon design; a zero overlap does not establish a closed conceptual subsystem. Terms such as allocation (219 occurrences), investment (272), resource (579), and resources (713) warrant examination of their operational definitions. Statistical or ecological compounds matching a seed word can be classification errors rather than evidence of economic framing.
 
 ## Historical Interpretation
 
@@ -327,42 +327,42 @@ Historical readings of caste and superorganism terminology provide context \cite
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_overview_grid.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/domain_overview_grid.png}
 \caption{Ten highest-frequency extracted terms per domain. Bar length is corpus frequency and color is the attached sentence-context entropy estimate. Zero-valued defaults for insufficient contexts must not be interpreted as evidence of unambiguous meaning. These are descriptive extraction outputs from the source-identified abstract layer.}
 \label{fig:domain_overview_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_patterns_grid.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/domain_patterns_grid.png}
 \caption{Surface word-formation composition of assigned vocabularies. Each term is assigned to exactly one surface category (single word, multi-word phrase, hyphenated or underscore compound, or containing digits), using the same classifier as Figure \ref{fig:unit_individuality_patterns}. The headline extractor does not independently add n-grams, so availability of a category in the plotting utility does not establish its extraction.}
 \label{fig:domain_patterns_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/unit_of_individuality_patterns.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/unit_of_individuality_patterns.png}
 \caption{Unit of Individuality term-formation counts (left) and counts of term names matching scale keyword groups (right). Scale groups can overlap; true zeros are retained. Neither panel estimates actual biological scale boundaries.}
 \label{fig:unit_individuality_patterns}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/concept_hierarchy.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/concept_hierarchy.png}
 \caption{Overlap strength of the six predefined concept categories: each category's weighted degree, the sum of its overlap coefficients with the other categories (Eq.~\ref{eq:overlap_coefficient}), ranked (left) and plotted against associated-term counts (right). Every category links to every other, so unweighted degree would not distinguish them. The display does not represent a biological command hierarchy.}
 \label{fig:concept_hierarchy}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/power_and_labor_term_frequencies.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/power_and_labor_term_frequencies.png}
 \caption{The fifteen highest-frequency assigned Power and Labor terms in the source-identified abstract layer. Frequency is annotated; color tracks rank. These observations do not quantify hierarchical control or bias.}
 \label{fig:power_labor_frequencies}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/power_and_labor_ambiguities.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/power_and_labor_ambiguities.png}
 \caption{Power and Labor terms ranked by attached context-cluster entropy, with corpus frequency and short extraction-context counts. Sentence-context entropy and the plotted extraction-window counts use different context definitions. Cluster entropy is not an independently validated ambiguity measure.}
 \label{fig:power_labor_ambiguities}
 \end{figure}
@@ -378,7 +378,7 @@ The descriptive outputs organize terminology into a framework for examining the 
 
 Terms such as *queen*, *worker*, and *caste* deserve contextual scrutiny because biological roles and ordinary-language connotations can differ. Existing discussions of terminology reform provide a substantive motivation \citep{herbers2006, herbers2007}. The present corpus analysis neither establishes that terminology delayed particular discoveries nor measures the adoption of alternatives across the field. Such claims would require dated source analysis and evidence about research decisions.
 
-The observed graph has clustering coefficient 0.8948, while 11.9\% of assigned terms receive multiple labels. Neither quantity demonstrates self-reinforcing conceptual bias. Co-occurrence can arise because papers discuss several biological processes together; label overlap also follows from the predefined lexicons. A visualization's arrangement must not be read as a human-style command hierarchy.
+The observed graph has clustering coefficient 0.8955, while 11.9\% of assigned terms receive multiple labels. Neither quantity demonstrates self-reinforcing conceptual bias. Co-occurrence can arise because papers discuss several biological processes together; label overlap also follows from the predefined lexicons. A visualization's arrangement must not be read as a human-style command hierarchy.
 
 ## Network Structure and Its Conditional Reference
 
@@ -426,7 +426,7 @@ The second borrows the manipulation logic of metaphor experiments (Section \ref{
 
 ## Limitations
 
-1. **Source custody and relevance.** Some archived abstract strings lack digest-indexed source metadata and are excluded from headline analysis; broad queries include adjacent biology and computational uses. Historical volumes contain mixed topics; PMC retrieval includes correction/retraction notices and repeated boilerplate. Source reconciliation and relevance annotation remain incomplete.
+1. **Source custody and relevance.** Some archived abstract strings lack digest-indexed source metadata and are excluded from headline analysis; broad queries include adjacent biology and computational uses. Historical volumes contain mixed topics; PMC notices are excluded by a title rule rather than a complete article-type screen. Source reconciliation and relevance annotation remain incomplete.
 2. **Sampling and accessibility.** Search and availability filters select a convenience corpus. Layers are not matched document samples and differ in extraction threshold, length, genre, and publication history.
 3. **OCR and language.** Literal historical matching is sensitive to OCR errors, language, hyphenation, and spelling. Rare or absent matches do not date a concept's origin.
 4. **Proxy validity.** Computational clusters are not annotated senses; marker patterns are not validated discourse labels. The pipeline does not measure author intent, cognitive distortion, or causal framing.
@@ -448,7 +448,7 @@ Architecture asks which units and relations a passage specifies. Simon's near-de
 
 # Conclusion {#sec:conclusion}
 
-This work provides a six-domain framework and a reproducible descriptive pipeline for examining terminology in scientific text. Across 7540 source-identified abstracts, the pipeline processes 991,026 tokens and extracts 11,644 candidate terms, with 1323 receiving domain assignments. Observed document co-occurrence, predefined conceptual-category overlap, sentence-context entropy, and heuristic framing and CACE scores are reported as distinct quantities.
+This work provides a six-domain framework and a reproducible descriptive pipeline for examining terminology in scientific text. Across 7599 source-identified abstracts, the pipeline processes 998,645 tokens and extracts 11,700 candidate terms, with 1330 receiving domain assignments. Observed document co-occurrence, predefined conceptual-category overlap, sentence-context entropy, and heuristic framing and CACE scores are reported as distinct quantities.
 
 The 11.9\% of assigned terms with multiple labels measures classification overlap, not semantic drift. The 6 concept categories are predefined rather than discovered. Complementary source layers extend the descriptive scope without establishing that language causes bias, that a terminology reform improves scientific modeling, or that numerical CACE rankings are independently validated.
 
@@ -554,11 +554,11 @@ This section specifies the input and extraction stages used by the study. The nu
 
 ## Source Layers and Custody
 
-The archived abstract input contains 7609 strings. The headline analysis includes 7540 strings whose SHA-256 digest maps to an identified PubMed record and excludes 69 unreconciled strings. Exact digest matches to retrieved PubMed abstracts can recover metadata without changing archived text. Identification establishes a source association, not relevance to ant biology, a complete retrieval history, or independent text annotation.
+The archived abstract input contains 7609 strings. The headline analysis includes 7599 strings whose SHA-256 digest maps to an identified PubMed record and excludes 10 unreconciled strings. Exact digest matches to retrieved PubMed abstracts can recover metadata without changing archived text. Identification establishes a source association, not relevance to ant biology, a complete retrieval history, or independent text annotation.
 
 PMC records retain title, abstract, and body text in their own shard directory. BHL records retain historical OCR and era assignments. arXiv title/abstract records form a separate preprint layer. Those documents are not concatenated into the headline abstract input. The custody audit inspects every stored record and reports missing metadata, duplicate text, identifier disagreement, unused sidecar entries, and invalid text.
 
-Digest-indexed sidecars can retain only one source identity when several records share identical text. These collisions are reported rather than resolved by inventing metadata. Broad searches include adjacent biology, computational terminology and mixed-topic historical volumes. The PMC layer includes correction and retraction notices; repeated notice boilerplate contributes to shared body text. Individual relevance, article-type screening and license review remain incomplete.
+Digest-indexed sidecars can retain only one source identity when several records share identical text. These collisions are reported rather than resolved by inventing metadata. Broad searches include adjacent biology, computational terminology and mixed-topic historical volumes. The stored PMC layer includes correction and retraction notices whose repeated boilerplate produces shared body text. Records whose titles begin with a correction, erratum or retraction prefix, including retracted full articles, are retained in the shards but excluded from full-text analysis. Individual relevance, article-type screening and license review remain incomplete.
 
 ## Normalization and Token Streams
 
@@ -683,24 +683,24 @@ Table \ref{tab:pairwise_domain} presents pairwise comparisons of per-term semant
 \hline
 \textbf{Domain A} & \textbf{Domain B} & \textbf{$t$} & \textbf{$p$ (raw)} & \textbf{$p$ (BH)} & \textbf{Std.\ diff.\ $d$} & \textbf{Sig.\ (BH)} \\
 \hline
-Behavior \& Identity & Economics & -1.1741 & 0.2453 & 0.3984 & -0.2613 & no \\
-Behavior \& Identity & Kin \& Relatedness & -0.1247 & 0.9014 & 0.9798 & -0.0316 & no \\
-Behavior \& Identity & Power \& Labor & 1.1183 & 0.2656 & 0.3984 & 0.1943 & no \\
-Behavior \& Identity & Sex \& Reproduction & -0.0254 & 0.9798 & 0.9798 & -0.0046 & no \\
-Behavior \& Identity & Unit of Individuality & 2.2826 & 0.0243 & 0.1244 & 0.3655 & no \\
-Economics & Kin \& Relatedness & 0.7908 & 0.4336 & 0.5420 & 0.2290 & no \\
-Economics & Power \& Labor & 2.1875 & 0.0332 & 0.1244 & 0.4471 & no \\
-Economics & Sex \& Reproduction & 1.1323 & 0.2621 & 0.3984 & 0.2343 & no \\
-Economics & Unit of Individuality & 3.2290 & 0.0023 & 0.0352 & 0.6170 & yes \\
-Kin \& Relatedness & Power \& Labor & 0.9250 & 0.3614 & 0.4929 & 0.2208 & no \\
-Kin \& Relatedness & Sex \& Reproduction & 0.1046 & 0.9173 & 0.9798 & 0.0248 & no \\
-Kin \& Relatedness & Unit of Individuality & 1.6961 & 0.1002 & 0.3006 & 0.3903 & no \\
-Power \& Labor & Sex \& Reproduction & -1.1186 & 0.2654 & 0.3984 & -0.1897 & no \\
-Power \& Labor & Unit of Individuality & 1.1426 & 0.2549 & 0.3984 & 0.1691 & no \\
-Sex \& Reproduction & Unit of Individuality & 2.2489 & 0.0263 & 0.1244 & 0.3564 & no \\
+Behavior \& Identity & Economics & -0.9801 & 0.3312 & 0.4516 & -0.2166 & no \\
+Behavior \& Identity & Kin \& Relatedness & -0.1601 & 0.8736 & 0.8736 & -0.0402 & no \\
+Behavior \& Identity & Power \& Labor & 1.2093 & 0.2289 & 0.4516 & 0.2101 & no \\
+Behavior \& Identity & Sex \& Reproduction & 0.1864 & 0.8525 & 0.8736 & 0.0337 & no \\
+Behavior \& Identity & Unit of Individuality & 2.3743 & 0.0192 & 0.1442 & 0.3793 & no \\
+Economics & Kin \& Relatedness & 0.6153 & 0.5417 & 0.6772 & 0.1781 & no \\
+Economics & Power \& Labor & 2.0805 & 0.0423 & 0.1586 & 0.4216 & no \\
+Economics & Sex \& Reproduction & 1.1366 & 0.2603 & 0.4516 & 0.2350 & no \\
+Economics & Unit of Individuality & 3.1260 & 0.0031 & 0.0464 & 0.5875 & yes \\
+Kin \& Relatedness & Power \& Labor & 1.0421 & 0.3045 & 0.4516 & 0.2457 & no \\
+Kin \& Relatedness & Sex \& Reproduction & 0.2982 & 0.7672 & 0.8736 & 0.0704 & no \\
+Kin \& Relatedness & Unit of Individuality & 1.8320 & 0.0767 & 0.2300 & 0.4127 & no \\
+Power \& Labor & Sex \& Reproduction & -0.9976 & 0.3203 & 0.4516 & -0.1689 & no \\
+Power \& Labor & Unit of Individuality & 1.1416 & 0.2553 & 0.4516 & 0.1687 & no \\
+Sex \& Reproduction & Unit of Individuality & 2.1273 & 0.0353 & 0.1586 & 0.3348 & no \\
 \hline
 \end{tabular}
-\caption{Exploratory pairwise Welch tests on valid per-term sentence-context entropy, with Benjamini--Hochberg adjusted $p$-values over 15 comparisons and standardized effect sizes. Threshold flags use $q=0.05$; domain groups share terms and contexts, so the flags are exploratory (Supplemental Section \ref{sec:supplemental_infrastructure}). The omnibus ANOVA yields $F(5,350)=2.5470$, $p$-value 0.0278, and $\eta^2=0.0351$.}
+\caption{Exploratory pairwise Welch tests on valid per-term sentence-context entropy, with Benjamini--Hochberg adjusted $p$-values over 15 comparisons and standardized effect sizes. Threshold flags use $q=0.05$; domain groups share terms and contexts, so the flags are exploratory (Supplemental Section \ref{sec:supplemental_infrastructure}). The omnibus ANOVA yields $F(5,350)=2.4761$, $p$-value 0.0319, and $\eta^2=0.0342$.}
 \label{tab:pairwise_domain}
 \end{table}
 
@@ -715,22 +715,22 @@ Table \ref{tab:cace_full} presents full CACE evaluations for a representative se
 \hline
 \textbf{Term} & \textbf{C} & \textbf{A} & \textbf{Cs} & \textbf{E} & \textbf{Mean} & \textbf{Extracted} \\
 \hline
-queen & 0.41 & 0.45 & 0.04 & 0.33 & 0.31 & yes \\
+queen & 0.48 & 0.45 & 0.04 & 0.33 & 0.33 & yes \\
 \textit{primary reproductive} & 1.00 & 1.00 & 0.50 & 0.00 & 0.62 & no \\
 \hline
-worker & 0.46 & 0.45 & 0.05 & 0.33 & 0.32 & yes \\
+worker & 0.42 & 0.45 & 0.05 & 0.33 & 0.31 & yes \\
 \textit{non-reproductive helper} & 1.00 & 1.00 & 0.50 & 0.00 & 0.62 & no \\
 \hline
 slave & 0.31 & 0.50 & 0.05 & 0.33 & 0.30 & yes \\
 \textit{host worker} & 1.00 & 0.40 & 0.50 & 0.00 & 0.47 & no \\
 \hline
-caste & 0.44 & 1.00 & 0.07 & 0.33 & 0.46 & yes \\
+caste & 0.36 & 1.00 & 0.06 & 0.33 & 0.44 & yes \\
 \textit{task group} & 1.00 & 1.00 & 0.50 & 0.00 & 0.62 & no \\
 \hline
-soldier & 0.38 & 0.50 & 0.11 & 0.17 & 0.29 & yes \\
+soldier & 0.35 & 0.50 & 0.10 & 0.17 & 0.28 & yes \\
 \textit{major worker} & 1.00 & 0.50 & 0.50 & 0.00 & 0.50 & no \\
 \hline
-colony & 0.44 & 1.00 & 0.03 & 0.33 & 0.45 & yes \\
+colony & 0.47 & 1.00 & 0.03 & 0.33 & 0.46 & yes \\
 haplodiploidy & 0.31 & 1.00 & 0.05 & 0.17 & 0.38 & yes \\
 trophallaxis & 0.33 & 1.00 & 0.06 & 0.17 & 0.39 & yes \\
 \hline
@@ -749,14 +749,14 @@ Table \ref{tab:entropy_distribution} summarizes the distribution of semantic ent
 \hline
 \textbf{Domain} & \textbf{Mean $H$ (bits)} & \textbf{High-entropy terms (\%)} & \textbf{$N$} \\
 \hline
-Economics & 1.86 & 57.7 & 26 \\
-Power \& Labor & 1.64 & 34.2 & 76 \\
-Behavior \& Identity & 1.74 & 41.1 & 56 \\
-Sex \& Reproduction & 1.74 & 53.1 & 64 \\
+Economics & 1.85 & 46.2 & 26 \\
+Power \& Labor & 1.64 & 31.6 & 76 \\
+Behavior \& Identity & 1.74 & 44.6 & 56 \\
+Sex \& Reproduction & 1.73 & 43.8 & 64 \\
 Unit of Individuality & 1.55 & 26.8 & 112 \\
-Kin \& Relatedness & 1.75 & 45.5 & 22 \\
+Kin \& Relatedness & 1.76 & 45.5 & 22 \\
 \hline
-\textbf{Overall} & 1.67 & 38.8 & \textbf{ 356 } \\
+\textbf{Overall} & 1.67 & 36.2 & \textbf{ 356 } \\
 \hline
 \end{tabular}
 \caption{Distribution of sentence-context entropy $H(t)$ across Ento-Linguistic domains (Eq.~\ref{eq:semantic_entropy}; cluster-count rule in Methods). High-entropy terms exceed $H > 2.0$ bits; the statistic summarizes occupancy of computational clusters, not annotated senses. Normalized entropy divides by $\log_2 k_{\mathrm{occupied}}$ and is zero when one cluster is occupied. $N$ counts terms with usable estimates; Overall sums valid domain memberships, so a multi-domain term can count more than once, and its mean and high-entropy percentage use that same denominator.}
@@ -769,21 +769,23 @@ The statistics artifact reports per-term valid-entropy descriptives (means and s
 
 ## Full-Text Parallel Layer
 
-A complementary descriptive analysis was run over 7073 open
-access full texts harvested from PubMed Central (PMC). The abstract corpus
+A complementary descriptive analysis was run over 6997 open
+access full texts harvested from PubMed Central (PMC), after excluding
+76 correction, erratum and retraction notices and retracted items
+from 7073 stored records. The abstract corpus
 remains the headline corpus of this study; the full-text layer is reported
 here as a separate convenience sample with a higher extraction threshold. The analysis machinery is shared: the same
 terminology extraction, domain assignment, semantic-entropy, and CACE
 scoring implementations are applied to full texts (Figure
 \ref{fig:fulltext_analysis}).
 
-The layer comprises 44,507,505 tokens of running text, with a
-per-document median of 5624 tokens. Table
+The layer comprises 44,476,595 tokens of running text, with a
+per-document median of 5651 tokens. Table
 \ref{tab:fulltext_domain} reports per-domain term counts and mean semantic
 entropy over the full texts; 15 pairwise Welch
 $t$-tests (Benjamini-Hochberg corrected, as in Table
 \ref{tab:pairwise_domain}) accompany the omnibus one-way ANOVA on per-term
-semantic entropy, $F = 8.6337$, $p$-value <0.0001.
+semantic entropy, $F = 7.7409$, $p$-value <0.0001.
 
 Anthropomorphic framing over the same full texts is scored as the
 proportion of domain-term occurrence contexts containing an anthropomorphic
@@ -800,12 +802,12 @@ for Behavior \& Identity.
 \hline
 \textbf{Domain} & \textbf{Terms extracted} & \textbf{Mean $H$ (bits)} \\
 \hline
-Behavior \& Identity & 96 & 1.9654 \\
-Economics & 35 & 1.7796 \\
-Kin \& Relatedness & 24 & 1.9768 \\
-Power \& Labor & 118 & 2.0165 \\
-Sex \& Reproduction & 86 & 2.0407 \\
-Unit of Individuality & 241 & 2.0240 \\
+Behavior \& Identity & 96 & 1.9700 \\
+Economics & 35 & 1.7970 \\
+Kin \& Relatedness & 24 & 1.9878 \\
+Power \& Labor & 118 & 2.0102 \\
+Sex \& Reproduction & 86 & 2.0381 \\
+Unit of Individuality & 241 & 2.0274 \\
 \hline
 \end{tabular}
 \caption{Per-domain terminology in the PMC full-text parallel layer: extracted-term counts and mean semantic entropy $H(t)$, computed over valid estimates with the same pipeline as the abstract layer; valid-estimate counts appear in Figure \ref{fig:fulltext_analysis}. Term extraction uses a higher minimum token frequency than the abstract layer because full texts are substantially longer.}
@@ -818,41 +820,41 @@ A shared discourse stage counts rule-based markers of discourse patterns,
 rhetorical strategies, argumentative structures, and persuasive techniques
 in both layers. Texts shorter than 200
 characters are excluded. The abstract pass therefore covers
-7524 texts (16
+7583 texts (16
 excluded as too short; 100.0\% of the
-eligible texts). The full-text pass covers 1415
-of 7073 texts, a deterministic
+eligible texts). The full-text pass covers 1400
+of 6997 texts, a deterministic
 20.0\% sample of eligible texts drawn to keep
 the pass computationally bounded. Figure \ref{fig:discourse_comparison}
 compares the two layers; panels spanning orders of magnitude use a symlog
 frequency axis.
 
-Discourse patterns occur 1271
+Discourse patterns occur 1278
 times as hierarchical framing in the abstract layer against
-1108 occurrences in the
-full-text layer, with 1038 versus
-1090 economic metaphors,
-30 versus
-47 anthropomorphic framings,
+1098 occurrences in the
+full-text layer, with 1045 versus
+1088 economic metaphors,
+32 versus
+52 anthropomorphic framings,
 and 27 versus
-33 scale-ambiguous constructions.
+22 scale-ambiguous constructions.
 
 Rhetorical-strategy marker counts in the two layers are:
-1563 anecdotal markers in the abstract
-layer versus 9229 in full texts,
-244 versus
-29,224 authority markers,
-446 versus
-1793 analogies, and
-1141 versus
-4228 generalizations.
+1578 anecdotal markers in the abstract
+layer versus 9446 in full texts,
+246 versus
+30,330 authority markers,
+456 versus
+1944 analogies, and
+1148 versus
+4204 generalizations.
 
 The argumentative-structure pass identifies
-1786 argumentative structures in the abstract
-layer versus 1300 in the full-text sample.
+1803 argumentative structures in the abstract
+layer versus 1292 in the full-text sample.
 Metaphorical-language markers occur
-3800 times in the abstract layer
-against 20,772 occurrences in full
+3830 times in the abstract layer
+against 21,140 occurrences in full
 texts. All frequencies are raw marker counts. The layers differ in size
 and sampling, so these counts are not prevalence comparisons.
 
@@ -864,35 +866,35 @@ Figures \ref{fig:statistical_analysis}--\ref{fig:arxiv_analysis} summarize the h
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/statistical_analysis.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/statistical_analysis.png}
 \caption{Headline valid-entropy descriptives with nominal intervals, bias-corrected standardized differences, and exploratory ANOVA. Bar annotations report valid term counts; overlapping domain memberships and shared document contexts limit population inference.}
 \label{fig:statistical_analysis}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/fulltext_analysis.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/fulltext_analysis.png}
 \caption{Separate PMC full-text statistics over all stored records by default. Extraction thresholds and context distributions differ from the abstract layer. Nominal intervals and multiplicity-adjusted threshold flags remain exploratory.}
 \label{fig:fulltext_analysis}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/layer_comparison.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/layer_comparison.png}
 \caption{Mean valid context-cluster entropy in the abstract and PMC layers, with valid-term counts. This compares distinct convenience samples and extraction thresholds; it is not a matched robustness experiment or evidence of causal language effects.}
 \label{fig:layer_comparison}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/discourse_comparison.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/discourse_comparison.png}
 \caption{Lexical discourse, rhetorical and persuasive-pattern counts, with analyzed-text counts shown in the legend. PMC uses an explicitly bounded text sample. Raw frequencies depend on sample size and text length and must not be read as normalized prevalence or human-validated author intent.}
 \label{fig:discourse_comparison}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/arxiv_analysis.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/arxiv_analysis.png}
 \caption{Separate arXiv preprint-layer descriptives and exploratory comparisons. Some groups have only one valid entropy estimate, for which intervals are omitted; very small groups and nearly zero within-group variance can yield large standardized differences without establishing generalizable effects.}
 \label{fig:arxiv_analysis}
 \end{figure}
@@ -991,7 +993,7 @@ superorganism & 0.0003 & 0.0007 & 0.0051 \\
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/bhl_term_usage.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/bhl_term_usage.png}
 \caption{Full-corpus historical literal frequencies for six seed terms. Each panel uses its own rate axis. Neither zeros nor changing rates establish conceptual origin, prevalence in all entomological literature, or causal influence on research.}
 \label{fig:bhl_term_usage}
 \end{figure}

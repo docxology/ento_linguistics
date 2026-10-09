@@ -4,12 +4,12 @@ This extension supplements the descriptive network analysis. It independently re
 
 ## Protocol and results
 
-7540 identified abstracts; 100 frequency-ranked domain-assigned terms; three seeds; 200 retained draws per chain, after 10 attempted-trade sweeps of burn-in, with 1 sweep(s) between draws. A sweep is one attempted trade per document, including no-ops.
+7599 identified abstracts; 100 frequency-ranked domain-assigned terms; three seeds; 200 retained draws per chain, after 10 attempted-trade sweeps of burn-in, with 1 sweep(s) between draws. A sweep is one attempted trade per document, including no-ops.
 
 | Statistic | Observed | Null mean | Central 95% null envelope | R-hat |
 | --- | ---: | ---: | ---: | ---: |
-| edges | 4232 | 4519.59 | 4486–4558 | 1.0012 |
-| clustering | 0.894841 | 0.932318 | 0.928068–0.937206 | 0.9991 |
+| edges | 4235 | 4533.58 | 4501–4568 | 1.0060 |
+| clustering | 0.895456 | 0.934107 | 0.929678–0.938557 | 1.0030 |
 
 The envelope describes the sampled conditional null, not uncertainty about the observed estimate. R-hat compares retained-chain variances; it is a diagnostic and does not prove mixing. Empirical tail fractions are available in the JSON but are not reported as confirmatory p-values. The 25/50/100-term sensitivity summaries condition on the same frequency ranking.
 

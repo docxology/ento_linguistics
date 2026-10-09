@@ -45,7 +45,10 @@ __all__ = [
     "PMC_SEARCH_QUERY",
     "PMCFulltextHarvester",
     "SHARD_SIZE",
+    "EDITORIAL_NOTICE_TITLE",
     "dedupe_by_pmcid",
+    "exclude_editorial_notices",
+    "is_editorial_notice",
     "is_relevant",
     "load_citation_counts",
     "load_corpus_pmcids",
@@ -197,6 +200,55 @@ def load_fulltexts(data_dir: Path) -> List[Dict[str, Any]]:
     for path in shard_paths(data_dir):
         records.extend(read_shard(path))
     return records
+
+
+#: Title prefix of a post-publication notice or retracted-item record:
+#: "Correction:", "Author Correction:", "Publisher Correction:",
+#: "Correction to ...", "Corrigendum"/"Corrigenda", "Erratum"/"Errata",
+#: "Retraction", "Retracted"/"RETRACTED:". The prefix must be followed by a
+#: colon, or by "to"/"for" and a colon or opening quote within a short
+#: citation ("Erratum for Green et al., “..."), so research titles such as
+#: "Correction of ..." or "Correction for phylogeny in ..." stay.
+EDITORIAL_NOTICE_TITLE = re.compile(
+    r"^\s*(?:(?:author|publisher)\s+)?"
+    r"(?:correction|corrigend(?:um|a)|errat(?:um|a)|retraction|retracted)"
+    r"(?:\s*:|\s+(?:to|for)\b[^:\"“‘']{0,40}[:\"“‘'])",
+    re.IGNORECASE,
+)
+
+
+def is_editorial_notice(record: Dict[str, Any]) -> bool:
+    """Whether a corpus record is a correction/retraction notice or retracted item.
+
+    Args:
+        record: Full-text corpus record.
+
+    Returns:
+        ``True`` when the record title carries an editorial-status prefix
+        (see :data:`EDITORIAL_NOTICE_TITLE`).
+    """
+    return bool(EDITORIAL_NOTICE_TITLE.match(record.get("title") or ""))
+
+
+def exclude_editorial_notices(
+    records: List[Dict[str, Any]],
+) -> tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """Split stored records into analyzed records and excluded notices.
+
+    The stored shards are unchanged; the exclusion applies only to the
+    analysis layer, preserving input order.
+
+    Args:
+        records: Full-text corpus records, as loaded from the shards.
+
+    Returns:
+        ``(kept, excluded)`` lists.
+    """
+    kept: List[Dict[str, Any]] = []
+    excluded: List[Dict[str, Any]] = []
+    for record in records:
+        (excluded if is_editorial_notice(record) else kept).append(record)
+    return kept, excluded
 
 
 def load_corpus_pmcids(data_dir: Path, provenance_path: Path) -> set:

@@ -1561,11 +1561,11 @@ def _ensure_fulltext_artifact(
         )
         return None
     try:
-        from data.pmc_fulltext import load_fulltexts
+        from data.pmc_fulltext import exclude_editorial_notices, load_fulltexts
     except (ImportError, ValueError):
-        from src.data.pmc_fulltext import load_fulltexts
+        from src.data.pmc_fulltext import exclude_editorial_notices, load_fulltexts
 
-    corpus = load_fulltexts(Path(fulltexts_dir))
+    corpus, notices = exclude_editorial_notices(load_fulltexts(Path(fulltexts_dir)))
     fingerprint = _fulltext_corpus_fingerprint(corpus, fulltexts_dir)
     limit_env = os.environ.get("FULLTEXT_ANALYSIS_LIMIT")
     limit = int(limit_env) if limit_env else None
@@ -1611,6 +1611,11 @@ def _ensure_fulltext_artifact(
 
         builder = build_fulltext_analysis
     artifact = builder(fulltexts)
+    artifact["stored_records"] = len(corpus) + len(notices)
+    artifact["excluded_editorial_notices"] = [
+        {"pmcid": record.get("pmcid"), "title": record.get("title")}
+        for record in notices
+    ]
     artifact["corpus_fingerprint"] = bounded_fingerprint
     os.makedirs(data_dir, exist_ok=True)
     with open(artifact_path, "w") as f:
@@ -1799,12 +1804,12 @@ def _merge_discourse_sections(data_dir: str, fulltexts_dir: str) -> None:
         )
         return
     try:
-        from data.pmc_fulltext import load_fulltexts
+        from data.pmc_fulltext import exclude_editorial_notices, load_fulltexts
     except (ImportError, ValueError):
-        from src.data.pmc_fulltext import load_fulltexts
+        from src.data.pmc_fulltext import exclude_editorial_notices, load_fulltexts
     from pipeline.fulltext_pipeline import _document_text
 
-    records = load_fulltexts(Path(fulltexts_dir))
+    records, _ = exclude_editorial_notices(load_fulltexts(Path(fulltexts_dir)))
     _merge(fulltext_path, [_document_text(record) for record in records])
 
 

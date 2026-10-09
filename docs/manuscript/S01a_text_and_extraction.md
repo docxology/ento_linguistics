@@ -8,7 +8,7 @@ The archived abstract input contains {{CORPUS_STORED_RECORDS}} strings. The head
 
 PMC records retain title, abstract, and body text in their own shard directory. BHL records retain historical OCR and era assignments. arXiv title/abstract records form a separate preprint layer. Those documents are not concatenated into the headline abstract input. The custody audit inspects every stored record and reports missing metadata, duplicate text, identifier disagreement, unused sidecar entries, and invalid text.
 
-Digest-indexed sidecars can retain only one source identity when several records share identical text. These collisions are reported rather than resolved by inventing metadata. Broad searches include adjacent biology, computational terminology and mixed-topic historical volumes. The PMC layer includes correction and retraction notices; repeated notice boilerplate contributes to shared body text. Individual relevance, article-type screening and license review remain incomplete.
+Digest-indexed sidecars can retain only one source identity when several records share identical text. These collisions are reported rather than resolved by inventing metadata. Broad searches include adjacent biology, computational terminology and mixed-topic historical volumes. The stored PMC layer includes correction and retraction notices whose repeated boilerplate produces shared body text. Records whose titles begin with a correction, erratum or retraction prefix, including retracted full articles, are retained in the shards but excluded from full-text analysis. Individual relevance, article-type screening and license review remain incomplete.
 
 ## Normalization and Token Streams
 

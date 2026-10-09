@@ -1,9 +1,9 @@
 {
   "behavior_and_identity": {
-    "cace_mean": 0.4278753762402198,
+    "cace_mean": 0.4282055792355313,
     "term_count": 262,
     "avg_confidence": 0.8133587786259542,
-    "total_frequency": 16896,
+    "total_frequency": 17119,
     "bridging_term_count": 91,
     "bridging_terms": [
       "ant-behavior",
@@ -98,19 +98,19 @@
       "worker-worker",
       "\u03b1-worker"
     ],
-    "semantic_entropy": 1.7376147086230733,
+    "semantic_entropy": 1.7442990777464367,
     "entropy_valid_terms": 56,
     "entropy_excluded_terms": 206,
-    "ambiguity_score": 1.7376147086230733,
-    "anthropomorphic_proportion": 0.009825,
-    "high_entropy_count": 23,
-    "high_entropy_pct": 41.1
+    "ambiguity_score": 1.7442990777464367,
+    "anthropomorphic_proportion": 0.009755,
+    "high_entropy_count": 25,
+    "high_entropy_pct": 44.6
   },
   "unit_of_individuality": {
-    "cace_mean": 0.43178285607048894,
-    "term_count": 526,
-    "avg_confidence": 0.8222433460076046,
-    "total_frequency": 27813,
+    "cace_mean": 0.4323054699656255,
+    "term_count": 530,
+    "avg_confidence": 0.8224528301886793,
+    "total_frequency": 28194,
     "bridging_term_count": 24,
     "bridging_terms": [
       "ant-behavior",
@@ -138,20 +138,20 @@
       "sister-group",
       "workers-as-a-collective-dominant"
     ],
-    "semantic_entropy": 1.5523029296476163,
+    "semantic_entropy": 1.5517855180678837,
     "entropy_valid_terms": 112,
-    "entropy_excluded_terms": 414,
-    "ambiguity_score": 1.5523029296476163,
-    "anthropomorphic_proportion": 0.011505,
+    "entropy_excluded_terms": 418,
+    "ambiguity_score": 1.5517855180678837,
+    "anthropomorphic_proportion": 0.011385,
     "high_entropy_count": 30,
     "high_entropy_pct": 26.8
   },
   "sex_and_reproduction": {
-    "cace_mean": 0.41967362000696345,
-    "term_count": 244,
-    "avg_confidence": 0.8192622950819674,
-    "total_frequency": 9165,
-    "bridging_term_count": 61,
+    "cace_mean": 0.42134362838875944,
+    "term_count": 245,
+    "avg_confidence": 0.8200000000000002,
+    "total_frequency": 9334,
+    "bridging_term_count": 62,
     "bridging_terms": [
       "among-queen",
       "ant-mating",
@@ -205,6 +205,7 @@
       "queen-size",
       "queen-specific",
       "queen-tolerant",
+      "queen-treated",
       "queen-worker",
       "sibling-mating",
       "single-queen",
@@ -215,38 +216,38 @@
       "worker-to-brood",
       "worker-to-queen"
     ],
-    "semantic_entropy": 1.7400006526083447,
+    "semantic_entropy": 1.726989878027706,
     "entropy_valid_terms": 64,
-    "entropy_excluded_terms": 180,
-    "ambiguity_score": 1.7400006526083447,
-    "anthropomorphic_proportion": 0.017239,
-    "high_entropy_count": 34,
-    "high_entropy_pct": 53.1
+    "entropy_excluded_terms": 181,
+    "ambiguity_score": 1.726989878027706,
+    "anthropomorphic_proportion": 0.017142,
+    "high_entropy_count": 28,
+    "high_entropy_pct": 43.8
   },
   "economics": {
-    "cace_mean": 0.5379327324900423,
-    "term_count": 78,
-    "avg_confidence": 0.8128205128205125,
-    "total_frequency": 4458,
+    "cace_mean": 0.5366779371840402,
+    "term_count": 79,
+    "avg_confidence": 0.8126582278481009,
+    "total_frequency": 4508,
     "bridging_term_count": 3,
     "bridging_terms": [
       "brood-benefit",
       "nest-sharing",
       "task-allocation"
     ],
-    "semantic_entropy": 1.8608692209943674,
+    "semantic_entropy": 1.8455471920361548,
     "entropy_valid_terms": 26,
-    "entropy_excluded_terms": 52,
-    "ambiguity_score": 1.8608692209943674,
-    "anthropomorphic_proportion": 0.075146,
-    "high_entropy_count": 15,
-    "high_entropy_pct": 57.7
+    "entropy_excluded_terms": 53,
+    "ambiguity_score": 1.8455471920361548,
+    "anthropomorphic_proportion": 0.074534,
+    "high_entropy_count": 12,
+    "high_entropy_pct": 46.2
   },
   "kin_and_relatedness": {
-    "cace_mean": 0.5558620770332038,
-    "term_count": 83,
-    "avg_confidence": 0.8048192771084337,
-    "total_frequency": 3957,
+    "cace_mean": 0.5544850221471279,
+    "term_count": 84,
+    "avg_confidence": 0.8047619047619047,
+    "total_frequency": 4040,
     "bridging_term_count": 4,
     "bridging_terms": [
       "behavior-kin",
@@ -254,20 +255,20 @@
       "sibling-mating",
       "sister-group"
     ],
-    "semantic_entropy": 1.7533580422200266,
+    "semantic_entropy": 1.7640856647628966,
     "entropy_valid_terms": 22,
-    "entropy_excluded_terms": 61,
-    "ambiguity_score": 1.7533580422200266,
-    "anthropomorphic_proportion": 0.012889,
+    "entropy_excluded_terms": 62,
+    "ambiguity_score": 1.7640856647628966,
+    "anthropomorphic_proportion": 0.012871,
     "high_entropy_count": 10,
     "high_entropy_pct": 45.5
   },
   "power_and_labor": {
-    "cace_mean": 0.3712964234868676,
-    "term_count": 294,
-    "avg_confidence": 0.8224489795918366,
-    "total_frequency": 12306,
-    "bridging_term_count": 138,
+    "cace_mean": 0.3690847241482562,
+    "term_count": 295,
+    "avg_confidence": 0.8223728813559321,
+    "total_frequency": 12533,
+    "bridging_term_count": 139,
     "bridging_terms": [
       "among-queen",
       "ant-cultivar-parasite-bacterium",
@@ -358,6 +359,7 @@
       "queen-size",
       "queen-specific",
       "queen-tolerant",
+      "queen-treated",
       "queen-worker",
       "reproductive-caste",
       "single-queen",
@@ -408,12 +410,12 @@
       "workers-as-a-collective-dominant",
       "\u03b1-worker"
     ],
-    "semantic_entropy": 1.6394464511564606,
+    "semantic_entropy": 1.638658257248097,
     "entropy_valid_terms": 76,
-    "entropy_excluded_terms": 218,
-    "ambiguity_score": 1.6394464511564606,
-    "anthropomorphic_proportion": 0.011702,
-    "high_entropy_count": 26,
-    "high_entropy_pct": 34.2
+    "entropy_excluded_terms": 219,
+    "ambiguity_score": 1.638658257248097,
+    "anthropomorphic_proportion": 0.011569,
+    "high_entropy_count": 24,
+    "high_entropy_pct": 31.6
   }
 }

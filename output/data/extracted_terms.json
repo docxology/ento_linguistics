@@ -1338,6 +1338,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "-uninfected": {
+    "lemma": "-uninfected",
+    "domains": [],
+    "frequency": 2,
+    "confidence": 0.4,
+    "n_contexts": 2
+  },
   "-uninvaded": {
     "lemma": "-uninvaded",
     "domains": [],
@@ -2076,9 +2083,9 @@
   "1-5": {
     "lemma": "1-5",
     "domains": [],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "1-50": {
     "lemma": "1-50",
@@ -2384,9 +2391,9 @@
   "10-12": {
     "lemma": "10-12",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "10-15": {
     "lemma": "10-15",
@@ -5188,6 +5195,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "2015-2017": {
+    "lemma": "2015-2017",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "2016-2017": {
     "lemma": "2016-2017",
     "domains": [],
@@ -6395,9 +6409,9 @@
   "3-methylalkanes": {
     "lemma": "3-methylalkanes",
     "domains": [],
-    "frequency": 2,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 5
   },
   "3-methylbenzo": {
     "lemma": "3-methylbenzo",
@@ -6534,6 +6548,13 @@
   },
   "30-18": {
     "lemma": "30-18",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "30-35": {
+    "lemma": "30-35",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -8536,6 +8557,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "5242335-2359": {
+    "lemma": "5242335-2359",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "525901-918": {
     "lemma": "525901-918",
     "domains": [],
@@ -8595,9 +8623,9 @@
   "55-60": {
     "lemma": "55-60",
     "domains": [],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.4,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "55-63": {
     "lemma": "55-63",
@@ -8965,6 +8993,13 @@
   },
   "60-94": {
     "lemma": "60-94",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "60-95": {
+    "lemma": "60-95",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -9862,9 +9897,9 @@
   "9-exon": {
     "lemma": "9-exon",
     "domains": [],
-    "frequency": 19,
+    "frequency": 20,
     "confidence": 0.6,
-    "n_contexts": 19
+    "n_contexts": 20
   },
   "9-hda": {
     "lemma": "9-hda",
@@ -10922,7 +10957,7 @@
   "age-dependent": {
     "lemma": "age-dependent",
     "domains": [],
-    "frequency": 34,
+    "frequency": 36,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -11089,7 +11124,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 574,
+    "frequency": 577,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -11681,6 +11716,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "all-surface": {
+    "lemma": "all-surface",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "all-trans": {
     "lemma": "all-trans",
     "domains": [],
@@ -11758,7 +11800,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 210,
+    "frequency": 219,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -12400,6 +12442,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "animal-built": {
+    "lemma": "animal-built",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "animal-derived": {
     "lemma": "animal-derived",
     "domains": [],
@@ -12505,7 +12554,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 8631,
+    "frequency": 8736,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -13425,9 +13474,9 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 14,
+    "frequency": 15,
     "confidence": 0.9999999999999999,
-    "n_contexts": 14
+    "n_contexts": 15
   },
   "ant-lion": {
     "lemma": "ant-lion",
@@ -13910,6 +13959,15 @@
   },
   "ant-pseudonocardia": {
     "lemma": "ant-pseudonocardia",
+    "domains": [
+      "unit_of_individuality"
+    ],
+    "frequency": 1,
+    "confidence": 0.7999999999999999,
+    "n_contexts": 1
+  },
+  "ant-psyllid": {
+    "lemma": "ant-psyllid",
     "domains": [
       "unit_of_individuality"
     ],
@@ -16397,7 +16455,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 2357,
+    "frequency": 2374,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -16503,7 +16561,7 @@
   "behavioral": {
     "lemma": "behavioral",
     "domains": [],
-    "frequency": 1137,
+    "frequency": 1146,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -16559,7 +16617,7 @@
   "behaviors": {
     "lemma": "behavior",
     "domains": [],
-    "frequency": 659,
+    "frequency": 664,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -16603,7 +16661,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 1281,
+    "frequency": 1292,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -16704,7 +16762,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 330,
+    "frequency": 332,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -18253,7 +18311,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 809,
+    "frequency": 831,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -19194,9 +19252,9 @@
   "carbohydrate-rich": {
     "lemma": "carbohydrate-rich",
     "domains": [],
-    "frequency": 18,
+    "frequency": 19,
     "confidence": 0.6,
-    "n_contexts": 18
+    "n_contexts": 19
   },
   "carbon-": {
     "lemma": "carbon-",
@@ -19400,7 +19458,7 @@
       "behavior_and_identity",
       "power_and_labor"
     ],
-    "frequency": 741,
+    "frequency": 761,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -19610,7 +19668,7 @@
       "behavior_and_identity",
       "power_and_labor"
     ],
-    "frequency": 78,
+    "frequency": 79,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -19651,7 +19709,7 @@
   "castes": {
     "lemma": "caste",
     "domains": [],
-    "frequency": 486,
+    "frequency": 497,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -20061,9 +20119,9 @@
   "cestode-infected": {
     "lemma": "cestode-infected",
     "domains": [],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "cg-site": {
     "lemma": "cg-site",
@@ -20221,6 +20279,13 @@
   },
   "chc-based": {
     "lemma": "chc-based",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "chc-poor": {
+    "lemma": "chc-poor",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -20928,6 +20993,15 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "clerid-ant": {
+    "lemma": "clerid-ant",
+    "domains": [
+      "unit_of_individuality"
+    ],
+    "frequency": 1,
+    "confidence": 0.7999999999999999,
+    "n_contexts": 1
+  },
   "clicking": {
     "lemma": "clicking",
     "domains": [],
@@ -21155,9 +21229,9 @@
   "co-adapted": {
     "lemma": "co-adapted",
     "domains": [],
-    "frequency": 3,
+    "frequency": 4,
     "confidence": 0.4,
-    "n_contexts": 3
+    "n_contexts": 4
   },
   "co-adaptive": {
     "lemma": "co-adaptive",
@@ -21290,9 +21364,9 @@
   "co-evolutionary": {
     "lemma": "co-evolutionary",
     "domains": [],
-    "frequency": 15,
+    "frequency": 17,
     "confidence": 0.6,
-    "n_contexts": 15
+    "n_contexts": 17
   },
   "co-evolve": {
     "lemma": "co-evolve",
@@ -21311,9 +21385,9 @@
   "co-evolving": {
     "lemma": "co-evolving",
     "domains": [],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.4,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "co-exist": {
     "lemma": "co-exist",
@@ -21598,7 +21672,7 @@
   "co-opted": {
     "lemma": "co-opted",
     "domains": [],
-    "frequency": 33,
+    "frequency": 34,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -21884,6 +21958,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "codimension-2": {
+    "lemma": "codimension-2",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "coding-region": {
     "lemma": "coding-region",
     "domains": [],
@@ -21931,7 +22012,7 @@
   "coevolution": {
     "lemma": "coevolution",
     "domains": [],
-    "frequency": 92,
+    "frequency": 94,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -21945,7 +22026,7 @@
   "coevolutionary": {
     "lemma": "coevolutionary",
     "domains": [],
-    "frequency": 59,
+    "frequency": 60,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -22080,7 +22161,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 523,
+    "frequency": 541,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -22133,7 +22214,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 3482,
+    "frequency": 3546,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -22233,7 +22314,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 140,
+    "frequency": 144,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -22251,9 +22332,9 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 5,
-    "confidence": 0.7999999999999999,
-    "n_contexts": 5
+    "frequency": 6,
+    "confidence": 0.9,
+    "n_contexts": 6
   },
   "colony-merger": {
     "lemma": "colony-merger",
@@ -22323,7 +22404,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 68,
+    "frequency": 69,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -22372,14 +22453,23 @@
     "confidence": 0.7999999999999999,
     "n_contexts": 1
   },
+  "colony-treated": {
+    "lemma": "colony-treated",
+    "domains": [
+      "unit_of_individuality"
+    ],
+    "frequency": 1,
+    "confidence": 0.7999999999999999,
+    "n_contexts": 1
+  },
   "colony-wide": {
     "lemma": "colony-wide",
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 16,
+    "frequency": 17,
     "confidence": 0.9999999999999999,
-    "n_contexts": 16
+    "n_contexts": 17
   },
   "colony11-and": {
     "lemma": "colony11-and",
@@ -22390,6 +22480,13 @@
   },
   "colony13": {
     "lemma": "colony13",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.2,
+    "n_contexts": 1
+  },
+  "colonyconsistent": {
+    "lemma": "colonyconsistent",
     "domains": [],
     "frequency": 1,
     "confidence": 0.2,
@@ -22896,6 +22993,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "cone-boring": {
+    "lemma": "cone-boring",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "cone-feeding": {
     "lemma": "cone-feeding",
     "domains": [],
@@ -22931,7 +23035,7 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 290,
+    "frequency": 297,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -23253,7 +23357,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 1308,
+    "frequency": 1314,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -23343,7 +23447,7 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 227,
+    "frequency": 229,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -23461,7 +23565,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 297,
+    "frequency": 299,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -23859,9 +23963,9 @@
   "cross-disciplinary": {
     "lemma": "cross-disciplinary",
     "domains": [],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.4,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "cross-ecosystem": {
     "lemma": "cross-ecosystem",
@@ -23965,6 +24069,15 @@
     "confidence": 0.7999999999999999,
     "n_contexts": 1
   },
+  "cross-nestmate": {
+    "lemma": "cross-nestmate",
+    "domains": [
+      "unit_of_individuality"
+    ],
+    "frequency": 1,
+    "confidence": 0.7999999999999999,
+    "n_contexts": 1
+  },
   "cross-pollinated": {
     "lemma": "cross-pollinated",
     "domains": [],
@@ -24038,9 +24151,9 @@
   "cross-species": {
     "lemma": "cross-species",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "cross-specific": {
     "lemma": "cross-specific",
@@ -25101,7 +25214,7 @@
   "decision-making": {
     "lemma": "decision-making",
     "domains": [],
-    "frequency": 132,
+    "frequency": 134,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -25235,6 +25348,15 @@
     "confidence": 0.7999999999999999,
     "n_contexts": 2
   },
+  "demand-varies": {
+    "lemma": "demand-varies",
+    "domains": [
+      "economics"
+    ],
+    "frequency": 1,
+    "confidence": 0.7999999999999999,
+    "n_contexts": 1
+  },
   "dendrites-likewise": {
     "lemma": "dendrites-likewise",
     "domains": [],
@@ -25363,6 +25485,13 @@
   },
   "desiccation-sensitive": {
     "lemma": "desiccation-sensitive",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "designs4-15": {
+    "lemma": "designs4-15",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -25623,9 +25752,9 @@
   "different-sized": {
     "lemma": "different-sized",
     "domains": [],
-    "frequency": 5,
-    "confidence": 0.4,
-    "n_contexts": 5
+    "frequency": 6,
+    "confidence": 0.5,
+    "n_contexts": 6
   },
   "different-time": {
     "lemma": "different-time",
@@ -25758,7 +25887,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 146,
+    "frequency": 147,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -25864,6 +25993,13 @@
   },
   "disease-resistant": {
     "lemma": "disease-resistant",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "disease-signalling": {
+    "lemma": "disease-signalling",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -26028,7 +26164,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 857,
+    "frequency": 868,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -26079,7 +26215,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 493,
+    "frequency": 513,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -26268,7 +26404,7 @@
   "dominance": {
     "lemma": "dominance",
     "domains": [],
-    "frequency": 346,
+    "frequency": 348,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -26335,7 +26471,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 524,
+    "frequency": 525,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -26521,9 +26657,9 @@
   "double-stranded": {
     "lemma": "double-stranded",
     "domains": [],
-    "frequency": 5,
-    "confidence": 0.4,
-    "n_contexts": 5
+    "frequency": 6,
+    "confidence": 0.5,
+    "n_contexts": 6
   },
   "double-walled": {
     "lemma": "double-walled",
@@ -27493,7 +27629,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 530,
+    "frequency": 546,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -27609,7 +27745,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 288,
+    "frequency": 291,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -27699,7 +27835,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 90,
+    "frequency": 91,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -28748,6 +28884,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "ethanol-preserved": {
+    "lemma": "ethanol-preserved",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "ethno-entomological": {
     "lemma": "ethno-entomological",
     "domains": [],
@@ -28783,7 +28926,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 904,
+    "frequency": 917,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -28792,7 +28935,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 317,
+    "frequency": 320,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -28922,7 +29065,7 @@
   "evolution": {
     "lemma": "evolution",
     "domains": [],
-    "frequency": 1441,
+    "frequency": 1459,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -28957,14 +29100,14 @@
   "evolutionarily": {
     "lemma": "evolutionarily",
     "domains": [],
-    "frequency": 73,
+    "frequency": 75,
     "confidence": 0.4,
     "n_contexts": 30
   },
   "evolutionary": {
     "lemma": "evolutionary",
     "domains": [],
-    "frequency": 1037,
+    "frequency": 1049,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -29080,7 +29223,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 38,
+    "frequency": 39,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -29138,7 +29281,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 164,
+    "frequency": 168,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -29500,7 +29643,7 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 248,
+    "frequency": 250,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -29903,7 +30046,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 827,
+    "frequency": 837,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -29930,7 +30073,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 44,
+    "frequency": 47,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -30341,6 +30484,13 @@
     "frequency": 7,
     "confidence": 0.5,
     "n_contexts": 7
+  },
+  "finely-tuned": {
+    "lemma": "finely-tuned",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
   },
   "finer-scale": {
     "lemma": "finer-scale",
@@ -31488,7 +31638,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 217,
+    "frequency": 220,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -31567,7 +31717,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 3369,
+    "frequency": 3406,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -32160,7 +32310,7 @@
   "free-living": {
     "lemma": "free-living",
     "domains": [],
-    "frequency": 57,
+    "frequency": 58,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -32491,9 +32641,9 @@
   "full-sib": {
     "lemma": "full-sib",
     "domains": [],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.4,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "full-sibling": {
     "lemma": "full-sibling",
@@ -32516,16 +32666,16 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 3,
+    "frequency": 4,
     "confidence": 0.7999999999999999,
-    "n_contexts": 3
+    "n_contexts": 4
   },
   "full-sisters": {
     "lemma": "full-sisters",
     "domains": [],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "full-size": {
     "lemma": "full-size",
@@ -32781,7 +32931,7 @@
   "fungus-growing": {
     "lemma": "fungus-growing",
     "domains": [],
-    "frequency": 144,
+    "frequency": 146,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -32875,6 +33025,13 @@
     "frequency": 4,
     "confidence": 0.4,
     "n_contexts": 4
+  },
+  "further-namely": {
+    "lemma": "further-namely",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
   },
   "furyl-substituted": {
     "lemma": "furyl-substituted",
@@ -33526,7 +33683,7 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 1380,
+    "frequency": 1410,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -33549,7 +33706,7 @@
   "genetically": {
     "lemma": "genetically",
     "domains": [],
-    "frequency": 202,
+    "frequency": 207,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -33577,7 +33734,7 @@
   "genetics": {
     "lemma": "genetics",
     "domains": [],
-    "frequency": 66,
+    "frequency": 68,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -34577,7 +34734,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 1310,
+    "frequency": 1330,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -34713,7 +34870,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 48,
+    "frequency": 50,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -34722,7 +34879,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 36,
+    "frequency": 37,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -35016,7 +35173,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 50,
+    "frequency": 51,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -35077,7 +35234,7 @@
   "gynes": {
     "lemma": "gynes",
     "domains": [],
-    "frequency": 137,
+    "frequency": 138,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -35321,16 +35478,16 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.7999999999999999,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "half-sisters": {
     "lemma": "half-sister",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "half-way": {
     "lemma": "half-way",
@@ -35479,7 +35636,7 @@
   "haplodiploid": {
     "lemma": "haplodiploid",
     "domains": [],
-    "frequency": 53,
+    "frequency": 54,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -35511,7 +35668,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 64,
+    "frequency": 65,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -35604,9 +35761,9 @@
   "hard-wired": {
     "lemma": "hard-wired",
     "domains": [],
-    "frequency": 6,
+    "frequency": 7,
     "confidence": 0.5,
-    "n_contexts": 6
+    "n_contexts": 7
   },
   "hard-working": {
     "lemma": "hard-working",
@@ -35618,9 +35775,9 @@
   "hardy-weinberg": {
     "lemma": "hardy-weinberg",
     "domains": [],
-    "frequency": 5,
-    "confidence": 0.4,
-    "n_contexts": 5
+    "frequency": 6,
+    "confidence": 0.5,
+    "n_contexts": 6
   },
   "harming-helping": {
     "lemma": "harming-helping",
@@ -35669,9 +35826,9 @@
   "hassell-varley": {
     "lemma": "hassell-varley",
     "domains": [],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.4,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "hawk-moth": {
     "lemma": "hawk-moth",
@@ -36514,6 +36671,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "high-maturity": {
+    "lemma": "high-maturity",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "high-melting": {
     "lemma": "high-melting",
     "domains": [],
@@ -36615,9 +36779,9 @@
   "high-resolution": {
     "lemma": "high-resolution",
     "domains": [],
-    "frequency": 27,
+    "frequency": 28,
     "confidence": 0.6,
-    "n_contexts": 27
+    "n_contexts": 28
   },
   "high-reward": {
     "lemma": "high-reward",
@@ -36978,6 +37142,13 @@
   },
   "hive-to-feeder": {
     "lemma": "hive-to-feeder",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "hlb-transmission-critical": {
+    "lemma": "hlb-transmission-critical",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -37421,7 +37592,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 1919,
+    "frequency": 1936,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -37733,7 +37904,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 61,
+    "frequency": 64,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -38009,9 +38180,9 @@
       "power_and_labor",
       "unit_of_individuality"
     ],
-    "frequency": 14,
+    "frequency": 16,
     "confidence": 0.9999999999999999,
-    "n_contexts": 14
+    "n_contexts": 16
   },
   "host-tree": {
     "lemma": "host-tree",
@@ -39049,6 +39220,13 @@
     "confidence": 0.2,
     "n_contexts": 1
   },
+  "importance-rather": {
+    "lemma": "importance-rather",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "impressa-complex": {
     "lemma": "impressa-complex",
     "domains": [],
@@ -39303,7 +39481,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 1480,
+    "frequency": 1508,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -39368,7 +39546,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 31,
+    "frequency": 34,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -39495,9 +39673,9 @@
   "industrial-scale": {
     "lemma": "industrial-scale",
     "domains": [],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "industry-provided": {
     "lemma": "industry-provided",
@@ -40899,9 +41077,9 @@
   "intra-population": {
     "lemma": "intra-population",
     "domains": [],
-    "frequency": 3,
+    "frequency": 4,
     "confidence": 0.4,
-    "n_contexts": 3
+    "n_contexts": 4
   },
   "intra-sexual": {
     "lemma": "intra-sexual",
@@ -41064,7 +41242,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 271,
+    "frequency": 272,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -41249,6 +41427,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "iso-": {
+    "lemma": "iso-",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "iso-217b": {
     "lemma": "iso-217b",
     "domains": [],
@@ -41275,9 +41460,9 @@
   "isolation-by-distance": {
     "lemma": "isolation-by-distance",
     "domains": [],
-    "frequency": 6,
+    "frequency": 7,
     "confidence": 0.5,
-    "n_contexts": 6
+    "n_contexts": 7
   },
   "isotope-labeled": {
     "lemma": "isotope-labeled",
@@ -41400,6 +41585,13 @@
   },
   "jack-of-all": {
     "lemma": "jack-of-all",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "jack-of-all-trades": {
+    "lemma": "jack-of-all-trades",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -41830,7 +42022,7 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 401,
+    "frequency": 413,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -41870,6 +42062,15 @@
     "confidence": 0.7999999999999999,
     "n_contexts": 3
   },
+  "kin-informative": {
+    "lemma": "kin-informative",
+    "domains": [
+      "kin_and_relatedness"
+    ],
+    "frequency": 1,
+    "confidence": 0.7999999999999999,
+    "n_contexts": 1
+  },
   "kin-recognition": {
     "lemma": "kin-recognition",
     "domains": [
@@ -41902,9 +42103,9 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 7,
+    "frequency": 8,
     "confidence": 0.9,
-    "n_contexts": 7
+    "n_contexts": 8
   },
   "kin-selection-based": {
     "lemma": "kin-selection-based",
@@ -42057,7 +42258,7 @@
   "kingdom": {
     "lemma": "kingdom",
     "domains": [],
-    "frequency": 31,
+    "frequency": 32,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -42253,9 +42454,9 @@
   "l-alt": {
     "lemma": "l-alt",
     "domains": [],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "l-amino": {
     "lemma": "l-amino",
@@ -42437,7 +42638,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 292,
+    "frequency": 307,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -42834,7 +43035,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 64,
+    "frequency": 66,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -42879,7 +43080,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 1198,
+    "frequency": 1208,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -43152,7 +43353,7 @@
   "leaf-cutting": {
     "lemma": "leaf-cutting",
     "domains": [],
-    "frequency": 326,
+    "frequency": 331,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -43774,7 +43975,7 @@
   "life-history": {
     "lemma": "life-history",
     "domains": [],
-    "frequency": 88,
+    "frequency": 89,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -44651,7 +44852,7 @@
   "long-lived": {
     "lemma": "long-lived",
     "domains": [],
-    "frequency": 58,
+    "frequency": 59,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -44728,7 +44929,7 @@
   "long-term": {
     "lemma": "long-term",
     "domains": [],
-    "frequency": 274,
+    "frequency": 276,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -45169,6 +45370,13 @@
   },
   "low-lying": {
     "lemma": "low-lying",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "low-maturity": {
+    "lemma": "low-maturity",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -45787,7 +45995,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 793,
+    "frequency": 798,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -45835,7 +46043,7 @@
   "making": {
     "lemma": "making",
     "domains": [],
-    "frequency": 215,
+    "frequency": 217,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -45893,7 +46101,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 731,
+    "frequency": 733,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -45929,7 +46137,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 32,
+    "frequency": 33,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -45992,9 +46200,9 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.7999999999999999,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "male-harming": {
     "lemma": "male-harming",
@@ -46064,9 +46272,9 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 5,
-    "confidence": 0.7999999999999999,
-    "n_contexts": 5
+    "frequency": 6,
+    "confidence": 0.9,
+    "n_contexts": 6
   },
   "male-queen": {
     "lemma": "male-queen",
@@ -46101,9 +46309,9 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.7999999999999999,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "maleimide-functionalized": {
     "lemma": "maleimide-functionalized",
@@ -46395,9 +46603,9 @@
   "mass-specific": {
     "lemma": "mass-specific",
     "domains": [],
-    "frequency": 9,
+    "frequency": 10,
     "confidence": 0.5,
-    "n_contexts": 9
+    "n_contexts": 10
   },
   "mass-spectrometry": {
     "lemma": "mass-spectrometry",
@@ -46516,7 +46724,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 701,
+    "frequency": 715,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -46546,7 +46754,7 @@
   "matings": {
     "lemma": "mating",
     "domains": [],
-    "frequency": 48,
+    "frequency": 49,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -47102,6 +47310,13 @@
     "frequency": 4,
     "confidence": 0.4,
     "n_contexts": 4
+  },
+  "memory-dependent": {
+    "lemma": "memory-dependent",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
   },
   "memory-we": {
     "lemma": "memory-we",
@@ -48223,7 +48438,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 163,
+    "frequency": 165,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -48831,6 +49046,20 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "more-closely": {
+    "lemma": "more-closely",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "more-distantly": {
+    "lemma": "more-distantly",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "more-disturbed": {
     "lemma": "more-disturbed",
     "domains": [],
@@ -48939,9 +49168,9 @@
   "morphology-based": {
     "lemma": "morphology-based",
     "domains": [],
-    "frequency": 6,
+    "frequency": 7,
     "confidence": 0.5,
-    "n_contexts": 6
+    "n_contexts": 7
   },
   "mosquito-specific": {
     "lemma": "mosquito-specific",
@@ -49989,6 +50218,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "multiply-inseminated": {
+    "lemma": "multiply-inseminated",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "multiply-mated": {
     "lemma": "multiply-mated",
     "domains": [],
@@ -49999,9 +50235,9 @@
   "multiqueen": {
     "lemma": "multiqueen",
     "domains": [],
-    "frequency": 11,
+    "frequency": 12,
     "confidence": 0.4,
-    "n_contexts": 11
+    "n_contexts": 12
   },
   "multiqueened": {
     "lemma": "multiqueened",
@@ -51022,6 +51258,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "near-isometric": {
+    "lemma": "near-isometric",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "near-natural": {
     "lemma": "near-natural",
     "domains": [],
@@ -51374,16 +51617,16 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 11,
+    "frequency": 15,
     "confidence": 0.7999999999999999,
-    "n_contexts": 11
+    "n_contexts": 15
   },
   "nest": {
     "lemma": "nest",
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 2742,
+    "frequency": 2752,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -51437,9 +51680,9 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 5,
-    "confidence": 0.7999999999999999,
-    "n_contexts": 5
+    "frequency": 6,
+    "confidence": 0.9,
+    "n_contexts": 6
   },
   "nest-centered": {
     "lemma": "nest-centered",
@@ -51866,6 +52109,13 @@
     "confidence": 0.7999999999999999,
     "n_contexts": 4
   },
+  "nest1-3": {
+    "lemma": "nest1-3",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "nestcolony": {
     "lemma": "nestcolony",
     "domains": [],
@@ -51906,7 +52156,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 477,
+    "frequency": 481,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -51994,9 +52244,16 @@
   "nestmates": {
     "lemma": "nestmates",
     "domains": [],
-    "frequency": 398,
+    "frequency": 402,
     "confidence": 0.4,
     "n_contexts": 30
+  },
+  "nestmates-a": {
+    "lemma": "nestmates-a",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
   },
   "nestmatesfriends": {
     "lemma": "nestmatesfriends",
@@ -52203,6 +52460,13 @@
   },
   "neuron-to-neuron": {
     "lemma": "neuron-to-neuron",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "neuronal-like": {
+    "lemma": "neuronal-like",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -52448,6 +52712,13 @@
   },
   "night-flying": {
     "lemma": "night-flying",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "night-long": {
+    "lemma": "night-long",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -53032,9 +53303,9 @@
   "non-clonal": {
     "lemma": "non-clonal",
     "domains": [],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "non-closable": {
     "lemma": "non-closable",
@@ -53868,6 +54139,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "non-heritable": {
+    "lemma": "non-heritable",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "non-hierarchical": {
     "lemma": "non-hierarchical",
     "domains": [],
@@ -53934,9 +54212,9 @@
   "non-human": {
     "lemma": "non-human",
     "domains": [],
-    "frequency": 19,
+    "frequency": 20,
     "confidence": 0.6,
-    "n_contexts": 19
+    "n_contexts": 20
   },
   "non-humanhuman": {
     "lemma": "non-humanhuman",
@@ -54606,7 +54884,7 @@
   "non-nestmates": {
     "lemma": "non-nestmates",
     "domains": [],
-    "frequency": 114,
+    "frequency": 116,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -56059,7 +56337,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 116,
+    "frequency": 118,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -56686,7 +56964,7 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 484,
+    "frequency": 488,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -57303,7 +57581,7 @@
   "ontogenetic": {
     "lemma": "ontogenetic",
     "domains": [],
-    "frequency": 46,
+    "frequency": 47,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -57486,6 +57764,13 @@
     "confidence": 0.7999999999999999,
     "n_contexts": 1
   },
+  "opposite-they": {
+    "lemma": "opposite-they",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "optic-flow": {
     "lemma": "optic-flow",
     "domains": [],
@@ -57519,7 +57804,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 174,
+    "frequency": 177,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -57700,7 +57985,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 129,
+    "frequency": 130,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -57746,7 +58031,7 @@
   "organisms": {
     "lemma": "organism",
     "domains": [],
-    "frequency": 637,
+    "frequency": 644,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -58144,7 +58429,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 124,
+    "frequency": 126,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -58633,7 +58918,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 457,
+    "frequency": 466,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -58880,7 +59165,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 56,
+    "frequency": 58,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -59904,7 +60189,7 @@
   "phenotype": {
     "lemma": "phenotype",
     "domains": [],
-    "frequency": 146,
+    "frequency": 149,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -59918,7 +60203,7 @@
   "phenotypes": {
     "lemma": "phenotype",
     "domains": [],
-    "frequency": 266,
+    "frequency": 268,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -60260,7 +60545,7 @@
   "phylogenetic": {
     "lemma": "phylogenetic",
     "domains": [],
-    "frequency": 530,
+    "frequency": 531,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -60274,7 +60559,7 @@
   "phylogenetically": {
     "lemma": "phylogenetically",
     "domains": [],
-    "frequency": 83,
+    "frequency": 84,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -60504,6 +60789,13 @@
   },
   "pinhead-capable": {
     "lemma": "pinhead-capable",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "pink-colored": {
+    "lemma": "pink-colored",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -61039,7 +61331,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 340,
+    "frequency": 342,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -61416,7 +61708,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 72,
+    "frequency": 73,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -61432,7 +61724,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 59,
+    "frequency": 62,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -61476,7 +61768,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 122,
+    "frequency": 125,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -61503,7 +61795,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 172,
+    "frequency": 178,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -61619,9 +61911,16 @@
   "population-level": {
     "lemma": "population-level",
     "domains": [],
-    "frequency": 26,
+    "frequency": 27,
     "confidence": 0.6,
-    "n_contexts": 25
+    "n_contexts": 26
+  },
+  "population-mean": {
+    "lemma": "population-mean",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
   },
   "population-specific": {
     "lemma": "population-specific",
@@ -61660,6 +61959,13 @@
   },
   "positively-selected": {
     "lemma": "positively-selected",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "possibly-rewarding": {
+    "lemma": "possibly-rewarding",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -62231,7 +62537,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 123,
+    "frequency": 124,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -62644,9 +62950,9 @@
   "pre-formed": {
     "lemma": "pre-formed",
     "domains": [],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.4,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "pre-harvest": {
     "lemma": "pre-harvest",
@@ -63639,7 +63945,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 184,
+    "frequency": 187,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -64067,9 +64373,9 @@
   "pseudoqueens": {
     "lemma": "pseudoqueens",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.2,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "psm-free": {
     "lemma": "psm-free",
@@ -64167,9 +64473,9 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 27,
+    "frequency": 28,
     "confidence": 0.7999999999999999,
-    "n_contexts": 27
+    "n_contexts": 28
   },
   "pupal-specific": {
     "lemma": "pupal-specific",
@@ -64436,7 +64742,7 @@
       "power_and_labor",
       "sex_and_reproduction"
     ],
-    "frequency": 1619,
+    "frequency": 1671,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -64636,9 +64942,9 @@
       "power_and_labor",
       "sex_and_reproduction"
     ],
-    "frequency": 9,
+    "frequency": 10,
     "confidence": 0.9,
-    "n_contexts": 9
+    "n_contexts": 10
   },
   "queen-offspring": {
     "lemma": "queen-offspring",
@@ -64687,9 +64993,9 @@
       "power_and_labor",
       "sex_and_reproduction"
     ],
-    "frequency": 7,
+    "frequency": 8,
     "confidence": 0.9,
-    "n_contexts": 7
+    "n_contexts": 8
   },
   "queen-rearing": {
     "lemma": "queen-rearing",
@@ -64781,6 +65087,16 @@
     "confidence": 0.7999999999999999,
     "n_contexts": 2
   },
+  "queen-treated": {
+    "lemma": "queen-treated",
+    "domains": [
+      "power_and_labor",
+      "sex_and_reproduction"
+    ],
+    "frequency": 1,
+    "confidence": 0.7999999999999999,
+    "n_contexts": 1
+  },
   "queen-worker": {
     "lemma": "queen-worker",
     "domains": [
@@ -64816,7 +65132,7 @@
   "queenless": {
     "lemma": "queenless",
     "domains": [],
-    "frequency": 142,
+    "frequency": 144,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -64837,7 +65153,7 @@
   "queenright": {
     "lemma": "queenright",
     "domains": [],
-    "frequency": 59,
+    "frequency": 60,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -64851,7 +65167,7 @@
   "queens": {
     "lemma": "queen",
     "domains": [],
-    "frequency": 2327,
+    "frequency": 2382,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -65478,9 +65794,9 @@
   "re-establishment": {
     "lemma": "re-establishment",
     "domains": [],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "re-evaluate": {
     "lemma": "re-evaluate",
@@ -65860,7 +66176,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 380,
+    "frequency": 381,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -66025,7 +66341,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 358,
+    "frequency": 364,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -66055,7 +66371,7 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 435,
+    "frequency": 450,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -66152,7 +66468,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 807,
+    "frequency": 814,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -66249,7 +66565,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 1607,
+    "frequency": 1636,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -66472,7 +66788,7 @@
   "resources": {
     "lemma": "resource",
     "domains": [],
-    "frequency": 711,
+    "frequency": 713,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -66915,9 +67231,9 @@
   "risk-related": {
     "lemma": "risk-related",
     "domains": [],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.4,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "risk-return": {
     "lemma": "risk-return",
@@ -67115,7 +67431,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 1302,
+    "frequency": 1310,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -67505,6 +67821,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "s-shaped": {
+    "lemma": "s-shaped",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "s-transferase": {
     "lemma": "s-transferase",
     "domains": [],
@@ -67627,16 +67950,16 @@
   "same-age": {
     "lemma": "same-age",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "same-aged": {
     "lemma": "same-aged",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "same-lineage": {
     "lemma": "same-lineage",
@@ -68379,7 +68702,7 @@
   "selection": {
     "lemma": "selection",
     "domains": [],
-    "frequency": 1097,
+    "frequency": 1118,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -68505,9 +68828,9 @@
   "self-assembly": {
     "lemma": "self-assembly",
     "domains": [],
-    "frequency": 2,
+    "frequency": 3,
     "confidence": 0.4,
-    "n_contexts": 2
+    "n_contexts": 3
   },
   "self-assessment": {
     "lemma": "self-assessment",
@@ -68602,6 +68925,13 @@
   },
   "self-destructive": {
     "lemma": "self-destructive",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "self-determination": {
+    "lemma": "self-determination",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -68818,6 +69148,13 @@
     "confidence": 0.4,
     "n_contexts": 2
   },
+  "self-non-self": {
+    "lemma": "self-non-self",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "self-nonself": {
     "lemma": "self-nonself",
     "domains": [],
@@ -68863,14 +69200,14 @@
   "self-organize": {
     "lemma": "self-organize",
     "domains": [],
-    "frequency": 6,
+    "frequency": 7,
     "confidence": 0.5,
-    "n_contexts": 6
+    "n_contexts": 7
   },
   "self-organized": {
     "lemma": "self-organized",
     "domains": [],
-    "frequency": 38,
+    "frequency": 39,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -69182,7 +69519,7 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 59,
+    "frequency": 60,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -69583,9 +69920,9 @@
   "set-up": {
     "lemma": "set-up",
     "domains": [],
-    "frequency": 10,
-    "confidence": 0.5,
-    "n_contexts": 10
+    "frequency": 12,
+    "confidence": 0.6,
+    "n_contexts": 12
   },
   "set-ups": {
     "lemma": "set-ups",
@@ -69713,9 +70050,9 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 5,
-    "confidence": 0.7999999999999999,
-    "n_contexts": 5
+    "frequency": 6,
+    "confidence": 0.9,
+    "n_contexts": 6
   },
   "sex-differences": {
     "lemma": "sex-differences",
@@ -69785,9 +70122,9 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 21,
+    "frequency": 23,
     "confidence": 0.9999999999999999,
-    "n_contexts": 21
+    "n_contexts": 23
   },
   "sex-ratio-conflict": {
     "lemma": "sex-ratio-conflict",
@@ -70147,9 +70484,9 @@
   "short-lived": {
     "lemma": "short-lived",
     "domains": [],
-    "frequency": 27,
+    "frequency": 28,
     "confidence": 0.6,
-    "n_contexts": 27
+    "n_contexts": 28
   },
   "short-living": {
     "lemma": "short-living",
@@ -70728,6 +71065,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "single-gene": {
+    "lemma": "single-gene",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "single-guide": {
     "lemma": "single-guide",
     "domains": [],
@@ -70857,7 +71201,7 @@
       "power_and_labor",
       "sex_and_reproduction"
     ],
-    "frequency": 52,
+    "frequency": 53,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -71001,9 +71345,16 @@
   "sinv-3": {
     "lemma": "sinv-3",
     "domains": [],
-    "frequency": 16,
+    "frequency": 20,
     "confidence": 0.6,
-    "n_contexts": 16
+    "n_contexts": 20
+  },
+  "sinv-3-infected": {
+    "lemma": "sinv-3-infected",
+    "domains": [],
+    "frequency": 5,
+    "confidence": 0.4,
+    "n_contexts": 5
   },
   "sinv-3-treated": {
     "lemma": "sinv-3-treated",
@@ -71011,6 +71362,13 @@
     "frequency": 1,
     "confidence": 0.4,
     "n_contexts": 1
+  },
+  "sinv-3-uninfected": {
+    "lemma": "sinv-3-uninfected",
+    "domains": [],
+    "frequency": 2,
+    "confidence": 0.4,
+    "n_contexts": 2
   },
   "siobp5-": {
     "lemma": "siobp5-",
@@ -71075,9 +71433,9 @@
     "domains": [
       "kin_and_relatedness"
     ],
-    "frequency": 2,
+    "frequency": 4,
     "confidence": 0.7999999999999999,
-    "n_contexts": 2
+    "n_contexts": 4
   },
   "sit-and-wait": {
     "lemma": "sit-and-wait",
@@ -71310,6 +71668,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "size-correlated": {
+    "lemma": "size-correlated",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "size-dependencies": {
     "lemma": "size-dependencies",
     "domains": [],
@@ -71462,9 +71827,9 @@
   "size-specific": {
     "lemma": "size-specific",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "size-structure": {
     "lemma": "size-structure",
@@ -71640,7 +72005,7 @@
     "domains": [
       "power_and_labor"
     ],
-    "frequency": 60,
+    "frequency": 62,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -72069,7 +72434,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 4687,
+    "frequency": 4771,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -72125,6 +72490,13 @@
     ],
     "frequency": 1,
     "confidence": 0.7999999999999999,
+    "n_contexts": 1
+  },
+  "sociality-associated": {
+    "lemma": "sociality-associated",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
     "n_contexts": 1
   },
   "socially-housed": {
@@ -72188,7 +72560,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 102,
+    "frequency": 103,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -72444,7 +72816,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 139,
+    "frequency": 140,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -72936,7 +73308,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 284,
+    "frequency": 290,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -73143,7 +73515,7 @@
   "species-rich": {
     "lemma": "species-rich",
     "domains": [],
-    "frequency": 52,
+    "frequency": 53,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -73319,7 +73691,7 @@
     "domains": [
       "sex_and_reproduction"
     ],
-    "frequency": 309,
+    "frequency": 328,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -74363,9 +74735,9 @@
   "stress-related": {
     "lemma": "stress-related",
     "domains": [],
-    "frequency": 3,
+    "frequency": 4,
     "confidence": 0.4,
-    "n_contexts": 3
+    "n_contexts": 4
   },
   "stress-relevant": {
     "lemma": "stress-relevant",
@@ -74419,7 +74791,7 @@
   "striking": {
     "lemma": "striking",
     "domains": [],
-    "frequency": 105,
+    "frequency": 106,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -74829,7 +75201,7 @@
   "subcastes": {
     "lemma": "subcastes",
     "domains": [],
-    "frequency": 35,
+    "frequency": 36,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -75361,7 +75733,7 @@
   "supercolony": {
     "lemma": "supercolony",
     "domains": [],
-    "frequency": 60,
+    "frequency": 62,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -75384,6 +75756,13 @@
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "superefficiency": {
+    "lemma": "superefficiency",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.2,
     "n_contexts": 1
   },
   "supergene-associated": {
@@ -75426,7 +75805,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 85,
+    "frequency": 86,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -75481,7 +75860,7 @@
   "superorganisms": {
     "lemma": "superorganisms",
     "domains": [],
-    "frequency": 56,
+    "frequency": 57,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -75571,9 +75950,9 @@
   "surface-based": {
     "lemma": "surface-based",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "surface-bound": {
     "lemma": "surface-bound",
@@ -75720,7 +76099,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 71,
+    "frequency": 72,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -75736,7 +76115,7 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 182,
+    "frequency": 183,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -75831,7 +76210,7 @@
   "symbionts": {
     "lemma": "symbionts",
     "domains": [],
-    "frequency": 249,
+    "frequency": 250,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -75873,9 +76252,9 @@
   "symmetry-breaking": {
     "lemma": "symmetry-breaking",
     "domains": [],
-    "frequency": 3,
+    "frequency": 4,
     "confidence": 0.4,
-    "n_contexts": 3
+    "n_contexts": 4
   },
   "synapse-rich": {
     "lemma": "synapse-rich",
@@ -76407,7 +76786,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 414,
+    "frequency": 428,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -77447,7 +77826,7 @@
   "three-dimensional": {
     "lemma": "three-dimensional",
     "domains": [],
-    "frequency": 42,
+    "frequency": 43,
     "confidence": 0.6,
     "n_contexts": 30
   },
@@ -77878,6 +78257,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "time-points": {
+    "lemma": "time-points",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
   "time-pregnant": {
     "lemma": "time-pregnant",
     "domains": [],
@@ -77950,6 +78336,13 @@
   },
   "time-varying": {
     "lemma": "time-varying",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "time-window": {
+    "lemma": "time-window",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -78266,9 +78659,9 @@
   "toti-like": {
     "lemma": "toti-like",
     "domains": [],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.4,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "touch-based": {
     "lemma": "touch-based",
@@ -78329,7 +78722,7 @@
   "tracking": {
     "lemma": "tracking",
     "domains": [],
-    "frequency": 120,
+    "frequency": 122,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -78347,7 +78740,7 @@
     "domains": [
       "economics"
     ],
-    "frequency": 161,
+    "frequency": 162,
     "confidence": 0.9999999999999999,
     "n_contexts": 30
   },
@@ -78386,7 +78779,7 @@
     "domains": [
       "behavior_and_identity"
     ],
-    "frequency": 492,
+    "frequency": 493,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -79466,6 +79859,13 @@
   },
   "twig-girdler": {
     "lemma": "twig-girdler",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.4,
+    "n_contexts": 1
+  },
+  "twig-like": {
+    "lemma": "twig-like",
     "domains": [],
     "frequency": 1,
     "confidence": 0.4,
@@ -82107,9 +82507,9 @@
   "whole-brain": {
     "lemma": "whole-brain",
     "domains": [],
-    "frequency": 4,
+    "frequency": 5,
     "confidence": 0.4,
-    "n_contexts": 4
+    "n_contexts": 5
   },
   "whole-cell": {
     "lemma": "whole-cell",
@@ -82123,9 +82523,9 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 1,
+    "frequency": 2,
     "confidence": 0.7999999999999999,
-    "n_contexts": 1
+    "n_contexts": 2
   },
   "whole-genome": {
     "lemma": "whole-genome",
@@ -82300,9 +82700,9 @@
   "wild-type": {
     "lemma": "wild-type",
     "domains": [],
-    "frequency": 26,
+    "frequency": 27,
     "confidence": 0.6,
-    "n_contexts": 26
+    "n_contexts": 27
   },
   "wildlife-friendly": {
     "lemma": "wildlife-friendly",
@@ -82526,9 +82926,9 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 29,
+    "frequency": 33,
     "confidence": 0.9999999999999999,
-    "n_contexts": 29
+    "n_contexts": 30
   },
   "within-ecosystem": {
     "lemma": "within-ecosystem",
@@ -82648,9 +83048,9 @@
     "domains": [
       "unit_of_individuality"
     ],
-    "frequency": 6,
+    "frequency": 8,
     "confidence": 0.9,
-    "n_contexts": 6
+    "n_contexts": 8
   },
   "within-pair": {
     "lemma": "within-pair",
@@ -82801,9 +83201,9 @@
   "wood-boring": {
     "lemma": "wood-boring",
     "domains": [],
-    "frequency": 10,
-    "confidence": 0.5,
-    "n_contexts": 10
+    "frequency": 11,
+    "confidence": 0.6,
+    "n_contexts": 11
   },
   "wood-borne": {
     "lemma": "wood-borne",
@@ -82916,7 +83316,7 @@
       "behavior_and_identity",
       "power_and_labor"
     ],
-    "frequency": 1654,
+    "frequency": 1710,
     "confidence": 0.7999999999999999,
     "n_contexts": 30
   },
@@ -83158,9 +83558,9 @@
       "power_and_labor",
       "sex_and_reproduction"
     ],
-    "frequency": 3,
+    "frequency": 4,
     "confidence": 0.7999999999999999,
-    "n_contexts": 3
+    "n_contexts": 4
   },
   "worker-reared": {
     "lemma": "worker-reared",
@@ -83304,9 +83704,9 @@
   "workerless": {
     "lemma": "workerless",
     "domains": [],
-    "frequency": 18,
+    "frequency": 19,
     "confidence": 0.4,
-    "n_contexts": 18
+    "n_contexts": 19
   },
   "workerqueen": {
     "lemma": "workerqueen",
@@ -83318,7 +83718,7 @@
   "workers": {
     "lemma": "worker",
     "domains": [],
-    "frequency": 4553,
+    "frequency": 4655,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -83346,6 +83746,13 @@
     "confidence": 0.4,
     "n_contexts": 1
   },
+  "workers8910": {
+    "lemma": "workers8910",
+    "domains": [],
+    "frequency": 1,
+    "confidence": 0.2,
+    "n_contexts": 1
+  },
   "workerscopyright": {
     "lemma": "workerscopyright",
     "domains": [],
@@ -83370,7 +83777,7 @@
   "working": {
     "lemma": "working",
     "domains": [],
-    "frequency": 70,
+    "frequency": 71,
     "confidence": 0.4,
     "n_contexts": 30
   },
@@ -83482,9 +83889,9 @@
   "x-ray": {
     "lemma": "x-ray",
     "domains": [],
-    "frequency": 25,
+    "frequency": 26,
     "confidence": 0.6,
-    "n_contexts": 25
+    "n_contexts": 26
   },
   "x-sdn9": {
     "lemma": "x-sdn9",

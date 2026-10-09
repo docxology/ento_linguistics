@@ -4,6 +4,12 @@ All notable changes to the Ento-Linguistics project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Concept DOI: [10.5281/zenodo.19574117](https://doi.org/10.5281/zenodo.19574117) — all versions are grouped under the same concept DOI.
 
+## Unreleased — 1.3.1 candidate
+
+- Admit a second exact-text PubMed reconciliation pass to abstract provenance. Each candidate was re-fetched live and admitted only when the stored string equals one reconstruction of exactly one PubMed abstract; stored abstract text is unchanged. See [integration evidence](output/review-v1.3.1-20261009/legacy-provenance-integration.json).
+- Exclude PMC records whose titles mark them as corrections, errata, retraction notices or retracted items from full-text analysis. The shards are unchanged; the artifact lists every excluded PMCID and the manuscript reports stored and excluded counts from it.
+- Regenerate all affected layers, both fixed-margin protocols and the network-reading diagnostic against the changed inputs.
+
 ## [1.3.0] — 2026-10-08
 
 - Add a separately receipted vocabulary/threshold diagnostic with isolates retained, explicit density denominators, component/document coverage and numerical replay before rendering.

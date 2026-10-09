@@ -409,6 +409,9 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
     Emits (all omitted when the artifact is absent/empty, never KeyError):
 
     - ``FULLTEXT_DOCUMENTS``: number of analyzed full texts.
+    - ``FULLTEXT_STORED_RECORDS`` / ``FULLTEXT_EXCLUDED_NOTICES``: stored
+      PMC records and the correction/retraction notices excluded from
+      analysis (emitted only when the artifact records the exclusion).
     - ``FULLTEXT_TOTAL_TOKENS`` / ``FULLTEXT_MEDIAN_TOKENS``: corpus token
       volume and per-document median token count.
     - ``FULLTEXT_DOMAIN_<SLUG>_TERMS`` / ``FULLTEXT_DOMAIN_<SLUG>_ENTROPY``:
@@ -443,6 +446,11 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
     if not fulltext_artifact:
         return variables
     variables["FULLTEXT_DOCUMENTS"] = str(fulltext_artifact.get("n_documents", 0))
+    if "excluded_editorial_notices" in fulltext_artifact:
+        variables["FULLTEXT_STORED_RECORDS"] = str(fulltext_artifact["stored_records"])
+        variables["FULLTEXT_EXCLUDED_NOTICES"] = str(
+            len(fulltext_artifact["excluded_editorial_notices"])
+        )
     token_counts = [
         int(doc.get("token_count", 0))
         for doc in fulltext_artifact.get("documents") or []

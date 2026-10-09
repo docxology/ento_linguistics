@@ -5,7 +5,7 @@ The corpus has four separately analyzed layers:
 | Layer | Source files | Provenance and analysis |
 | --- | --- | --- |
 | Headline abstracts | `corpus/abstracts.json` | Digest-indexed `corpus/provenance.json`; only identified PubMed strings enter headline results |
-| PMC | `fulltexts/fulltexts_*.json` | Full-text records and associated provenance; includes notices and repeated boilerplate |
+| PMC | `fulltexts/fulltexts_*.json` | Full-text records and associated provenance; stored notices and repeated boilerplate are excluded from analysis by title rule |
 | BHL | `bhl/bhl_shard_*.json` | Historical mirror OCR, provenance, era counts, and analysis exports |
 | arXiv | `corpus/arxiv_records.json` | Preprint records with nested source metadata; analyzed separately |
 

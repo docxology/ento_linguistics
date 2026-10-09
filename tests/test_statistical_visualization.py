@@ -753,6 +753,34 @@ class TestFulltextFingerprintGuard:
         )
         assert stored["corpus_fingerprint"] == artifact["corpus_fingerprint"]
 
+    def test_editorial_notices_are_excluded_and_listed(self, tmp_path, monkeypatch) -> None:
+        """Notices stay in the shards but are not analyzed; the artifact lists them."""
+        from visualization.manuscript_figures import _ensure_fulltext_artifact
+
+        fulltexts_dir = tmp_path / "fulltexts"
+        data_dir = tmp_path / "output" / "data"
+        data_dir.mkdir(parents=True)
+        fulltexts_dir.mkdir()
+        corpus = [
+            {"pmcid": "PMC0", "title": "Trail pheromones in Lasius niger"},
+            {"pmcid": "PMC1", "title": "Retracted: Ant colony routing in IPv6"},
+            {"pmcid": "PMC2", "title": "Caste determination in honey bees"},
+        ]
+        (fulltexts_dir / "fulltexts_00001.json").write_text(json.dumps(corpus), encoding="utf-8")
+        (fulltexts_dir / "provenance.json").write_text("{}", encoding="utf-8")
+        monkeypatch.delenv("FULLTEXT_ANALYSIS_LIMIT", raising=False)
+        calls = []
+        artifact = _ensure_fulltext_artifact(
+            str(data_dir), str(fulltexts_dir), builder=self._fake_builder(calls)
+        )
+        assert [r["pmcid"] for r in calls[0]] == ["PMC0", "PMC2"]
+        assert artifact["n_documents"] == 2
+        assert artifact["stored_records"] == 3
+        assert artifact["excluded_editorial_notices"] == [
+            {"pmcid": "PMC1", "title": "Retracted: Ant colony routing in IPv6"}
+        ]
+        assert artifact["corpus_fingerprint"]["record_count"] == 2
+
     def test_fresh_artifact_is_skipped(self, tmp_path, monkeypatch) -> None:
         """Matching fingerprint → the builder is not called again."""
         from visualization.manuscript_figures import _ensure_fulltext_artifact

@@ -1,6 +1,6 @@
 # Headline abstracts and preprint records
 
-`abstracts.json` is the ordered archive of abstract strings. Digest-indexed `provenance.json` records retrieved PubMed metadata, including identifiers and query information where available. Headline analysis selects source-identified strings; unreconciled strings remain archived and excluded. Exact-text provenance recovery establishes identity, not topical relevance.
+`abstracts.json` is the ordered archive of abstract strings. Digest-indexed `provenance.json` records retrieved PubMed metadata, including identifiers and query information where available. Headline analysis selects source-identified strings; unreconciled strings remain archived and excluded. Exact-text provenance recovery establishes identity, not topical relevance. Two reconciliation passes over the original strings are recorded under `_reconciliation` in `provenance.json`; near matches are not admitted.
 
 `arxiv_records.json` retains a separate preprint layer. Its records and analysis are not merged into the headline abstract list. OpenAlex enrichment adds citation metadata where available; it is not an additional corpus of analyzed article text. Historical snapshots and retrieval sidecars retain acquisition history.
 

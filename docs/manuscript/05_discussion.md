@@ -54,7 +54,7 @@ The second borrows the manipulation logic of metaphor experiments (Section \ref{
 
 ## Limitations
 
-1. **Source custody and relevance.** Some archived abstract strings lack digest-indexed source metadata and are excluded from headline analysis; broad queries include adjacent biology and computational uses. Historical volumes contain mixed topics; PMC retrieval includes correction/retraction notices and repeated boilerplate. Source reconciliation and relevance annotation remain incomplete.
+1. **Source custody and relevance.** Some archived abstract strings lack digest-indexed source metadata and are excluded from headline analysis; broad queries include adjacent biology and computational uses. Historical volumes contain mixed topics; PMC notices are excluded by a title rule rather than a complete article-type screen. Source reconciliation and relevance annotation remain incomplete.
 2. **Sampling and accessibility.** Search and availability filters select a convenience corpus. Layers are not matched document samples and differ in extraction threshold, length, genre, and publication history.
 3. **OCR and language.** Literal historical matching is sensitive to OCR errors, language, hyphenation, and spelling. Rare or absent matches do not date a concept's origin.
 4. **Proxy validity.** Computational clusters are not annotated senses; marker patterns are not validated discourse labels. The pipeline does not measure author intent, cognitive distortion, or causal framing.

@@ -1,0 +1,36 @@
+{
+  "head": "eaa2f91652a87acb9b43d5f1ca0aac5322f18722",
+  "data_modified": false,
+  "abstract_gap": {
+    "records_without_provenance": 69,
+    "excluded_from_headline_analysis": true,
+    "exact_pubmed_matches": 59,
+    "near_match_not_exact": [
+      {
+        "index": 1,
+        "pmid": "41885839",
+        "similarity": 0.999
+      }
+    ],
+    "unidentified": 9,
+    "integration_effect": "adding exact-digest entries to data/corpus/provenance.json would admit these abstracts to load_real_corpus, changing headline counts; requires full regeneration, re-render and a new release"
+  },
+  "pmc_gap": {
+    "duplicate_text_records": 8,
+    "cause": "identical Hindawi retraction-notice boilerplate shared across distinct PMCIDs (two notice texts, 8 and 2 copies)",
+    "notice_titled_records": 66,
+    "notice_tokens": 26170,
+    "total_tokens": 40169737,
+    "already_disclosed": [
+      "03_methods.md",
+      "05_discussion.md",
+      "S01a_text_and_extraction.md"
+    ],
+    "resolution_effect": "article-type exclusion is a method change; requires regeneration and new release"
+  },
+  "attempts": [
+    "attempt1: 12-term AND query returned 0 candidates (query too strict) \u2014 retained",
+    "attempt2: 7/4-term distinctive query, 55 exact \u2014 retained",
+    "attempt3: label-aware matching + fallbacks, 59 exact \u2014 current"
+  ]
+}

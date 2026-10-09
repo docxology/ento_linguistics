@@ -3,13 +3,13 @@
   "n_concepts": 6,
   "n_relationships": 15,
   "network_nodes": 100,
-  "network_edges": 4232,
-  "network_clustering": 0.8948,
-  "network_avg_degree": 84.64,
+  "network_edges": 4235,
+  "network_clustering": 0.8955,
+  "network_avg_degree": 84.7,
   "concepts": {
     "biological_individuality": {
       "description": "Concepts related to what constitutes a biological individual",
-      "n_terms": 573,
+      "n_terms": 577,
       "domains": [
         "unit_of_individuality"
       ],
@@ -17,7 +17,7 @@
     },
     "social_organization": {
       "description": "Principles of social organization and structure",
-      "n_terms": 594,
+      "n_terms": 596,
       "domains": [
         "behavior_and_identity",
         "power_and_labor"
@@ -26,7 +26,7 @@
     },
     "reproductive_biology": {
       "description": "Reproductive systems and sex determination",
-      "n_terms": 272,
+      "n_terms": 273,
       "domains": [
         "sex_and_reproduction"
       ],
@@ -34,7 +34,7 @@
     },
     "kinship_systems": {
       "description": "Genetic and social relatedness structures",
-      "n_terms": 321,
+      "n_terms": 323,
       "domains": [
         "kin_and_relatedness"
       ],
@@ -42,7 +42,7 @@
     },
     "resource_economics": {
       "description": "Resource allocation and economic principles",
-      "n_terms": 108,
+      "n_terms": 109,
       "domains": [
         "economics"
       ],
@@ -50,7 +50,7 @@
     },
     "behavioral_ecology": {
       "description": "Behavioral adaptations and ecological contexts",
-      "n_terms": 407,
+      "n_terms": 408,
       "domains": [
         "behavior_and_identity",
         "economics"

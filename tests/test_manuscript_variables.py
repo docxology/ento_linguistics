@@ -442,6 +442,19 @@ class TestFulltextStatisticalTokens:
         assert tokens["FULLTEXT_DOCUMENTS"] == "3"
         assert tokens["FULLTEXT_ANOVA_P"] == "0.6286"
 
+    def test_fulltext_notice_exclusion_tokens(self) -> None:
+        """Stored and excluded-notice counts come from the artifact."""
+        artifact = dict(
+            self.FULLTEXT_ARTIFACT,
+            stored_records=5,
+            excluded_editorial_notices=[{"pmcid": "PMC8"}, {"pmcid": "PMC9"}],
+        )
+        tokens = build_statistical_tokens({}, fulltext_artifact=artifact)
+        assert tokens["FULLTEXT_STORED_RECORDS"] == "5"
+        assert tokens["FULLTEXT_EXCLUDED_NOTICES"] == "2"
+        plain = build_statistical_tokens({}, fulltext_artifact=self.FULLTEXT_ARTIFACT)
+        assert "FULLTEXT_EXCLUDED_NOTICES" not in plain
+
     def test_absent_fulltext_artifact_omits_tokens(self, data_dirs) -> None:
         """No fulltext_analysis.json → no FULLTEXT_* tokens, no KeyError."""
         output_data, corpus_dir = data_dirs

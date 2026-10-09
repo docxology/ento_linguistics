@@ -511,3 +511,60 @@ class TestHarvestSharded:
             "PMC222",
         ]
         assert (tmp_path / "README.md").exists()
+
+
+class TestEditorialNoticeExclusion:
+    """Title-prefix exclusion of correction/retraction notices from analysis."""
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "Correction: Visual Navigation during Colony Emigration",
+            "Author Correction: Spatial fidelity of workers",
+            "Publisher Correction: Relaxed selection in parasitic ants",
+            "Correction to: Are Sepsis flies Batesian mimics of ants?",
+            "Correction to “Testing the predictive value of functional traits”",
+            "Corrigendum: Follower ants in a tandem pair are not always naive",
+            "Corrigenda: Revision of the fungus-farming ant genus Sericomyrmex",
+            "Erratum to: Comparative transcriptomics reveals building blocks",
+            "Erratum for Green et al., “Isolation of mollicute symbionts”",
+            "Retraction: An Eocene army ant",
+            "Retracted: Ant Colony Optimization-Enabled CNN Deep Learning",
+            "RETRACTED: Optimising barrier placement for intrusion detection",
+        ],
+    )
+    def test_notice_titles_are_excluded(self, title) -> None:
+        assert pmc_fulltext.is_editorial_notice({"title": title})
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "Individual error correction drives responsive self-assembly of army ant scaffolds",
+            "Turning and Radius Deviation Correction for a Hexapod Walking Robot",
+            "Correction of Susceptibility Artifacts in Diffusion Imaging",
+            "Correction for phylogeny in comparative analyses of ant body size",
+            "Correction to the ant tree of life using fossil calibration",
+            "Increased Risk Proneness or Social Withdrawal?",
+            "",
+        ],
+    )
+    def test_research_titles_are_kept(self, title) -> None:
+        assert not pmc_fulltext.is_editorial_notice({"title": title})
+
+    def test_missing_title_is_kept(self) -> None:
+        assert not pmc_fulltext.is_editorial_notice({"title": None})
+        assert not pmc_fulltext.is_editorial_notice({})
+
+    def test_split_preserves_order_and_stored_records(self, tmp_path) -> None:
+        records = [
+            {"pmcid": "PMC1", "title": "Foraging in Pogonomyrmex"},
+            {"pmcid": "PMC2", "title": "Retracted: Ant colony routing"},
+            {"pmcid": "PMC3", "title": "Queen pheromone and worker sterility"},
+            {"pmcid": "PMC4", "title": "Correction: Foraging in Pogonomyrmex"},
+        ]
+        write_shard(tmp_path / shard_filename(1), records)
+        stored = load_fulltexts(tmp_path)
+        kept, excluded = pmc_fulltext.exclude_editorial_notices(stored)
+        assert [r["pmcid"] for r in kept] == ["PMC1", "PMC3"]
+        assert [r["pmcid"] for r in excluded] == ["PMC2", "PMC4"]
+        assert len(load_fulltexts(tmp_path)) == 4  # shards are not modified
