@@ -11,9 +11,10 @@
 | Numerical effect | All 733 changed template variables listed; threshold-crossing conclusions keep their direction (see candidate record) |
 | Release render | 53 pages, no unresolved placeholders, version 1.3.1 and concept DOI on the title page |
 | Public software | 1,856 passed, eight external-template skips, 91.99% combined coverage |
+| Public readback | All three GitHub and Zenodo files downloaded and SHA-256 matched to the local bundle; the DOI resolves to the Zenodo record |
 | Independent review | Candidate review found no blockers; a separate read-only release review of the metadata and documentation diff found citation, DOI and link defects that were fixed before tagging |
 
-The [candidate verification record](../../output/review-v1.3.1-20261009/SUMMARY.md) retains the execution log, variable diff and reconciliation evidence. The [release folder](../../output/release-v1.3.1-20261010/) retains the release render, test log, Zenodo reservation and publication receipt.
+The [candidate verification record](../../output/review-v1.3.1-20261009/SUMMARY.md) retains the execution log, variable diff and reconciliation evidence. The [release folder](../../output/release-v1.3.1-20261010/) retains the release render, test log and Zenodo scripts; the [publication receipt](../../output/releases/v1.3.1-publication.json) records the exact public file identities.
 
 The 20-minute lecture, slides and audio were not re-produced. They remain the [v1.3.0 release assets](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0) and quote v1.3.0 values. v1.3.0 was a GitHub release without a DOI; earlier version DOIs keep their archived identities.
 

@@ -1,0 +1,21 @@
+{
+  "version": "1.3.1",
+  "release_target_commit": "59a7c98589311be755f0f64f8518a6dbec1dd048",
+  "version_doi": "10.5281/zenodo.23287623",
+  "concept_doi": "10.5281/zenodo.19574117",
+  "previous_version_doi": "10.5281/zenodo.23215452",
+  "lecture_reproduced": false,
+  "lecture_release": "https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0",
+  "assets": {
+    "EntoLinguistics_network_methods.zip": {
+      "sha256": "50de54ebf13d5649aff3d0912903a2b8fd0f21d8955b968a5bf947a2b09feebd",
+      "md5": "d3a41407b043421f3730f9795b5283fa",
+      "bytes": 1939097
+    },
+    "Ento_Linguistics_manuscript.pdf": {
+      "sha256": "5a6c4f3356a7bf1ebd498c5423ff1b3f6ec24ab75557bb755c2b0cd908fd92e9",
+      "md5": "760d9111e7c018b3e26b8400a5ca6f2f",
+      "bytes": 11550347
+    }
+  }
+}
