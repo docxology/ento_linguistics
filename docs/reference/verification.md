@@ -2,11 +2,15 @@
 
 [Documentation](../README.md) → Verification and publication
 
-This page distinguishes the v1.3.0 complexity edition, the earlier unpublished 1.2.2 draft, the published v1.2.1 validation patch, the v1.2.0 network extension and lecture, and the earlier captured 6 October 2026 baseline revision. It is a reference to actual execution records, not a live status dashboard or a new scientific validation claim.
+This page distinguishes the v1.3.1 corpus-custody patch, the v1.3.0 complexity edition, the earlier unpublished 1.2.2 draft, the published v1.2.1 validation patch, the v1.2.0 network extension and lecture, and the earlier captured 6 October 2026 baseline revision. It is a reference to actual execution records, not a live status dashboard or a new scientific validation claim.
+
+## Version 1.3.1
+
+The current paper has 53 pages. A second exact-text PubMed reconciliation and the exclusion of PMC correction and retraction notices changed the analyzed inputs; every layer, both fixed-margin protocols and the vocabulary/threshold diagnostic were regenerated, and custody and strict rendering passed. The release suite recorded 1,856 passes, eight external-template skips and 91.99% combined coverage. See [v1.3.1 release verification](release-v1.3.1.md) and the [candidate verification record](../../output/review-v1.3.1-20261009/SUMMARY.md). The 20-minute lecture was not re-produced and remains matched to v1.3.0.
 
 ## Version 1.3.0
 
-The current paper has 52 pages, a graphical abstract and a separately receipted vocabulary/threshold diagnostic. Full/default core generation, custody and strict rendering passed. The complete public suite recorded 1,833 passes, eight external-template skips and 91.98% combined coverage. The [current verification record](../../output/review-v1.3.0-20261008/SUMMARY.md) retains source identity, numerical replay/failure controls and bounded visual QA. Current PDF SHA-256: `c6588539b0ca5e11aaf5fd9ca32037a599bc0a5d171da69c31dd9c6abdba48d3`.
+The v1.3.0 paper had 52 pages, a graphical abstract and a separately receipted vocabulary/threshold diagnostic. Full/default core generation, custody and strict rendering passed. The complete public suite recorded 1,833 passes, eight external-template skips and 91.98% combined coverage. The [v1.3.0 verification record](../../output/review-v1.3.0-20261008/SUMMARY.md) retains source identity, numerical replay/failure controls and bounded visual QA. v1.3.0 PDF SHA-256: `c6588539b0ca5e11aaf5fd9ca32037a599bc0a5d171da69c31dd9c6abdba48d3`.
 
 The public GitHub edition is matched to the fifth-edition LectureCreate source bundle. A previous version DOI must not identify these new paper/media bytes; existing Zenodo records preserve their original scope.
 

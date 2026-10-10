@@ -9,7 +9,7 @@ uv run pytest tests/integration/ --no-cov -v
 uv run pytest tests/test_rendering.py tests/test_concept_visualization.py --no-cov
 ```
 
-The configured floor is **90% combined statement/branch coverage** across measured source. Subset passes and image existence do not establish full coverage or visual correctness. Tests and artifact generation run sequentially. The [v1.3.0 run](../output/review-v1.3.0-20261008/SUMMARY.md) recorded 1,833 passes, eight external-template skips, 83 warnings and 91.98% combined coverage in about 410 seconds; this is a captured run, not a timing guarantee for later checkouts.
+The configured floor is **90% combined statement/branch coverage** across measured source. Subset passes and image existence do not establish full coverage or visual correctness. Tests and artifact generation run sequentially. The [v1.3.1 release run](../output/release-v1.3.1-20261010/full-tests.log) recorded 1,856 passes, eight external-template skips, 83 warnings and 91.99% combined coverage in about 451 seconds; this is a captured run, not a timing guarantee for later checkouts.
 
 ## Find the relevant controls
 

@@ -1,6 +1,6 @@
 # Documentation
 
-Read the [v1.3.0 paper](../Ento_Linguistics_manuscript.pdf), its [matched lecture release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0), or choose a task below. Earlier publication identities remain in [verification](reference/verification.md). Commands in these guides run from the repository root.
+Read the [v1.3.1 paper](../Ento_Linguistics_manuscript.pdf) ([release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.1), [DOI](https://doi.org/10.5281/zenodo.23287623)), the [v1.3.0 lecture release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0), or choose a task below. Earlier publication identities remain in [verification](reference/verification.md). Commands in these guides run from the repository root.
 
 ## Guides: complete a task
 
@@ -25,8 +25,8 @@ Read the [v1.3.0 paper](../Ento_Linguistics_manuscript.pdf), its [matched lectur
 
 [manuscript/](manuscript/README.md) holds the canonical numbered Markdown sections, supplements, bibliography, configuration, and preamble. Its paths remain stable because the renderer uses them directly. [Methods](manuscript/03_methods.md), [corpus results](manuscript/04a_corpus_and_networks.md), and [domain findings](manuscript/04b_domain_findings.md) are useful starting points; numerical placeholders resolve in the built paper.
 
-Documentation contains reusable instructions and definitions. Historical review narratives and speculative refactoring/testing plans have been removed; recorded execution and publication receipts remain in dated output folders. The [current v1.3.0 verification](../output/review-v1.3.0-20261008/SUMMARY.md) records the complexity and representation-sensitivity edition; [earlier baseline records](../output/review-20261006/) retain their historical scope. Read [verification](reference/verification.md) for how to use those records without treating an old run as a new one.
+Documentation contains reusable instructions and definitions. Historical review narratives and speculative refactoring/testing plans have been removed; recorded execution and publication receipts remain in dated output folders. The [v1.3.1 verification](../output/review-v1.3.1-20261009/SUMMARY.md) records the corpus-custody patch and the [v1.3.0 verification](../output/review-v1.3.0-20261008/SUMMARY.md) the complexity and representation-sensitivity edition; [earlier baseline records](../output/review-20261006/) retain their historical scope. Read [verification](reference/verification.md) for how to use those records without treating an old run as a new one.
 
 Return to the [repository overview](../README.md).
 
-[Archived v1.2.1 validation patch](reference/release-v1.2.1.md) · [Complexity scholarship](research/complexity-scholarship.md) · [Network-reading diagnostic](../research/network_reading/README.md).
+[v1.3.1 release](reference/release-v1.3.1.md) · [Archived v1.2.1 validation patch](reference/release-v1.2.1.md) · [Complexity scholarship](research/complexity-scholarship.md) · [Network-reading diagnostic](../research/network_reading/README.md).

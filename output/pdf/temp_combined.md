@@ -2,7 +2,7 @@
 author:
 - Daniel Ari Friedman
 - Tucker Cahill Chambers
-date: "2026-10-08 \u2013 Version 1.3.0"
+date: "2026-10-10 \u2013 Version 1.3.1"
 subtitle: Complex Systems, Measurement, and a Six-Domain Framework
 title: 'Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology'
 ---
@@ -13,7 +13,7 @@ Terms such as *queen*, *worker*, and *colony* connect biological descriptions to
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/extensions/network_reading/graphical_abstract.png}
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_reading/graphical_abstract.png}
 \caption{Graphical abstract. Biological processes, scientific discourse and computational representations have distinct observational units. The six overlapping domains organize questions; observed textual proxies and proposed validation designs retain separate evidential roles. Arrows in the biological lane are schematic, not a fitted model or newly measured interaction network.}
 \label{fig:graphical_abstract}
 \end{figure}
@@ -224,7 +224,7 @@ Whole-word matches are case-insensitive, and repeated mentions within a document
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/terminology_network.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/terminology_network.png}
 \caption{Observed document co-occurrence among the hundred highest-frequency domain-assigned terms in the 7599-abstract layer. Nodes represent terms, node area uses a square-root frequency scale, color identifies the primary domain, and edge width scales shared-document counts to a bounded display range (Eq.~\ref{eq:network_edge_weight}). Isolated nodes are omitted from the display and up to twenty frequent terms are considered for collision-filtered labels. The right panel ranks the ten strongest observed pairs by shared-document count, with lexical tie-breaking. All observed edges remain in the left graph, whose unweighted layout reduces visual concentration around frequent pairs. Layout and dense regions have no causal or hierarchical interpretation.}
 \label{fig:terminology_network}
 \end{figure}
@@ -237,7 +237,7 @@ Selected terms therefore co-occur in fewer distinct pairs, with less closed tria
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/extensions/network_robustness/network_robustness.png}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_robustness/network_robustness.png}
 \caption{Fixed-margin comparison for the abstract terminology network. Top: retained-chain traces of projected edge count and mean local clustering for 3 seeds. Bottom: distributions of the 600 retained draws, with the observed value marked. Every draw preserves each abstract's selected-term count and each term's document frequency. The reference is conditional on the frequency-ranked vocabulary and the convenience corpus.}
 \label{fig:network_robustness}
 \end{figure}
@@ -248,7 +248,7 @@ Across the declared 20 vocabulary--threshold combinations on the same 7599 ident
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/extensions/network_reading/network_reading.png}
+\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/extensions/network_reading/network_reading.png}
 \caption{Vocabulary and minimum-shared-document sensitivity. Curves use nested frequency-ranked vocabularies and inclusive thresholds. The denominator includes all selected pairs, and clustering includes isolates as zero. Each point is recomputed from the same identified abstract layer; no new randomization or biological-network inference is represented.}
 \label{fig:network_reading}
 \end{figure}
@@ -257,14 +257,14 @@ Domain-assignment overlap is a different quantity, displayed separately in Figur
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/domain_overlap_heatmap.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_overlap_heatmap.png}
 \caption{Szymkiewicz--Simpson overlap coefficients between domain-assigned vocabularies (Eq.~\ref{eq:overlap_coefficient}). Each cell shows shared terms as a percentage of the smaller vocabulary; the diagonal is 100 by definition. Values reflect the current lexical classifier; observed zeros do not establish conceptual isolation.}
 \label{fig:domain_overlap}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/domain_comparison.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_comparison.png}
 \caption{Six descriptive panels show distinct term counts, mean extraction confidence, total frequency, mean successfully computed sentence-context entropy, bridging counts, and heuristic CACE means over up to fifty selected terms per domain. Extraction confidence is a configured score rather than calibrated classification accuracy. Entropy and CACE sample definitions are specified in Methods; missing entropy does not establish zero ambiguity.}
 \label{fig:domain_comparison}
 \end{figure}
@@ -272,7 +272,7 @@ Domain-assignment overlap is a different quantity, displayed separately in Figur
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/concept_map.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/concept_map.png}
 \caption{Six predefined concept categories connected by vocabulary overlap. Node size summarizes associated terms, which can appear in several categories; the subtitle totals term associations rather than unique terms. Edge weights are classifier-defined overlaps, not observed causal connections or a discovered biological ontology.}
 \label{fig:concept_map}
 \end{figure}
@@ -283,7 +283,7 @@ Lexical markers identify contexts for further qualitative examination. They do n
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/anthropomorphic_framing.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/anthropomorphic_framing.png}
 \caption{Observed framing-marked terminology by canonical domain. Top: distinct extracted terms with at least one occurrence context matching an anthropomorphic pattern. Bottom: up to six terms per domain, selected by decreasing matched-context proportion, context count, and lexical ordering. Counts are neither curated vocabulary sizes nor occurrence frequencies. Occurrence-context framing proportions are exported separately.}
 \label{fig:anthropomorphic}
 \end{figure}
@@ -327,42 +327,42 @@ Historical readings of caste and superorganism terminology provide context \cite
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/domain_overview_grid.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_overview_grid.png}
 \caption{Ten highest-frequency extracted terms per domain. Bar length is corpus frequency and color is the attached sentence-context entropy estimate. Zero-valued defaults for insufficient contexts must not be interpreted as evidence of unambiguous meaning. These are descriptive extraction outputs from the source-identified abstract layer.}
 \label{fig:domain_overview_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/domain_patterns_grid.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/domain_patterns_grid.png}
 \caption{Surface word-formation composition of assigned vocabularies. Each term is assigned to exactly one surface category (single word, multi-word phrase, hyphenated or underscore compound, or containing digits), using the same classifier as Figure \ref{fig:unit_individuality_patterns}. The headline extractor does not independently add n-grams, so availability of a category in the plotting utility does not establish its extraction.}
 \label{fig:domain_patterns_grid}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/unit_of_individuality_patterns.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/unit_of_individuality_patterns.png}
 \caption{Unit of Individuality term-formation counts (left) and counts of term names matching scale keyword groups (right). Scale groups can overlap; true zeros are retained. Neither panel estimates actual biological scale boundaries.}
 \label{fig:unit_individuality_patterns}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/concept_hierarchy.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/concept_hierarchy.png}
 \caption{Overlap strength of the six predefined concept categories: each category's weighted degree, the sum of its overlap coefficients with the other categories (Eq.~\ref{eq:overlap_coefficient}), ranked (left) and plotted against associated-term counts (right). Every category links to every other, so unweighted degree would not distinguish them. The display does not represent a biological command hierarchy.}
 \label{fig:concept_hierarchy}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/power_and_labor_term_frequencies.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/power_and_labor_term_frequencies.png}
 \caption{The fifteen highest-frequency assigned Power and Labor terms in the source-identified abstract layer. Frequency is annotated; color tracks rank. These observations do not quantify hierarchical control or bias.}
 \label{fig:power_labor_frequencies}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/power_and_labor_ambiguities.png}
+\includegraphics[width=0.9\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/power_and_labor_ambiguities.png}
 \caption{Power and Labor terms ranked by attached context-cluster entropy, with corpus frequency and short extraction-context counts. Sentence-context entropy and the plotted extraction-window counts use different context definitions. Cluster entropy is not an independently validated ambiguity measure.}
 \label{fig:power_labor_ambiguities}
 \end{figure}
@@ -866,35 +866,35 @@ Figures \ref{fig:statistical_analysis}--\ref{fig:arxiv_analysis} summarize the h
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/statistical_analysis.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/statistical_analysis.png}
 \caption{Headline valid-entropy descriptives with nominal intervals, bias-corrected standardized differences, and exploratory ANOVA. Bar annotations report valid term counts; overlapping domain memberships and shared document contexts limit population inference.}
 \label{fig:statistical_analysis}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/fulltext_analysis.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/fulltext_analysis.png}
 \caption{Separate PMC full-text statistics over all stored records by default. Extraction thresholds and context distributions differ from the abstract layer. Nominal intervals and multiplicity-adjusted threshold flags remain exploratory.}
 \label{fig:fulltext_analysis}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/layer_comparison.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/layer_comparison.png}
 \caption{Mean valid context-cluster entropy in the abstract and PMC layers, with valid-term counts. This compares distinct convenience samples and extraction thresholds; it is not a matched robustness experiment or evidence of causal language effects.}
 \label{fig:layer_comparison}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/discourse_comparison.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/discourse_comparison.png}
 \caption{Lexical discourse, rhetorical and persuasive-pattern counts, with analyzed-text counts shown in the legend. PMC uses an explicitly bounded text sample. Raw frequencies depend on sample size and text length and must not be read as normalized prevalence or human-validated author intent.}
 \label{fig:discourse_comparison}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/arxiv_analysis.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/arxiv_analysis.png}
 \caption{Separate arXiv preprint-layer descriptives and exploratory comparisons. Some groups have only one valid entropy estimate, for which intervals are omitted; very small groups and nearly zero within-group variance can yield large standardized differences without establishing generalizable effects.}
 \label{fig:arxiv_analysis}
 \end{figure}
@@ -993,7 +993,7 @@ superorganism & 0.0003 & 0.0007 & 0.0051 \\
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Local/worktrees/ento-v1.3.1/ento_linguistics/output/figures/bhl_term_usage.png}
+\includegraphics[width=0.95\textwidth,height=0.78\textheight,keepaspectratio]{/Volumes/GitVault/Username/docxology/Public/ento_linguistics/output/figures/bhl_term_usage.png}
 \caption{Full-corpus historical literal frequencies for six seed terms. Each panel uses its own rate axis. Neither zeros nor changing rates establish conceptual origin, prevalence in all entomological literature, or causal influence on research.}
 \label{fig:bhl_term_usage}
 \end{figure}

@@ -1,0 +1,140 @@
+{
+  "created": "2026-10-10T20:03:00.062956+00:00",
+  "modified": "2026-10-10T20:03:00.434385+00:00",
+  "id": 23287623,
+  "conceptrecid": "19574117",
+  "conceptdoi": "10.5281/zenodo.19574117",
+  "metadata": {
+    "title": "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology",
+    "publication_date": "2026-10-10",
+    "description": "Descriptive Ento-Linguistic corpus analyses with a six-domain framework, a fixed-margin terminology-network comparison, and a 20-minute research lecture. Version 1.2.0 adds 600 primary and 300 protocol-sensitivity draws, full traces and independent provenance. The comparison is conditional on the selected vocabulary and convenience corpus; it does not measure causal language effects or author intent. Paper and media: CC BY 4.0; source corpus materials remain subject to their providers' terms. Version 1.2.1 validates decoded retained traces, reconstructs observed statistics and checks report consistency; the statistical model and lecture media are unchanged.",
+    "access_right": "open",
+    "creators": [
+      {
+        "name": "Friedman, Daniel Ari",
+        "affiliation": "Active Inference Institute, APOIDEAS",
+        "orcid": "0000-0001-6232-9096"
+      },
+      {
+        "name": "Chambers, Tucker Cahill",
+        "affiliation": "APOIDEAS",
+        "orcid": "0009-0008-3793-7872"
+      }
+    ],
+    "keywords": [
+      "entomology",
+      "scientific terminology",
+      "language analysis",
+      "discourse analysis",
+      "ant biology",
+      "eusociality",
+      "conceptual frameworks",
+      "active inference",
+      "terminology networks",
+      "computational linguistics"
+    ],
+    "language": "eng",
+    "license": "cc-by-4.0",
+    "journal_title": "Journal of APOIDEAS",
+    "imprint_publisher": "APOIDEAS",
+    "communities": [
+      {
+        "identifier": "entomology"
+      }
+    ],
+    "upload_type": "publication",
+    "prereserve_doi": {
+      "doi": "10.5281/zenodo.23287623",
+      "recid": 23287623
+    }
+  },
+  "title": "Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology",
+  "links": {
+    "self": "https://zenodo.org/api/deposit/depositions/23287623",
+    "html": "https://zenodo.org/deposit/23287623",
+    "badge": "https://zenodo.org/badge/doi/.svg",
+    "files": "https://zenodo.org/api/deposit/depositions/23287623/files",
+    "bucket": "https://zenodo.org/api/files/e3352a95-18df-468c-a255-45ab4c5e8d6f",
+    "thumb250": "https://zenodo.org/record/23287623/thumb250",
+    "thumbs": {
+      "10": "https://zenodo.org/record/23287623/thumb10",
+      "50": "https://zenodo.org/record/23287623/thumb50",
+      "100": "https://zenodo.org/record/23287623/thumb100",
+      "250": "https://zenodo.org/record/23287623/thumb250",
+      "750": "https://zenodo.org/record/23287623/thumb750",
+      "1200": "https://zenodo.org/record/23287623/thumb1200"
+    },
+    "latest_draft": "https://zenodo.org/api/deposit/depositions/23287623",
+    "latest_draft_html": "https://zenodo.org/deposit/23287623",
+    "publish": "https://zenodo.org/api/deposit/depositions/23287623/actions/publish",
+    "edit": "https://zenodo.org/api/deposit/depositions/23287623/actions/edit",
+    "discard": "https://zenodo.org/api/deposit/depositions/23287623/actions/discard",
+    "newversion": "https://zenodo.org/api/deposit/depositions/23287623/actions/newversion"
+  },
+  "record_id": 23287623,
+  "owner": 131706,
+  "files": [
+    {
+      "id": "9d8ba808-8fda-4b35-b2d3-68050de02227",
+      "filename": "EntoLinguistics_audio.mp3",
+      "filesize": 16618796,
+      "checksum": "be93781dd5d79b13b13127224e169b06",
+      "links": {
+        "self": "https://zenodo.org/api/deposit/depositions/23287623/files/9d8ba808-8fda-4b35-b2d3-68050de02227",
+        "download": "https://zenodo.org/api/records/23287623/draft/files/EntoLinguistics_audio.mp3/content"
+      }
+    },
+    {
+      "id": "12423a0b-b4fe-427a-a388-38124b93339a",
+      "filename": "EntoLinguistics_network_robustness.zip",
+      "filesize": 1329873,
+      "checksum": "98029645d3c3a358ab5760705365f1fb",
+      "links": {
+        "self": "https://zenodo.org/api/deposit/depositions/23287623/files/12423a0b-b4fe-427a-a388-38124b93339a",
+        "download": "https://zenodo.org/api/records/23287623/draft/files/EntoLinguistics_network_robustness.zip/content"
+      }
+    },
+    {
+      "id": "8d600672-3fe8-4547-ab58-c262f333125c",
+      "filename": "EntoLinguistics_20min_4K.mp4",
+      "filesize": 75657214,
+      "checksum": "5856f4f0de753d379fb71583245ee118",
+      "links": {
+        "self": "https://zenodo.org/api/deposit/depositions/23287623/files/8d600672-3fe8-4547-ab58-c262f333125c",
+        "download": "https://zenodo.org/api/records/23287623/draft/files/EntoLinguistics_20min_4K.mp4/content"
+      }
+    },
+    {
+      "id": "519aa4cc-802e-4398-b527-61ab807db030",
+      "filename": "EntoLinguistics_slides.pdf",
+      "filesize": 10267572,
+      "checksum": "d8ca162644f9a53cefc28e6fb950e4e1",
+      "links": {
+        "self": "https://zenodo.org/api/deposit/depositions/23287623/files/519aa4cc-802e-4398-b527-61ab807db030",
+        "download": "https://zenodo.org/api/records/23287623/draft/files/EntoLinguistics_slides.pdf/content"
+      }
+    },
+    {
+      "id": "5086b4ef-01a7-4154-8bdf-94fdec7dcd4f",
+      "filename": "Ento_Linguistics_manuscript.pdf",
+      "filesize": 11216627,
+      "checksum": "311f7154708ab060dcec3c60dd1003c1",
+      "links": {
+        "self": "https://zenodo.org/api/deposit/depositions/23287623/files/5086b4ef-01a7-4154-8bdf-94fdec7dcd4f",
+        "download": "https://zenodo.org/api/records/23287623/draft/files/Ento_Linguistics_manuscript.pdf/content"
+      }
+    },
+    {
+      "id": "e80df980-340a-4acc-a3f6-03930ec23753",
+      "filename": "EntoLinguistics_lecture_companions.zip",
+      "filesize": 9939639,
+      "checksum": "20019f248a874fe2223b625e7218fe14",
+      "links": {
+        "self": "https://zenodo.org/api/deposit/depositions/23287623/files/e80df980-340a-4acc-a3f6-03930ec23753",
+        "download": "https://zenodo.org/api/records/23287623/draft/files/EntoLinguistics_lecture_companions.zip/content"
+      }
+    }
+  ],
+  "state": "unsubmitted",
+  "submitted": false
+}

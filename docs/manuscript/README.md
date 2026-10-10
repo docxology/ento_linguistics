@@ -2,9 +2,9 @@
 
 [Documentation](../README.md) → Manuscript
 
-This directory is the canonical source for [Ento-Linguistics v1.3.0](../../Ento_Linguistics_manuscript.pdf). The Markdown retains computational placeholders; the built PDF resolves them from verified core and extension exports. The current edition adds a graphical abstract, vocabulary/threshold sensitivity methods and source-checked Complexity / Complex Systems framing.
+This directory is the canonical source for [Ento-Linguistics v1.3.1](../../Ento_Linguistics_manuscript.pdf). The Markdown retains computational placeholders; the built PDF resolves them from verified core and extension exports. The v1.3.0 edition added a graphical abstract, vocabulary/threshold sensitivity methods and source-checked Complexity / Complex Systems framing; v1.3.1 regenerates every value after a second exact-text abstract reconciliation and the exclusion of PMC correction and retraction notices.
 
-[The v1.3.0 GitHub release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0) identifies the matched paper and lecture artifacts. The [v1.2.1 DOI](https://doi.org/10.5281/zenodo.23215452) retains the earlier archived paper and media identity; it is not the DOI of the new edition.
+[The v1.3.1 release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.1) and [DOI 10.5281/zenodo.23287623](https://doi.org/10.5281/zenodo.23287623) identify the current paper. [The v1.3.0 release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0) keeps the earlier paper and its matched lecture; the [v1.2.1 DOI](https://doi.org/10.5281/zenodo.23215452) retains the earlier archived paper and media identity.
 
 ## Reading map
 

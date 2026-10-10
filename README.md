@@ -4,25 +4,25 @@
 
 How do terms such as *queen*, *worker*, *caste*, and *colony* organize descriptions of ant biology? Ento-Linguistics provides a six-domain framework and a reproducible, descriptive analysis of scientific terminology across modern abstracts, full texts, historical OCR, and preprints.
 
-[Read the v1.3.0 paper](Ento_Linguistics_manuscript.pdf) · [Paper and lecture release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0) · [Documentation](docs/README.md) · [Reproduce the analyses](docs/guides/workflow.md)
+[Read the v1.3.1 paper](Ento_Linguistics_manuscript.pdf) · [Paper release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.1) · [DOI 10.5281/zenodo.23287623](https://doi.org/10.5281/zenodo.23287623) · [Documentation](docs/README.md) · [Reproduce the analyses](docs/guides/workflow.md)
 
 Daniel Ari Friedman and Tucker Cahill Chambers
 
 **Version 1.3.0 — Complexity, representation and scientific communication.** The graphical abstract distinguishes biological processes from observed scientific discourse and computational proxies. The [network-reading method](research/network_reading/README.md) reports a declared grid of vocabulary sizes and shared-document thresholds, retaining isolates and exposing density denominators. Source-checked complexity scholarship strengthens questions about units, coupling, feedback and scale. Density, clustering, entropy and heuristic CACE retain separate interpretation limits.
 
-The six-domain framework, four source layers and [fixed-margin comparison](research/network_robustness/README.md) remain separately receipted. The [current verification record](output/review-v1.3.0-20261008/SUMMARY.md) identifies the exact source, checks and artifact scope. The software package version and research-edition version are distinct.
+The six-domain framework, four source layers and [fixed-margin comparison](research/network_robustness/README.md) remain separately receipted. The [v1.3.0 verification record](output/review-v1.3.0-20261008/SUMMARY.md) identifies the exact source, checks and artifact scope. The software package version and research-edition version are distinct.
 
-**Unreleased on `main` (1.3.1 candidate).** A second exact-text PubMed reconciliation admits 59 more archived abstracts, and PMC correction, erratum and retraction notices are excluded from full-text analysis while staying in the stored shards. All layers were regenerated; the [candidate verification record](output/review-v1.3.1-20261009/SUMMARY.md) lists every changed value. The published v1.3.0 PDF, media and DOI are unchanged.
+**Version 1.3.1 — corpus-custody patch.** A second exact-text PubMed reconciliation admits 59 more archived abstracts, and PMC correction, erratum and retraction notices are excluded from full-text analysis while staying in the stored shards. All layers were regenerated; the [verification record](output/review-v1.3.1-20261009/SUMMARY.md) lists every changed value and the [release record](docs/reference/release-v1.3.1.md) identifies the published files. The 20-minute lecture below is the v1.3.0 release asset and quotes v1.3.0 values.
 
 ## Matched research lecture
 
-[Watch the 20-minute lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.3.0/EntoLinguistics_20min_4K.mp4) · [Download slides](https://github.com/docxology/ento_linguistics/releases/download/v1.3.0/EntoLinguistics_slides.pdf) · [All release files](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0)
+[Watch the 20-minute v1.3.0 lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.3.0/EntoLinguistics_20min_4K.mp4) · [Download slides](https://github.com/docxology/ento_linguistics/releases/download/v1.3.0/EntoLinguistics_slides.pdf) · [All release files](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0)
 
 The 29-slide fifth edition begins with the paper's graphical abstract and uses DAF narration, provider-timed captions and nine real Manim scenes. Complexity / Complex Systems connects the methods and scholarship. Architecture, Fertilization, Expansion supports transitions without replacing the results. LectureCreate pins the exact public source commit, version, paper SHA-256 and analysis signature; synchronization rejects dirty sources, stale public PDFs or a differently authored lecture version.
 
 ## Archived publication identities
 
-[Zenodo v1.2.1](https://doi.org/10.5281/zenodo.23215452), [its GitHub release](https://github.com/docxology/ento_linguistics/releases/tag/v1.2.1) and [the concept DOI](https://doi.org/10.5281/zenodo.19574117) preserve prior versions. The earlier third-edition public media and fourth-edition local draft retain their own identities. The new GitHub research edition does not borrow a previous version DOI.
+[Zenodo v1.3.1](https://doi.org/10.5281/zenodo.23287623) identifies the current paper. v1.3.0 was a GitHub release without a DOI; [Zenodo v1.2.1](https://doi.org/10.5281/zenodo.23215452), [its GitHub release](https://github.com/docxology/ento_linguistics/releases/tag/v1.2.1) and [the concept DOI](https://doi.org/10.5281/zenodo.19574117) preserve prior versions. The earlier third-edition public media and fourth-edition local draft retain their own identities.
 
 ## What this project studies
 
@@ -52,7 +52,7 @@ Edges in this terminology network count documents containing both terms among th
 
 Full/default BHL processing covers **2,317,721,403 OCR characters**. Layers differ in genre, retrieval, language, and extraction threshold; their raw counts are not matched comparisons. Broad retrieval, OCR errors, title-rule notice screening, overlapping domain groups, and incomplete relevance/license annotation remain documented limitations.
 
-The published v1.2.1 paper contains **47 pages**. Its figures include the separately receipted network comparison. See the [data lineage](docs/reference/data-lineage.md) for the exports behind each result and the [verification reference](docs/reference/verification.md) for measured build evidence.
+The v1.3.1 paper contains **53 pages**. Its figures include the separately receipted network comparison and vocabulary/threshold diagnostic. See the [data lineage](docs/reference/data-lineage.md) for the exports behind each result and the [verification reference](docs/reference/verification.md) for measured build evidence.
 
 ## Get started
 
@@ -89,7 +89,7 @@ The build writes [output/pdf/ento_linguistics_combined.pdf](output/pdf/ento_ling
 uv run pytest tests/ --cov=src --cov-report=term-missing
 ~~~
 
-Run tests and generation sequentially. The configured coverage floor is **90% combined statement/branch coverage**. The published v1.2.1 validation run recorded **1,802 passed, eight external-template skips, and 91.45% combined coverage**; these are captured results, not a claim that every later checkout has been rerun. The v1.3.0 full run passed **1,833 tests with eight skips and 91.98% combined coverage**; see [current receipts and bounded QA](output/review-v1.3.0-20261008/SUMMARY.md). Earlier independent approvals retain their exact candidate scope.
+Run tests and generation sequentially. The configured coverage floor is **90% combined statement/branch coverage**. The published v1.2.1 validation run recorded **1,802 passed, eight external-template skips, and 91.45% combined coverage**; these are captured results, not a claim that every later checkout has been rerun. The v1.3.0 full run passed **1,833 tests with eight skips and 91.98% combined coverage**; the v1.3.1 release run passed **1,856 tests with eight skips and 91.99% combined coverage** (see [release verification](docs/reference/release-v1.3.1.md)). Earlier independent approvals retain their exact candidate scope.
 
 Content receipts bind actual corpus, source, dependency-lock, NLTK resource, and output bytes. The strict renderer rejects stale receipts and unresolved placeholders. [Validation](docs/guides/validation.md) explains numerical controls, custody checks, figure inspection, and PDF verification.
 
@@ -112,6 +112,6 @@ Source identity and a successful build do not establish relevance, individual re
 
 ## Cite the paper
 
-Daniel Ari Friedman and Tucker Cahill Chambers. *Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology*. Manuscript revision, 7 October 2026. [doi:10.5281/zenodo.23215452](https://doi.org/10.5281/zenodo.23215452).
+Daniel Ari Friedman and Tucker Cahill Chambers. *Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology*. Version 1.3.1, 10 October 2026. [doi:10.5281/zenodo.23287623](https://doi.org/10.5281/zenodo.23287623).
 
 Use the version DOI to cite this PDF, or the [concept DOI](https://doi.org/10.5281/zenodo.19574117) to refer to the evolving work. The Zenodo paper is distributed under its recorded **CC BY 4.0** license. Corpus reuse remains subject to each source's terms; availability is not blanket redistribution permission.
