@@ -1,6 +1,6 @@
 # Documentation
 
-Read the [v1.3.1 paper](../Ento_Linguistics_manuscript.pdf) ([release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.1), [DOI](https://doi.org/10.5281/zenodo.23287623)), the [v1.3.0 lecture release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.0), or choose a task below. Earlier publication identities remain in [verification](reference/verification.md). Commands in these guides run from the repository root.
+Read the [v1.3.1 paper](../Ento_Linguistics_manuscript.pdf) ([release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.1), [DOI](https://doi.org/10.5281/zenodo.23287623)), the [v1.3.1 lecture](https://github.com/docxology/ento_linguistics/releases/download/v1.3.1/EntoLinguistics_v1.3.1_lecture.mp4), or choose a task below. Earlier publication identities remain in [verification](reference/verification.md). Commands in these guides run from the repository root.
 
 ## Guides: complete a task
 

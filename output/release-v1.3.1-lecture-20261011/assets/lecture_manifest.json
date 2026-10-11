@@ -1,0 +1,43 @@
+{
+  "release": "v1.3.1",
+  "edition": "sixth-edition lecture",
+  "paper_version": "1.3.1",
+  "paper_pdf_sha256": "5a6c4f3356a7bf1ebd498c5423ff1b3f6ec24ab75557bb755c2b0cd908fd92e9",
+  "lecture_source_commit": "5d9d80d7b1484531f791b1bcbf6d95be3857a6fd",
+  "lecturecreate_commit": "dbfd1cf",
+  "note": "Lecture media added to the v1.3.1 release after tagging; the v1.3.1 Zenodo record (10.5281/zenodo.23287623) does not include these files.",
+  "files": {
+    "EntoLinguistics_v1.3.1_audio.mp3": {
+      "bytes": 17888084,
+      "sha256": "35244be80c672b9b79a1c84843243e7bc8b1bbc0dfe2b7988f8f812f8b3a8c87"
+    },
+    "EntoLinguistics_v1.3.1_captions.srt": {
+      "bytes": 34531,
+      "sha256": "982759d37d8e744d07dbb78d7644bdc466bc0b8d58836b5cf56aaa98d305ff80"
+    },
+    "EntoLinguistics_v1.3.1_captions.vtt": {
+      "bytes": 34539,
+      "sha256": "9dcb6a7758eb7e5d20ee7cdb9b4e7c15066cc2cf6817ad028f64661a2692e0f4"
+    },
+    "EntoLinguistics_v1.3.1_chapters.txt": {
+      "bytes": 278,
+      "sha256": "6db405a825b1fbff5cab889a65ca66bd028c38739968a1aef129295933632c73"
+    },
+    "EntoLinguistics_v1.3.1_lecture.mp4": {
+      "bytes": 87423989,
+      "sha256": "9403d55917517341ea5865d4f6dd4705adbd66edf9b1ccdf1c77f9b086dbb759"
+    },
+    "EntoLinguistics_v1.3.1_lecture_receipt.json": {
+      "bytes": 1403,
+      "sha256": "891ba7e10f34673a033cc4b230de819e46e0b9dcdc41e56f98ecc061cad325d6"
+    },
+    "EntoLinguistics_v1.3.1_slides.pdf": {
+      "bytes": 13535634,
+      "sha256": "56c4a8b41674d57416c654befd59b2acbd5e63cc99f92e873a01aafbac058597"
+    },
+    "EntoLinguistics_v1.3.1_transcript.txt": {
+      "bytes": 23544,
+      "sha256": "ddfefcd7a09001b19dfe4051a0c89e9bf5790018e4ba942783779c883b68441c"
+    }
+  }
+}

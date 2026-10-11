@@ -1,0 +1,20 @@
+{
+  "release": "v1.3.1",
+  "url": "https://github.com/docxology/ento_linguistics/releases/tag/v1.3.1",
+  "added": "2026-10-11",
+  "lecturecreate_commit": "dbfd1cf",
+  "edition": 6,
+  "assets": {
+    "EntoLinguistics_v1.3.1_audio.mp3": "35244be80c672b9b79a1c84843243e7bc8b1bbc0dfe2b7988f8f812f8b3a8c87",
+    "EntoLinguistics_v1.3.1_captions.srt": "982759d37d8e744d07dbb78d7644bdc466bc0b8d58836b5cf56aaa98d305ff80",
+    "EntoLinguistics_v1.3.1_captions.vtt": "9dcb6a7758eb7e5d20ee7cdb9b4e7c15066cc2cf6817ad028f64661a2692e0f4",
+    "EntoLinguistics_v1.3.1_chapters.txt": "6db405a825b1fbff5cab889a65ca66bd028c38739968a1aef129295933632c73",
+    "EntoLinguistics_v1.3.1_lecture.mp4": "9403d55917517341ea5865d4f6dd4705adbd66edf9b1ccdf1c77f9b086dbb759",
+    "EntoLinguistics_v1.3.1_lecture_receipt.json": "891ba7e10f34673a033cc4b230de819e46e0b9dcdc41e56f98ecc061cad325d6",
+    "EntoLinguistics_v1.3.1_slides.pdf": "56c4a8b41674d57416c654befd59b2acbd5e63cc99f92e873a01aafbac058597",
+    "EntoLinguistics_v1.3.1_transcript.txt": "ddfefcd7a09001b19dfe4051a0c89e9bf5790018e4ba942783779c883b68441c",
+    "lecture_manifest.json": "1811f28d13dceeec36436323bcd9aa3b2f8714f5f87fae5256b2d0b7b2dd7125"
+  },
+  "github_downloads_match": true,
+  "zenodo": "not included; v1.3.1 DOI 10.5281/zenodo.23287623 identifies paper and methods bundle only"
+}
