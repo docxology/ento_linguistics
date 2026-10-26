@@ -13,7 +13,7 @@ tested). The standalone renderer is the paper acceptance path; several older rep
 |--------|---------|--------------|---------|
 | `01_build_corpus.py` | Build/refresh the literature corpus (cached; `--force` re-fetches) | `src/pipeline/corpus_build.py` | `uv run python scripts/01_build_corpus.py` |
 | `02_generate_figures.py` | **Main entry point** — regenerate registered core figures and data, validate manuscript variables | `src/visualization/manuscript_figures.py` | `uv run python scripts/02_generate_figures.py` |
-| `_analysis_pipeline.py` | End-to-end run: corpus → figures → preflight (stage selection + dry run) | the three scripts above | `uv run python scripts/_analysis_pipeline.py [--stages corpus figures preflight] [--dry-run]` |
+| `_analysis_pipeline.py` | End-to-end run: corpus → figures → preflight (stage selection + dry run) | `01_build_corpus.py`, `02_generate_figures.py`, `_manuscript_preflight.py` | `uv run python scripts/_analysis_pipeline.py [--stages corpus figures preflight] [--dry-run]` |
 | `_conceptual_mapping_script.py` | Concept mapping and network generation | `src/pipeline/conceptual_mapping_pipeline.py` | `uv run python scripts/_conceptual_mapping_script.py` |
 | `_convert_corpus.py` | Convert literature corpus JSON to plain abstracts list | `src/data/loader.py` (`convert_corpus`) | `uv run python scripts/_convert_corpus.py` |
 | `_discourse_analysis_script.py` | Discourse pattern analysis | `src/pipeline/discourse_pipeline.py` | `uv run python scripts/_discourse_analysis_script.py` |

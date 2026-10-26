@@ -1,5 +1,5 @@
 # Ento-Linguistics Project Configuration
-# Inherits workspace settings from root pyproject.toml
+# Standalone project: no parent workspace pyproject.toml. Dependencies are locked in uv.lock.
 
 [build-system]
 requires = ["setuptools>=61.0"]
@@ -83,6 +83,3 @@ target-version = "py310"
 # Package __init__ files re-export the public API; unused-import there is
 # intentional surface, not dead code.
 "**/__init__.py" = ["F401"]
-
-[tool.uv]
-# Inherits workspace settings from root pyproject.toml

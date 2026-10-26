@@ -4,6 +4,11 @@ All notable changes to the Ento-Linguistics project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Concept DOI: [10.5281/zenodo.19574117](https://doi.org/10.5281/zenodo.19574117) — all versions are grouped under the same concept DOI.
 
+## Unreleased — maintenance
+
+- Remove the obsolete one-shot Zenodo replay workflow (`.github/workflows/zenodo-sync.yml` and its `zenodo_v1.1.0_payload.json`). Its guard waited for Zenodo to list version `v1.1.0`, which the concept record never listed (it lists 1.1.1, 1.2.0, 1.2.1, v1 and 1.3.1), so the 30-minute schedule replayed the v1.1.0 release event indefinitely. No analysis input, receipt or published artifact changes.
+- Correct dead and stale documentation references: the ESA common-names URL in `docs/manuscript/references.bib` (`better-common-names` 404s; the live page is `entsoc.org/publications/common-names`), the `[1.1.1]` version DOI in this file (it pointed at the concept DOI instead of doi:10.5281/zenodo.22902510), the positional script reference in `scripts/README.md`, and the `pyproject.toml` comments that claimed settings were inherited from a root workspace `pyproject.toml`, which does not exist for this standalone repository. Dependency constraints and `uv.lock` are unchanged, so stored receipts still verify. The published v1.3.1 PDF keeps its identity; a later render picks up the corrected link.
+
 ## [1.3.1] — 2026-10-10
 
 - Admit a second exact-text PubMed reconciliation pass to abstract provenance. Each candidate was re-fetched live and admitted only when the stored string equals one reconstruction of exactly one PubMed abstract; stored abstract text is unchanged. See [integration evidence](output/review-v1.3.1-20261009/legacy-provenance-integration.json).
@@ -114,7 +119,7 @@ Methods and statistics revision of the analysis pipeline and manuscript.
 - **Ambiguity scores are real**: supplemental tables no longer present hardcoded placeholder scores; descriptives come from per-term valid-entropy means with exclusions counted.
 - **Manuscript data corrections**: inferential claims in the manuscript are restated as token-driven values, and the pairwise comparisons are correctly described as tests on per-term semantic entropy (not mean ambiguity scores).
 
-[1.1.1]: https://doi.org/10.5281/zenodo.19574117
+[1.1.1]: https://doi.org/10.5281/zenodo.22902510
 [1.1.0]: https://doi.org/10.5281/zenodo.19574118
 
 [1.2.0]: https://doi.org/10.5281/zenodo.23198912
