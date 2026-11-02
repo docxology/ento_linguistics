@@ -12,7 +12,7 @@ description = "Ento-Linguistic analysis of scientific terminology in entomology"
 authors = [
     {name = "Daniel Ari Friedman", email = "daniel@activeinference.institute"}
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     # Core scientific computing
     "numpy>=1.24.0",
