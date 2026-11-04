@@ -174,8 +174,18 @@ def _setup_test_project_structure(tmp_path: Path, test_name: str) -> Path:
 
 
 def _infrastructure_available():
-    """Check if infrastructure modules are accessible."""
-    repo_root, cli_script, _ = _get_infrastructure_paths()
+    """Check if infrastructure modules are accessible.
+
+    This function decides a skip, so it answers False when the infrastructure is absent
+    instead of raising: _find_repo_root() raises when no parent directory holds
+    infrastructure/__init__.py, which is the normal case for a standalone checkout of this
+    project. Raising here ran at import time (the result feeds a class-level skipif) and
+    aborted collection of the whole suite, so no test in tests/ could run.
+    """
+    try:
+        repo_root, cli_script, _ = _get_infrastructure_paths()
+    except RuntimeError:
+        return False
     return cli_script.exists() and (repo_root / "infrastructure" / "__init__.py").exists()
 
 
