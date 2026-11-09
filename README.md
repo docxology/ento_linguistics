@@ -115,3 +115,7 @@ Source identity and a successful build do not establish relevance, individual re
 Daniel Ari Friedman and Tucker Cahill Chambers. *Ento-Linguistics: Language, Ambiguity, and Scientific Communication in Entomology*. Version 1.3.1, 10 October 2026. [doi:10.5281/zenodo.23287623](https://doi.org/10.5281/zenodo.23287623).
 
 Use the version DOI to cite this PDF, or the [concept DOI](https://doi.org/10.5281/zenodo.19574117) to refer to the evolving work. The Zenodo paper is distributed under its recorded **CC BY 4.0** license. Corpus reuse remains subject to each source's terms; availability is not blanket redistribution permission.
+
+## License
+
+Repository contents are licensed under [CC BY-NC 4.0](LICENSE). The published paper on Zenodo keeps its recorded CC BY 4.0 license, and corpus sources keep their own terms.
