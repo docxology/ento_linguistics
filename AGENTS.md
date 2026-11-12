@@ -15,6 +15,9 @@ Preserve unrelated working-tree edits and historical scientific evidence. Reprod
 Run from the repository root, with tests and generation sequential:
 
 ```bash
+# One-time environment setup (installs pytest and the test tooling)
+uv sync --extra dev
+
 uv run pytest tests/ --cov=src --cov-report=term-missing
 uv run python scripts/02_generate_figures.py
 PYTHONPATH=src uv run python -m research.network_reading.study --root .
