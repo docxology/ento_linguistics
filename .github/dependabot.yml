@@ -1,0 +1,20 @@
+# Dependabot — version updates for the manifest this repository ships.
+# pip: the root pyproject.toml / uv.lock pair, which carries every one of this repository's alerts.
+# No github-actions entry: the tree tracks no workflow files, so such an entry would name
+# something that does not exist.
+# Archived paths: The tree contains no directory matching archive / archived / deprecated / legacy / old / attic / `_archive`, so no path is excluded and none is silently watched.
+# Hosted CI cannot run here (private-partition billing lapse); the shape below is validated
+# locally against the tracked tree before merge.
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    groups:
+      python:
+        patterns: ["*"]
