@@ -210,7 +210,7 @@ def _skip_if_cli_deps_missing(result) -> None:
 
 @pytest.mark.skipif(
     not _infrastructure_available(),
-    reason="Infrastructure modules not available (project in projects_in_progress/)",
+    reason="Parent-template infrastructure modules not available in this standalone checkout",
 )
 class TestFullPipelineIntegration:
     """Test the complete pipeline: scripts → outputs → validation → glossary."""
