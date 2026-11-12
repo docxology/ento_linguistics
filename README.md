@@ -1,5 +1,11 @@
 # Ento-Linguistics
 
+<p align="center">
+  <a href="https://doi.org/10.5281/zenodo.23287623"><img alt="Digital Object Identifier (DOI), Zenodo record: 10.5281/zenodo.23287623" src="https://zenodo.org/badge/DOI/10.5281/zenodo.23287623.svg"></a>
+  <a href="LICENSE"><img alt="License: CC BY-NC 4.0" src="https://img.shields.io/badge/license-CC%20BY--NC%204.0-blue"></a>
+  <img alt="Requires Python 3.11 or newer" src="https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white">
+</p>
+
 **Language, ambiguity, and scientific communication in entomology.**
 
 How do terms such as *queen*, *worker*, *caste*, and *colony* organize descriptions of ant biology? Ento-Linguistics provides a six-domain framework and a reproducible, descriptive analysis of scientific terminology across modern abstracts, full texts, historical OCR, and preprints.
