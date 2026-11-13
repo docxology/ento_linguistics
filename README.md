@@ -62,7 +62,7 @@ The v1.3.1 paper contains **53 pages**. Its figures include the separately recei
 
 ## Get started
 
-Use **Python 3.10 or newer** and [uv](https://docs.astral.sh/uv/). Run commands from the repository root:
+Use **Python 3.11 or newer** and [uv](https://docs.astral.sh/uv/). Run commands from the repository root:
 
 ~~~bash
 git clone https://github.com/docxology/ento_linguistics.git
