@@ -8,16 +8,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import numpy as np
 
-from .validation_utils import (validate_figure_registry, validate_markdown,
-                               verify_output_integrity)
+from .validation_utils import validate_figure_registry, validate_markdown, verify_output_integrity
 
 __all__ = [
-    "ValidationResult",
     "ValidationFramework",
+    "ValidationResult",
 ]
 
 
@@ -28,10 +27,10 @@ class ValidationResult:
     is_valid: bool
     check_name: str
     message: str
-    details: Dict[str, Any] = field(default_factory=dict)
+    details: dict[str, Any] = field(default_factory=dict)
     severity: str = "error"  # error, warning, info
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return {
             "is_valid": self.is_valid,
@@ -44,7 +43,7 @@ class ValidationResult:
 
 def _detect_outliers(
     values: np.ndarray, method: str = "iqr", threshold: float = 1.5
-) -> Tuple[np.ndarray, Dict[str, Any]]:
+) -> tuple[np.ndarray, dict[str, Any]]:
     """Detect outliers without up-layer imports.
 
     Relocated down-layer from ``data.data_processing.detect_outliers`` so that
@@ -105,15 +104,15 @@ class ValidationFramework:
 
     def __init__(self):
         """Initialize validation framework."""
-        self.validation_results: List[ValidationResult] = []
+        self.validation_results: list[ValidationResult] = []
 
     def validate_bounds(
         self,
         values: np.ndarray,
         name: str,
-        min_value: Optional[float] = None,
-        max_value: Optional[float] = None,
-        expected_range: Optional[Tuple[float, float]] = None,
+        min_value: float | None = None,
+        max_value: float | None = None,
+        expected_range: tuple[float, float] | None = None,
     ) -> ValidationResult:
         """Validate that values are within bounds.
 
@@ -166,7 +165,7 @@ class ValidationFramework:
         self,
         value: float,
         name: str,
-        expected_order_of_magnitude: Optional[float] = None,
+        expected_order_of_magnitude: float | None = None,
         allow_zero: bool = True,
         allow_negative: bool = True,
     ) -> ValidationResult:
@@ -219,8 +218,8 @@ class ValidationFramework:
 
     def validate_reproducibility(
         self,
-        run1_results: Dict[str, Any],
-        run2_results: Dict[str, Any],
+        run1_results: dict[str, Any],
+        run2_results: dict[str, Any],
         tolerance: float = 1e-6,
     ) -> ValidationResult:
         """Validate reproducibility between two runs.
@@ -252,11 +251,7 @@ class ValidationFramework:
         ignored_keys.sort()
         is_valid = len(differences) == 0
 
-        message = (
-            "Runs are reproducible"
-            if is_valid
-            else f"Differences found: {', '.join(differences)}"
-        )
+        message = "Runs are reproducible" if is_valid else f"Differences found: {', '.join(differences)}"
 
         result = ValidationResult(
             is_valid=is_valid,
@@ -273,9 +268,7 @@ class ValidationFramework:
         self.validation_results.append(result)
         return result
 
-    def detect_anomalies(
-        self, values: np.ndarray, method: str = "iqr", threshold: float = 3.0
-    ) -> ValidationResult:
+    def detect_anomalies(self, values: np.ndarray, method: str = "iqr", threshold: float = 3.0) -> ValidationResult:
         """Detect anomalies in results.
 
         Args:
@@ -293,9 +286,7 @@ class ValidationFramework:
         # Consider > 5% anomalies as a problem
         is_valid = anomaly_percentage < 5.0
         message = (
-            f"Found {n_anomalies} anomalies ({anomaly_percentage:.2f}%)"
-            if n_anomalies > 0
-            else "No anomalies detected"
+            f"Found {n_anomalies} anomalies ({anomaly_percentage:.2f}%)" if n_anomalies > 0 else "No anomalies detected"
         )
 
         result = ValidationResult(
@@ -316,8 +307,8 @@ class ValidationFramework:
         return result
 
     def validate_quality_metrics(
-        self, metrics: Dict[str, float], expected_ranges: Dict[str, Tuple[float, float]]
-    ) -> List[ValidationResult]:
+        self, metrics: dict[str, float], expected_ranges: dict[str, tuple[float, float]]
+    ) -> list[ValidationResult]:
         """Validate quality metrics against expected ranges.
 
         Args:
@@ -374,11 +365,7 @@ class ValidationFramework:
         result = ValidationResult(
             is_valid=is_valid,
             check_name="markdown_validation",
-            message=(
-                "No markdown issues"
-                if is_valid
-                else f"{len(problems)} markdown issues found"
-            ),
+            message=("No markdown issues" if is_valid else f"{len(problems)} markdown issues found"),
             details={"problems": problems, "validation_result": result_dict},
             severity="warning" if not is_valid else "info",
         )
@@ -409,9 +396,7 @@ class ValidationFramework:
         self.validation_results.append(result)
         return result
 
-    def validate_figure_registry(
-        self, registry_path: str, manuscript_dir: str = "."
-    ) -> ValidationResult:
+    def validate_figure_registry(self, registry_path: str, manuscript_dir: str = ".") -> ValidationResult:
         """Validate a figure registry JSON using infrastructure validation."""
         try:
             report = validate_figure_registry(Path(registry_path), Path(manuscript_dir))
@@ -435,7 +420,7 @@ class ValidationFramework:
         self.validation_results.append(result)
         return result
 
-    def generate_validation_report(self) -> Dict[str, Any]:
+    def generate_validation_report(self) -> dict[str, Any]:
         """Generate validation report.
 
         Returns:
@@ -445,16 +430,8 @@ class ValidationFramework:
         n_passed = sum(1 for r in self.validation_results if r.is_valid)
         n_failed = n_total - n_passed
 
-        errors = [
-            r
-            for r in self.validation_results
-            if not r.is_valid and r.severity == "error"
-        ]
-        warnings = [
-            r
-            for r in self.validation_results
-            if not r.is_valid and r.severity == "warning"
-        ]
+        errors = [r for r in self.validation_results if not r.is_valid and r.severity == "error"]
+        warnings = [r for r in self.validation_results if not r.is_valid and r.severity == "warning"]
 
         return {
             "summary": {

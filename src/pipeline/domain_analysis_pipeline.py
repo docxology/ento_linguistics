@@ -10,14 +10,14 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
-from visualization.concept_visualization import ConceptVisualizer
 from analysis.domain_analysis import DomainAnalysis, DomainAnalyzer
-from data.literature_mining import LiteratureCorpus
 from analysis.term_extraction import TerminologyExtractor
-
 from core.logging import get_logger
+from data.literature_mining import LiteratureCorpus
+from visualization.concept_visualization import ConceptVisualizer
+
 # Directory creation handled inline
 from visualization.figure_manager import FigureManager
 
@@ -31,7 +31,7 @@ class DomainAnalysisScript:
     generating detailed reports and visualizations for specific conceptual areas.
     """
 
-    def __init__(self, output_dir: Optional[Path] = None):
+    def __init__(self, output_dir: Path | None = None):
         """Initialize domain analysis script.
 
         Args:
@@ -51,16 +51,14 @@ class DomainAnalysisScript:
         self.figure_manager = FigureManager()
         self.visualizer = ConceptVisualizer()
 
-        logger.info(
-            f"Initialized domain analysis script with output directory: {self.output_dir}"
-        )
+        logger.info(f"Initialized domain analysis script with output directory: {self.output_dir}")
 
     def analyze_domain(
         self,
         domain_name: str,
-        corpus_file: Optional[Path] = None,
+        corpus_file: Path | None = None,
         generate_figures: bool = True,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Analyze a specific Ento-Linguistic domain.
 
         Args:
@@ -96,11 +94,7 @@ class DomainAnalysisScript:
         all_terms = extractor.extract_terms(texts, min_frequency=2)
 
         # Filter terms for this domain
-        domain_terms = {
-            term: term_obj
-            for term, term_obj in all_terms.items()
-            if domain_name in term_obj.domains
-        }
+        domain_terms = {term: term_obj for term, term_obj in all_terms.items() if domain_name in term_obj.domains}
 
         logger.info(f"Found {len(domain_terms)} terms in {domain_name} domain")
 
@@ -115,9 +109,7 @@ class DomainAnalysisScript:
         analysis = analyses[domain_name]
 
         # Generate detailed report
-        report_content = self._generate_domain_report(
-            domain_name, analysis, domain_terms
-        )
+        report_content = self._generate_domain_report(domain_name, analysis, domain_terms)
 
         # Save report
         report_file = self.reports_dir / f"{domain_name}_analysis_report.md"
@@ -142,7 +134,7 @@ class DomainAnalysisScript:
         logger.info(f"Completed analysis of {domain_name} domain")
         return results
 
-    def _load_corpus(self, corpus_file: Optional[Path]) -> LiteratureCorpus:
+    def _load_corpus(self, corpus_file: Path | None) -> LiteratureCorpus:
         """Load literature corpus.
 
         Args:
@@ -164,9 +156,7 @@ class DomainAnalysisScript:
                 logger.warning("No corpus file found, creating empty corpus")
                 return LiteratureCorpus()
 
-    def _generate_domain_report(
-        self, domain_name: str, analysis: DomainAnalysis, domain_terms: Dict[str, Any]
-    ) -> str:
+    def _generate_domain_report(self, domain_name: str, analysis: DomainAnalysis, domain_terms: dict[str, Any]) -> str:
         """Generate detailed domain analysis report.
 
         Args:
@@ -183,8 +173,7 @@ class DomainAnalysisScript:
         # backslash escapes are not allowed inside f-string expressions on
         # Python 3.10.
         ambiguities_section = "\n\n".join(
-            f"#### {amb['term']}\n**Context**: {', '.join(amb['contexts'])}"
-            f"\n**Issue**: {amb['issue']}"
+            f"#### {amb['term']}\n**Context**: {', '.join(amb['contexts'])}\n**Issue**: {amb['issue']}"
             for amb in analysis.ambiguities
         )
         term_breakdown_section = "\n\n".join(
@@ -192,27 +181,30 @@ class DomainAnalysisScript:
             f"\n- **Contexts**: {len(info.contexts)}"
             f"\n- **Domains**: {', '.join(info.domains)}"
             f"\n- **Sample Usage**: {info.contexts[0] if info.contexts else 'No contexts available'}"
-            for term, info in sorted(
-                domain_terms.items(), key=lambda x: x[1].frequency, reverse=True
-            )[:20]
+            for term, info in sorted(domain_terms.items(), key=lambda x: x[1].frequency, reverse=True)[:20]
         )
-
 
         report = f"""# {domain_title} Domain Analysis
 
-**Analysis Date:** {__import__('datetime').datetime.now().isoformat()}
+**Analysis Date:** {__import__("datetime").datetime.now().isoformat()}
 **Domain:** {domain_name}
 **Terms Analyzed:** {len(domain_terms)}
 
 ## Overview
 
-This report presents a detailed analysis of the {domain_title} domain within the Ento-Linguistic framework, examining how terminology shapes scientific understanding in this conceptual area.
+This report presents a detailed analysis of the {
+            domain_title
+        } domain within the Ento-Linguistic framework, examining how terminology shapes scientific understanding in this conceptual area.
 
 ## Key Terminology
 
 ### Most Frequent Terms
-{chr(10).join(f"- **{term}**: {info.frequency} occurrences" for term, info in
-              sorted(domain_terms.items(), key=lambda x: x[1].frequency, reverse=True)[:10])}
+{
+            chr(10).join(
+                f"- **{term}**: {info.frequency} occurrences"
+                for term, info in sorted(domain_terms.items(), key=lambda x: x[1].frequency, reverse=True)[:10]
+            )
+        }
 
 ### Term Patterns
 {chr(10).join(f"- {pattern}: {count} instances" for pattern, count in analysis.term_patterns.items())}
@@ -226,8 +218,12 @@ The following assumptions are embedded in the terminology used in this domain:
 ## Conceptual Structure
 
 ### Hierarchical Organization
-{chr(10).join(f"- **{key}**: {', '.join(value) if isinstance(value, list) else str(value)}"
-              for key, value in analysis.conceptual_structure.items())}
+{
+            chr(10).join(
+                f"- **{key}**: {', '.join(value) if isinstance(value, list) else str(value)}"
+                for key, value in analysis.conceptual_structure.items()
+            )
+        }
 
 ## Ambiguities and Communication Challenges
 
@@ -285,8 +281,8 @@ This analysis draws on the broader Ento-Linguistic framework and domain-specific
         return report
 
     def _generate_domain_figures(
-        self, domain_name: str, analysis: DomainAnalysis, domain_terms: Dict[str, Any]
-    ) -> Dict[str, str]:
+        self, domain_name: str, analysis: DomainAnalysis, domain_terms: dict[str, Any]
+    ) -> dict[str, str]:
         """Generate figures for domain analysis.
 
         Args:
@@ -306,9 +302,7 @@ This analysis draws on the broader Ento-Linguistic framework and domain-specific
             fig, ax = plt.subplots(figsize=(10, 6))
 
             # Get top terms by frequency
-            top_terms = sorted(
-                domain_terms.items(), key=lambda x: x[1].frequency, reverse=True
-            )[:15]
+            top_terms = sorted(domain_terms.items(), key=lambda x: x[1].frequency, reverse=True)[:15]
             terms, term_objects = zip(*top_terms)
             frequencies = [obj.frequency for obj in term_objects]
 
@@ -316,9 +310,7 @@ This analysis draws on the broader Ento-Linguistic framework and domain-specific
             ax.set_xticks(range(len(terms)))
             ax.set_xticklabels(terms, rotation=45, ha="right")
             ax.set_ylabel("Frequency")
-            ax.set_title(
-                f'Term Frequency Distribution - {domain_name.replace("_", " ").title()}'
-            )
+            ax.set_title(f"Term Frequency Distribution - {domain_name.replace('_', ' ').title()}")
 
             # Add value labels
             for bar, freq in zip(bars, frequencies):
@@ -358,15 +350,11 @@ This analysis draws on the broader Ento-Linguistic framework and domain-specific
             ambiguity_terms = [amb["term"] for amb in analysis.ambiguities]
             context_counts = [len(amb["contexts"]) for amb in analysis.ambiguities]
 
-            bars = ax.bar(
-                range(len(ambiguity_terms)), context_counts, alpha=0.7, color="orange"
-            )
+            bars = ax.bar(range(len(ambiguity_terms)), context_counts, alpha=0.7, color="orange")
             ax.set_xticks(range(len(ambiguity_terms)))
             ax.set_xticklabels(ambiguity_terms, rotation=45, ha="right")
             ax.set_ylabel("Number of Contexts")
-            ax.set_title(
-                f'Term Ambiguity Analysis - {domain_name.replace("_", " ").title()}'
-            )
+            ax.set_title(f"Term Ambiguity Analysis - {domain_name.replace('_', ' ').title()}")
 
             plt.tight_layout()
             # Use shorter name for power_and_labor to match manuscript references
@@ -390,7 +378,7 @@ This analysis draws on the broader Ento-Linguistic framework and domain-specific
         logger.info(f"Generated {len(figures)} figures for {domain_name} domain")
         return figures
 
-    def analyze_all_domains(self, corpus_file: Optional[Path] = None) -> Dict[str, Any]:
+    def analyze_all_domains(self, corpus_file: Path | None = None) -> dict[str, Any]:
         """Analyze all Ento-Linguistic domains.
 
         Args:
@@ -413,9 +401,7 @@ This analysis draws on the broader Ento-Linguistic framework and domain-specific
         for domain in domains:
             try:
                 logger.info(f"Analyzing {domain} domain...")
-                results = self.analyze_domain(
-                    domain, corpus_file, generate_figures=True
-                )
+                results = self.analyze_domain(domain, corpus_file, generate_figures=True)
                 all_results[domain] = results
 
             except Exception as e:
@@ -430,22 +416,14 @@ This analysis draws on the broader Ento-Linguistic framework and domain-specific
             "individual_analyses": all_results,
             "comparative_report": comparative_report,
             "summary": {
-                "domains_analyzed": len(
-                    [d for d in all_results.values() if "error" not in d]
-                ),
-                "total_terms": sum(
-                    r.get("terms_analyzed", 0) for r in all_results.values()
-                ),
-                "total_ambiguities": sum(
-                    r.get("ambiguities_found", 0) for r in all_results.values()
-                ),
-                "total_recommendations": sum(
-                    r.get("recommendations", 0) for r in all_results.values()
-                ),
+                "domains_analyzed": len([d for d in all_results.values() if "error" not in d]),
+                "total_terms": sum(r.get("terms_analyzed", 0) for r in all_results.values()),
+                "total_ambiguities": sum(r.get("ambiguities_found", 0) for r in all_results.values()),
+                "total_recommendations": sum(r.get("recommendations", 0) for r in all_results.values()),
             },
         }
 
-    def _generate_comparative_report(self, all_results: Dict[str, Any]) -> str:
+    def _generate_comparative_report(self, all_results: dict[str, Any]) -> str:
         """Generate comparative report across domains.
 
         Args:
@@ -538,13 +516,9 @@ def main() -> None:
         ],
         help="Domain to analyze (or 'all' for all domains)",
     )
-    parser.add_argument(
-        "--corpus-file", type=Path, help="Path to literature corpus JSON file"
-    )
+    parser.add_argument("--corpus-file", type=Path, help="Path to literature corpus JSON file")
     parser.add_argument("--output-dir", type=Path, help="Output directory")
-    parser.add_argument(
-        "--no-figures", action="store_true", help="Skip figure generation"
-    )
+    parser.add_argument("--no-figures", action="store_true", help="Skip figure generation")
 
     args = parser.parse_args()
 
@@ -559,9 +533,7 @@ def main() -> None:
         logger.info(f"Total terms: {results['summary']['total_terms']}")
         logger.info(f"Comparative report: {results['comparative_report']}")
     else:
-        results = script.analyze_domain(
-            domain, args.corpus_file, generate_figures=not args.no_figures
-        )
+        results = script.analyze_domain(domain, args.corpus_file, generate_figures=not args.no_figures)
 
         if results:
             logger.info(f"Analysis completed for {domain}")

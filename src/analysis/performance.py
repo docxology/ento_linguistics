@@ -7,18 +7,18 @@ of terminology extraction and discourse mapping algorithms.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import numpy as np
 
 __all__ = [
     "ConvergenceMetrics",
-    "analyze_convergence",
     "ScalabilityMetrics",
+    "analyze_convergence",
     "analyze_scalability",
-    "calculate_speedup",
-    "calculate_efficiency",
     "benchmark_comparison",
+    "calculate_efficiency",
+    "calculate_speedup",
     "check_statistical_significance",
 ]
 
@@ -28,13 +28,13 @@ class ConvergenceMetrics:
     """Metrics for convergence analysis."""
 
     final_value: float
-    target_value: Optional[float]
+    target_value: float | None
     error: float
-    convergence_rate: Optional[float]
-    iterations_to_convergence: Optional[int]
+    convergence_rate: float | None
+    iterations_to_convergence: int | None
     is_converged: bool
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return {
             "final_value": self.final_value,
@@ -48,7 +48,7 @@ class ConvergenceMetrics:
 
 def analyze_convergence(
     values: np.ndarray,
-    target: Optional[float] = None,
+    target: float | None = None,
     tolerance: float = 1e-6,
     window_size: int = 10,
 ) -> ConvergenceMetrics:
@@ -118,14 +118,14 @@ def analyze_convergence(
 class ScalabilityMetrics:
     """Metrics for scalability analysis."""
 
-    problem_sizes: List[int]
-    execution_times: List[float]
-    memory_usage: Optional[List[float]]
-    time_complexity: Optional[str]
-    speedup: Optional[List[float]]
-    efficiency: Optional[List[float]]
+    problem_sizes: list[int]
+    execution_times: list[float]
+    memory_usage: list[float] | None
+    time_complexity: str | None
+    speedup: list[float] | None
+    efficiency: list[float] | None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return {
             "problem_sizes": self.problem_sizes,
@@ -138,9 +138,9 @@ class ScalabilityMetrics:
 
 
 def analyze_scalability(
-    problem_sizes: List[int],
-    execution_times: List[float],
-    memory_usage: Optional[List[float]] = None,
+    problem_sizes: list[int],
+    execution_times: list[float],
+    memory_usage: list[float] | None = None,
 ) -> ScalabilityMetrics:
     """Analyze scalability of an algorithm.
 
@@ -181,7 +181,7 @@ def analyze_scalability(
     )
 
 
-def _estimate_complexity(sizes: List[int], times: List[float]) -> str:
+def _estimate_complexity(sizes: list[int], times: list[float]) -> str:
     """Estimate time complexity from measurements.
 
     Args:
@@ -197,11 +197,7 @@ def _estimate_complexity(sizes: List[int], times: List[float]) -> str:
     # Log-log fit to estimate exponent.  Guard against non-positive problem
     # sizes or timings (e.g. a 0.0 s timing): np.log would crash or produce
     # meaningless fits.
-    valid = [
-        (s, t)
-        for s, t in zip(sizes, times)
-        if s > 0 and t > 0
-    ]
+    valid = [(s, t) for s, t in zip(sizes, times) if s > 0 and t > 0]
     if len(valid) < 2:
         return "unknown"
 
@@ -227,9 +223,7 @@ def _estimate_complexity(sizes: List[int], times: List[float]) -> str:
         return f"O(n^{exponent:.2f})"
 
 
-def calculate_speedup(
-    baseline_time: float, optimized_times: List[float]
-) -> List[float]:
+def calculate_speedup(baseline_time: float, optimized_times: list[float]) -> list[float]:
     """Calculate speedup relative to baseline.
 
     Args:
@@ -242,9 +236,7 @@ def calculate_speedup(
     return [baseline_time / t for t in optimized_times]
 
 
-def calculate_efficiency(
-    speedup: List[float], resource_ratios: List[float]
-) -> List[float]:
+def calculate_efficiency(speedup: list[float], resource_ratios: list[float]) -> list[float]:
     """Calculate efficiency (speedup / resource_ratio).
 
     Args:
@@ -261,10 +253,10 @@ def calculate_efficiency(
 
 
 def benchmark_comparison(
-    methods: List[str],
-    metrics: Dict[str, List[float]],
+    methods: list[str],
+    metrics: dict[str, list[float]],
     metric_name: str = "execution_time",
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Compare multiple methods on benchmarks.
 
     Args:
@@ -290,9 +282,7 @@ def benchmark_comparison(
     # the formula extends as 0.0 for every other value rather than collapsing
     # everything to a misleading 1.0.
     if best_value is not None:
-        relative_performance = [
-            best_value / v if v > 0 else 1.0 for v in values
-        ]
+        relative_performance = [best_value / v if v > 0 else 1.0 for v in values]
     else:
         relative_performance = []
 
@@ -306,9 +296,7 @@ def benchmark_comparison(
     }
 
 
-def check_statistical_significance(
-    group1: np.ndarray, group2: np.ndarray, alpha: float = 0.05
-) -> Dict[str, Any]:
+def check_statistical_significance(group1: np.ndarray, group2: np.ndarray, alpha: float = 0.05) -> dict[str, Any]:
     """Test statistical significance between two groups.
 
     Args:

@@ -11,14 +11,14 @@ import itertools
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 __all__ = [
+    "AnalysisParameters",
     "ParameterConstraint",
     "ParameterSet",
     "ParameterSweep",
     "SimulationParameters",
-    "AnalysisParameters",
 ]
 
 
@@ -26,12 +26,12 @@ __all__ = [
 class ParameterConstraint:
     """Constraint for parameter validation."""
 
-    min_value: Optional[float] = None
-    max_value: Optional[float] = None
-    allowed_values: Optional[List[Any]] = None
-    param_type: Optional[type] = None
+    min_value: float | None = None
+    max_value: float | None = None
+    allowed_values: list[Any] | None = None
+    param_type: type | None = None
 
-    def validate(self, value: Any) -> Tuple[bool, Optional[str]]:
+    def validate(self, value: Any) -> tuple[bool, str | None]:
         """Validate a parameter value.
 
         Args:
@@ -57,7 +57,7 @@ class ParameterConstraint:
 
         return True, None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to a JSON-serializable dictionary.
 
         Returns:
@@ -72,7 +72,7 @@ class ParameterConstraint:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> ParameterConstraint:
+    def from_dict(cls, data: dict[str, Any]) -> ParameterConstraint:
         """Restore a constraint from its dictionary form.
 
         Args:
@@ -90,8 +90,7 @@ class ParameterConstraint:
             param_type = getattr(builtins, param_type_name, None)
             if not isinstance(param_type, type):
                 raise ValueError(
-                    f"Cannot restore param_type {param_type_name!r}: "
-                    "only builtin types are supported for serialization"
+                    f"Cannot restore param_type {param_type_name!r}: only builtin types are supported for serialization"
                 )
         return cls(
             min_value=data.get("min_value"),
@@ -105,18 +104,18 @@ class ParameterConstraint:
 class ParameterSet:
     """A set of parameters with validation."""
 
-    parameters: Dict[str, Any] = field(default_factory=dict)
-    constraints: Dict[str, ParameterConstraint] = field(default_factory=dict)
-    defaults: Dict[str, Any] = field(default_factory=dict)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    parameters: dict[str, Any] = field(default_factory=dict)
+    constraints: dict[str, ParameterConstraint] = field(default_factory=dict)
+    defaults: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def add_parameter(
         self,
         name: str,
         value: Any,
-        constraint: Optional[ParameterConstraint] = None,
-        default: Optional[Any] = None,
-        description: Optional[str] = None,
+        constraint: ParameterConstraint | None = None,
+        default: Any | None = None,
+        description: str | None = None,
     ) -> None:
         """Add a parameter with optional constraint.
 
@@ -137,7 +136,7 @@ class ParameterSet:
                 self.metadata["descriptions"] = {}
             self.metadata["descriptions"][name] = description
 
-    def get(self, name: str, default: Optional[Any] = None) -> Any:
+    def get(self, name: str, default: Any | None = None) -> Any:
         """Get parameter value.
 
         Args:
@@ -153,7 +152,7 @@ class ParameterSet:
             return self.defaults[name]
         return default
 
-    def validate(self) -> Tuple[bool, List[str]]:
+    def validate(self) -> tuple[bool, list[str]]:
         """Validate all parameters.
 
         Returns:
@@ -170,20 +169,17 @@ class ParameterSet:
 
         return len(errors) == 0, errors
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return {
             "parameters": self.parameters,
-            "constraints": {
-                name: constraint.to_dict()
-                for name, constraint in self.constraints.items()
-            },
+            "constraints": {name: constraint.to_dict() for name, constraint in self.constraints.items()},
             "defaults": self.defaults,
             "metadata": self.metadata,
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> ParameterSet:
+    def from_dict(cls, data: dict[str, Any]) -> ParameterSet:
         """Create from dictionary."""
         return cls(
             parameters=data.get("parameters", {}),
@@ -195,7 +191,7 @@ class ParameterSet:
             metadata=data.get("metadata", {}),
         )
 
-    def save(self, filepath: Union[str, Path]) -> None:
+    def save(self, filepath: str | Path) -> None:
         """Save parameter set to file.
 
         Args:
@@ -206,7 +202,7 @@ class ParameterSet:
             json.dump(self.to_dict(), f, indent=2, default=str)
 
     @classmethod
-    def load(cls, filepath: Union[str, Path]) -> ParameterSet:
+    def load(cls, filepath: str | Path) -> ParameterSet:
         """Load parameter set from file.
 
         Args:
@@ -231,9 +227,9 @@ class ParameterSweep:
             base_parameters: Base parameter set
         """
         self.base_parameters = base_parameters
-        self.sweep_configs: Dict[str, List[Any]] = {}
+        self.sweep_configs: dict[str, list[Any]] = {}
 
-    def add_sweep(self, parameter_name: str, values: List[Any]) -> None:
+    def add_sweep(self, parameter_name: str, values: list[Any]) -> None:
         """Add parameter to sweep.
 
         Args:
@@ -242,7 +238,7 @@ class ParameterSweep:
         """
         self.sweep_configs[parameter_name] = values
 
-    def generate_combinations(self) -> List[Dict[str, Any]]:
+    def generate_combinations(self) -> list[dict[str, Any]]:
         """Generate all parameter combinations.
 
         Returns:
@@ -309,7 +305,6 @@ class SimulationParameters(ParameterSet):
             self.parameters["num_steps"] = 1000
         if "interaction_rate" not in self.parameters:
             self.parameters["interaction_rate"] = 0.1
-
 
 
 class AnalysisParameters(ParameterSet):

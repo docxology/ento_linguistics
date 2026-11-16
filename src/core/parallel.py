@@ -6,12 +6,14 @@ independent scores).  :func:`map_ordered` therefore guarantees the same
 result as a serial ``[fn(i) for i in items]`` while spreading the work over
 a process pool once the item count justifies the pool startup cost.
 """
+
 from __future__ import annotations
 
 import os
+from collections.abc import Callable, Sequence
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import get_context
-from typing import Any, Callable, List, Optional, Sequence
+from typing import Any
 
 # Below this many items, pool startup (spawn + module re-import) dominates
 # the per-item work — run serially instead.
@@ -27,10 +29,10 @@ def map_ordered(
     items: Sequence[Any],
     *,
     min_items: int = MIN_PARALLEL_ITEMS,
-    max_workers: Optional[int] = None,
-    initializer: Optional[Callable[..., None]] = None,
+    max_workers: int | None = None,
+    initializer: Callable[..., None] | None = None,
     initargs: Sequence[Any] = (),
-) -> List[Any]:
+) -> list[Any]:
     """Map ``fn`` over ``items``, parallel when the item count warrants it.
 
     Args:
@@ -68,5 +70,6 @@ def map_ordered(
             return list(pool.map(fn, items, chunksize=chunksize))
     except OSError as exc:  # pragma: no cover - restricted-environment fallback
         import logging
+
         logging.getLogger(__name__).warning("Process pool unavailable; running serially: %s", exc)
         return [fn(item) for item in items]

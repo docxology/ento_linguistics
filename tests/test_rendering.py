@@ -5,6 +5,7 @@ title-page emission, {{KEY}} corpus-variable substitution, and corpus
 variable loading from real files on disk (tmp_path). Subprocess-invoking
 build paths are intentionally not covered here.
 """
+
 from __future__ import annotations
 
 import json
@@ -13,14 +14,13 @@ from pathlib import Path
 import pytest
 
 from pipeline.rendering import (
-    _load_extension_vars,
     _apply_corpus_vars,
     _build_frontmatter,
     _load_corpus_vars,
+    _load_extension_vars,
     _postprocess_combined_tex,
     _write_title_page_tex,
 )
-
 
 # ═══════════════════════════════════════════════════════════════════════
 #  _postprocess_combined_tex
@@ -57,9 +57,7 @@ class TestPostprocessCombinedTex:
 
     def test_hidelinks_replaced_inside_multiline_block(self, tmp_path: Path):
         tex = tmp_path / "combined.tex"
-        tex.write_text(
-            "\\hypersetup{\n  hidelinks,\n  pdfborder={0 0 0},\n}", encoding="utf-8"
-        )
+        tex.write_text("\\hypersetup{\n  hidelinks,\n  pdfborder={0 0 0},\n}", encoding="utf-8")
 
         _postprocess_combined_tex(tex)
 
@@ -231,8 +229,7 @@ class TestApplyCorpusVars:
 # ═══════════════════════════════════════════════════════════════════════
 
 
-def _make_project(tmp_path: Path, *, with_stats=True, with_terms=True,
-                  with_domains=True, with_concepts=True) -> Path:
+def _make_project(tmp_path: Path, *, with_stats=True, with_terms=True, with_domains=True, with_concepts=True) -> Path:
     """Materialize a fake project tree with real corpus/statistics JSON files."""
     (tmp_path / "data" / "corpus").mkdir(parents=True)
     (tmp_path / "output" / "data").mkdir(parents=True)
@@ -249,41 +246,64 @@ def _make_project(tmp_path: Path, *, with_stats=True, with_terms=True,
         }
         (tmp_path / "output" / "data" / "corpus_statistics.json").write_text(json.dumps(stats))
 
-
     if with_terms:
         terms = {
-            "queen-mating": {"lemma": "queen-mating", "domains": ["sex_and_reproduction"],
-                             "frequency": 12, "confidence": 0.99, "n_contexts": 12},
-            "worker-laid": {"lemma": "worker-laid", "domains": ["sex_and_reproduction",
-                                                                  "power_and_labor"],
-                            "frequency": 7, "confidence": 0.95, "n_contexts": 7},
+            "queen-mating": {
+                "lemma": "queen-mating",
+                "domains": ["sex_and_reproduction"],
+                "frequency": 12,
+                "confidence": 0.99,
+                "n_contexts": 12,
+            },
+            "worker-laid": {
+                "lemma": "worker-laid",
+                "domains": ["sex_and_reproduction", "power_and_labor"],
+                "frequency": 7,
+                "confidence": 0.95,
+                "n_contexts": 7,
+            },
         }
         (tmp_path / "output" / "data" / "extracted_terms.json").write_text(json.dumps(terms))
 
     if with_domains:
         domains = {
             "sex_and_reproduction": {
-                "term_count": 64, "total_frequency": 605, "bridging_term_count": 26,
-                "semantic_entropy": 0.2458, "anthropomorphic_proportion": 0.0175,
-                "high_entropy_count": 1, "high_entropy_pct": 1.8,
+                "term_count": 64,
+                "total_frequency": 605,
+                "bridging_term_count": 26,
+                "semantic_entropy": 0.2458,
+                "anthropomorphic_proportion": 0.0175,
+                "high_entropy_count": 1,
+                "high_entropy_pct": 1.8,
             },
             "power_and_labor": {
-                "term_count": 63, "total_frequency": 905, "bridging_term_count": 43,
-                "semantic_entropy": 0.5, "anthropomorphic_proportion": 0.02,
-                "high_entropy_count": 2, "high_entropy_pct": 3.2,
+                "term_count": 63,
+                "total_frequency": 905,
+                "bridging_term_count": 43,
+                "semantic_entropy": 0.5,
+                "anthropomorphic_proportion": 0.02,
+                "high_entropy_count": 2,
+                "high_entropy_pct": 3.2,
             },
         }
         (tmp_path / "output" / "data" / "domain_statistics.json").write_text(json.dumps(domains))
 
     if with_concepts:
         concepts = {
-            "n_concepts": 6, "n_relationships": 9, "network_nodes": 894,
-            "network_edges": 1200, "network_clustering": 0.3142, "network_avg_degree": 2.68,
+            "n_concepts": 6,
+            "n_relationships": 9,
+            "network_nodes": 894,
+            "network_edges": 1200,
+            "network_clustering": 0.3142,
+            "network_avg_degree": 2.68,
             "concepts": {
-                "Reproduction": {"description": "d", "n_terms": 30,
-                                 "domains": ["sex_and_reproduction"], "confidence": 0.9},
-                "Labor": {"description": "d", "n_terms": 25,
-                          "domains": ["power_and_labor"], "confidence": 0.9},
+                "Reproduction": {
+                    "description": "d",
+                    "n_terms": 30,
+                    "domains": ["sex_and_reproduction"],
+                    "confidence": 0.9,
+                },
+                "Labor": {"description": "d", "n_terms": 25, "domains": ["power_and_labor"], "confidence": 0.9},
             },
         }
         (tmp_path / "output" / "data" / "concept_map_summary.json").write_text(json.dumps(concepts))
@@ -355,8 +375,7 @@ class TestLoadCorpusVars:
         assert vars_["CORPUS_PUBLICATIONS"] == "N/A"
 
     def test_missing_stats_files_yield_na(self, tmp_path: Path):
-        root = _make_project(tmp_path, with_stats=False, with_terms=False,
-                             with_domains=False, with_concepts=False)
+        root = _make_project(tmp_path, with_stats=False, with_terms=False, with_domains=False, with_concepts=False)
 
         vars_ = _load_corpus_vars(root)
 
@@ -381,14 +400,10 @@ class TestLoadCorpusVars:
 
     def test_non_numeric_network_stats_pass_through(self, tmp_path: Path):
         root = _make_project(tmp_path)
-        concepts = json.loads(
-            (root / "output" / "data" / "concept_map_summary.json").read_text()
-        )
+        concepts = json.loads((root / "output" / "data" / "concept_map_summary.json").read_text())
         concepts["network_clustering"] = "N/A"
         concepts["network_avg_degree"] = "N/A"
-        (root / "output" / "data" / "concept_map_summary.json").write_text(
-            json.dumps(concepts)
-        )
+        (root / "output" / "data" / "concept_map_summary.json").write_text(json.dumps(concepts))
 
         vars_ = _load_corpus_vars(root)
 
@@ -398,34 +413,49 @@ class TestLoadCorpusVars:
 
 def test_rendered_entropy_counts_match_valid_estimates(tmp_path, capsys):
     root = _make_project(tmp_path)
-    path = root / 'output/data/domain_statistics.json'
+    path = root / "output/data/domain_statistics.json"
     domains = json.loads(path.read_text())
     for entry in domains.values():
-        entry['entropy_valid_terms'] = 2
+        entry["entropy_valid_terms"] = 2
     path.write_text(json.dumps(domains))
-    path = root / 'output/data/corpus_statistics.json'
+    path = root / "output/data/corpus_statistics.json"
     stats = json.loads(path.read_text())
     stats.update(n_documents=2, stored_documents=3, excluded_unreconciled=1)
     path.write_text(json.dumps(stats))
     variables = _load_corpus_vars(root)
-    assert variables['DOMAIN_POWER_AND_LABOR_N_TERMS'] == '2'
-    assert variables['CORPUS_OVERALL_N_TERMS'] == '4'
-    assert variables['CORPUS_PUBLICATIONS'] == '2'
-    assert 'Publications=2' in capsys.readouterr().out
+    assert variables["DOMAIN_POWER_AND_LABOR_N_TERMS"] == "2"
+    assert variables["CORPUS_OVERALL_N_TERMS"] == "4"
+    assert variables["CORPUS_PUBLICATIONS"] == "2"
+    assert "Publications=2" in capsys.readouterr().out
 
 
 def _write_extension_report(path: Path, *, seeds: list[int], samples: int) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps({
-        "documents": 7540, "vocabulary": ["ant", "colony", "queen"],
-        "protocol": {"samples_per_chain": samples, "burn_sweeps": 10, "spacing_sweeps": 1, "seeds": seeds},
-        "metrics": {
-            "edges": {"observed": 4232, "null_mean": 4519.59, "null_q025": 4486.0,
-                      "null_q975": 4558.0, "rhat": 1.001153},
-            "clustering": {"observed": 0.894841, "null_mean": 0.932318, "null_q025": 0.928068,
-                           "null_q975": 0.937206, "rhat": 0.999139},
-        },
-    }))
+    path.write_text(
+        json.dumps(
+            {
+                "documents": 7540,
+                "vocabulary": ["ant", "colony", "queen"],
+                "protocol": {"samples_per_chain": samples, "burn_sweeps": 10, "spacing_sweeps": 1, "seeds": seeds},
+                "metrics": {
+                    "edges": {
+                        "observed": 4232,
+                        "null_mean": 4519.59,
+                        "null_q025": 4486.0,
+                        "null_q975": 4558.0,
+                        "rhat": 1.001153,
+                    },
+                    "clustering": {
+                        "observed": 0.894841,
+                        "null_mean": 0.932318,
+                        "null_q025": 0.928068,
+                        "null_q975": 0.937206,
+                        "rhat": 0.999139,
+                    },
+                },
+            }
+        )
+    )
 
 
 def test_extension_vars_format_both_protocols(tmp_path):
@@ -473,13 +503,16 @@ def test_grouped_counts_survive_real_pandoc_conversion(tmp_path):
     import subprocess
 
     content = _apply_corpus_vars(
-        "Count {{COUNT}}. Mathematical count ${{COUNT}}$.", {"COUNT": "29224"},
+        "Count {{COUNT}}. Mathematical count ${{COUNT}}$.",
+        {"COUNT": "29224"},
     )
     source = tmp_path / "counts.md"
     source.write_text(content, encoding="utf-8")
     result = subprocess.run(
         ["pandoc", str(source), "--from=markdown+raw_tex", "--to=latex"],
-        check=True, capture_output=True, text=True,
+        check=True,
+        capture_output=True,
+        text=True,
     )
     assert "Count 29,224." in result.stdout
     assert r"\{" not in result.stdout and r"\}" not in result.stdout

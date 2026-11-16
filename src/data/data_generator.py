@@ -6,7 +6,6 @@ discourse analysis models.
 """
 
 import numpy as np
-from typing import Tuple, Optional
 
 __all__ = [
     "generate_synthetic_data",
@@ -20,7 +19,7 @@ def generate_synthetic_data(
     distribution: str = "normal",
     mean: float = 0.0,
     std: float = 1.0,
-    seed: Optional[int] = None
+    seed: int | None = None,
 ) -> np.ndarray:
     """
     Generate synthetic data for testing and simulation.
@@ -51,12 +50,10 @@ def generate_synthetic_data(
         return data.flatten()
     return data
 
+
 def generate_time_series(
-    n_points: int = 100,
-    trend: str = "linear",
-    noise_level: float = 0.1,
-    seed: Optional[int] = None
-) -> Tuple[np.ndarray, np.ndarray]:
+    n_points: int = 100, trend: str = "linear", noise_level: float = 0.1, seed: int | None = None
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Generate synthetic time series data.
 

@@ -5,18 +5,19 @@ Every candidate is re-fetched from NCBI eFetch/eSummary; a record is admitted on
 when the stored abstract string equals exactly one reconstruction of exactly one
 PubMed abstract. Corpus text (abstracts.json) is never modified.
 """
+
 import hashlib
 import json
 import sys
 import time
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
-from data.literature_mining import PubMedMiner  # noqa: E402
+from data.literature_mining import PubMedMiner
 
 BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
 HERE = Path(__file__).parent
@@ -26,8 +27,10 @@ def fetch(endpoint, query):
     for attempt in range(4):
         try:
             time.sleep(0.4)
-            with urlopen(Request(BASE + endpoint + "?" + query,
-                                 headers={"User-Agent": "EntoLinguistics-custody-review/1.0"}), timeout=30) as r:
+            with urlopen(
+                Request(BASE + endpoint + "?" + query, headers={"User-Agent": "EntoLinguistics-custody-review/1.0"}),
+                timeout=30,
+            ) as r:
                 return r.read().decode("utf-8")
         except Exception:
             if attempt == 3:
@@ -80,9 +83,13 @@ def main():
                 summary = json.loads(fetch("esummary.fcgi", f"db=pubmed&retmode=json&id={pmid}"))["result"][pmid]
                 pub = PubMedMiner()._parse_pubmed_summary(summary)
                 records[digest] = {
-                    "pmid": pmid, "doi": pub.doi, "title": pub.title, "year": pub.year,
-                    "journal": pub.journal, "query": "legacy_exact_text_reconciliation",
-                    "retrieved_at": datetime.now(timezone.utc).isoformat(),
+                    "pmid": pmid,
+                    "doi": pub.doi,
+                    "title": pub.title,
+                    "year": pub.year,
+                    "journal": pub.journal,
+                    "query": "legacy_exact_text_reconciliation",
+                    "retrieved_at": datetime.now(UTC).isoformat(),
                     "match": f"exact stored text equals NCBI eFetch abstract ({forms[0]})",
                 }
                 mapped_pmids.add(pmid)
@@ -91,10 +98,12 @@ def main():
         print(result["index"], result["status"], result.get("form", ""), flush=True)
     admitted = [r for r in results if r["status"] == "admitted"]
     prov["seen_pmids"] = sorted(set(prov["seen_pmids"]) | {r["pmid"] for r in admitted})
-    prov["_note"] = ("Keys are sha256 of the exact abstract string in abstracts.json. Records appended after the "
-                     "original 369 carry harvest provenance; original records are mapped only where a later "
-                     "reconciliation found an exact NCBI text match (see _reconciliation). Unmapped strings remain "
-                     "in abstracts.json but are excluded from the headline analysis.")
+    prov["_note"] = (
+        "Keys are sha256 of the exact abstract string in abstracts.json. Records appended after the "
+        "original 369 carry harvest provenance; original records are mapped only where a later "
+        "reconciliation found an exact NCBI text match (see _reconciliation). Unmapped strings remain "
+        "in abstracts.json but are excluded from the headline analysis."
+    )
     prov["_reconciliation"] = {
         "source": "NCBI ESearch/eSummary/eFetch",
         "method": "Unambiguous exact stored-abstract text equality; no corpus text edits",
@@ -102,8 +111,10 @@ def main():
         "exact_matches_added": 300 + len(admitted),
         "passes": [
             {"exact_matches_added": 300, "evidence": "output/review-20261005/legacy_reconciliation_merged.json"},
-            {"exact_matches_added": len(admitted),
-             "evidence": "output/review-v1.3.1-20261009/legacy-provenance-integration.json"},
+            {
+                "exact_matches_added": len(admitted),
+                "evidence": "output/review-v1.3.1-20261009/legacy-provenance-integration.json",
+            },
         ],
         "unmapped_legacy_records": sum(r["status"] != "admitted" for r in results),
     }

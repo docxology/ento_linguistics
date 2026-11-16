@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-import data.arxiv_corpus as arxiv_corpus
+from data import arxiv_corpus
 from data.arxiv_corpus import (
     ARXIV_QUERIES,
     EnrichedArXivMiner,
@@ -75,9 +75,7 @@ def _no_sleep(monkeypatch):
 @pytest.fixture
 def miner(httpserver) -> EnrichedArXivMiner:
     """EnrichedArXivMiner pointed at a local fixture server serving FEED_XML."""
-    httpserver.expect_request("/api/query").respond_with_data(
-        FEED_XML, content_type="application/xml"
-    )
+    httpserver.expect_request("/api/query").respond_with_data(FEED_XML, content_type="application/xml")
     miner = EnrichedArXivMiner()
     miner.BASE_URL = httpserver.url_for("/api/query?")
     return miner
@@ -120,9 +118,7 @@ def corpus_dir(tmp_path: Path) -> Path:
 
 class TestNormalization:
     def test_normalize_title(self):
-        assert normalize_title("  Colony\tOrganization  in  Ants ") == (
-            "colony organization in ants"
-        )
+        assert normalize_title("  Colony\tOrganization  in  Ants ") == ("colony organization in ants")
 
     def test_abstract_key_truncates(self):
         assert len(abstract_key("word " * 200)) == 100
@@ -249,9 +245,7 @@ class TestPubmedDedupe:
 
 class TestHarvest:
     def test_harvest_writes_records_and_provenance(self, corpus_dir, miner):
-        records, provenance, stats = harvest_arxiv(
-            target=10, corpus_dir=corpus_dir, miner=miner
-        )
+        records, provenance, stats = harvest_arxiv(target=10, corpus_dir=corpus_dir, miner=miner)
         # Off-topic "Concrete Rheology" filtered; no internal dupes.
         assert [r["arxiv_id"] for r in records] == ["2401.00001", "2402.00002"]
         record = records[0]
@@ -274,45 +268,33 @@ class TestHarvest:
         assert ARXIV_QUERIES == provenance["queries"]
         assert stats["new"] == 2 and stats["total"] == 2
 
-        on_disk = json.loads(
-            (corpus_dir / "arxiv_records.json").read_text(encoding="utf-8")
-        )
+        on_disk = json.loads((corpus_dir / "arxiv_records.json").read_text(encoding="utf-8"))
         assert on_disk == records
-        prov_disk = json.loads(
-            (corpus_dir / "arxiv_provenance.json").read_text(encoding="utf-8")
-        )
+        prov_disk = json.loads((corpus_dir / "arxiv_provenance.json").read_text(encoding="utf-8"))
         assert prov_disk["records"] == provenance["records"]
 
     def test_harvest_dedupes_internally(self, corpus_dir, miner):
         # Entry 4 duplicates entry 1's abstract text -> dropped.
-        records, _, stats = harvest_arxiv(
-            target=10, corpus_dir=corpus_dir, miner=miner
-        )
+        records, _, _stats = harvest_arxiv(target=10, corpus_dir=corpus_dir, miner=miner)
         ids = [r["arxiv_id"] for r in records]
         assert len(ids) == len(set(ids))
         assert "2404.00004" not in ids
 
     def test_harvest_resumable(self, corpus_dir, miner):
-        first, provenance, _ = harvest_arxiv(target=10, corpus_dir=corpus_dir, miner=miner)
+        first, _provenance, _ = harvest_arxiv(target=10, corpus_dir=corpus_dir, miner=miner)
         # Re-run: everything already fetched, nothing new.
-        second, provenance2, stats = harvest_arxiv(
-            target=10, corpus_dir=corpus_dir, miner=miner
-        )
+        second, provenance2, stats = harvest_arxiv(target=10, corpus_dir=corpus_dir, miner=miner)
         assert stats["existing"] == len(first)
         assert stats["new"] == 0
         assert second == first
         # Provenance must keep covering every record across runs.
         import hashlib
 
-        expected_shas = {
-            hashlib.sha256(r["abstract"].encode("utf-8")).hexdigest() for r in second
-        }
+        expected_shas = {hashlib.sha256(r["abstract"].encode("utf-8")).hexdigest() for r in second}
         assert set(provenance2["records"]) == expected_shas
 
     def test_harvest_dry_run_writes_nothing(self, corpus_dir, miner):
-        records, _, stats = harvest_arxiv(
-            target=10, corpus_dir=corpus_dir, miner=miner, dry_run=True
-        )
+        records, _, stats = harvest_arxiv(target=10, corpus_dir=corpus_dir, miner=miner, dry_run=True)
         assert records and stats["new"] > 0
         assert not (corpus_dir / "arxiv_records.json").exists()
         assert not (corpus_dir / "arxiv_provenance.json").exists()
@@ -332,12 +314,16 @@ class TestMain:
 
         def fake_harvest(**kwargs):
             captured.update(kwargs)
-            return [], {"records": {}}, {
-                "existing": 0,
-                "new": 0,
-                "total": 0,
-                "query_stats": {},
-            }
+            return (
+                [],
+                {"records": {}},
+                {
+                    "existing": 0,
+                    "new": 0,
+                    "total": 0,
+                    "query_stats": {},
+                },
+            )
 
         monkeypatch.setattr(arxiv_corpus, "harvest_arxiv", fake_harvest)
         rc = main(["--dry-run", "--target", "5", "--corpus-dir", str(corpus_dir)])

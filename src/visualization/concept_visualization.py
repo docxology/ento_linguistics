@@ -23,13 +23,14 @@ visualization engine for the Ento-Linguistic research pipeline.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
 
 try:
     import networkx as nx
+
     HAS_NETWORKX = True
 except ImportError:
     nx = None
@@ -82,7 +83,7 @@ class ConceptVisualizer:
     # Single shared domain palette keyed by canonical domain names
     DOMAIN_COLORS = DOMAIN_PALETTE
 
-    def __init__(self, figsize: Tuple[int, int] = (12, 8)):
+    def __init__(self, figsize: tuple[int, int] = (12, 8)):
         """Initialize concept visualizer.
 
         Args:
@@ -96,7 +97,7 @@ class ConceptVisualizer:
     def visualize_concept_map(
         self,
         concept_map: ConceptMap,
-        filepath: Optional[Path] = None,
+        filepath: Path | None = None,
         title: str = "Ento-Linguistic Concept Map",
     ) -> plt.Figure:
         """Create a publication-quality network visualization of the concept map.
@@ -122,8 +123,15 @@ class ConceptVisualizer:
         fig, ax = plt.subplots(figsize=(14, 10))
 
         if not HAS_NETWORKX:
-            ax.text(0.5, 0.5, "networkx not available\nInstall with: pip install networkx",
-                    ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT)
+            ax.text(
+                0.5,
+                0.5,
+                "networkx not available\nInstall with: pip install networkx",
+                ha="center",
+                va="center",
+                transform=ax.transAxes,
+                fontsize=MIN_FONT,
+            )
             ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
             ax.axis("off")
             if filepath:
@@ -162,9 +170,7 @@ class ConceptVisualizer:
                 G.add_edge(c1, c2, weight=weight)
 
         if len(G.nodes()) == 0:
-            ax.text(0.5, 0.5, "No concepts in map",
-                    ha="center", va="center", transform=ax.transAxes,
-                    fontsize=MIN_FONT)
+            ax.text(0.5, 0.5, "No concepts in map", ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT)
             ax.axis("off")
             return fig
 
@@ -183,14 +189,16 @@ class ConceptVisualizer:
                 norm_widths = [3.0] * len(edge_weights)
 
             nx.draw_networkx_edges(
-                G, pos, width=norm_widths,
-                edge_color="#b0b0b0", alpha=0.5, ax=ax,
+                G,
+                pos,
+                width=norm_widths,
+                edge_color="#b0b0b0",
+                alpha=0.5,
+                ax=ax,
                 style="solid",
             )
 
-            edge_weight_text = {
-                (u, v): f"{d['weight']:.2f}" for u, v, d in G.edges(data=True)
-            }
+            edge_weight_text = {(u, v): f"{d['weight']:.2f}" for u, v, d in G.edges(data=True)}
 
         # ── Draw nodes ───────────────────────────────────────────────
         node_list = list(G.nodes())
@@ -204,10 +212,15 @@ class ConceptVisualizer:
 
         # Draw nodes with bold outline
         nx.draw_networkx_nodes(
-            G, pos, nodelist=node_list,
-            node_size=node_sizes, node_color=node_colors,
-            alpha=0.85, ax=ax,
-            edgecolors="#333333", linewidths=1.5,
+            G,
+            pos,
+            nodelist=node_list,
+            node_size=node_sizes,
+            node_color=node_colors,
+            alpha=0.85,
+            ax=ax,
+            edgecolors="#333333",
+            linewidths=1.5,
         )
 
         # Canvas limits and legend are fixed first so label placement can
@@ -229,18 +242,21 @@ class ConceptVisualizer:
         # size) so multi-line titles never collide with the subtitle.
         ax.set_title(
             title,
-            fontsize=MIN_FONT + 2, fontweight="bold",
+            fontsize=MIN_FONT + 2,
+            fontweight="bold",
             pad=24 + 20 * title.count("\n"),
         )
 
         ax.text(
-            0.5, 1.01,
-            f"{total_concepts} concepts · {total_relationships} relationships · "
-            f"{total_terms} term associations",
+            0.5,
+            1.01,
+            f"{total_concepts} concepts · {total_relationships} relationships · {total_terms} term associations",
             transform=ax.transAxes,
-            ha="center", va="bottom",
+            ha="center",
+            va="bottom",
             fontsize=MIN_FONT,
-            color="#666666", fontstyle="italic",
+            color="#666666",
+            fontstyle="italic",
         )
 
         fig.patch.set_facecolor("#fafafa")
@@ -256,34 +272,37 @@ class ConceptVisualizer:
         # along the edge (0.35 first) that is clear of node discs, nodes'
         # labels and earlier edge labels.
         from matplotlib.transforms import Bbox
+
         node_px = {n: ax.transData.transform(pos[n]) for n in node_list}
         node_boxes = []
         for n, size in zip(node_list, node_sizes):
             r_px = float(np.sqrt(size / np.pi)) * fig.dpi / 72.0
             cx_, cy_ = node_px[n]
-            node_boxes.append(Bbox.from_extents(cx_ - r_px, cy_ - r_px,
-                                                cx_ + r_px, cy_ + r_px))
+            node_boxes.append(Bbox.from_extents(cx_ - r_px, cy_ - r_px, cx_ + r_px, cy_ + r_px))
         if G.edges():
             placed_edge_boxes: list = []
-            for (u, v) in sorted(edge_weight_text,
-                                 key=lambda e: -G.edges[e]["weight"]):
+            for u, v in sorted(edge_weight_text, key=lambda e: -G.edges[e]["weight"]):
+
                 def _draw(t_frac: float):
                     x = pos[u][0] + t_frac * (pos[v][0] - pos[u][0])
                     y = pos[u][1] + t_frac * (pos[v][1] - pos[u][1])
                     return ax.text(
-                        x, y, edge_weight_text[(u, v)], ha="center",
-                        va="center", fontsize=MIN_FONT, color="#444444",
+                        x,
+                        y,
+                        edge_weight_text[(u, v)],
+                        ha="center",
+                        va="center",
+                        fontsize=MIN_FONT,
+                        color="#444444",
                         zorder=4,
-                        bbox={"boxstyle": "round,pad=0.12", "fc": "white",
-                              "ec": "none", "alpha": 0.9},
+                        bbox={"boxstyle": "round,pad=0.12", "fc": "white", "ec": "none", "alpha": 0.9},
                     )
 
                 chosen = None
                 for t_frac in (0.35, 0.5, 0.25, 0.65, 0.15, 0.8):
                     txt = _draw(t_frac)
                     box = txt.get_window_extent(renderer)
-                    if any(box.overlaps(o) for o in
-                           placed_edge_boxes + node_boxes + obstacles):
+                    if any(box.overlaps(o) for o in placed_edge_boxes + node_boxes + obstacles):
                         txt.remove()
                         continue
                     chosen = txt
@@ -314,25 +333,23 @@ class ConceptVisualizer:
                 va = "bottom" if cuy > 0.35 else "top" if cuy < -0.35 else "center"
                 cands.append((cux * gap, cuy * gap, ha, va))
             label_offsets_by_node[node] = cands
-        placed_label_boxes = list(obstacles) + node_boxes + [
-            t.get_window_extent(renderer)
-            for t in ax.texts
-        ]
+        placed_label_boxes = list(obstacles) + node_boxes + [t.get_window_extent(renderer) for t in ax.texts]
         for node in sorted(node_list, key=lambda n: -G.nodes[n]["size"]):
             anns = place_labels(
                 ax,
                 [(f"{display_labels[node]}\n{G.nodes[node]['size']} terms", pos[node])],
                 offsets=label_offsets_by_node[node],
                 avoid_boxes=placed_label_boxes,
-                fontsize=MIN_FONT, fontweight="bold", color="#1a1a1a",
+                fontsize=MIN_FONT,
+                fontweight="bold",
+                color="#1a1a1a",
                 ma="center",
             )
             if anns[0] is not None:
                 placed_label_boxes.append(anns[0].get_window_extent(renderer))
 
         if filepath:
-            fig.savefig(filepath, dpi=300, bbox_inches="tight",
-                        facecolor=fig.get_facecolor())
+            fig.savefig(filepath, dpi=300, bbox_inches="tight", facecolor=fig.get_facecolor())
             plt.close(fig)
 
         return fig
@@ -357,7 +374,6 @@ class ConceptVisualizer:
 
         return FALLBACK_COLOR  # Default gray
 
-
     def _add_domain_legend(self, ax: plt.Axes) -> None:
         """Add a legend for domain colors.
 
@@ -367,11 +383,7 @@ class ConceptVisualizer:
         legend_elements = []
         for domain, color in self.DOMAIN_COLORS.items():
             domain_name = domain_display_name(domain)
-            legend_elements.append(
-                plt.Rectangle(
-                    (0, 0), 1, 1, facecolor=color, alpha=0.7, label=domain_name
-                )
-            )
+            legend_elements.append(plt.Rectangle((0, 0), 1, 1, facecolor=color, alpha=0.7, label=domain_name))
 
         ax.legend(
             handles=legend_elements,
@@ -384,11 +396,11 @@ class ConceptVisualizer:
 
     @staticmethod
     def _select_label_positions(
-        pos: Dict[Any, Tuple[float, float]],
-        candidates: List[Any],
+        pos: dict[Any, tuple[float, float]],
+        candidates: list[Any],
         *,
         min_frac: float = 0.11,
-    ) -> Dict[Any, Tuple[float, float]]:
+    ) -> dict[Any, tuple[float, float]]:
         """Greedy, deterministic label placement to avoid collisions.
 
         Walks ``candidates`` in the given priority order and keeps a label
@@ -411,22 +423,19 @@ class ConceptVisualizer:
         ys = [p[1] for p in pos.values()]
         span = max(max(xs) - min(xs), max(ys) - min(ys)) or 1.0
         min_dist_sq = (min_frac * span) ** 2
-        selected: Dict[Any, Tuple[float, float]] = {}
+        selected: dict[Any, tuple[float, float]] = {}
         for name in candidates:
             x, y = pos[name]
-            if all(
-                (x - px) ** 2 + (y - py) ** 2 >= min_dist_sq
-                for px, py in selected.values()
-            ):
+            if all((x - px) ** 2 + (y - py) ** 2 >= min_dist_sq for px, py in selected.values()):
                 selected[name] = (x, y)
         return selected
 
     @publication_style
     def visualize_terminology_network(
         self,
-        terms: Dict[str, Any],
-        relationships: Dict[Tuple[str, str], float],
-        filepath: Optional[Path] = None,
+        terms: dict[str, Any],
+        relationships: dict[tuple[str, str], float],
+        filepath: Path | None = None,
         title: str = "Terminology Network",
     ) -> plt.Figure:
         """Visualize a terminology network.
@@ -440,13 +449,19 @@ class ConceptVisualizer:
         Returns:
             Matplotlib figure object
         """
-        fig, (ax, pair_ax) = plt.subplots(1, 2, figsize=(19, 10),
-                                           gridspec_kw={"width_ratios": [1.2, 1]})
+        fig, (ax, pair_ax) = plt.subplots(1, 2, figsize=(19, 10), gridspec_kw={"width_ratios": [1.2, 1]})
 
         if not HAS_NETWORKX:
             pair_ax.axis("off")
-            ax.text(0.5, 0.5, "networkx not available\nInstall with: pip install networkx",
-                    ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT)
+            ax.text(
+                0.5,
+                0.5,
+                "networkx not available\nInstall with: pip install networkx",
+                ha="center",
+                va="center",
+                transform=ax.transAxes,
+                fontsize=MIN_FONT,
+            )
             ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold")
             ax.axis("off")
             if filepath:
@@ -505,41 +520,36 @@ class ConceptVisualizer:
 
         # Draw nodes
         max_frequency = max(G.nodes[node]["frequency"] for node in G.nodes())
-        node_sizes = [80 + 500 * np.sqrt(G.nodes[node]["frequency"] / max(max_frequency, 1))
-                      for node in G.nodes()]
+        node_sizes = [80 + 500 * np.sqrt(G.nodes[node]["frequency"] / max(max_frequency, 1)) for node in G.nodes()]
         node_colors = [self._get_term_color(node, G) for node in G.nodes()]
 
-        nx.draw_networkx_nodes(
-            G, pos, node_size=node_sizes, node_color=node_colors, alpha=0.7, ax=ax
-        )
+        nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color=node_colors, alpha=0.7, ax=ax)
 
         # Draw edges
         if G.edges():
             maximum = max(G.edges[edge]["weight"] for edge in G.edges())
-            edge_weights = [0.15 + 3.5 * G.edges[edge]["weight"] / max(maximum, 1)
-                            for edge in G.edges()]
-            nx.draw_networkx_edges(
-                G, pos, width=edge_weights, edge_color="gray", alpha=0.18, ax=ax
-            )
+            edge_weights = [0.15 + 3.5 * G.edges[edge]["weight"] / max(maximum, 1) for edge in G.edges()]
+            nx.draw_networkx_edges(G, pos, width=edge_weights, edge_color="gray", alpha=0.18, ax=ax)
 
-        ranked_pairs = sorted(G.edges(data=True),
-                              key=lambda edge: (-edge[2]["weight"],
-                                                tuple(sorted(edge[:2]))))[:10]
+        ranked_pairs = sorted(G.edges(data=True), key=lambda edge: (-edge[2]["weight"], tuple(sorted(edge[:2]))))[:10]
         pair_values = [edge[2]["weight"] for edge in ranked_pairs]
         pair_names = [" + ".join(sorted(edge[:2])) for edge in ranked_pairs]
-        bars = pair_ax.barh(range(len(ranked_pairs)), pair_values,
-                            height=0.62, color="#24485B")
+        bars = pair_ax.barh(range(len(ranked_pairs)), pair_values, height=0.62, color="#24485B")
         pair_ax.set_yticks(range(len(ranked_pairs)), pair_names, fontsize=MIN_FONT)
         pair_ax.invert_yaxis()
         pair_ax.set_xlim(0, max(pair_values, default=1) * 1.24)
         for bar, value in zip(bars, pair_values):
-            pair_ax.annotate(f"{value:,.0f}",
-                             (value, bar.get_y() + bar.get_height() / 2),
-                             xytext=(7, 0), textcoords="offset points",
-                             va="center", fontsize=MIN_FONT, fontweight="bold")
+            pair_ax.annotate(
+                f"{value:,.0f}",
+                (value, bar.get_y() + bar.get_height() / 2),
+                xytext=(7, 0),
+                textcoords="offset points",
+                va="center",
+                fontsize=MIN_FONT,
+                fontweight="bold",
+            )
         pair_ax.set_xlabel("Abstracts containing both terms", fontsize=MIN_FONT)
-        pair_ax.set_title("Ten strongest observed pairs", loc="left",
-                          fontsize=MIN_FONT + 2, fontweight="bold", pad=18)
+        pair_ax.set_title("Ten strongest observed pairs", loc="left", fontsize=MIN_FONT + 2, fontweight="bold", pad=18)
         pair_ax.grid(axis="x", alpha=0.18)
         pair_ax.set_axisbelow(True)
         for side in ("top", "right", "left"):
@@ -551,11 +561,7 @@ class ConceptVisualizer:
         # Density tradeoff: large corpora yield hundreds of nodes; labelling
         # every node would be illegible, so only the top-20 terms by corpus
         # frequency are labelled — at the enforced 16pt publication floor.
-        important_terms = sorted(
-            G.nodes(), key=lambda x: G.nodes[x]["frequency"], reverse=True
-        )[
-            :20
-        ]  # Top 20 terms
+        important_terms = sorted(G.nodes(), key=lambda x: G.nodes[x]["frequency"], reverse=True)[:20]  # Top 20 terms
 
         # Labels are offset above each node (by its radius) so hub nodes
         # are not overprinted, then filtered by rendered-box overlap in
@@ -564,34 +570,51 @@ class ConceptVisualizer:
         ax.margins(0.08)
         ax.axis("off")
         # Add legend
-        legend_elements = [plt.Rectangle((0, 0), 1, 1, facecolor=color,
-                                         label=domain_display_name(domain))
-                           for domain, color in self.DOMAIN_COLORS.items()]
-        ax.legend(handles=legend_elements, loc="upper center", ncol=2,
-                  bbox_to_anchor=(0.5, -0.025), frameon=False,
-                  fontsize=MIN_FONT)
+        legend_elements = [
+            plt.Rectangle((0, 0), 1, 1, facecolor=color, label=domain_display_name(domain))
+            for domain, color in self.DOMAIN_COLORS.items()
+        ]
+        ax.legend(
+            handles=legend_elements,
+            loc="upper center",
+            ncol=2,
+            bbox_to_anchor=(0.5, -0.025),
+            frameon=False,
+            fontsize=MIN_FONT,
+        )
 
         # Subtitle sits just above the axes; pad per title line so
         # multi-line titles never collide with the subtitle text.
         ax.set_title(
             "Observed co-occurrence topology",
-            fontsize=MIN_FONT + 2, fontweight="bold",
+            fontsize=MIN_FONT + 2,
+            fontweight="bold",
             pad=24 + 20 * title.count("\n"),
         )
         subtitle = ax.text(
-            0.5, 1.005,
+            0.5,
+            1.005,
             f"{G.number_of_nodes():,} terms · {G.number_of_edges():,} observed edges\n"
             f"0 labels from {len(important_terms)} frequent candidates",
-            transform=ax.transAxes, ha="center", va="bottom",
-            fontsize=MIN_FONT, color="#666666", fontstyle="italic",
+            transform=ax.transAxes,
+            ha="center",
+            va="bottom",
+            fontsize=MIN_FONT,
+            color="#666666",
+            fontstyle="italic",
         )
         ax.axis("off")
 
         fig.suptitle(title, fontsize=MIN_FONT + 4, fontweight="bold", y=0.995)
-        fig.text(0.5, 0.005,
-                 "All observed edges remain in the graph. Pair ranking uses shared-document counts; "
-                 "layout is unweighted and has no biological hierarchy.",
-                 ha="center", fontsize=MIN_FONT, color="#526271")
+        fig.text(
+            0.5,
+            0.005,
+            "All observed edges remain in the graph. Pair ranking uses shared-document counts; "
+            "layout is unweighted and has no biological hierarchy.",
+            ha="center",
+            fontsize=MIN_FONT,
+            color="#526271",
+        )
         plt.tight_layout(rect=(0, 0.045, 1, 0.89), w_pad=4.0)
 
         fig.canvas.draw()
@@ -599,22 +622,25 @@ class ConceptVisualizer:
             ax,
             [(t, pos[t]) for t in important_terms],
             offsets=[
-                (0, 9, "center", "bottom"), (0, -9, "center", "top"),
-                (9, 0, "left", "center"), (-9, 0, "right", "center"),
-                (9, 9, "left", "bottom"), (-9, 9, "right", "bottom"),
-                (9, -9, "left", "top"), (-9, -9, "right", "top"),
-                (0, 24, "center", "bottom"), (0, -24, "center", "top"),
-                (26, 0, "left", "center"), (-26, 0, "right", "center"),
+                (0, 9, "center", "bottom"),
+                (0, -9, "center", "top"),
+                (9, 0, "left", "center"),
+                (-9, 0, "right", "center"),
+                (9, 9, "left", "bottom"),
+                (-9, 9, "right", "bottom"),
+                (9, -9, "left", "top"),
+                (-9, -9, "right", "top"),
+                (0, 24, "center", "bottom"),
+                (0, -24, "center", "top"),
+                (26, 0, "left", "center"),
+                (-26, 0, "right", "center"),
             ],
             avoid_boxes=[ax.get_legend().get_window_extent(fig.canvas.get_renderer())],
             drop_on_fail=True,
             fontsize=MIN_FONT,
-            bbox={"boxstyle": "round,pad=0.1", "fc": "white",
-                  "ec": "none", "alpha": 0.75},
+            bbox={"boxstyle": "round,pad=0.1", "fc": "white", "ec": "none", "alpha": 0.75},
         )
-        label_dict: Dict[str, str] = {
-            t: t for t, a_ in zip(important_terms, anns) if a_ is not None
-        }
+        label_dict: dict[str, str] = {t: t for t, a_ in zip(important_terms, anns) if a_ is not None}
         subtitle.set_text(
             f"{G.number_of_nodes():,} terms · {G.number_of_edges():,} observed edges\n"
             f"{len(label_dict)} labels from {len(important_terms)} frequent candidates"
@@ -648,9 +674,9 @@ class ConceptVisualizer:
     @publication_style
     def create_domain_comparison_plot(
         self,
-        domain_data: Dict[str, Dict[str, Any]],
-        filepath: Optional[Path] = None,
-        terms: Optional[Dict[str, Any]] = None,
+        domain_data: dict[str, dict[str, Any]],
+        filepath: Path | None = None,
+        terms: dict[str, Any] | None = None,
     ) -> plt.Figure:
         """Create a six-panel horizontal comparison plot across all six Ento-Linguistic domains.
 
@@ -684,19 +710,25 @@ class ConceptVisualizer:
 
         def _bar(ax, values, ylabel, title, *, fmt=",.0f"):
             """Draw aligned horizontal bars with exact values and readable labels."""
-            bars = ax.barh(range(len(domains)), values, color=domain_colors,
-                           height=0.62, edgecolor="white", linewidth=0.5)
+            bars = ax.barh(
+                range(len(domains)), values, color=domain_colors, height=0.62, edgecolor="white", linewidth=0.5
+            )
             finite = [v for v in values if np.isfinite(v)]
             maximum = max(finite, default=0.0)
             ax.set_xlim(0, max(maximum * 1.22, 0.1))
             for bar, value in zip(bars, values):
                 printed = f"{value:{fmt}}" if np.isfinite(value) else "n/a"
-                ax.annotate(printed,
-                            xy=(value if np.isfinite(value) else 0,
-                                bar.get_y() + bar.get_height() / 2),
-                            xytext=(7, 0), textcoords="offset points",
-                            ha="left", va="center", fontsize=MIN_FONT,
-                            fontweight="bold", color="#263746")
+                ax.annotate(
+                    printed,
+                    xy=(value if np.isfinite(value) else 0, bar.get_y() + bar.get_height() / 2),
+                    xytext=(7, 0),
+                    textcoords="offset points",
+                    ha="left",
+                    va="center",
+                    fontsize=MIN_FONT,
+                    fontweight="bold",
+                    color="#263746",
+                )
             ax.set_yticks(range(len(domains)))
             ax.set_yticklabels(short_labels, fontsize=MIN_FONT)
             ax.set_ylim(-0.6, len(domains) - 0.4)
@@ -734,17 +766,13 @@ class ConceptVisualizer:
             if domain_h is not None and domain_h > 0.0:
                 entropy_vals.append(float(domain_h))
             elif terms:
-                domain_terms = [
-                    t for t in terms.values() if domain in getattr(t, "domains", [])
-                ]
+                domain_terms = [t for t in terms.values() if domain in getattr(t, "domains", [])]
                 if domain_terms:
                     # Only use term-level semantic_entropy if explicitly set (not a proxy)
                     explicit_entropies = [
-                        getattr(t, "semantic_entropy")
+                        t.semantic_entropy
                         for t in domain_terms
-                        if hasattr(t, "semantic_entropy") and isinstance(
-                            getattr(t, "semantic_entropy"), (int, float)
-                        )
+                        if hasattr(t, "semantic_entropy") and isinstance(t.semantic_entropy, (int, float))
                     ]
                     if explicit_entropies:
                         entropy_vals.append(float(np.mean(explicit_entropies)))
@@ -759,38 +787,41 @@ class ConceptVisualizer:
                     domain_data[domain].get("avg_ambiguity", 0.0),
                 )
                 entropy_vals.append(float(raw) if raw else 0.0)
-        _bar(axes[1, 1], entropy_vals, "Mean H(t) bits",
-             "Sentence-context occupancy entropy", fmt=".2f")
+        _bar(axes[1, 1], entropy_vals, "Mean H(t) bits", "Sentence-context occupancy entropy", fmt=".2f")
 
         # Panel (2,0): bridging term count
         bridging = []
         for domain in domains:
             if terms:
-                count = sum(1 for t in terms.values()
-                            if domain in getattr(t, "domains", [])
-                            and len(getattr(t, "domains", [])) > 1)
+                count = sum(
+                    1
+                    for t in terms.values()
+                    if domain in getattr(t, "domains", []) and len(getattr(t, "domains", [])) > 1
+                )
             else:
                 count = len(domain_data[domain].get("bridging_terms", set()))
             bridging.append(count)
-        _bar(axes[2, 0], bridging, "Number of Bridging Terms",
-             "Cross-Domain Bridging Terms")
+        _bar(axes[2, 0], bridging, "Number of Bridging Terms", "Cross-Domain Bridging Terms")
 
         # Panel (2,1): CACE aggregate (Clarity·Appropriateness·Consistency·Evolvability)
         from pipeline.statistics_pipeline import _domain_cace_scores
+
         cace_vals = []
         for domain in domains:
-            domain_terms = [term for term in (terms or {}).values()
-                            if domain in getattr(term, "domains", [])]
+            domain_terms = [term for term in (terms or {}).values() if domain in getattr(term, "domains", [])]
             scores = _domain_cace_scores(domain_terms)
-            cace_vals.append(float(np.mean([score.aggregate for score in scores]))
-                             if scores else float("nan"))
-        _bar(axes[2, 1], cace_vals, "Mean CACE Score [0–1]",
-             "CACE Aggregate Score per Domain", fmt=".3f")
+            cace_vals.append(float(np.mean([score.aggregate for score in scores])) if scores else float("nan"))
+        _bar(axes[2, 1], cace_vals, "Mean CACE Score [0–1]", "CACE Aggregate Score per Domain", fmt=".3f")
 
-        fig.text(0.5, 0.012,
-                 "Assignments overlap; extraction confidence and CACE are heuristics. "
-                 "Entropy does not independently validate word senses.",
-                 ha="center", fontsize=MIN_FONT, color="#526271")
+        fig.text(
+            0.5,
+            0.012,
+            "Assignments overlap; extraction confidence and CACE are heuristics. "
+            "Entropy does not independently validate word senses.",
+            ha="center",
+            fontsize=MIN_FONT,
+            color="#526271",
+        )
         plt.tight_layout(rect=(0, 0.055, 1, 0.96), h_pad=2.0, w_pad=3.0)
 
         if filepath:
@@ -802,9 +833,9 @@ class ConceptVisualizer:
     @publication_style
     def create_domain_overview_grid(
         self,
-        domain_data: Dict[str, Dict[str, Any]],
-        terms: Dict[str, Any],
-        filepath: Optional[Path] = None,
+        domain_data: dict[str, dict[str, Any]],
+        terms: dict[str, Any],
+        filepath: Path | None = None,
     ) -> plt.Figure:
         """6-panel grid: one subplot per domain showing top-10 terms by frequency.
 
@@ -826,7 +857,8 @@ class ConceptVisualizer:
         fig, axes = plt.subplots(3, 2, figsize=(18, 22))
         fig.suptitle(
             "Domain Terminology Overview: Top Terms by Frequency & Semantic Entropy",
-            fontsize=MIN_FONT + 4, fontweight="bold",
+            fontsize=MIN_FONT + 4,
+            fontweight="bold",
         )
 
         all_axes = axes.flatten()
@@ -834,15 +866,10 @@ class ConceptVisualizer:
 
         # First pass: compute global max entropy for shared colormap
         for domain in valid_domains:
-            domain_terms = [
-                (name, t) for name, t in terms.items()
-                if domain in getattr(t, "domains", [])
-            ]
+            domain_terms = [(name, t) for name, t in terms.items() if domain in getattr(t, "domains", [])]
             if domain_terms:
                 max_e = max(
-                    getattr(t, "semantic_entropy",
-                             float(len(getattr(t, "domains", [1]))))
-                    for _, t in domain_terms
+                    getattr(t, "semantic_entropy", float(len(getattr(t, "domains", [1])))) for _, t in domain_terms
                 )
                 global_max_entropy = max(global_max_entropy, max_e)
 
@@ -852,15 +879,19 @@ class ConceptVisualizer:
             ax = all_axes[idx]
             domain_color = self.DOMAIN_COLORS.get(domain, "#7f7f7f")
 
-            domain_terms = [
-                (name, t) for name, t in terms.items()
-                if domain in getattr(t, "domains", [])
-            ]
+            domain_terms = [(name, t) for name, t in terms.items() if domain in getattr(t, "domains", [])]
             if not domain_terms:
-                ax.text(0.5, 0.5, "No terms extracted", ha="center", va="center",
-                        transform=ax.transAxes, fontsize=MIN_FONT, color="#888")
-                ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold",
-                             color=domain_color)
+                ax.text(
+                    0.5,
+                    0.5,
+                    "No terms extracted",
+                    ha="center",
+                    va="center",
+                    transform=ax.transAxes,
+                    fontsize=MIN_FONT,
+                    color="#888",
+                )
+                ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold", color=domain_color)
                 ax.axis("off")
                 continue
 
@@ -868,24 +899,24 @@ class ConceptVisualizer:
             top = sorted(domain_terms, key=lambda x: x[1].frequency, reverse=True)[:10]
             names = [n for n, _ in top]
             freqs = [t.frequency for _, t in top]
-            entropies = [
-                getattr(t, "semantic_entropy",
-                         float(len(getattr(t, "domains", [1]))))
-                for _, t in top
-            ]
+            entropies = [getattr(t, "semantic_entropy", float(len(getattr(t, "domains", [1])))) for _, t in top]
 
             # Normalise entropy → colour
             norm_e = [min(1.0, e / global_max_entropy) for e in entropies]
             bar_colors = [cmap(ne) for ne in norm_e]
 
-            bars = ax.barh(range(len(names)), freqs, color=bar_colors,
-                           edgecolor="white", linewidth=0.4)
+            bars = ax.barh(range(len(names)), freqs, color=bar_colors, edgecolor="white", linewidth=0.4)
             for bar, f in zip(bars, freqs):
-                ax.annotate(str(f),
-                            xy=(bar.get_width(), bar.get_y() + bar.get_height() / 2),
-                            xytext=(5, 0), textcoords="offset points",
-                            va="center", ha="left",
-                            fontsize=MIN_FONT, fontweight="bold")
+                ax.annotate(
+                    str(f),
+                    xy=(bar.get_width(), bar.get_y() + bar.get_height() / 2),
+                    xytext=(5, 0),
+                    textcoords="offset points",
+                    va="center",
+                    ha="left",
+                    fontsize=MIN_FONT,
+                    fontweight="bold",
+                )
 
             ax.set_yticks(range(len(names)))
             ax.set_yticklabels(names, fontsize=MIN_FONT)
@@ -895,18 +926,20 @@ class ConceptVisualizer:
             ax.set_xlabel("Corpus Frequency (occurrences)", fontsize=MIN_FONT)
             ax.set_title(
                 f"{title}  ({len(domain_terms)} terms)",
-                fontsize=MIN_FONT + 2, fontweight="bold", color=domain_color, pad=10,
+                fontsize=MIN_FONT + 2,
+                fontweight="bold",
+                color=domain_color,
+                pad=10,
             )
             ax.spines["top"].set_visible(False)
             ax.spines["right"].set_visible(False)
 
         # Shared entropy colour bar
-        sm = plt.cm.ScalarMappable(cmap=cmap,
-                                    norm=plt.Normalize(vmin=0, vmax=global_max_entropy))
+        sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=0, vmax=global_max_entropy))
         sm.set_array([])
-        cbar = fig.colorbar(sm, ax=all_axes, orientation="vertical",
-                            fraction=0.012, pad=0.03,
-                            label="Semantic Entropy H(t) bits")
+        cbar = fig.colorbar(
+            sm, ax=all_axes, orientation="vertical", fraction=0.012, pad=0.03, label="Semantic Entropy H(t) bits"
+        )
         cbar.ax.tick_params(labelsize=MIN_FONT)
 
         # Use constrained_layout instead of tight_layout — the colorbar axes
@@ -922,8 +955,8 @@ class ConceptVisualizer:
     @publication_style
     def create_domain_patterns_grid(
         self,
-        terms: Dict[str, Any],
-        filepath: Optional[Path] = None,
+        terms: dict[str, Any],
+        filepath: Path | None = None,
     ) -> plt.Figure:
         """6-panel donut grid: one chart per domain showing term word-formation
         composition.
@@ -945,7 +978,9 @@ class ConceptVisualizer:
         fig, axes = plt.subplots(3, 2, figsize=(16, 20))
         fig.suptitle(
             "Domain Vocabulary Composition: Word-Formation Patterns",
-            fontsize=MIN_FONT + 4, fontweight="bold", y=1.005,
+            fontsize=MIN_FONT + 4,
+            fontweight="bold",
+            y=1.005,
         )
         all_axes = axes.flatten()
 
@@ -962,14 +997,19 @@ class ConceptVisualizer:
             ax = all_axes[idx]
             domain_color = self.DOMAIN_COLORS.get(domain, "#7f7f7f")
 
-            domain_terms = [
-                t for t in terms.values() if domain in getattr(t, "domains", [])
-            ]
+            domain_terms = [t for t in terms.values() if domain in getattr(t, "domains", [])]
             if not domain_terms:
-                ax.text(0.5, 0.5, "No terms", ha="center", va="center",
-                        transform=ax.transAxes, fontsize=MIN_FONT, color="#888")
-                ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold",
-                             color=domain_color)
+                ax.text(
+                    0.5,
+                    0.5,
+                    "No terms",
+                    ha="center",
+                    va="center",
+                    transform=ax.transAxes,
+                    fontsize=MIN_FONT,
+                    color="#888",
+                )
+                ax.set_title(title, fontsize=MIN_FONT + 2, fontweight="bold", color=domain_color)
                 ax.axis("off")
                 continue
 
@@ -977,7 +1017,7 @@ class ConceptVisualizer:
             # (``_style.classify_word_formation``), the same one the
             # unit-of-individuality pie uses, so both figures agree.
             # Classes are mutually exclusive and partition the terms.
-            pos_counts: Dict[str, int] = {}
+            pos_counts: dict[str, int] = {}
             for t in domain_terms:
                 label = classify_word_formation(getattr(t, "text", "") or "")
                 pos_counts[label] = pos_counts.get(label, 0) + 1
@@ -999,8 +1039,9 @@ class ConceptVisualizer:
             colors = [label_colors.get(lab, "#bab0ac") for lab in labels]
 
             wedge_props = {"width": 0.5, "edgecolor": "white", "linewidth": 1.5}
-            wedges, texts, autotexts = ax.pie(
-                sizes, colors=colors,
+            wedges, _texts, autotexts = ax.pie(
+                sizes,
+                colors=colors,
                 autopct=lambda pct: f"{pct:.0f}%" if pct >= 3 else "",
                 startangle=90,
                 wedgeprops=wedge_props,
@@ -1011,19 +1052,26 @@ class ConceptVisualizer:
                 at.set_fontweight("bold")
 
             ax.legend(
-                wedges, [f"{label} ({count})" for label, count in zip(labels, sizes)],
-                loc="upper center", bbox_to_anchor=(0.5, -0.03),
-                fontsize=MIN_FONT, frameon=False,
+                wedges,
+                [f"{label} ({count})" for label, count in zip(labels, sizes)],
+                loc="upper center",
+                bbox_to_anchor=(0.5, -0.03),
+                fontsize=MIN_FONT,
+                frameon=False,
             )
 
             # Centre annotation
             n_terms = len(domain_terms)
-            ax.text(0, 0, f"{n_terms}\nterms", ha="center", va="center",
-                    fontsize=MIN_FONT, fontweight="bold", color="#333")
+            ax.text(
+                0, 0, f"{n_terms}\nterms", ha="center", va="center", fontsize=MIN_FONT, fontweight="bold", color="#333"
+            )
 
             ax.set_title(
-                title, fontsize=MIN_FONT + 2, fontweight="bold",
-                color=domain_color, pad=10,
+                title,
+                fontsize=MIN_FONT + 2,
+                fontweight="bold",
+                color=domain_color,
+                pad=10,
             )
 
         plt.tight_layout()
@@ -1036,7 +1084,7 @@ class ConceptVisualizer:
 
     @publication_style
     def visualize_concept_hierarchy(
-        self, concept_hierarchy: Dict[str, Any], filepath: Optional[Path] = None
+        self, concept_hierarchy: dict[str, Any], filepath: Path | None = None
     ) -> plt.Figure:
         """Visualize concept overlap strength as a 2-panel figure.
 
@@ -1060,24 +1108,29 @@ class ConceptVisualizer:
         Returns:
             Matplotlib Figure
         """
-        hierarchy_data = (
-            concept_hierarchy.get("strength_scores")
-            or concept_hierarchy.get("centrality_scores", {})
-        )
+        hierarchy_data = concept_hierarchy.get("strength_scores") or concept_hierarchy.get("centrality_scores", {})
         term_counts_map = concept_hierarchy.get("term_counts", {})
         bar_color = "#4e79a7"
 
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, max(7, len(hierarchy_data) * 0.45 + 3)))
         fig.suptitle(
             "Concept Category Overlap Strength",
-            fontsize=MIN_FONT + 4, fontweight="bold", y=1.02,
+            fontsize=MIN_FONT + 4,
+            fontweight="bold",
+            y=1.02,
         )
 
         if not hierarchy_data:
             for ax in (ax1, ax2):
-                ax.text(0.5, 0.5, "No hierarchy data available",
-                        ha="center", va="center", transform=ax.transAxes,
-                        fontsize=MIN_FONT)
+                ax.text(
+                    0.5,
+                    0.5,
+                    "No hierarchy data available",
+                    ha="center",
+                    va="center",
+                    transform=ax.transAxes,
+                    fontsize=MIN_FONT,
+                )
                 ax.axis("off")
             if filepath:
                 fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -1088,32 +1141,31 @@ class ConceptVisualizer:
             return c.replace("_", " ").title()
 
         # ── Panel 1: strength rank bar chart ─────────────────────────
-        sorted_concepts = sorted(
-            hierarchy_data.items(), key=lambda x: (-x[1], x[0])
-        )
+        sorted_concepts = sorted(hierarchy_data.items(), key=lambda x: (-x[1], x[0]))
         concepts = [c for c, _ in sorted_concepts]
         scores = [s for _, s in sorted_concepts]
         max_score = max(scores) if scores else 1.0
 
         y_pos = np.arange(len(concepts))
-        bars = ax1.barh(y_pos, scores, color=bar_color, alpha=0.85,
-                        edgecolor="white", linewidth=0.5)
+        bars = ax1.barh(y_pos, scores, color=bar_color, alpha=0.85, edgecolor="white", linewidth=0.5)
         for bar, score in zip(bars, scores):
             ax1.annotate(
                 f"{score:.2f}",
                 xy=(bar.get_width(), bar.get_y() + bar.get_height() / 2),
-                xytext=(5, 0), textcoords="offset points",
-                va="center", ha="left",
-                fontsize=MIN_FONT, fontweight="bold")
+                xytext=(5, 0),
+                textcoords="offset points",
+                va="center",
+                ha="left",
+                fontsize=MIN_FONT,
+                fontweight="bold",
+            )
 
         ax1.set_yticks(y_pos)
         ax1.set_yticklabels([_fmt(c) for c in concepts], fontsize=MIN_FONT)
         ax1.invert_yaxis()
         ax1.set_xlim(0, max_score * 1.2 if max_score > 0 else 1.0)
-        ax1.set_xlabel("Weighted degree (sum of overlap coefficients)",
-                       fontsize=MIN_FONT)
-        ax1.set_title("Concept Overlap Strength Ranking", fontsize=MIN_FONT + 2,
-                      fontweight="bold", pad=8)
+        ax1.set_xlabel("Weighted degree (sum of overlap coefficients)", fontsize=MIN_FONT)
+        ax1.set_title("Concept Overlap Strength Ranking", fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
         ax1.spines["top"].set_visible(False)
         ax1.spines["right"].set_visible(False)
 
@@ -1121,17 +1173,14 @@ class ConceptVisualizer:
         sc_x = scores
         sc_y = [term_counts_map.get(c, 1) for c in concepts]
         sc_sizes = [160 for _ in scores]
-        ax2.scatter(sc_x, sc_y, c=bar_color, s=sc_sizes, alpha=0.85,
-                    edgecolors="white", linewidths=0.8, zorder=3)
+        ax2.scatter(sc_x, sc_y, c=bar_color, s=sc_sizes, alpha=0.85, edgecolors="white", linewidths=0.8, zorder=3)
 
         ax2.margins(x=0.5, y=0.3)
         # Weighted degree is non-negative; margins must not show negative ticks.
         ax2.set_xlim(left=0.0, right=ax2.get_xlim()[1])
-        ax2.set_xlabel("Weighted degree (sum of overlap coefficients)",
-                       fontsize=MIN_FONT)
+        ax2.set_xlabel("Weighted degree (sum of overlap coefficients)", fontsize=MIN_FONT)
         ax2.set_ylabel("Number of Associated Terms", fontsize=MIN_FONT)
-        ax2.set_title("Overlap strength vs. associated terms",
-                      fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
+        ax2.set_title("Overlap strength vs. associated terms", fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
         ax2.spines["top"].set_visible(False)
         ax2.spines["right"].set_visible(False)
         ax2.grid(True, alpha=0.3)
@@ -1145,19 +1194,23 @@ class ConceptVisualizer:
             ax2,
             [(_fmt(c), (x, y)) for c, x, y in zip(concepts, sc_x, sc_y)],
             offsets=[
-                (10, 14, "left", "bottom"), (10, -14, "left", "top"),
-                (-10, 14, "right", "bottom"), (-10, -14, "right", "top"),
-                (0, 34, "center", "bottom"), (0, -34, "center", "top"),
-                (0, 58, "center", "bottom"), (0, -58, "center", "top"),
-                (0, 82, "center", "bottom"), (0, -82, "center", "top"),
+                (10, 14, "left", "bottom"),
+                (10, -14, "left", "top"),
+                (-10, 14, "right", "bottom"),
+                (-10, -14, "right", "top"),
+                (0, 34, "center", "bottom"),
+                (0, -34, "center", "top"),
+                (0, 58, "center", "bottom"),
+                (0, -58, "center", "top"),
+                (0, 82, "center", "bottom"),
+                (0, -82, "center", "top"),
             ],
-            avoid_points=[tuple(pt) for pt in ax2.transData.transform(
-                np.column_stack([sc_x, sc_y]))],
-            fontsize=MIN_FONT, color="#333", fontweight="bold",
-            arrowprops={"arrowstyle": "-", "color": "#999", "lw": 1.0,
-                        "shrinkA": 0, "shrinkB": 4},
+            avoid_points=[tuple(pt) for pt in ax2.transData.transform(np.column_stack([sc_x, sc_y]))],
+            fontsize=MIN_FONT,
+            color="#333",
+            fontweight="bold",
+            arrowprops={"arrowstyle": "-", "color": "#999", "lw": 1.0, "shrinkA": 0, "shrinkB": 4},
         )
-
 
         if filepath:
             fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -1168,8 +1221,8 @@ class ConceptVisualizer:
     @publication_style
     def create_anthropomorphic_analysis_plot(
         self,
-        anthropomorphic_data: Dict[str, List[str]],
-        filepath: Optional[Path] = None,
+        anthropomorphic_data: dict[str, list[str]],
+        filepath: Path | None = None,
     ) -> plt.Figure:
         """Create a 2-panel visualization of anthropomorphic terminology.
 
@@ -1201,19 +1254,29 @@ class ConceptVisualizer:
         bars_h = 0.55 * n_rows + 1.2
         table_h = 0.45 * total_lines + 0.8
         fig, (ax1, ax2) = plt.subplots(
-            2, 1, figsize=(16, bars_h + table_h + 2.0),
+            2,
+            1,
+            figsize=(16, bars_h + table_h + 2.0),
             gridspec_kw={"height_ratios": [bars_h, table_h]},
         )
         fig.suptitle(
             "Anthropomorphic Terminology in Entomological Discourse",
-            fontsize=MIN_FONT + 4, fontweight="bold", y=0.99,
+            fontsize=MIN_FONT + 4,
+            fontweight="bold",
+            y=0.99,
         )
 
         if not anthropomorphic_data:
             for ax in (ax1, ax2):
-                ax.text(0.5, 0.5, "No anthropomorphic data available",
-                        ha="center", va="center", transform=ax.transAxes,
-                        fontsize=MIN_FONT)
+                ax.text(
+                    0.5,
+                    0.5,
+                    "No anthropomorphic data available",
+                    ha="center",
+                    va="center",
+                    transform=ax.transAxes,
+                    fontsize=MIN_FONT,
+                )
                 ax.axis("off")
             if filepath:
                 fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -1227,61 +1290,54 @@ class ConceptVisualizer:
         bar_colors = [palette[i % len(palette)] for i in range(len(categories))]
 
         y_pos = np.arange(len(categories))
-        bars = ax1.barh(y_pos, counts, color=bar_colors, alpha=0.82,
-                        edgecolor="white", linewidth=0.5)
+        bars = ax1.barh(y_pos, counts, color=bar_colors, alpha=0.82, edgecolor="white", linewidth=0.5)
 
         for bar, count in zip(bars, counts):
-            ax1.text(bar.get_width() + max(0.05, max(counts) * 0.02),
-                     bar.get_y() + bar.get_height() / 2,
-                     str(count), va="center", ha="left",
-                     fontsize=MIN_FONT, fontweight="bold")
+            ax1.text(
+                bar.get_width() + max(0.05, max(counts) * 0.02),
+                bar.get_y() + bar.get_height() / 2,
+                str(count),
+                va="center",
+                ha="left",
+                fontsize=MIN_FONT,
+                fontweight="bold",
+            )
 
         ax1.set_yticks(y_pos)
         ax1.set_yticklabels(categories, fontsize=MIN_FONT)
         ax1.invert_yaxis()
         total = sum(counts)
-        ax1.set_xlabel(f"Number of Terms (total: {total})",
-                       fontsize=MIN_FONT)
-        ax1.set_title("Terms per Anthropomorphic Category",
-                      fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
+        ax1.set_xlabel(f"Number of Terms (total: {total})", fontsize=MIN_FONT)
+        ax1.set_title("Terms per Anthropomorphic Category", fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
         ax1.spines["top"].set_visible(False)
         ax1.spines["right"].set_visible(False)
 
         # ── Panel 2: Sample terms table (wrapped, full width) ─────────
         ax2.axis("off")
-        ax2.set_title("Sample Terms by Category",
-                      fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
+        ax2.set_title("Sample Terms by Category", fontsize=MIN_FONT + 2, fontweight="bold", pad=8)
         ax2.set_xlim(0, 1)
         ax2.set_ylim(0, 1)
 
         line_h = 1.0 / (total_lines + 0.5)
 
         y = 1.0 - line_h / 2
-        ax2.text(0.01, y, "Category", fontsize=MIN_FONT, fontweight="bold",
-                 va="center")
-        ax2.text(0.34, y, "Example Terms", fontsize=MIN_FONT,
-                 fontweight="bold", va="center")
+        ax2.text(0.01, y, "Category", fontsize=MIN_FONT, fontweight="bold", va="center")
+        ax2.text(0.34, y, "Example Terms", fontsize=MIN_FONT, fontweight="bold", va="center")
         y -= line_h / 2
         ax2.plot([0, 1], [y, y], color="#ccc", linewidth=0.8, clip_on=False)
 
-        for row_idx, ((cat, _terms), lines) in enumerate(
-            zip(anthropomorphic_data.items(), wrapped_rows)
-        ):
+        for row_idx, ((cat, _terms), lines) in enumerate(zip(anthropomorphic_data.items(), wrapped_rows)):
             top = y
             bottom = y - len(lines) * line_h
             if row_idx % 2 == 0:
-                ax2.fill_between([0, 1], bottom, top, color="#f0f0f0",
-                                 alpha=0.8, zorder=0)
+                ax2.fill_between([0, 1], bottom, top, color="#f0f0f0", alpha=0.8, zorder=0)
             cat_color = palette[row_idx % len(palette)]
-            ax2.text(0.01, top - line_h / 2, cat, fontsize=MIN_FONT,
-                     va="center", color=cat_color, fontweight="bold")
+            ax2.text(0.01, top - line_h / 2, cat, fontsize=MIN_FONT, va="center", color=cat_color, fontweight="bold")
             for k, line in enumerate(lines):
-                ax2.text(0.34, top - (k + 0.5) * line_h, line,
-                         fontsize=MIN_FONT, va="center", color="#333")
+                ax2.text(0.34, top - (k + 0.5) * line_h, line, fontsize=MIN_FONT, va="center", color="#333")
             y = bottom
 
-        fig.subplots_adjust(left=0.30, right=0.96, top=0.90,
-                            bottom=0.04, hspace=0.3)
+        fig.subplots_adjust(left=0.30, right=0.96, top=0.90, bottom=0.04, hspace=0.3)
 
         if filepath:
             fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -1289,9 +1345,7 @@ class ConceptVisualizer:
 
         return fig
 
-    def export_visualization_metadata(
-        self, figures: Dict[str, plt.Figure], metadata_file: Path
-    ) -> None:
+    def export_visualization_metadata(self, figures: dict[str, plt.Figure], metadata_file: Path) -> None:
         """Export metadata about created visualizations.
 
         Args:
@@ -1326,8 +1380,8 @@ class ConceptVisualizer:
     @publication_style
     def visualize_term_cooccurrence(
         self,
-        cooccurrence_matrix: Dict[str, Dict[str, int]],
-        filepath: Optional[Path] = None,
+        cooccurrence_matrix: dict[str, dict[str, int]],
+        filepath: Path | None = None,
         title: str = "Term Co-occurrence Network",
     ) -> plt.Figure:
         """Create a network visualization of term co-occurrence patterns.
@@ -1376,23 +1430,18 @@ class ConceptVisualizer:
         node_sizes = [G.degree(node) * 100 + 300 for node in G.nodes()]
         node_colors = ["lightblue" for _ in G.nodes()]  # Default color
 
-        nx.draw_networkx_nodes(
-            G, pos, node_size=node_sizes, node_color=node_colors, alpha=0.7, ax=ax
-        )
+        nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color=node_colors, alpha=0.7, ax=ax)
 
         # Draw edges with width based on co-occurrence strength
         edge_weights = [G.edges[edge]["weight"] * 0.5 for edge in G.edges()]
-        nx.draw_networkx_edges(
-            G, pos, width=edge_weights, edge_color="gray", alpha=0.6, ax=ax
-        )
+        nx.draw_networkx_edges(G, pos, width=edge_weights, edge_color="gray", alpha=0.6, ax=ax)
 
         # Draw labels for high-degree nodes only, with a deterministic
         # anti-collision pass so 16pt labels never stack on dense layouts.
         high_degree_nodes = [node for node in G.nodes() if G.degree(node) > 2]
         label_pos = self._select_label_positions(pos, high_degree_nodes)
         labels = {node: node for node in label_pos}
-        nx.draw_networkx_labels(G, label_pos, labels, font_size=MIN_FONT,
-                                font_weight="bold", ax=ax)
+        nx.draw_networkx_labels(G, label_pos, labels, font_size=MIN_FONT, font_weight="bold", ax=ax)
 
         ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
         ax.axis("off")
@@ -1408,8 +1457,8 @@ class ConceptVisualizer:
     @publication_style
     def create_domain_overlap_heatmap(
         self,
-        domain_overlaps: Dict[str, Dict[str, Any]],
-        filepath: Optional[Path] = None,
+        domain_overlaps: dict[str, dict[str, Any]],
+        filepath: Path | None = None,
         title: str = "Domain Term Overlap Heatmap",
     ) -> plt.Figure:
         """Create a heatmap visualization of term overlap between domains.
@@ -1490,14 +1539,14 @@ class ConceptVisualizer:
         # Add labels
         ax.set_xticks(range(len(domains)))
         ax.set_yticks(range(len(domains)))
-        ax.set_xticklabels(display_labels, rotation=45, ha="right",
-                           fontsize=MIN_FONT)
+        ax.set_xticklabels(display_labels, rotation=45, ha="right", fontsize=MIN_FONT)
         ax.set_yticklabels(display_labels, fontsize=MIN_FONT)
 
         # Add colorbar labelled with the metric name and units.
         cbar = ax.figure.colorbar(im, ax=ax)
-        cbar.ax.set_ylabel("Overlap coefficient (% of smaller domain)", rotation=270,
-                           va="bottom", fontsize=MIN_FONT, labelpad=18)
+        cbar.ax.set_ylabel(
+            "Overlap coefficient (% of smaller domain)", rotation=270, va="bottom", fontsize=MIN_FONT, labelpad=18
+        )
         cbar.ax.tick_params(labelsize=MIN_FONT)
 
         # Add text annotations
@@ -1505,8 +1554,11 @@ class ConceptVisualizer:
             for j in range(len(domains)):
                 val = overlap_matrix[i, j]
                 ax.text(
-                    j, i, f"{val:.1f}",
-                    ha="center", va="center",
+                    j,
+                    i,
+                    f"{val:.1f}",
+                    ha="center",
+                    va="center",
                     color="white" if val > 60 else "black",
                     fontsize=MIN_FONT,
                 )
@@ -1514,8 +1566,13 @@ class ConceptVisualizer:
         # Title is placed on the figure, left of the colourbar, and wraps
         # so it can never collide with the colourbar.
         import textwrap
-        ax.set_title("\n".join(textwrap.wrap(title, 36, break_on_hyphens=False)),
-                     fontsize=MIN_FONT + 4, fontweight="bold", pad=14)
+
+        ax.set_title(
+            "\n".join(textwrap.wrap(title, 36, break_on_hyphens=False)),
+            fontsize=MIN_FONT + 4,
+            fontweight="bold",
+            pad=14,
+        )
         plt.tight_layout()
 
         if filepath:
@@ -1527,8 +1584,8 @@ class ConceptVisualizer:
     @publication_style
     def visualize_concept_evolution(
         self,
-        evolution_data: Dict[str, Dict[str, Any]],
-        filepath: Optional[Path] = None,
+        evolution_data: dict[str, dict[str, Any]],
+        filepath: Path | None = None,
         title: str = "Concept Evolution Over Time",
     ) -> plt.Figure:
         """Create a temporal visualization of concept evolution.
@@ -1544,9 +1601,7 @@ class ConceptVisualizer:
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 10))
 
         # Extract data for plotting
-        concepts = list(evolution_data.keys())[
-            :6
-        ]  # Limit to 6 concepts for readability
+        concepts = list(evolution_data.keys())[:6]  # Limit to 6 concepts for readability
         time_points = []
 
         # Collect evolution data
@@ -1616,9 +1671,7 @@ class ConceptVisualizer:
             for concept, data in evolution_data.items():
                 rate = data.get("term_growth_rate", 0)
                 growth_rates.append(rate)
-                concept_names.append(
-                    concept[:15] + "..." if len(concept) > 15 else concept
-                )
+                concept_names.append(concept[:15] + "..." if len(concept) > 15 else concept)
 
             ax4.bar(range(len(growth_rates)), growth_rates)
             ax4.set_xlabel("Concepts")
@@ -1639,8 +1692,8 @@ class ConceptVisualizer:
     @publication_style
     def create_statistical_summary_plot(
         self,
-        statistical_data: Dict[str, Dict[str, Any]],
-        filepath: Optional[Path] = None,
+        statistical_data: dict[str, dict[str, Any]],
+        filepath: Path | None = None,
         title: str = "Statistical Summary",
     ) -> plt.Figure:
         """Create a multi-panel statistical summary visualization.
@@ -1663,7 +1716,7 @@ class ConceptVisualizer:
             # Frequency distribution histogram
             if "frequency_distribution" in freq_data:
                 dist_data = freq_data["frequency_distribution"]
-                if "counts" in dist_data and dist_data["counts"]:
+                if dist_data.get("counts"):
                     axes[0, 0].bar(
                         range(len(dist_data["counts"])),
                         dist_data["counts"],
@@ -1677,20 +1730,14 @@ class ConceptVisualizer:
                     axes[0, 0].grid(True, alpha=0.3)
 
             # Top terms bar chart
-            if "top_terms" in freq_data and freq_data["top_terms"]:
+            if freq_data.get("top_terms"):
                 terms = [
-                    (
-                        item["term"][:15] + "..."
-                        if len(item["term"]) > 15
-                        else item["term"]
-                    )
+                    (item["term"][:15] + "..." if len(item["term"]) > 15 else item["term"])
                     for item in freq_data["top_terms"]
                 ]
                 frequencies = [item["frequency"] for item in freq_data["top_terms"]]
 
-                axes[0, 1].barh(
-                    terms, frequencies, color="lightgreen", edgecolor="black"
-                )
+                axes[0, 1].barh(terms, frequencies, color="lightgreen", edgecolor="black")
                 axes[0, 1].set_xlabel("Frequency")
                 axes[0, 1].set_title("Top Terms by Frequency")
                 axes[0, 1].grid(True, alpha=0.3)
@@ -1723,10 +1770,7 @@ class ConceptVisualizer:
                 axes[1, 0].grid(True, alpha=0.3)
 
         # Ambiguity metrics
-        if (
-            "ambiguity_metrics" in statistical_data
-            and "domain_metrics" in statistical_data["ambiguity_metrics"]
-        ):
+        if "ambiguity_metrics" in statistical_data and "domain_metrics" in statistical_data["ambiguity_metrics"]:
             domain_metrics = statistical_data["ambiguity_metrics"]["domain_metrics"]
 
             if domain_metrics:
@@ -1737,9 +1781,7 @@ class ConceptVisualizer:
                 ]
                 values = [domain_metrics.get(metric, 0) for metric in metrics]
 
-                axes[1, 1].bar(
-                    metrics, values, color="purple", alpha=0.7, edgecolor="black"
-                )
+                axes[1, 1].bar(metrics, values, color="purple", alpha=0.7, edgecolor="black")
                 axes[1, 1].set_ylabel("Score")
                 axes[1, 1].set_title("Domain Ambiguity Metrics")
                 axes[1, 1].tick_params(axis="x", rotation=45)
@@ -1815,7 +1857,7 @@ class ConceptVisualizer:
             y=edge_y,
             z=edge_z,
             mode="lines",
-            line=dict(width=2, color="gray"),
+            line={"width": 2, "color": "gray"},
             hoverinfo="none",
             name="relationships",
         )
@@ -1835,9 +1877,7 @@ class ConceptVisualizer:
             size = G.nodes[node]["size"]
             description = G.nodes[node]["description"]
 
-            node_text.append(
-                f"Concept: {node}<br>Domains: {', '.join(domains)}<br>Terms: {size}<br>{description}"
-            )
+            node_text.append(f"Concept: {node}<br>Domains: {', '.join(domains)}<br>Terms: {size}<br>{description}")
             node_sizes.append(size * 5 + 20)  # Scale node size
             node_colors.append(self._get_concept_color_3d(node, concept_map))
 
@@ -1846,12 +1886,12 @@ class ConceptVisualizer:
             y=node_y,
             z=node_z,
             mode="markers",
-            marker=dict(
-                size=node_sizes,
-                color=node_colors,
-                opacity=0.8,
-                line=dict(width=2, color="black"),
-            ),
+            marker={
+                "size": node_sizes,
+                "color": node_colors,
+                "opacity": 0.8,
+                "line": {"width": 2, "color": "black"},
+            },
             text=node_text,
             hoverinfo="text",
             name="concepts",
@@ -1863,12 +1903,12 @@ class ConceptVisualizer:
         fig.update_layout(
             title=title,
             showlegend=False,
-            scene=dict(
-                xaxis=dict(showbackground=False),
-                yaxis=dict(showbackground=False),
-                zaxis=dict(showbackground=False),
-            ),
-            margin=dict(l=0, r=0, t=40, b=0),
+            scene={
+                "xaxis": {"showbackground": False},
+                "yaxis": {"showbackground": False},
+                "zaxis": {"showbackground": False},
+            },
+            margin={"l": 0, "r": 0, "t": 40, "b": 0},
         )
 
         # Save HTML file
@@ -1891,7 +1931,7 @@ class ConceptVisualizer:
         return "gray"
 
     def _create_fallback_cooccurrence_plot(
-        self, cooccurrence_matrix: Dict[str, Dict[str, int]], ax: plt.Axes, title: str
+        self, cooccurrence_matrix: dict[str, dict[str, int]], ax: plt.Axes, title: str
     ) -> None:
         """Create a fallback co-occurrence visualization without NetworkX."""
         # Simple bar chart of co-occurrence frequencies
@@ -1907,15 +1947,14 @@ class ConceptVisualizer:
         # Sort by frequency
         sorted_pairs = sorted(zip(frequencies, term_pairs), reverse=True)[:20]  # Top 20
         if not sorted_pairs:
-            ax.text(0.5, 0.5, "No co-occurrence data", ha="center", va="center",
-                    transform=ax.transAxes, fontsize=MIN_FONT)
+            ax.text(
+                0.5, 0.5, "No co-occurrence data", ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT
+            )
             ax.set_title(title)
             return
         frequencies, term_pairs = zip(*sorted_pairs)
 
-        ax.barh(
-            range(len(term_pairs)), frequencies, color="lightcoral", edgecolor="black"
-        )
+        ax.barh(range(len(term_pairs)), frequencies, color="lightcoral", edgecolor="black")
         ax.set_yticks(range(len(term_pairs)))
         ax.set_yticklabels(term_pairs, fontsize=MIN_FONT)
         ax.set_xlabel("Co-occurrence Frequency", fontsize=MIN_FONT)

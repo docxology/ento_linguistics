@@ -10,6 +10,7 @@ The script should:
 3. Print the paths of generated files
 4. Fail loudly (no silent fallbacks) when any step cannot complete
 """
+
 from __future__ import annotations
 
 import os
@@ -96,7 +97,7 @@ def main() -> None:
         f"Avg: {avg_y:.3f}\nMax: {max_y:.3f}\nMin: {min_y:.3f}",
         transform=ax2.transAxes,
         verticalalignment="top",
-        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5),
+        bbox={"boxstyle": "round", "facecolor": "wheat", "alpha": 0.5},
     )
 
     plt.tight_layout()
@@ -134,8 +135,7 @@ def main() -> None:
     csv_path = os.path.join(data_dir, "example_data.csv")
     with open(csv_path, "w") as f:
         f.write("x,y,y_processed\n")
-        for xi, yi, ypi in zip(x, y, y_processed):
-            f.write(f"{xi:.6f},{yi:.6f},{ypi:.6f}\n")
+        f.writelines(f"{xi:.6f},{yi:.6f},{ypi:.6f}\n" for xi, yi, ypi in zip(x, y, y_processed))
 
     # Print generated paths (this is what the render system captures)
     print(f"Generated: {figure_path}")

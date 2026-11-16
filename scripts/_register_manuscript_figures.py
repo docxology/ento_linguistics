@@ -6,6 +6,7 @@ metadata (caption, label, section) already recorded in the FigureManager
 registry. Files that cannot be registered are skipped with an explicit
 logged reason; a missing figures directory is a hard failure.
 """
+
 from __future__ import annotations
 
 import logging
@@ -17,7 +18,7 @@ repo_root = project_root.parent
 sys.path.insert(0, str(project_root / "src"))
 sys.path.insert(0, str(repo_root))
 
-from visualization.figure_manager import FigureManager  # noqa: E402
+from visualization.figure_manager import FigureManager
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(name)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -47,14 +48,10 @@ def register_all_manuscript_figures(figures_dir: Path | None = None) -> int:
         logger.error("Run scripts/02_generate_figures.py first.")
         sys.exit(1)
 
-    figure_manager = FigureManager(
-        registry_file=str(figures_dir / "figure_registry.json")
-    )
+    figure_manager = FigureManager(registry_file=str(figures_dir / "figure_registry.json"))
 
     # Reuse metadata already recorded for a filename, if any.
-    existing_by_filename = {
-        meta.filename: meta for meta in figure_manager.figures.values()
-    }
+    existing_by_filename = {meta.filename: meta for meta in figure_manager.figures.values()}
 
     registered = 0
     skipped = 0
@@ -65,15 +62,11 @@ def register_all_manuscript_figures(figures_dir: Path | None = None) -> int:
             figure_manager.register_figure(
                 filename=filename,
                 caption=(
-                    existing.caption
-                    if existing and existing.caption
-                    else f"Figure {png_path.stem.replace('_', ' ')}"
+                    existing.caption if existing and existing.caption else f"Figure {png_path.stem.replace('_', ' ')}"
                 ),
                 label=existing.label if existing and existing.label else None,
                 section=existing.section if existing else None,
-                generated_by=(
-                    existing.generated_by if existing else "02_generate_figures.py"
-                ),
+                generated_by=(existing.generated_by if existing else "02_generate_figures.py"),
             )
             registered += 1
         except Exception as e:

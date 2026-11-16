@@ -9,12 +9,11 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from analysis.discourse_analysis import DiscourseAnalyzer
-from data.literature_mining import LiteratureCorpus
-
 from core.logging import get_logger
+from data.literature_mining import LiteratureCorpus
 
 # Directory creation handled inline
 
@@ -28,7 +27,7 @@ class DiscourseAnalysisScript:
     strategies are employed, and how language creates persuasive frameworks.
     """
 
-    def __init__(self, output_dir: Optional[Path] = None):
+    def __init__(self, output_dir: Path | None = None):
         """Initialize discourse analysis script.
 
         Args:
@@ -44,15 +43,13 @@ class DiscourseAnalysisScript:
         self.reports_dir.mkdir(parents=True, exist_ok=True)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
-        logger.info(
-            f"Initialized discourse analysis script with output directory: {self.output_dir}"
-        )
+        logger.info(f"Initialized discourse analysis script with output directory: {self.output_dir}")
 
     def analyze_discourse(
         self,
-        corpus_file: Optional[Path] = None,
-        focus_areas: Optional[List[str]] = None,
-    ) -> Dict[str, Any]:
+        corpus_file: Path | None = None,
+        focus_areas: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Analyze discourse patterns in literature.
 
         Args:
@@ -92,14 +89,12 @@ class DiscourseAnalysisScript:
         }
 
         # Save analysis data
-        analyzer.export_discourse_analysis(
-            profile, str(self.data_dir / "discourse_analysis.json")
-        )
+        analyzer.export_discourse_analysis(profile, str(self.data_dir / "discourse_analysis.json"))
 
         logger.info("Discourse analysis completed")
         return results
 
-    def _load_corpus(self, corpus_file: Optional[Path]) -> LiteratureCorpus:
+    def _load_corpus(self, corpus_file: Path | None) -> LiteratureCorpus:
         """Load literature corpus."""
         if corpus_file and corpus_file.exists():
             return LiteratureCorpus.load_from_file(corpus_file)
@@ -110,9 +105,7 @@ class DiscourseAnalysisScript:
             else:
                 return LiteratureCorpus()
 
-    def _generate_discourse_report(
-        self, profile: Dict[str, Any], focus_areas: Optional[List[str]]
-    ) -> str:
+    def _generate_discourse_report(self, profile: dict[str, Any], focus_areas: list[str] | None) -> str:
         """Generate discourse analysis report.
 
         Args:
@@ -133,9 +126,9 @@ This report analyzes discourse patterns, rhetorical strategies, and argumentativ
 """
 
         summary = profile.get("summary", {})
-        report += f"""- **Texts Analyzed**: {summary.get('total_texts', 0)}
-- **Discourse Patterns**: {summary.get('total_patterns_identified', 0)}
-- **Argumentative Structures**: {summary.get('argumentative_structures_found', 0)}
+        report += f"""- **Texts Analyzed**: {summary.get("total_texts", 0)}
+- **Discourse Patterns**: {summary.get("total_patterns_identified", 0)}
+- **Argumentative Structures**: {summary.get("argumentative_structures_found", 0)}
 
 ## Discourse Patterns
 
@@ -144,10 +137,10 @@ This report analyzes discourse patterns, rhetorical strategies, and argumentativ
 
         patterns = profile.get("patterns", {})
         for pattern_name, pattern in patterns.items():
-            report += f"""#### {pattern_name.replace('_', ' ').title()}
+            report += f"""#### {pattern_name.replace("_", " ").title()}
 - **Frequency**: {pattern.frequency}
 - **Rhetorical Function**: {pattern.rhetorical_function}
-- **Domains**: {', '.join(pattern.domains)}
+- **Domains**: {", ".join(pattern.domains)}
 - **Examples**: {len(pattern.examples)} instances
 
 """
@@ -166,16 +159,14 @@ This report analyzes discourse patterns, rhetorical strategies, and argumentativ
                 # claim is a list of claim sentences; group by the first one,
                 # truncated, so the grouping key stays hashable.
                 first_claim = struct.claim[0] if struct.claim else ""
-                claim_start = (
-                    first_claim[:50] + "..." if len(first_claim) > 50 else first_claim
-                )
+                claim_start = first_claim[:50] + "..." if len(first_claim) > 50 else first_claim
                 claim_patterns.setdefault(claim_start, []).append(struct)
 
             for claim, structs in list(claim_patterns.items())[:5]:  # Top 5 patterns
                 report += f"""#### "{claim}"
 - **Occurrences**: {len(structs)}
-- **Evidence Types**: {', '.join(set(s.evidence[0][:30] + "..." for s in structs if s.evidence))}
-- **Discourse Markers**: {', '.join(list(set(marker for s in structs for marker in s.discourse_markers))[:5])}
+- **Evidence Types**: {", ".join({s.evidence[0][:30] + "..." for s in structs if s.evidence})}
+- **Discourse Markers**: {", ".join(list({marker for s in structs for marker in s.discourse_markers})[:5])}
 
 """
         else:
@@ -189,9 +180,9 @@ This report analyzes discourse patterns, rhetorical strategies, and argumentativ
 
         strategies = profile.get("rhetorical_strategies", {})
         for strategy, data in strategies.items():
-            report += f"""#### {strategy.replace('_', ' ').title()}
-- **Frequency**: {data.get('frequency', 0)}
-- **Examples**: {len(data.get('examples', []))} instances
+            report += f"""#### {strategy.replace("_", " ").title()}
+- **Frequency**: {data.get("frequency", 0)}
+- **Examples**: {len(data.get("examples", []))} instances
 
 """
 
@@ -203,7 +194,7 @@ This report analyzes discourse patterns, rhetorical strategies, and argumentativ
 
         frameworks = profile.get("narrative_frameworks", {})
         for framework, examples in frameworks.items():
-            report += f"""#### {framework.replace('_', ' ').title()}
+            report += f"""#### {framework.replace("_", " ").title()}
 - **Occurrences**: {len(examples)}
 - **Examples**: {len(examples)} text segments
 
@@ -217,8 +208,8 @@ This report analyzes discourse patterns, rhetorical strategies, and argumentativ
 
         techniques = profile.get("persuasive_techniques", {})
         for technique, data in techniques.items():
-            report += f"""#### {technique.replace('_', ' ').title()}
-- **Count**: {data.get('count', 0)}
+            report += f"""#### {technique.replace("_", " ").title()}
+- **Count**: {data.get("count", 0)}
 
 """
 
@@ -274,9 +265,7 @@ Analysis results are saved in the following files:
 
         return str(report_file)
 
-    def _generate_discourse_visualizations(
-        self, profile: Dict[str, Any]
-    ) -> Dict[str, str]:
+    def _generate_discourse_visualizations(self, profile: dict[str, Any]) -> dict[str, str]:
         """Generate visualizations for discourse analysis.
 
         Args:
@@ -299,9 +288,7 @@ Analysis results are saved in the following files:
 
             ax.bar(range(len(strategy_names)), frequencies, alpha=0.7)
             ax.set_xticks(range(len(strategy_names)))
-            ax.set_xticklabels(
-                [name.replace("_", "\n").title() for name in strategy_names]
-            )
+            ax.set_xticklabels([name.replace("_", "\n").title() for name in strategy_names])
             ax.set_ylabel("Frequency")
             ax.set_title("Rhetorical Strategies in Entomological Literature")
 
@@ -320,11 +307,7 @@ Analysis results are saved in the following files:
             counts = [data.get("count", 0) for data in techniques.values()]
 
             # Filter out zero counts
-            filtered_data = [
-                (name, count)
-                for name, count in zip(technique_names, counts)
-                if count > 0
-            ]
+            filtered_data = [(name, count) for name, count in zip(technique_names, counts) if count > 0]
             if filtered_data:
                 names, values = zip(*filtered_data)
 
@@ -348,9 +331,7 @@ Analysis results are saved in the following files:
 def main() -> None:
     """Main entry point for discourse analysis script."""
     parser = argparse.ArgumentParser(description="Ento-Linguistic Discourse Analysis")
-    parser.add_argument(
-        "--corpus-file", type=Path, help="Path to literature corpus JSON file"
-    )
+    parser.add_argument("--corpus-file", type=Path, help="Path to literature corpus JSON file")
     parser.add_argument("--output-dir", type=Path, help="Output directory")
     parser.add_argument(
         "--focus-areas",

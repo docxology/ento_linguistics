@@ -52,7 +52,7 @@ def validate_artifacts(root: Path, out: Path, protocol: Protocol) -> None:
         for index, (name, value) in enumerate((("edges", observed.edges), ("clustering", observed.clustering)))
     }
     sensitivity = {
-        str(count): asdict(project([set(v for v in row if v < count) for row in data.rows], count))
+        str(count): asdict(project([{v for v in row if v < count} for row in data.rows], count))
         for count in (25, 50, 100)
     }
     expected = {

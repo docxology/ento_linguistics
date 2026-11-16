@@ -4,6 +4,7 @@ Importable figure-generation, analysis-pipeline, and data-export logic used by
 the thin orchestrator ``scripts/02_generate_figures.py``. All business logic
 lives here; the script only sets paths and delegates.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -11,13 +12,15 @@ import json
 import os
 import re
 from collections import Counter
+from collections.abc import Callable
 from itertools import combinations
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any
 
 os.environ.setdefault("MPLBACKEND", "Agg")
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
@@ -42,22 +45,23 @@ except (ImportError, ValueError):
     )
 
 # ── Project root (src/visualization/manuscript_figures.py → project) ──
-_PROJECT_ROOT = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-)
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ── Logging ───────────────────────────────────────────────────────────
 try:
     from core.logging import get_logger
+
     logger = get_logger(__name__)
 except ImportError:
     import logging
+
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     logger = logging.getLogger(__name__)
 
 # ── Infrastructure validation (optional) ──────────────────────────────
 try:
     from core.validation import validate_figure_registry, verify_output_integrity
+
     INFRASTRUCTURE_AVAILABLE = True
 except ImportError:
     INFRASTRUCTURE_AVAILABLE = False
@@ -68,33 +72,40 @@ except ImportError:
 #  Corpus Loading
 # ═══════════════════════════════════════════════════════════════════════
 
-def load_real_corpus(project_root: Optional[str] = None, require_provenance: bool = False) -> List[str]:
+
+def load_real_corpus(project_root: str | None = None, require_provenance: bool = False) -> list[str]:
     """Load real entomological corpus from data directory.
-    
+
     Returns:
         List of abstract strings
     """
     if project_root is not None or require_provenance:
         project_root = project_root or _PROJECT_ROOT
         from data.loader import DataLoader
+
         texts = DataLoader(Path(project_root) / "data").load_corpus("corpus/abstracts.json")
         if require_provenance:
             path = Path(project_root) / "data" / "corpus" / "provenance.json"
             records = json.loads(path.read_text())["records"]
             if not isinstance(records, dict):
                 raise ValueError("Abstract provenance records must be a digest mapping")
-            texts = [text for text in texts if str(records.get(hashlib.sha256(text.encode()).hexdigest(), {}).get("pmid", "")).isdigit()]
+            texts = [
+                text
+                for text in texts
+                if str(records.get(hashlib.sha256(text.encode()).hexdigest(), {}).get("pmid", "")).isdigit()
+            ]
             if not texts:
                 raise ValueError("No source-identified abstracts available")
         return texts
     try:
         from data.loader import DataLoader
+
         loader = DataLoader()
         # Ensure corpus exists
         corpus_path = os.path.join(loader.data_root, "corpus/abstracts.json")
         if not os.path.exists(corpus_path):
             raise FileNotFoundError(f"Corpus not found at {corpus_path}")
-            
+
         return loader.load_corpus("corpus/abstracts.json")
     except ImportError:
         logger.error("Could not import DataLoader. Ensure src/data/loader.py exists.")
@@ -103,14 +114,14 @@ def load_real_corpus(project_root: Optional[str] = None, require_provenance: boo
         logger.error(f"Error loading corpus: {e}")
         return []
 
+
 # Load real data
-REAL_ABSTRACTS: List[str] = load_real_corpus()
+REAL_ABSTRACTS: list[str] = load_real_corpus()
 if not REAL_ABSTRACTS:
     logger.warning("⚠️  Failed to load real corpus. Pipeline may fail.")
 
 
-
-def _setup_directories(project_root: Optional[str] = None) -> Tuple[str, str, str]:
+def _setup_directories(project_root: str | None = None) -> tuple[str, str, str]:
     """Set up output directories, wiping stale figures/data for a clean-slate run.
 
     Deletes and recreates ``output/figures/`` and ``output/data/`` so that
@@ -157,12 +168,12 @@ def _setup_directories(project_root: Optional[str] = None) -> Tuple[str, str, st
     return output_dir, data_dir, figure_dir
 
 
-
 # ═══════════════════════════════════════════════════════════════════════
 #  Analysis Pipeline
 # ═══════════════════════════════════════════════════════════════════════
 
-def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
+
+def run_analysis_pipeline(texts: list[str]) -> dict[str, Any]:
     """Run the complete Ento-Linguistic analysis pipeline on a text corpus.
 
     Uses real analysis modules from src/ to extract terms, build concept maps,
@@ -174,12 +185,12 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
     Returns:
         Dictionary with all analysis results
     """
-    from analysis.text_analysis import TextProcessor
-    from analysis.term_extraction import TerminologyExtractor
     from analysis.conceptual_mapping import ConceptualMapper
     from analysis.domain_analysis import DomainAnalyzer
+    from analysis.term_extraction import TerminologyExtractor
+    from analysis.text_analysis import TextProcessor
 
-    results: Dict[str, Any] = {}
+    results: dict[str, Any] = {}
     # The analyzed texts ride along so downstream stages (e.g. the
     # anthropomorphic-terminology figure's on-the-fly framing fallback)
     # can compute corpus-level features without re-loading the corpus.
@@ -189,8 +200,7 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
     logger.info("Step 1/4: Processing text corpus...")
     processor = TextProcessor()
     results["corpus_stats"] = processor.get_vocabulary_stats(texts)
-    logger.info(f"  Corpus: {len(texts)} documents, "
-                f"{results['corpus_stats'].get('total_tokens', '?')} tokens")
+    logger.info(f"  Corpus: {len(texts)} documents, {results['corpus_stats'].get('total_tokens', '?')} tokens")
 
     # ── Step 2: Terminology Extraction ────────────────────────────────
     logger.info("Step 2/4: Extracting terminology...")
@@ -198,16 +208,14 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
     terms = extractor.extract_terms(texts, min_frequency=1)
     results["terms"] = terms
     results["domain_seed_stats"] = extractor.get_domain_statistics()
-    logger.info(f"  Extracted {len(terms)} terms across "
-                f"{len(results['domain_seed_stats'])} domains")
+    logger.info(f"  Extracted {len(terms)} terms across {len(results['domain_seed_stats'])} domains")
 
     # ── Step 3: Concept Mapping ───────────────────────────────────────
     logger.info("Step 3/4: Building concept map...")
     mapper = ConceptualMapper()
     concept_map = mapper.build_concept_map(terms)
     results["concept_map"] = concept_map
-    logger.info(f"  {len(concept_map.concepts)} concepts, "
-                f"{len(concept_map.concept_relationships)} relationships")
+    logger.info(f"  {len(concept_map.concepts)} concepts, {len(concept_map.concept_relationships)} relationships")
 
     # ── Step 4: Domain Analysis ───────────────────────────────────────
     logger.info("Step 4/4: Analyzing domains...")
@@ -216,20 +224,18 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
     results["domain_analyses"] = domain_analyses
 
     # Build domain data summary for visualization
-    domain_data: Dict[str, Dict[str, Any]] = {}
+    domain_data: dict[str, dict[str, Any]] = {}
 
     # Pre-compute actual extracted term counts and confidence scores per domain
-    actual_term_counts: Dict[str, int] = {}
-    actual_avg_freq: Dict[str, float] = {}
-    actual_total_freq: Dict[str, int] = {}
-    actual_domain_conf: Dict[str, List[float]] = {}
+    actual_term_counts: dict[str, int] = {}
+    actual_avg_freq: dict[str, float] = {}
+    actual_total_freq: dict[str, int] = {}
+    actual_domain_conf: dict[str, list[float]] = {}
     for term_text, term_obj in terms.items():
         for d in getattr(term_obj, "domains", []):
             actual_term_counts[d] = actual_term_counts.get(d, 0) + 1
             actual_total_freq[d] = actual_total_freq.get(d, 0) + getattr(term_obj, "frequency", 0)
-            actual_domain_conf.setdefault(d, []).append(
-                float(getattr(term_obj, "confidence", 0.0))
-            )
+            actual_domain_conf.setdefault(d, []).append(float(getattr(term_obj, "confidence", 0.0)))
     for d in actual_term_counts:
         if actual_term_counts[d] > 0:
             actual_avg_freq[d] = actual_total_freq[d] / actual_term_counts[d]
@@ -237,11 +243,10 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
     # Reuse the sentence-context entropy already computed by DomainAnalyzer.
     # Short extraction windows and insufficient-context zeros are not the
     # canonical statistical estimand and must not enter these means.
-    semantic_entropy_map: Dict[str, float] = {}
+    semantic_entropy_map: dict[str, float] = {}
     for domain, analysis in domain_analyses.items():
         entries = analysis.ambiguity_metrics.get("term_ambiguity_scores", {})
-        valid = [entry["entropy_bits"] for entry in entries.values()
-                 if entry.get("status") == "ok"]
+        valid = [entry["entropy_bits"] for entry in entries.values() if entry.get("status") == "ok"]
         semantic_entropy_map[domain] = float(np.mean(valid)) if valid else 0.0
         for name, entry in entries.items():
             if name in terms:
@@ -251,33 +256,23 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
     for domain_name, analysis in domain_analyses.items():
         domain_data[domain_name] = {
             # Use actual extracted term count, fall back to key_terms if zero
-            "term_count": actual_term_counts.get(domain_name, 0) or (
-                len(analysis.key_terms) if hasattr(analysis, "key_terms") else 0
-            ),
+            "term_count": actual_term_counts.get(domain_name, 0)
+            or (len(analysis.key_terms) if hasattr(analysis, "key_terms") else 0),
             "avg_confidence": (
-                float(np.mean(actual_domain_conf[domain_name]))
-                if domain_name in actual_domain_conf and actual_domain_conf[domain_name]
-                else 0.0
+                float(np.mean(actual_domain_conf[domain_name])) if actual_domain_conf.get(domain_name) else 0.0
             ),
-            "total_frequency": actual_total_freq.get(domain_name, sum(
-                t.frequency for t in terms.values()
-                if domain_name in getattr(t, "domains", [])
-            )),
+            "total_frequency": actual_total_freq.get(
+                domain_name, sum(t.frequency for t in terms.values() if domain_name in getattr(t, "domains", []))
+            ),
             "bridging_terms": set(),  # Populated below
-            "ambiguity_metrics": (
-                analysis.ambiguity_metrics
-                if hasattr(analysis, "ambiguity_metrics")
-                else {}
-            ),
+            "ambiguity_metrics": (analysis.ambiguity_metrics if hasattr(analysis, "ambiguity_metrics") else {}),
             # Semantic entropy H(t) from validated supplemental table
             "semantic_entropy": semantic_entropy_map.get(domain_name, 0.0),
             # Scalar ambiguity score for visualization
             "ambiguity_score": (
                 analysis.ambiguity_metrics.get("domain_metrics", {}).get(
                     "average_ambiguity_score",
-                    analysis.ambiguity_metrics.get("domain_metrics", {}).get(
-                        "average_context_diversity", 0.0
-                    ),
+                    analysis.ambiguity_metrics.get("domain_metrics", {}).get("average_context_diversity", 0.0),
                 )
                 if hasattr(analysis, "ambiguity_metrics") and analysis.ambiguity_metrics
                 else 0.0
@@ -303,8 +298,8 @@ def run_analysis_pipeline(texts: List[str]) -> Dict[str, Any]:
 #  Figure Generation
 # ═══════════════════════════════════════════════════════════════════════
 
-def document_cooccurrences(terms: Dict[str, Any], texts: List[str],
-                           max_terms: int = 100) -> Dict[Tuple[str, str], int]:
+
+def document_cooccurrences(terms: dict[str, Any], texts: list[str], max_terms: int = 100) -> dict[tuple[str, str], int]:
     """Count documents containing each pair of the top domain-assigned terms.
 
     Matches are case-insensitive whole words; repeated mentions in a document
@@ -313,10 +308,10 @@ def document_cooccurrences(terms: Dict[str, Any], texts: List[str],
     """
     if max_terms < 2:
         raise ValueError("max_terms must be at least two")
-    selected = sorted((name for name, term in terms.items() if term.domains),
-                      key=lambda name: (-terms[name].frequency, name))[:max_terms]
-    patterns = {name: re.compile(r"\b" + re.escape(name) + r"\b", re.IGNORECASE)
-                for name in selected}
+    selected = sorted(
+        (name for name, term in terms.items() if term.domains), key=lambda name: (-terms[name].frequency, name)
+    )[:max_terms]
+    patterns = {name: re.compile(r"\b" + re.escape(name) + r"\b", re.IGNORECASE) for name in selected}
     counts: Counter = Counter()
     for text in texts:
         present = sorted(name for name, pattern in patterns.items() if pattern.search(text))
@@ -324,7 +319,7 @@ def document_cooccurrences(terms: Dict[str, Any], texts: List[str],
     return dict(sorted(counts.items()))
 
 
-def generate_concept_map(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_concept_map(results: dict[str, Any], figure_dir: str) -> str:
     """Generate concept_map.png using ConceptVisualizer.
 
     Args:
@@ -353,7 +348,7 @@ def generate_concept_map(results: Dict[str, Any], figure_dir: str) -> str:
     return str(filepath)
 
 
-def generate_terminology_network(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_terminology_network(results: dict[str, Any], figure_dir: str) -> str:
     """Generate terminology_network.png using ConceptVisualizer.
 
     Args:
@@ -387,7 +382,7 @@ def generate_terminology_network(results: Dict[str, Any], figure_dir: str) -> st
     return str(filepath)
 
 
-def generate_domain_comparison(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_domain_comparison(results: dict[str, Any], figure_dir: str) -> str:
     """Generate domain_comparison.png using the improved 2×3 ConceptVisualizer.
 
     Passes the full ``terms`` dict so the visualizer can compute real
@@ -421,7 +416,7 @@ def generate_domain_comparison(results: Dict[str, Any], figure_dir: str) -> str:
     return str(filepath)
 
 
-def generate_domain_overlap_heatmap(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_domain_overlap_heatmap(results: dict[str, Any], figure_dir: str) -> str:
     """Generate domain_overlap_heatmap.png showing cross-domain term sharing.
 
     Args:
@@ -445,7 +440,7 @@ def generate_domain_overlap_heatmap(results: Dict[str, Any], figure_dir: str) ->
         return ""
 
     # Use '||' as separator to avoid conflicts with domain names that contain '_and_'
-    overlaps: Dict[str, Dict[str, Any]] = {}
+    overlaps: dict[str, dict[str, Any]] = {}
     for d1 in domain_names:
         terms_d1 = {t for t, obj in terms.items() if d1 in obj.domains}
         for d2 in domain_names:
@@ -475,7 +470,7 @@ def generate_domain_overlap_heatmap(results: Dict[str, Any], figure_dir: str) ->
     return str(filepath)
 
 
-def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_anthropomorphic_analysis(results: dict[str, Any], figure_dir: str) -> str:
     """Generate anthropomorphic_framing.png showing human-derived terminology.
 
     Data source: the abstract artifact's real per-term framing
@@ -512,12 +507,13 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
     # and texts riding in ``results`` via the same public machinery the
     # statistics stage uses, so the figure never falls back to a
     # curated word list.
-    framing_terms: Dict[str, Any] = results.get("framing_terms") or {}
+    framing_terms: dict[str, Any] = results.get("framing_terms") or {}
     if not framing_terms:
         texts = results.get("texts") or []
         terms = results.get("terms") or {}
         if terms and texts:
             from pipeline.statistics_pipeline import _framing_section
+
             _, framing_terms = _framing_section(list(terms.values()), texts)
     if not framing_terms:
         logger.warning(
@@ -528,9 +524,11 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
         return ""
     # Domain slugs get manuscript-style display labels so the category
     # column stays readable.
-    anthropomorphic_data: Dict[str, List[str]] = {}
+    anthropomorphic_data: dict[str, list[str]] = {}
     present_domains = {d for entry in framing_terms.values() for d in entry.get("domains", [])}
-    for domain in [d for d in CANONICAL_DOMAINS if d in present_domains] + sorted(present_domains - set(CANONICAL_DOMAINS)):
+    for domain in [d for d in CANONICAL_DOMAINS if d in present_domains] + sorted(
+        present_domains - set(CANONICAL_DOMAINS)
+    ):
         framed_terms = [
             term
             for term, entry in framing_terms.items()
@@ -566,7 +564,7 @@ def generate_anthropomorphic_analysis(results: Dict[str, Any], figure_dir: str) 
     return str(filepath)
 
 
-def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_concept_hierarchy(results: dict[str, Any], figure_dir: str) -> str:
     """Generate concept_hierarchy.png as a 2-panel overlap-strength figure.
 
     Args:
@@ -585,11 +583,11 @@ def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
     # graph, so unweighted degree is identical (n-1) for every concept.
     # Strength = sum of overlap-coefficient weights to the other concepts.
     centrality_scores = {}
-    term_counts: Dict[str, int] = {}
+    term_counts: dict[str, int] = {}
     for concept_name in concept_map.concepts:
-        centrality_scores[concept_name] = float(sum(
-            weight for _, weight in concept_map.get_connected_concepts(concept_name)
-        ))
+        centrality_scores[concept_name] = float(
+            sum(weight for _, weight in concept_map.get_connected_concepts(concept_name))
+        )
         term_counts[concept_name] = len(concept_map.concepts[concept_name].terms)
 
     hierarchy_data = {
@@ -608,7 +606,7 @@ def generate_concept_hierarchy(results: Dict[str, Any], figure_dir: str) -> str:
 
 
 @publication_style
-def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_unit_of_individuality_patterns(results: dict[str, Any], figure_dir: str) -> str:
     """Generate unit_of_individuality_patterns.png.
 
     Args:
@@ -625,9 +623,7 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
     domain = "unit_of_individuality"
     filepath = Path(figure_dir) / "unit_of_individuality_patterns.png"
 
-    domain_terms = {
-        name: t for name, t in terms.items() if domain in t.domains
-    }
+    domain_terms = {name: t for name, t in terms.items() if domain in t.domains}
 
     if not domain_terms:
         logger.warning("  ⚠️  No terms found for unit_of_individuality domain")
@@ -640,10 +636,7 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
     # plain single words, so its shares are not a partition of the terms.
     formation_counts = Counter(classify_word_formation(name) for name in domain_terms)
     patterns_data = {
-        label: formation_counts[label]
-        for label, _ in sorted(
-            formation_counts.items(), key=lambda kv: (-kv[1], kv[0])
-        )
+        label: formation_counts[label] for label, _ in sorted(formation_counts.items(), key=lambda kv: (-kv[1], kv[0]))
     }
 
     pattern_labels = list(patterns_data.keys())
@@ -651,74 +644,78 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
 
     # ── Right panel: scale-level distribution ──
     scale_keywords = {
-        "Colony\n(Superorganism)": {"colony", "superorganism", "collective",
-                                    "nest", "colony-level"},
-        "Sub-colony\n(Caste)": {"caste", "division", "worker", "queen",
-                                "soldier", "subcaste"},
-        "Individual\n(Worker)": {"individual", "nestmate", "ant", "insect",
-                                 "worker"},
-        "Genomic\n(Gene-level)": {"gene", "genetic", "genomic", "allele",
-                                  "epigenetic"},
-        "Emergent\n(Collective)": {"emergent", "self-organization", "swarm",
-                                   "stigmergy", "distributed"},
+        "Colony\n(Superorganism)": {"colony", "superorganism", "collective", "nest", "colony-level"},
+        "Sub-colony\n(Caste)": {"caste", "division", "worker", "queen", "soldier", "subcaste"},
+        "Individual\n(Worker)": {"individual", "nestmate", "ant", "insect", "worker"},
+        "Genomic\n(Gene-level)": {"gene", "genetic", "genomic", "allele", "epigenetic"},
+        "Emergent\n(Collective)": {"emergent", "self-organization", "swarm", "stigmergy", "distributed"},
     }
     scale_counts = {}
     for label, keywords in scale_keywords.items():
-        count = sum(
-            1 for name in domain_terms if any(k in name for k in keywords)
-        )
+        count = sum(1 for name in domain_terms if any(k in name for k in keywords))
         scale_counts[label] = count
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
 
     # Pie chart
     formation_palette = {
-        "Single word": "#4e79a7", "Multiword phrase": "#f28e2b",
-        "Hyphenated compound": "#59a14f", "Underscore compound": "#e15759",
+        "Single word": "#4e79a7",
+        "Multiword phrase": "#f28e2b",
+        "Hyphenated compound": "#59a14f",
+        "Underscore compound": "#e15759",
         "Contains digits": "#b07aa1",
     }
     pie_colors = [formation_palette.get(lab, "#bab0ac") for lab in pattern_labels]
-    wedges, texts, autotexts = ax1.pie(
-        pattern_sizes, colors=pie_colors,
+    wedges, _texts, autotexts = ax1.pie(
+        pattern_sizes,
+        colors=pie_colors,
         autopct=lambda pct: f"{pct:.1f}%" if pct >= 3 else "",
-        startangle=90, textprops={"fontsize": MIN_FONT},
+        startangle=90,
+        textprops={"fontsize": MIN_FONT},
     )
     for at in autotexts:
         at.set_fontweight("bold")
     ax1.legend(
-        wedges, [f"{label} ({count})" for label, count in zip(pattern_labels, pattern_sizes)],
-        loc="upper center", bbox_to_anchor=(0.5, -0.03),
-        fontsize=MIN_FONT, frameon=False,
+        wedges,
+        [f"{label} ({count})" for label, count in zip(pattern_labels, pattern_sizes)],
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.03),
+        fontsize=MIN_FONT,
+        frameon=False,
     )
-    ax1.set_title("Term Formation Patterns", fontsize=MIN_FONT + 2,
-                  fontweight="bold", pad=14)
+    ax1.set_title("Term Formation Patterns", fontsize=MIN_FONT + 2, fontweight="bold", pad=14)
 
     # Bar chart
     scales = list(scale_counts.keys())
     counts = list(scale_counts.values())
     bar_colors = plt.cm.viridis(np.linspace(0.2, 0.8, len(scales)))
-    bars = ax2.bar(range(len(scales)), counts, color=bar_colors,
-                   edgecolor="white", linewidth=0.5)
+    bars = ax2.bar(range(len(scales)), counts, color=bar_colors, edgecolor="white", linewidth=0.5)
     for bar, c in zip(bars, counts):
-        ax2.annotate(str(c),
-                     xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
-                     xytext=(0, 4), textcoords="offset points",
-                     ha="center", va="bottom", fontsize=MIN_FONT,
-                     fontweight="bold")
+        ax2.annotate(
+            str(c),
+            xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
+            xytext=(0, 4),
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+            fontsize=MIN_FONT,
+            fontweight="bold",
+        )
     ax2.set_xticks(range(len(scales)))
     ax2.set_xticklabels(
-        scales, fontsize=MIN_FONT, rotation=30, ha="right",
+        scales,
+        fontsize=MIN_FONT,
+        rotation=30,
+        ha="right",
         rotation_mode="anchor",
     )
     ax2.set_ylabel("Number of Terms", fontsize=MIN_FONT)
-    ax2.set_title("Scale-Level Distribution", fontsize=MIN_FONT + 2,
-                  fontweight="bold", pad=14)
+    ax2.set_title("Scale-Level Distribution", fontsize=MIN_FONT + 2, fontweight="bold", pad=14)
     ax2.set_ylim(0, max(max(counts), 1) * 1.15)
     ax2.spines["top"].set_visible(False)
     ax2.spines["right"].set_visible(False)
 
-    fig.suptitle("Unit of Individuality — Terminology Patterns",
-                 fontsize=MIN_FONT + 4, fontweight="bold", y=1.02)
+    fig.suptitle("Unit of Individuality — Terminology Patterns", fontsize=MIN_FONT + 4, fontweight="bold", y=1.02)
     plt.tight_layout()
     fig.savefig(filepath, dpi=300, bbox_inches="tight")
     plt.close(fig)
@@ -731,7 +728,7 @@ def generate_unit_of_individuality_patterns(results: Dict[str, Any], figure_dir:
 
 
 @publication_style
-def generate_power_labor_term_frequencies(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_power_labor_term_frequencies(results: dict[str, Any], figure_dir: str) -> str:
     """Generate power_and_labor_term_frequencies.png.
 
     Args:
@@ -748,12 +745,8 @@ def generate_power_labor_term_frequencies(results: Dict[str, Any], figure_dir: s
     domain = "power_and_labor"
     filepath = Path(figure_dir) / "power_and_labor_term_frequencies.png"
 
-    domain_terms = {
-        name: t for name, t in terms.items() if domain in t.domains
-    }
-    sorted_pairs = sorted(
-        domain_terms.items(), key=lambda x: x[1].frequency, reverse=True
-    )[:15]
+    domain_terms = {name: t for name, t in terms.items() if domain in t.domains}
+    sorted_pairs = sorted(domain_terms.items(), key=lambda x: x[1].frequency, reverse=True)[:15]
 
     if not sorted_pairs:
         logger.warning("  ⚠️  No terms found for power_and_labor domain")
@@ -764,22 +757,25 @@ def generate_power_labor_term_frequencies(results: Dict[str, Any], figure_dir: s
 
     fig, ax = plt.subplots(figsize=(12, 7))
     colors = plt.cm.YlOrRd(np.linspace(0.3, 0.9, len(names)))
-    bars = ax.bar(range(len(names)), freqs, color=colors, edgecolor="white",
-                  linewidth=0.5)
+    bars = ax.bar(range(len(names)), freqs, color=colors, edgecolor="white", linewidth=0.5)
 
     for bar, freq in zip(bars, freqs):
-        ax.annotate(str(freq),
-                    xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
-                    xytext=(0, 4), textcoords="offset points",
-                    ha="center", va="bottom", fontsize=MIN_FONT,
-                    fontweight="bold")
+        ax.annotate(
+            str(freq),
+            xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
+            xytext=(0, 4),
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+            fontsize=MIN_FONT,
+            fontweight="bold",
+        )
 
     ax.set_xticks(range(len(names)))
     ax.set_xticklabels(names, rotation=45, ha="right", fontsize=MIN_FONT)
     ax.set_ylabel("Frequency in Corpus", fontsize=MIN_FONT)
     ax.set_ylim(0, max(freqs) * 1.15)
-    ax.set_title("Term Frequency Distribution — Power & Labor",
-                 fontsize=MIN_FONT + 2, fontweight="bold", pad=12)
+    ax.set_title("Term Frequency Distribution — Power & Labor", fontsize=MIN_FONT + 2, fontweight="bold", pad=12)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
@@ -795,7 +791,7 @@ def generate_power_labor_term_frequencies(results: Dict[str, Any], figure_dir: s
 
 
 @publication_style
-def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_power_labor_ambiguities(results: dict[str, Any], figure_dir: str) -> str:
     """Generate power_and_labor_ambiguities.png.
 
     Two-panel figure:
@@ -816,9 +812,7 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
     domain = "power_and_labor"
     filepath = Path(figure_dir) / "power_and_labor_ambiguities.png"
 
-    domain_terms = {
-        name: t for name, t in terms.items() if domain in t.domains
-    }
+    domain_terms = {name: t for name, t in terms.items() if domain in t.domains}
 
     amb_data = sorted(
         [
@@ -826,7 +820,8 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
             for name, t in domain_terms.items()
             if t.semantic_entropy > 0.0
         ],
-        key=lambda x: x[1], reverse=True,
+        key=lambda x: x[1],
+        reverse=True,
     )[:15]
 
     if not amb_data:
@@ -838,25 +833,26 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
     freqs = [a[2] for a in amb_data]
     n_ctx = [a[3] for a in amb_data]
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8),
-                                    gridspec_kw={"width_ratios": [1.2, 1]})
-    fig.suptitle("Semantic Entropy — Power & Labor Domain",
-                 fontsize=18, fontweight="bold", y=1.01)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8), gridspec_kw={"width_ratios": [1.2, 1]})
+    fig.suptitle("Semantic Entropy — Power & Labor Domain", fontsize=18, fontweight="bold", y=1.01)
 
     # ── Left panel: entropy bar chart ────────────────────────────────
     max_ent = max(entropies)
     min_ent = min(entropies)
-    norm_vals = [(e - min_ent) / (max_ent - min_ent) if max_ent > min_ent else 0.5
-                 for e in entropies]
+    norm_vals = [(e - min_ent) / (max_ent - min_ent) if max_ent > min_ent else 0.5 for e in entropies]
     colors = plt.cm.Purples([0.3 + 0.5 * v for v in norm_vals])
-    bars = ax1.barh(range(len(names)), entropies, color=colors,
-                    edgecolor="white", linewidth=0.5)
+    bars = ax1.barh(range(len(names)), entropies, color=colors, edgecolor="white", linewidth=0.5)
 
     for bar, ent, nc in zip(bars, entropies, n_ctx):
-        ax1.text(bar.get_width() + max_ent * 0.02,
-                 bar.get_y() + bar.get_height() / 2,
-                 f"{ent:.2f}  (n={nc})", ha="left", va="center",
-                 fontsize=MIN_FONT, fontweight="bold")
+        ax1.text(
+            bar.get_width() + max_ent * 0.02,
+            bar.get_y() + bar.get_height() / 2,
+            f"{ent:.2f}  (n={nc})",
+            ha="left",
+            va="center",
+            fontsize=MIN_FONT,
+            fontweight="bold",
+        )
 
     ax1.set_yticks(range(len(names)))
     ax1.set_yticklabels(names, fontsize=MIN_FONT)
@@ -866,22 +862,30 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
     ax1.set_xlim(0, max_ent + x_pad)
     ax1.spines["top"].set_visible(False)
     ax1.spines["right"].set_visible(False)
-    ax1.tick_params(axis='x', labelsize=MIN_FONT)
+    ax1.tick_params(axis="x", labelsize=MIN_FONT)
     ax1.invert_yaxis()
 
     med_ent = float(np.median(entropies))
     ax1.axvline(med_ent, color="#888", linestyle="--", linewidth=1, alpha=0.6)
     # Median label sits in headroom above the first bar, clear of all bars.
     ax1.set_ylim(len(names) - 0.5, -1.4)
-    ax1.text(med_ent, -0.75, f"median {med_ent:.2f}",
-             fontsize=MIN_FONT, color="#555", ha="center", va="center")
+    ax1.text(med_ent, -0.75, f"median {med_ent:.2f}", fontsize=MIN_FONT, color="#555", ha="center", va="center")
 
     # ── Right panel: frequency vs entropy scatter ────────────────────
     sc_sizes = [max(40, c * 8) for c in n_ctx]
     ax2.margins(x=0.15)
-    scatter = ax2.scatter(freqs, entropies, s=sc_sizes, c=entropies,
-                          cmap="Purples", edgecolors="#333", linewidths=0.5,
-                          alpha=0.85, vmin=0, vmax=max_ent)
+    scatter = ax2.scatter(
+        freqs,
+        entropies,
+        s=sc_sizes,
+        c=entropies,
+        cmap="Purples",
+        edgecolors="#333",
+        linewidths=0.5,
+        alpha=0.85,
+        vmin=0,
+        vmax=max_ent,
+    )
     ax2.set_xlabel("Corpus Frequency", fontsize=MIN_FONT)
     ax2.set_ylabel("Semantic Entropy H(t) (bits)", fontsize=MIN_FONT)
     ax2.set_title("Frequency vs Entropy", fontsize=MIN_FONT + 2, fontweight="bold")
@@ -899,10 +903,10 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
     place_labels(
         ax2,
         list(zip(names, zip(freqs, entropies))),
-        avoid_points=[tuple(pt) for pt in ax2.transData.transform(
-            np.column_stack([freqs, entropies]))],
+        avoid_points=[tuple(pt) for pt in ax2.transData.transform(np.column_stack([freqs, entropies]))],
         drop_on_fail=True,
-        fontsize=MIN_FONT, color="#333",
+        fontsize=MIN_FONT,
+        color="#333",
     )
 
     fig.savefig(filepath, dpi=300, bbox_inches="tight")
@@ -914,7 +918,8 @@ def generate_power_labor_ambiguities(results: Dict[str, Any], figure_dir: str) -
     logger.info(f"  ✅ power_and_labor_ambiguities.png ({filepath.stat().st_size / 1024:.1f} KB)")
     return str(filepath)
 
-def generate_domain_overview_grid(results: Dict[str, Any], figure_dir: str) -> str:
+
+def generate_domain_overview_grid(results: dict[str, Any], figure_dir: str) -> str:
     """Generate domain_overview_grid.png: 6-panel top-terms grid (one per domain).
 
     Replaces the 12 scattered per-domain frequency and ambiguity single-panel
@@ -947,7 +952,7 @@ def generate_domain_overview_grid(results: Dict[str, Any], figure_dir: str) -> s
     return str(filepath)
 
 
-def generate_domain_patterns_grid(results: Dict[str, Any], figure_dir: str) -> str:
+def generate_domain_patterns_grid(results: dict[str, Any], figure_dir: str) -> str:
     """Generate domain_patterns_grid.png: 6-panel POS-composition donut grid.
 
     Replaces the 6 scattered per-domain single-bar patterns figures with an
@@ -978,7 +983,7 @@ def generate_domain_patterns_grid(results: Dict[str, Any], figure_dir: str) -> s
     return str(filepath)
 
 
-def save_analysis_data(results: Dict[str, Any], data_dir: str) -> List[str]:
+def save_analysis_data(results: dict[str, Any], data_dir: str) -> list[str]:
     """Save analysis results as data files.
 
     Args:
@@ -1000,28 +1005,28 @@ def save_analysis_data(results: Dict[str, Any], data_dir: str) -> List[str]:
     framing = results.get("framing")
     if framing is None:
         from pipeline.statistics_pipeline import _framing_section
+
         framing, _ = _framing_section(list(results["terms"].values()), results["texts"])
 
     domain_stats = {}
     for domain_name, data in results["domain_data"].items():
         # Compute anthropomorphic proportion for this domain
         domain_term_set = [
-            t_text for t_text, t_obj in results["terms"].items()
-            if domain_name in getattr(t_obj, "domains", [])
+            t_text for t_text, t_obj in results["terms"].items() if domain_name in getattr(t_obj, "domains", [])
         ]
         anthro_proportion = framing.get(domain_name, {}).get("proportion", 0.0)
 
         # Count high-entropy terms (H > 2.0 bits) for this domain
         n_high_entropy = sum(
-            1 for t in domain_term_set
-            if t in results["terms"]
-            and getattr(results["terms"][t], "semantic_entropy", 0.0) > 2.0
+            1
+            for t in domain_term_set
+            if t in results["terms"] and getattr(results["terms"][t], "semantic_entropy", 0.0) > 2.0
         )
-        n_domain = sum(getattr(results["terms"][t], "entropy_status", None) == "ok"
-                       for t in domain_term_set)
+        n_domain = sum(getattr(results["terms"][t], "entropy_status", None) == "ok" for t in domain_term_set)
         high_entropy_pct = round(100 * n_high_entropy / n_domain, 1) if n_domain else 0.0
 
         from pipeline.statistics_pipeline import _domain_cace_scores
+
         cace_scores = _domain_cace_scores([results["terms"][name] for name in domain_term_set])
         domain_stats[domain_name] = {
             "cace_mean": float(np.mean([score.aggregate for score in cace_scores])) if cace_scores else None,
@@ -1062,8 +1067,10 @@ def save_analysis_data(results: Dict[str, Any], data_dir: str) -> List[str]:
     import networkx as _nx
 
     _G = _nx.Graph()
-    selected = sorted((name for name, term in results["terms"].items() if term.domains),
-                      key=lambda name: (-results["terms"][name].frequency, name))[:100]
+    selected = sorted(
+        (name for name, term in results["terms"].items() if term.domains),
+        key=lambda name: (-results["terms"][name].frequency, name),
+    )[:100]
     _G.add_nodes_from(selected)
     for (_t1, _t2), _w in results["relationships"].items():
         _G.add_edge(_t1, _t2, weight=float(_w))
@@ -1110,7 +1117,8 @@ def save_analysis_data(results: Dict[str, Any], data_dir: str) -> List[str]:
 #  Figure Registry
 # ═══════════════════════════════════════════════════════════════════════
 
-def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
+
+def _register_figures_with_manager(figures: list[str], figure_dir: str) -> None:
     """Register generated figures with FigureManager for cross-referencing."""
     try:
         from visualization.figure_manager import FigureManager
@@ -1138,24 +1146,20 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
             "terminology_network.png": {
                 "label": "fig:terminology_network",
                 "caption": (
-                    (
-                    'Observed document co-occurrence among the hundred most frequent domain-assigned '
-                    'terms. Node area uses a square-root frequency scale; line widths map shared-document '
-                    'counts to a bounded range. A companion ranking shows the ten strongest pairs. '
-                    'Up to twenty frequent terms are considered for '
-                    'collision-filtered labels.'
-                    )
+                    "Observed document co-occurrence among the hundred most frequent domain-assigned "
+                    "terms. Node area uses a square-root frequency scale; line widths map shared-document "
+                    "counts to a bounded range. A companion ranking shows the ten strongest pairs. "
+                    "Up to twenty frequent terms are considered for "
+                    "collision-filtered labels."
                 ),
                 "section": "experimental_results",
             },
             "domain_comparison.png": {
                 "label": "fig:domain_comparison",
                 "caption": (
-                    (
-                    'Domain term counts, heuristic extraction confidence, frequency, mean valid '
-                    'sentence-context entropy, bridging labels, and bounded-term heuristic CACE means. '
-                    'These quantities are descriptive and do not validate causal framing effects.'
-                    )
+                    "Domain term counts, heuristic extraction confidence, frequency, mean valid "
+                    "sentence-context entropy, bridging labels, and bounded-term heuristic CACE means. "
+                    "These quantities are descriptive and do not validate causal framing effects."
                 ),
                 "section": "experimental_results",
             },
@@ -1179,22 +1183,18 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
             "anthropomorphic_framing.png": {
                 "label": "fig:anthropomorphic",
                 "caption": (
-                    (
-                    'Distinct extracted terms with at least one anthropomorphic marker-bearing occurrence '
-                    'context, grouped by canonical domain, with example terms ranked by matched-context '
-                    'proportion. Counts are not curated vocabulary sizes or validated author bias.'
-                    )
+                    "Distinct extracted terms with at least one anthropomorphic marker-bearing occurrence "
+                    "context, grouped by canonical domain, with example terms ranked by matched-context "
+                    "proportion. Counts are not curated vocabulary sizes or validated author bias."
                 ),
                 "section": "discussion",
             },
             "concept_hierarchy.png": {
                 "label": "fig:concept_hierarchy",
                 "caption": (
-                    (
-                    'Direct-link centrality of predefined concept categories and centrality against '
-                    'associated-term counts. The graph describes vocabulary overlap, not biological '
-                    'control or hierarchy.'
-                    )
+                    "Direct-link centrality of predefined concept categories and centrality against "
+                    "associated-term counts. The graph describes vocabulary overlap, not biological "
+                    "control or hierarchy."
                 ),
                 "section": "discussion",
             },
@@ -1298,34 +1298,28 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
             "statistical_analysis.png": {
                 "label": "fig:statistical_analysis",
                 "caption": (
-                    (
-                    'Exploratory entropy descriptives over source-identified abstract records, nominal '
-                    'intervals where estimable, standardized differences and BH threshold flags, and an '
-                    'omnibus ANOVA summary. Shared terms and documents limit independence and population '
-                    'inference.'
-                    )
+                    "Exploratory entropy descriptives over source-identified abstract records, nominal "
+                    "intervals where estimable, standardized differences and BH threshold flags, and an "
+                    "omnibus ANOVA summary. Shared terms and documents limit independence and population "
+                    "inference."
                 ),
                 "section": "experimental_results",
             },
             "fulltext_analysis.png": {
                 "label": "fig:fulltext_analysis",
                 "caption": (
-                    (
-                    'Exploratory entropy descriptives and numerical comparisons over the stored PMC '
-                    'full-text corpus. The same definitions apply as for abstracts; different extraction '
-                    'thresholds and source composition limit cross-layer interpretation.'
-                    )
+                    "Exploratory entropy descriptives and numerical comparisons over the stored PMC "
+                    "full-text corpus. The same definitions apply as for abstracts; different extraction "
+                    "thresholds and source composition limit cross-layer interpretation."
                 ),
                 "section": "supplemental_results",
             },
             "layer_comparison.png": {
                 "label": "fig:layer_comparison",
                 "caption": (
-                    (
-                    'Mean successfully computed sentence-context entropy by domain in the abstract and '
-                    'full-text layers. Term counts annotate valid estimates. Differences are descriptive '
-                    'rather than a matched robustness or causal test.'
-                    )
+                    "Mean successfully computed sentence-context entropy by domain in the abstract and "
+                    "full-text layers. Term counts annotate valid estimates. Differences are descriptive "
+                    "rather than a matched robustness or causal test."
                 ),
                 "section": "supplemental_results",
             },
@@ -1357,17 +1351,20 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
             },
         }
 
-
-        figure_metadata.update({
-            "bhl_term_usage.png": {
-                "label": "fig:bhl_term_usage", "section": "supplemental_analysis",
-                "caption": "Literal term frequencies per 10,000 OCR tokens across the complete BHL historical source layer; era differences are descriptive, with no causal or representativeness inference.",
-            },
-            "arxiv_analysis.png": {
-                "label": "fig:arxiv_analysis", "section": "supplemental_results",
-                "caption": "Exploratory entropy comparisons over all stored arXiv preprint records; overlapping domain groups and shared source documents limit inferential interpretation.",
-            },
-        })
+        figure_metadata.update(
+            {
+                "bhl_term_usage.png": {
+                    "label": "fig:bhl_term_usage",
+                    "section": "supplemental_analysis",
+                    "caption": "Literal term frequencies per 10,000 OCR tokens across the complete BHL historical source layer; era differences are descriptive, with no causal or representativeness inference.",
+                },
+                "arxiv_analysis.png": {
+                    "label": "fig:arxiv_analysis",
+                    "section": "supplemental_results",
+                    "caption": "Exploratory entropy comparisons over all stored arXiv preprint records; overlapping domain groups and shared source documents limit inferential interpretation.",
+                },
+            }
+        )
         # Dynamically register domain figures to ensure full coverage
         valid_domains = [
             "unit_of_individuality",
@@ -1377,21 +1374,21 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
             "kin_and_relatedness",
             "economics",
         ]
-        
+
         for domain in valid_domains:
             # Normalize label keys to match manuscript conventions
             # e.g., unit_of_individuality -> unit_individuality
             # e.g., power_and_labor -> power_labor
             label_base = domain.replace("_and_", "_").replace("unit_of_", "unit_")
             d_title = domain_display_name(domain)
-            
+
             # Register all 3 types if not already manually defined
             display_map = {
                 "patterns": (f"fig:{label_base}_patterns", f"{d_title} Term Patterns"),
                 "term_frequencies": (f"fig:{label_base}_frequencies", f"{d_title} Term Frequencies"),
                 "ambiguities": (f"fig:{label_base}_ambiguities", f"{d_title} Ambiguity Analysis"),
             }
-            
+
             for type_suffix, (label, caption) in display_map.items():
                 filename = f"{domain}_{type_suffix}.png"
                 if filename not in figure_metadata:
@@ -1432,9 +1429,8 @@ def _register_figures_with_manager(figures: List[str], figure_dir: str) -> None:
 #  Full-Text Stage Helpers
 # ═══════════════════════════════════════════════════════════════════════
 
-def _fulltext_corpus_fingerprint(
-    fulltexts: List[Dict[str, Any]], fulltexts_dir: str
-) -> Dict[str, Any]:
+
+def _fulltext_corpus_fingerprint(fulltexts: list[dict[str, Any]], fulltexts_dir: str) -> dict[str, Any]:
     """Fingerprint the full-text corpus for artifact freshness.
 
     Binds ordered body contents, provenance, implementation, locked
@@ -1457,7 +1453,7 @@ def _fulltext_corpus_fingerprint(
             provenance_sha = hashlib.sha256(f.read()).hexdigest()
     else:
         provenance_sha = "absent"
-    from core.provenance import records_sha256, analysis_signature
+    from core.provenance import analysis_signature, records_sha256
 
     return {
         "records_sha256": records_sha256(fulltexts),
@@ -1468,7 +1464,7 @@ def _fulltext_corpus_fingerprint(
     }
 
 
-def max_mtime(directory: str, pattern: str) -> Optional[float]:
+def max_mtime(directory: str, pattern: str) -> float | None:
     """Newest file mtime in ``directory`` among names matching ``pattern``.
 
     Args:
@@ -1482,18 +1478,14 @@ def max_mtime(directory: str, pattern: str) -> Optional[float]:
     import fnmatch
 
     try:
-        candidates = [
-            name for name in os.listdir(directory) if fnmatch.fnmatch(name, pattern)
-        ]
+        candidates = [name for name in os.listdir(directory) if fnmatch.fnmatch(name, pattern)]
     except OSError:
         return None
-    mtimes = [
-        os.path.getmtime(os.path.join(directory, name)) for name in candidates
-    ]
+    mtimes = [os.path.getmtime(os.path.join(directory, name)) for name in candidates]
     return max(mtimes) if mtimes else None
 
 
-def _bhl_artifact_summary(project_root: str) -> Optional[Dict[str, Any]]:
+def _bhl_artifact_summary(project_root: str) -> dict[str, Any] | None:
     """Load the BHL era-stratified artifact when present.
 
     Args:
@@ -1522,8 +1514,8 @@ def _bhl_artifact_summary(project_root: str) -> Optional[Dict[str, Any]]:
 def _ensure_fulltext_artifact(
     data_dir: str,
     fulltexts_dir: str,
-    builder: Optional["Callable[..., Dict[str, Any]]"] = None,
-) -> Optional[Dict[str, Any]]:
+    builder: Callable[..., dict[str, Any]] | None = None,
+) -> dict[str, Any] | None:
     """Load or rebuild the full-text analysis artifact under the
     corpus fingerprint freshness guard.
 
@@ -1548,15 +1540,14 @@ def _ensure_fulltext_artifact(
         The artifact dict (fresh or newly built), or ``None`` when the
         corpus shards are missing.
     """
-    shards = sorted(
-        p
-        for p in os.listdir(fulltexts_dir)
-        if p.startswith("fulltexts_") and p.endswith(".json")
-    ) if os.path.isdir(fulltexts_dir) else []
+    shards = (
+        sorted(p for p in os.listdir(fulltexts_dir) if p.startswith("fulltexts_") and p.endswith(".json"))
+        if os.path.isdir(fulltexts_dir)
+        else []
+    )
     if not shards:
         logger.warning(
-            "⚠️  %s holds no fulltexts_*.json shards — full-text layer "
-            "stage skipped (run the full-text harvest first)",
+            "⚠️  %s holds no fulltexts_*.json shards — full-text layer stage skipped (run the full-text harvest first)",
             fulltexts_dir,
         )
         return None
@@ -1574,19 +1565,16 @@ def _ensure_fulltext_artifact(
     limit = limit if limit is not None and limit < len(corpus) else None
     fingerprint["limit"] = limit
     artifact_path = os.path.join(data_dir, "fulltext_analysis.json")
-    existing: Optional[Dict[str, Any]] = None
+    existing: dict[str, Any] | None = None
     if os.path.isfile(artifact_path):
         try:
             with open(artifact_path) as f:
                 existing = json.load(f)
         except (OSError, ValueError) as exc:
-            logger.warning(
-                "⚠️  Unreadable existing artifact %s: %s", artifact_path, exc
-            )
+            logger.warning("⚠️  Unreadable existing artifact %s: %s", artifact_path, exc)
     if existing and existing.get("corpus_fingerprint") == fingerprint:
         logger.info(
-            "  ✅ fulltext_analysis.json is fresh for corpus fingerprint "
-            "%s — skipping regeneration (%d documents)",
+            "  ✅ fulltext_analysis.json is fresh for corpus fingerprint %s — skipping regeneration (%d documents)",
             fingerprint,
             existing.get("n_documents", 0),
         )
@@ -1613,8 +1601,7 @@ def _ensure_fulltext_artifact(
     artifact = builder(fulltexts)
     artifact["stored_records"] = len(corpus) + len(notices)
     artifact["excluded_editorial_notices"] = [
-        {"pmcid": record.get("pmcid"), "title": record.get("title")}
-        for record in notices
+        {"pmcid": record.get("pmcid"), "title": record.get("title")} for record in notices
     ]
     artifact["corpus_fingerprint"] = bounded_fingerprint
     os.makedirs(data_dir, exist_ok=True)
@@ -1628,9 +1615,7 @@ def _ensure_fulltext_artifact(
     return artifact
 
 
-def _abstract_corpus_fingerprint(
-    abstracts: List[str], abstracts_path: str
-) -> Dict[str, Any]:
+def _abstract_corpus_fingerprint(abstracts: list[str], abstracts_path: str) -> dict[str, Any]:
     """Fingerprint the abstract corpus for the statistics-stage guard.
 
     Same convention as :func:`_fulltext_corpus_fingerprint`: record
@@ -1649,10 +1634,14 @@ def _abstract_corpus_fingerprint(
             abstracts_sha = hashlib.sha256(f.read()).hexdigest()
     else:
         abstracts_sha = "absent"
-    from core.provenance import records_sha256, analysis_signature
-    return {"record_count": len(abstracts), "abstracts_sha256": abstracts_sha,
-            "records_sha256": records_sha256(abstracts),
-            "analysis_signature": analysis_signature()}
+    from core.provenance import analysis_signature, records_sha256
+
+    return {
+        "record_count": len(abstracts),
+        "abstracts_sha256": abstracts_sha,
+        "records_sha256": records_sha256(abstracts),
+        "analysis_signature": analysis_signature(),
+    }
 
 
 def _abstracts_corpus_path() -> str:
@@ -1668,11 +1657,11 @@ def _abstracts_corpus_path() -> str:
 
 def _ensure_statistical_artifact(
     data_dir: str,
-    terms: "Dict[str, Any]",
-    abstracts: List[str],
-    builder: Optional["Callable[..., Dict[str, Any]]"] = None,
-    corpus_path: Optional[str] = None,
-) -> Dict[str, Any]:
+    terms: dict[str, Any],
+    abstracts: list[str],
+    builder: Callable[..., dict[str, Any]] | None = None,
+    corpus_path: str | None = None,
+) -> dict[str, Any]:
     """Load or rebuild the abstract-layer statistical artifact under a
     corpus-fingerprint freshness guard.
 
@@ -1701,19 +1690,16 @@ def _ensure_statistical_artifact(
     fingerprint = _abstract_corpus_fingerprint(
         abstracts, corpus_path if corpus_path is not None else _abstracts_corpus_path()
     )
-    existing: Optional[Dict[str, Any]] = None
+    existing: dict[str, Any] | None = None
     if os.path.isfile(artifact_path):
         try:
             with open(artifact_path) as f:
                 existing = json.load(f)
         except (OSError, ValueError) as exc:
-            logger.warning(
-                "⚠️  Unreadable existing artifact %s: %s", artifact_path, exc
-            )
+            logger.warning("⚠️  Unreadable existing artifact %s: %s", artifact_path, exc)
     if existing and existing.get("corpus_fingerprint") == fingerprint:
         logger.info(
-            "  ✅ statistical_analysis.json is fresh for corpus "
-            "fingerprint %s — skipping regeneration (%d abstracts)",
+            "  ✅ statistical_analysis.json is fresh for corpus fingerprint %s — skipping regeneration (%d abstracts)",
             fingerprint["abstracts_sha256"][:12],
             fingerprint["record_count"],
         )
@@ -1755,21 +1741,19 @@ def _merge_discourse_sections(data_dir: str, fulltexts_dir: str) -> None:
     """
     from pipeline.statistics_pipeline import add_discourse_analysis
 
-    def _merge(path: str, texts: List[str]) -> None:
+    def _merge(path: str, texts: list[str]) -> None:
         with open(path) as f:
             artifact = json.load(f)
         if artifact.get("discourse"):
             logger.info(
-                "  ✅ %s already carries a discourse section — skipping "
-                "recompute",
+                "  ✅ %s already carries a discourse section — skipping recompute",
                 os.path.basename(path),
             )
             return
         merged = add_discourse_analysis(artifact, texts)
         if not merged.get("discourse"):
             logger.warning(
-                "⚠️  %s: no text eligible for discourse analysis "
-                "(all below the minimum length) — section omitted",
+                "⚠️  %s: no text eligible for discourse analysis (all below the minimum length) — section omitted",
                 os.path.basename(path),
             )
             return
@@ -1777,8 +1761,7 @@ def _merge_discourse_sections(data_dir: str, fulltexts_dir: str) -> None:
             json.dump(merged, f, indent=2, default=str)
         section = merged["discourse"]
         logger.info(
-            "  ✅ %s: discourse section merged (%d/%d texts analyzed, "
-            "sample_fraction %s)",
+            "  ✅ %s: discourse section merged (%d/%d texts analyzed, sample_fraction %s)",
             os.path.basename(path),
             section["n_texts_analyzed"],
             section["n_texts"],
@@ -1791,17 +1774,13 @@ def _merge_discourse_sections(data_dir: str, fulltexts_dir: str) -> None:
         _merge(stats_path, load_real_corpus(str(Path(data_dir).parents[1]), require_provenance=True))
     else:
         logger.warning(
-            "⚠️  statistical_analysis.json missing — abstract discourse "
-            "section skipped (statistics stage failed?)"
+            "⚠️  statistical_analysis.json missing — abstract discourse section skipped (statistics stage failed?)"
         )
 
     # ── Full-text layer ───────────────────────────────────────────────
     fulltext_path = os.path.join(data_dir, "fulltext_analysis.json")
     if not os.path.isfile(fulltext_path):
-        logger.warning(
-            "⚠️  fulltext_analysis.json missing — full-text discourse "
-            "section skipped"
-        )
+        logger.warning("⚠️  fulltext_analysis.json missing — full-text discourse section skipped")
         return
     try:
         from data.pmc_fulltext import exclude_editorial_notices, load_fulltexts
@@ -1816,27 +1795,45 @@ def _merge_discourse_sections(data_dir: str, fulltexts_dir: str) -> None:
 # ═══════════════════════════════════════════════════════════════════════
 #  Main Entry Point
 # ═══════════════════════════════════════════════════════════════════════
-def ensure_auxiliary_artifacts(root: Path) -> Dict[str, Dict[str, Any]]:
+def ensure_auxiliary_artifacts(root: Path) -> dict[str, dict[str, Any]]:
     """Rebuild BHL/arXiv artifacts when records or implementation change."""
-    from core.provenance import records_sha256, analysis_signature
+    from core.provenance import analysis_signature, records_sha256
+
     output = {}
     arxiv_path = root / "data" / "corpus" / "arxiv_records.json"
     bhl_dir = root / "data" / "bhl"
     sources = []
     if arxiv_path.exists():
-        from pipeline.arxiv_analysis import load_arxiv_records, build_arxiv_analysis
-        sources.append(("arxiv_analysis.png", arxiv_path.with_name("arxiv_analysis.json"),
-                        load_arxiv_records(arxiv_path), build_arxiv_analysis))
+        from pipeline.arxiv_analysis import build_arxiv_analysis, load_arxiv_records
+
+        sources.append(
+            (
+                "arxiv_analysis.png",
+                arxiv_path.with_name("arxiv_analysis.json"),
+                load_arxiv_records(arxiv_path),
+                build_arxiv_analysis,
+            )
+        )
     if list(bhl_dir.glob("bhl_shard_*.json")):
-        from pipeline.bhl_analysis import load_corpus_records_for_analysis, build_artifact
-        sources.append(("bhl_term_usage.png", bhl_dir / "era_term_usage.json",
-                        load_corpus_records_for_analysis(bhl_dir),
-                        lambda records: build_artifact(bhl_dir, records, root / "output" / ".checkpoints" / "bhl")))
+        from pipeline.bhl_analysis import build_artifact, load_corpus_records_for_analysis
+
+        sources.append(
+            (
+                "bhl_term_usage.png",
+                bhl_dir / "era_term_usage.json",
+                load_corpus_records_for_analysis(bhl_dir),
+                lambda records: build_artifact(bhl_dir, records, root / "output" / ".checkpoints" / "bhl"),
+            )
+        )
     for filename, destination, records, builder in sources:
-        expected = {"record_count": len(records), "records_sha256": records_sha256(records),
-                    "analysis_signature": analysis_signature()}
+        expected = {
+            "record_count": len(records),
+            "records_sha256": records_sha256(records),
+            "analysis_signature": analysis_signature(),
+        }
         if filename == "bhl_term_usage.png":
             from pipeline.bhl_analysis import stack_character_budget
+
             expected["stack_character_budget"] = stack_character_budget()
         existing = json.loads(destination.read_text()) if destination.exists() else {}
         if existing.get("corpus_fingerprint") != expected:
@@ -1849,7 +1846,7 @@ def ensure_auxiliary_artifacts(root: Path) -> Dict[str, Dict[str, Any]]:
     return output
 
 
-def generate_bhl_usage(artifact: Dict[str, Any], figure_dir: str) -> str:
+def generate_bhl_usage(artifact: dict[str, Any], figure_dir: str) -> str:
     """Plot complete-corpus literal historical rates without causal labels."""
     selected = ("queen", "worker", "caste", "colony", "superorganism", "kin")
     eras = artifact["eras"]
@@ -1869,7 +1866,7 @@ def generate_bhl_usage(artifact: Dict[str, Any], figure_dir: str) -> str:
     return str(path)
 
 
-def main(project_root: Optional[str] = None) -> None:
+def main(project_root: str | None = None) -> None:
     """Generate all research figures and data using the real analysis pipeline.
 
     Args:
@@ -1899,8 +1896,9 @@ def main(project_root: Optional[str] = None) -> None:
     logger.info("▶ Running analysis pipeline...")
     results = run_analysis_pipeline(abstracts)
     stored_count = len(load_real_corpus(project_root))
-    results["corpus_stats"].update(n_documents=len(abstracts), stored_documents=stored_count,
-                                  excluded_unreconciled=stored_count - len(abstracts))
+    results["corpus_stats"].update(
+        n_documents=len(abstracts), stored_documents=stored_count, excluded_unreconciled=stored_count - len(abstracts)
+    )
     logger.info("")
 
     # ── Generate figures ──────────────────────────────────────────────
@@ -1922,8 +1920,10 @@ def main(project_root: Optional[str] = None) -> None:
             )
 
         stats_artifact = _ensure_statistical_artifact(
-            data_dir, results["terms"], abstracts,
-            corpus_path=str(Path(project_root) / "data" / "corpus" / "abstracts.json")
+            data_dir,
+            results["terms"],
+            abstracts,
+            corpus_path=str(Path(project_root) / "data" / "corpus" / "abstracts.json"),
         )
         logger.info(
             f"  ✅ statistical_analysis.json: {len(stats_artifact['pairwise'])} "
@@ -1959,9 +1959,7 @@ def main(project_root: Optional[str] = None) -> None:
 
     if fulltext_artifact is not None:
         try:
-            fig_path = plot_statistical_analysis(
-                fulltext_artifact, figure_dir, filename="fulltext_analysis.png"
-            )
+            fig_path = plot_statistical_analysis(fulltext_artifact, figure_dir, filename="fulltext_analysis.png")
             figures.append(fig_path)
         except Exception as exc:
             raise RuntimeError(f"Full-text figure warning: {exc}") from exc
@@ -1977,20 +1975,15 @@ def main(project_root: Optional[str] = None) -> None:
                     plot_layer_comparison,
                 )
             stats_disk_path = os.path.join(data_dir, "statistical_analysis.json")
-            abstract_artifact: Optional[Dict[str, Any]] = None
+            abstract_artifact: dict[str, Any] | None = None
             if os.path.isfile(stats_disk_path):
                 with open(stats_disk_path) as f:
                     abstract_artifact = json.load(f)
             if abstract_artifact and fulltext_artifact:
-                fig_path = plot_layer_comparison(
-                    abstract_artifact, fulltext_artifact, figure_dir
-                )
+                fig_path = plot_layer_comparison(abstract_artifact, fulltext_artifact, figure_dir)
                 figures.append(fig_path)
             else:
-                logger.warning(
-                    "⚠️  layer_comparison.png skipped: abstract and/or "
-                    "full-text artifacts missing"
-                )
+                logger.warning("⚠️  layer_comparison.png skipped: abstract and/or full-text artifacts missing")
         except Exception as exc:
             raise RuntimeError(f"Layer-comparison stage warning: {exc}") from exc
 
@@ -2011,15 +2004,10 @@ def main(project_root: Optional[str] = None) -> None:
                     plot_discourse_comparison,
                 )
             if abstract_artifact and fulltext_artifact:
-                fig_path = plot_discourse_comparison(
-                    abstract_artifact, fulltext_artifact, figure_dir
-                )
+                fig_path = plot_discourse_comparison(abstract_artifact, fulltext_artifact, figure_dir)
                 figures.append(fig_path)
             else:
-                logger.warning(
-                    "⚠️  discourse_comparison.png skipped: abstract and/or "
-                    "full-text artifacts missing"
-                )
+                logger.warning("⚠️  discourse_comparison.png skipped: abstract and/or full-text artifacts missing")
         except Exception as exc:
             raise RuntimeError(f"Discourse-comparison stage warning: {exc}") from exc
     else:
@@ -2114,6 +2102,7 @@ def main(project_root: Optional[str] = None) -> None:
             build_variable_map,
             fill_manuscript,
         )
+
         logger.info("▶ Filling manuscript template variables...")
         variables = build_variable_map(
             output_data_dir=Path(project_root) / "output" / "data",
@@ -2124,14 +2113,19 @@ def main(project_root: Optional[str] = None) -> None:
         # build_pdf), so writing substituted text back into docs/manuscript
         # would destroy the {{...}} placeholders the editing rule requires.
         manuscript_path = Path(project_root) / "docs" / "manuscript"
-        unresolved = sorted({key for path in manuscript_path.glob("*.md")
-                             for key in re.findall(r"\{\{([A-Z0-9_]+)\}\}", path.read_text())
-                             if key not in variables
-                             and not key.startswith(RENDER_STAGE_PREFIXES)})
+        unresolved = sorted(
+            {
+                key
+                for path in manuscript_path.glob("*.md")
+                for key in re.findall(r"\{\{([A-Z0-9_]+)\}\}", path.read_text())
+                if key not in variables and not key.startswith(RENDER_STAGE_PREFIXES)
+            }
+        )
         if unresolved:
             raise ValueError(f"Unresolved manuscript variables: {unresolved}")
         results_fill = fill_manuscript(
-            variables, manuscript_dir=Path(project_root) / "docs" / "manuscript",
+            variables,
+            manuscript_dir=Path(project_root) / "docs" / "manuscript",
             dry_run=True,
         )
         total_subs = sum(results_fill.values())
@@ -2143,11 +2137,13 @@ def main(project_root: Optional[str] = None) -> None:
         raise RuntimeError(f"Manuscript variable fill warning: {exc}") from exc
 
     from core.provenance import validate_generated_artifacts
+
     validate_generated_artifacts(Path(project_root))
     logger.info("Local JSON, PNG and registry integrity validation passed")
 
     from core.manuscript_variables import RENDER_STAGE_FIGURE_DIR
     from core.provenance import write_analysis_manifest
+
     for path in (Path(project_root) / "docs" / "manuscript").glob("*.md"):
         for image in re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", path.read_text()):
             if RENDER_STAGE_FIGURE_DIR in image:

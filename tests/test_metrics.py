@@ -2,10 +2,18 @@
 
 import numpy as np
 import pytest
-from core.metrics import (CustomMetric, calculate_accuracy, calculate_all_metrics,
-                     calculate_convergence_metrics, calculate_effect_size,
-                     calculate_precision_recall_f1, calculate_psnr,
-                     calculate_snr, calculate_ssim)
+
+from core.metrics import (
+    CustomMetric,
+    calculate_accuracy,
+    calculate_all_metrics,
+    calculate_convergence_metrics,
+    calculate_effect_size,
+    calculate_precision_recall_f1,
+    calculate_psnr,
+    calculate_snr,
+    calculate_ssim,
+)
 
 
 class TestCalculateAccuracy:
@@ -306,9 +314,7 @@ class TestCalculateCoherence:
         values = np.array([-10.0, 10.0, -10.0, 10.0])
         coherence = calculate_coherence(values)
         assert coherence >= 0.0, "Coherence should never be negative"
-        assert coherence == pytest.approx(0.0, abs=1e-6), (
-            "Coherence should be approximately 0.0 when std > mean_abs"
-        )
+        assert coherence == pytest.approx(0.0, abs=1e-6), "Coherence should be approximately 0.0 when std > mean_abs"
 
     def test_all_identical_values_coherence(self):
         """All identical values should return coherence of 1.0."""
@@ -405,4 +411,3 @@ class TestConvergenceMetricsEdgeCases:
         metrics = calculate_convergence_metrics(values, target=0.0)
         assert metrics["iterations_to_convergence"] == len(values)
         assert metrics["is_converged"] is False
-

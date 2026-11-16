@@ -5,10 +5,20 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from visualization.plots import (plot_3d_surface, plot_bar, plot_comparison, plot_contour,
-                   plot_convergence, plot_heatmap, plot_line, plot_scatter,
-                   plot_term_frequency, plot_domain_distribution,
-                   plot_concept_network)
+
+from visualization.plots import (
+    plot_3d_surface,
+    plot_bar,
+    plot_comparison,
+    plot_concept_network,
+    plot_contour,
+    plot_convergence,
+    plot_domain_distribution,
+    plot_heatmap,
+    plot_line,
+    plot_scatter,
+    plot_term_frequency,
+)
 
 
 class TestPlotLine:
@@ -359,22 +369,28 @@ class TestPlotConceptNetwork:
     def test_concept_network_with_real_concept_map(self):
         """Test concept network with a populated ConceptMap (covers main body)."""
         from matplotlib.colors import to_rgba
+
         from analysis.conceptual_mapping import Concept, ConceptMap
         from visualization._style import DOMAIN_PALETTE
 
         cmap = ConceptMap()
         c1 = Concept(
-            name="colony", description="Colony concept",
-            terms={"colony", "hive"}, domains={"unit_of_individuality"},
+            name="colony",
+            description="Colony concept",
+            terms={"colony", "hive"},
+            domains={"unit_of_individuality"},
         )
         c2 = Concept(
-            name="worker", description="Worker concept",
+            name="worker",
+            description="Worker concept",
             terms={"worker", "laborer"},
             domains={"power_and_labor", "unit_of_individuality"},
         )
         c3 = Concept(
-            name="queen", description="Queen concept",
-            terms={"queen", "monarch"}, domains={"sex_and_reproduction"},
+            name="queen",
+            description="Queen concept",
+            terms={"queen", "monarch"},
+            domains={"sex_and_reproduction"},
         )
         cmap.add_concept(c1)
         cmap.add_concept(c2)
@@ -396,9 +412,9 @@ class TestPlotConceptNetwork:
         for face, name in zip(fills, node_order):
             expected_rgb = to_rgba(expected_primary[name])[:3]
             actual_rgb = tuple(float(c) for c in face[:3])
-            assert all(
-                abs(e - a) < 1e-6 for e, a in zip(expected_rgb, actual_rgb)
-            ), f"{name}: expected {expected_rgb}, got {actual_rgb}"
+            assert all(abs(e - a) < 1e-6 for e, a in zip(expected_rgb, actual_rgb)), (
+                f"{name}: expected {expected_rgb}, got {actual_rgb}"
+            )
         plt.close(ax.figure)
 
     def test_concept_network_custom_title(self):
@@ -406,8 +422,7 @@ class TestPlotConceptNetwork:
         from analysis.conceptual_mapping import Concept, ConceptMap
 
         cmap = ConceptMap()
-        c = Concept(name="test", description="Test", terms={"a"},
-                    domains={"economics"})
+        c = Concept(name="test", description="Test", terms={"a"}, domains={"economics"})
         cmap.add_concept(c)
 
         ax = plot_concept_network(cmap, title="Custom Network Title")
@@ -419,8 +434,7 @@ class TestPlotConceptNetwork:
         from analysis.conceptual_mapping import Concept, ConceptMap
 
         cmap = ConceptMap()
-        c = Concept(name="orphan", description="No domain", terms={"x"},
-                    domains=set())
+        c = Concept(name="orphan", description="No domain", terms={"x"}, domains=set())
         cmap.add_concept(c)
 
         ax = plot_concept_network(cmap)
@@ -435,14 +449,11 @@ class TestPlotConceptNetworkFallbacks:
         """Without networkx, a labelled placeholder axes is returned (no raise)."""
         import sys
 
-        from visualization.plots import MIN_FONT
         from analysis.conceptual_mapping import Concept, ConceptMap
+        from visualization.plots import MIN_FONT
 
         cmap = ConceptMap()
-        cmap.add_concept(
-            Concept(name="colony", description="c", terms={"colony"},
-                    domains={"economics"})
-        )
+        cmap.add_concept(Concept(name="colony", description="c", terms={"colony"}, domains={"economics"}))
 
         # None in sys.modules makes `import networkx` raise ImportError.
         monkeypatch.setitem(sys.modules, "networkx", None)
@@ -458,14 +469,11 @@ class TestPlotConceptNetworkFallbacks:
         unknown node keeps the neutral fallback colour."""
         from matplotlib.colors import to_rgba
 
-        from visualization._style import FALLBACK_COLOR, DOMAIN_PALETTE
         from analysis.conceptual_mapping import Concept, ConceptMap
+        from visualization._style import DOMAIN_PALETTE, FALLBACK_COLOR
 
         cmap = ConceptMap()
-        cmap.add_concept(
-            Concept(name="queen", description="q", terms={"queen"},
-                    domains={"sex_and_reproduction"})
-        )
+        cmap.add_concept(Concept(name="queen", description="q", terms={"queen"}, domains={"sex_and_reproduction"}))
         # "ghost" is never added as a concept, only referenced by an edge.
         cmap.add_relationship("queen", "ghost", 0.7)
 
@@ -489,13 +497,10 @@ class TestStandaloneModuleImport:
         import visualization.plots as pkg_plots
 
         source = Path(pkg_plots.__file__)
-        spec = importlib.util.spec_from_file_location(
-            "_plots_standalone_probe", source
-        )
+        spec = importlib.util.spec_from_file_location("_plots_standalone_probe", source)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
 
         assert hasattr(module, "plot_line")
         assert module.MIN_FONT >= 16
         plt.close("all")
-

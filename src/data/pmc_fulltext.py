@@ -33,19 +33,19 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from datetime import UTC, datetime
 from http.client import IncompleteRead
+from pathlib import Path
+from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 __all__ = [
-    "PMC_SEARCH_QUERY",
-    "PMCFulltextHarvester",
-    "SHARD_SIZE",
     "EDITORIAL_NOTICE_TITLE",
+    "PMC_SEARCH_QUERY",
+    "SHARD_SIZE",
+    "PMCFulltextHarvester",
     "dedupe_by_pmcid",
     "exclude_editorial_notices",
     "is_editorial_notice",
@@ -130,7 +130,7 @@ def shard_filename(index: int) -> str:
     return f"fulltexts_{index:05d}.json"
 
 
-def shard_paths(data_dir: Path) -> List[Path]:
+def shard_paths(data_dir: Path) -> list[Path]:
     """List shard files in a corpus directory in concatenation order.
 
     Args:
@@ -156,22 +156,18 @@ def _atomic_write_text(path: Path, text: str) -> None:
     tmp.replace(path)
 
 
-def write_shard(path: Path, records: List[Dict[str, Any]]) -> None:
+def write_shard(path: Path, records: list[dict[str, Any]]) -> None:
     """Write one shard file atomically.
 
     Args:
         path: Destination shard path.
         records: Corpus records for this shard (at most ``SHARD_SIZE``).
     """
-    corpus = [
-        {field: record.get(field) for field in CORPUS_FIELDS} for record in records
-    ]
-    _atomic_write_text(
-        path, json.dumps(corpus, ensure_ascii=False, indent=1) + "\n"
-    )
+    corpus = [{field: record.get(field) for field in CORPUS_FIELDS} for record in records]
+    _atomic_write_text(path, json.dumps(corpus, ensure_ascii=False, indent=1) + "\n")
 
 
-def read_shard(path: Path) -> List[Dict[str, Any]]:
+def read_shard(path: Path) -> list[dict[str, Any]]:
     """Read one shard file.
 
     Args:
@@ -183,7 +179,7 @@ def read_shard(path: Path) -> List[Dict[str, Any]]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_fulltexts(data_dir: Path) -> List[Dict[str, Any]]:
+def load_fulltexts(data_dir: Path) -> list[dict[str, Any]]:
     """Load the full-text corpus by concatenating shards in order.
 
     Frozen name: the pipeline layer loads the corpus through this
@@ -196,7 +192,7 @@ def load_fulltexts(data_dir: Path) -> List[Dict[str, Any]]:
     Returns:
         All corpus records, shard 1 first.
     """
-    records: List[Dict[str, Any]] = []
+    records: list[dict[str, Any]] = []
     for path in shard_paths(data_dir):
         records.extend(read_shard(path))
     return records
@@ -217,7 +213,7 @@ EDITORIAL_NOTICE_TITLE = re.compile(
 )
 
 
-def is_editorial_notice(record: Dict[str, Any]) -> bool:
+def is_editorial_notice(record: dict[str, Any]) -> bool:
     """Whether a corpus record is a correction/retraction notice or retracted item.
 
     Args:
@@ -231,8 +227,8 @@ def is_editorial_notice(record: Dict[str, Any]) -> bool:
 
 
 def exclude_editorial_notices(
-    records: List[Dict[str, Any]],
-) -> tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    records: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Split stored records into analyzed records and excluded notices.
 
     The stored shards are unchanged; the exclusion applies only to the
@@ -244,8 +240,8 @@ def exclude_editorial_notices(
     Returns:
         ``(kept, excluded)`` lists.
     """
-    kept: List[Dict[str, Any]] = []
-    excluded: List[Dict[str, Any]] = []
+    kept: list[dict[str, Any]] = []
+    excluded: list[dict[str, Any]] = []
     for record in records:
         (excluded if is_editorial_notice(record) else kept).append(record)
     return kept, excluded
@@ -279,7 +275,7 @@ def load_corpus_pmcids(data_dir: Path, provenance_path: Path) -> set:
     return pmcids
 
 
-def load_provenance(provenance_path: Path) -> Dict[str, Any]:
+def load_provenance(provenance_path: Path) -> dict[str, Any]:
     """Load the provenance sidecar (empty mapping when absent).
 
     Args:
@@ -294,10 +290,10 @@ def load_provenance(provenance_path: Path) -> Dict[str, Any]:
 
 
 def build_provenance(
-    records: List[Dict[str, Any]],
+    records: list[dict[str, Any]],
     query: str,
     retrieved_at: str,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Build provenance entries for corpus records.
 
     Args:
@@ -309,11 +305,9 @@ def build_provenance(
         Mapping ``sha256(body_text)`` ->
         ``{pmcid, doi, query, retrieved_at}``.
     """
-    provenance: Dict[str, Any] = {}
+    provenance: dict[str, Any] = {}
     for record in records:
-        digest = hashlib.sha256(
-            (record["body_text"] or "").encode("utf-8")
-        ).hexdigest()
+        digest = hashlib.sha256((record["body_text"] or "").encode("utf-8")).hexdigest()
         provenance[digest] = {
             "pmcid": record["pmcid"],
             "doi": record["doi"],
@@ -324,9 +318,9 @@ def build_provenance(
 
 
 def order_by_citation(
-    pmcids: List[str],
-    cited_by: Dict[str, int],
-) -> List[str]:
+    pmcids: list[str],
+    cited_by: dict[str, int],
+) -> list[str]:
     """Order PMCIDs highest-cited first where citation counts are known.
 
     PMCIDs present in ``cited_by`` are sorted by descending count;
@@ -355,7 +349,7 @@ def order_by_citation(
     return [pmcid for _, pmcid in indexed]
 
 
-def is_relevant(record: Dict[str, Any]) -> bool:
+def is_relevant(record: dict[str, Any]) -> bool:
     """Return True when the record mentions a relevance term.
 
     Checked against the concatenated title/abstract/body text with
@@ -368,13 +362,11 @@ def is_relevant(record: Dict[str, Any]) -> bool:
     Returns:
         True if any relevance term occurs.
     """
-    haystack = " ".join(
-        str(record.get(field) or "") for field in ("title", "abstract", "body_text")
-    )
+    haystack = " ".join(str(record.get(field) or "") for field in ("title", "abstract", "body_text"))
     return bool(_RELEVANCE_RE.search(haystack))
 
 
-def dedupe_by_pmcid(records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def dedupe_by_pmcid(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Drop records whose PMCID was already seen, keeping first occurrence.
 
     Args:
@@ -384,7 +376,7 @@ def dedupe_by_pmcid(records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         Deduplicated list preserving input order.
     """
     seen: set = set()
-    unique: List[Dict[str, Any]] = []
+    unique: list[dict[str, Any]] = []
     for record in records:
         pmcid = record.get("pmcid")
         if not pmcid or pmcid in seen:
@@ -402,16 +394,16 @@ def _local(tag: str) -> str:
     return tag.rsplit("}", 1)[-1]
 
 
-def _children(element: ET.Element, name: str) -> List[ET.Element]:
+def _children(element: ET.Element, name: str) -> list[ET.Element]:
     """Direct children of ``element`` whose local tag name is ``name``."""
     return [child for child in element if _local(child.tag) == name]
 
 
-def _first_descendant(element: ET.Element, *path: str) -> Optional[ET.Element]:
+def _first_descendant(element: ET.Element, *path: str) -> ET.Element | None:
     """First descendant matching the local-name path, else None."""
-    current: List[ET.Element] = [element]
+    current: list[ET.Element] = [element]
     for name in path:
-        next_level: List[ET.Element] = []
+        next_level: list[ET.Element] = []
         for node in current:
             next_level.extend(_children(node, name))
         current = next_level
@@ -420,12 +412,12 @@ def _first_descendant(element: ET.Element, *path: str) -> Optional[ET.Element]:
     return current[0]
 
 
-def _descendants(element: ET.Element, name: str) -> List[ET.Element]:
+def _descendants(element: ET.Element, name: str) -> list[ET.Element]:
     """All descendants (any depth) with the given local tag name."""
     return [node for node in element.iter() if _local(node.tag) == name]
 
 
-def _text(element: Optional[ET.Element]) -> str:
+def _text(element: ET.Element | None) -> str:
     """Whitespace-normalized itertext of an element ('' when None)."""
     if element is None:
         return ""
@@ -444,19 +436,16 @@ def _body_text(article: ET.Element) -> str:
     body = _first_descendant(article, "body")
     if body is None:
         return ""
-    paragraphs = [
-        re.sub(r"\s+", " ", "".join(p.itertext())).strip()
-        for p in _descendants(body, "p")
-    ]
+    paragraphs = [re.sub(r"\s+", " ", "".join(p.itertext())).strip() for p in _descendants(body, "p")]
     if not paragraphs:
         # Degenerate body without <p> wrappers: fall back to itertext.
         paragraphs = [re.sub(r"\s+", " ", "".join(body.itertext())).strip()]
     return "\n\n".join(p for p in paragraphs if p)
 
 
-def _article_ids(article: ET.Element) -> Dict[str, str]:
+def _article_ids(article: ET.Element) -> dict[str, str]:
     """Map pub-id-type -> identifier for the article's ``article-id`` tags."""
-    ids: Dict[str, str] = {}
+    ids: dict[str, str] = {}
     for element in _descendants(article, "article-id"):
         id_type = element.attrib.get("pub-id-type", "")
         value = _text(element)
@@ -488,7 +477,7 @@ def _license_text(article: ET.Element) -> str:
     return "unknown"
 
 
-def parse_article(article: ET.Element) -> Dict[str, Any]:
+def parse_article(article: ET.Element) -> dict[str, Any]:
     """Parse one JATS ``<article>`` element into a corpus record.
 
     Args:
@@ -501,7 +490,7 @@ def parse_article(article: ET.Element) -> Dict[str, Any]:
         to ``""``; a missing license maps to ``"unknown"``.
     """
 
-    def first_any(element: ET.Element, name: str) -> Optional[ET.Element]:
+    def first_any(element: ET.Element, name: str) -> ET.Element | None:
         found = _descendants(element, name)
         return found[0] if found else None
 
@@ -511,11 +500,9 @@ def parse_article(article: ET.Element) -> Dict[str, Any]:
     ids = _article_ids(article)
 
     pub_date = first_any(front, "pub-date")
-    year_text = _text(
-        _first_descendant(pub_date if pub_date is not None else article, "year")
-    )
+    year_text = _text(_first_descendant(pub_date if pub_date is not None else article, "year"))
     try:
-        year: Optional[int] = int(year_text)
+        year: int | None = int(year_text)
     except ValueError:
         year = None
 
@@ -535,7 +522,7 @@ def parse_article(article: ET.Element) -> Dict[str, Any]:
     }
 
 
-def parse_fulltext_xml(xml_text: str) -> List[Dict[str, Any]]:
+def parse_fulltext_xml(xml_text: str) -> list[dict[str, Any]]:
     """Parse an efetch ``db=pmc`` response into corpus records.
 
     Args:
@@ -551,7 +538,7 @@ def parse_fulltext_xml(xml_text: str) -> List[Dict[str, Any]]:
     articles = _descendants(root, "article")
     if _local(root.tag) == "article":
         articles = [root]
-    records: List[Dict[str, Any]] = []
+    records: list[dict[str, Any]] = []
     for article in articles:
         record = parse_article(article)
         if record["pmcid"]:
@@ -580,7 +567,7 @@ class PMCFulltextHarvester:
         self,
         tool: str = "ento-linguistics-fulltext",
         email: str = "daniel@activeinference.institute",
-        delay: Optional[float] = None,
+        delay: float | None = None,
     ):
         """Store NCBI identification parameters.
 
@@ -595,7 +582,7 @@ class PMCFulltextHarvester:
 
     # ── HTTP plumbing ─────────────────────────────────────────────
 
-    def _get(self, endpoint: str, params: Dict[str, Any]) -> str:
+    def _get(self, endpoint: str, params: dict[str, Any]) -> str:
         """GET an E-utilities endpoint with retries and backoff.
 
         Args:
@@ -613,7 +600,7 @@ class PMCFulltextHarvester:
         query.setdefault("tool", self.tool)
         query.setdefault("email", self.email)
         url = f"{self.BASE_URL}{endpoint}?{urlencode(query)}"
-        last_error: Optional[Exception] = None
+        last_error: Exception | None = None
         for attempt in range(1, self.MAX_RETRIES + 1):
             try:
                 request = Request(url, headers={"User-Agent": f"{self.tool}/1.0"})
@@ -633,7 +620,7 @@ class PMCFulltextHarvester:
 
     # ── E-utilities operations ────────────────────────────────────
 
-    def search_pmcids(self, query: str = PMC_SEARCH_QUERY, retmax: int = 600) -> List[str]:
+    def search_pmcids(self, query: str = PMC_SEARCH_QUERY, retmax: int = 600) -> list[str]:
         """Run esearch ``db=pmc`` ranked by relevance.
 
         Args:
@@ -656,7 +643,7 @@ class PMCFulltextHarvester:
         idlist = json.loads(payload).get("esearchresult", {}).get("idlist", [])
         return [f"PMC{pmcid}" for pmcid in idlist]
 
-    def fetch_fulltext_batch(self, pmcids: List[str]) -> List[Dict[str, Any]]:
+    def fetch_fulltext_batch(self, pmcids: list[str]) -> list[dict[str, Any]]:
         """Fetch and parse one batch of full-text XML.
 
         Args:
@@ -681,7 +668,7 @@ class PMCFulltextHarvester:
         query: str = PMC_SEARCH_QUERY,
         target: int = 500,
         retmax: int = 600,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Search, fetch, filter, and deduplicate full-text records.
 
         Batches of ``BATCH_SIZE`` PMCIDs are fetched with
@@ -704,7 +691,7 @@ class PMCFulltextHarvester:
         pmcids = self.search_pmcids(query, retmax=retmax)
         logger.info("esearch returned %d candidate PMCIDs", len(pmcids))
 
-        records: List[Dict[str, Any]] = []
+        records: list[dict[str, Any]] = []
         seen: set = set()
         for start in range(0, len(pmcids), self.BATCH_SIZE):
             if len(records) >= target:
@@ -718,16 +705,10 @@ class PMCFulltextHarvester:
                 continue
             for record in batch_records:
                 pmcid = record["pmcid"]
-                if (
-                    pmcid not in seen
-                    and record["body_text"]
-                    and is_relevant(record)
-                ):
+                if pmcid not in seen and record["body_text"] and is_relevant(record):
                     seen.add(pmcid)
                     records.append(record)
-            logger.info(
-                "Progress: %d/%d records (batch at %s)", len(records), target, batch[0]
-            )
+            logger.info("Progress: %d/%d records (batch at %s)", len(records), target, batch[0])
             time.sleep(self.delay)
         return records[:target]
 
@@ -736,10 +717,10 @@ class PMCFulltextHarvester:
         data_dir: Path,
         provenance_path: Path,
         query: str = PMC_SEARCH_QUERY,
-        target: Optional[int] = None,
+        target: int | None = None,
         retmax: int = 10000,
-        cited_by: Optional[Dict[str, int]] = None,
-    ) -> Dict[str, Any]:
+        cited_by: dict[str, int] | None = None,
+    ) -> dict[str, Any]:
         """Resumable sharded harvest of the full candidate set.
 
         Skips PMCIDs already present in ``data_dir`` shards or
@@ -781,23 +762,19 @@ class PMCFulltextHarvester:
         # full; ``pending`` is the partially-filled shard file to
         # overwrite on the first flush.
         shards = shard_paths(data_dir)
-        pending: Optional[Path] = shards[-1] if shards else None
+        pending: Path | None = shards[-1] if shards else None
         if shards:
             buffer = read_shard(shards[-1])
         elif (data_dir / "fulltexts.json").exists():
-            buffer = json.loads(
-                (data_dir / "fulltexts.json").read_text(encoding="utf-8")
-            )
-            already.update(
-                record["pmcid"] for record in buffer if record.get("pmcid")
-            )
+            buffer = json.loads((data_dir / "fulltexts.json").read_text(encoding="utf-8"))
+            already.update(record["pmcid"] for record in buffer if record.get("pmcid"))
         else:
             buffer = []
         buffer_start = len(buffer)
         next_shard = len(shards)
 
         provenance = load_provenance(provenance_path)
-        retrieved_at = datetime.now(timezone.utc).isoformat()
+        retrieved_at = datetime.now(UTC).isoformat()
         harvested = 0
         failed_batches = 0
         for start in range(0, len(pmcids), self.BATCH_SIZE):
@@ -816,19 +793,13 @@ class PMCFulltextHarvester:
             new_records = []
             for record in batch_records:
                 pmcid = record["pmcid"]
-                if (
-                    pmcid in already
-                    or not record["body_text"]
-                    or not is_relevant(record)
-                ):
+                if pmcid in already or not record["body_text"] or not is_relevant(record):
                     continue
                 already.add(pmcid)
                 new_records.append(record)
             if new_records:
                 harvested += len(new_records)
-                for digest, entry in build_provenance(
-                    new_records, query, retrieved_at
-                ).items():
+                for digest, entry in build_provenance(new_records, query, retrieved_at).items():
                     provenance.setdefault(digest, entry)
                 buffer.extend(new_records)
                 while len(buffer) >= SHARD_SIZE:
@@ -844,13 +815,15 @@ class PMCFulltextHarvester:
                     _atomic_write_text(
                         provenance_path,
                         json.dumps(
-                            provenance, ensure_ascii=False, indent=1,
+                            provenance,
+                            ensure_ascii=False,
+                            indent=1,
                             sort_keys=True,
-                        ) + "\n",
+                        )
+                        + "\n",
                     )
             logger.info(
-                "Progress: %d/%d candidates fetched, %d new records "
-                "(batch at %s)",
+                "Progress: %d/%d candidates fetched, %d new records (batch at %s)",
                 start + len(batch),
                 len(pmcids),
                 harvested,
@@ -868,9 +841,7 @@ class PMCFulltextHarvester:
             write_shard(path, buffer)
         _atomic_write_text(
             provenance_path,
-            json.dumps(
-                provenance, ensure_ascii=False, indent=1, sort_keys=True
-            ) + "\n",
+            json.dumps(provenance, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
         )
         summary = {
             "candidates": len(pmcids),
@@ -883,17 +854,16 @@ class PMCFulltextHarvester:
         return summary
 
 
-
 # ── Persistence ───────────────────────────────────────────────────────
 
 
 def write_corpus(
-    records: List[Dict[str, Any]],
+    records: list[dict[str, Any]],
     corpus_path: Path,
     provenance_path: Path,
     query: str = PMC_SEARCH_QUERY,
-    retrieved_at: Optional[str] = None,
-) -> Dict[str, Any]:
+    retrieved_at: str | None = None,
+) -> dict[str, Any]:
     """Write the full-text corpus and its provenance sidecar.
 
     Args:
@@ -907,16 +877,14 @@ def write_corpus(
         The provenance mapping ``sha256(body_text)`` ->
         ``{pmcid, doi, query, retrieved_at}`` that was written.
     """
-    retrieved_at = retrieved_at or datetime.now(timezone.utc).isoformat()
+    retrieved_at = retrieved_at or datetime.now(UTC).isoformat()
     corpus = [{field: record.get(field) for field in CORPUS_FIELDS} for record in records]
 
     provenance = build_provenance(corpus, query, retrieved_at)
 
     corpus_path.parent.mkdir(parents=True, exist_ok=True)
     provenance_path.parent.mkdir(parents=True, exist_ok=True)
-    corpus_path.write_text(
-        json.dumps(corpus, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
-    )
+    corpus_path.write_text(json.dumps(corpus, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     provenance_path.write_text(
         json.dumps(provenance, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -933,7 +901,7 @@ def write_corpus(
 def load_citation_counts(
     provenance_path: Path,
     citation_metadata_path: Path,
-) -> Dict[str, int]:
+) -> dict[str, int]:
     """Map PMCID -> OpenAlex ``cited_by_count`` where DOI matching allows.
 
     ``citation_metadata.json`` is keyed by abstract SHA-256 and carries
@@ -952,12 +920,8 @@ def load_citation_counts(
     if not citation_metadata_path.exists():
         return {}
     metadata = json.loads(citation_metadata_path.read_text(encoding="utf-8"))
-    doi_counts = {
-        entry["doi"]: entry.get("cited_by_count", 0)
-        for entry in metadata.values()
-        if entry.get("doi")
-    }
-    counts: Dict[str, int] = {}
+    doi_counts = {entry["doi"]: entry.get("cited_by_count", 0) for entry in metadata.values() if entry.get("doi")}
+    counts: dict[str, int] = {}
     for entry in load_provenance(provenance_path).values():
         doi = entry.get("doi")
         pmcid = entry.get("pmcid")
@@ -966,7 +930,7 @@ def load_citation_counts(
     return counts
 
 
-def _coverage_stats(data_dir: Path) -> Dict[str, Any]:
+def _coverage_stats(data_dir: Path) -> dict[str, Any]:
     """Compute corpus coverage statistics streaming over the shards.
 
     Args:
@@ -978,9 +942,9 @@ def _coverage_stats(data_dir: Path) -> Dict[str, Any]:
     """
     count = 0
     body_chars = 0
-    years: List[int] = []
+    years: list[int] = []
     journals: set = set()
-    license_counts: Dict[str, int] = {}
+    license_counts: dict[str, int] = {}
     for path in shard_paths(data_dir):
         for record in read_shard(path):
             count += 1
@@ -1004,7 +968,7 @@ def _coverage_stats(data_dir: Path) -> Dict[str, Any]:
 def write_readme(
     output_dir: Path,
     query: str = PMC_SEARCH_QUERY,
-    summary: Optional[Dict[str, Any]] = None,
+    summary: dict[str, Any] | None = None,
 ) -> Path:
     """Write ``README.md`` documenting the sharded harvested corpus.
 
@@ -1026,13 +990,9 @@ def write_readme(
     shards = [p.name for p in shard_paths(output_dir)]
     license_lines = "\n".join(
         f"- `{license}`: {count} documents"
-        for license, count in sorted(
-            stats["license_counts"].items(), key=lambda item: (-item[1], item[0])
-        )
+        for license, count in sorted(stats["license_counts"].items(), key=lambda item: (-item[1], item[0]))
     )
-    year_line = (
-        f"{min(stats['years'])}–{max(stats['years'])}" if stats["years"] else "n/a"
-    )
+    year_line = f"{min(stats['years'])}–{max(stats['years'])}" if stats["years"] else "n/a"
     shard_lines = "\n".join(f"- `{name}`" for name in shards) or "- (none yet)"
     summary_block = ""
     if summary:
@@ -1107,11 +1067,11 @@ from data.pmc_fulltext import load_fulltexts
 records = load_fulltexts(Path("data/fulltexts"))
 ```
 {summary_block}
-## Coverage ({stats['count']} documents)
+## Coverage ({stats["count"]} documents)
 
 - Publication years: {year_line}
-- Distinct journals: {len(stats['journals'])}
-- Body text: {stats['body_chars']:,} characters
+- Distinct journals: {len(stats["journals"])}
+- Body text: {stats["body_chars"]:,} characters
 - License coverage:
 
 {license_lines}
@@ -1128,7 +1088,7 @@ uv run python src/pipeline/fulltext_pipeline.py
     return path
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point: harvest the PMC full-text corpus into shards.
 
     Resumable: existing shard PMCIDs are skipped; re-running continues an
@@ -1185,7 +1145,6 @@ def main(argv: Optional[List[str]] = None) -> int:
         logger.info("Removed legacy fulltexts.json (migrated into shards)")
     print(f"Harvested {summary['harvested']} new; {total} total in {output_dir}")
     return 0
-
 
 
 if __name__ == "__main__":  # pragma: no cover

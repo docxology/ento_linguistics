@@ -4,18 +4,17 @@ from __future__ import annotations
 
 import importlib.util
 import json
-
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any
 
 from .logging import get_logger
 
 __all__ = [
-    "validate_markdown",
-    "validate_figure_registry",
-    "verify_output_integrity",
-    "validate_pdf_rendering",
     "IntegrityReport",
+    "validate_figure_registry",
+    "validate_markdown",
+    "validate_pdf_rendering",
+    "verify_output_integrity",
 ]
 
 _logger = get_logger(__name__)
@@ -83,7 +82,7 @@ def _ensure_infrastructure_path():
         sys.path.insert(0, repo_root)
 
 
-def validate_markdown(markdown_path: str, strict: bool = False) -> Dict[str, Any]:
+def validate_markdown(markdown_path: str, strict: bool = False) -> dict[str, Any]:
     """Validate markdown files using infrastructure validation.
 
     Args:
@@ -101,9 +100,7 @@ def validate_markdown(markdown_path: str, strict: bool = False) -> Dict[str, Any
 
     try:
         # Infrastructure function requires both markdown_dir and repo_root
-        problems, exit_code = infra_validate_markdown(
-            Path(markdown_path), _repo_root(), strict=strict
-        )
+        problems, exit_code = infra_validate_markdown(Path(markdown_path), _repo_root(), strict=strict)
         # The infrastructure reports DiagnosticEvent objects; serialize them
         # so this wrapper's result stays a plain, JSON-serializable dictionary.
         issues = [event.to_dict() for event in problems]
@@ -117,13 +114,11 @@ def validate_markdown(markdown_path: str, strict: bool = False) -> Dict[str, Any
         # Expected: missing/unreadable paths, malformed content
         return {"status": "error", "error": str(e), "path": markdown_path}
     except Exception:
-        _logger.exception(
-            "Unexpected error in validate_markdown for %s", markdown_path
-        )
+        _logger.exception("Unexpected error in validate_markdown for %s", markdown_path)
         raise
 
 
-def _registry_input_error(registry_path: Path) -> Optional[str]:
+def _registry_input_error(registry_path: Path) -> str | None:
     """Return an error message when the registry input is missing or corrupt.
 
     The infrastructure loader converts unreadable or malformed registries into
@@ -146,10 +141,7 @@ def _registry_input_error(registry_path: Path) -> Optional[str]:
     return None
 
 
-
-def validate_figure_registry(
-    registry_path: Path, manuscript_dir: Path
-) -> Dict[str, Any]:
+def validate_figure_registry(registry_path: Path, manuscript_dir: Path) -> dict[str, Any]:
     """Validate figure registry using infrastructure validation.
 
     Args:
@@ -185,9 +177,7 @@ def validate_figure_registry(
             "issues": [],
         }
     except Exception:
-        _logger.exception(
-            "Unexpected error in validate_figure_registry for %s", registry_path
-        )
+        _logger.exception("Unexpected error in validate_figure_registry for %s", registry_path)
         raise
 
     return {
@@ -198,7 +188,7 @@ def validate_figure_registry(
     }
 
 
-def verify_output_integrity(output_path: Path) -> Dict[str, Any]:
+def verify_output_integrity(output_path: Path) -> dict[str, Any]:
     """Verify output integrity using infrastructure validation.
 
     Args:
@@ -218,9 +208,7 @@ def verify_output_integrity(output_path: Path) -> Dict[str, Any]:
         # Expected: unreadable output paths, malformed report payloads
         return {"status": "error", "error": str(e), "path": str(output_path)}
     except Exception:
-        _logger.exception(
-            "Unexpected error in verify_output_integrity for %s", output_path
-        )
+        _logger.exception("Unexpected error in verify_output_integrity for %s", output_path)
         raise
 
     # The infrastructure returns an IntegrityReport dataclass; adapt it
@@ -236,7 +224,7 @@ def verify_output_integrity(output_path: Path) -> Dict[str, Any]:
     }
 
 
-def validate_pdf_rendering(pdf_path: Union[str, Path]) -> Dict[str, Any]:
+def validate_pdf_rendering(pdf_path: str | Path) -> dict[str, Any]:
     """Validate PDF rendering using infrastructure validation.
 
     Args:
@@ -246,9 +234,7 @@ def validate_pdf_rendering(pdf_path: Union[str, Path]) -> Dict[str, Any]:
         Validation results
     """
     try:
-        infra_validate_pdf_rendering, PDFValidationError = (
-            _get_infra_validate_pdf_rendering()
-        )
+        infra_validate_pdf_rendering, PDFValidationError = _get_infra_validate_pdf_rendering()
     except ImportError as e:
         return {"status": "error", "error": str(e), "path": pdf_path}
 
@@ -264,16 +250,14 @@ def validate_pdf_rendering(pdf_path: Union[str, Path]) -> Dict[str, Any]:
         # Expected: missing/corrupt PDF files, extraction failures
         return {"status": "error", "error": str(e), "path": pdf_path}
     except Exception:
-        _logger.exception(
-            "Unexpected error in validate_pdf_rendering for %s", pdf_path
-        )
+        _logger.exception("Unexpected error in validate_pdf_rendering for %s", pdf_path)
         raise
 
 
 class IntegrityReport:
     """Compatibility wrapper for infrastructure integrity reports."""
 
-    def __init__(self, results: Optional[Dict[str, Any]] = None):
+    def __init__(self, results: dict[str, Any] | None = None):
         """Initialize from an infrastructure results dictionary.
 
         Args:

@@ -14,21 +14,21 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 __all__ = [
-    "CACEScore",
     "ANTHROPOMORPHIC_TERMS",
     "SCALE_LEVELS",
-    "score_clarity",
-    "score_appropriateness",
-    "mean_context_similarity",
-    "score_evolvability",
-    "evaluate_term_cace",
+    "CACEScore",
     "compare_terms_cace",
+    "evaluate_term_cace",
+    "mean_context_similarity",
+    "score_appropriateness",
+    "score_clarity",
+    "score_evolvability",
 ]
 
 
@@ -53,7 +53,7 @@ class CACEScore:
     evolvability: float
     aggregate: float
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
             "term": self.term,
@@ -65,14 +65,14 @@ class CACEScore:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "CACEScore":
+    def from_dict(cls, data: dict[str, Any]) -> CACEScore:
         """Create from dictionary."""
         return cls(**data)
 
 
 # Anthropomorphic terms that project human social structures onto insect biology.
 # These carry implicit framing assumptions that may distort scientific understanding.
-ANTHROPOMORPHIC_TERMS: Set[str] = {
+ANTHROPOMORPHIC_TERMS: set[str] = {
     "queen",
     "king",
     "slave",
@@ -139,8 +139,8 @@ def score_clarity(
 
 def score_appropriateness(
     term: str,
-    domains: Optional[List[str]] = None,
-    anthropomorphic_set: Optional[Set[str]] = None,
+    domains: list[str] | None = None,
+    anthropomorphic_set: set[str] | None = None,
 ) -> float:
     """Score term appropriateness by penalizing anthropomorphic language.
 
@@ -184,7 +184,7 @@ def score_appropriateness(
 
 def mean_context_similarity(
     term: str,
-    contexts: List[str],
+    contexts: list[str],
     min_contexts: int = 3,
 ) -> float:
     """Compute the mean pairwise cosine similarity of TF-IDF context vectors.
@@ -241,16 +241,15 @@ def mean_context_similarity(
 
     except (ValueError, np.linalg.LinAlgError) as exc:
         import logging
-        logging.getLogger(__name__).debug(
-            "mean_context_similarity fallback for '%s': %s", term, exc
-        )
+
+        logging.getLogger(__name__).debug("mean_context_similarity fallback for '%s': %s", term, exc)
         return 0.5
 
 
 def score_evolvability(
     term: str,
-    domains: Optional[List[str]] = None,
-    contexts: Optional[List[str]] = None,
+    domains: list[str] | None = None,
+    contexts: list[str] | None = None,
 ) -> float:
     """Score term evolvability (scale-invariance across biological levels).
 
@@ -276,12 +275,8 @@ def score_evolvability(
     # Context-based scale detection with word boundaries so "gene" does not
     # match "general" or "organism" a prefix of "microorganism".
     context_text = " ".join(contexts).lower()
-    context_patterns = [
-        re.compile(r"\b" + re.escape(level) + r"\b") for level in SCALE_LEVELS
-    ]
-    scale_count = sum(
-        1 for pattern in context_patterns if pattern.search(context_text)
-    )
+    context_patterns = [re.compile(r"\b" + re.escape(level) + r"\b") for level in SCALE_LEVELS]
+    scale_count = sum(1 for pattern in context_patterns if pattern.search(context_text))
 
     # Scale breadth score
     scale_score = min(1.0, scale_count / DEFAULT_SCALE_DIVISOR) if contexts else 0.0
@@ -298,8 +293,8 @@ def score_evolvability(
 def evaluate_term_cace(
     term: str,
     semantic_entropy: float = 0.0,
-    contexts: Optional[List[str]] = None,
-    domains: Optional[List[str]] = None,
+    contexts: list[str] | None = None,
+    domains: list[str] | None = None,
     max_entropy: float = DEFAULT_MAX_ENTROPY,
 ) -> CACEScore:
     """Evaluate a term across all four CACE dimensions.
@@ -335,9 +330,9 @@ def evaluate_term_cace(
 
 
 def compare_terms_cace(
-    terms_data: List[Dict[str, Any]],
+    terms_data: list[dict[str, Any]],
     max_entropy: float = DEFAULT_MAX_ENTROPY,
-) -> List[CACEScore]:
+) -> list[CACEScore]:
     """Evaluate and compare multiple terms using CACE framework.
 
     Args:

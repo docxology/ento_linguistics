@@ -19,8 +19,8 @@ import pipeline.literature_pipeline as literature_pipeline_module
 from data.literature_mining import (
     ArXivMiner,
     LiteratureCorpus,
-    PubMedMiner,
     Publication,
+    PubMedMiner,
 )
 from pipeline.literature_pipeline import LiteratureAnalysisPipeline
 from visualization.figure_manager import FigureManager
@@ -71,10 +71,7 @@ def _pubmed_fetch_xml() -> str:
     </MedlineCitation>
   </PubmedArticle>"""
         )
-    return (
-        '<?xml version="1.0" encoding="UTF-8"?>\n'
-        "<PubmedArticleSet>" + "".join(articles) + "\n</PubmedArticleSet>"
-    )
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<PubmedArticleSet>' + "".join(articles) + "\n</PubmedArticleSet>"
 
 
 ARXIV_FEED_XML = """<?xml version="1.0" encoding="UTF-8"?>
@@ -97,18 +94,10 @@ ARXIV_FEED_XML = """<?xml version="1.0" encoding="UTF-8"?>
 @pytest.fixture
 def literature_httpserver(httpserver, monkeypatch):
     """Serve realistic PubMed and arXiv payloads and redirect the miners."""
-    httpserver.expect_request("/esearch.fcgi").respond_with_json(
-        PUBMED_SEARCH_RESPONSE
-    )
-    httpserver.expect_request("/esummary.fcgi").respond_with_json(
-        PUBMED_SUMMARY_RESPONSE
-    )
-    httpserver.expect_request("/efetch.fcgi").respond_with_data(
-        _pubmed_fetch_xml(), content_type="application/xml"
-    )
-    httpserver.expect_request("/api/query").respond_with_data(
-        ARXIV_FEED_XML, content_type="application/xml"
-    )
+    httpserver.expect_request("/esearch.fcgi").respond_with_json(PUBMED_SEARCH_RESPONSE)
+    httpserver.expect_request("/esummary.fcgi").respond_with_json(PUBMED_SUMMARY_RESPONSE)
+    httpserver.expect_request("/efetch.fcgi").respond_with_data(_pubmed_fetch_xml(), content_type="application/xml")
+    httpserver.expect_request("/api/query").respond_with_data(ARXIV_FEED_XML, content_type="application/xml")
     monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
     monkeypatch.setattr(ArXivMiner, "BASE_URL", httpserver.url_for("/api/query?"))
     monkeypatch.setattr(time, "sleep", lambda _seconds: None)
@@ -152,9 +141,7 @@ class TestCollectLiterature:
     def test_warns_on_very_large_max_publications(self, tmp_path, caplog) -> None:
         """max_publications above 10000 logs a size warning but proceeds."""
         pipeline = LiteratureAnalysisPipeline(tmp_path / "out")
-        cached = LiteratureCorpus(
-            [Publication(title="Small cache", authors=[], pmid="1")]
-        )
+        cached = LiteratureCorpus([Publication(title="Small cache", authors=[], pmid="1")])
         cached.save_to_file(tmp_path / "out" / "data" / "literature_corpus.json")
         with caplog.at_level("WARNING"):
             corpus = pipeline._collect_literature(20000, use_cached=True)
@@ -188,9 +175,7 @@ class TestCollectLiterature:
         # Cache is used as-is: file untouched, no mining artifacts added.
         assert corpus_file.read_text(encoding="utf-8") == before
 
-    def test_mines_and_saves_corpus(
-        self, tmp_path, literature_httpserver, make_pipeline
-    ) -> None:
+    def test_mines_and_saves_corpus(self, tmp_path, literature_httpserver, make_pipeline) -> None:
         """Without a cache, publications are mined over HTTP and saved."""
         pipeline = make_pipeline(tmp_path / "out")
         corpus = pipeline._collect_literature(10, use_cached=False)
@@ -205,15 +190,11 @@ class TestCollectLiterature:
         assert data["metadata"]["total_publications"] == len(corpus.publications)
         assert len(data["publications"]) == len(corpus.publications)
 
-    def test_uses_cache_when_present(
-        self, tmp_path, literature_httpserver, make_pipeline
-    ) -> None:
+    def test_uses_cache_when_present(self, tmp_path, literature_httpserver, make_pipeline) -> None:
         """use_cached=True with a valid cache file skips mining entirely."""
         output_dir = tmp_path / "out"
         pipeline = make_pipeline(output_dir)
-        cached = LiteratureCorpus(
-            [Publication(title="Only cached publication", authors=[], pmid="1")]
-        )
+        cached = LiteratureCorpus([Publication(title="Only cached publication", authors=[], pmid="1")])
         corpus_file = output_dir / "data" / "literature_corpus.json"
         cached.save_to_file(corpus_file)
 
@@ -221,16 +202,10 @@ class TestCollectLiterature:
 
         assert [p.title for p in corpus.publications] == ["Only cached publication"]
 
-    def test_http_errors_yield_empty_corpus(
-        self, tmp_path, httpserver, monkeypatch, make_pipeline
-    ) -> None:
+    def test_http_errors_yield_empty_corpus(self, tmp_path, httpserver, monkeypatch, make_pipeline) -> None:
         """HTTP 5xx from both APIs is handled gracefully: empty corpus."""
-        httpserver.expect_request("/esearch.fcgi").respond_with_json(
-            {"error": "upstream"}, status=500
-        )
-        httpserver.expect_request("/api/query").respond_with_data(
-            "service unavailable", status=503
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_json({"error": "upstream"}, status=500)
+        httpserver.expect_request("/api/query").respond_with_data("service unavailable", status=503)
         monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
         monkeypatch.setattr(ArXivMiner, "BASE_URL", httpserver.url_for("/api/query?"))
         monkeypatch.setattr(time, "sleep", lambda _seconds: None)
@@ -243,13 +218,9 @@ class TestCollectLiterature:
         data = json.loads(corpus_file.read_text(encoding="utf-8"))
         assert data["publications"] == []
 
-    def test_malformed_payloads_yield_empty_corpus(
-        self, tmp_path, httpserver, monkeypatch, make_pipeline
-    ) -> None:
+    def test_malformed_payloads_yield_empty_corpus(self, tmp_path, httpserver, monkeypatch, make_pipeline) -> None:
         """Malformed JSON from PubMed and malformed XML from arXiv are caught."""
-        httpserver.expect_request("/esearch.fcgi").respond_with_data(
-            "{not valid json", content_type="application/json"
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_data("{not valid json", content_type="application/json")
         httpserver.expect_request("/api/query").respond_with_data(
             "<feed><entry>unclosed", content_type="application/xml"
         )
@@ -283,9 +254,7 @@ class TestProcessTexts:
 class TestRunCompleteAnalysis:
     """End-to-end and failure-path tests for run_complete_analysis."""
 
-    def test_end_to_end_success(
-        self, tmp_path, literature_httpserver, make_pipeline
-    ) -> None:
+    def test_end_to_end_success(self, tmp_path, literature_httpserver, make_pipeline) -> None:
         """A full offline run completes and writes every expected artifact."""
         pipeline = make_pipeline(tmp_path / "out")
         results = pipeline.run_complete_analysis(max_publications=10)
@@ -319,13 +288,9 @@ class TestRunCompleteAnalysis:
             "visualization_metadata.json",
         ):
             assert (out / "data" / name).exists(), name
-        terminology = json.loads(
-            (out / "data" / "terminology.json").read_text(encoding="utf-8")
-        )
+        terminology = json.loads((out / "data" / "terminology.json").read_text(encoding="utf-8"))
         assert terminology, "terminology.json should contain extracted terms"
-        csv_lines = (out / "data" / "terminology.csv").read_text(
-            encoding="utf-8"
-        ).strip().splitlines()
+        csv_lines = (out / "data" / "terminology.csv").read_text(encoding="utf-8").strip().splitlines()
         assert len(csv_lines) >= 2  # header plus at least one term row
 
         # Figures are real PNG files
@@ -339,11 +304,11 @@ class TestRunCompleteAnalysis:
         report_text = report.read_text(encoding="utf-8")
         assert "# Ento-Linguistic Literature Analysis Report" in report_text
         assert (
-            out / "reports" / "domain_analysis_report.md"
-        ).read_text(encoding="utf-8").startswith("# Ento-Linguistic Domain Analysis")
-        summary = json.loads(
-            (out / "reports" / "analysis_summary.json").read_text(encoding="utf-8")
+            (out / "reports" / "domain_analysis_report.md")
+            .read_text(encoding="utf-8")
+            .startswith("# Ento-Linguistic Domain Analysis")
         )
+        summary = json.loads((out / "reports" / "analysis_summary.json").read_text(encoding="utf-8"))
         assert summary["pipeline_metadata"]["status"] == "completed"
         assert "literature_collection" in summary["stages"]
 
@@ -351,9 +316,7 @@ class TestRunCompleteAnalysis:
         assert pipeline.figure_manager.get_figure("fig:terminology_network") is not None
         assert pipeline.figure_manager.get_figure("fig:domain_comparison") is not None
 
-    def test_second_run_uses_cached_corpus(
-        self, tmp_path, literature_httpserver, make_pipeline
-    ) -> None:
+    def test_second_run_uses_cached_corpus(self, tmp_path, literature_httpserver, make_pipeline) -> None:
         """A second run with use_cached_data=True reuses the saved corpus."""
         output_dir = tmp_path / "out"
         first = make_pipeline(output_dir)
@@ -362,24 +325,16 @@ class TestRunCompleteAnalysis:
 
         second = make_pipeline(output_dir)
         second_results = second.run_complete_analysis(max_publications=500)
-        assert (
-            second_results["stages"]["literature_collection"]["publications_found"]
-            == first_pub
-        )
+        assert second_results["stages"]["literature_collection"]["publications_found"] == first_pub
 
-    def test_invalid_max_publications_raises_and_logs(
-        self, tmp_path, make_pipeline, caplog
-    ) -> None:
+    def test_invalid_max_publications_raises_and_logs(self, tmp_path, make_pipeline, caplog) -> None:
         """Non-positive max_publications propagates ValueError through the run."""
         pipeline = make_pipeline(tmp_path / "out")
-        with caplog.at_level("ERROR"):
-            with pytest.raises(ValueError, match="max_publications must be positive"):
-                pipeline.run_complete_analysis(max_publications=0)
+        with caplog.at_level("ERROR"), pytest.raises(ValueError, match="max_publications must be positive"):
+            pipeline.run_complete_analysis(max_publications=0)
         assert "Pipeline failed" in caplog.text
 
-    def test_corrupt_cached_corpus_raises(
-        self, tmp_path, literature_httpserver, make_pipeline
-    ) -> None:
+    def test_corrupt_cached_corpus_raises(self, tmp_path, literature_httpserver, make_pipeline) -> None:
         """A cached corpus file that cannot be parsed aborts the pipeline."""
         output_dir = tmp_path / "out"
         pipeline = make_pipeline(output_dir)
@@ -425,11 +380,7 @@ class TestFinalReport:
         assert "Concepts Mapped:** 6" in report_text
         assert "Patterns Identified:** 2" in report_text
 
-        summary = json.loads(
-            (tmp_path / "out" / "reports" / "analysis_summary.json").read_text(
-                encoding="utf-8"
-            )
-        )
+        summary = json.loads((tmp_path / "out" / "reports" / "analysis_summary.json").read_text(encoding="utf-8"))
         assert summary == results
 
 
@@ -447,9 +398,7 @@ class TestFigureRegistrationFailure:
         read_only.chmod(stat.S_IRUSR | stat.S_IXUSR)
         try:
             pipeline = make_pipeline(tmp_path / "out")
-            pipeline.figure_manager = FigureManager(
-                registry_file=str(read_only / "figure_registry.json")
-            )
+            pipeline.figure_manager = FigureManager(registry_file=str(read_only / "figure_registry.json"))
             with caplog.at_level("WARNING"):
                 results = pipeline.run_complete_analysis(max_publications=10)
         finally:
@@ -463,9 +412,7 @@ class TestFigureRegistrationFailure:
 class TestMainEntryPoint:
     """Tests for the module's command-line entry point."""
 
-    def test_main_runs_full_pipeline(
-        self, tmp_path, literature_httpserver, monkeypatch
-    ) -> None:
+    def test_main_runs_full_pipeline(self, tmp_path, literature_httpserver, monkeypatch) -> None:
         """main() honors CLI flags and produces the full artifact tree."""
         output_dir = tmp_path / "cli_out"
         registry_file = tmp_path / "cli_registry.json"
@@ -492,11 +439,7 @@ class TestMainEntryPoint:
 
         assert (output_dir / "reports" / "literature_analysis_report.md").exists()
         assert (output_dir / "reports" / "analysis_summary.json").exists()
-        summary = json.loads(
-            (output_dir / "reports" / "analysis_summary.json").read_text(
-                encoding="utf-8"
-            )
-        )
+        summary = json.loads((output_dir / "reports" / "analysis_summary.json").read_text(encoding="utf-8"))
         assert summary["pipeline_metadata"]["status"] == "completed"
         assert summary["pipeline_metadata"]["max_publications"] == 10
         assert summary["stages"]["literature_collection"]["publications_found"] >= 1

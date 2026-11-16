@@ -3,8 +3,8 @@
 Covers: DiscoursePattern, ArgumentativeStructure, DISCOURSE_MARKERS,
 identify_patterns_in_text, extract_argumentative_structure.
 """
-from __future__ import annotations
 
+from __future__ import annotations
 
 from analysis.discourse_patterns import (
     DISCOURSE_MARKERS,
@@ -200,10 +200,7 @@ class TestExtractArgumentativeStructure:
             "However this varies among different species.",
         ]
         result = extract_argumentative_structure(sentences)
-        assert any(
-            "however" in qualification.lower()
-            for qualification in result.qualification
-        )
+        assert any("however" in qualification.lower() for qualification in result.qualification)
 
     def test_word_boundary_marker_matching(self):
         """Markers must match whole words only: 'maybe' is not 'may'."""

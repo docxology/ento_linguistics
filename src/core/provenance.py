@@ -1,10 +1,12 @@
 """Content signatures for reproducible analyses, independent of file mtimes."""
+
 from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from .nltk_resources import nltk_resource_fingerprints
 
@@ -18,8 +20,9 @@ def records_sha256(records: Iterable[Any]) -> str:
     """
     digest = hashlib.sha256()
     for record in records:
-        payload = json.dumps(record, ensure_ascii=False, sort_keys=True,
-                             separators=(",", ":"), allow_nan=False).encode("utf-8")
+        payload = json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode(
+            "utf-8"
+        )
         digest.update(len(payload).to_bytes(8, "big"))
         digest.update(payload)
     return digest.hexdigest()
@@ -56,10 +59,12 @@ def analysis_signature() -> str:
 
 def _inventory(root: Path) -> list[Path]:
     """Include corpus files and analysis/figure artifacts, excluding receipts."""
-    paths = [*sorted((root / "data").glob("**/*.json")),
-             *sorted((root / "output" / "data").glob("*.json")),
-             *sorted((root / "output" / "figures").glob("*.png")),
-             *sorted((root / "output" / "figures").glob("*.json"))]
+    paths = [
+        *sorted((root / "data").glob("**/*.json")),
+        *sorted((root / "output" / "data").glob("*.json")),
+        *sorted((root / "output" / "figures").glob("*.png")),
+        *sorted((root / "output" / "figures").glob("*.json")),
+    ]
     return [path for path in paths if path.name != "analysis_manifest.json"]
 
 
@@ -77,9 +82,12 @@ def write_analysis_manifest(root: Path) -> dict[str, Any]:
     paths = _inventory(root)
     if not paths:
         raise ValueError("Cannot certify an empty analysis inventory")
-    manifest = {"schema": 2, "analysis_signature": analysis_signature(),
-                "nltk_resources": nltk_resource_fingerprints(),
-                "files": {str(path.relative_to(root)): files_sha256([path]) for path in paths}}
+    manifest = {
+        "schema": 2,
+        "analysis_signature": analysis_signature(),
+        "nltk_resources": nltk_resource_fingerprints(),
+        "files": {str(path.relative_to(root)): files_sha256([path]) for path in paths},
+    }
     target = root / "output" / "data" / "analysis_manifest.json"
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(".json.tmp")
@@ -97,8 +105,11 @@ def validate_analysis_manifest(root: Path) -> None:
     """
     target = root / "output" / "data" / "analysis_manifest.json"
     manifest = json.loads(target.read_text(encoding="utf-8"))
-    if (manifest.get("schema") != 2 or manifest.get("analysis_signature") != analysis_signature()
-            or manifest.get("nltk_resources") != nltk_resource_fingerprints()):
+    if (
+        manifest.get("schema") != 2
+        or manifest.get("analysis_signature") != analysis_signature()
+        or manifest.get("nltk_resources") != nltk_resource_fingerprints()
+    ):
         raise ValueError("Analysis implementation or NLTK resources changed; regenerate analyses")
     expected = manifest.get("files")
     if not isinstance(expected, dict) or not expected:
@@ -118,12 +129,16 @@ def validate_generated_artifacts(root: Path) -> None:
 
         validate_generated_artifacts(Path.cwd())
     """
+
     def reject_constant(value: str) -> None:
         raise ValueError(f"Non-finite JSON value: {value}")
 
     paths = sorted((root / "output" / "data").glob("*.json"))
-    paths += [path for path in (root / "data" / "bhl" / "era_term_usage.json",
-                                root / "data" / "corpus" / "arxiv_analysis.json") if path.exists()]
+    paths += [
+        path
+        for path in (root / "data" / "bhl" / "era_term_usage.json", root / "data" / "corpus" / "arxiv_analysis.json")
+        if path.exists()
+    ]
     if not paths:
         raise ValueError("No generated analysis JSON")
     for path in paths:
@@ -136,6 +151,7 @@ def validate_generated_artifacts(root: Path) -> None:
         raise ValueError("Empty or invalid figure registry")
     registered = set()
     from PIL import Image
+
     for label, entry in registry.items():
         filename = entry["filename"]
         if not isinstance(filename, str) or Path(filename).name != filename:

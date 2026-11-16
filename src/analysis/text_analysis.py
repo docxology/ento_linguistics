@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from collections import Counter
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -18,8 +18,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 
 __all__ = [
     "SCIENTIFIC_STOP_WORDS",
-    "TextProcessor",
     "LinguisticFeatureExtractor",
+    "TextProcessor",
 ]
 
 # Domain-specific stop words for scientific text
@@ -60,9 +60,7 @@ class TextProcessor:
     ensuring consistent tokenization and normalization across different text sources.
     """
 
-    def __init__(
-        self, language: str = "english", custom_stop_words: Optional[Set[str]] = None
-    ):
+    def __init__(self, language: str = "english", custom_stop_words: set[str] | None = None):
         """Initialize text processor.
 
         Args:
@@ -96,9 +94,7 @@ class TextProcessor:
 
         # Lowercased scientific terms, precomputed once: tokenize_words runs
         # per text, so rebuilding the lookup set per call was wasted work.
-        self._scientific_lower = frozenset(
-            term.lower() for term in self.scientific_terms
-        )
+        self._scientific_lower = frozenset(term.lower() for term in self.scientific_terms)
 
     def normalize_text(self, text: str, strip_punctuation: bool = True) -> str:
         """Normalize text for consistent processing.
@@ -130,7 +126,7 @@ class TextProcessor:
 
         return text
 
-    def tokenize_sentences(self, text: str) -> List[str]:
+    def tokenize_sentences(self, text: str) -> list[str]:
         """Split text into sentences.
 
         Args:
@@ -141,7 +137,7 @@ class TextProcessor:
         """
         return sent_tokenize(text)
 
-    def tokenize_words(self, text: str, preserve_scientific: bool = True) -> List[str]:
+    def tokenize_words(self, text: str, preserve_scientific: bool = True) -> list[str]:
         """Tokenize text into words with scientific term preservation.
 
         Args:
@@ -156,14 +152,11 @@ class TextProcessor:
 
         if preserve_scientific:
             # Preserve scientific terms: O(n) set-lookup per token
-            tokens = [
-                t if t.lower() not in self._scientific_lower else t.lower()
-                for t in tokens
-            ]
+            tokens = [t if t.lower() not in self._scientific_lower else t.lower() for t in tokens]
 
         return tokens
 
-    def remove_punctuation(self, tokens: List[str]) -> List[str]:
+    def remove_punctuation(self, tokens: list[str]) -> list[str]:
         """Remove punctuation from tokens.
 
         Clitic fragments produced by word-tokenizing contractions and
@@ -188,7 +181,7 @@ class TextProcessor:
                 clean_tokens.append(clean_token)
         return clean_tokens
 
-    def remove_stop_words(self, tokens: List[str]) -> List[str]:
+    def remove_stop_words(self, tokens: list[str]) -> list[str]:
         """Remove stop words from token list.
 
         Args:
@@ -199,7 +192,7 @@ class TextProcessor:
         """
         return [token for token in tokens if token.lower() not in self.stop_words]
 
-    def lemmatize_tokens(self, tokens: List[str]) -> List[str]:
+    def lemmatize_tokens(self, tokens: list[str]) -> list[str]:
         """Lemmatize tokens to base forms.
 
         Args:
@@ -210,9 +203,7 @@ class TextProcessor:
         """
         return [self.lemmatizer.lemmatize(token) for token in tokens]
 
-    def process_text(
-        self, text: str, lemmatize: bool = True, remove_stops: bool = True
-    ) -> List[str]:
+    def process_text(self, text: str, lemmatize: bool = True, remove_stops: bool = True) -> list[str]:
         """Complete text processing pipeline.
 
         Args:
@@ -244,9 +235,7 @@ class TextProcessor:
 
         return tokens
 
-    def extract_ngrams(
-        self, tokens: List[str], n: int = 2, min_freq: int = 1
-    ) -> Dict[str, int]:
+    def extract_ngrams(self, tokens: list[str], n: int = 2, min_freq: int = 1) -> dict[str, int]:
         """Extract n-grams from token list.
 
         Args:
@@ -263,11 +252,9 @@ class TextProcessor:
             ngrams.append(ngram)
 
         ngram_counts = Counter(ngrams)
-        return {
-            ngram: count for ngram, count in ngram_counts.items() if count >= min_freq
-        }
+        return {ngram: count for ngram, count in ngram_counts.items() if count >= min_freq}
 
-    def get_vocabulary_stats(self, texts: List[str]) -> Dict[str, Any]:
+    def get_vocabulary_stats(self, texts: list[str]) -> dict[str, Any]:
         """Compute vocabulary statistics across multiple texts.
 
         Args:
@@ -291,9 +278,7 @@ class TextProcessor:
             "total_tokens": len(all_tokens),
             "unique_tokens": len(vocab),
             "total_characters": total_chars,
-            "avg_token_length": (
-                sum(len(t) for t in all_tokens) / len(all_tokens) if all_tokens else 0
-            ),
+            "avg_token_length": (sum(len(t) for t in all_tokens) / len(all_tokens) if all_tokens else 0),
             "most_common_tokens": token_counts.most_common(20),
             "type_token_ratio": len(vocab) / len(all_tokens) if all_tokens else 0,
         }
@@ -330,7 +315,7 @@ class LinguisticFeatureExtractor:
             r"\b(value|worth|price|commodity)\b",
         ]
 
-    def extract_framing_features(self, text: str) -> Dict[str, int]:
+    def extract_framing_features(self, text: str) -> dict[str, int]:
         """Extract framing-related linguistic features.
 
         Args:
@@ -365,19 +350,13 @@ class LinguisticFeatureExtractor:
 
         # Calculate densities
         if features["total_words"] > 0:
-            features["anthropomorphic_density"] = (
-                features["anthropomorphic_terms"] / features["total_words"]
-            )
-            features["hierarchical_density"] = (
-                features["hierarchical_terms"] / features["total_words"]
-            )
-            features["economic_density"] = (
-                features["economic_terms"] / features["total_words"]
-            )
+            features["anthropomorphic_density"] = features["anthropomorphic_terms"] / features["total_words"]
+            features["hierarchical_density"] = features["hierarchical_terms"] / features["total_words"]
+            features["economic_density"] = features["economic_terms"] / features["total_words"]
 
         return features
 
-    def detect_terminology_patterns(self, tokens: List[str]) -> Dict[str, Any]:
+    def detect_terminology_patterns(self, tokens: list[str]) -> dict[str, Any]:
         """Detect patterns in terminology usage.
 
         Args:
@@ -401,7 +380,7 @@ class LinguisticFeatureExtractor:
                 and not tokens[i].endswith(".")
                 and not tokens[i + 1].startswith(".")
             ):
-                compound = f"{tokens[i]} {tokens[i+1]}"
+                compound = f"{tokens[i]} {tokens[i + 1]}"
                 patterns["compound_terms"].append(compound)
 
         # Find hyphenated terms
@@ -422,7 +401,7 @@ class LinguisticFeatureExtractor:
 
         return patterns
 
-    def analyze_sentence_complexity(self, text: str) -> Dict[str, float]:
+    def analyze_sentence_complexity(self, text: str) -> dict[str, float]:
         """Analyze sentence complexity features.
 
         Args:

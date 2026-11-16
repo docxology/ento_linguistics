@@ -6,11 +6,9 @@ used in Ento-Linguistic research.
 
 from __future__ import annotations
 
-from typing import List
-
 import pytest
-from analysis.discourse_analysis import (ArgumentativeStructure, DiscourseAnalyzer,
-                                    DiscoursePattern)
+
+from analysis.discourse_analysis import ArgumentativeStructure, DiscourseAnalyzer, DiscoursePattern
 
 
 class TestDiscoursePattern:
@@ -74,7 +72,7 @@ class TestDiscourseAnalyzer:
         return DiscourseAnalyzer()
 
     @pytest.fixture
-    def sample_texts(self) -> List[str]:
+    def sample_texts(self) -> list[str]:
         """Create sample texts for testing."""
         return [
             "Ants cooperate because it increases colony survival. However, some species show different behaviors.",
@@ -90,9 +88,7 @@ class TestDiscourseAnalyzer:
         assert "causation" in analyzer.DISCOURSE_MARKERS
         assert "contrast" in analyzer.DISCOURSE_MARKERS
 
-    def test_analyze_discourse_patterns(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str]
-    ) -> None:
+    def test_analyze_discourse_patterns(self, analyzer: DiscourseAnalyzer, sample_texts: list[str]) -> None:
         """Test discourse pattern analysis."""
         patterns = analyzer.analyze_discourse_patterns(sample_texts)
 
@@ -107,9 +103,7 @@ class TestDiscourseAnalyzer:
             assert pattern.frequency >= 0
             assert isinstance(pattern.domains, set)
 
-    def test_analyze_discourse_patterns_empty_input(
-        self, analyzer: DiscourseAnalyzer
-    ) -> None:
+    def test_analyze_discourse_patterns_empty_input(self, analyzer: DiscourseAnalyzer) -> None:
         """Test discourse pattern analysis with empty input."""
         patterns = analyzer.analyze_discourse_patterns([])
         assert isinstance(patterns, dict)
@@ -125,9 +119,7 @@ class TestDiscourseAnalyzer:
         # Should find causation and contrast patterns
         assert len(patterns) > 0
 
-    def test_analyze_argumentative_structures(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str]
-    ) -> None:
+    def test_analyze_argumentative_structures(self, analyzer: DiscourseAnalyzer, sample_texts: list[str]) -> None:
         """Test argumentative structure analysis."""
         structures = analyzer.analyze_argumentative_structures(sample_texts)
 
@@ -151,9 +143,7 @@ class TestDiscourseAnalyzer:
         assert isinstance(structure, ArgumentativeStructure)
         assert structure.claim or len(structure.evidence) > 0
 
-    def test_analyze_rhetorical_strategies(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str]
-    ) -> None:
+    def test_analyze_rhetorical_strategies(self, analyzer: DiscourseAnalyzer, sample_texts: list[str]) -> None:
         """Test rhetorical strategies analysis."""
         strategies = analyzer.analyze_rhetorical_strategies(sample_texts)
 
@@ -162,13 +152,11 @@ class TestDiscourseAnalyzer:
         assert len(strategies) > 0
 
         # Check for expected rhetorical elements
-        for strategy_name, analysis in strategies.items():
+        for analysis in strategies.values():
             assert isinstance(analysis, dict)
             assert "frequency" in analysis or "examples" in analysis
 
-    def test_identify_narrative_frameworks(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str]
-    ) -> None:
+    def test_identify_narrative_frameworks(self, analyzer: DiscourseAnalyzer, sample_texts: list[str]) -> None:
         """Test narrative framework identification."""
         frameworks = analyzer.identify_narrative_frameworks(sample_texts)
 
@@ -176,12 +164,10 @@ class TestDiscourseAnalyzer:
         # Should identify some narrative elements
         assert len(frameworks) >= 0
 
-        for framework_name, elements in frameworks.items():
+        for elements in frameworks.values():
             assert isinstance(elements, list)
 
-    def test_analyze_persuasive_techniques(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str]
-    ) -> None:
+    def test_analyze_persuasive_techniques(self, analyzer: DiscourseAnalyzer, sample_texts: list[str]) -> None:
         """Test persuasive techniques analysis."""
         techniques = analyzer.analyze_persuasive_techniques(sample_texts)
 
@@ -189,12 +175,10 @@ class TestDiscourseAnalyzer:
         # Should analyze persuasive elements
         assert len(techniques) > 0
 
-        for technique_name, analysis in techniques.items():
+        for analysis in techniques.values():
             assert isinstance(analysis, dict)
 
-    def test_create_discourse_profile(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str]
-    ) -> None:
+    def test_create_discourse_profile(self, analyzer: DiscourseAnalyzer, sample_texts: list[str]) -> None:
         """Test discourse profile creation."""
         profile = analyzer.create_discourse_profile(sample_texts)
 
@@ -214,9 +198,7 @@ class TestDiscourseAnalyzer:
             if key in profile:
                 assert isinstance(profile[key], (dict, list))
 
-    def test_create_discourse_profile_empty_input(
-        self, analyzer: DiscourseAnalyzer
-    ) -> None:
+    def test_create_discourse_profile_empty_input(self, analyzer: DiscourseAnalyzer) -> None:
         """Test discourse profile creation with empty input."""
         profile = analyzer.create_discourse_profile([])
 
@@ -224,9 +206,7 @@ class TestDiscourseAnalyzer:
         # Should handle empty input gracefully
         assert len(profile) >= 0
 
-    def test_compare_discourse_profiles(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str]
-    ) -> None:
+    def test_compare_discourse_profiles(self, analyzer: DiscourseAnalyzer, sample_texts: list[str]) -> None:
         """Test discourse profile comparison."""
         profile1 = analyzer.create_discourse_profile(sample_texts)
         profile2 = analyzer.create_discourse_profile(sample_texts[:2])  # Subset
@@ -237,9 +217,7 @@ class TestDiscourseAnalyzer:
         # Should contain comparison results
         assert len(comparison) >= 0
 
-    def test_export_discourse_analysis(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str], tmp_path
-    ) -> None:
+    def test_export_discourse_analysis(self, analyzer: DiscourseAnalyzer, sample_texts: list[str], tmp_path) -> None:
         """Test discourse analysis export."""
         profile = analyzer.create_discourse_profile(sample_texts)
         filepath = tmp_path / "discourse_analysis.json"
@@ -288,13 +266,9 @@ class TestDiscourseAnalyzer:
                 assert pattern.frequency >= 3
                 assert len(pattern.examples) >= 3
 
-        assert (
-            anthropomorphic_found
-        ), "Anthropomorphic framing pattern should be detected"
+        assert anthropomorphic_found, "Anthropomorphic framing pattern should be detected"
 
-    def test_argumentative_structure_extraction(
-        self, analyzer: DiscourseAnalyzer
-    ) -> None:
+    def test_argumentative_structure_extraction(self, analyzer: DiscourseAnalyzer) -> None:
         """Test detailed argumentative structure extraction."""
         text = "Ant colonies succeed because they cooperate. This is clearly shown in field studies."
 
@@ -328,7 +302,7 @@ class TestDiscourseAnalysisIntegration:
         return DiscourseAnalyzer()
 
     @pytest.fixture
-    def sample_texts(self) -> List[str]:
+    def sample_texts(self) -> list[str]:
         """Create sample texts for testing."""
         return [
             "Ants cooperate because it increases colony survival. However, some species show different behaviors.",
@@ -385,19 +359,14 @@ class TestDiscourseAnalysisIntegration:
         """Test handling of larger text corpora."""
         analyzer = DiscourseAnalyzer()
 
-        texts = [
-            f"Ant behavior pattern {i}: cooperation because survival."
-            for i in range(10)
-        ]
+        texts = [f"Ant behavior pattern {i}: cooperation because survival." for i in range(10)]
 
         profile = analyzer.create_discourse_profile(texts)
 
         assert isinstance(profile, dict)
         assert len(profile) > 0
 
-    def test_export_discourse_analysis(
-        self, analyzer: DiscourseAnalyzer, sample_texts: List[str], tmp_path
-    ) -> None:
+    def test_export_discourse_analysis(self, analyzer: DiscourseAnalyzer, sample_texts: list[str], tmp_path) -> None:
         """Test discourse analysis export."""
         profile = analyzer.create_discourse_profile(sample_texts)
         filepath = tmp_path / "discourse_analysis.json"
@@ -421,24 +390,30 @@ class TestDiscourseAnalysisIntegration:
 def rich_texts():
     """Create rich sample texts with discourse markers and framing language."""
     return [
-        "The queen bee therefore orchestrates the colony's division of labor. "
-        "However, worker bees demonstrate remarkable autonomy in foraging decisions. "
-        "Furthermore, the evidence shows that pheromone signaling shapes colony behavior. "
-        "This suggests that ant colonies function as superorganisms with emergent intelligence. "
-        "Moreover, recent studies indicate that insect communication is more complex than previously assumed. "
-        "In conclusion, these findings support the hypothesis that social insects exhibit collective cognition.",
-        "Studies demonstrate that honeybee dance language communicates precise spatial information. "
-        "Similarly, ant trail pheromones create self-organizing networks. "
-        "Nevertheless, the mechanistic basis of these behaviors remains poorly understood. "
-        "The results indicate that colony-level optimization emerges from simple individual rules. "
-        "Specifically, each worker responds to local signals without global knowledge. "
-        "Consequently, the swarm intelligence paradigm has transformed our understanding of insect societies.",
-        "The data confirm that termite mounds regulate temperature through architectural design. "
-        "In contrast, wasp nests rely on behavioral thermoregulation by workers. "
-        "These observations imply that different insect lineages evolved convergent solutions. "
-        "The evidence suggests that natural selection has shaped collective building instincts. "
-        "Additionally, the holistic framework reveals interconnections between insect behavior and ecology. "
-        "Thus, an anthropomorphic interpretation of insect intelligence may obscure biological mechanisms.",
+        (
+            "The queen bee therefore orchestrates the colony's division of labor. "
+            "However, worker bees demonstrate remarkable autonomy in foraging decisions. "
+            "Furthermore, the evidence shows that pheromone signaling shapes colony behavior. "
+            "This suggests that ant colonies function as superorganisms with emergent intelligence. "
+            "Moreover, recent studies indicate that insect communication is more complex than previously assumed. "
+            "In conclusion, these findings support the hypothesis that social insects exhibit collective cognition."
+        ),
+        (
+            "Studies demonstrate that honeybee dance language communicates precise spatial information. "
+            "Similarly, ant trail pheromones create self-organizing networks. "
+            "Nevertheless, the mechanistic basis of these behaviors remains poorly understood. "
+            "The results indicate that colony-level optimization emerges from simple individual rules. "
+            "Specifically, each worker responds to local signals without global knowledge. "
+            "Consequently, the swarm intelligence paradigm has transformed our understanding of insect societies."
+        ),
+        (
+            "The data confirm that termite mounds regulate temperature through architectural design. "
+            "In contrast, wasp nests rely on behavioral thermoregulation by workers. "
+            "These observations imply that different insect lineages evolved convergent solutions. "
+            "The evidence suggests that natural selection has shaped collective building instincts. "
+            "Additionally, the holistic framework reveals interconnections between insect behavior and ecology. "
+            "Thus, an anthropomorphic interpretation of insect intelligence may obscure biological mechanisms."
+        ),
     ]
 
 
@@ -452,7 +427,7 @@ class TestQuantifyRhetoricalPatterns:
     def test_basic_quantification(self, analyzer, rich_texts):
         result = analyzer.quantify_rhetorical_patterns(rich_texts)
         assert isinstance(result, dict)
-        for key, val in result.items():
+        for val in result.values():
             assert "total_occurrences" in val
             assert "text_coverage" in val
             assert "heuristic_frequency_index" in val
@@ -460,7 +435,7 @@ class TestQuantifyRhetoricalPatterns:
 
     def test_effectiveness_score_bounded(self, analyzer, rich_texts):
         result = analyzer.quantify_rhetorical_patterns(rich_texts)
-        for key, val in result.items():
+        for val in result.values():
             assert 0 <= val["heuristic_frequency_index"] <= 1.0
             assert 0 <= val["heuristic_persuasiveness_index"] <= 1.0
 
@@ -479,7 +454,7 @@ class TestScoreArgumentativeStructures:
     def test_basic_scoring(self, analyzer, rich_texts):
         result = analyzer.score_argumentative_structures(rich_texts)
         assert isinstance(result, dict)
-        for key, val in result.items():
+        for val in result.values():
             assert "claim_strength" in val
             assert "evidence_quality" in val
             assert "reasoning_coherence" in val
@@ -488,13 +463,13 @@ class TestScoreArgumentativeStructures:
 
     def test_overall_strength_is_average(self, analyzer, rich_texts):
         result = analyzer.score_argumentative_structures(rich_texts)
-        for key, val in result.items():
+        for val in result.values():
             expected = (val["claim_strength"] + val["evidence_quality"] + val["reasoning_coherence"]) / 3
             assert abs(val["overall_strength"] - expected) < 0.001
 
     def test_scores_bounded(self, analyzer, rich_texts):
         result = analyzer.score_argumentative_structures(rich_texts)
-        for key, val in result.items():
+        for val in result.values():
             assert 0 <= val["claim_strength"] <= 1.0
             assert 0 <= val["evidence_quality"] <= 1.0
             assert 0 <= val["reasoning_coherence"] <= 1.0
@@ -510,7 +485,7 @@ class TestAnalyzeNarrativeFrequency:
     def test_basic_analysis(self, analyzer, rich_texts):
         result = analyzer.analyze_narrative_frequency(rich_texts)
         assert isinstance(result, dict)
-        for key, val in result.items():
+        for val in result.values():
             assert "frequency" in val
             assert "coverage_percentage" in val
             assert "average_text_length" in val
@@ -519,12 +494,12 @@ class TestAnalyzeNarrativeFrequency:
 
     def test_coverage_bounded(self, analyzer, rich_texts):
         result = analyzer.analyze_narrative_frequency(rich_texts)
-        for key, val in result.items():
+        for val in result.values():
             assert 0 <= val["coverage_percentage"] <= 100
 
     def test_examples_limited(self, analyzer, rich_texts):
         result = analyzer.analyze_narrative_frequency(rich_texts)
-        for key, val in result.items():
+        for val in result.values():
             assert len(val.get("examples", [])) <= 3
 
 
@@ -538,7 +513,7 @@ class TestMeasurePersuasiveEffectiveness:
     def test_basic_measurement(self, analyzer, rich_texts):
         result = analyzer.measure_persuasive_effectiveness(rich_texts)
         assert isinstance(result, dict)
-        for key, val in result.items():
+        for val in result.values():
             assert "usage_frequency" in val
             assert "context_relevance" in val
             assert "heuristic_impact_index" in val
@@ -546,7 +521,7 @@ class TestMeasurePersuasiveEffectiveness:
 
     def test_impact_bounded(self, analyzer, rich_texts):
         result = analyzer.measure_persuasive_effectiveness(rich_texts)
-        for key, val in result.items():
+        for val in result.values():
             assert 0 <= val["heuristic_impact_index"] <= 1.0
 
 
@@ -562,7 +537,7 @@ class TestAnalyzeTermUsageContext:
         result = analyzer.analyze_term_usage_context(terms, rich_texts)
         assert isinstance(result, dict)
         if result:
-            for term, data in result.items():
+            for data in result.values():
                 assert "total_occurrences" in data
                 assert "context_diversity" in data
                 assert "context_types" in data
@@ -607,7 +582,7 @@ class TestTrackConceptualShifts:
 
     def test_shift_structure(self, analyzer, rich_texts):
         result = analyzer.track_conceptual_shifts(rich_texts)
-        for key, shift_data in result.items():
+        for shift_data in result.values():
             assert "pattern_shifts" in shift_data
             assert "overall_shift_intensity" in shift_data
             assert "significant_shifts" in shift_data
@@ -634,14 +609,12 @@ class TestQuantifyFramingEffects:
         assert isinstance(result, dict)
 
     def test_custom_framing_concepts(self, analyzer, rich_texts):
-        result = analyzer.quantify_framing_effects(
-            rich_texts, framing_concepts=["anthropomorphic", "mechanistic"]
-        )
+        result = analyzer.quantify_framing_effects(rich_texts, framing_concepts=["anthropomorphic", "mechanistic"])
         assert isinstance(result, dict)
 
     def test_framing_structure(self, analyzer, rich_texts):
         result = analyzer.quantify_framing_effects(rich_texts)
-        for concept, data in result.items():
+        for data in result.values():
             assert "framing_strength" in data
             assert "consistency_score" in data
             assert "affected_texts" in data
@@ -649,7 +622,5 @@ class TestQuantifyFramingEffects:
 
     def test_framing_strength_bounded(self, analyzer, rich_texts):
         result = analyzer.quantify_framing_effects(rich_texts)
-        for concept, data in result.items():
+        for data in result.values():
             assert 0 <= data["framing_strength"] <= 1.0
-
-

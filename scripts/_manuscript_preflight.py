@@ -4,6 +4,7 @@
 Validates that referenced figures exist, glossary markers are present,
 and references boilerplate is intact before PDF rendering.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -12,7 +13,6 @@ import re
 import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import List, Tuple
 
 # Ensure src/ is at the FRONT of sys.path so project core/ isn't shadowed
 # by infrastructure/core/ when PYTHONPATH includes infrastructure/
@@ -22,10 +22,8 @@ if src_path in sys.path:
     sys.path.remove(src_path)
 sys.path.insert(0, src_path)
 
-from core.validation_utils import (validate_markdown, validate_pdf_rendering,
-                               verify_output_integrity)
-
 from core.logging import get_logger
+from core.validation_utils import validate_markdown, validate_pdf_rendering, verify_output_integrity
 
 logger = get_logger(__name__)
 
@@ -51,24 +49,20 @@ GLOSSARY_END = "<!-- END: AUTO-API-GLOSSARY -->"
 
 @dataclass
 class CheckResult:
-    missing_figures: List[str]
+    missing_figures: list[str]
     missing_glossary_markers: bool
     missing_references_block: bool
 
     def is_clean(self) -> bool:
-        return (
-            not self.missing_figures
-            and not self.missing_glossary_markers
-            and not self.missing_references_block
-        )
+        return not self.missing_figures and not self.missing_glossary_markers and not self.missing_references_block
 
 
-def _find_markdown_files(manuscript_dir: Path) -> List[Path]:
+def _find_markdown_files(manuscript_dir: Path) -> list[Path]:
     return sorted(f for f in manuscript_dir.glob("*.md") if f.is_file())
 
 
-def _collect_figure_paths(markdown_files: List[Path]) -> List[Tuple[Path, str]]:
-    found: List[Tuple[Path, str]] = []
+def _collect_figure_paths(markdown_files: list[Path]) -> list[tuple[Path, str]]:
+    found: list[tuple[Path, str]] = []
     for md_file in markdown_files:
         for line in md_file.read_text(encoding="utf-8").splitlines():
             match = FIGURE_PATTERN.search(line)
@@ -81,7 +75,7 @@ def run_checks(manuscript_dir: Path) -> CheckResult:
     markdown_files = _find_markdown_files(manuscript_dir)
 
     figure_refs = _collect_figure_paths(markdown_files)
-    missing_figs: List[str] = []
+    missing_figs: list[str] = []
     for md_file, ref in figure_refs:
         # Figure refs are written relative to the legacy project/manuscript/
         # location ("../output/figures/..."); resolve against the project
@@ -97,17 +91,11 @@ def run_checks(manuscript_dir: Path) -> CheckResult:
             missing_figs.append(f"{md_file.name}: {ref}")
 
     glossary_path = manuscript_dir / "98_symbols_glossary.md"
-    glossary_text = (
-        glossary_path.read_text(encoding="utf-8") if glossary_path.exists() else ""
-    )
-    missing_glossary = not (
-        GLOSSARY_BEGIN in glossary_text and GLOSSARY_END in glossary_text
-    )
+    glossary_text = glossary_path.read_text(encoding="utf-8") if glossary_path.exists() else ""
+    missing_glossary = not (GLOSSARY_BEGIN in glossary_text and GLOSSARY_END in glossary_text)
 
     references_path = manuscript_dir / "99_references.md"
-    references_text = (
-        references_path.read_text(encoding="utf-8") if references_path.exists() else ""
-    )
+    references_text = references_path.read_text(encoding="utf-8") if references_path.exists() else ""
     missing_references_block = "\\bibliography{references}" not in references_text
 
     return CheckResult(
@@ -117,7 +105,7 @@ def run_checks(manuscript_dir: Path) -> CheckResult:
     )
 
 
-def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run manuscript preflight checks.")
     parser.add_argument(
         "--manuscript-dir",
@@ -141,16 +129,14 @@ def _parse_args(argv: List[str] | None = None) -> argparse.Namespace:
 def main() -> None:
     args = _parse_args()
     result = run_checks(args.manuscript_dir)
-    validation_messages: List[str] = []
+    validation_messages: list[str] = []
 
     # Run additional validation passes
     try:
         markdown_result = validate_markdown(str(args.manuscript_dir), ".")
         markdown_issues = markdown_result.get("issues") or []
         if markdown_issues:
-            validation_messages.append(
-                f"Markdown validation issues: {len(markdown_issues)}"
-            )
+            validation_messages.append(f"Markdown validation issues: {len(markdown_issues)}")
     except Exception as exc:
         validation_messages.append(f"Markdown validation skipped: {exc}")
 
@@ -179,9 +165,7 @@ def main() -> None:
     if args.json:
         payload = asdict(result)
         payload["validation_messages"] = validation_messages
-        print(
-            json.dumps(payload, indent=2)
-        )  # Keep JSON output as-is for machine consumption
+        print(json.dumps(payload, indent=2))  # Keep JSON output as-is for machine consumption
     else:
         logger.info(f"Manuscript dir: {args.manuscript_dir}")
         if result.missing_figures:

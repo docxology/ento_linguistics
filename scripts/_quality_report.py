@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate a comprehensive quality report using infrastructure modules."""
+
 from __future__ import annotations
 
 import argparse
@@ -18,8 +19,7 @@ sys.path.insert(0, src_path)
 # Try to import build modules (may not exist)
 try:
     from infrastructure.build.quality_checker import analyze_document_quality
-    from infrastructure.build.reproducibility import \
-        generate_reproducibility_report
+    from infrastructure.build.reproducibility import generate_reproducibility_report
 
     _BUILD_MODULES_AVAILABLE = True
 except (ImportError, ModuleNotFoundError):
@@ -40,9 +40,8 @@ except (ImportError, ModuleNotFoundError):
 
 
 from core.logging import get_logger, log_substep
-from pipeline.reporting import (generate_pipeline_report,
-                              get_error_aggregator, save_pipeline_report)
 from core.validation_utils import validate_markdown, verify_output_integrity
+from pipeline.reporting import generate_pipeline_report, get_error_aggregator, save_pipeline_report
 
 logger = get_logger(__name__)
 
@@ -74,9 +73,7 @@ def main() -> None:
     markdown_issues = {}
     try:
         markdown_issues = validate_markdown(str(args.manuscript_dir), ".")
-        log_substep(
-            f"Markdown validation: {markdown_issues.get('status', 'unknown')}", logger
-        )
+        log_substep(f"Markdown validation: {markdown_issues.get('status', 'unknown')}", logger)
     except Exception as exc:
         error_agg["validation_errors"] = error_agg.get("validation_errors", [])
         error_agg["validation_errors"].append(

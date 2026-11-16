@@ -44,9 +44,9 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 __all__ = [
     "DEFAULT_MAILTO",
@@ -68,7 +68,7 @@ _RETRY_BACKOFF_S = 2.0
 
 def _utcnow() -> str:
     """Current UTC timestamp in ISO-8601 format."""
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+    return datetime.now(UTC).isoformat(timespec="seconds")
 
 
 def _sleep(seconds: float) -> None:
@@ -77,7 +77,7 @@ def _sleep(seconds: float) -> None:
         time.sleep(seconds)
 
 
-def collect_doi_records(corpus_dir: Path) -> Dict[str, Dict[str, Any]]:
+def collect_doi_records(corpus_dir: Path) -> dict[str, dict[str, Any]]:
     """Collect DOI-bearing corpus records from ``provenance.json``.
 
     Args:
@@ -87,10 +87,8 @@ def collect_doi_records(corpus_dir: Path) -> Dict[str, Dict[str, Any]]:
         Mapping of abstract SHA-256 (as used in ``provenance.json``) to
         ``{"doi": ..., "title": ...}`` for every record that has a DOI.
     """
-    provenance = json.loads(
-        (corpus_dir / "provenance.json").read_text(encoding="utf-8")
-    )
-    doi_records: Dict[str, Dict[str, Any]] = {}
+    provenance = json.loads((corpus_dir / "provenance.json").read_text(encoding="utf-8"))
+    doi_records: dict[str, dict[str, Any]] = {}
     for sha256, record in provenance.get("records", {}).items():
         doi = (record.get("doi") or "").strip()
         if doi:
@@ -103,7 +101,7 @@ def fetch_openalex_work(
     mailto: str = DEFAULT_MAILTO,
     base_url: str = OPENALEX_API,
     timeout: float = 30.0,
-) -> Optional[Dict[str, Any]]:
+) -> dict[str, Any] | None:
     """Fetch one OpenAlex work by DOI.
 
     Args:
@@ -120,10 +118,8 @@ def fetch_openalex_work(
         urllib.error.HTTPError / URLError: On non-404 failure after retries.
     """
     url = f"{base_url}{doi}?mailto={mailto}"
-    request = urllib.request.Request(
-        url, headers={"User-Agent": f"EntoLinguisticResearch/1.0 (mailto:{mailto})"}
-    )
-    last_error: Optional[Exception] = None
+    request = urllib.request.Request(url, headers={"User-Agent": f"EntoLinguisticResearch/1.0 (mailto:{mailto})"})
+    last_error: Exception | None = None
     for attempt in range(_RETRIES):
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
@@ -140,7 +136,7 @@ def fetch_openalex_work(
     raise last_error
 
 
-def parse_openalex_work(work: Dict[str, Any]) -> Dict[str, Any]:
+def parse_openalex_work(work: dict[str, Any]) -> dict[str, Any]:
     """Extract the enrichment fields we keep from an OpenAlex work payload.
 
     Args:
@@ -166,14 +162,14 @@ def parse_openalex_work(work: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def enrich_corpus(
-    corpus_dir: Optional[Path] = None,
-    output_path: Optional[Path] = None,
+    corpus_dir: Path | None = None,
+    output_path: Path | None = None,
     mailto: str = DEFAULT_MAILTO,
     base_url: str = OPENALEX_API,
     sleep_s: float = 0.2,
-    limit: Optional[int] = None,
+    limit: int | None = None,
     dry_run: bool = False,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Enrich all DOI-bearing corpus records with OpenAlex metadata.
 
     Resumable: SHA-256 keys already present in the output file are skipped and
@@ -200,16 +196,12 @@ def enrich_corpus(
 
     doi_records = collect_doi_records(corpus_dir)
 
-    existing: Dict[str, Dict[str, Any]] = {}
+    existing: dict[str, dict[str, Any]] = {}
     if output_path.exists():
         existing = json.loads(output_path.read_text(encoding="utf-8"))
 
-    pending = {
-        k: v
-        for k, v in doi_records.items()
-        if k not in existing or existing[k].get("status") == "error"
-    }
-    summary: Dict[str, Any] = {
+    pending = {k: v for k, v in doi_records.items() if k not in existing or existing[k].get("status") == "error"}
+    summary: dict[str, Any] = {
         "total_doi_records": len(doi_records),
         "already_fetched": len(doi_records) - len(pending),
         "fetched": 0,
@@ -222,7 +214,7 @@ def enrich_corpus(
         summary["pending"] = len(pending)
         return summary
 
-    metadata: Dict[str, Dict[str, Any]] = dict(existing)
+    metadata: dict[str, dict[str, Any]] = dict(existing)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     for index, (sha256, info) in enumerate(pending.items()):
@@ -253,9 +245,7 @@ def enrich_corpus(
                 metadata[sha256] = entry
                 summary["fetched"] += 1
         # Rewrite after every record so an interrupted run stays resumable.
-        output_path.write_text(
-            json.dumps(metadata, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
+        output_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         if index < len(pending) - 1:
             _sleep(sleep_s)
 
@@ -263,11 +253,9 @@ def enrich_corpus(
     return summary
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point for OpenAlex citation enrichment."""
-    parser = argparse.ArgumentParser(
-        description="Enrich corpus DOIs with OpenAlex citation metadata."
-    )
+    parser = argparse.ArgumentParser(description="Enrich corpus DOIs with OpenAlex citation metadata.")
     parser.add_argument(
         "--limit",
         type=int,

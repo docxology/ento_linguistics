@@ -13,11 +13,12 @@ manager), so the font floor is genuinely enforced rather than merely claimed.
 """
 
 from __future__ import annotations
-from contextlib import contextmanager
-from pathlib import Path
 
 import functools
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional
+from collections.abc import Iterable
+from contextlib import contextmanager
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 import matplotlib.pyplot as plt
 import matplotlib.text
@@ -28,18 +29,18 @@ if TYPE_CHECKING:
     from matplotlib.transforms import Bbox
 
 __all__ = [
-    "MIN_FONT",
     "CANONICAL_DOMAINS",
+    "DOMAIN_DISPLAY_NAMES",
     "DOMAIN_PALETTE",
     "FALLBACK_COLOR",
+    "LABEL_OFFSETS",
+    "MIN_FONT",
     "STYLE_CONFIG",
-    "DOMAIN_DISPLAY_NAMES",
     "WORD_FORMATION_LABELS",
+    "classify_word_formation",
     "domain_display_name",
     "ordered_domains",
-    "classify_word_formation",
     "place_labels",
-    "LABEL_OFFSETS",
     "publication_style",
     "save_and_verify",
 ]
@@ -49,7 +50,7 @@ __all__ = [
 MIN_FONT: float = 16.0
 
 # The six canonical Ento-Linguistic domains, in manuscript display order.
-CANONICAL_DOMAINS: List[str] = [
+CANONICAL_DOMAINS: list[str] = [
     "unit_of_individuality",
     "behavior_and_identity",
     "power_and_labor",
@@ -59,7 +60,7 @@ CANONICAL_DOMAINS: List[str] = [
 ]
 
 # Canonical display names (manuscript style) keyed by internal domain key.
-DOMAIN_DISPLAY_NAMES: Dict[str, str] = {
+DOMAIN_DISPLAY_NAMES: dict[str, str] = {
     "unit_of_individuality": "Unit of Individuality",
     "behavior_and_identity": "Behavior & Identity",
     "power_and_labor": "Power & Labor",
@@ -87,25 +88,21 @@ def domain_display_name(key: str, wrap: bool = False) -> str:
     """
     name = DOMAIN_DISPLAY_NAMES.get(key)
     if name is None:
-        words = [
-            _SMALL_WORDS.get(w, w.capitalize()) for w in str(key).split("_") if w
-        ]
+        words = [_SMALL_WORDS.get(w, w.capitalize()) for w in str(key).split("_") if w]
         name = " ".join(words)
     if wrap:
         name = name.replace(" & ", " &\n").replace(" of ", " of\n")
     return name
 
 
-def ordered_domains(domains: Iterable[str]) -> List[str]:
+def ordered_domains(domains: Iterable[str]) -> list[str]:
     """Order domain keys canonically first, then any extras alphabetically."""
     present = set(domains)
-    return [d for d in CANONICAL_DOMAINS if d in present] + sorted(
-        d for d in present if d not in CANONICAL_DOMAINS
-    )
+    return [d for d in CANONICAL_DOMAINS if d in present] + sorted(d for d in present if d not in CANONICAL_DOMAINS)
 
 
 # One label vocabulary for surface word-formation classes.
-WORD_FORMATION_LABELS: List[str] = [
+WORD_FORMATION_LABELS: list[str] = [
     "Single word",
     "Multiword phrase",
     "Hyphenated compound",
@@ -140,7 +137,7 @@ def classify_word_formation(text: str) -> str:
 
 
 # Single shared domain palette keyed by canonical domain names.
-DOMAIN_PALETTE: Dict[str, str] = {
+DOMAIN_PALETTE: dict[str, str] = {
     "unit_of_individuality": "#0072B2",
     "behavior_and_identity": "#E69F00",
     "power_and_labor": "#009E73",
@@ -153,7 +150,7 @@ DOMAIN_PALETTE: Dict[str, str] = {
 FALLBACK_COLOR: str = "#7f7f7f"
 
 # Publication style applied to every figure path. All font sizes >= MIN_FONT.
-STYLE_CONFIG: Dict[str, Any] = {
+STYLE_CONFIG: dict[str, Any] = {
     "font.size": MIN_FONT,
     "axes.labelsize": MIN_FONT,
     "axes.titlesize": MIN_FONT + 2,
@@ -166,26 +163,32 @@ STYLE_CONFIG: Dict[str, Any] = {
 
 
 #: Candidate label offsets (dx, dy in points, ha, va), tried in order.
-LABEL_OFFSETS: List[tuple] = [
-    (8, 6, "left", "bottom"), (8, -6, "left", "top"),
-    (-8, 6, "right", "bottom"), (-8, -6, "right", "top"),
-    (0, 12, "center", "bottom"), (0, -12, "center", "top"),
-    (16, 0, "left", "center"), (-16, 0, "right", "center"),
-    (22, 16, "left", "bottom"), (-22, 16, "right", "bottom"),
-    (22, -16, "left", "top"), (-22, -16, "right", "top"),
+LABEL_OFFSETS: list[tuple] = [
+    (8, 6, "left", "bottom"),
+    (8, -6, "left", "top"),
+    (-8, 6, "right", "bottom"),
+    (-8, -6, "right", "top"),
+    (0, 12, "center", "bottom"),
+    (0, -12, "center", "top"),
+    (16, 0, "left", "center"),
+    (-16, 0, "right", "center"),
+    (22, 16, "left", "bottom"),
+    (-22, 16, "right", "bottom"),
+    (22, -16, "left", "top"),
+    (-22, -16, "right", "top"),
 ]
 
 
 def place_labels(
     ax: Axes,
     specs: Iterable[tuple[str, tuple[float, float]]],
-    offsets: Optional[Iterable[tuple[float, float, str, str]]] = None,
+    offsets: Iterable[tuple[float, float, str, str]] | None = None,
     *,
-    avoid_points: Optional[Iterable[tuple[float, float]]] = None,
-    avoid_boxes: Optional[Iterable[Bbox]] = None,
+    avoid_points: Iterable[tuple[float, float]] | None = None,
+    avoid_boxes: Iterable[Bbox] | None = None,
     drop_on_fail: bool = False,
     **text_kw: Any,
-) -> List[Optional[Annotation]]:
+) -> list[Annotation | None]:
     """Place text labels next to points without overlaps (deterministic).
 
     For each ``(text, (x, y))`` spec, in priority order, the candidate
@@ -224,8 +227,14 @@ def place_labels(
         best_hits = None
         for dx, dy, ha, va in offsets:
             ann = ax.annotate(
-                text, xy, xytext=(dx, dy), textcoords="offset points",
-                ha=ha, va=va, zorder=6, **text_kw,
+                text,
+                xy,
+                xytext=(dx, dy),
+                textcoords="offset points",
+                ha=ha,
+                va=va,
+                zorder=6,
+                **text_kw,
             )
             ann.update_positions(renderer)
             # Text-only box (Annotation.get_window_extent would include any
@@ -236,7 +245,8 @@ def place_labels(
             if box.x0 < axbox.x0 or box.x1 > axbox.x1 or box.y1 > axbox.y1 or box.y0 < axbox.y0:
                 hits += 1
             hits += sum(
-                1 for (mx, my) in points
+                1
+                for (mx, my) in points
                 if abs(mx - own[0]) + abs(my - own[1]) > 1.0
                 and box.x0 - 4 <= mx <= box.x1 + 4
                 and box.y0 - 4 <= my <= box.y1 + 4
@@ -264,7 +274,7 @@ def place_labels(
     return result
 
 
-def primary_domain(domains: Optional[Iterable[str]]) -> Optional[str]:
+def primary_domain(domains: Iterable[str] | None) -> str | None:
     """Deterministically pick the primary domain from a membership iterable.
 
     Selection is ``sorted(domains)[0]``, so the result is independent of set
@@ -278,11 +288,11 @@ def primary_domain(domains: Optional[Iterable[str]]) -> Optional[str]:
     """
     if not domains:
         return None
-    return sorted(domains)[0]
+    return min(domains)
 
 
 @contextmanager
-def publication_rc(extra: Optional[Dict[str, Any]] = None):
+def publication_rc(extra: dict[str, Any] | None = None):
     """Apply the shared publication style as a scoped ``rc_context`` block.
 
     Args:
@@ -317,7 +327,7 @@ def publication_style(func):
     return wrapper
 
 
-def save_and_verify(fig: "plt.Figure", filepath, dpi: int = 300) -> int:
+def save_and_verify(fig: plt.Figure, filepath, dpi: int = 300) -> int:
     """Save *fig* to *filepath* and verify the write landed.
 
     Shared save-and-verify pattern: the file must exist and be non-empty

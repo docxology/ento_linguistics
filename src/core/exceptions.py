@@ -1,10 +1,10 @@
 """Custom exceptions for the Ento-Linguistic Research Project."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 __all__ = [
-    "ValidationError",
     "EntoLinguisticsError",
+    "ValidationError",
 ]
 
 
@@ -18,8 +18,8 @@ class ValidationError(EntoLinguisticsError):
     def __init__(
         self,
         message: str,
-        context: Optional[Dict[str, Any]] = None,
-        suggestions: Optional[List[str]] = None,
+        context: dict[str, Any] | None = None,
+        suggestions: list[str] | None = None,
     ):
         """Initialize validation error.
 

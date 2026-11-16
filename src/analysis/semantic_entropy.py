@@ -10,8 +10,9 @@ signaling potential for miscommunication in scientific discourse.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field, fields as dataclass_fields
-from typing import Any, Dict, List, Optional
+from dataclasses import dataclass, field
+from dataclasses import fields as dataclass_fields
+from typing import Any
 
 import numpy as np
 from scipy.stats import entropy as scipy_entropy
@@ -21,8 +22,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 __all__ = [
     "HIGH_ENTROPY_THRESHOLD",
     "SemanticEntropyResult",
-    "calculate_semantic_entropy",
     "calculate_corpus_entropy",
+    "calculate_semantic_entropy",
     "get_high_entropy_terms",
 ]
 
@@ -71,15 +72,15 @@ class SemanticEntropyResult:
     term: str
     entropy_bits: float
     n_clusters: int
-    cluster_distribution: List[float] = field(default_factory=list)
+    cluster_distribution: list[float] = field(default_factory=list)
     is_high_entropy: bool = False
     n_contexts: int = 0
     entropy_normalized: float = 0.0
     h_max: float = 0.0
     status: str = "ok"
-    error: Optional[str] = None
+    error: str | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
             "term": self.term,
@@ -95,7 +96,7 @@ class SemanticEntropyResult:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "SemanticEntropyResult":
+    def from_dict(cls, data: dict[str, Any]) -> SemanticEntropyResult:
         """Create from dictionary.
 
         Tolerates serialized payloads that predate the normalized-entropy
@@ -107,7 +108,7 @@ class SemanticEntropyResult:
 
 def calculate_semantic_entropy(
     term: str,
-    contexts: List[str],
+    contexts: list[str],
     max_clusters: int = 5,
     min_contexts: int = 5,
     random_state: int = 42,
@@ -210,10 +211,12 @@ def calculate_semantic_entropy(
         # expected; fallback gracefully without masking other errors.
         # TODO: unify with core.logging.get_logger once logging is standardized
         import logging
+
         logging.getLogger(__name__).warning(
-            "Semantic entropy calculation failed for term '%s' (%d contexts): %s. "
-            "Returning zero entropy fallback.",
-            term, len(valid_contexts), str(e)
+            "Semantic entropy calculation failed for term '%s' (%d contexts): %s. Returning zero entropy fallback.",
+            term,
+            len(valid_contexts),
+            str(e),
         )
         return SemanticEntropyResult(
             term=term,
@@ -228,12 +231,12 @@ def calculate_semantic_entropy(
 
 
 def calculate_corpus_entropy(
-    terms_contexts: Dict[str, List[str]],
+    terms_contexts: dict[str, list[str]],
     max_clusters: int = 5,
     min_contexts: int = 5,
     random_state: int = 42,
     threshold: float = HIGH_ENTROPY_THRESHOLD,
-) -> Dict[str, SemanticEntropyResult]:
+) -> dict[str, SemanticEntropyResult]:
     """Calculate semantic entropy for all terms in a corpus.
 
     Args:
@@ -260,8 +263,8 @@ def calculate_corpus_entropy(
 
 
 def get_high_entropy_terms(
-    results: Dict[str, SemanticEntropyResult],
-) -> List[SemanticEntropyResult]:
+    results: dict[str, SemanticEntropyResult],
+) -> list[SemanticEntropyResult]:
     """Filter to only high-entropy (ambiguous) terms.
 
     Args:

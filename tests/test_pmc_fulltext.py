@@ -28,6 +28,7 @@ from data.pmc_fulltext import (
     write_shard,
 )
 
+
 def _article(
     pmcid: str,
     title: str,
@@ -111,9 +112,7 @@ class TestParsing:
         assert "queen" in record["body_text"]
 
     def test_parse_skips_articles_without_pmcid(self):
-        orphan = RELEVANT_ARTICLE.replace(
-            '<article-id pub-id-type="pmcid">PMC111</article-id>', ""
-        )
+        orphan = RELEVANT_ARTICLE.replace('<article-id pub-id-type="pmcid">PMC111</article-id>', "")
         records = parse_fulltext_xml(_articleset(orphan, RELEVANT_ARTICLE))
         assert [r["pmcid"] for r in records] == ["PMC111"]
 
@@ -183,9 +182,7 @@ class TestDedupe:
 
 class TestHarvest:
     def _install(self, httpserver, monkeypatch, idlist, articles_xml):
-        httpserver.expect_request("/esearch.fcgi").respond_with_json(
-            {"esearchresult": {"idlist": idlist}}
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_json({"esearchresult": {"idlist": idlist}})
         httpserver.expect_request("/efetch.fcgi").respond_with_data(articles_xml)
         harvester = PMCFulltextHarvester(delay=0)
         monkeypatch.setattr(harvester, "BASE_URL", httpserver.url_for("/"))
@@ -225,9 +222,7 @@ class TestHarvest:
             "<p>Caste ratios depend on <bold>queen</bold> pheromone signaling.</p></body>",
             "",
         )
-        harvester = self._install(
-            httpserver, monkeypatch, ["111"], _articleset(no_body)
-        )
+        harvester = self._install(httpserver, monkeypatch, ["111"], _articleset(no_body))
         assert harvester.harvest(target=5) == []
 
     def test_search_uses_relevance_sorted_pmc_query(self, httpserver, monkeypatch):
@@ -238,9 +233,7 @@ class TestHarvest:
             return json.dumps({"esearchresult": {"idlist": ["111"]}})
 
         httpserver.expect_request("/esearch.fcgi").respond_with_handler(_capture)
-        httpserver.expect_request("/efetch.fcgi").respond_with_data(
-            _articleset(RELEVANT_ARTICLE)
-        )
+        httpserver.expect_request("/efetch.fcgi").respond_with_data(_articleset(RELEVANT_ARTICLE))
         harvester = PMCFulltextHarvester(delay=0)
         monkeypatch.setattr(harvester, "BASE_URL", httpserver.url_for("/"))
         harvester.harvest(target=1)
@@ -275,9 +268,7 @@ class TestWriteCorpus:
 
         sidecar = json.loads(provenance_path.read_text(encoding="utf-8"))
         assert sidecar == provenance
-        digest = hashlib.sha256(
-            corpus[0]["body_text"].encode("utf-8")
-        ).hexdigest()
+        digest = hashlib.sha256(corpus[0]["body_text"].encode("utf-8")).hexdigest()
         assert sidecar[digest] == {
             "pmcid": "PMC111",
             "doi": "10.1234/example.001",
@@ -287,18 +278,14 @@ class TestWriteCorpus:
 
     def test_provenance_distinguishes_distinct_bodies(self, tmp_path: Path):
         records = parse_fulltext_xml(_articleset(RELEVANT_ARTICLE, IRRELEVANT_ARTICLE))
-        provenance = write_corpus(
-            records, tmp_path / "c.json", tmp_path / "p.json"
-        )
+        provenance = write_corpus(records, tmp_path / "c.json", tmp_path / "p.json")
         digests = {entry["pmcid"]: digest for digest, entry in provenance.items()}
         assert digests["PMC111"] != digests["PMC222"]
 
 
 class TestWriteReadme:
     def test_documents_query_filters_and_license_coverage(self, tmp_path: Path):
-        records = parse_fulltext_xml(
-            _articleset(RELEVANT_ARTICLE, IRRELEVANT_ARTICLE)
-        )
+        records = parse_fulltext_xml(_articleset(RELEVANT_ARTICLE, IRRELEVANT_ARTICLE))
         write_shard(tmp_path / "fulltexts_00001.json", records)
         readme = write_readme(tmp_path, query=PMC_SEARCH_QUERY)
         text = readme.read_text(encoding="utf-8")
@@ -358,10 +345,7 @@ class TestSharding:
         write_shard(tmp_path / "fulltexts_00001.json", records)
         provenance_path = tmp_path / "provenance.json"
         provenance_path.write_text(
-            json.dumps(
-                {"deadbeef": {"pmcid": "PMC999", "doi": "10.x/y",
-                              "query": "q", "retrieved_at": "t"}}
-            ),
+            json.dumps({"deadbeef": {"pmcid": "PMC999", "doi": "10.x/y", "query": "q", "retrieved_at": "t"}}),
             encoding="utf-8",
         )
         assert load_corpus_pmcids(tmp_path, provenance_path) == {
@@ -372,13 +356,9 @@ class TestSharding:
 
 class TestHarvestSharded:
     def _install(self, httpserver, monkeypatch, idlist, articles_xml):
-        httpserver.expect_request("/esearch.fcgi").respond_with_json(
-            {"esearchresult": {"idlist": idlist}}
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_json({"esearchresult": {"idlist": idlist}})
         if articles_xml is not None:
-            httpserver.expect_request("/efetch.fcgi").respond_with_data(
-                articles_xml
-            )
+            httpserver.expect_request("/efetch.fcgi").respond_with_data(articles_xml)
         harvester = PMCFulltextHarvester(delay=0)
         monkeypatch.setattr(harvester, "BASE_URL", httpserver.url_for("/"))
         return harvester
@@ -387,18 +367,14 @@ class TestHarvestSharded:
         write_shard(data_dir / "fulltexts_00001.json", records)
         provenance = {}
         for record in records:
-            digest = hashlib.sha256(
-                (record["body_text"] or "").encode("utf-8")
-            ).hexdigest()
+            digest = hashlib.sha256((record["body_text"] or "").encode("utf-8")).hexdigest()
             provenance[digest] = {
                 "pmcid": record["pmcid"],
                 "doi": record["doi"],
                 "query": "seed",
                 "retrieved_at": "seeded",
             }
-        (data_dir / "provenance.json").write_text(
-            json.dumps(provenance), encoding="utf-8"
-        )
+        (data_dir / "provenance.json").write_text(json.dumps(provenance), encoding="utf-8")
 
     def test_resume_harvests_only_missing_pmcids(self, httpserver, monkeypatch, tmp_path: Path):
         monkeypatch.setattr(pmc_fulltext, "SHARD_SIZE", 2)
@@ -414,23 +390,16 @@ class TestHarvestSharded:
                 _sharded_article("PMC333", 3),
             ),
         )
-        summary = harvester.harvest_sharded(
-            tmp_path, tmp_path / "provenance.json"
-        )
+        summary = harvester.harvest_sharded(tmp_path, tmp_path / "provenance.json")
         assert summary["harvested"] == 2
         loaded = load_fulltexts(tmp_path)
         pmcids = [r["pmcid"] for r in loaded]
         # No overlap with the seeded shard, order preserved.
         assert pmcids == ["PMC111", "PMC222", "PMC333"]
         # Shard cap respected across the rewritten and new shards.
-        assert all(
-            len(json.loads(p.read_text(encoding="utf-8"))) <= 2
-            for p in shard_paths(tmp_path)
-        )
+        assert all(len(json.loads(p.read_text(encoding="utf-8"))) <= 2 for p in shard_paths(tmp_path))
         assert not list(tmp_path.glob("*.tmp"))
-        provenance = json.loads(
-            (tmp_path / "provenance.json").read_text(encoding="utf-8")
-        )
+        provenance = json.loads((tmp_path / "provenance.json").read_text(encoding="utf-8"))
         assert len(provenance) == 3
         assert {e["pmcid"] for e in provenance.values()} == {
             "PMC111",
@@ -447,18 +416,12 @@ class TestHarvestSharded:
             fetches.append(request.args["id"])
             return _articleset(_sharded_article("PMC222", 2))
 
-        httpserver.expect_request("/esearch.fcgi").respond_with_json(
-            {"esearchresult": {"idlist": ["111", "222"]}}
-        )
-        httpserver.expect_request("/efetch.fcgi").respond_with_handler(
-            _count_fetch
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_json({"esearchresult": {"idlist": ["111", "222"]}})
+        httpserver.expect_request("/efetch.fcgi").respond_with_handler(_count_fetch)
         harvester = PMCFulltextHarvester(delay=0)
         monkeypatch.setattr(harvester, "BASE_URL", httpserver.url_for("/"))
         monkeypatch.setattr(harvester, "BATCH_SIZE", 1)
-        summary = harvester.harvest_sharded(
-            tmp_path, tmp_path / "provenance.json"
-        )
+        summary = harvester.harvest_sharded(tmp_path, tmp_path / "provenance.json")
         # Batch "111" was fully stored: skipped; only "222" was fetched.
         assert fetches == ["222"]
         assert summary["harvested"] == 1
@@ -466,9 +429,7 @@ class TestHarvestSharded:
     def test_migrates_legacy_single_file_corpus(self, httpserver, monkeypatch, tmp_path: Path):
         monkeypatch.setattr(pmc_fulltext, "SHARD_SIZE", 2)
         seeded = parse_fulltext_xml(_articleset(_sharded_article("PMC111", 1)))
-        (tmp_path / "fulltexts.json").write_text(
-            json.dumps(seeded), encoding="utf-8"
-        )
+        (tmp_path / "fulltexts.json").write_text(json.dumps(seeded), encoding="utf-8")
         harvester = self._install(
             httpserver,
             monkeypatch,
@@ -489,12 +450,8 @@ class TestHarvestSharded:
 
     def test_main_end_to_end_removes_legacy_file(self, httpserver, monkeypatch, tmp_path: Path):
         seeded = parse_fulltext_xml(_articleset(_sharded_article("PMC111", 1)))
-        (tmp_path / "fulltexts.json").write_text(
-            json.dumps(seeded), encoding="utf-8"
-        )
-        httpserver.expect_request("/esearch.fcgi").respond_with_json(
-            {"esearchresult": {"idlist": ["111", "222"]}}
-        )
+        (tmp_path / "fulltexts.json").write_text(json.dumps(seeded), encoding="utf-8")
+        httpserver.expect_request("/esearch.fcgi").respond_with_json({"esearchresult": {"idlist": ["111", "222"]}})
         httpserver.expect_request("/efetch.fcgi").respond_with_data(
             _articleset(
                 _sharded_article("PMC111", 1),

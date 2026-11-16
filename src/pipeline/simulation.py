@@ -13,14 +13,14 @@ import time
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import numpy as np
 
 __all__ = [
-    "SimulationState",
-    "SimulationBase",
     "SimpleSimulation",
+    "SimulationBase",
+    "SimulationState",
 ]
 
 # Infrastructure integration
@@ -29,6 +29,7 @@ try:
     repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
     sys.path.insert(0, str(repo_root))
     from infrastructure.core import get_logger
+
     INFRASTRUCTURE_AVAILABLE = True
     logger = get_logger("ento_linguistics.simulation")
 except ImportError:
@@ -41,18 +42,18 @@ class SimulationState:
     """Represents the state of a simulation run."""
 
     iteration: int = 0
-    parameters: Dict[str, Any] = field(default_factory=dict)
-    results: Dict[str, Any] = field(default_factory=dict)
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    parameters: dict[str, Any] = field(default_factory=dict)
+    results: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
     timestamp: str = ""
-    seed: Optional[int] = None
+    seed: int | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert state to dictionary for serialization."""
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> SimulationState:
+    def from_dict(cls, data: dict[str, Any]) -> SimulationState:
         """Create state from dictionary."""
         return cls(**data)
 
@@ -66,9 +67,9 @@ class SimulationBase(ABC):
 
     def __init__(
         self,
-        parameters: Optional[Dict[str, Any]] = None,
-        seed: Optional[int] = None,
-        output_dir: Optional[str] = None,
+        parameters: dict[str, Any] | None = None,
+        seed: int | None = None,
+        output_dir: str | None = None,
         checkpoint_interval: int = 100,
     ):
         """Initialize simulation.
@@ -99,16 +100,15 @@ class SimulationBase(ABC):
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         # Progress tracking
-        self.start_time: Optional[float] = None
-        self.last_checkpoint_time: Optional[float] = None
+        self.start_time: float | None = None
+        self.last_checkpoint_time: float | None = None
 
     @abstractmethod
     def initialize(self) -> None:
         """Initialize simulation state."""
-        pass
 
     @abstractmethod
-    def step(self, iteration: int) -> Dict[str, Any]:
+    def step(self, iteration: int) -> dict[str, Any]:
         """Perform one simulation step.
 
         Args:
@@ -117,7 +117,6 @@ class SimulationBase(ABC):
         Returns:
             Dictionary of step results
         """
-        pass
 
     @abstractmethod
     def should_continue(self, iteration: int) -> bool:
@@ -129,11 +128,10 @@ class SimulationBase(ABC):
         Returns:
             True if simulation should continue
         """
-        pass
 
     def run(
         self,
-        max_iterations: Optional[int] = None,
+        max_iterations: int | None = None,
         save_checkpoints: bool = True,
         verbose: bool = True,
     ) -> SimulationState:
@@ -214,17 +212,13 @@ class SimulationBase(ABC):
 
             # Mark that simulation has started (for progress tracking)
             if self.state.iteration > 0:
-                self.start_time = (
-                    time.time()
-                )  # Approximate, checkpoint doesn't store this
+                self.start_time = time.time()  # Approximate, checkpoint doesn't store this
 
             return True
         except Exception:
             return False
 
-    def save_results(
-        self, filename: Optional[str] = None, formats: Optional[List[str]] = None
-    ) -> Dict[str, Path]:
+    def save_results(self, filename: str | None = None, formats: list[str] | None = None) -> dict[str, Path]:
         """Save simulation results.
 
         Args:
@@ -255,10 +249,7 @@ class SimulationBase(ABC):
             np.savez_compressed(
                 npz_file,
                 iteration=np.array([self.state.iteration]),
-                **{
-                    k: np.array(v) if isinstance(v, (list, tuple)) else v
-                    for k, v in self.state.results.items()
-                },
+                **{k: np.array(v) if isinstance(v, (list, tuple)) else v for k, v in self.state.results.items()},
             )
             saved_files["npz"] = npz_file
 
@@ -291,7 +282,7 @@ class SimulationBase(ABC):
                     for key, value in results.items():
                         writer.writerow([iter_num, key, value])
 
-    def get_progress(self) -> Dict[str, Any]:
+    def get_progress(self) -> dict[str, Any]:
         """Get simulation progress information.
 
         Returns:
@@ -317,7 +308,7 @@ class SimpleSimulation(SimulationBase):
     def __init__(self, **kwargs):
         """Initialize simple simulation."""
         super().__init__(**kwargs)
-        self.data: List[float] = []
+        self.data: list[float] = []
         self.max_iterations = self.parameters.get("max_iterations", 100)
         self.target_value = self.parameters.get("target_value", 10.0)
 
@@ -325,7 +316,7 @@ class SimpleSimulation(SimulationBase):
         """Initialize simulation."""
         self.data = []
 
-    def step(self, iteration: int) -> Dict[str, Any]:
+    def step(self, iteration: int) -> dict[str, Any]:
         """Perform one step."""
         # Simple random walk
         step_size = self.rng.normal(0, 1)
@@ -345,7 +336,4 @@ class SimpleSimulation(SimulationBase):
             return False
 
         # Stop if close to target
-        if self.data and abs(self.data[-1] - self.target_value) < 0.01:
-            return False
-
-        return True
+        return not (self.data and abs(self.data[-1] - self.target_value) < 0.01)

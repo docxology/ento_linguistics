@@ -48,9 +48,9 @@ import argparse
 import json
 import logging
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from analysis.term_extraction import TerminologyExtractor
 from pipeline.fulltext_pipeline import (
@@ -61,11 +61,11 @@ from pipeline.fulltext_pipeline import (
 from pipeline.statistics_pipeline import build_statistical_analysis
 
 __all__ = [
-    "ARXIV_LAYER",
     "ARTIFACT_NAME",
+    "ARXIV_LAYER",
     "DEFAULT_MIN_TERM_FREQUENCY",
-    "load_arxiv_records",
     "build_arxiv_analysis",
+    "load_arxiv_records",
     "main",
 ]
 
@@ -88,7 +88,7 @@ DEFAULT_MIN_TERM_FREQUENCY = 2
 _TOKEN_RE = re.compile(r"\w+")
 
 
-def load_arxiv_records(path: Path) -> List[Dict[str, Any]]:
+def load_arxiv_records(path: Path) -> list[dict[str, Any]]:
     """Load arXiv corpus records in file order.
 
     Args:
@@ -103,17 +103,15 @@ def load_arxiv_records(path: Path) -> List[Dict[str, Any]]:
     """
     records = json.loads(Path(path).read_text(encoding="utf-8"))
     if not isinstance(records, list):
-        raise ValueError(
-            f"arXiv records file {path} must contain a JSON list"
-        )
+        raise ValueError(f"arXiv records file {path} must contain a JSON list")
     return records
 
 
 def build_arxiv_analysis(
-    records: List[Dict[str, Any]],
+    records: list[dict[str, Any]],
     min_term_frequency: int = DEFAULT_MIN_TERM_FREQUENCY,
     include_framing: bool = True,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Build the arXiv-layer analysis artifact.
 
     Args:
@@ -140,8 +138,8 @@ def build_arxiv_analysis(
     if not records:
         raise ValueError("build_arxiv_analysis requires a non-empty record list")
 
-    documents_meta: List[Dict[str, Any]] = []
-    texts: List[str] = []
+    documents_meta: list[dict[str, Any]] = []
+    texts: list[str] = []
     for record in records:
         text = _document_text(record)
         texts.append(text)
@@ -167,20 +165,22 @@ def build_arxiv_analysis(
     # DOMAIN-level entropy/ambiguity APIs are exercised inside it.
     statistics = build_statistical_analysis(terms, texts, layer=ARXIV_LAYER)
 
-    from core.provenance import records_sha256, analysis_signature
-    artifact: Dict[str, Any] = {
-        "corpus_fingerprint": {"record_count": len(records), "records_sha256": records_sha256(records),
-                               "analysis_signature": analysis_signature()},
+    from core.provenance import analysis_signature, records_sha256
+
+    artifact: dict[str, Any] = {
+        "corpus_fingerprint": {
+            "record_count": len(records),
+            "records_sha256": records_sha256(records),
+            "analysis_signature": analysis_signature(),
+        },
         "layer": ARXIV_LAYER,
-        "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated": datetime.now(UTC).isoformat(timespec="seconds"),
         "source": {
             "records": "data/corpus/arxiv_records.json",
             "harvester": "arXiv API (preprint layer)",
             "text_surface": "title + abstract per record",
             "n_documents": len(records),
-            "vocabulary_source": (
-                "analysis.term_extraction.TerminologyExtractor.DOMAIN_SEEDS"
-            ),
+            "vocabulary_source": ("analysis.term_extraction.TerminologyExtractor.DOMAIN_SEEDS"),
         },
         "n_documents": len(records),
         "min_term_frequency": min_term_frequency,
@@ -196,7 +196,7 @@ def build_arxiv_analysis(
     return artifact
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point: write ``data/corpus/arxiv_analysis.json``.
 
     Args:
@@ -210,28 +210,19 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--records",
         type=Path,
         default=None,
-        help=(
-            "arXiv records path "
-            "(default: <project root>/data/corpus/arxiv_records.json)"
-        ),
+        help=("arXiv records path (default: <project root>/data/corpus/arxiv_records.json)"),
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=None,
-        help=(
-            "Artifact path "
-            "(default: <project root>/data/corpus/arxiv_analysis.json)"
-        ),
+        help=("Artifact path (default: <project root>/data/corpus/arxiv_analysis.json)"),
     )
     parser.add_argument(
         "--min-term-frequency",
         type=int,
         default=DEFAULT_MIN_TERM_FREQUENCY,
-        help=(
-            "Minimum token frequency for term extraction "
-            f"(default: {DEFAULT_MIN_TERM_FREQUENCY})"
-        ),
+        help=(f"Minimum token frequency for term extraction (default: {DEFAULT_MIN_TERM_FREQUENCY})"),
     )
     args = parser.parse_args(argv)
 
@@ -244,8 +235,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     records = load_arxiv_records(records_path)
     artifact = build_arxiv_analysis(records, min_term_frequency=args.min_term_frequency)
     logger.info(
-        "Analyzed %d arXiv records: %d extracted-term domains, "
-        "%d pairwise tests, %d skipped comparisons",
+        "Analyzed %d arXiv records: %d extracted-term domains, %d pairwise tests, %d skipped comparisons",
         artifact["n_documents"],
         len(artifact["domain_term_counts"]),
         len(artifact["pairwise"]),

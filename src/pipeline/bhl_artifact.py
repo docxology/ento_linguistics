@@ -1,10 +1,13 @@
 """Era orchestration and atomic recovery for the complete BHL analysis."""
+
 from __future__ import annotations
+
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TypeAlias
+
 from core.provenance import analysis_signature, records_sha256
 
 JsonValue: TypeAlias = str | int | float | bool | None | list["JsonValue"] | dict[str, "JsonValue"]
@@ -23,23 +26,24 @@ def _load_checkpoint(path: Path, fingerprint: str) -> JsonObject | None:
     payload = json.loads(path.read_text(), parse_constant=_reject_nonfinite)
     if not isinstance(payload, dict):
         raise ValueError(f"Invalid checkpoint object: {path.name}")
-    if payload.get('schema') != 1 or payload.get('fingerprint') != fingerprint:
+    if payload.get("schema") != 1 or payload.get("fingerprint") != fingerprint:
         return None
-    result = payload.get('result')
-    if (not isinstance(result, dict) or set(result) != {'era', 'terms', 'skipped'}
-            or payload.get('result_sha256') != records_sha256([result])):
+    result = payload.get("result")
+    if (
+        not isinstance(result, dict)
+        or set(result) != {"era", "terms", "skipped"}
+        or payload.get("result_sha256") != records_sha256([result])
+    ):
         raise ValueError(f"BHL checkpoint content changed: {path.name}")
     return result
 
 
 def _save_checkpoint(path: Path, fingerprint: str, result: JsonObject) -> None:
     """Publish a completed era atomically; partial computations are never saved."""
-    payload = {'schema': 1, 'fingerprint': fingerprint, 'result': result,
-               'result_sha256': records_sha256([result])}
+    payload = {"schema": 1, "fingerprint": fingerprint, "result": result, "result_sha256": records_sha256([result])}
     path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix('.json.tmp')
-    temporary.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True,
-                                   allow_nan=False) + '\n')
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(payload, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n")
     temporary.replace(path)
 
 
@@ -67,9 +71,17 @@ def build_artifact(
         Artifact dict: ``{"layer": "bhl_historical", "generated",
         "source", "eras", "terms", "skipped"}``.
     """
-    from .bhl_analysis import (ERA_KEYS, OCR_MIN_TERM_FREQUENCY, ENTROPY_TOP_TERMS,
-                               analyze_eras, analyze_era_stack, load_corpus_records_for_analysis,
-                               stack_character_budget, select_stack_records)
+    from .bhl_analysis import (
+        ENTROPY_TOP_TERMS,
+        ERA_KEYS,
+        OCR_MIN_TERM_FREQUENCY,
+        analyze_era_stack,
+        analyze_eras,
+        load_corpus_records_for_analysis,
+        select_stack_records,
+        stack_character_budget,
+    )
+
     signature = analysis_signature()
     if records is None:
         records = load_corpus_records_for_analysis(data_dir)
@@ -84,51 +96,52 @@ def build_artifact(
                 {
                     "kind": "era_stack",
                     "era": era,
-                    "reason": (
-                        "no documents in era; extraction/entropy/framing "
-                        "sections omitted"
-                    ),
+                    "reason": ("no documents in era; extraction/entropy/framing sections omitted"),
                 }
             )
             continue
         budget = stack_character_budget()
         fingerprint = records_sha256([era, era_records, signature, budget])
-        checkpoint = checkpoint_dir / (era + '.json') if checkpoint_dir is not None else None
+        checkpoint = checkpoint_dir / (era + ".json") if checkpoint_dir is not None else None
         result = _load_checkpoint(checkpoint, fingerprint) if checkpoint is not None else None
         if result is None:
-            logger.info('Computing historical era %s (%d documents)', era, len(era_records))
+            logger.info("Computing historical era %s (%d documents)", era, len(era_records))
             literal = analyze_eras(era_records)
             stack_records = select_stack_records(era_records, budget) if budget is not None else era_records
             stack = analyze_era_stack(stack_records)
-            era_data = literal['eras'][era]
-            era_data['stack_coverage'] = {
-                'documents_available': len(era_records),
-                'documents_analyzed': len(stack_records),
-                'characters_available': sum(len(r.get('full_text') or '') for r in era_records),
-                'characters_analyzed': sum(len(r.get('full_text') or '') for r in stack_records),
-                'character_budget': budget,
-                'selection': 'all stored era documents' if budget is None else 'deterministic dyadic traversal; whole documents; output in shard order',
+            era_data = literal["eras"][era]
+            era_data["stack_coverage"] = {
+                "documents_available": len(era_records),
+                "documents_analyzed": len(stack_records),
+                "characters_available": sum(len(r.get("full_text") or "") for r in era_records),
+                "characters_analyzed": sum(len(r.get("full_text") or "") for r in stack_records),
+                "character_budget": budget,
+                "selection": "all stored era documents"
+                if budget is None
+                else "deterministic dyadic traversal; whole documents; output in shard order",
             }
-            for key in ('extraction', 'entropy', 'framing'):
+            for key in ("extraction", "entropy", "framing"):
                 era_data[key] = stack[key]
-            result = {'era': era_data, 'terms': literal['terms'], 'skipped': stack['skipped']}
+            result = {"era": era_data, "terms": literal["terms"], "skipped": stack["skipped"]}
             if checkpoint is not None:
                 _save_checkpoint(checkpoint, fingerprint, result)
-                logger.info('Saved completed historical era %s', era)
+                logger.info("Saved completed historical era %s", era)
         else:
-            logger.info('Resuming verified historical era %s', era)
-        eras[era] = result['era']
-        for term, values in result['terms'].items():
-            eras_terms['terms'][term][era] = values[era]
-            eras_terms['terms'][term]['total'] += values['total']
-        skipped.extend({**entry, 'era': era} for entry in result['skipped'])
+            logger.info("Resuming verified historical era %s", era)
+        eras[era] = result["era"]
+        for term, values in result["terms"].items():
+            eras_terms["terms"][term][era] = values[era]
+            eras_terms["terms"][term]["total"] += values["total"]
+        skipped.extend({**entry, "era": era} for entry in result["skipped"])
     return {
-        "corpus_fingerprint": {"record_count": len(records),
-                               "records_sha256": records_sha256(records),
-                               "analysis_signature": signature,
-                               "stack_character_budget": stack_character_budget()},
+        "corpus_fingerprint": {
+            "record_count": len(records),
+            "records_sha256": records_sha256(records),
+            "analysis_signature": signature,
+            "stack_character_budget": stack_character_budget(),
+        },
         "layer": "bhl_historical",
-        "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated": datetime.now(UTC).isoformat(timespec="seconds"),
         "source": {
             "data_dir": str(data_dir),
             "documents": len(records),
@@ -148,8 +161,7 @@ def build_artifact(
             ),
             "stack": {
                 "extraction": (
-                    "TerminologyExtractor over clean_ocr_text output, "
-                    f"min_frequency={OCR_MIN_TERM_FREQUENCY} per era"
+                    f"TerminologyExtractor over clean_ocr_text output, min_frequency={OCR_MIN_TERM_FREQUENCY} per era"
                 ),
                 "entropy": (
                     "DomainAnalyzer.quantify_ambiguity_metrics over the "

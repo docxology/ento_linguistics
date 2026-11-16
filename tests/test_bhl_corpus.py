@@ -34,7 +34,7 @@ from data.bhl_corpus import (
 )
 
 
-def _search_payload(*docs: dict, num_found: int = None) -> str:
+def _search_payload(*docs: dict, num_found: int | None = None) -> str:
     """Render an advancedsearch response body.
 
     ``numFound`` defaults to the number of docs on the page; pass an
@@ -120,9 +120,7 @@ class TestRelevance:
     def test_relevant(self, text: str):
         assert is_relevant_bhl_record({"title": "x", "full_text": text})
 
-    @pytest.mark.parametrize(
-        "text", ["plant tissues", "antenna morphology", "pantry stores"]
-    )
+    @pytest.mark.parametrize("text", ["plant tissues", "antenna morphology", "pantry stores"])
     def test_irrelevant(self, text: str):
         assert not is_relevant_bhl_record({"title": "x", "full_text": text})
 
@@ -223,9 +221,7 @@ class TestSearchTitles:
         assert [s["ia_identifier"] for s in stubs] == ["a1", "a2"]
 
     def test_pages_until_total(self, monkeypatch):
-        page1 = _search_payload(
-            *[_doc(f"a{i}", "1868") for i in range(200)], num_found=201
-        )
+        page1 = _search_payload(*[_doc(f"a{i}", "1868") for i in range(200)], num_found=201)
         page2 = _search_payload(_doc("b1", "1868"), num_found=201)
         seen = self._install(monkeypatch, [page1, page2])
         stubs = BHLHarvester(delay=0).search_titles()
@@ -258,10 +254,7 @@ class TestHarvestSharded:
             url = request.full_url
             if "biodiversitylibrary.org/api3" in url:
                 # Keyless BHL API: the documented unauthorized verdict.
-                return _FakeResponse(
-                    b'{"Status": "unauthorized", '
-                    b'"ErrorMessage": "unauthorized API key."}'
-                )
+                return _FakeResponse(b'{"Status": "unauthorized", "ErrorMessage": "unauthorized API key."}')
             if "advancedsearch" in url:
                 return _FakeResponse(search_page.encode())
             if "/metadata/" in url:
@@ -294,15 +287,12 @@ class TestHarvestSharded:
         }
         metadata = {
             f"{k}": _metadata_payload(k, d)
-            for k, d in (("ant1868", "1868-06-01"), ("ant1931", "1931"),
-                         ("ant1965", "1965-12-17"), ("out1980", "1980"))
+            for k, d in (("ant1868", "1868-06-01"), ("ant1931", "1931"), ("ant1965", "1965-12-17"), ("out1980", "1980"))
         }
         self._install(monkeypatch, page, metadata, texts)
         data_dir = tmp_path / "bhl"
         harvester = BHLHarvester(delay=0)
-        summary = harvester.harvest_sharded(
-            data_dir, data_dir / "provenance.json"
-        )
+        summary = harvester.harvest_sharded(data_dir, data_dir / "provenance.json")
         assert summary["candidates"] == 4
         assert summary["harvested"] == 3
         assert summary["out_of_window"] == 1
@@ -314,14 +304,18 @@ class TestHarvestSharded:
             "era_1900_1949",
             "era_1950_1970",
         ]
-        provenance = json.loads(
-            (data_dir / "provenance.json").read_text(encoding="utf-8")
-        )
+        provenance = json.loads((data_dir / "provenance.json").read_text(encoding="utf-8"))
         assert len(provenance) == 3
         entry = next(iter(provenance.values()))
         assert set(entry) >= {
-            "bhl_id", "ia_identifier", "title", "publication_date",
-            "era", "collections", "url", "query",
+            "bhl_id",
+            "ia_identifier",
+            "title",
+            "publication_date",
+            "era",
+            "collections",
+            "url",
+            "query",
         }
         assert entry["query"] == BHL_SEARCH_QUERY
         for record in records:
@@ -340,18 +334,12 @@ class TestHarvestSharded:
         data_dir = tmp_path / "bhl"
         self._install(monkeypatch, page, metadata, texts)
         harvester = BHLHarvester(delay=0)
-        first = harvester.harvest_sharded(
-            data_dir, data_dir / "provenance.json", target=1
-        )
+        first = harvester.harvest_sharded(data_dir, data_dir / "provenance.json", target=1)
         assert first["harvested"] == 1
-        second = harvester.harvest_sharded(
-            data_dir, data_dir / "provenance.json"
-        )
+        second = harvester.harvest_sharded(data_dir, data_dir / "provenance.json")
         assert second["harvested"] == 1
         assert second["already_stored"] == 1
-        records = [
-            r for p in shard_paths(data_dir) for r in read_shard(p)
-        ]
+        records = [r for p in shard_paths(data_dir) for r in read_shard(p)]
         assert len(records) == 2
 
     def test_shard_fill_boundary(self, monkeypatch, tmp_path):
@@ -364,9 +352,7 @@ class TestHarvestSharded:
         harvester = BHLHarvester(delay=0)
         # Force a tiny shard size so one run fills and spills a shard.
         monkeypatch.setattr("data.bhl_corpus.SHARD_SIZE", 2)
-        summary = harvester.harvest_sharded(
-            data_dir, data_dir / "provenance.json"
-        )
+        summary = harvester.harvest_sharded(data_dir, data_dir / "provenance.json")
         assert summary["harvested"] == 5
         shards = shard_paths(data_dir)
         sizes = [len(read_shard(p)) for p in shards]
@@ -377,13 +363,9 @@ class TestHarvestSharded:
         page = _search_payload(_doc("good", "1868"), _doc("gone", "1868"))
         texts = {"good": "ants good"}
         metadata = {"good": _metadata_payload("good", "1868")}
-        self._install(
-            monkeypatch, page, metadata, texts, metadata_404={"gone"}
-        )
+        self._install(monkeypatch, page, metadata, texts, metadata_404={"gone"})
         data_dir = tmp_path / "bhl"
-        summary = BHLHarvester(delay=0).harvest_sharded(
-            data_dir, data_dir / "provenance.json"
-        )
+        summary = BHLHarvester(delay=0).harvest_sharded(data_dir, data_dir / "provenance.json")
         assert summary["harvested"] == 1
         assert summary["failed_items"] == 1
 
@@ -401,9 +383,7 @@ class TestHarvestSharded:
         }
         self._install(monkeypatch, page, metadata, texts)
         data_dir = tmp_path / "bhl"
-        summary = BHLHarvester(delay=0).harvest_sharded(
-            data_dir, data_dir / "provenance.json"
-        )
+        summary = BHLHarvester(delay=0).harvest_sharded(data_dir, data_dir / "provenance.json")
         assert summary["no_text_derivative"] == 1
         assert summary["harvested"] == 1
 
@@ -413,9 +393,7 @@ class TestHarvestSharded:
         metadata = {"plant": _metadata_payload("plant", "1868")}
         self._install(monkeypatch, page, metadata, texts)
         data_dir = tmp_path / "bhl"
-        summary = BHLHarvester(delay=0).harvest_sharded(
-            data_dir, data_dir / "provenance.json"
-        )
+        summary = BHLHarvester(delay=0).harvest_sharded(data_dir, data_dir / "provenance.json")
         assert summary["harvested"] == 0
         assert summary["irrelevant"] == 1
 
@@ -465,10 +443,7 @@ class TestHarvestBhlWrapper:
         def fake_urlopen(request, timeout=120):
             url = request.full_url
             if "biodiversitylibrary.org/api3" in url:
-                return _FakeResponse(
-                    b'{"Status": "unauthorized", '
-                    b'"ErrorMessage": "unauthorized API key."}'
-                )
+                return _FakeResponse(b'{"Status": "unauthorized", "ErrorMessage": "unauthorized API key."}')
             if "advancedsearch" in url:
                 return _FakeResponse(page.encode())
             if "/metadata/" in url:
@@ -482,7 +457,7 @@ class TestHarvestBhlWrapper:
         summary = harvest_bhl(data_dir=data_dir)
         assert summary["harvested"] == 1
         readme = (data_dir / "README.md").read_text(encoding="utf-8")
-        assert "collection:\"biodiversity\"" in readme
+        assert 'collection:"biodiversity"' in readme
         assert BHL_SEARCH_QUERY in readme
         assert "1 new documents" in readme
 
@@ -525,24 +500,16 @@ def _serve_api(httpserver, responses: list, calls: list) -> None:
     for response in responses:
 
         def handler(request, _response=response):
-            calls.append(
-                {key: request.args.get(key) for key in request.args.keys()}
-            )
-            return Response(
-                json.dumps(_response), content_type="application/json"
-            )
+            calls.append({key: request.args.get(key) for key in request.args})
+            return Response(json.dumps(_response), content_type="application/json")
 
-        httpserver.expect_oneshot_request("/api3").respond_with_handler(
-            handler
-        )
+        httpserver.expect_oneshot_request("/api3").respond_with_handler(handler)
 
 
 @pytest.fixture
 def bhl_api(monkeypatch, httpserver):
     """Point the BHL API base at the local httpserver."""
-    monkeypatch.setattr(
-        "data.bhl_corpus.BHL_API_BASE", httpserver.url_for("api3")
-    )
+    monkeypatch.setattr("data.bhl_corpus.BHL_API_BASE", httpserver.url_for("api3"))
     return httpserver
 
 
@@ -606,9 +573,9 @@ class TestSearchInside:
         )
         calls: list = []
         _serve_api(bhl_api, [page1, page2], calls)
-        pubs, truncated = BHLHarvester(
-            api_key=FAKE_KEY, delay=0
-        ).search_inside("Formicidae", date_from=1850, date_to=1970, rows=2)
+        pubs, truncated = BHLHarvester(api_key=FAKE_KEY, delay=0).search_inside(
+            "Formicidae", date_from=1850, date_to=1970, rows=2
+        )
         assert truncated is False
         assert [p["year"] for p in pubs] == [1868, 1901]
         assert [c["page"] for c in calls] == ["1", "2"]
@@ -622,16 +589,12 @@ class TestSearchInside:
 
     def test_stops_at_api_page_cap(self, bhl_api, monkeypatch):
         monkeypatch.setattr("data.bhl_corpus.BHL_SEARCH_MAX_PAGES", 2)
-        full_page = _ok(
-            [_pub_item(1, "1868"), _pub_part(2, "1901")]
-        )
+        full_page = _ok([_pub_item(1, "1868"), _pub_part(2, "1901")])
         calls: list = []
         # Two full pages: the (monkeypatched) 50-page cap stops paging
         # before a short page can.
         _serve_api(bhl_api, [full_page, full_page], calls)
-        pubs, truncated = BHLHarvester(api_key=FAKE_KEY, delay=0).search_inside(
-            "ants", rows=2
-        )
+        pubs, truncated = BHLHarvester(api_key=FAKE_KEY, delay=0).search_inside("ants", rows=2)
         assert truncated is True
         assert len(pubs) == 4
         assert [c["page"] for c in calls] == ["1", "2"]
@@ -648,9 +611,7 @@ class TestPartAndItemResolution:
     def test_part_resolves_to_item(self, bhl_api):
         calls: list = []
         _serve_api(bhl_api, [_ok([{"PartID": "11", "ItemID": "100"}])], calls)
-        assert BHLHarvester(api_key=FAKE_KEY, delay=0).get_part_item_id(
-            11
-        ) == 100
+        assert BHLHarvester(api_key=FAKE_KEY, delay=0).get_part_item_id(11) == 100
         assert calls[0]["op"] == "GetPartMetadata"
         assert calls[0]["id"] == "11"
 
@@ -733,15 +694,11 @@ class TestCollectSearchInsideCandidates:
     def _collect(self, httpserver, data_dir, cap=2):
         monkeypatch = pytest.MonkeyPatch()
         try:
-            monkeypatch.setattr(
-                "data.bhl_corpus.SEARCH_INSIDE_TERMS", ("terma", "termb")
-            )
+            monkeypatch.setattr("data.bhl_corpus.SEARCH_INSIDE_TERMS", ("terma", "termb"))
             calls: list = []
             self._queue_enumeration(httpserver, calls)
             harvester = BHLHarvester(api_key=FAKE_KEY, delay=0)
-            stubs, stats = harvester.collect_search_inside_candidates(
-                data_dir, cap=cap
-            )
+            stubs, stats = harvester.collect_search_inside_candidates(data_dir, cap=cap)
         finally:
             monkeypatch.undo()
         return stubs, stats
@@ -756,13 +713,9 @@ class TestCollectSearchInsideCandidates:
         assert stats["not_ia_sourced"] == 1
         assert [s["ia_identifier"] for s in stubs] == ["ia-one"]
         assert stubs[0]["queries"] == ["terma", "termb"]
-        results = json.loads(
-            (tmp_path / "searchinside_results.json").read_text()
-        )
+        results = json.loads((tmp_path / "searchinside_results.json").read_text())
         assert set(results["terms"]) == {"terma", "termb"}
-        items_doc = json.loads(
-            (tmp_path / "searchinside_items.json").read_text()
-        )
+        items_doc = json.loads((tmp_path / "searchinside_items.json").read_text())
         assert items_doc["part_to_item"] == {"11": 100, "12": 100}
 
     def test_cap_truncates_highest_relevance(self, bhl_api, tmp_path):
@@ -779,12 +732,8 @@ class TestCollectSearchInsideCandidates:
         # served from the checkpoints.
         monkeypatch = pytest.MonkeyPatch()
         try:
-            monkeypatch.setattr(
-                "data.bhl_corpus.SEARCH_INSIDE_TERMS", ("terma", "termb")
-            )
-            stubs, stats = BHLHarvester(
-                api_key=FAKE_KEY, delay=0
-            ).collect_search_inside_candidates(tmp_path, cap=2)
+            monkeypatch.setattr("data.bhl_corpus.SEARCH_INSIDE_TERMS", ("terma", "termb"))
+            stubs, stats = BHLHarvester(api_key=FAKE_KEY, delay=0).collect_search_inside_candidates(tmp_path, cap=2)
         finally:
             monkeypatch.undo()
         assert [s["ia_identifier"] for s in stubs] == ["ia-one"]
@@ -834,12 +783,10 @@ class TestKeyedHarvestMerge:
             },
             "files": [{"name": "ia-two_djvu.txt"}],
         }
-        bhl_api.expect_oneshot_request(
-            "/ia/metadata/ia-two"
-        ).respond_with_json(metadata)
-        bhl_api.expect_oneshot_request(
-            "/ia/download/ia-two/ia-two_djvu.txt"
-        ).respond_with_data("the ants of two colonies " * 5)
+        bhl_api.expect_oneshot_request("/ia/metadata/ia-two").respond_with_json(metadata)
+        bhl_api.expect_oneshot_request("/ia/download/ia-two/ia-two_djvu.txt").respond_with_data(
+            "the ants of two colonies " * 5
+        )
         monkeypatch = pytest.MonkeyPatch()
         try:
             monkeypatch.setattr(
@@ -848,9 +795,7 @@ class TestKeyedHarvestMerge:
             )
             monkeypatch.setattr(
                 "data.bhl_corpus.IA_DOWNLOAD_URL",
-                bhl_api.url_for(
-                    "ia/download/{identifier}/{identifier}_djvu.txt"
-                ),
+                bhl_api.url_for("ia/download/{identifier}/{identifier}_djvu.txt"),
             )
             harvester = BHLHarvester(delay=0)
             summary = harvester.harvest_sharded(
@@ -867,9 +812,7 @@ class TestKeyedHarvestMerge:
         assert [r["ia_identifier"] for r in records] == ["ia-one", "ia-two"]
         assert records[1]["title"] == "Ants of Two"
         assert records[1]["era"] == "era_1900_1949"
-        provenance = json.loads(
-            (data_dir / "provenance.json").read_text(encoding="utf-8")
-        )
+        provenance = json.loads((data_dir / "provenance.json").read_text(encoding="utf-8"))
         assert all(e["query"] == BHL_KEYED_QUERY for e in provenance.values())
         assert FAKE_KEY not in json.dumps(provenance)
 

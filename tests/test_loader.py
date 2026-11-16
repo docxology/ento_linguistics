@@ -1,19 +1,24 @@
 """Tests for data loader module."""
 
 import json
+
 import pytest
+
 from data.loader import DataLoader
+
 
 @pytest.fixture
 def loader():
     """Create DataLoader instance."""
     return DataLoader()
 
+
 def test_loader_initialization():
     """Test DataLoader initialization."""
     loader = DataLoader()
     assert loader.data_root.exists()
     assert loader.data_root.name == "data"
+
 
 def test_load_corpus_exists(loader):
     """Test loading existing corpus."""
@@ -23,10 +28,12 @@ def test_load_corpus_exists(loader):
     assert len(texts) > 0
     assert all(isinstance(t, str) for t in texts)
 
+
 def test_load_corpus_not_found(loader):
     """Test loading non-existent corpus."""
     with pytest.raises(FileNotFoundError):
         loader.load_corpus("non_existent.json")
+
 
 def test_loader_custom_data_root(tmp_path):
     """Test DataLoader with custom data_root."""
@@ -71,8 +78,9 @@ def test_load_corpus_invalid_format(tmp_path):
         loader.load_corpus("bad_corpus.json")
 
 
-@pytest.mark.parametrize("data", [["real text", 7], ["real text", None],
-                                  ["real text", "  "], {"abstracts": "text"}, []])
+@pytest.mark.parametrize(
+    "data", [["real text", 7], ["real text", None], ["real text", "  "], {"abstracts": "text"}, []]
+)
 def test_load_corpus_rejects_invalid_records(tmp_path, data):
     """Corrupt records must not be stringified or silently dropped."""
     (tmp_path / "bad.json").write_text(json.dumps(data))
@@ -130,8 +138,7 @@ class TestConvertCorpus:
         assert count == 1
         written = json.loads(output_file.read_text(encoding="utf-8"))
         assert written == [
-            "Ant Colony Organization. Wilson, E.O., Hölldobler, B. (1990). "
-            "A study of ant colony structure."
+            ("Ant Colony Organization. Wilson, E.O., Hölldobler, B. (1990). A study of ant colony structure.")
         ]
 
     def test_convert_corpus_without_publications_key(self, tmp_path):

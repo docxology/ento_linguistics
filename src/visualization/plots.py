@@ -6,7 +6,7 @@ terminology distributions, ambiguity metrics, and discourse patterns.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -30,17 +30,17 @@ except (ImportError, ValueError):
 
 
 __all__ = [
+    "plot_3d_surface",
+    "plot_bar",
+    "plot_comparison",
+    "plot_concept_network",
+    "plot_contour",
+    "plot_convergence",
+    "plot_domain_distribution",
+    "plot_heatmap",
     "plot_line",
     "plot_scatter",
-    "plot_bar",
-    "plot_heatmap",
-    "plot_contour",
-    "plot_3d_surface",
-    "plot_convergence",
-    "plot_comparison",
     "plot_term_frequency",
-    "plot_domain_distribution",
-    "plot_concept_network",
 ]
 
 
@@ -48,13 +48,13 @@ __all__ = [
 def plot_line(
     x: np.ndarray,
     y: np.ndarray,
-    ax: Optional[plt.Axes] = None,
-    label: Optional[str] = None,
-    color: Optional[str] = None,
+    ax: plt.Axes | None = None,
+    label: str | None = None,
+    color: str | None = None,
     linestyle: str = "-",
-    marker: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
+    marker: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a line plot.
@@ -73,11 +73,9 @@ def plot_line(
         Axes object
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(8, 6))
+        _fig, ax = plt.subplots(figsize=(8, 6))
 
-    ax.plot(
-        x, y, label=label, color=color, linestyle=linestyle, marker=marker, **kwargs
-    )
+    ax.plot(x, y, label=label, color=color, linestyle=linestyle, marker=marker, **kwargs)
 
     if label:
         ax.legend()
@@ -92,13 +90,13 @@ def plot_line(
 def plot_scatter(
     x: np.ndarray,
     y: np.ndarray,
-    ax: Optional[plt.Axes] = None,
-    color: Optional[str] = None,
-    size: Optional[float] = None,
+    ax: plt.Axes | None = None,
+    color: str | None = None,
+    size: float | None = None,
     alpha: float = 0.6,
-    label: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
+    label: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a scatter plot.
@@ -119,7 +117,7 @@ def plot_scatter(
         Axes object
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(8, 6))
+        _fig, ax = plt.subplots(figsize=(8, 6))
 
     ax.scatter(x, y, c=color, s=size, alpha=alpha, label=label, **kwargs)
 
@@ -134,13 +132,13 @@ def plot_scatter(
 
 @publication_style
 def plot_bar(
-    categories: List[str],
+    categories: list[str],
     values: np.ndarray,
-    ax: Optional[plt.Axes] = None,
-    color: Optional[str] = None,
+    ax: plt.Axes | None = None,
+    color: str | None = None,
     width: float = 0.8,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a bar chart.
@@ -159,15 +157,13 @@ def plot_bar(
         Axes object
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(8, 6))
+        _fig, ax = plt.subplots(figsize=(8, 6))
 
     x_pos = np.arange(len(categories))
     ax.bar(x_pos, values, color=color, width=width, **kwargs)
     ax.set_xticks(x_pos)
     ax.set_xticklabels(categories, rotation=45, ha="right")
-    ax.set_xlabel(
-        xlabel if xlabel is not None else "Category", fontsize=MIN_FONT
-    )
+    ax.set_xlabel(xlabel if xlabel is not None else "Category", fontsize=MIN_FONT)
     ax.set_ylabel(ylabel if ylabel is not None else "Value", fontsize=MIN_FONT)
 
     return ax
@@ -176,13 +172,13 @@ def plot_bar(
 @publication_style
 def plot_heatmap(
     data: np.ndarray,
-    ax: Optional[plt.Axes] = None,
-    row_labels: Optional[List[str]] = None,
-    col_labels: Optional[List[str]] = None,
+    ax: plt.Axes | None = None,
+    row_labels: list[str] | None = None,
+    col_labels: list[str] | None = None,
     cmap: str = "viridis",
     colorbar: bool = True,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a heatmap.
@@ -202,7 +198,7 @@ def plot_heatmap(
         Axes object
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(8, 6))
+        _fig, ax = plt.subplots(figsize=(8, 6))
 
     im = ax.imshow(data, cmap=cmap, aspect="auto", **kwargs)
 
@@ -217,12 +213,8 @@ def plot_heatmap(
     if colorbar:
         plt.colorbar(im, ax=ax)
 
-    ax.set_xlabel(
-        xlabel if xlabel is not None else "Column index", fontsize=MIN_FONT
-    )
-    ax.set_ylabel(
-        ylabel if ylabel is not None else "Row index", fontsize=MIN_FONT
-    )
+    ax.set_xlabel(xlabel if xlabel is not None else "Column index", fontsize=MIN_FONT)
+    ax.set_ylabel(ylabel if ylabel is not None else "Row index", fontsize=MIN_FONT)
 
     return ax
 
@@ -232,12 +224,12 @@ def plot_contour(
     x: np.ndarray,
     y: np.ndarray,
     z: np.ndarray,
-    ax: Optional[plt.Axes] = None,
+    ax: plt.Axes | None = None,
     levels: int = 20,
     cmap: str = "viridis",
     filled: bool = True,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Create a contour plot.
@@ -259,7 +251,7 @@ def plot_contour(
         Axes object
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(8, 6))
+        _fig, ax = plt.subplots(figsize=(8, 6))
 
     if filled:
         contour = ax.contourf(x, y, z, levels=levels, cmap=cmap, **kwargs)
@@ -279,7 +271,7 @@ def plot_3d_surface(
     x: np.ndarray,
     y: np.ndarray,
     z: np.ndarray,
-    ax: Optional[Any] = None,
+    ax: Any | None = None,
     cmap: str = "viridis",
     **kwargs,
 ) -> Any:
@@ -314,8 +306,8 @@ def plot_3d_surface(
 def plot_convergence(
     iterations: np.ndarray,
     values: np.ndarray,
-    target: Optional[float] = None,
-    ax: Optional[plt.Axes] = None,
+    target: float | None = None,
+    ax: plt.Axes | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Plot convergence curve.
@@ -331,7 +323,7 @@ def plot_convergence(
         Axes object
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(8, 6))
+        _fig, ax = plt.subplots(figsize=(8, 6))
 
     ax.plot(iterations, values, label="Convergence", **kwargs)
 
@@ -349,10 +341,10 @@ def plot_convergence(
 
 @publication_style
 def plot_comparison(
-    methods: List[str],
-    metrics: Dict[str, List[float]],
+    methods: list[str],
+    metrics: dict[str, list[float]],
     metric_name: str,
-    ax: Optional[plt.Axes] = None,
+    ax: plt.Axes | None = None,
     plot_type: str = "bar",
     **kwargs,
 ) -> plt.Axes:
@@ -370,7 +362,7 @@ def plot_comparison(
         Axes object
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(10, 6))
+        _fig, ax = plt.subplots(figsize=(10, 6))
 
     values = metrics.get(metric_name, [])
 
@@ -389,11 +381,12 @@ def plot_comparison(
 
     return ax
 
+
 @publication_style
 def plot_term_frequency(
-    terms: Dict[str, Any],
+    terms: dict[str, Any],
     top_n: int = 20,
-    ax: Optional[plt.Axes] = None,
+    ax: plt.Axes | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Plot term frequency distribution.
@@ -433,8 +426,8 @@ def plot_term_frequency(
 
 @publication_style
 def plot_domain_distribution(
-    domain_counts: Dict[str, int],
-    ax: Optional[plt.Axes] = None,
+    domain_counts: dict[str, int],
+    ax: plt.Axes | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Plot domain distribution.
@@ -464,7 +457,7 @@ def plot_domain_distribution(
 @publication_style
 def plot_concept_network(
     concept_map: Any,
-    ax: Optional[plt.Axes] = None,
+    ax: plt.Axes | None = None,
     **kwargs,
 ) -> plt.Axes:
     """Plot concept network using NetworkX spring layout.
@@ -482,15 +475,18 @@ def plot_concept_network(
         Axes object
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(10, 8))
+        _fig, ax = plt.subplots(figsize=(10, 8))
 
     try:
         import networkx as nx
     except ImportError:
         ax.text(
-            0.5, 0.5,
+            0.5,
+            0.5,
             "Concept Network Visualization\n(Requires networkx)",
-            ha="center", va="center", transform=ax.transAxes,
+            ha="center",
+            va="center",
+            transform=ax.transAxes,
             fontsize=MIN_FONT,
         )
         ax.axis("off")
@@ -507,8 +503,13 @@ def plot_concept_network(
 
     if G.number_of_nodes() == 0:
         ax.text(
-            0.5, 0.5, "No concepts available",
-            ha="center", va="center", transform=ax.transAxes, fontsize=MIN_FONT,
+            0.5,
+            0.5,
+            "No concepts available",
+            ha="center",
+            va="center",
+            transform=ax.transAxes,
+            fontsize=MIN_FONT,
         )
         ax.axis("off")
         return ax
@@ -532,20 +533,35 @@ def plot_concept_network(
     node_sizes = [max(300, G.degree(n) * 150) for n in G.nodes()]
 
     nx.draw_networkx_nodes(
-        G, pos, node_size=node_sizes, node_color=node_colors,
-        alpha=0.85, edgecolors="white", linewidths=1.0, ax=ax,
+        G,
+        pos,
+        node_size=node_sizes,
+        node_color=node_colors,
+        alpha=0.85,
+        edgecolors="white",
+        linewidths=1.0,
+        ax=ax,
     )
     edge_weights = [G.edges[e].get("weight", 0.5) for e in G.edges()]
     nx.draw_networkx_edges(
-        G, pos, width=[w * 1.5 for w in edge_weights],
-        edge_color="gray", alpha=0.5, ax=ax,
+        G,
+        pos,
+        width=[w * 1.5 for w in edge_weights],
+        edge_color="gray",
+        alpha=0.5,
+        ax=ax,
     )
     # Label top-degree nodes
     degrees = dict(G.degree())
     top_nodes = sorted(degrees, key=degrees.get, reverse=True)[:15]
     labels = {n: n.replace("_", " ").title() for n in top_nodes}
     nx.draw_networkx_labels(
-        G, pos, labels, font_size=MIN_FONT, font_weight="bold", ax=ax,
+        G,
+        pos,
+        labels,
+        font_size=MIN_FONT,
+        font_weight="bold",
+        ax=ax,
     )
 
     title = kwargs.get("title", "Concept Network")

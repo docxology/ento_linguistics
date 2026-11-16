@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
-from typing import TYPE_CHECKING, Mapping
+from typing import TYPE_CHECKING
 
 import matplotlib
 
@@ -11,7 +12,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy.typing import NDArray
-
 
 if TYPE_CHECKING:
     from .study import MetricSummary, Protocol

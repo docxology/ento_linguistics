@@ -12,7 +12,7 @@ import json
 import re
 from itertools import combinations
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 import numpy as np
 import pytest
@@ -21,8 +21,8 @@ from analysis.term_extraction import Term
 from core.manuscript_variables import build_variable_map
 from pipeline.statistics_pipeline import (
     ABSTRACT_LAYER,
-    CANONICAL_DOMAINS,
     CACE_TABLE_TERMS,
+    CANONICAL_DOMAINS,
     add_discourse_analysis,
     build_statistical_analysis,
 )
@@ -73,12 +73,12 @@ FROZEN_PAIRWISE_KEYS = {
 FROZEN_ANOVA_KEYS = {"metric", "F", "df1", "df2", "p", "eta_squared"}
 
 
-def _load_slice_terms(texts: List[str]) -> Dict[str, Term]:
+def _load_slice_terms(texts: list[str]) -> dict[str, Term]:
     """Reconstruct real pipeline-extracted terms occurring in the slice."""
     raw = json.loads(TERMS_PATH.read_text(encoding="utf-8"))
     assert raw, "extracted_terms.json must contain real pipeline output"
     slice_text = " ".join(texts).lower()
-    terms: Dict[str, Term] = {}
+    terms: dict[str, Term] = {}
     for name, data in raw.items():
         if not re.search(rf"\b{re.escape(name)}\b", slice_text):
             continue
@@ -95,7 +95,7 @@ def _load_slice_terms(texts: List[str]) -> Dict[str, Term]:
     return terms
 
 
-def _real_texts(slice_size: int) -> List[str]:
+def _real_texts(slice_size: int) -> list[str]:
     """Load a real slice of data/corpus/abstracts.json."""
     if not CORPUS_PATH.exists():
         pytest.skip("real corpus data/corpus/abstracts.json not available")
@@ -113,14 +113,14 @@ class TestFullPairwiseArtifact:
 
     @pytest.fixture(scope="class")
     @classmethod
-    def artifact(cls) -> Dict[str, Any]:
+    def artifact(cls) -> dict[str, Any]:
         """One end-to-end build over the real 200-abstract slice."""
         texts = _real_texts(cls.SLICE_SIZE)
         terms = _load_slice_terms(texts)
         assert terms, "no extracted terms occur in the corpus slice"
         return build_statistical_analysis(terms, texts)
 
-    def test_top_level_schema_keys(self, artifact: Dict[str, Any]) -> None:
+    def test_top_level_schema_keys(self, artifact: dict[str, Any]) -> None:
         """The frozen top-level sections are all present."""
         assert FROZEN_TOP_LEVEL_KEYS <= set(artifact)
         assert isinstance(artifact["descriptives"], dict)
@@ -128,7 +128,7 @@ class TestFullPairwiseArtifact:
         assert isinstance(artifact["anova"], dict)
         assert isinstance(artifact["corrections"], dict)
 
-    def test_fifteen_canonical_pairs(self, artifact: Dict[str, Any]) -> None:
+    def test_fifteen_canonical_pairs(self, artifact: dict[str, Any]) -> None:
         """Exactly the 15 canonical-domain pairs, A < B alphabetical."""
         pairwise = artifact["pairwise"]
         assert len(pairwise) == 15
@@ -140,7 +140,7 @@ class TestFullPairwiseArtifact:
             assert pair["domain_a"] < pair["domain_b"]
             assert pair["metric"] == "semantic_entropy"
 
-    def test_bh_monotonicity(self, artifact: Dict[str, Any]) -> None:
+    def test_bh_monotonicity(self, artifact: dict[str, Any]) -> None:
         """BH-adjusted p-values are >= raw and non-decreasing in raw order."""
         pairwise = artifact["pairwise"]
         for pair in pairwise:
@@ -150,12 +150,12 @@ class TestFullPairwiseArtifact:
         adjusted = [p["p_bh"] for p in by_raw_p]
         assert adjusted == sorted(adjusted)
 
-    def test_significant_bh_matches_threshold(self, artifact: Dict[str, Any]) -> None:
+    def test_significant_bh_matches_threshold(self, artifact: dict[str, Any]) -> None:
         """significant_bh is exactly the p_bh < 0.05 rule."""
         for pair in artifact["pairwise"]:
             assert pair["significant_bh"] == (pair["p_bh"] < 0.05)
 
-    def test_anova_schema_and_df(self, artifact: Dict[str, Any]) -> None:
+    def test_anova_schema_and_df(self, artifact: dict[str, Any]) -> None:
         """Omnibus ANOVA over all six groups: df2 == N - 6."""
         anova = artifact["anova"]
         assert FROZEN_ANOVA_KEYS <= set(anova)
@@ -166,26 +166,20 @@ class TestFullPairwiseArtifact:
         assert anova["F"] >= 0.0
         assert 0.0 <= anova["p"] <= 1.0
 
-    def test_eta_squared_in_unit_interval_and_consistent_with_F(
-        self, artifact: Dict[str, Any]
-    ) -> None:
+    def test_eta_squared_in_unit_interval_and_consistent_with_F(self, artifact: dict[str, Any]) -> None:
         """eta_squared in [0, 1] and equals the one-way identity F*df1 / (F*df1 + df2)."""
         anova = artifact["anova"]
         eta = anova["eta_squared"]
         assert 0.0 <= eta <= 1.0
-        expected = (anova["F"] * anova["df1"]) / (
-            anova["F"] * anova["df1"] + anova["df2"]
-        )
+        expected = (anova["F"] * anova["df1"]) / (anova["F"] * anova["df1"] + anova["df2"])
         assert eta == pytest.approx(expected, rel=1e-9)
 
-    def test_descriptives_real_values(self, artifact: Dict[str, Any]) -> None:
+    def test_descriptives_real_values(self, artifact: dict[str, Any]) -> None:
         """Every tested domain reports real entropy/ambiguity values, never 0.0 placeholders."""
         descriptives = artifact["descriptives"]
         assert set(descriptives) == set(CANONICAL_DOMAINS)
         for domain, entry in descriptives.items():
-            assert entry["n_terms"] >= 2, (
-                f"{domain} must be testable on the {self.SLICE_SIZE}-abstract slice"
-            )
+            assert entry["n_terms"] >= 2, f"{domain} must be testable on the {self.SLICE_SIZE}-abstract slice"
             assert entry["entropy_mean"] > 0.0
             assert entry["entropy_sd"] >= 0.0
             # Wave-1 ambiguity fix: real per-term means, present or omitted —
@@ -194,11 +188,11 @@ class TestFullPairwiseArtifact:
             assert 0.0 <= entry["cace_mean"] <= 1.0
             assert entry["bridging_count"] >= 0
 
-    def test_cace_domain_aggregates(self, artifact: Dict[str, Any]) -> None:
+    def test_cace_domain_aggregates(self, artifact: dict[str, Any]) -> None:
         """Per-domain CACE aggregates cover every domain with frozen keys."""
         cace = artifact["cace"]
         assert set(cace) == set(CANONICAL_DOMAINS)
-        for domain, entry in cace.items():
+        for entry in cace.values():
             assert FROZEN_CACE_KEYS <= set(entry)
             assert entry["n_terms"] >= 1
             assert 0.0 <= entry["min"] <= entry["max"] <= 1.0
@@ -212,14 +206,12 @@ class TestFullPairwiseArtifact:
             ):
                 assert 0.0 <= entry[dimension] <= 1.0
 
-    def test_cace_mean_matches_descriptives(self, artifact: Dict[str, Any]) -> None:
+    def test_cace_mean_matches_descriptives(self, artifact: dict[str, Any]) -> None:
         """The ``cace`` mean and ``descriptives`` CACE mean share one scoring pass."""
         for domain, entry in artifact["cace"].items():
-            assert entry["mean"] == pytest.approx(
-                artifact["descriptives"][domain]["cace_mean"]
-            )
+            assert entry["mean"] == pytest.approx(artifact["descriptives"][domain]["cace_mean"])
 
-    def test_cace_terms_schema(self, artifact: Dict[str, Any]) -> None:
+    def test_cace_terms_schema(self, artifact: dict[str, Any]) -> None:
         """Every representative term is evaluated with the frozen entry keys."""
         cace_terms = artifact["cace_terms"]
         assert set(cace_terms) == set(CACE_TABLE_TERMS)
@@ -237,20 +229,20 @@ class TestFullPairwiseArtifact:
             # Aggregate is exactly the mean of the four dimensions.
             assert entry["aggregate"] == pytest.approx(float(np.mean(dimensions)))
 
-    def test_pairwise_n_matches_descriptives(self, artifact: Dict[str, Any]) -> None:
+    def test_pairwise_n_matches_descriptives(self, artifact: dict[str, Any]) -> None:
         """Pairwise group sizes are the per-domain valid-term counts."""
         descriptives = artifact["descriptives"]
         for pair in artifact["pairwise"]:
             assert pair["n_a"] == descriptives[pair["domain_a"]]["n_terms"]
             assert pair["n_b"] == descriptives[pair["domain_b"]]["n_terms"]
 
-    def test_corrections_metadata(self, artifact: Dict[str, Any]) -> None:
+    def test_corrections_metadata(self, artifact: dict[str, Any]) -> None:
         """BH correction metadata reflects the 15 computed comparisons."""
         corrections = artifact["corrections"]
         assert corrections["method"] == "benjamini_hochberg"
         assert corrections["n_comparisons"] == len(artifact["pairwise"])
 
-    def test_determinism(self, artifact: Dict[str, Any]) -> None:
+    def test_determinism(self, artifact: dict[str, Any]) -> None:
         """Two builds over identical inputs produce byte-identical JSON."""
         texts = _real_texts(self.SLICE_SIZE)
         terms = _load_slice_terms(texts)
@@ -277,9 +269,7 @@ class TestDegenerateSliceBehavior:
         assert artifact["corrections"]["n_comparisons"] == 0
 
         # Every canonical domain is recorded as skipped with an honest reason.
-        skipped_domains = {
-            s["domain"] for s in artifact["skipped"] if s["kind"] == "domain_group"
-        }
+        skipped_domains = {s["domain"] for s in artifact["skipped"] if s["kind"] == "domain_group"}
         assert skipped_domains == set(CANONICAL_DOMAINS)
         assert any(s["kind"] == "anova" for s in artifact["skipped"])
 
@@ -297,12 +287,10 @@ class TestDegenerateSliceBehavior:
         terms = _load_slice_terms(texts)
         artifact = build_statistical_analysis(terms, texts)
 
-        tested_domains = {
-            pair["domain_a"] for pair in artifact["pairwise"]
-        } | {pair["domain_b"] for pair in artifact["pairwise"]}
-        skipped_domains = {
-            s["domain"] for s in artifact["skipped"] if s["kind"] == "domain_group"
+        tested_domains = {pair["domain_a"] for pair in artifact["pairwise"]} | {
+            pair["domain_b"] for pair in artifact["pairwise"]
         }
+        skipped_domains = {s["domain"] for s in artifact["skipped"] if s["kind"] == "domain_group"}
 
         # Skipped domains never appear in a tested pair; tested domains have >= 2.
         assert tested_domains.isdisjoint(skipped_domains)
@@ -318,7 +306,7 @@ class TestManuscriptVariableTokens:
     """build_variable_map resolves the frozen stats tokens from the artifact."""
 
     @staticmethod
-    def _fixture_artifact() -> Dict[str, Any]:
+    def _fixture_artifact() -> dict[str, Any]:
         """A copy of the real artifact shape with known statistics."""
         return {
             "descriptives": {
@@ -406,15 +394,13 @@ class TestManuscriptVariableTokens:
 
     @pytest.fixture(scope="class")
     @classmethod
-    def stat_tokens(cls, tmp_path_factory: pytest.TempPathFactory) -> Dict[str, str]:
+    def stat_tokens(cls, tmp_path_factory: pytest.TempPathFactory) -> dict[str, str]:
         """Token map built from the fixture artifact written to tmp_path."""
         data_dir = tmp_path_factory.mktemp("output_data")
-        (data_dir / "statistical_analysis.json").write_text(
-            json.dumps(cls._fixture_artifact()), encoding="utf-8"
-        )
+        (data_dir / "statistical_analysis.json").write_text(json.dumps(cls._fixture_artifact()), encoding="utf-8")
         return build_variable_map(output_data_dir=data_dir, corpus_dir=data_dir)
 
-    def test_anova_tokens(self, stat_tokens: Dict[str, str]) -> None:
+    def test_anova_tokens(self, stat_tokens: dict[str, str]) -> None:
         """ANOVA tokens render the frozen names with 4-decimal formatting."""
         assert stat_tokens["ANOVA_METRIC"] == "semantic_entropy"
         assert stat_tokens["ANOVA_F"] == "2.5000"
@@ -423,11 +409,11 @@ class TestManuscriptVariableTokens:
         assert stat_tokens["ANOVA_P"] == "<0.0001"
         assert stat_tokens["ANOVA_ETA_SQUARED"] == "0.3400"
 
-    def test_correction_tokens(self, stat_tokens: Dict[str, str]) -> None:
+    def test_correction_tokens(self, stat_tokens: dict[str, str]) -> None:
         assert stat_tokens["PAIRWISE_N_COMPARISONS"] == "15"
         assert stat_tokens["CORRECTION_METHOD"] == "benjamini_hochberg"
 
-    def test_pairwise_tokens(self, stat_tokens: Dict[str, str]) -> None:
+    def test_pairwise_tokens(self, stat_tokens: dict[str, str]) -> None:
         """Per-pair tokens use uppercased alphabetical slugs."""
         prefix = "PAIRWISE_BEHAVIOR_AND_IDENTITY_UNIT_OF_INDIVIDUALITY"
         assert stat_tokens[f"{prefix}_T"] == "-2.3457"
@@ -443,7 +429,7 @@ class TestManuscriptVariableTokens:
         assert stat_tokens[f"{prefix}_D"] == "2.4000"
         assert stat_tokens[f"{prefix}_SIGNIFICANT"] == "yes"
 
-    def test_cace_domain_tokens(self, stat_tokens: Dict[str, str]) -> None:
+    def test_cace_domain_tokens(self, stat_tokens: dict[str, str]) -> None:
         """CACE_<SLUG>_* tokens render 2-decimal values and the sampled N."""
         assert stat_tokens["CACE_ECONOMICS_MEAN"] == "0.52"
         assert stat_tokens["CACE_ECONOMICS_MIN"] == "0.37"
@@ -454,7 +440,7 @@ class TestManuscriptVariableTokens:
         assert stat_tokens["CACE_ECONOMICS_EVOLVABILITY"] == "0.57"
         assert stat_tokens["CACE_ECONOMICS_N"] == "3"
 
-    def test_cace_term_tokens(self, stat_tokens: Dict[str, str]) -> None:
+    def test_cace_term_tokens(self, stat_tokens: dict[str, str]) -> None:
         """CACE_TERM_<SLUG>_* tokens map spaces to underscores in slugs."""
         assert stat_tokens["CACE_TERM_SLAVE_CLARITY"] == "0.40"
         assert stat_tokens["CACE_TERM_SLAVE_APPROPRIATENESS"] == "0.40"
@@ -468,13 +454,7 @@ class TestManuscriptVariableTokens:
     def test_absent_artifact_omits_tokens(self, tmp_path: Path) -> None:
         """Missing statistical_analysis.json omits the token family, no KeyError."""
         variables = build_variable_map(output_data_dir=tmp_path, corpus_dir=tmp_path)
-        stat_tokens = {
-            k
-            for k in variables
-            if k.startswith(
-                ("ANOVA_", "PAIRWISE_", "CORRECTION_METHOD", "CACE_")
-            )
-        }
+        stat_tokens = {k for k in variables if k.startswith(("ANOVA_", "PAIRWISE_", "CORRECTION_METHOD", "CACE_"))}
         assert stat_tokens == set()
 
 
@@ -485,16 +465,14 @@ class TestAbstractLayerFraming:
 
     @pytest.fixture(scope="class")
     @classmethod
-    def artifact(cls) -> Dict[str, Any]:
+    def artifact(cls) -> dict[str, Any]:
         """One end-to-end abstract-layer build over the real slice."""
         texts = _real_texts(cls.SLICE_SIZE)
         terms = _load_slice_terms(texts)
         assert terms, "no extracted terms occur in the corpus slice"
         return build_statistical_analysis(terms, texts, layer=ABSTRACT_LAYER)
 
-    def test_layer_marker_and_domain_term_counts(
-        self, artifact: Dict[str, Any]
-    ) -> None:
+    def test_layer_marker_and_domain_term_counts(self, artifact: dict[str, Any]) -> None:
         """The abstract artifact carries the layer marker and term tallies."""
         assert artifact["layer"] == ABSTRACT_LAYER
         counts = artifact["domain_term_counts"]
@@ -509,7 +487,7 @@ class TestAbstractLayerFraming:
             assert entry["term_count"] >= 1
             assert entry["total_frequency"] >= entry["term_count"]
 
-    def test_framing_shape(self, artifact: Dict[str, Any]) -> None:
+    def test_framing_shape(self, artifact: dict[str, Any]) -> None:
         """framing matches the full-text shape: per-domain + overall."""
         framing = artifact["framing"]
         assert set(framing) <= set(CANONICAL_DOMAINS) | {"overall"}
@@ -520,21 +498,17 @@ class TestAbstractLayerFraming:
             assert 0.0 <= entry["proportion"] <= 1.0
             assert entry["n_contexts"] >= 1
 
-    def test_framing_overall_counts_each_occurrence_once(
-        self, artifact: Dict[str, Any]
-    ) -> None:
+    def test_framing_overall_counts_each_occurrence_once(self, artifact: dict[str, Any]) -> None:
         """Per-domain n_contexts sums to >= overall (bridging terms double-count)."""
         framing = artifact["framing"]
-        domain_sum = sum(
-            e["n_contexts"] for k, e in framing.items() if k != "overall"
-        )
+        domain_sum = sum(e["n_contexts"] for k, e in framing.items() if k != "overall")
         assert domain_sum >= framing["overall"]["n_contexts"]
 
-    def test_framing_terms_section(self, artifact: Dict[str, Any]) -> None:
+    def test_framing_terms_section(self, artifact: dict[str, Any]) -> None:
         """Per-term framing data exists and is internally consistent."""
         framing_terms = artifact["framing_terms"]
         assert framing_terms, "domain terms must occur in the slice texts"
-        for term, entry in framing_terms.items():
+        for entry in framing_terms.values():
             assert set(entry) == {"proportion", "n_contexts", "domains"}
             assert 0.0 <= entry["proportion"] <= 1.0
             assert entry["n_contexts"] >= 1
@@ -542,16 +516,10 @@ class TestAbstractLayerFraming:
         # Term-level occurrence counts aggregate to the per-domain counts.
         framing = artifact["framing"]
         for domain in set(framing) - {"overall"}:
-            from_terms = sum(
-                e["n_contexts"]
-                for e in framing_terms.values()
-                if domain in e["domains"]
-            )
+            from_terms = sum(e["n_contexts"] for e in framing_terms.values() if domain in e["domains"])
             assert from_terms == framing[domain]["n_contexts"]
 
-    def test_no_layer_sections_by_default(
-        self, artifact: Dict[str, Any]
-    ) -> None:
+    def test_no_layer_sections_by_default(self, artifact: dict[str, Any]) -> None:
         """Default builds (full-text/arXiv callers) carry no abstract sections."""
         texts = _real_texts(self.SLICE_SIZE)
         terms = _load_slice_terms(texts)
@@ -569,25 +537,28 @@ class TestDiscourseSection:
 
     @pytest.fixture(scope="class")
     @classmethod
-    def artifact(cls) -> Dict[str, Any]:
+    def artifact(cls) -> dict[str, Any]:
         """Build over a real slice (small enough to keep the suite fast)."""
         texts = _real_texts(cls.SLICE_SIZE)
         terms = _load_slice_terms(texts)
         return build_statistical_analysis(terms, texts)
 
-    def test_schema_keys(self, artifact: Dict[str, Any]) -> None:
+    def test_schema_keys(self, artifact: dict[str, Any]) -> None:
         """The four analyzer subsections plus honest metadata are present."""
         discourse = artifact["discourse"]
-        assert {"patterns", "rhetorical", "argumentative", "persuasive"} <= set(
-            discourse
-        )
-        assert {"n_texts", "n_texts_analyzed", "n_texts_excluded_min_length",
-                "min_text_length", "sample_fraction"} <= set(discourse)
+        assert {"patterns", "rhetorical", "argumentative", "persuasive"} <= set(discourse)
+        assert {
+            "n_texts",
+            "n_texts_analyzed",
+            "n_texts_excluded_min_length",
+            "min_text_length",
+            "sample_fraction",
+        } <= set(discourse)
         assert discourse["n_texts"] == self.SLICE_SIZE
         assert discourse["n_texts_analyzed"] > 0
         assert discourse["sample_fraction"] == 1.0
 
-    def test_patterns_shape(self, artifact: Dict[str, Any]) -> None:
+    def test_patterns_shape(self, artifact: dict[str, Any]) -> None:
         """Pattern entries record real frequencies over the analyzed texts."""
         patterns = artifact["discourse"]["patterns"]
         assert isinstance(patterns, dict)
@@ -595,31 +566,43 @@ class TestDiscourseSection:
             assert {"frequency", "rhetorical_function", "domains", "examples"} <= set(entry)
             assert entry["frequency"] >= 1
 
-    def test_rhetorical_strategies_present(self, artifact: Dict[str, Any]) -> None:
+    def test_rhetorical_strategies_present(self, artifact: dict[str, Any]) -> None:
         """Authority citations occur in real abstracts — nonzero frequency."""
         rhetorical = artifact["discourse"]["rhetorical"]
         assert set(rhetorical) == {
-            "authority", "analogy", "generalization", "anecdotal",
+            "authority",
+            "analogy",
+            "generalization",
+            "anecdotal",
         }
         assert rhetorical["authority"]["frequency"] > 0
         for entry in rhetorical.values():
             assert entry["frequency"] >= 0
             assert entry["text_count"] >= 0
 
-    def test_persuasive_effectiveness_shape(self, artifact: Dict[str, Any]) -> None:
+    def test_persuasive_effectiveness_shape(self, artifact: dict[str, Any]) -> None:
         """Persuasive entries are the analyzer's effectiveness metrics."""
         persuasive = artifact["discourse"]["persuasive"]
         assert persuasive, "the analyzer always returns its technique keys"
         for entry in persuasive.values():
-            assert {"usage_frequency", "context_relevance",
-                    "heuristic_impact_index", "heuristic_effectiveness_band"} <= set(entry)
+            assert {
+                "usage_frequency",
+                "context_relevance",
+                "heuristic_impact_index",
+                "heuristic_effectiveness_band",
+            } <= set(entry)
             assert 0.0 <= entry["heuristic_impact_index"] <= 1.0
 
-    def test_argumentative_aggregates(self, artifact: Dict[str, Any]) -> None:
+    def test_argumentative_aggregates(self, artifact: dict[str, Any]) -> None:
         """Argumentative aggregates are internally consistent counts."""
         arg = artifact["discourse"]["argumentative"]
-        assert {"n_structures", "n_with_evidence", "n_with_warrant",
-                "n_with_qualification", "n_with_discourse_markers"} <= set(arg)
+        assert {
+            "n_structures",
+            "n_with_evidence",
+            "n_with_warrant",
+            "n_with_qualification",
+            "n_with_discourse_markers",
+        } <= set(arg)
         assert arg["n_structures"] >= 0
         assert arg["n_with_evidence"] <= arg["n_structures"]
         if arg["n_with_discourse_markers"]:
@@ -649,11 +632,9 @@ class TestDiscourseSection:
         assert discourse["n_texts_excluded_min_length"] == 1
         assert discourse["n_texts_analyzed"] == 1
 
-    def test_discourse_deterministic(self, artifact: Dict[str, Any]) -> None:
+    def test_discourse_deterministic(self, artifact: dict[str, Any]) -> None:
         """Rebuilding yields byte-identical discourse metadata and counts."""
         texts = _real_texts(self.SLICE_SIZE)
         terms = _load_slice_terms(texts)
         rebuild = build_statistical_analysis(terms, texts)
-        assert json.dumps(artifact["discourse"], indent=2) == json.dumps(
-            rebuild["discourse"], indent=2
-        )
+        assert json.dumps(artifact["discourse"], indent=2) == json.dumps(rebuild["discourse"], indent=2)

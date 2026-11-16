@@ -6,11 +6,11 @@ import hashlib
 import json
 from pathlib import Path
 
+from .artifacts import validate_artifacts
 from .model import MatrixError
 from .study import Protocol, run
-from .artifacts import validate_artifacts
 
-__all__ = ["validate_receipt", "ensure_extensions"]
+__all__ = ["ensure_extensions", "validate_receipt"]
 
 
 def validate_receipt(root: Path, out: Path, protocol: Protocol) -> None:

@@ -7,19 +7,20 @@ in scientific discourse.
 
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from collections.abc import Callable
+from typing import Any
 
 import numpy as np
 
 __all__ = [
     "clean_data",
-    "normalize_data",
-    "standardize_data",
-    "detect_outliers",
-    "remove_outliers",
-    "extract_features",
-    "transform_data",
     "create_validation_pipeline",
+    "detect_outliers",
+    "extract_features",
+    "normalize_data",
+    "remove_outliers",
+    "standardize_data",
+    "transform_data",
 ]
 
 
@@ -27,7 +28,7 @@ def clean_data(
     data: np.ndarray,
     remove_nan: bool = True,
     remove_inf: bool = True,
-    fill_method: Optional[str] = None,
+    fill_method: str | None = None,
 ) -> np.ndarray:
     """Clean data by removing or filling invalid values.
 
@@ -77,8 +78,8 @@ def clean_data(
 
 
 def normalize_data(
-    data: np.ndarray, method: str = "z_score", axis: Optional[int] = None
-) -> Tuple[np.ndarray, Dict[str, Any]]:
+    data: np.ndarray, method: str = "z_score", axis: int | None = None
+) -> tuple[np.ndarray, dict[str, Any]]:
     """Normalize data using specified method.
 
     Args:
@@ -130,8 +131,8 @@ def normalize_data(
 
 
 def standardize_data(
-    data: np.ndarray, mean: Optional[float] = None, std: Optional[float] = None
-) -> Tuple[np.ndarray, Dict[str, float]]:
+    data: np.ndarray, mean: float | None = None, std: float | None = None
+) -> tuple[np.ndarray, dict[str, float]]:
     """Standardize data to zero mean and unit variance.
 
     Args:
@@ -152,9 +153,7 @@ def standardize_data(
     return standardized, {"mean": mean, "std": std}
 
 
-def detect_outliers(
-    data: np.ndarray, method: str = "iqr", threshold: float = 1.5
-) -> Tuple[np.ndarray, Dict[str, Any]]:
+def detect_outliers(data: np.ndarray, method: str = "iqr", threshold: float = 1.5) -> tuple[np.ndarray, dict[str, Any]]:
     """Detect outliers in data.
 
     Args:
@@ -213,9 +212,7 @@ def detect_outliers(
     return outlier_mask, info
 
 
-def remove_outliers(
-    data: np.ndarray, method: str = "iqr", threshold: float = 1.5
-) -> Tuple[np.ndarray, Dict[str, Any]]:
+def remove_outliers(data: np.ndarray, method: str = "iqr", threshold: float = 1.5) -> tuple[np.ndarray, dict[str, Any]]:
     """Remove outliers from data.
 
     Args:
@@ -240,9 +237,7 @@ def remove_outliers(
     return cleaned, info
 
 
-def extract_features(
-    data: np.ndarray, feature_types: List[str]
-) -> Dict[str, np.ndarray]:
+def extract_features(data: np.ndarray, feature_types: list[str]) -> dict[str, np.ndarray]:
     """Extract features from data.
 
     Args:
@@ -256,21 +251,13 @@ def extract_features(
 
     for feature_type in feature_types:
         if feature_type == "mean":
-            features["mean"] = (
-                np.mean(data, axis=-1) if data.ndim > 1 else np.array([np.mean(data)])
-            )
+            features["mean"] = np.mean(data, axis=-1) if data.ndim > 1 else np.array([np.mean(data)])
         elif feature_type == "std":
-            features["std"] = (
-                np.std(data, axis=-1) if data.ndim > 1 else np.array([np.std(data)])
-            )
+            features["std"] = np.std(data, axis=-1) if data.ndim > 1 else np.array([np.std(data)])
         elif feature_type == "min":
-            features["min"] = (
-                np.min(data, axis=-1) if data.ndim > 1 else np.array([np.min(data)])
-            )
+            features["min"] = np.min(data, axis=-1) if data.ndim > 1 else np.array([np.min(data)])
         elif feature_type == "max":
-            features["max"] = (
-                np.max(data, axis=-1) if data.ndim > 1 else np.array([np.max(data)])
-            )
+            features["max"] = np.max(data, axis=-1) if data.ndim > 1 else np.array([np.max(data)])
         elif feature_type == "range":
             features["range"] = (
                 np.max(data, axis=-1) - np.min(data, axis=-1)
@@ -283,7 +270,7 @@ def extract_features(
     return features
 
 
-def transform_data(data: np.ndarray, transform: Union[str, Callable]) -> np.ndarray:
+def transform_data(data: np.ndarray, transform: str | Callable) -> np.ndarray:
     """Apply transformation to data.
 
     Args:
@@ -309,7 +296,7 @@ def transform_data(data: np.ndarray, transform: Union[str, Callable]) -> np.ndar
         return transform(data)
 
 
-def create_validation_pipeline(steps: List[Tuple[str, Dict[str, Any]]]) -> Callable:
+def create_validation_pipeline(steps: list[tuple[str, dict[str, Any]]]) -> Callable:
     """Create a data validation pipeline.
 
     Args:
@@ -319,7 +306,7 @@ def create_validation_pipeline(steps: List[Tuple[str, Dict[str, Any]]]) -> Calla
         Pipeline function
     """
 
-    def pipeline(data: np.ndarray) -> Tuple[bool, List[str]]:
+    def pipeline(data: np.ndarray) -> tuple[bool, list[str]]:
         """Run validation pipeline.
 
         Args:
@@ -339,9 +326,7 @@ def create_validation_pipeline(steps: List[Tuple[str, Dict[str, Any]]]) -> Calla
                 elif step_name == "check_shape":
                     expected_shape = step_kwargs.get("shape")
                     if expected_shape and data.shape != expected_shape:
-                        errors.append(
-                            f"Expected shape {expected_shape}, got {data.shape}"
-                        )
+                        errors.append(f"Expected shape {expected_shape}, got {data.shape}")
 
                 elif step_name == "check_range":
                     min_val = step_kwargs.get("min")

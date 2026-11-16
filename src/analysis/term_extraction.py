@@ -9,10 +9,11 @@ from __future__ import annotations
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
+
+from core.parallel import map_ordered
 
 from .text_analysis import TextProcessor
-from core.parallel import map_ordered
 
 __all__ = [
     "Term",
@@ -22,7 +23,7 @@ __all__ = [
 ]
 
 
-def filter_matching_sentences(sentences: List[str], term: str) -> List[str]:
+def filter_matching_sentences(sentences: list[str], term: str) -> list[str]:
     """Return sentences containing ``term`` as whole word(s).
 
     Shared context-extraction helper: matching is word-boundary anchored and
@@ -43,7 +44,7 @@ def filter_matching_sentences(sentences: List[str], term: str) -> List[str]:
 # Per-process tokenizer singleton for the pool-based tokenization task
 # below.  Set by the pool initializer; the lazy guard in the task also
 # covers the serial fallback path, which runs tasks in the parent.
-_WORKER_TEXT_PROCESSOR: Optional[TextProcessor] = None
+_WORKER_TEXT_PROCESSOR: TextProcessor | None = None
 
 
 def _init_worker_text_processor() -> None:
@@ -53,7 +54,7 @@ def _init_worker_text_processor() -> None:
         _WORKER_TEXT_PROCESSOR = TextProcessor()
 
 
-def _tokenize_text_task(text: str) -> "Tuple[List[str], Counter]":
+def _tokenize_text_task(text: str) -> tuple[list[str], Counter]:
     """Per-text tokenization task for :func:`map_ordered`.
 
     Performs exactly the per-text computation of the serial
@@ -91,13 +92,13 @@ class Term:
 
     text: str
     lemma: str
-    domains: List[str] = field(default_factory=list)
+    domains: list[str] = field(default_factory=list)
     frequency: int = 0
-    contexts: List[str] = field(default_factory=list)
-    pos_tags: List[str] = field(default_factory=list)
+    contexts: list[str] = field(default_factory=list)
+    pos_tags: list[str] = field(default_factory=list)
     confidence: float = 0.0
     semantic_entropy: float = 0.0
-    entropy_status: Optional[str] = None
+    entropy_status: str | None = None
 
     def add_context(self, context: str) -> None:
         """Add a usage context for this term.
@@ -108,7 +109,7 @@ class Term:
         if context not in self.contexts:
             self.contexts.append(context)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
             "text": self.text,
@@ -123,7 +124,7 @@ class Term:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Term":
+    def from_dict(cls, data: dict[str, Any]) -> Term:
         """Create from dictionary.
 
         Handles graceful defaults for dicts without semantic_entropy.
@@ -312,18 +313,16 @@ class TerminologyExtractor:
         r"\b[a-z]{4,}(?:\s+[a-z]{3,})+",  # Multi-word technical terms
     ]
 
-    def __init__(self, text_processor: Optional[TextProcessor] = None):
+    def __init__(self, text_processor: TextProcessor | None = None):
         """Initialize terminology extractor.
 
         Args:
             text_processor: Text processor instance
         """
         self.text_processor = text_processor or TextProcessor()
-        self.extracted_terms: Dict[str, Term] = {}
+        self.extracted_terms: dict[str, Term] = {}
 
-    def extract_terms(
-        self, texts: List[str], min_frequency: int = 3
-    ) -> Dict[str, Term]:
+    def extract_terms(self, texts: list[str], min_frequency: int = 3) -> dict[str, Term]:
         """Extract terminology from a collection of texts.
 
         Args:
@@ -358,10 +357,8 @@ class TerminologyExtractor:
         # The parent merges in text order, so the aggregate is identical:
         # ``all_tokens`` concatenation, ``term_counts`` integer merge and
         # ``text_contexts`` built in text order.
-        tokenized = map_ordered(
-            _tokenize_text_task, texts, initializer=_init_worker_text_processor
-        )
-        text_contexts: List[Tuple[str, List[str]]] = []
+        tokenized = map_ordered(_tokenize_text_task, texts, initializer=_init_worker_text_processor)
+        text_contexts: list[tuple[str, list[str]]] = []
         term_counts: Counter = Counter()
         for text, (tokens, local_counts) in zip(texts, tokenized):
             text_contexts.append((text, tokens))
@@ -369,16 +366,14 @@ class TerminologyExtractor:
 
         # Extract candidate terms (filter by frequency first for efficiency)
         candidate_terms = {
-            token
-            for token, count in term_counts.items()
-            if count >= min_frequency and self._is_candidate_term(token)
+            token for token, count in term_counts.items() if count >= min_frequency and self._is_candidate_term(token)
         }
 
         # Track candidate-token positions for efficient context extraction,
         # in one parent-side pass in text order.  Non-candidate tokens are
         # skipped: ``_extract_term_contexts_efficient`` only looks up
         # candidate tokens, so their positions are never read.
-        token_positions: Dict[str, List[Tuple[int, int]]] = defaultdict(list)
+        token_positions: dict[str, list[tuple[int, int]]] = defaultdict(list)
         for text_idx, (_text, tokens) in enumerate(text_contexts):
             for pos, token in enumerate(tokens):
                 if token in candidate_terms:
@@ -393,9 +388,7 @@ class TerminologyExtractor:
             term.domains = self.classify_term_domains(candidate)
 
             # Extract contexts using position information
-            self._extract_term_contexts_efficient(
-                term, text_contexts, token_positions[candidate], window_size=3
-            )
+            self._extract_term_contexts_efficient(term, text_contexts, token_positions[candidate], window_size=3)
 
             # Calculate confidence
             term.confidence = self._calculate_extraction_confidence(term)
@@ -484,12 +477,9 @@ class TerminologyExtractor:
             "resource",
         }
 
-        if any(word in token.lower() for word in scientific_words):
-            return True
+        return bool(any(word in token.lower() for word in scientific_words))
 
-        return False
-
-    def classify_term_domains(self, term: str) -> List[str]:
+    def classify_term_domains(self, term: str) -> list[str]:
         """Classify term into Ento-Linguistic domains.
 
         Args:
@@ -518,7 +508,7 @@ class TerminologyExtractor:
 
         return sorted(set(domains))
 
-    def _classify_by_pattern(self, term: str) -> List[str]:
+    def _classify_by_pattern(self, term: str) -> list[str]:
         """Classify term based on linguistic patterns.
 
         Args:
@@ -533,33 +523,22 @@ class TerminologyExtractor:
         # Compound separators (_ and -) are treated as word boundaries by
         # extending the token pattern to those characters' neighbours.
         def _matches(word: str) -> bool:
-            return re.search(
-                rf"\b{re.escape(word)}\b", term.replace("_", " ").replace("-", " ")
-            ) is not None
+            return re.search(rf"\b{re.escape(word)}\b", term.replace("_", " ").replace("-", " ")) is not None
 
         # Individuality patterns
         if any(_matches(w) for w in ["individual", "collective", "organism", "unit"]):
             domains.append("unit_of_individuality")
 
         # Behavior patterns
-        if any(
-            _matches(w)
-            for w in ["behavior", "task", "role", "foraging", "specialization"]
-        ):
+        if any(_matches(w) for w in ["behavior", "task", "role", "foraging", "specialization"]):
             domains.append("behavior_and_identity")
 
         # Power patterns
-        if any(
-            _matches(w)
-            for w in ["caste", "hierarchy", "control", "dominant", "subordinate"]
-        ):
+        if any(_matches(w) for w in ["caste", "hierarchy", "control", "dominant", "subordinate"]):
             domains.append("power_and_labor")
 
         # Reproduction patterns
-        if any(
-            _matches(w)
-            for w in ["sex", "reproduction", "mating", "fertilization"]
-        ):
+        if any(_matches(w) for w in ["sex", "reproduction", "mating", "fertilization"]):
             domains.append("sex_and_reproduction")
 
         # Kin patterns
@@ -567,10 +546,7 @@ class TerminologyExtractor:
             domains.append("kin_and_relatedness")
 
         # Economic patterns
-        if any(
-            _matches(w)
-            for w in ["resource", "allocation", "cost", "benefit", "trade"]
-        ):
+        if any(_matches(w) for w in ["resource", "allocation", "cost", "benefit", "trade"]):
             domains.append("economics")
 
         return domains
@@ -578,8 +554,8 @@ class TerminologyExtractor:
     def _extract_term_contexts_efficient(
         self,
         term: Term,
-        text_contexts: List[Tuple[str, List[str]]],
-        positions: List[Tuple[int, int]],
+        text_contexts: list[tuple[str, list[str]]],
+        positions: list[tuple[int, int]],
         window_size: int = 3,
     ) -> None:
         """Extract contextual usage examples for a term using pre-computed positions.
@@ -591,7 +567,7 @@ class TerminologyExtractor:
             window_size: Context window size in words
         """
         for text_idx, token_pos in positions:
-            text, tokens = text_contexts[text_idx]
+            _text, tokens = text_contexts[text_idx]
 
             # Extract context window
             start = max(0, token_pos - window_size)
@@ -640,7 +616,7 @@ class TerminologyExtractor:
 
         return min(confidence, 1.0)
 
-    def get_domain_statistics(self) -> Dict[str, Dict[str, Any]]:
+    def get_domain_statistics(self) -> dict[str, dict[str, Any]]:
         """Get statistics for each domain.
 
         Returns:
@@ -669,9 +645,7 @@ class TerminologyExtractor:
 
         return dict(domain_stats)
 
-    def find_term_cooccurrences(
-        self, term1: str, term2: str, texts: List[str], window_size: int = 10
-    ) -> int:
+    def find_term_cooccurrences(self, term1: str, term2: str, texts: list[str], window_size: int = 10) -> int:
         """Find co-occurrence frequency of two terms.
 
         Args:
@@ -729,16 +703,12 @@ class TerminologyExtractor:
                         "domains": ";".join(term.domains),
                         "frequency": term.frequency,
                         "confidence": term.confidence,
-                        "contexts": "|".join(
-                            term.contexts[:3]
-                        ),  # Limit contexts for CSV
+                        "contexts": "|".join(term.contexts[:3]),  # Limit contexts for CSV
                     }
                 )
 
 
-def create_domain_seed_expansion(
-    extractor: TerminologyExtractor, corpus_terms: Dict[str, Term]
-) -> Dict[str, Set[str]]:
+def create_domain_seed_expansion(extractor: TerminologyExtractor, corpus_terms: dict[str, Term]) -> dict[str, set[str]]:
     """Expand domain seed terms using corpus analysis.
 
     Args:
@@ -754,9 +724,7 @@ def create_domain_seed_expansion(
         expanded_seeds[domain] = set(original_seeds)
 
         # Find corpus terms in this domain
-        domain_terms = [
-            term for term in corpus_terms.values() if domain in term.domains
-        ]
+        domain_terms = [term for term in corpus_terms.values() if domain in term.domains]
 
         # Add high-confidence, high-frequency terms
         for term in domain_terms:

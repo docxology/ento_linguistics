@@ -13,8 +13,8 @@ import json
 import pytest
 
 from pipeline.arxiv_analysis import (
-    ARXIV_LAYER,
     ARTIFACT_NAME,
+    ARXIV_LAYER,
     DEFAULT_MIN_TERM_FREQUENCY,
     build_arxiv_analysis,
     load_arxiv_records,
@@ -104,7 +104,7 @@ class TestBuildArxivAnalysisSchema:
     def test_extraction_nonempty(self, rich_artifact):
         counts = rich_artifact["domain_term_counts"]
         assert counts, "recurring domain vocabulary must be extracted"
-        for domain, entry in counts.items():
+        for entry in counts.values():
             assert entry["term_count"] >= 1
             assert entry["total_frequency"] >= entry["term_count"]
             assert 0 <= entry["bridging_term_count"] <= entry["term_count"]
@@ -129,7 +129,7 @@ class TestFraming:
     def test_framing_over_occurrence_contexts(self, rich_artifact):
         framing = rich_artifact["framing"]
         assert framing["overall"]["n_contexts"] > 0
-        for domain, entry in framing.items():
+        for entry in framing.values():
             assert 0.0 <= entry["proportion"] <= 1.0
             assert entry["n_contexts"] > 0
 
@@ -161,9 +161,7 @@ class TestGuards:
 class TestMainCli:
     def test_writes_artifact(self, tmp_path):
         records_path = tmp_path / "records.json"
-        records_path.write_text(
-            json.dumps(_noise_records()), encoding="utf-8"
-        )
+        records_path.write_text(json.dumps(_noise_records()), encoding="utf-8")
         output = tmp_path / ARTIFACT_NAME
         rc = main(["--records", str(records_path), "--output", str(output)])
         assert rc == 0
@@ -173,9 +171,7 @@ class TestMainCli:
 
     def test_min_term_frequency_flag_recorded(self, tmp_path):
         records_path = tmp_path / "records.json"
-        records_path.write_text(
-            json.dumps(_rich_records()), encoding="utf-8"
-        )
+        records_path.write_text(json.dumps(_rich_records()), encoding="utf-8")
         output = tmp_path / "arxiv_min3.json"
         rc = main(
             [

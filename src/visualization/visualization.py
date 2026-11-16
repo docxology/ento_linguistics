@@ -7,7 +7,7 @@ illustrating entomological metaphors in scientific discourse.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -56,7 +56,7 @@ class VisualizationEngine:
         self,
         style: str = "publication",
         color_palette: str = "default",
-        output_dir: Optional[str] = None,
+        output_dir: str | None = None,
     ):
         """Initialize visualization engine.
 
@@ -74,17 +74,15 @@ class VisualizationEngine:
         # no global rcParams mutation at construction time.
 
         # Get color palette
-        self.colors = self.COLOR_PALETTES.get(
-            color_palette, self.COLOR_PALETTES["default"]
-        )
+        self.colors = self.COLOR_PALETTES.get(color_palette, self.COLOR_PALETTES["default"])
 
     def create_figure(
         self,
         nrows: int = 1,
         ncols: int = 1,
-        figsize: Optional[Tuple[float, float]] = None,
+        figsize: tuple[float, float] | None = None,
         **kwargs,
-    ) -> Tuple[plt.Figure, np.ndarray]:
+    ) -> tuple[plt.Figure, np.ndarray]:
         """Create a new figure with subplots.
 
         Args:
@@ -118,9 +116,9 @@ class VisualizationEngine:
         self,
         figure: plt.Figure,
         filename: str,
-        formats: Optional[List[str]] = None,
+        formats: list[str] | None = None,
         dpi: int = 300,
-    ) -> Dict[str, Path]:
+    ) -> dict[str, Path]:
         """Save figure in multiple formats.
 
         Args:
@@ -148,7 +146,7 @@ class VisualizationEngine:
                 raise RuntimeError(f"Figure save failed for {path}")
         return saved_files
 
-    def figure_metadata(self, saved: Dict[str, Path]) -> Dict[str, Any]:
+    def figure_metadata(self, saved: dict[str, Path]) -> dict[str, Any]:
         """Return simple metadata for saved figures (size and path)."""
         meta = {}
         for fmt, path in saved.items():
@@ -159,9 +157,9 @@ class VisualizationEngine:
     def apply_publication_style(
         self,
         ax: plt.Axes,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
         grid: bool = True,
         legend: bool = False,
     ) -> None:
@@ -202,9 +200,9 @@ class VisualizationEngine:
 
 def create_multi_panel_figure(
     n_panels: int,
-    layout: Optional[Tuple[int, int]] = None,
-    figsize: Optional[Tuple[float, float]] = None,
-) -> Tuple[plt.Figure, List[plt.Axes]]:
+    layout: tuple[int, int] | None = None,
+    figsize: tuple[float, float] | None = None,
+) -> tuple[plt.Figure, list[plt.Axes]]:
     """Create a multi-panel figure.
 
     Args:

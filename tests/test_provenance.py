@@ -1,11 +1,11 @@
 """Content provenance and tamper controls using real files."""
+
 import json
 from pathlib import Path
 
 import pytest
 
-from core.provenance import (files_sha256, records_sha256,
-                             write_analysis_manifest, validate_analysis_manifest)
+from core.provenance import files_sha256, records_sha256, validate_analysis_manifest, write_analysis_manifest
 
 
 def test_record_signatures_bind_order_and_text():
@@ -56,7 +56,7 @@ def test_missing_manifest_is_not_a_success(tmp_path):
 def test_manifest_rejects_missing_and_extra_files(tmp_path):
     root = _project(tmp_path)
     write_analysis_manifest(root)
-    (root / "output" / "data" / "unbound.json").write_text('{}')
+    (root / "output" / "data" / "unbound.json").write_text("{}")
     with pytest.raises(ValueError, match="inventory"):
         validate_analysis_manifest(root)
 
@@ -71,9 +71,7 @@ def test_manifest_discloses_and_checks_selected_nltk_resources(tmp_path):
     # Given a receipt over real project inputs and installed NLTK resources.
     root = _project(tmp_path)
     manifest = write_analysis_manifest(root)
-    assert set(manifest["nltk_resources"]) == {
-        "punkt_tab_english", "stopwords_english", "wordnet"
-    }
+    assert set(manifest["nltk_resources"]) == {"punkt_tab_english", "stopwords_english", "wordnet"}
     assert all(len(value) == 64 for value in manifest["nltk_resources"].values())
     # When the receipt falsely identifies its dictionary bytes.
     manifest["nltk_resources"]["wordnet"] = "0" * 64

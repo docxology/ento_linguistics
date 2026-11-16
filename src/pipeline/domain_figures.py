@@ -10,14 +10,13 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from visualization.concept_visualization import ConceptVisualizer
 from analysis.domain_analysis import DomainAnalyzer
-from data.literature_mining import LiteratureCorpus
 from analysis.term_extraction import TerminologyExtractor
-
 from core.logging import get_logger
+from data.literature_mining import LiteratureCorpus
+from visualization.concept_visualization import ConceptVisualizer
 from visualization.figure_manager import FigureManager
 
 logger = get_logger(__name__)
@@ -31,7 +30,7 @@ class DomainFigureGenerator:
     and conceptual structures.
     """
 
-    def __init__(self, output_dir: Optional[Path] = None):
+    def __init__(self, output_dir: Path | None = None):
         """Initialize figure generator.
 
         Args:
@@ -48,13 +47,9 @@ class DomainFigureGenerator:
         self.figure_manager = FigureManager()
         self.visualizer = ConceptVisualizer()
 
-        logger.info(
-            f"Initialized domain figure generator with output directory: {self.output_dir}"
-        )
+        logger.info(f"Initialized domain figure generator with output directory: {self.output_dir}")
 
-    def generate_domain_figures(
-        self, domain_name: str, corpus_file: Optional[Path] = None
-    ) -> Dict[str, Any]:
+    def generate_domain_figures(self, domain_name: str, corpus_file: Path | None = None) -> dict[str, Any]:
         """Generate figures for a specific domain.
 
         Args:
@@ -89,11 +84,7 @@ class DomainFigureGenerator:
         all_terms = extractor.extract_terms(texts, min_frequency=2)
 
         # Filter for domain
-        domain_terms = {
-            term: term_obj
-            for term, term_obj in all_terms.items()
-            if domain_name in term_obj.domains
-        }
+        domain_terms = {term: term_obj for term, term_obj in all_terms.items() if domain_name in term_obj.domains}
 
         if not domain_terms:
             logger.warning(f"No terms found for domain {domain_name}")
@@ -109,9 +100,7 @@ class DomainFigureGenerator:
             return {"error": f"No analysis available for domain {domain_name}"}
 
         # Generate figures
-        figures = self._generate_domain_specific_figures(
-            domain_name, domain_terms, analysis
-        )
+        figures = self._generate_domain_specific_figures(domain_name, domain_terms, analysis)
 
         results = {
             "domain": domain_name,
@@ -123,9 +112,7 @@ class DomainFigureGenerator:
         logger.info(f"Generated {len(figures)} figures for {domain_name}")
         return results
 
-    def generate_all_domain_figures(
-        self, corpus_file: Optional[Path] = None
-    ) -> Dict[str, Any]:
+    def generate_all_domain_figures(self, corpus_file: Path | None = None) -> dict[str, Any]:
         """Generate figures for all domains.
 
         Args:
@@ -160,25 +147,19 @@ class DomainFigureGenerator:
                 all_results[domain] = {"error": str(e)}
 
         # Generate comparative figures
-        comparative_figures = self._generate_comparative_figures(
-            all_results, corpus_file
-        )
+        comparative_figures = self._generate_comparative_figures(all_results, corpus_file)
 
         summary = {
             "individual_domains": all_results,
             "comparative_figures": comparative_figures,
             "total_figures_generated": total_figures + len(comparative_figures),
-            "domains_processed": len(
-                [r for r in all_results.values() if "error" not in r]
-            ),
+            "domains_processed": len([r for r in all_results.values() if "error" not in r]),
         }
 
-        logger.info(
-            f"Generated {summary['total_figures_generated']} figures across all domains"
-        )
+        logger.info(f"Generated {summary['total_figures_generated']} figures across all domains")
         return summary
 
-    def _load_corpus(self, corpus_file: Optional[Path]) -> LiteratureCorpus:
+    def _load_corpus(self, corpus_file: Path | None) -> LiteratureCorpus:
         """Load literature corpus."""
         if corpus_file and corpus_file.exists():
             return LiteratureCorpus.load_from_file(corpus_file)
@@ -190,8 +171,8 @@ class DomainFigureGenerator:
                 return LiteratureCorpus()
 
     def _generate_domain_specific_figures(
-        self, domain_name: str, domain_terms: Dict[str, Any], analysis: Any
-    ) -> Dict[str, str]:
+        self, domain_name: str, domain_terms: dict[str, Any], analysis: Any
+    ) -> dict[str, str]:
         """Generate figures specific to a domain.
 
         Args:
@@ -217,9 +198,7 @@ class DomainFigureGenerator:
 
         # Term pattern analysis
         if analysis.term_patterns:
-            pattern_fig = self._generate_pattern_plot(
-                domain_name, analysis.term_patterns
-            )
+            pattern_fig = self._generate_pattern_plot(domain_name, analysis.term_patterns)
             if pattern_fig:
                 figures["term_patterns"] = pattern_fig
 
@@ -231,9 +210,7 @@ class DomainFigureGenerator:
 
         return figures
 
-    def _generate_term_frequency_plot(
-        self, domain_name: str, domain_terms: Dict[str, Any]
-    ) -> Optional[str]:
+    def _generate_term_frequency_plot(self, domain_name: str, domain_terms: dict[str, Any]) -> str | None:
         """Generate term frequency distribution plot.
 
         Args:
@@ -251,9 +228,7 @@ class DomainFigureGenerator:
         fig, ax = plt.subplots(figsize=(12, 8))
 
         # Sort terms by frequency
-        sorted_terms = sorted(
-            domain_terms.items(), key=lambda x: x[1].frequency, reverse=True
-        )[:20]
+        sorted_terms = sorted(domain_terms.items(), key=lambda x: x[1].frequency, reverse=True)[:20]
 
         if not sorted_terms:
             plt.close(fig)
@@ -263,7 +238,8 @@ class DomainFigureGenerator:
         frequencies = [obj.frequency for obj in term_objects]
 
         # Use gradient colormap for visual richness
-        import matplotlib.cm as cm
+        from matplotlib import cm
+
         cmap = cm.get_cmap("viridis", len(terms))
         bar_colors = [cmap(i / max(len(terms) - 1, 1)) for i in range(len(terms))]
         bars = ax.bar(
@@ -276,9 +252,7 @@ class DomainFigureGenerator:
         ax.set_xticks(range(len(terms)))
         ax.set_xticklabels(terms, rotation=45, ha="right", fontsize=8)
         ax.set_ylabel("Frequency in Corpus")
-        ax.set_title(
-            f'Term Frequency Distribution - {domain_name.replace("_", " ").title()}'
-        )
+        ax.set_title(f"Term Frequency Distribution - {domain_name.replace('_', ' ').title()}")
 
         # Add value labels on bars
         for bar, freq in zip(bars, frequencies):
@@ -314,9 +288,7 @@ class DomainFigureGenerator:
 
         return str(filepath)
 
-    def _generate_ambiguity_plot(
-        self, domain_name: str, ambiguities: List[Dict[str, Any]]
-    ) -> Optional[str]:
+    def _generate_ambiguity_plot(self, domain_name: str, ambiguities: list[dict[str, Any]]) -> str | None:
         """Generate ambiguity analysis plot.
 
         Args:
@@ -337,7 +309,8 @@ class DomainFigureGenerator:
         context_counts = [len(amb["contexts"]) for amb in ambiguities]
 
         # Use gradient colormap for visual richness
-        import matplotlib.cm as cm
+        from matplotlib import cm
+
         cmap = cm.get_cmap("plasma", len(terms))
         bar_colors = [cmap(i / max(len(terms) - 1, 1)) for i in range(len(terms))]
         ax.bar(
@@ -350,9 +323,7 @@ class DomainFigureGenerator:
         ax.set_xticks(range(len(terms)))
         ax.set_xticklabels(terms, rotation=45, ha="right")
         ax.set_ylabel("Number of Contexts")
-        ax.set_title(
-            f'Term Ambiguity Analysis - {domain_name.replace("_", " ").title()}'
-        )
+        ax.set_title(f"Term Ambiguity Analysis - {domain_name.replace('_', ' ').title()}")
 
         plt.tight_layout()
         filename = f"{domain_name}_ambiguities.png"
@@ -376,9 +347,7 @@ class DomainFigureGenerator:
 
         return str(filepath)
 
-    def _generate_pattern_plot(
-        self, domain_name: str, term_patterns: Dict[str, int]
-    ) -> Optional[str]:
+    def _generate_pattern_plot(self, domain_name: str, term_patterns: dict[str, int]) -> str | None:
         """Generate term pattern analysis plot.
 
         Args:
@@ -407,12 +376,10 @@ class DomainFigureGenerator:
                 [p.title() for p in patterns],
                 counts,
                 alpha=0.85,
-                color=wedge_colors[:len(patterns)],
+                color=wedge_colors[: len(patterns)],
             )
             ax.set_ylabel("Count")
-            ax.set_title(
-                f'Term Pattern Counts - {domain_name.replace("_", " ").title()}'
-            )
+            ax.set_title(f"Term Pattern Counts - {domain_name.replace('_', ' ').title()}")
             # Add value labels on bars
             for i, (p, c) in enumerate(zip(patterns, counts)):
                 ax.text(i, c + max(counts) * 0.02, str(c), ha="center", fontsize=10)
@@ -425,9 +392,7 @@ class DomainFigureGenerator:
                 startangle=90,
                 colors=wedge_colors,
             )
-            ax.set_title(
-                f'Term Pattern Distribution - {domain_name.replace("_", " ").title()}'
-            )
+            ax.set_title(f"Term Pattern Distribution - {domain_name.replace('_', ' ').title()}")
 
         plt.tight_layout()
         filename = f"{domain_name}_patterns.png"
@@ -437,9 +402,7 @@ class DomainFigureGenerator:
 
         return str(filepath)
 
-    def _generate_domain_network(
-        self, domain_name: str, domain_terms: Dict[str, Any]
-    ) -> Optional[str]:
+    def _generate_domain_network(self, domain_name: str, domain_terms: dict[str, Any]) -> str | None:
         """Generate simplified term network for domain.
 
         Args:
@@ -478,25 +441,17 @@ class DomainFigureGenerator:
         pos = nx.spring_layout(G, seed=42)
 
         node_sizes = [G.nodes[node].get("size", 100) * 10 for node in G.nodes()]
-        node_colors = [self.visualizer.DOMAIN_COLORS.get(domain_name, "#7f7f7f")] * len(
-            G.nodes()
-        )
+        node_colors = [self.visualizer.DOMAIN_COLORS.get(domain_name, "#7f7f7f")] * len(G.nodes())
 
-        nx.draw_networkx_nodes(
-            G, pos, node_size=node_sizes, node_color=node_colors, alpha=0.7, ax=ax
-        )
+        nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color=node_colors, alpha=0.7, ax=ax)
         nx.draw_networkx_edges(G, pos, alpha=0.5, ax=ax)
 
         # Draw labels for important terms only
-        important_terms = sorted(
-            G.nodes(), key=lambda x: G.nodes[x].get("size", 0), reverse=True
-        )[:8]
+        important_terms = sorted(G.nodes(), key=lambda x: G.nodes[x].get("size", 0), reverse=True)[:8]
         label_map = {term: term for term in important_terms}
         nx.draw_networkx_labels(G, pos, labels=label_map, font_size=8, ax=ax)
 
-        ax.set_title(
-            f'Term Relationship Network - {domain_name.replace("_", " ").title()}'
-        )
+        ax.set_title(f"Term Relationship Network - {domain_name.replace('_', ' ').title()}")
         ax.axis("off")
 
         plt.tight_layout()
@@ -508,8 +463,8 @@ class DomainFigureGenerator:
         return str(filepath)
 
     def _generate_comparative_figures(
-        self, domain_results: Dict[str, Any], corpus_file: Optional[Path] = None
-    ) -> Dict[str, str]:
+        self, domain_results: dict[str, Any], corpus_file: Path | None = None
+    ) -> dict[str, str]:
         """Generate comparative figures across domains.
 
         Args:
@@ -522,11 +477,7 @@ class DomainFigureGenerator:
         figures = {}
 
         # Domain comparison plot
-        successful_domains = {
-            name: results
-            for name, results in domain_results.items()
-            if "error" not in results
-        }
+        successful_domains = {name: results for name, results in domain_results.items() if "error" not in results}
 
         if len(successful_domains) > 1:
             # Create domain comparison data
@@ -542,9 +493,7 @@ class DomainFigureGenerator:
                         "term_count": results.get("terms_visualized", 0),
                         "total_frequency": sum(
                             term_data.get("frequency", 0)
-                            for term_data in analysis_data.get(
-                                "extracted_terms", {}
-                            ).values()
+                            for term_data in analysis_data.get("extracted_terms", {}).values()
                         ),
                         "avg_confidence": 0.8,  # Placeholder
                         "bridging_terms": [],  # Would need cross-domain analysis
@@ -554,9 +503,7 @@ class DomainFigureGenerator:
                 self.visualizer.create_domain_comparison_plot(
                     domain_data, filepath=self.figures_dir / "domain_comparison.png"
                 )
-                figures["domain_comparison"] = str(
-                    self.figures_dir / "domain_comparison.png"
-                )
+                figures["domain_comparison"] = str(self.figures_dir / "domain_comparison.png")
 
                 # Register domain comparison figure
                 try:
@@ -576,9 +523,7 @@ class DomainFigureGenerator:
 
 def main() -> None:
     """Main entry point for domain figure generation script."""
-    parser = argparse.ArgumentParser(
-        description="Ento-Linguistic Domain Figure Generation"
-    )
+    parser = argparse.ArgumentParser(description="Ento-Linguistic Domain Figure Generation")
     parser.add_argument(
         "domain",
         nargs="?",
@@ -593,9 +538,7 @@ def main() -> None:
         ],
         help="Domain to generate figures for (or 'all' for all domains)",
     )
-    parser.add_argument(
-        "--corpus-file", type=Path, help="Path to literature corpus JSON file"
-    )
+    parser.add_argument("--corpus-file", type=Path, help="Path to literature corpus JSON file")
     parser.add_argument("--output-dir", type=Path, help="Output directory")
 
     args = parser.parse_args()

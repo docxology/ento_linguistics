@@ -4,10 +4,12 @@ Covers: analyze_rhetorical_strategies, identify_narrative_frameworks,
 quantify_rhetorical_patterns, score_argumentative_structures,
 analyze_narrative_frequency, and private helpers.
 """
+
 from __future__ import annotations
 
 import pytest
 
+from analysis.discourse_patterns import ArgumentativeStructure
 from analysis.rhetorical_analysis import (
     analyze_narrative_frequency,
     analyze_rhetorical_strategies,
@@ -15,7 +17,6 @@ from analysis.rhetorical_analysis import (
     quantify_rhetorical_patterns,
     score_argumentative_structures,
 )
-from analysis.discourse_patterns import ArgumentativeStructure
 
 
 @pytest.fixture
@@ -147,7 +148,7 @@ class TestQuantifyRhetoricalPatterns:
     def test_returns_quantified_data(self, sample_texts):
         """Test that quantified patterns have expected keys."""
         result = quantify_rhetorical_patterns(sample_texts)
-        for pattern_name, data in result.items():
+        for data in result.values():
             assert "total_occurrences" in data
             assert "text_coverage" in data
             assert "heuristic_frequency_index" in data
@@ -257,7 +258,7 @@ class TestAnalyzeNarrativeFrequency:
     def test_returns_expected_keys(self, sample_texts):
         """Test that output has expected structure."""
         result = analyze_narrative_frequency(sample_texts)
-        for framework_name, data in result.items():
+        for data in result.values():
             assert "frequency" in data
             assert "coverage_percentage" in data
             assert "average_text_length" in data
@@ -273,9 +274,7 @@ class TestAnalyzeNarrativeFrequency:
 
     def test_examples_limited(self):
         """Test examples are limited to 3."""
-        texts = [
-            f"The advance of research {i} shows progress." for i in range(10)
-        ]
+        texts = [f"The advance of research {i} shows progress." for i in range(10)]
         result = analyze_narrative_frequency(texts)
         for data in result.values():
             assert len(data["examples"]) <= 3

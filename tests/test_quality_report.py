@@ -3,6 +3,7 @@
 Validates the quality report generation logic — argument parsing, error
 aggregation, and JSON report output — using subprocess (no mocks).
 """
+
 from __future__ import annotations
 
 import json
@@ -11,7 +12,6 @@ import sys
 from pathlib import Path
 
 import pytest
-
 
 # Ensure the scripts and src directories are importable
 PROJECT_DIR = Path(__file__).resolve().parent.parent
@@ -42,9 +42,7 @@ class TestParseArgs:
         """Defaults derive from the project root, independent of the CWD."""
         import importlib.util
 
-        spec = importlib.util.spec_from_file_location(
-            "_quality_report_defaults", SCRIPTS_DIR / "_quality_report.py"
-        )
+        spec = importlib.util.spec_from_file_location("_quality_report_defaults", SCRIPTS_DIR / "_quality_report.py")
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
 
@@ -56,15 +54,17 @@ class TestParseArgs:
         """Running with only --output-dir from an unrelated CWD still succeeds
         against the real docs/manuscript directory."""
         out_dir = tmp_path / "reports"
-        result = run_subprocess([
-            sys.executable,
-            str(SCRIPTS_DIR / "_quality_report.py"),
-            "--output-dir",
-            str(out_dir),
-        ],
-        capture_output=True,
-        text=True,
-        cwd=str(tmp_path),)
+        result = run_subprocess(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "_quality_report.py"),
+                "--output-dir",
+                str(out_dir),
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(tmp_path),
+        )
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
         report = json.loads((out_dir / "quality_report.json").read_text())
@@ -74,17 +74,19 @@ class TestParseArgs:
         """Running against the real docs/manuscript directory completes."""
         out_dir = tmp_path / "reports"
         ms_dir = PROJECT_DIR / "docs" / "manuscript"
-        result = run_subprocess([
-            sys.executable,
-            str(SCRIPTS_DIR / "_quality_report.py"),
-            "--manuscript-dir",
-            str(ms_dir),
-            "--output-dir",
-            str(out_dir),
-        ],
-        capture_output=True,
-        text=True,
-        cwd=str(PROJECT_DIR),)
+        result = run_subprocess(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "_quality_report.py"),
+                "--manuscript-dir",
+                str(ms_dir),
+                "--output-dir",
+                str(out_dir),
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(PROJECT_DIR),
+        )
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
     def test_custom_args(self, tmp_path: Path):
@@ -94,17 +96,19 @@ class TestParseArgs:
         (ms_dir / "01_abstract.md").write_text("# Abstract\nTest.")
         out_dir = tmp_path / "output"
 
-        result = run_subprocess([
-            sys.executable,
-            str(SCRIPTS_DIR / "_quality_report.py"),
-            "--manuscript-dir",
-            str(ms_dir),
-            "--output-dir",
-            str(out_dir),
-        ],
-        capture_output=True,
-        text=True,
-        cwd=str(PROJECT_DIR),)
+        result = run_subprocess(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "_quality_report.py"),
+                "--manuscript-dir",
+                str(ms_dir),
+                "--output-dir",
+                str(out_dir),
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(PROJECT_DIR),
+        )
         assert result.returncode == 0, f"stderr: {result.stderr}"
         assert out_dir.exists()
 
@@ -148,17 +152,19 @@ class TestMainFunction:
 
         out_dir = tmp_path / "reports"
 
-        result = run_subprocess([
-            sys.executable,
-            str(SCRIPTS_DIR / "_quality_report.py"),
-            "--manuscript-dir",
-            str(ms_dir),
-            "--output-dir",
-            str(out_dir),
-        ],
-        capture_output=True,
-        text=True,
-        cwd=str(PROJECT_DIR),)
+        result = run_subprocess(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "_quality_report.py"),
+                "--manuscript-dir",
+                str(ms_dir),
+                "--output-dir",
+                str(out_dir),
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(PROJECT_DIR),
+        )
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
         report_path = out_dir / "quality_report.json"
@@ -175,17 +181,19 @@ class TestMainFunction:
         ms_dir.mkdir()
         out_dir = tmp_path / "reports"
 
-        result = run_subprocess([
-            sys.executable,
-            str(SCRIPTS_DIR / "_quality_report.py"),
-            "--manuscript-dir",
-            str(ms_dir),
-            "--output-dir",
-            str(out_dir),
-        ],
-        capture_output=True,
-        text=True,
-        cwd=str(PROJECT_DIR),)
+        result = run_subprocess(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "_quality_report.py"),
+                "--manuscript-dir",
+                str(ms_dir),
+                "--output-dir",
+                str(out_dir),
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(PROJECT_DIR),
+        )
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
         report_path = out_dir / "quality_report.json"
@@ -199,17 +207,19 @@ class TestMainFunction:
 
         out_dir = tmp_path / "reports"
 
-        result = run_subprocess([
-            sys.executable,
-            str(SCRIPTS_DIR / "_quality_report.py"),
-            "--manuscript-dir",
-            str(ms_dir),
-            "--output-dir",
-            str(out_dir),
-        ],
-        capture_output=True,
-        text=True,
-        cwd=str(PROJECT_DIR),)
+        result = run_subprocess(
+            [
+                sys.executable,
+                str(SCRIPTS_DIR / "_quality_report.py"),
+                "--manuscript-dir",
+                str(ms_dir),
+                "--output-dir",
+                str(out_dir),
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(PROJECT_DIR),
+        )
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
         report = json.loads((out_dir / "quality_report.json").read_text())
@@ -220,6 +230,4 @@ class TestMainFunction:
             "reproducibility",
             "errors",
         }
-        assert expected_keys.issubset(
-            set(report.keys())
-        ), f"Missing keys: {expected_keys - set(report.keys())}"
+        assert expected_keys.issubset(set(report.keys())), f"Missing keys: {expected_keys - set(report.keys())}"

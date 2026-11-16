@@ -42,8 +42,8 @@ __layer__ = "scientific"
 __all__ = [
     # Subpackages
     "analysis",
-    "visualization",
-    "data",
     "core",
+    "data",
     "pipeline",
+    "visualization",
 ]

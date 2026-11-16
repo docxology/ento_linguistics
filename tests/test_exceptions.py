@@ -4,8 +4,7 @@ import logging
 import os
 
 from core.exceptions import EntoLinguisticsError, ValidationError
-from core.logging import (get_logger, log_progress_bar, log_stage,
-                               log_substep)
+from core.logging import get_logger, log_progress_bar, log_stage, log_substep
 
 
 class TestValidationError:
@@ -128,5 +127,3 @@ class TestLogging:
             log_stage(2, 5, "Processing", logger)
 
         assert "Stage 2/5: Processing" in caplog.text
-
-

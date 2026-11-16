@@ -1,11 +1,11 @@
 """Comprehensive tests for src/visualization.py to ensure 100% coverage."""
 
-import pytest
-
 import matplotlib
+import pytest
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
 from visualization.visualization import VisualizationEngine, create_multi_panel_figure
 
 
@@ -28,9 +28,11 @@ class TestVisualizationEngine:
     def test_style_config_respects_font_floor(self):
         """Every font size in STYLE_CONFIG is at least 16pt."""
         for key, value in VisualizationEngine.STYLE_CONFIG.items():
-            if key.endswith("size") and isinstance(value, (int, float)) \
-                    and ("labelsize" in key or key == "font.size"
-                         or "titlesize" in key):
+            if (
+                key.endswith("size")
+                and isinstance(value, (int, float))
+                and ("labelsize" in key or key == "font.size" or "titlesize" in key)
+            ):
                 assert value >= 16, f"{key}={value} below 16pt floor"
 
     def test_create_figure_scopes_style(self, tmp_path):
@@ -54,7 +56,7 @@ class TestVisualizationEngine:
     def test_create_figure_with_figsize(self, tmp_path):
         """Test creating figure with custom figsize (branch 95->98)."""
         engine = VisualizationEngine(output_dir=str(tmp_path))
-        fig, ax = engine.create_figure(nrows=1, ncols=1, figsize=(10, 8))
+        fig, _ax = engine.create_figure(nrows=1, ncols=1, figsize=(10, 8))
         assert fig.get_figwidth() == 10
         assert fig.get_figheight() == 8
         plt.close(fig)
@@ -122,9 +124,7 @@ class TestVisualizationEngine:
         engine = VisualizationEngine(output_dir=str(tmp_path))
         fig, ax = engine.create_figure()
         # ax is a single axes object for nrows=1, ncols=1
-        engine.apply_publication_style(
-            ax, title="Test", xlabel="X", ylabel="Y", grid=True, legend=True
-        )
+        engine.apply_publication_style(ax, title="Test", xlabel="X", ylabel="Y", grid=True, legend=True)
         assert ax.get_title() == "Test"
         assert ax.get_xlabel() == "X"
         assert ax.get_ylabel() == "Y"
@@ -190,7 +190,7 @@ class TestCreateMultiPanelFigure:
 
     def test_custom_figsize(self):
         """Test custom figure size."""
-        fig, axes = create_multi_panel_figure(4, figsize=(12, 8))
+        fig, _axes = create_multi_panel_figure(4, figsize=(12, 8))
         assert fig.get_figwidth() == 12
         assert fig.get_figheight() == 8
         plt.close(fig)
@@ -216,9 +216,7 @@ class TestCreateMultiPanelFigure:
 
     def test_multi_panel_hide_extra(self):
         """Test multi-panel hides extra subplots (line 223)."""
-        fig, axes = create_multi_panel_figure(
-            3, layout=(2, 2)
-        )  # 4 subplots, only 3 used
+        fig, axes = create_multi_panel_figure(3, layout=(2, 2))  # 4 subplots, only 3 used
         assert len(axes) == 3
         # The 4th subplot should be hidden
         plt.close(fig)

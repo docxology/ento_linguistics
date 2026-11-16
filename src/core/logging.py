@@ -15,14 +15,13 @@ Functions:
 
 import logging
 import os
-from typing import Dict, Optional
 
 __all__ = [
     "get_logger",
-    "log_substep",
     "log_progress_bar",
-    "log_stage",
     "log_section",
+    "log_stage",
+    "log_substep",
 ]
 
 
@@ -51,7 +50,7 @@ def get_logger(name: str) -> logging.Logger:
         level_str = os.getenv("LOG_LEVEL", "INFO").upper()
 
         # Numeric-shorthand map (convenience aliases)
-        numeric_map: Dict[str, int] = {
+        numeric_map: dict[str, int] = {
             "0": logging.DEBUG,
             "1": logging.INFO,
             "2": logging.WARNING,
@@ -83,14 +82,12 @@ def get_logger(name: str) -> logging.Logger:
         logger.addHandler(handler)
 
         if unknown_level:
-            logger.warning(
-                "Unknown LOG_LEVEL %r; defaulting to INFO", level_str
-            )
+            logger.warning("Unknown LOG_LEVEL %r; defaulting to INFO", level_str)
 
     return logger
 
 
-def log_substep(message: str, logger: Optional[logging.Logger] = None) -> None:
+def log_substep(message: str, logger: logging.Logger | None = None) -> None:
     """Log a substep with indentation.
 
     Args:
@@ -102,9 +99,7 @@ def log_substep(message: str, logger: Optional[logging.Logger] = None) -> None:
     logger.info(f"  {message}")
 
 
-def log_progress_bar(
-    current: int, total: int, task: str, logger: Optional[logging.Logger] = None
-) -> None:
+def log_progress_bar(current: int, total: int, task: str, logger: logging.Logger | None = None) -> None:
     """Log progress with a simple bar.
 
     Args:
@@ -125,7 +120,7 @@ def log_stage(
     stage_num: int,
     total_stages: int,
     stage_name: str,
-    logger: Optional[logging.Logger] = None,
+    logger: logging.Logger | None = None,
 ) -> None:
     """Log a pipeline stage header.
 
@@ -143,9 +138,9 @@ def log_stage(
 def log_section(
     title: str,
     *,
-    elapsed: Optional[float] = None,
+    elapsed: float | None = None,
     width: int = 60,
-    logger: Optional[logging.Logger] = None,
+    logger: logging.Logger | None = None,
 ) -> None:
     """Log a titled section divider for pipeline signposting.
 

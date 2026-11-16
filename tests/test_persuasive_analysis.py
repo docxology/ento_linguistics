@@ -4,6 +4,7 @@ Covers: analyze_persuasive_techniques, measure_persuasive_effectiveness,
 analyze_term_usage_context, track_conceptual_shifts, quantify_framing_effects,
 and private helpers.
 """
+
 from __future__ import annotations
 
 import pytest
@@ -100,7 +101,7 @@ class TestMeasurePersuasiveEffectiveness:
     def test_returns_expected_keys(self, sample_texts):
         """Test output has expected structure."""
         result = measure_persuasive_effectiveness(sample_texts)
-        for technique_name, data in result.items():
+        for data in result.values():
             assert "usage_frequency" in data
             assert "context_relevance" in data
             assert "heuristic_impact_index" in data
@@ -172,8 +173,10 @@ class TestAnalyzeTermUsageContext:
     def test_context_types_classified(self):
         """Test that context types are properly classified."""
         texts = [
-            "However colony behavior changes. Because colony fitness matters. "
-            "For example colony size varies. Therefore colony success depends on this."
+            (
+                "However colony behavior changes. Because colony fitness matters. "
+                "For example colony size varies. Therefore colony success depends on this."
+            )
         ]
         result = analyze_term_usage_context(["colony"], texts)
         assert "colony" in result
@@ -240,7 +243,7 @@ class TestTrackConceptualShifts:
     def test_shift_structure(self, temporal_texts):
         """Test that shift results have expected structure."""
         result = track_conceptual_shifts(temporal_texts)
-        for shift_key, shift_data in result.items():
+        for shift_data in result.values():
             assert "pattern_shifts" in shift_data
             assert "overall_shift_intensity" in shift_data
             assert "significant_shifts" in shift_data
@@ -264,18 +267,14 @@ class TestTrackConceptualShifts:
         ]
         result = track_conceptual_shifts(texts)
         assert len(result) == 1
-        shift_data = list(result.values())[0]
+        shift_data = next(iter(result.values()))
         # At least one pattern should show a non-zero shift
-        has_nonzero_shift = any(
-            ps["shift_magnitude"] > 0
-            for ps in shift_data["pattern_shifts"].values()
-        )
-        assert has_nonzero_shift, (
-            "Changing rhetorical patterns between periods should produce non-zero shifts"
-        )
+        has_nonzero_shift = any(ps["shift_magnitude"] > 0 for ps in shift_data["pattern_shifts"].values())
+        assert has_nonzero_shift, "Changing rhetorical patterns between periods should produce non-zero shifts"
 
     def test_custom_analyzer(self):
         """Test with custom rhetorical analyzer."""
+
         def custom_analyzer(texts):
             return {"custom_pattern": {"total_occurrences": len(texts)}}
 
@@ -329,6 +328,7 @@ class TestQuantifyFramingEffects:
 
     def test_with_argumentative_analyzer(self):
         """Test with custom argumentative analyzer."""
+
         def arg_analyzer(texts):
             return [{"claim": t} for t in texts]
 
@@ -367,5 +367,6 @@ class TestConceptualShiftsNaturalOrder:
 
     def test_technique_impact_reads_count_key(self):
         from analysis.persuasive_analysis import _calculate_technique_impact
+
         data = {"count": 18, "examples": []}
         assert _calculate_technique_impact(data) == pytest.approx(0.9)

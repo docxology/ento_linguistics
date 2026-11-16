@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+
 from data.data_generator import generate_synthetic_data, generate_time_series
 
 
@@ -22,27 +23,21 @@ class TestGenerateSyntheticData:
 
     def test_normal_distribution(self) -> None:
         """Test normal distribution generation."""
-        data = generate_synthetic_data(
-            n_samples=1000, distribution="normal", mean=5.0, std=2.0, seed=42
-        )
+        data = generate_synthetic_data(n_samples=1000, distribution="normal", mean=5.0, std=2.0, seed=42)
         assert data.shape == (1000,)
         assert abs(data.mean() - 5.0) < 0.5
         assert abs(data.std() - 2.0) < 0.5
 
     def test_uniform_distribution(self) -> None:
         """Test uniform distribution generation."""
-        data = generate_synthetic_data(
-            n_samples=500, distribution="uniform", mean=3.0, std=1.0, seed=42
-        )
+        data = generate_synthetic_data(n_samples=500, distribution="uniform", mean=3.0, std=1.0, seed=42)
         assert data.shape == (500,)
         assert data.min() >= 2.0  # mean - std
         assert data.max() <= 4.0  # mean + std
 
     def test_exponential_distribution(self) -> None:
         """Test exponential distribution generation."""
-        data = generate_synthetic_data(
-            n_samples=500, distribution="exponential", std=2.0, seed=42
-        )
+        data = generate_synthetic_data(n_samples=500, distribution="exponential", std=2.0, seed=42)
         assert data.shape == (500,)
         assert data.min() >= 0  # Exponential is non-negative
 
@@ -88,9 +83,7 @@ class TestGenerateTimeSeries:
 
     def test_linear_trend(self) -> None:
         """Test linear trend generation."""
-        time, values = generate_time_series(
-            n_points=50, trend="linear", noise_level=0.0, seed=42
-        )
+        time, values = generate_time_series(n_points=50, trend="linear", noise_level=0.0, seed=42)
         assert len(time) == 50
         # With no noise, values should follow linear trend exactly
         expected = time * 0.5 + 2.0
@@ -99,18 +92,14 @@ class TestGenerateTimeSeries:
 
     def test_sinusoidal_trend(self) -> None:
         """Test sinusoidal trend generation."""
-        time, values = generate_time_series(
-            n_points=50, trend="sinusoidal", noise_level=0.0, seed=42
-        )
+        time, values = generate_time_series(n_points=50, trend="sinusoidal", noise_level=0.0, seed=42)
         assert len(time) == 50
         expected = np.sin(time) * 2.0 + 3.0
         np.testing.assert_allclose(values, expected, atol=0.01)
 
     def test_exponential_trend(self) -> None:
         """Test exponential trend generation."""
-        time, values = generate_time_series(
-            n_points=50, trend="exponential", noise_level=0.0, seed=42
-        )
+        time, values = generate_time_series(n_points=50, trend="exponential", noise_level=0.0, seed=42)
         assert len(time) == 50
         expected = np.exp(time * 0.2)
         np.testing.assert_allclose(values, expected, atol=0.01)

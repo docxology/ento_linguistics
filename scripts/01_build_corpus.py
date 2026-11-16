@@ -9,6 +9,7 @@ to ``src/pipeline/corpus_build.py``. Exposed modes:
 * ``--grow [--target-new N] [--max-per-query N] [--since-pdat DATE]``:
   append new unique records from all ``CORPUS_GROWTH_QUERIES``
 """
+
 from __future__ import annotations
 
 import os
@@ -22,7 +23,7 @@ for p in (project_root, src_path, repo_root):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from pipeline.corpus_build import main  # noqa: E402
+from pipeline.corpus_build import main
 
 if __name__ == "__main__":
     sys.exit(main(project_root=project_root))

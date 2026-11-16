@@ -10,11 +10,12 @@ This script demonstrates how to use src/ modules to:
 IMPORTANT: This script follows the thin orchestrator pattern - all business
 logic is in src/ modules, this script only orchestrates the workflow.
 """
+
 from __future__ import annotations
 
+import logging
 import os
 import sys
-import logging
 from pathlib import Path
 
 # Ensure src/ and infrastructure/ are on path
@@ -24,13 +25,13 @@ sys.path.insert(0, str(project_root / "src"))
 sys.path.insert(0, str(repo_root))  # Add repo root so we can import infrastructure.*
 
 
-from data.data_generator import generate_synthetic_data, generate_time_series
-from core.parameters import ParameterSet, ParameterSweep
 from analysis.performance import analyze_convergence
+from analysis.statistics import calculate_descriptive_stats
+from core.parameters import ParameterSet, ParameterSweep
+from core.validation import ValidationFramework
+from data.data_generator import generate_synthetic_data, generate_time_series
 from pipeline.reporting import ReportGenerator
 from pipeline.simulation import SimpleSimulation
-from analysis.statistics import calculate_descriptive_stats
-from core.validation import ValidationFramework
 from visualization.figure_manager import FigureManager
 from visualization.plots import plot_line
 from visualization.visualization import VisualizationEngine
@@ -48,9 +49,7 @@ def run_simulation_example() -> None:
     params = {"max_iterations": 100, "target_value": 5.0}
 
     # Create simulation
-    sim = SimpleSimulation(
-        parameters=params, seed=42, output_dir="output/simulations"
-    )
+    sim = SimpleSimulation(parameters=params, seed=42, output_dir="output/simulations")
 
     # Run simulation
     logger.info("Running simulation...")
@@ -83,15 +82,13 @@ def run_parameter_sweep_example() -> None:
     # Run all combinations
     results = []
     for i, params in enumerate(sweep.generate_combinations()):
-        logger.info(f"  Running combination {i+1}/{sweep.get_sweep_size()}...")
+        logger.info(f"  Running combination {i + 1}/{sweep.get_sweep_size()}...")
         sim = SimpleSimulation(parameters=params, seed=42 + i)
         state = sim.run(max_iterations=50, verbose=False)
         results.append(
             {
                 "parameters": params,
-                "final_value": state.results.get(
-                    f"iteration_{state.iteration-1}", {}
-                ).get("value", 0),
+                "final_value": state.results.get(f"iteration_{state.iteration - 1}", {}).get("value", 0),
             }
         )
 
@@ -103,16 +100,12 @@ def generate_analysis_figures() -> None:
     logger.info("\nGenerating analysis figures...")
 
     # Generate data
-    time, values = generate_time_series(
-        n_points=100, trend="sinusoidal", noise_level=0.1, seed=42
-    )
+    time, values = generate_time_series(n_points=100, trend="sinusoidal", noise_level=0.1, seed=42)
 
     # Analyze convergence
     convergence = analyze_convergence(values, target=None)
     convergence_status = (
-        "reached"
-        if convergence.is_converged
-        else "not yet reached (expected for demo sinusoidal data)"
+        "reached" if convergence.is_converged else "not yet reached (expected for demo sinusoidal data)"
     )
     logger.info(f"  Convergence: {convergence_status}")
 
@@ -127,9 +120,7 @@ def generate_analysis_figures() -> None:
 
     # Plot time series
     plot_line(time, values, ax=ax, label="Time Series", color=engine.get_color(0))
-    engine.apply_publication_style(
-        ax, "Time Series Analysis", "Time", "Value", grid=True, legend=True
-    )
+    engine.apply_publication_style(ax, "Time Series Analysis", "Time", "Value", grid=True, legend=True)
 
     # Save figure
     figure_manager = FigureManager()
@@ -207,9 +198,7 @@ def validate_results() -> None:
     validator.validate_bounds(data, "test_data", min_value=-5.0, max_value=5.0)
 
     # Validate sanity
-    validator.validate_sanity(
-        float(data.mean()), "mean_value", expected_order_of_magnitude=0.1
-    )
+    validator.validate_sanity(float(data.mean()), "mean_value", expected_order_of_magnitude=0.1)
 
     # Detect anomalies
     validator.detect_anomalies(data, method="iqr", threshold=1.5)

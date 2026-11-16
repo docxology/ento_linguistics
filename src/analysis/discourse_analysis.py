@@ -14,45 +14,36 @@ maintaining full API consistency:
 from __future__ import annotations
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .text_analysis import LinguisticFeatureExtractor, TextProcessor
 
 __all__ = [
+    "DISCOURSE_MARKERS",
+    "ArgumentativeStructure",
     "DiscourseAnalyzer",
     "DiscoursePattern",
-    "ArgumentativeStructure",
-    "DISCOURSE_MARKERS",
-    "extract_argumentative_structure",
-    "identify_patterns_in_text",
-    "analyze_rhetorical_strategies",
     "analyze_narrative_frequency",
-    "identify_narrative_frameworks",
-    "quantify_rhetorical_patterns",
-    "score_argumentative_structures",
     "analyze_persuasive_techniques",
+    "analyze_rhetorical_strategies",
     "analyze_term_usage_context",
+    "extract_argumentative_structure",
+    "identify_narrative_frameworks",
+    "identify_patterns_in_text",
     "measure_persuasive_effectiveness",
     "quantify_framing_effects",
+    "quantify_rhetorical_patterns",
+    "score_argumentative_structures",
     "track_conceptual_shifts",
 ]
 
 # Re-export data classes from discourse_patterns
 from .discourse_patterns import (
+    DISCOURSE_MARKERS,
     ArgumentativeStructure,
     DiscoursePattern,
-    DISCOURSE_MARKERS,
     extract_argumentative_structure,
     identify_patterns_in_text,
-)
-
-# Re-export rhetorical analysis functions
-from .rhetorical_analysis import (
-    analyze_narrative_frequency,
-    analyze_rhetorical_strategies,
-    identify_narrative_frameworks,
-    quantify_rhetorical_patterns,
-    score_argumentative_structures,
 )
 
 # Re-export persuasive analysis functions
@@ -62,6 +53,15 @@ from .persuasive_analysis import (
     measure_persuasive_effectiveness,
     quantify_framing_effects,
     track_conceptual_shifts,
+)
+
+# Re-export rhetorical analysis functions
+from .rhetorical_analysis import (
+    analyze_narrative_frequency,
+    analyze_rhetorical_strategies,
+    identify_narrative_frameworks,
+    quantify_rhetorical_patterns,
+    score_argumentative_structures,
 )
 
 
@@ -81,9 +81,7 @@ class DiscourseAnalyzer:
         self.text_processor = TextProcessor()
         self.feature_extractor = LinguisticFeatureExtractor()
 
-    def analyze_discourse_patterns(
-        self, texts: List[str]
-    ) -> Dict[str, DiscoursePattern]:
+    def analyze_discourse_patterns(self, texts: list[str]) -> dict[str, DiscoursePattern]:
         """Analyze discourse patterns across texts.
 
         Args:
@@ -125,13 +123,11 @@ class DiscourseAnalyzer:
 
         return patterns
 
-    def _identify_patterns_in_text(self, text: str) -> Dict[str, Dict[str, Any]]:
+    def _identify_patterns_in_text(self, text: str) -> dict[str, dict[str, Any]]:
         """Identify discourse patterns in a single text."""
         return identify_patterns_in_text(text)
 
-    def analyze_argumentative_structures(
-        self, texts: List[str]
-    ) -> List[ArgumentativeStructure]:
+    def analyze_argumentative_structures(self, texts: list[str]) -> list[ArgumentativeStructure]:
         """Analyze argumentative structures in texts.
 
         Args:
@@ -153,29 +149,23 @@ class DiscourseAnalyzer:
 
         return structures
 
-    def _extract_argumentative_structure(
-        self, sentences: List[str]
-    ) -> ArgumentativeStructure:
+    def _extract_argumentative_structure(self, sentences: list[str]) -> ArgumentativeStructure:
         """Extract argumentative structure from sentences."""
         return extract_argumentative_structure(sentences)
 
-    def analyze_rhetorical_strategies(
-        self, texts: List[str]
-    ) -> Dict[str, Dict[str, Any]]:
+    def analyze_rhetorical_strategies(self, texts: list[str]) -> dict[str, dict[str, Any]]:
         """Analyze rhetorical strategies used in texts."""
         return analyze_rhetorical_strategies(texts)
 
-    def identify_narrative_frameworks(self, texts: List[str]) -> Dict[str, List[str]]:
+    def identify_narrative_frameworks(self, texts: list[str]) -> dict[str, list[str]]:
         """Identify narrative frameworks used in texts."""
         return identify_narrative_frameworks(texts)
 
-    def analyze_persuasive_techniques(
-        self, texts: List[str]
-    ) -> Dict[str, Dict[str, Any]]:
+    def analyze_persuasive_techniques(self, texts: list[str]) -> dict[str, dict[str, Any]]:
         """Analyze persuasive techniques used in scientific writing."""
         return analyze_persuasive_techniques(texts)
 
-    def create_discourse_profile(self, texts: List[str]) -> Dict[str, Any]:
+    def create_discourse_profile(self, texts: list[str]) -> dict[str, Any]:
         """Create a comprehensive discourse profile for a set of texts.
 
         Args:
@@ -195,25 +185,17 @@ class DiscourseAnalyzer:
         # Add summary statistics
         profile["summary"] = {
             "total_texts": len(texts),
-            "avg_text_length": (
-                sum(len(text) for text in texts) / len(texts) if texts else 0
-            ),
-            "total_patterns_identified": (
-                len(profile["patterns"]) if profile["patterns"] else 0
-            ),
+            "avg_text_length": (sum(len(text) for text in texts) / len(texts) if texts else 0),
+            "total_patterns_identified": (len(profile["patterns"]) if profile["patterns"] else 0),
             "total_pattern_instances": (
-                sum(pattern.frequency for pattern in profile["patterns"].values())
-                if profile["patterns"]
-                else 0
+                sum(pattern.frequency for pattern in profile["patterns"].values()) if profile["patterns"] else 0
             ),
             "argumentative_structures_found": len(profile["argumentative_structures"]),
         }
 
         return profile
 
-    def compare_discourse_profiles(
-        self, profile1: Dict[str, Any], profile2: Dict[str, Any]
-    ) -> Dict[str, Any]:
+    def compare_discourse_profiles(self, profile1: dict[str, Any], profile2: dict[str, Any]) -> dict[str, Any]:
         """Compare two discourse profiles.
 
         Args:
@@ -254,7 +236,7 @@ class DiscourseAnalyzer:
 
         return comparison
 
-    def export_discourse_analysis(self, profile: Dict[str, Any], filepath: str) -> None:
+    def export_discourse_analysis(self, profile: dict[str, Any], filepath: str) -> None:
         """Export discourse analysis results to file.
 
         Args:
@@ -292,40 +274,30 @@ class DiscourseAnalyzer:
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(serializable_profile, f, indent=2, ensure_ascii=False)
 
-    def quantify_rhetorical_patterns(
-        self, texts: List[str]
-    ) -> Dict[str, Dict[str, Any]]:
+    def quantify_rhetorical_patterns(self, texts: list[str]) -> dict[str, dict[str, Any]]:
         """Quantify rhetorical patterns with frequency and effectiveness metrics."""
         return quantify_rhetorical_patterns(texts)
 
-    def score_argumentative_structures(
-        self, texts: List[str]
-    ) -> Dict[str, Dict[str, Any]]:
+    def score_argumentative_structures(self, texts: list[str]) -> dict[str, dict[str, Any]]:
         """Score argumentative structures for strength and coherence."""
         structures = self.analyze_argumentative_structures(texts)
         return score_argumentative_structures(structures, texts)
 
-    def analyze_narrative_frequency(
-        self, texts: List[str]
-    ) -> Dict[str, Dict[str, Any]]:
+    def analyze_narrative_frequency(self, texts: list[str]) -> dict[str, dict[str, Any]]:
         """Analyze frequency and distribution of narrative frameworks."""
         return analyze_narrative_frequency(texts)
 
-    def measure_persuasive_effectiveness(
-        self, texts: List[str]
-    ) -> Dict[str, Dict[str, Any]]:
+    def measure_persuasive_effectiveness(self, texts: list[str]) -> dict[str, dict[str, Any]]:
         """Measure effectiveness of persuasive techniques."""
         return measure_persuasive_effectiveness(texts)
 
-    def analyze_term_usage_context(
-        self, terms: List[str], texts: List[str]
-    ) -> Dict[str, Dict[str, Any]]:
+    def analyze_term_usage_context(self, terms: list[str], texts: list[str]) -> dict[str, dict[str, Any]]:
         """Analyze context-dependent term usage patterns."""
         return analyze_term_usage_context(terms, texts)
 
     def track_conceptual_shifts(
-        self, texts: List[str], time_periods: Optional[List[str]] = None
-    ) -> Dict[str, Dict[str, Any]]:
+        self, texts: list[str], time_periods: list[str] | None = None
+    ) -> dict[str, dict[str, Any]]:
         """Track how concepts shift in discourse over time or contexts."""
         return track_conceptual_shifts(
             texts,
@@ -334,8 +306,8 @@ class DiscourseAnalyzer:
         )
 
     def quantify_framing_effects(
-        self, texts: List[str], framing_concepts: Optional[List[str]] = None
-    ) -> Dict[str, Dict[str, Any]]:
+        self, texts: list[str], framing_concepts: list[str] | None = None
+    ) -> dict[str, dict[str, Any]]:
         """Quantify the impact of framing assumptions on discourse."""
         return quantify_framing_effects(
             texts,

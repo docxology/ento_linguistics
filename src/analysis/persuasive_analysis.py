@@ -11,21 +11,22 @@ ranking and comparison, NOT validated measures of persuasive effectiveness.
 from __future__ import annotations
 
 import re
-from typing import Any, Callable, Dict, List, Optional
+from collections.abc import Callable
+from typing import Any
 
 from .discourse_patterns import find_citations
 from .text_analysis import TextProcessor
 
 __all__ = [
     "analyze_persuasive_techniques",
-    "measure_persuasive_effectiveness",
     "analyze_term_usage_context",
-    "track_conceptual_shifts",
+    "measure_persuasive_effectiveness",
     "quantify_framing_effects",
+    "track_conceptual_shifts",
 ]
 
 
-def analyze_persuasive_techniques(texts: List[str]) -> Dict[str, Dict[str, Any]]:
+def analyze_persuasive_techniques(texts: list[str]) -> dict[str, dict[str, Any]]:
     """Analyze persuasive techniques used in scientific writing.
 
     Args:
@@ -52,9 +53,7 @@ def analyze_persuasive_techniques(texts: List[str]) -> Dict[str, Dict[str, Any]]
         techniques["metaphorical_language"]["count"] += len(metaphors)
 
         # Quantitative emphasis
-        quantitative = re.findall(
-            r"\b(\d+(?:\.\d+)?\%|\d+(?:\.\d+)?\s+times?)\b", text
-        )
+        quantitative = re.findall(r"\b(\d+(?:\.\d+)?\%|\d+(?:\.\d+)?\s+times?)\b", text)
         techniques["quantitative_emphasis"]["count"] += len(quantitative)
         # Authoritative citations (shared matcher with rhetorical_analysis)
         citations = find_citations(text)
@@ -64,8 +63,8 @@ def analyze_persuasive_techniques(texts: List[str]) -> Dict[str, Dict[str, Any]]
 
 
 def measure_persuasive_effectiveness(
-    texts: List[str],
-) -> Dict[str, Dict[str, Any]]:
+    texts: list[str],
+) -> dict[str, dict[str, Any]]:
     """Measure effectiveness of persuasive techniques.
 
     Args:
@@ -87,9 +86,7 @@ def measure_persuasive_effectiveness(
             "usage_frequency": usage_frequency,
             "context_relevance": context_relevance,
             "heuristic_impact_index": impact_score,
-            "heuristic_effectiveness_band": _rate_technique_effectiveness(
-                technique_data
-            ),
+            "heuristic_effectiveness_band": _rate_technique_effectiveness(technique_data),
             "success_examples": technique_data.get("examples", [])[:3],
             "usage_distribution": technique_data.get("distribution", {}),
         }
@@ -97,9 +94,7 @@ def measure_persuasive_effectiveness(
     return effectiveness_analysis
 
 
-def analyze_term_usage_context(
-    terms: List[str], texts: List[str]
-) -> Dict[str, Dict[str, Any]]:
+def analyze_term_usage_context(terms: list[str], texts: list[str]) -> dict[str, dict[str, Any]]:
     """Analyze context-dependent term usage patterns.
 
     Args:
@@ -138,9 +133,7 @@ def analyze_term_usage_context(
 
             # Calculate context diversity
             total_contexts = len(term_contexts)
-            context_diversity = (
-                len(context_types) / total_contexts if total_contexts > 0 else 0
-            )
+            context_diversity = len(context_types) / total_contexts if total_contexts > 0 else 0
 
             # Analyze positional patterns
             positions = [pos[1] for pos in term_positions]  # Sentence positions
@@ -163,12 +156,10 @@ def analyze_term_usage_context(
 
 
 def track_conceptual_shifts(
-    texts: List[str],
-    time_periods: Optional[List[str]] = None,
-    rhetorical_analyzer: Optional[
-        Callable[[List[str]], Dict[str, Dict[str, Any]]]
-    ] = None,
-) -> Dict[str, Dict[str, Any]]:
+    texts: list[str],
+    time_periods: list[str] | None = None,
+    rhetorical_analyzer: Callable[[list[str]], dict[str, dict[str, Any]]] | None = None,
+) -> dict[str, dict[str, Any]]:
     """Track how concepts shift in discourse over time or contexts.
 
     Args:
@@ -217,21 +208,13 @@ def track_conceptual_shifts(
 
         # Calculate pattern shifts
         pattern_shifts = {}
-        for pattern_name in set(current_patterns.keys()) | set(
-            next_patterns.keys()
-        ):
-            current_freq = current_patterns.get(pattern_name, {}).get(
-                "frequency", 0
-            )
-            next_freq = next_patterns.get(pattern_name, {}).get(
-                "frequency", 0
-            )
+        for pattern_name in set(current_patterns.keys()) | set(next_patterns.keys()):
+            current_freq = current_patterns.get(pattern_name, {}).get("frequency", 0)
+            next_freq = next_patterns.get(pattern_name, {}).get("frequency", 0)
 
             shift_magnitude = abs(next_freq - current_freq)
             shift_direction = (
-                "increased"
-                if next_freq > current_freq
-                else "decreased" if next_freq < current_freq else "stable"
+                "increased" if next_freq > current_freq else "decreased" if next_freq < current_freq else "stable"
             )
 
             pattern_shifts[pattern_name] = {
@@ -239,36 +222,24 @@ def track_conceptual_shifts(
                 "to_frequency": next_freq,
                 "shift_magnitude": shift_magnitude,
                 "shift_direction": shift_direction,
-                "relative_change": (
-                    (next_freq - current_freq) / current_freq
-                    if current_freq > 0
-                    else 0
-                ),
+                "relative_change": ((next_freq - current_freq) / current_freq if current_freq > 0 else 0),
             }
 
         shifts[f"{current_period}_to_{next_period}"] = {
             "pattern_shifts": pattern_shifts,
-            "overall_shift_intensity": sum(
-                shift["shift_magnitude"] for shift in pattern_shifts.values()
-            ),
-            "significant_shifts": [
-                name
-                for name, shift in pattern_shifts.items()
-                if shift["shift_magnitude"] > 2
-            ],
+            "overall_shift_intensity": sum(shift["shift_magnitude"] for shift in pattern_shifts.values()),
+            "significant_shifts": [name for name, shift in pattern_shifts.items() if shift["shift_magnitude"] > 2],
         }
 
     return shifts
 
 
 def quantify_framing_effects(
-    texts: List[str],
-    framing_concepts: Optional[List[str]] = None,
-    rhetorical_analyzer: Optional[
-        Callable[[List[str]], Dict[str, Dict[str, Any]]]
-    ] = None,
-    argumentative_analyzer: Optional[Callable[[List[str]], list]] = None,
-) -> Dict[str, Dict[str, Any]]:
+    texts: list[str],
+    framing_concepts: list[str] | None = None,
+    rhetorical_analyzer: Callable[[list[str]], dict[str, dict[str, Any]]] | None = None,
+    argumentative_analyzer: Callable[[list[str]], list] | None = None,
+) -> dict[str, dict[str, Any]]:
     """Quantify the impact of framing assumptions on discourse.
 
     Args:
@@ -303,18 +274,13 @@ def quantify_framing_effects(
         framing_indicators = _get_framing_indicators(concept)
 
         for text in texts:
-            if any(
-                indicator.lower() in text.lower()
-                for indicator in framing_indicators
-            ):
+            if any(indicator.lower() in text.lower() for indicator in framing_indicators):
                 framed_texts.append(text)
 
         if framed_texts:
             # Analyze framing impact
             framing_strength = len(framed_texts) / len(texts)
-            consistency_score = _calculate_framing_consistency(
-                framed_texts, framing_indicators
-            )
+            consistency_score = _calculate_framing_consistency(framed_texts, framing_indicators)
 
             # Analyze downstream effects
             downstream_patterns = analyze_rhet(framed_texts)
@@ -343,10 +309,7 @@ def _natural_sort_key(value: str) -> list:
 
     "period_2" < "period_10", unlike plain lexicographic ordering.
     """
-    return [
-        int(part) if part.isdigit() else part
-        for part in re.split(r"(\d+)", value)
-    ]
+    return [int(part) if part.isdigit() else part for part in re.split(r"(\d+)", value)]
 
 
 # --- Helper functions ---
@@ -356,28 +319,21 @@ def _classify_context_type(sentence: str, term: str) -> str:
     """Classify the context type of term usage."""
     sentence_lower = sentence.lower()
 
-    if any(
-        word in sentence_lower for word in ["however", "but", "although", "despite"]
-    ):
+    if any(word in sentence_lower for word in ["however", "but", "although", "despite"]):
         return "contrastive"
     elif any(word in sentence_lower for word in ["because", "since", "due to"]):
         return "causal"
-    elif any(
-        word in sentence_lower for word in ["for example", "such as", "including"]
-    ):
+    elif any(word in sentence_lower for word in ["for example", "such as", "including"]):
         return "exemplifying"
     elif "?" in sentence:
         return "interrogative"
-    elif any(
-        word in sentence_lower
-        for word in ["therefore", "thus", "hence", "consequently"]
-    ):
+    elif any(word in sentence_lower for word in ["therefore", "thus", "hence", "consequently"]):
         return "conclusive"
     else:
         return "descriptive"
 
 
-def _calculate_usage_consistency(contexts: List[Dict[str, Any]]) -> float:
+def _calculate_usage_consistency(contexts: list[dict[str, Any]]) -> float:
     """Calculate consistency of term usage across contexts."""
     if len(contexts) < 2:
         return 1.0
@@ -389,7 +345,7 @@ def _calculate_usage_consistency(contexts: List[Dict[str, Any]]) -> float:
     return consistency
 
 
-def _get_framing_indicators(framing_concept: str) -> List[str]:
+def _get_framing_indicators(framing_concept: str) -> list[str]:
     """Get indicator words/phrases for a framing concept."""
     indicators = {
         "anthropomorphic": [
@@ -446,9 +402,7 @@ def _get_framing_indicators(framing_concept: str) -> List[str]:
     return indicators.get(framing_concept, [])
 
 
-def _calculate_framing_consistency(
-    framed_texts: List[str], indicators: List[str]
-) -> float:
+def _calculate_framing_consistency(framed_texts: list[str], indicators: list[str]) -> float:
     """Calculate consistency of framing usage."""
     if not framed_texts:
         return 0.0
@@ -456,19 +410,15 @@ def _calculate_framing_consistency(
     total_indicator_usage = 0
     for text in framed_texts:
         text_lower = text.lower()
-        text_indicators = sum(
-            1 for indicator in indicators if indicator in text_lower
-        )
-        total_indicator_usage += min(
-            text_indicators, len(indicators)
-        )  # Cap at max indicators
+        text_indicators = sum(1 for indicator in indicators if indicator in text_lower)
+        total_indicator_usage += min(text_indicators, len(indicators))  # Cap at max indicators
 
     consistency = total_indicator_usage / (len(framed_texts) * len(indicators))
 
     return min(consistency, 1.0)
 
 
-def _rate_technique_effectiveness(technique_data: Dict[str, Any]) -> str:
+def _rate_technique_effectiveness(technique_data: dict[str, Any]) -> str:
     """Map the heuristic impact index to a categorical band."""
     impact = _calculate_technique_impact(technique_data)
 
@@ -484,7 +434,7 @@ def _rate_technique_effectiveness(technique_data: Dict[str, Any]) -> str:
         return "ineffective"
 
 
-def _calculate_technique_impact(technique_data: Dict[str, Any]) -> float:
+def _calculate_technique_impact(technique_data: dict[str, Any]) -> float:
     """Heuristic impact index: (count + capped examples) / 20.
 
     ``technique_data`` dicts produced by ``analyze_persuasive_techniques``
