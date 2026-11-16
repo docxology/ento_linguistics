@@ -3,6 +3,7 @@
 Validates that preflight checks correctly detect missing figures,
 absent glossary markers, and missing references blocks.
 """
+
 from __future__ import annotations
 
 import json
@@ -11,8 +12,6 @@ import sys
 from pathlib import Path
 
 import pytest
-
-
 
 SUBPROCESS_TIMEOUT_SECONDS = 1800
 
@@ -129,9 +128,7 @@ class TestCollectFigurePaths:
     def test_detects_includegraphics(self, tmp_path: Path):
         """Should extract paths from \\includegraphics directives."""
         md = tmp_path / "04_results.md"
-        md.write_text(
-            r"\includegraphics[width=\textwidth]{output/figures/concept_map.png}"
-        )
+        md.write_text(r"\includegraphics[width=\textwidth]{output/figures/concept_map.png}")
         refs = _collect_figure_paths([md])
         assert len(refs) == 1
         assert refs[0][1] == "output/figures/concept_map.png"
@@ -159,9 +156,7 @@ class TestRunChecks:
         (fig_dir / "concept_map.png").write_text("fake png")
 
         # Create markdown that references existing figure
-        (tmp_path / "04_results.md").write_text(
-            r"\includegraphics{output/figures/concept_map.png}"
-        )
+        (tmp_path / "04_results.md").write_text(r"\includegraphics{output/figures/concept_map.png}")
 
         # Create glossary with markers
         (tmp_path / "98_symbols_glossary.md").write_text(
@@ -176,9 +171,7 @@ class TestRunChecks:
 
     def test_missing_figure_detected(self, tmp_path: Path):
         """Missing figures are reported."""
-        (tmp_path / "04_results.md").write_text(
-            r"\includegraphics{output/figures/nonexistent.png}"
-        )
+        (tmp_path / "04_results.md").write_text(r"\includegraphics{output/figures/nonexistent.png}")
         (tmp_path / "98_symbols_glossary.md").write_text(
             "<!-- BEGIN: AUTO-API-GLOSSARY -->\n<!-- END: AUTO-API-GLOSSARY -->"
         )
@@ -240,14 +233,16 @@ class TestDefaultPaths:
     def test_real_manuscript_run_from_foreign_cwd(self, tmp_path: Path):
         """Running with default args from an unrelated CWD validates the real
         docs/manuscript directory and emits parseable JSON."""
-        result = run_subprocess([
-            sys.executable,
-            str(PROJECT_DIR / "scripts" / "_manuscript_preflight.py"),
-            "--json",
-        ],
-        capture_output=True,
-        text=True,
-        cwd=str(tmp_path),)
+        result = run_subprocess(
+            [
+                sys.executable,
+                str(PROJECT_DIR / "scripts" / "_manuscript_preflight.py"),
+                "--json",
+            ],
+            capture_output=True,
+            text=True,
+            cwd=str(tmp_path),
+        )
         assert result.returncode == 0, f"stderr: {result.stderr}"
 
         payload = json.loads(result.stdout)

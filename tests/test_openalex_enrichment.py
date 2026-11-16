@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import json
+import urllib.error
 from pathlib import Path
 
 import pytest
-import urllib.error
 
-import data.openalex_enrichment as openalex_enrichment
+from data import openalex_enrichment
 from data.openalex_enrichment import (
     collect_doi_records,
     enrich_corpus,
@@ -79,9 +79,7 @@ def corpus_dir(tmp_path: Path) -> Path:
 def server(httpserver):
     """Local OpenAlex stand-in URL matching ``<base>doi:<doi>`` requests."""
     httpserver.expect_request("/works/doi:10.1000/one").respond_with_json(WORK_JSON)
-    httpserver.expect_request("/works/doi:10.1000/gone").respond_with_json(
-        {"error": "not found"}, status=404
-    )
+    httpserver.expect_request("/works/doi:10.1000/gone").respond_with_json({"error": "not found"}, status=404)
     return httpserver.url_for("/works/doi:")
 
 
@@ -105,9 +103,7 @@ class TestFetchOpenAlexWork:
         assert fetch_openalex_work("10.1000/gone", base_url=server) is None
 
     def test_server_error_raises_after_retries(self, httpserver):
-        httpserver.expect_request("/works/doi:10.1000/err").respond_with_data(
-            "boom", status=500
-        )
+        httpserver.expect_request("/works/doi:10.1000/err").respond_with_data("boom", status=500)
         with pytest.raises(urllib.error.HTTPError):
             fetch_openalex_work("10.1000/err", base_url=httpserver.url_for("/works/doi:"))
 
@@ -133,16 +129,12 @@ class TestFetchOpenAlexWork:
 
 class TestEnrichCorpus:
     def test_enrich_writes_schema(self, corpus_dir, server):
-        summary = enrich_corpus(
-            corpus_dir=corpus_dir, base_url=server
-        )
+        summary = enrich_corpus(corpus_dir=corpus_dir, base_url=server)
         assert summary["fetched"] == 1
         assert summary["not_found"] == 1
         assert summary["errors"] == 0
 
-        metadata = json.loads(
-            (corpus_dir / "citation_metadata.json").read_text(encoding="utf-8")
-        )
+        metadata = json.loads((corpus_dir / "citation_metadata.json").read_text(encoding="utf-8"))
         assert set(metadata) == {"c" * 64, "d" * 64}  # DOI-less record untouched
 
         ok = metadata["c" * 64]
@@ -163,25 +155,17 @@ class TestEnrichCorpus:
         summary = enrich_corpus(corpus_dir=corpus_dir, base_url="http://127.0.0.1:1/")
         assert summary["already_fetched"] == 2
         assert summary["fetched"] == 0
-        metadata = json.loads(
-            (corpus_dir / "citation_metadata.json").read_text(encoding="utf-8")
-        )
+        metadata = json.loads((corpus_dir / "citation_metadata.json").read_text(encoding="utf-8"))
         assert metadata["c" * 64]["status"] == "ok"
 
     def test_enrich_limit(self, corpus_dir, server):
-        summary = enrich_corpus(
-            corpus_dir=corpus_dir, base_url=server, limit=1
-        )
+        summary = enrich_corpus(corpus_dir=corpus_dir, base_url=server, limit=1)
         assert summary["fetched"] + summary["not_found"] == 1
-        metadata = json.loads(
-            (corpus_dir / "citation_metadata.json").read_text(encoding="utf-8")
-        )
+        metadata = json.loads((corpus_dir / "citation_metadata.json").read_text(encoding="utf-8"))
         assert len(metadata) == 1
 
     def test_enrich_dry_run(self, corpus_dir, server):
-        summary = enrich_corpus(
-            corpus_dir=corpus_dir, base_url=server, dry_run=True
-        )
+        summary = enrich_corpus(corpus_dir=corpus_dir, base_url=server, dry_run=True)
         assert summary["dry_run"] is True
         assert summary["pending"] == 2
         assert not (corpus_dir / "citation_metadata.json").exists()
@@ -190,9 +174,7 @@ class TestEnrichCorpus:
         # Port 1: connection refused -> explicit error entries, never silent.
         summary = enrich_corpus(corpus_dir=corpus_dir, base_url="http://127.0.0.1:1/")
         assert summary["errors"] == 2
-        metadata = json.loads(
-            (corpus_dir / "citation_metadata.json").read_text(encoding="utf-8")
-        )
+        metadata = json.loads((corpus_dir / "citation_metadata.json").read_text(encoding="utf-8"))
         assert all(m["status"] == "error" for m in metadata.values())
         assert "error" in metadata["c" * 64]
 
@@ -200,16 +182,10 @@ class TestEnrichCorpus:
         enrich_corpus(corpus_dir=corpus_dir, base_url="http://127.0.0.1:1/")
         # Server now answers: previously errored entries are retried.
         httpserver.expect_request("/works/doi:10.1000/one").respond_with_json(WORK_JSON)
-        httpserver.expect_request("/works/doi:10.1000/gone").respond_with_json(
-            {"error": "not found"}, status=404
-        )
-        summary = enrich_corpus(
-            corpus_dir=corpus_dir, base_url=httpserver.url_for("/works/doi:")
-        )
+        httpserver.expect_request("/works/doi:10.1000/gone").respond_with_json({"error": "not found"}, status=404)
+        summary = enrich_corpus(corpus_dir=corpus_dir, base_url=httpserver.url_for("/works/doi:"))
         assert summary["fetched"] == 1 and summary["not_found"] == 1
-        metadata = json.loads(
-            (corpus_dir / "citation_metadata.json").read_text(encoding="utf-8")
-        )
+        metadata = json.loads((corpus_dir / "citation_metadata.json").read_text(encoding="utf-8"))
         assert metadata["c" * 64]["status"] == "ok"
 
 

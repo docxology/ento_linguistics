@@ -1,8 +1,9 @@
 """Content custody for the English NLTK inputs used by the paper pipeline."""
+
 from __future__ import annotations
 
-import hashlib
 import codecs
+import hashlib
 from pathlib import Path
 from typing import BinaryIO, TypedDict
 from zipfile import ZipFile
@@ -23,10 +24,15 @@ def _resource_sha256(resource: str) -> str:
     pointer = find(resource)
     match pointer:
         case ZipFilePathPointer():
-            members = [entry for entry in pointer.zipfile.infolist()
-                       if not entry.is_dir() and
-                       (entry.filename == pointer.entry or
-                        (pointer.entry.endswith("/") and entry.filename.startswith(pointer.entry)))]
+            members = [
+                entry
+                for entry in pointer.zipfile.infolist()
+                if not entry.is_dir()
+                and (
+                    entry.filename == pointer.entry
+                    or (pointer.entry.endswith("/") and entry.filename.startswith(pointer.entry))
+                )
+            ]
             if not any(entry.file_size for entry in members):
                 raise FileNotFoundError(f"Empty NLTK resource: {resource}")
             has_content = False

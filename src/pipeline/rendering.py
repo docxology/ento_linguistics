@@ -5,12 +5,13 @@ Importable rendering logic used by the thin orchestrator
 output TeX post-processing, frontmatter/title-page LaTeX emission, and
 ``{{KEY}}`` corpus-variable substitution.
 """
+
 from __future__ import annotations
 
 import logging
 import os
-import sys
 import subprocess
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -18,6 +19,7 @@ try:
     import yaml
 except ImportError:
     yaml = None
+
 
 def _postprocess_combined_tex(tex_path: Path) -> None:
     """Patch Pandoc output: natbib options, red links (override trailing ``hidelinks``).
@@ -80,7 +82,13 @@ def _build_frontmatter(config_path: Path, output_dir: Path) -> str:
 
     # ── Generate _title_page.tex from config.yaml ────────────────────
     _write_title_page_tex(
-        output_dir, authors_cfg, doi, date_str, title, author_names, keywords_cfg,
+        output_dir,
+        authors_cfg,
+        doi,
+        date_str,
+        title,
+        author_names,
+        keywords_cfg,
     )
 
     # ── Pandoc YAML frontmatter (plain names only) ───────────────────
@@ -92,8 +100,7 @@ def _build_frontmatter(config_path: Path, output_dir: Path) -> str:
 
     frontmatter = "---\n" + yaml.dump(metadata, default_flow_style=False) + "---\n"
 
-    print(f"  Cover metadata: title='{title[:50]}...', "
-          f"{len(author_names)} author(s), date='{date_str}', doi='{doi}'")
+    print(f"  Cover metadata: title='{title[:50]}...', {len(author_names)} author(s), date='{date_str}', doi='{doi}'")
 
     return frontmatter
 
@@ -119,6 +126,7 @@ def _write_title_page_tex(
     redefined (with ``\colorbox``) for inline-code styling elsewhere in
     the preamble.
     """
+
     def _tex_escape(s: str) -> str:
         """Escape characters that are special in LaTeX."""
         for ch, repl in [("&", r"\&"), ("%", r"\%"), ("_", r"\_"), ("#", r"\#")]:
@@ -145,15 +153,8 @@ def _write_title_page_tex(
         # One detail per line: a joined email/ORCID line wraps mid-identifier
         # in narrow two-author columns.
         if detail_bits:
-            inner.append(
-                r"      {\footnotesize "
-                + r"\\ ".join(detail_bits)
-                + r"}"
-            )
-        box = (
-            r"    \parbox[t]{" + col_width + r"}{\centering"
-            + "\n" + "\n".join(inner) + "\n    }"
-        )
+            inner.append(r"      {\footnotesize " + r"\\ ".join(detail_bits) + r"}")
+        box = r"    \parbox[t]{" + col_width + r"}{\centering" + "\n" + "\n".join(inner) + "\n    }"
         author_boxes.append(box)
 
     authors_block = "\n    \\hfill\n".join(author_boxes) if author_boxes else ""
@@ -162,10 +163,7 @@ def _write_title_page_tex(
     date_block = r"    " + date_str
     if doi:
         date_block += r"\\[4pt]" + "\n"
-        date_block += (
-            r"    {\small DOI: \href{https://doi.org/"
-            + doi + r"}{" + doi + r"}}"
-        )
+        date_block += r"    {\small DOI: \href{https://doi.org/" + doi + r"}{" + doi + r"}}"
 
     # PDF metadata values
     pdf_author = " and ".join(author_names) if author_names else ""
@@ -238,13 +236,13 @@ def _load_corpus_vars(project_root: Path) -> dict:
         vars_["CORPUS_TOTAL_TOKENS"] = str(stats.get("total_tokens", 0))
         vars_["CORPUS_UNIQUE_TOKENS"] = str(stats.get("unique_tokens", 0))
         vars_["CORPUS_TTR"] = f"{stats.get('type_token_ratio', 0):.4f}"
-        
+
         top_terms = stats.get("most_common_tokens", [])
         n_top = 0
         for i in range(5):
             if i < len(top_terms):
-                vars_[f"CORPUS_TOP_TERM_{i+1}"] = top_terms[i][0]
-                vars_[f"CORPUS_TOP_FREQ_{i+1}"] = str(top_terms[i][1])
+                vars_[f"CORPUS_TOP_TERM_{i + 1}"] = top_terms[i][0]
+                vars_[f"CORPUS_TOP_FREQ_{i + 1}"] = str(top_terms[i][1])
                 n_top += 2
 
         # Per-term frequency lookup: TERM_FREQ_<UPPERCASE_TERM>
@@ -253,8 +251,12 @@ def _load_corpus_vars(project_root: Path) -> dict:
             slug = term_name.upper().replace("-", "_").replace(" ", "_")
             vars_[f"TERM_FREQ_{slug}"] = str(freq)
             term_freq_count += 1
-        logger.info("  ✓ %s → %d variables (incl. %d per-term freqs)",
-                    stats_path.name, 3 + n_top + term_freq_count, term_freq_count)
+        logger.info(
+            "  ✓ %s → %d variables (incl. %d per-term freqs)",
+            stats_path.name,
+            3 + n_top + term_freq_count,
+            term_freq_count,
+        )
     else:
         vars_["CORPUS_TOTAL_TOKENS"] = "N/A"
         vars_["CORPUS_UNIQUE_TOKENS"] = "N/A"
@@ -287,17 +289,13 @@ def _load_corpus_vars(project_root: Path) -> dict:
     except ImportError:
         logger.warning("  ✗ core.manuscript_variables import failed — inferential tokens unavailable")
 
-
     # ── Term extraction counts ─────────────────────────────────────────
     terms_path = project_root / "output" / "data" / "extracted_terms.json"
     if terms_path.exists():
         with open(terms_path) as fh:
             terms_data = json.load(fh)
         candidate_terms = len(terms_data)
-        domain_terms = sum(
-            1 for v in terms_data.values()
-            if isinstance(v, dict) and v.get("domains")
-        )
+        domain_terms = sum(1 for v in terms_data.values() if isinstance(v, dict) and v.get("domains"))
         vars_["CORPUS_CANDIDATE_TERMS"] = str(candidate_terms)
         vars_["CORPUS_DOMAIN_TERMS"] = str(domain_terms)
 
@@ -331,13 +329,13 @@ def _load_corpus_vars(project_root: Path) -> dict:
         vars_["CORPUS_CANDIDATE_TERMS"] = "N/A"
         vars_["CORPUS_DOMAIN_TERMS"] = "N/A"
         logger.warning("  ✗ %s NOT FOUND — term counts unavailable", terms_path)
-        
+
     # ── Domain Statistics ──────────────────────────────────────────────
     domain_path = project_root / "output" / "data" / "domain_statistics.json"
     if domain_path.exists():
         with open(domain_path) as fh:
             dstats = json.load(fh)
-        
+
         n_domain_vars = 0
         total_domain_terms = sum(v.get("entropy_valid_terms", v.get("term_count", 0)) for v in dstats.values())
         for dom, v in dstats.items():
@@ -349,8 +347,7 @@ def _load_corpus_vars(project_root: Path) -> dict:
             n_domain_vars += 4
         vars_["CORPUS_OVERALL_N_TERMS"] = str(total_domain_terms)
         n_domain_vars += 1
-        logger.info("  ✓ %s → %d variables (%d domains)",
-                     domain_path.name, n_domain_vars, len(dstats))
+        logger.info("  ✓ %s → %d variables (%d domains)", domain_path.name, n_domain_vars, len(dstats))
     else:
         logger.warning("  ✗ %s NOT FOUND — domain statistics unavailable", domain_path)
 
@@ -364,13 +361,9 @@ def _load_corpus_vars(project_root: Path) -> dict:
         vars_["NETWORK_NODES"] = str(cstats.get("network_nodes", "N/A"))
         vars_["NETWORK_EDGES"] = str(cstats.get("network_edges", "N/A"))
         nc = cstats.get("network_clustering", "N/A")
-        vars_["NETWORK_CLUSTERING"] = (
-            f"{float(nc):.4f}" if isinstance(nc, (int, float)) else str(nc)
-        )
+        vars_["NETWORK_CLUSTERING"] = f"{float(nc):.4f}" if isinstance(nc, (int, float)) else str(nc)
         ad = cstats.get("network_avg_degree", "N/A")
-        vars_["NETWORK_AVG_DEGREE"] = (
-            f"{float(ad):.2f}" if isinstance(ad, (int, float)) else str(ad)
-        )
+        vars_["NETWORK_AVG_DEGREE"] = f"{float(ad):.2f}" if isinstance(ad, (int, float)) else str(ad)
 
         # Per-concept term count variables: CONCEPT_<SLUG>_TERMS
         n_concept_vars = 0
@@ -379,8 +372,12 @@ def _load_corpus_vars(project_root: Path) -> dict:
             slug = concept_name.upper()
             vars_[f"CONCEPT_{slug}_TERMS"] = str(concept_data.get("n_terms", 0))
             n_concept_vars += 1
-        logger.info("  ✓ %s → %d variables (6 network + %d concept term counts)",
-                    concept_path.name, 6 + n_concept_vars, n_concept_vars)
+        logger.info(
+            "  ✓ %s → %d variables (6 network + %d concept term counts)",
+            concept_path.name,
+            6 + n_concept_vars,
+            n_concept_vars,
+        )
     else:
         vars_["CORPUS_CONCEPT_COUNT"] = "N/A"
         vars_["CORPUS_RELATIONSHIP_COUNT"] = "N/A"
@@ -430,7 +427,8 @@ def _load_corpus_vars(project_root: Path) -> dict:
             with open(terms_path_check) as fh_t:
                 tdata = json.load(fh_t)
             domain_assigned = {
-                k: vt for k, vt in tdata.items()
+                k: vt
+                for k, vt in tdata.items()
                 if isinstance(vt, dict) and vt.get("domains") and len(vt["domains"]) > 0
             }
             multi = sum(1 for vt in domain_assigned.values() if len(vt.get("domains", [])) > 1)
@@ -438,8 +436,7 @@ def _load_corpus_vars(project_root: Path) -> dict:
             vars_["CORPUS_DRIFT_PERCENTAGE"] = f"{drift:.1f}"
             n_ext_vars += 1
 
-        logger.info("  ✓ domain extended stats → %d variables (%d domains)",
-                    n_ext_vars, len(dstats_ext))
+        logger.info("  ✓ domain extended stats → %d variables (%d domains)", n_ext_vars, len(dstats_ext))
     else:
         logger.warning("  ✗ domain_statistics.json missing extended stats")
 
@@ -449,7 +446,9 @@ def _load_corpus_vars(project_root: Path) -> dict:
     vars_["CORPUS_MULTIDOMAIN_PERCENTAGE"] = vars_.get("CORPUS_DRIFT_PERCENTAGE", "N/A")
     if stats_path.exists():
         vars_["CORPUS_PUBLICATIONS"] = str(stats.get("n_documents", vars_["CORPUS_PUBLICATIONS"]))
-        vars_["CORPUS_STORED_RECORDS"] = str(stats.get("stored_documents", len(abstracts))) if abstracts_path.exists() else "N/A"
+        vars_["CORPUS_STORED_RECORDS"] = (
+            str(stats.get("stored_documents", len(abstracts))) if abstracts_path.exists() else "N/A"
+        )
         vars_["CORPUS_EXCLUDED_UNRECONCILED"] = str(stats.get("excluded_unreconciled", 0))
     print(f"  Corpus template vars: {len(vars_)} variables loaded")
     print(
@@ -478,8 +477,10 @@ def _load_extension_vars(project_root: Path) -> dict:
     logger = logging.getLogger("render_pdf.template_vars")
     base = project_root / "output" / "extensions" / "network_robustness"
     vars_: dict = {}
-    for prefix, path in (("NULLNET", base / "network_robustness.json"),
-                         ("NULLNET_SENS", base / "sensitivity" / "network_robustness.json")):
+    for prefix, path in (
+        ("NULLNET", base / "network_robustness.json"),
+        ("NULLNET_SENS", base / "sensitivity" / "network_robustness.json"),
+    ):
         if not path.exists():
             logger.warning("  ✗ %s NOT FOUND — %s_* variables unavailable", path, prefix)
             continue
@@ -541,9 +542,7 @@ def _apply_corpus_vars(content: str, vars_: dict, *, strict: bool = False) -> st
     remaining = re.findall(r"\{\{([A-Z0-9_]+)\}\}", content)
     if remaining:
         unique = sorted(set(remaining))
-        msg = (
-            f"Unreplaced template variable(s): {', '.join(unique)}"
-        )
+        msg = f"Unreplaced template variable(s): {', '.join(unique)}"
         logger.warning("  ⚠ %d %s", len(unique), msg)
         if strict:
             print(f"ERROR: {msg}", file=sys.stderr)
@@ -555,8 +554,9 @@ def run_latex_command(command: list[str], output_dir: Path) -> None:
     """Run a real renderer; any nonzero status is a build failure."""
     result = subprocess.run(command, cwd=output_dir, capture_output=True, text=True)
     if result.returncode:
-        raise RuntimeError(f"Renderer failed ({result.returncode}): {command[0]}\n"
-                           f"{result.stdout[-4000:]}\n{result.stderr[-2000:]}")
+        raise RuntimeError(
+            f"Renderer failed ({result.returncode}): {command[0]}\n{result.stdout[-4000:]}\n{result.stderr[-2000:]}"
+        )
 
 
 def build_pdf(strict_templates: bool = False) -> None:
@@ -573,6 +573,7 @@ def build_pdf(strict_templates: bool = False) -> None:
     # Publication rendering requires a completed, unchanged analysis run.
     # Resolving placeholders alone cannot detect stale or mixed outputs.
     from core.provenance import validate_analysis_manifest
+
     validate_analysis_manifest(project_root)
 
     output_file = output_dir / "ento_linguistics_combined.pdf"
@@ -607,9 +608,9 @@ def build_pdf(strict_templates: bool = False) -> None:
     # Load corpus statistics for template variable substitution
     corpus_vars = _load_corpus_vars(project_root)
     corpus_vars.update(_load_extension_vars(project_root))
-    if any("{{NETREAD_" in (manuscript_dir / name).read_text()
-           for name in files if (manuscript_dir / name).is_file()):
+    if any("{{NETREAD_" in (manuscript_dir / name).read_text() for name in files if (manuscript_dir / name).is_file()):
         from research.network_reading.study import template_values
+
         corpus_vars.update(template_values(project_root))
 
     # Verify files exist and concatenate
@@ -647,7 +648,8 @@ def build_pdf(strict_templates: bool = False) -> None:
     pandoc_cmd = [
         "pandoc",
         str(temp_md),
-        "-o", str(tex_file),
+        "-o",
+        str(tex_file),
         "--from=markdown+citations+raw_tex",
         "--standalone",
         "--include-in-header=" + str(manuscript_dir / "preamble.tex"),
@@ -655,7 +657,8 @@ def build_pdf(strict_templates: bool = False) -> None:
         "--number-sections",
         "--toc",
         "--toc-depth=2",
-        "--variable", "geometry:margin=0.85in",
+        "--variable",
+        "geometry:margin=0.85in",
     ]
 
     print("Step 1/5: Generating LaTeX source with Pandoc...")
@@ -672,6 +675,7 @@ def build_pdf(strict_templates: bool = False) -> None:
 
     # Step 2: Copy .bib file to build directory (bibtex needs it alongside .tex)
     import shutil
+
     bib_src = manuscript_dir / "references.bib"
     bib_dst = output_dir / "references.bib"
     shutil.copy2(bib_src, bib_dst)
@@ -689,9 +693,7 @@ def build_pdf(strict_templates: bool = False) -> None:
     # Pass 1: no -halt-on-error so undefined-citation warnings don't abort the
     # run mid-document; we need a complete .aux file for bibtex.
     # Note: with the bgcolor preamble bug fixed, pass 1 should now complete cleanly.
-    run_latex("xelatex pass 1", [
-        "xelatex", "-interaction=nonstopmode", tex_basename
-    ])
+    run_latex("xelatex pass 1", ["xelatex", "-interaction=nonstopmode", tex_basename])
 
     print("Step 4/5: Running bibtex (resolving citations)...")
     bibtex_ok = run_latex("bibtex", ["bibtex", tex_basename])
@@ -703,15 +705,12 @@ def build_pdf(strict_templates: bool = False) -> None:
     # NOTE: -halt-on-error is intentionally omitted because harmless font
     # warnings (e.g. from lmodern under xelatex) would otherwise abort the
     # run before all labels are written to the .aux file.
-    run_latex("xelatex pass 2", [
-        "xelatex", "-interaction=nonstopmode", tex_basename
-    ])
-    run_latex("xelatex pass 3", [
-        "xelatex", "-interaction=nonstopmode", tex_basename
-    ])
+    run_latex("xelatex pass 2", ["xelatex", "-interaction=nonstopmode", tex_basename])
+    run_latex("xelatex pass 3", ["xelatex", "-interaction=nonstopmode", tex_basename])
 
     log = (output_dir / f"{tex_basename}.log").read_text(errors="replace")
     import re
+
     if re.search(r"There were undefined references|(?:Citation|Reference).*undefined|Missing character:", log):
         raise RuntimeError("PDF has unresolved citations/references or missing glyphs; inspect the LaTeX log")
 

@@ -12,7 +12,7 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.sparse import csr_matrix
 
-__all__ = ["MatrixError", "Projection", "validate_rows", "curveball_trade", "project"]
+__all__ = ["MatrixError", "Projection", "curveball_trade", "project", "validate_rows"]
 
 
 class MatrixError(ValueError):

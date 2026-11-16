@@ -8,13 +8,13 @@ import json
 import logging
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 __all__ = [
-    "FigureMetadata",
     "FigureManager",
+    "FigureMetadata",
 ]
 
 
@@ -24,12 +24,12 @@ class FigureMetadata:
 
     filename: str
     caption: str
-    label: Optional[str] = None
-    section: Optional[str] = None
-    generated_by: Optional[str] = None
-    metadata: Optional[Dict[str, Any]] = None
+    label: str | None = None
+    section: str | None = None
+    generated_by: str | None = None
+    metadata: dict[str, Any] | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary."""
         return asdict(self)
 
@@ -41,7 +41,7 @@ class FigureManager:
     generated figures with on-disk integrity checks.
     """
 
-    def __init__(self, registry_file: Optional[str] = None):
+    def __init__(self, registry_file: str | None = None):
         """Initialize figure manager.
 
         Args:
@@ -57,16 +57,16 @@ class FigureManager:
 
         self.registry_file = Path(registry_file)
         self.registry_file.parent.mkdir(parents=True, exist_ok=True)
-        self.figures: Dict[str, FigureMetadata] = {}
+        self.figures: dict[str, FigureMetadata] = {}
         self._load_registry()
 
     def register_figure(
         self,
         filename: str,
         caption: str,
-        label: Optional[str] = None,
-        section: Optional[str] = None,
-        generated_by: Optional[str] = None,
+        label: str | None = None,
+        section: str | None = None,
+        generated_by: str | None = None,
         **kwargs,
     ) -> FigureMetadata:
         """Register a figure.
@@ -132,7 +132,7 @@ class FigureManager:
         self._save_registry()
         logger.info("Figure registry cleared")
 
-    def get_figure(self, label: str) -> Optional[FigureMetadata]:
+    def get_figure(self, label: str) -> FigureMetadata | None:
         """Get figure metadata by label.
 
         Args:
@@ -143,19 +143,18 @@ class FigureManager:
         """
         return self.figures.get(label)
 
-    def list_figures(self) -> List[Tuple[str, str]]:
+    def list_figures(self) -> list[tuple[str, str]]:
         """List all registered figures.
 
         Returns:
             List of (label, filename) tuples sorted by label
         """
-        return sorted(
-            [(label, fig.filename) for label, fig in self.figures.items()]
-        )
+        return sorted([(label, fig.filename) for label, fig in self.figures.items()])
 
     def validate_registry(
-        self, figure_dir: Optional[Path] = None,
-    ) -> Dict[str, List[str]]:
+        self,
+        figure_dir: Path | None = None,
+    ) -> dict[str, list[str]]:
         """Validate that all registered figures exist on disk.
 
         Args:
@@ -170,14 +169,14 @@ class FigureManager:
             figure_dir = self.registry_file.parent
 
         figure_dir = Path(figure_dir)
-        results: Dict[str, List[str]] = {
+        results: dict[str, list[str]] = {
             "valid": [],
             "missing": [],
             "orphaned": [],
         }
 
         # Check registered figures exist on disk
-        for label, fig in self.figures.items():
+        for fig in self.figures.values():
             filepath = figure_dir / fig.filename
             if filepath.exists():
                 results["valid"].append(fig.filename)
@@ -214,10 +213,7 @@ class FigureManager:
                 data = json.load(f)
         except Exception:
             self.figures = {}
-            logger.warning(
-                f"Figure registry unreadable ({self.registry_file}); "
-                "starting fresh"
-            )
+            logger.warning(f"Figure registry unreadable ({self.registry_file}); starting fresh")
             return
 
         skipped = 0
@@ -226,15 +222,9 @@ class FigureManager:
                 self.figures[label] = FigureMetadata(**fig_data)
             except Exception:
                 skipped += 1
-                logger.warning(
-                    f"Skipping corrupt registry entry '{label}': "
-                    f"{fig_data!r}"
-                )
+                logger.warning(f"Skipping corrupt registry entry '{label}': {fig_data!r}")
         if skipped:
-            logger.warning(
-                f"Skipped {skipped} corrupt registry entries; "
-                f"loaded {len(self.figures)} valid figures"
-            )
+            logger.warning(f"Skipped {skipped} corrupt registry entries; loaded {len(self.figures)} valid figures")
         else:
             logger.debug(f"Loaded {len(self.figures)} figures from registry")
 
@@ -243,4 +233,3 @@ class FigureManager:
         data = {label: fig.to_dict() for label, fig in self.figures.items()}
         with open(self.registry_file, "w") as f:
             json.dump(data, f, indent=2, default=str)
-

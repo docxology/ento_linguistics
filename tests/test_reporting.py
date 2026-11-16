@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 import pytest
+
 from pipeline.reporting import ReportGenerator
 
 
@@ -24,9 +25,7 @@ class TestReportGenerator:
             "tables": {"Test Table": {"Column1": ["A", "B"], "Column2": ["1", "2"]}},
         }
         # Pass explicit filename to cover branch 44->47 (filename is not None)
-        report_path = generator.generate_markdown_report(
-            "Test Report", results, filename="custom_markdown_report"
-        )
+        report_path = generator.generate_markdown_report("Test Report", results, filename="custom_markdown_report")
         assert report_path.exists()
         assert report_path.suffix == ".md"
         assert report_path.stem == "custom_markdown_report"
@@ -42,9 +41,7 @@ class TestReportGenerator:
             "tables": {"Test Table": {"Col1": ["A"], "Col2": ["1"]}},
         }
         # Pass explicit filename to cover branch 44->47 (filename is not None)
-        report_path = generator.generate_latex_report(
-            "Test Report", results, filename="custom_report"
-        )
+        report_path = generator.generate_latex_report("Test Report", results, filename="custom_report")
         assert report_path.exists()
         assert report_path.suffix == ".tex"
         assert report_path.stem == "custom_report"
@@ -57,9 +54,7 @@ class TestReportGenerator:
         generator = ReportGenerator(output_dir=str(tmp_path))
         results = {"summary": {"mean": 1.0}, "findings": ["Finding 1"]}
         # Pass explicit filename to cover branch 169->172 (filename is not None)
-        report_path = generator.generate_html_report(
-            "Test Report", results, filename="custom_html_report"
-        )
+        report_path = generator.generate_html_report("Test Report", results, filename="custom_html_report")
         assert report_path.exists()
         assert report_path.suffix == ".html"
         assert report_path.stem == "custom_html_report"
@@ -125,9 +120,7 @@ class TestReportGenerator:
         """Test generating LaTeX report with custom filename."""
         generator = ReportGenerator(output_dir=str(tmp_path))
         results = {"summary": {"mean": 1.0}}
-        report_path = generator.generate_latex_report(
-            "Test Report", results, filename="custom"
-        )
+        report_path = generator.generate_latex_report("Test Report", results, filename="custom")
         assert "custom" in report_path.name
 
     def test_generate_latex_report_default_filename(self, tmp_path):
@@ -202,9 +195,7 @@ class TestReportGenerator:
         }
         findings = generator.extract_key_findings(results)
         assert len(findings) > 0
-        assert any(
-            "converged" in f.lower() or "iteration" in f.lower() for f in findings
-        )
+        assert any("converged" in f.lower() or "iteration" in f.lower() for f in findings)
 
     def test_extract_key_findings_with_performance(self, tmp_path):
         """Test extracting key findings with performance data."""
@@ -334,9 +325,7 @@ class TestReportGenerator:
         """Test comparison report when no values found for metric."""
         generator = ReportGenerator(output_dir=str(tmp_path))
         runs = [{"metrics": {"accuracy": 0.9}}, {"metrics": {"accuracy": 0.92}}]
-        comparison = generator.create_comparison_report(
-            runs, ["accuracy", "nonexistent"]
-        )
+        comparison = generator.create_comparison_report(runs, ["accuracy", "nonexistent"])
         assert "accuracy" in comparison["comparisons"]
         # nonexistent metric should not be in comparisons if no values found
         assert "nonexistent" not in comparison["comparisons"]
@@ -400,6 +389,7 @@ class TestReportingModuleFunctions:
         assert "json" in paths
         assert paths["json"].exists()
         import json
+
         with open(paths["json"]) as f:
             saved = json.load(f)
         assert saved["accuracy"] == 0.95
@@ -446,17 +436,13 @@ class TestReportingModuleFunctions:
 
         monkeypatch.setattr(rep_module, "_HAS_INFRASTRUCTURE", True)
         gen = rep_module.ReportGenerator(output_dir=str(tmp_path))
-        paths = gen.save_structured_report(
-            "infra_stage", {"metric": 1.0}, pipeline_duration=0.5
-        )
+        paths = gen.save_structured_report("infra_stage", {"metric": 1.0}, pipeline_duration=0.5)
         assert isinstance(paths, dict)
         assert len(paths) > 0
         for saved_path in paths.values():
             assert Path(saved_path).exists()
 
-    def test_generate_and_save_pipeline_report_with_infrastructure(
-        self, tmp_path, monkeypatch
-    ):
+    def test_generate_and_save_pipeline_report_with_infrastructure(self, tmp_path, monkeypatch):
         """Module wrappers delegate to real infrastructure when available."""
         import pipeline.reporting as rep_module
 
@@ -472,7 +458,7 @@ class TestReportingModuleFunctions:
             error_summary={"total_errors": 0},
         )
         # Real infrastructure returns a PipelineReport model with stages
-        assert list(report.stages)[0].name == "stage"
+        assert next(iter(report.stages)).name == "stage"
 
         paths = rep_module.save_pipeline_report(report, Path(tmp_path))
         assert isinstance(paths, dict)
@@ -489,4 +475,3 @@ class TestReportingModuleFunctions:
         paths = gen.save_structured_report("fallback_stage", results)
         saved = _json.loads(Path(paths["json"]).read_text())
         assert saved == results
-

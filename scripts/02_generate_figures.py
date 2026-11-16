@@ -4,6 +4,7 @@
 Sets up paths and delegates all figure-generation, analysis-pipeline, and
 data-export logic to ``src/visualization/manuscript_figures.py``.
 """
+
 from __future__ import annotations
 
 import os
@@ -19,7 +20,7 @@ for p in (project_root, src_path, repo_root):
 
 os.environ.setdefault("MPLBACKEND", "Agg")
 
-from visualization.manuscript_figures import main  # noqa: E402
+from visualization.manuscript_figures import main
 
 if __name__ == "__main__":
     main(project_root=project_root)

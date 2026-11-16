@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+
 from analysis.semantic_entropy import (
     SemanticEntropyResult,
     calculate_corpus_entropy,
@@ -37,8 +38,12 @@ class TestSemanticEntropyResult:
     def test_to_dict(self):
         """Test serialization to dictionary."""
         result = SemanticEntropyResult(
-            term="queen", entropy_bits=2.3, n_clusters=5,
-            cluster_distribution=[0.2] * 5, is_high_entropy=True, n_contexts=50,
+            term="queen",
+            entropy_bits=2.3,
+            n_clusters=5,
+            cluster_distribution=[0.2] * 5,
+            is_high_entropy=True,
+            n_contexts=50,
         )
         d = result.to_dict()
         assert d["term"] == "queen"
@@ -143,17 +148,16 @@ class TestCalculateSemanticEntropy:
             "The colony reproduces through swarming and queen dispersal.",
         ]
         result = calculate_semantic_entropy(
-            "colony", contexts, threshold=0.0  # Any entropy > 0 flags
+            "colony",
+            contexts,
+            threshold=0.0,  # Any entropy > 0 flags
         )
         if result.entropy_bits > 0.0:
             assert result.is_high_entropy is True
 
     def test_max_clusters_parameter(self):
         """max_clusters should limit the number of clusters found."""
-        contexts = [
-            f"Context about colony in sense number {i} of the term."
-            for i in range(20)
-        ]
+        contexts = [f"Context about colony in sense number {i} of the term." for i in range(20)]
         result = calculate_semantic_entropy("colony", contexts, max_clusters=3)
         assert result.n_clusters <= 3
 
@@ -172,7 +176,6 @@ class TestCalculateSemanticEntropy:
         result = calculate_semantic_entropy("queen", contexts, min_contexts=5)
         # Only 5 valid contexts (3+ words)
         assert result.n_contexts == 5
-
 
     def test_no_degenerate_uniform_entropy_with_five_contexts(self):
         """Regression: five contexts must NOT produce H = log2(5) ≈ 2.32 for all terms.
@@ -254,15 +257,9 @@ class TestGetHighEntropyTerms:
     def test_filtering(self):
         """Should return only terms above threshold, sorted descending."""
         results = {
-            "queen": SemanticEntropyResult(
-                term="queen", entropy_bits=2.5, n_clusters=5, is_high_entropy=True
-            ),
-            "colony": SemanticEntropyResult(
-                term="colony", entropy_bits=1.0, n_clusters=2, is_high_entropy=False
-            ),
-            "worker": SemanticEntropyResult(
-                term="worker", entropy_bits=2.1, n_clusters=4, is_high_entropy=True
-            ),
+            "queen": SemanticEntropyResult(term="queen", entropy_bits=2.5, n_clusters=5, is_high_entropy=True),
+            "colony": SemanticEntropyResult(term="colony", entropy_bits=1.0, n_clusters=2, is_high_entropy=False),
+            "worker": SemanticEntropyResult(term="worker", entropy_bits=2.1, n_clusters=4, is_high_entropy=True),
         }
         high = get_high_entropy_terms(results)
         assert len(high) == 2
@@ -272,9 +269,7 @@ class TestGetHighEntropyTerms:
     def test_no_high_entropy(self):
         """Should return empty list when no terms exceed threshold."""
         results = {
-            "term1": SemanticEntropyResult(
-                term="term1", entropy_bits=0.5, n_clusters=2, is_high_entropy=False
-            ),
+            "term1": SemanticEntropyResult(term="term1", entropy_bits=0.5, n_clusters=2, is_high_entropy=False),
         }
         high = get_high_entropy_terms(results)
         assert high == []
@@ -297,9 +292,7 @@ class TestEntropyNormalizationContract:
         assert r.n_clusters >= 2
         assert r.h_max > 0
         assert 0.0 <= r.entropy_normalized <= 1.0
-        assert r.entropy_normalized == pytest.approx(
-            r.entropy_bits / r.h_max, rel=1e-9
-        )
+        assert r.entropy_normalized == pytest.approx(r.entropy_bits / r.h_max, rel=1e-9)
 
     def test_insufficient_contexts_flagged_not_ok(self):
         r = calculate_semantic_entropy("queen", ["The queen ant"], min_contexts=5)
@@ -310,8 +303,13 @@ class TestEntropyNormalizationContract:
     def test_to_dict_roundtrip_includes_new_fields(self):
         r = calculate_semantic_entropy(
             "queen",
-            ["The queen lays eggs.", "Queens reproduce.", "A queen mates once.",
-             "The queen dominates workers.", "Queen pheromones regulate workers."],
+            [
+                "The queen lays eggs.",
+                "Queens reproduce.",
+                "A queen mates once.",
+                "The queen dominates workers.",
+                "Queen pheromones regulate workers.",
+            ],
             random_state=42,
         )
         d = r.to_dict()

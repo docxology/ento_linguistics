@@ -91,6 +91,7 @@ literal-token counts by design.  NO ``output/`` writes: the artifact
 lands in ``data/bhl/``; figure/token wiring belongs to the
 integration wave.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -101,33 +102,34 @@ import re
 import unicodedata
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from analysis.domain_analysis import DomainAnalyzer
 from analysis.term_extraction import Term, TerminologyExtractor
 from analysis.text_analysis import TextProcessor
+from core.parallel import map_ordered
 from pipeline.fulltext_pipeline import (
     _domain_term_counts,
+    _framing_contexts_task,
+    _framing_count_tokens_task,
     _framing_token_domains,
     _framing_worker_init,
-    _framing_count_tokens_task,
-    _framing_contexts_task,
 )
-from core.parallel import map_ordered
+
 __all__ = [
-    "ERA_KEYS",
     "ARTIFACT_NAME",
-    "OCR_MIN_TERM_FREQUENCY",
     "ENTROPY_TOP_TERMS",
-    "normalize_text",
-    "clean_ocr_text",
-    "tokenize",
-    "domain_vocabularies",
-    "analyze_eras",
+    "ERA_KEYS",
+    "OCR_MIN_TERM_FREQUENCY",
     "analyze_era_stack",
+    "analyze_eras",
     "build_artifact",
+    "clean_ocr_text",
+    "domain_vocabularies",
     "load_corpus_records_for_analysis",
     "main",
+    "normalize_text",
+    "tokenize",
 ]
 
 #: Minimum per-era token frequency for the extraction/entropy/framing
@@ -146,7 +148,7 @@ ENTROPY_TOP_TERMS = 20
 STACK_CHARACTER_BUDGET = 10_000_000
 
 
-def stack_character_budget() -> Optional[int]:
+def stack_character_budget() -> int | None:
     """Return the explicit development cap, or None for the full corpus."""
     value = os.environ.get("BHL_STACK_CHARACTER_BUDGET")
     budget = int(value) if value else None
@@ -154,10 +156,11 @@ def stack_character_budget() -> Optional[int]:
         raise ValueError("BHL_STACK_CHARACTER_BUDGET must be a positive integer")
     return budget
 
+
 logger = logging.getLogger(__name__)
 
 #: Era buckets, canonical order (must match ``bhl_corpus.ERA_BOUNDS``).
-ERA_KEYS: Tuple[str, ...] = (
+ERA_KEYS: tuple[str, ...] = (
     "era_1850_1899",
     "era_1900_1949",
     "era_1950_1970",
@@ -224,7 +227,7 @@ def clean_ocr_text(text: str) -> str:
     return _WHITESPACE_RE.sub(" ", cleaned).strip()
 
 
-def tokenize(text: str) -> List[str]:
+def tokenize(text: str) -> list[str]:
     """Split normalized text into word tokens (hyphenated kept whole).
 
     Args:
@@ -236,12 +239,12 @@ def tokenize(text: str) -> List[str]:
     return _TOKEN_RE.findall(text.lower())
 
 
-def _term_tokens(term: str) -> Tuple[str, ...]:
+def _term_tokens(term: str) -> tuple[str, ...]:
     """Tokenize one vocabulary term for window matching."""
     return tuple(tokenize(term))
 
 
-def domain_vocabularies() -> Dict[str, Tuple[str, ...]]:
+def domain_vocabularies() -> dict[str, tuple[str, ...]]:
     """Return the canonical six-domain seed vocabularies.
 
     Reuses ``analysis.term_extraction.TerminologyExtractor.DOMAIN_SEEDS``
@@ -257,13 +260,10 @@ def domain_vocabularies() -> Dict[str, Tuple[str, ...]]:
     except (ImportError, ValueError):  # pragma: no cover - fallback path
         from src.analysis.term_extraction import TerminologyExtractor
     seeds = TerminologyExtractor.DOMAIN_SEEDS
-    return {
-        domain: tuple(sorted(terms))
-        for domain, terms in seeds.items()
-    }
+    return {domain: tuple(sorted(terms)) for domain, terms in seeds.items()}
 
 
-def _count_term(tokens: List[str], term: Tuple[str, ...]) -> int:
+def _count_term(tokens: list[str], term: tuple[str, ...]) -> int:
     """Count non-overlapping occurrences of a term token window.
 
     Args:
@@ -288,26 +288,27 @@ def _count_term(tokens: List[str], term: Tuple[str, ...]) -> int:
     return count
 
 
-def _count_terms(tokens: List[str], vocabulary: Dict[str, Tuple[str, ...]]) -> Dict[str, int]:
+def _count_terms(tokens: list[str], vocabulary: dict[str, tuple[str, ...]]) -> dict[str, int]:
     """Count the same non-overlapping phrase matches in one token pass."""
-    by_first: Dict[str, List[Tuple[str, Tuple[str, ...]]]] = {}
+    by_first: dict[str, list[tuple[str, tuple[str, ...]]]] = {}
     for name, phrase in vocabulary.items():
         if phrase:
             by_first.setdefault(phrase[0], []).append((name, phrase))
     counts: Counter = Counter()
-    ends: Dict[str, int] = {}
+    ends: dict[str, int] = {}
     for position, token in enumerate(tokens):
         for name, phrase in by_first.get(token, ()):
             if position < ends.get(name, 0):
                 continue
-            if tuple(tokens[position:position + len(phrase)]) == phrase:
+            if tuple(tokens[position : position + len(phrase)]) == phrase:
                 counts[name] += 1
                 ends[name] = position + len(phrase)
     return {name: counts[name] for name in vocabulary}
 
 
-def select_stack_records(records: List[Dict[str, Any]],
-                         character_budget: int = STACK_CHARACTER_BUDGET) -> List[Dict[str, Any]]:
+def select_stack_records(
+    records: list[dict[str, Any]], character_budget: int = STACK_CHARACTER_BUDGET
+) -> list[dict[str, Any]]:
     """Select whole documents evenly across shard order under a stated budget.
 
     Complete eras below the budget are retained. Oversize single documents
@@ -340,7 +341,7 @@ def select_stack_records(records: List[Dict[str, Any]],
     return [records[index] for index in sorted(selected)]
 
 
-def load_corpus_records_for_analysis(data_dir: Path) -> List[Dict[str, Any]]:
+def load_corpus_records_for_analysis(data_dir: Path) -> list[dict[str, Any]]:
     """Load BHL corpus records in shard order.
 
     Args:
@@ -357,9 +358,9 @@ def load_corpus_records_for_analysis(data_dir: Path) -> List[Dict[str, Any]]:
 
 
 def analyze_eras(
-    records: List[Dict[str, Any]],
-    vocabularies: Optional[Dict[str, Tuple[str, ...]]] = None,
-) -> Dict[str, Any]:
+    records: list[dict[str, Any]],
+    vocabularies: dict[str, tuple[str, ...]] | None = None,
+) -> dict[str, Any]:
     """Compute per-era term and domain frequencies over corpus records.
 
     Args:
@@ -380,8 +381,8 @@ def analyze_eras(
         vocabularies = domain_vocabularies()
 
     # term -> domains; multi-domain terms appear once per membership.
-    term_domains: Dict[str, List[str]] = {}
-    term_token_cache: Dict[str, Tuple[str, ...]] = {}
+    term_domains: dict[str, list[str]] = {}
+    term_token_cache: dict[str, tuple[str, ...]] = {}
     for domain, terms in vocabularies.items():
         for term in terms:
             term_domains.setdefault(term, [])
@@ -389,7 +390,7 @@ def analyze_eras(
                 term_domains[term].append(domain)
             term_token_cache.setdefault(term, _term_tokens(term))
 
-    eras: Dict[str, Dict[str, Any]] = {
+    eras: dict[str, dict[str, Any]] = {
         era: {
             "documents": 0,
             "tokens": 0,
@@ -398,9 +399,7 @@ def analyze_eras(
         }
         for era in ERA_KEYS
     }
-    term_counts: Dict[str, Dict[str, int]] = {
-        term: {era: 0 for era in ERA_KEYS} for term in term_domains
-    }
+    term_counts: dict[str, dict[str, int]] = {term: {era: 0 for era in ERA_KEYS} for term in term_domains}
 
     for record in records:
         era = record.get("era")
@@ -416,20 +415,18 @@ def analyze_eras(
     # Frequencies per 10k tokens, deterministic rounding.
     for era in ERA_KEYS:
         era_tokens = eras[era]["tokens"]
-        freqs: Dict[str, float] = {}
+        freqs: dict[str, float] = {}
         for term in sorted(term_counts):
             count = term_counts[term][era]
-            freqs[term] = (
-                round(count / era_tokens * 10000, 4) if era_tokens else 0.0
-            )
+            freqs[term] = round(count / era_tokens * 10000, 4) if era_tokens else 0.0
         eras[era]["terms_per_10k"] = freqs
-        domains_per_10k: Dict[str, float] = {}
+        domains_per_10k: dict[str, float] = {}
         for domain, terms in sorted(vocabularies.items()):
             total = sum(freqs.get(term, 0.0) for term in terms)
             domains_per_10k[domain] = round(total, 4)
         eras[era]["domains_per_10k"] = domains_per_10k
 
-    terms: Dict[str, Dict[str, Any]] = {}
+    terms: dict[str, dict[str, Any]] = {}
     for term in sorted(term_counts):
         counts = term_counts[term]
         terms[term] = {
@@ -441,10 +438,10 @@ def analyze_eras(
 
 
 def analyze_era_stack(
-    era_records: List[Dict[str, Any]],
+    era_records: list[dict[str, Any]],
     min_term_frequency: int = OCR_MIN_TERM_FREQUENCY,
     entropy_top_terms: int = ENTROPY_TOP_TERMS,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Run the full linguistic stack over one era's OCR texts.
 
     Stages (all deterministic):
@@ -475,7 +472,7 @@ def analyze_era_stack(
         every omission carries a ``skipped`` entry.
     """
     cleaned = [clean_ocr_text(r.get("full_text") or "") for r in era_records]
-    skipped: List[Dict[str, str]] = []
+    skipped: list[dict[str, str]] = []
 
     # ── 1. Extraction (OCR-guarded) ──────────────────────────────────
     # Keep only document counters, not the full corpus token-position map.
@@ -485,37 +482,32 @@ def analyze_era_stack(
     extractor = TerminologyExtractor()
     _framing_worker_init()
     counts: Counter = Counter()
-    for counter in map_ordered(_framing_count_tokens_task, cleaned,
-                               initializer=_framing_worker_init):
+    for counter in map_ordered(_framing_count_tokens_task, cleaned, initializer=_framing_worker_init):
         counts.update(counter)
     terms = {
-        name: Term(text=name, lemma=name, frequency=counts[name],
-                   domains=extractor.classify_term_domains(name))
+        name: Term(text=name, lemma=name, frequency=counts[name], domains=extractor.classify_term_domains(name))
         for name in sorted(counts)
         if counts[name] >= min_term_frequency and extractor._is_candidate_term(name)
     }
-    extraction: Dict[str, Any] = {
+    extraction: dict[str, Any] = {
         "min_frequency": min_term_frequency,
         "n_terms": len(terms),
         "domains": _domain_term_counts(terms),
     }
     if not terms:
         reason = (
-            f"no domain-assigned terms extracted at min_frequency="
-            f"{min_term_frequency}; entropy and framing omitted"
+            f"no domain-assigned terms extracted at min_frequency={min_term_frequency}; entropy and framing omitted"
         )
         skipped.append({"kind": "era_stack", "reason": reason})
         return {"extraction": extraction, "entropy": None, "framing": None, "skipped": skipped}
 
     # ── 2. Bounded per-term entropy ──────────────────────────────────
-    ranked = sorted(terms.values(), key=lambda t: (-t.frequency, t.text))[
-        :entropy_top_terms
-    ]
+    ranked = sorted(terms.values(), key=lambda t: (-t.frequency, t.text))[:entropy_top_terms]
     analyzer = DomainAnalyzer()
     metrics = analyzer.quantify_ambiguity_metrics(ranked, cleaned)
     scores = metrics.get("term_ambiguity_scores", {})
-    per_term_entropy: Dict[str, float] = {}
-    domain_values: Dict[str, List[float]] = {}
+    per_term_entropy: dict[str, float] = {}
+    domain_values: dict[str, list[float]] = {}
     for term in ranked:
         result = scores.get(term.text.lower())
         if not result or result.get("status") != "ok":
@@ -524,16 +516,13 @@ def analyze_era_stack(
         per_term_entropy[term.text] = round(entropy, 6)
         for domain in term.domains:
             domain_values.setdefault(domain, []).append(entropy)
-    entropy: Optional[Dict[str, Any]] = {
+    entropy: dict[str, Any] | None = {
         "bounded_to_top_terms": min(entropy_top_terms, len(ranked)),
         "n_terms_evaluated": len(ranked),
         "n_valid": len(per_term_entropy),
         "n_excluded": len(ranked) - len(per_term_entropy),
         "terms": dict(sorted(per_term_entropy.items())),
-        "domains": {
-            domain: round(sum(values) / len(values), 6)
-            for domain, values in sorted(domain_values.items())
-        },
+        "domains": {domain: round(sum(values) / len(values), 6) for domain, values in sorted(domain_values.items())},
     }
     if not per_term_entropy:
         entropy = None
@@ -549,9 +538,7 @@ def analyze_era_stack(
         )
 
     # ── 3. Framing proportions over occurrence contexts ──────────────
-    framing = _era_framing_proportions(
-        cleaned, terms, min_term_frequency, skipped, counts=counts
-    )
+    framing = _era_framing_proportions(cleaned, terms, min_term_frequency, skipped, counts=counts)
 
     return {
         "extraction": extraction,
@@ -562,12 +549,12 @@ def analyze_era_stack(
 
 
 def _era_framing_proportions(
-    cleaned_texts: List[str],
-    terms: Dict[str, Any],
+    cleaned_texts: list[str],
+    terms: dict[str, Any],
     min_term_frequency: int,
-    skipped: List[Dict[str, str]],
-    counts: Optional[Counter] = None,
-) -> Optional[Dict[str, Any]]:
+    skipped: list[dict[str, str]],
+    counts: Counter | None = None,
+) -> dict[str, Any] | None:
     """Compute anthropomorphic-framing proportions for one era.
 
     Mirrors ``pipeline.fulltext_pipeline.add_framing_analysis`` over
@@ -593,9 +580,7 @@ def _era_framing_proportions(
         counts = Counter()
         for text in cleaned_texts:
             counts.update(processor.process_text(text, lemmatize=False))
-    token_domains, tallies = _framing_token_domains(
-        counts, classifier, min_term_frequency
-    )
+    token_domains, tallies = _framing_token_domains(counts, classifier, min_term_frequency)
     expected = _domain_term_counts(terms)
     if tallies != expected:
         raise ValueError(
@@ -612,7 +597,9 @@ def _era_framing_proportions(
     # small counters merged in document order; token lists live per task.
     _framing_worker_init(token_domains)
     for contexts, framed, total, total_framed in map_ordered(
-        _framing_contexts_task, cleaned_texts, initializer=_framing_worker_init,
+        _framing_contexts_task,
+        cleaned_texts,
+        initializer=_framing_worker_init,
         initargs=(token_domains,),
     ):
         domain_contexts.update(contexts)
@@ -624,14 +611,11 @@ def _era_framing_proportions(
         skipped.append(
             {
                 "kind": "era_framing",
-                "reason": (
-                    "no domain-assigned term occurrence contexts in the "
-                    "era; framing proportions omitted"
-                ),
+                "reason": ("no domain-assigned term occurrence contexts in the era; framing proportions omitted"),
             }
         )
         return None
-    proportions: Dict[str, Any] = {}
+    proportions: dict[str, Any] = {}
     for domain in sorted(domain_contexts):
         n_contexts = domain_contexts[domain]
         proportions[domain] = {
@@ -647,9 +631,9 @@ def _era_framing_proportions(
 
 def build_artifact(
     data_dir: Path,
-    records: Optional[List[Dict[str, Any]]] = None,
-    checkpoint_dir: Optional[Path] = None,
-) -> Dict[str, Any]:
+    records: list[dict[str, Any]] | None = None,
+    checkpoint_dir: Path | None = None,
+) -> dict[str, Any]:
     """Build full-era results, optionally resuming verified local checkpoints.
 
     Checkpoints bind corpus contents, source/resources and explicit bounds.
@@ -661,7 +645,7 @@ def build_artifact(
     return build_checkpointed_artifact(data_dir, records, checkpoint_dir)
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point: write ``data/bhl/era_term_usage.json``.
 
     Args:
@@ -684,7 +668,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Artifact path (default: <data-dir>/era_term_usage.json)",
     )
     parser.add_argument(
-        "--checkpoint-dir", type=Path, default=None,
+        "--checkpoint-dir",
+        type=Path,
+        default=None,
         help="Optional recovery directory for completed, content-bound eras",
     )
     args = parser.parse_args(argv)
@@ -696,9 +682,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     output = args.output or data_dir / ARTIFACT_NAME
 
     artifact = build_artifact(data_dir, checkpoint_dir=args.checkpoint_dir)
-    era_docs = {
-        era: stats["documents"] for era, stats in artifact["eras"].items()
-    }
+    era_docs = {era: stats["documents"] for era, stats in artifact["eras"].items()}
     logger.info(
         "Analyzed %d documents across eras: %s",
         artifact["source"]["documents"],
@@ -711,8 +695,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     tmp = output.with_name(output.name + ".tmp")
     tmp.write_text(
-        json.dumps(artifact, ensure_ascii=False, indent=1, sort_keys=True)
-        + "\n",
+        json.dumps(artifact, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     tmp.replace(output)

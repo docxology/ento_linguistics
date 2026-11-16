@@ -3,10 +3,10 @@
 Covers: get_logger (all log levels, caching, default), log_substep,
 log_progress_bar (with and without zero total), log_stage.
 """
+
 from __future__ import annotations
 
 import logging
-
 
 from core.logging import get_logger, log_progress_bar, log_stage, log_substep
 
@@ -60,8 +60,7 @@ class TestGetLogger:
         logger = get_logger("test_log_invalid_level")
         assert logger.level == logging.INFO
         assert any(
-            "Unknown LOG_LEVEL" in record.getMessage()
-            and record.levelno == logging.WARNING
+            "Unknown LOG_LEVEL" in record.getMessage() and record.levelno == logging.WARNING
             for record in caplog.records
         )
 
@@ -71,10 +70,7 @@ class TestGetLogger:
         monkeypatch.setenv("LOG_LEVEL", "BASIC_FORMAT")
         logger = get_logger("test_log_non_level_attr")
         assert logger.level == logging.INFO
-        assert any(
-            "Unknown LOG_LEVEL" in record.getMessage()
-            for record in caplog.records
-        )
+        assert any("Unknown LOG_LEVEL" in record.getMessage() for record in caplog.records)
 
     def test_logger_has_handler(self):
         """Test that logger has at least one handler."""
@@ -228,4 +224,3 @@ class TestLogSection:
         with caplog.at_level(logging.INFO):
             log_section("Default Section")
         assert "Default Section" in caplog.text
-

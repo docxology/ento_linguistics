@@ -37,7 +37,7 @@ import re
 import sys
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from analysis.term_extraction import TerminologyExtractor
 from analysis.text_analysis import LinguisticFeatureExtractor, TextProcessor
@@ -46,8 +46,8 @@ from data.pmc_fulltext import exclude_editorial_notices, load_fulltexts
 from pipeline.statistics_pipeline import build_statistical_analysis
 
 __all__ = [
-    "FULLTEXT_LAYER",
     "FRAMING_CONTEXT_WINDOW",
+    "FULLTEXT_LAYER",
     "add_framing_analysis",
     "build_fulltext_analysis",
     "main",
@@ -66,7 +66,7 @@ _TOKEN_RE = re.compile(r"\w+")
 FRAMING_CONTEXT_WINDOW = 3
 
 
-def _document_text(record: Dict[str, Any]) -> str:
+def _document_text(record: dict[str, Any]) -> str:
     """Assemble the analyzed text for one full-text record.
 
     Args:
@@ -88,7 +88,7 @@ def _document_text(record: Dict[str, Any]) -> str:
     return "\n\n".join(part for part in parts if part.strip())
 
 
-def _domain_term_counts(terms: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+def _domain_term_counts(terms: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """Count extracted terms per canonical domain assignment.
 
     Args:
@@ -99,12 +99,10 @@ def _domain_term_counts(terms: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
         "total_frequency"}``.  Domains with no assigned terms map to an
         empty entry — never fabricated counts.
     """
-    counts: Dict[str, Dict[str, Any]] = {}
+    counts: dict[str, dict[str, Any]] = {}
     for term in terms.values():
         for domain in term.domains:
-            entry = counts.setdefault(
-                domain, {"term_count": 0, "bridging_term_count": 0, "total_frequency": 0}
-            )
+            entry = counts.setdefault(domain, {"term_count": 0, "bridging_term_count": 0, "total_frequency": 0})
             entry["term_count"] += 1
             entry["bridging_term_count"] += 1 if len(term.domains) > 1 else 0
             entry["total_frequency"] += term.frequency
@@ -115,7 +113,7 @@ def _framing_token_domains(
     counts: Counter,
     classifier: TerminologyExtractor,
     min_term_frequency: int,
-) -> "Tuple[Dict[str, List[str]], Dict[str, Dict[str, Any]]]":
+) -> tuple[dict[str, list[str]], dict[str, dict[str, Any]]]:
     """Reconstruct the full-text layer's domain-assigned term vocabulary.
     Runs the same candidate filter and domain classification
     ``TerminologyExtractor.extract_terms`` applies (frequency >=
@@ -138,8 +136,8 @@ def _framing_token_domains(
         each domain to the same ``{"term_count", "bridging_term_count",
         "total_frequency"}`` shape as :func:`_domain_term_counts`.
     """
-    token_domains: Dict[str, List[str]] = {}
-    tallies: Dict[str, Dict[str, Any]] = {}
+    token_domains: dict[str, list[str]] = {}
+    tallies: dict[str, dict[str, Any]] = {}
     for token in sorted(counts):
         if counts[token] < min_term_frequency:
             continue
@@ -173,13 +171,13 @@ def _framing_token_domains(
 # the singletons.  On the serial path (< 64 items, or pool failure) the tasks
 # run in the parent, which ``add_framing_analysis`` seeds before dispatching.
 
-_FRAMING_PROCESSOR: Optional[TextProcessor] = None
-_FRAMING_FEATURE_EXTRACTOR: Optional[LinguisticFeatureExtractor] = None
-_FRAMING_TOKEN_DOMAINS: Optional[Dict[str, List[str]]] = None
+_FRAMING_PROCESSOR: TextProcessor | None = None
+_FRAMING_FEATURE_EXTRACTOR: LinguisticFeatureExtractor | None = None
+_FRAMING_TOKEN_DOMAINS: dict[str, list[str]] | None = None
 
 
 def _framing_worker_init(
-    token_domains: Optional[Dict[str, List[str]]] = None,
+    token_domains: dict[str, list[str]] | None = None,
 ) -> None:
     """Build this process's framing-analysis singletons (pool initializer)."""
     global _FRAMING_PROCESSOR, _FRAMING_FEATURE_EXTRACTOR, _FRAMING_TOKEN_DOMAINS
@@ -200,7 +198,7 @@ def _framing_count_tokens_task(text: str) -> Counter:
     return Counter(_FRAMING_PROCESSOR.process_text(text, lemmatize=False))
 
 
-def _framing_contexts_task(text: str) -> Tuple[Counter, Counter, int, int]:
+def _framing_contexts_task(text: str) -> tuple[Counter, Counter, int, int]:
     """Pass-2 worker task: framing scan over one document.
 
     Serial equivalent of the per-record loop in ``add_framing_analysis``
@@ -224,12 +222,7 @@ def _framing_contexts_task(text: str) -> Tuple[Counter, Counter, int, int]:
         start = max(0, position - FRAMING_CONTEXT_WINDOW)
         end = min(n_tokens, position + FRAMING_CONTEXT_WINDOW + 1)
         context = " ".join(tokens[start:end])
-        is_framed = (
-            _FRAMING_FEATURE_EXTRACTOR.extract_framing_features(context)[
-                "anthropomorphic_terms"
-            ]
-            > 0
-        )
+        is_framed = _FRAMING_FEATURE_EXTRACTOR.extract_framing_features(context)["anthropomorphic_terms"] > 0
         for domain in domains:
             domain_contexts[domain] += 1
             if is_framed:
@@ -241,9 +234,9 @@ def _framing_contexts_task(text: str) -> Tuple[Counter, Counter, int, int]:
 
 
 def add_framing_analysis(
-    artifact: Dict[str, Any],
-    fulltexts: List[Dict[str, Any]],
-) -> Dict[str, Any]:
+    artifact: dict[str, Any],
+    fulltexts: list[dict[str, Any]],
+) -> dict[str, Any]:
     """Compute anthropomorphic-framing proportions over the full texts.
 
     Metric: for every occurrence in the corpus of a domain-assigned term
@@ -305,14 +298,10 @@ def add_framing_analysis(
     # counts, so the reconstructed term set is the artifact's own.
     texts = [_document_text(record) for record in fulltexts]
     counts: Counter = Counter()
-    for record_counts in map_ordered(
-        _framing_count_tokens_task, texts, initializer=_framing_worker_init
-    ):
+    for record_counts in map_ordered(_framing_count_tokens_task, texts, initializer=_framing_worker_init):
         counts.update(record_counts)
 
-    token_domains, tallies = _framing_token_domains(
-        counts, classifier, min_term_frequency
-    )
+    token_domains, tallies = _framing_token_domains(counts, classifier, min_term_frequency)
     expected_counts = artifact.get("domain_term_counts") or {}
     if expected_counts and tallies != expected_counts:
         raise ValueError(
@@ -345,7 +334,7 @@ def add_framing_analysis(
         overall_contexts += part_overall_contexts
         overall_framed += part_overall_framed
 
-    framing: Dict[str, Any] = {}
+    framing: dict[str, Any] = {}
     for domain in sorted(domain_contexts):
         n_contexts = domain_contexts[domain]
         if not n_contexts:
@@ -366,10 +355,10 @@ def add_framing_analysis(
 
 
 def build_fulltext_analysis(
-    fulltexts: List[Dict[str, Any]],
+    fulltexts: list[dict[str, Any]],
     min_term_frequency: int = 20,
     include_framing: bool = True,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Build the full-text-layer analysis artifact.
 
     Args:
@@ -394,12 +383,10 @@ def build_fulltext_analysis(
             artifact).
     """
     if not fulltexts:
-        raise ValueError(
-            "build_fulltext_analysis requires a non-empty full-text corpus"
-        )
+        raise ValueError("build_fulltext_analysis requires a non-empty full-text corpus")
 
-    documents_meta: List[Dict[str, Any]] = []
-    texts: List[str] = []
+    documents_meta: list[dict[str, Any]] = []
+    texts: list[str] = []
     for record in fulltexts:
         text = _document_text(record)
         texts.append(text)
@@ -424,7 +411,7 @@ def build_fulltext_analysis(
     # public entropy APIs inside statistics_pipeline.
     statistics = build_statistical_analysis(terms, texts)
 
-    artifact: Dict[str, Any] = {
+    artifact: dict[str, Any] = {
         "layer": FULLTEXT_LAYER,
         "n_documents": len(fulltexts),
         "min_term_frequency": min_term_frequency,
@@ -440,7 +427,7 @@ def build_fulltext_analysis(
     return artifact
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point: analyze the harvested full-text corpus.
 
     Args:
@@ -490,29 +477,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     fulltexts, notices = exclude_editorial_notices(stored)
     if args.merge_framing:
         if not output_path.exists():
-            parser.error(
-                f"--merge-framing requires an existing artifact at {output_path}"
-            )
+            parser.error(f"--merge-framing requires an existing artifact at {output_path}")
         artifact = json.loads(output_path.read_text(encoding="utf-8"))
         artifact = add_framing_analysis(artifact, fulltexts)
     else:
-        artifact = build_fulltext_analysis(
-            fulltexts, min_term_frequency=args.min_term_frequency
-        )
+        artifact = build_fulltext_analysis(fulltexts, min_term_frequency=args.min_term_frequency)
         artifact["stored_records"] = len(stored)
         artifact["excluded_editorial_notices"] = [
-            {"pmcid": record.get("pmcid"), "title": record.get("title")}
-            for record in notices
+            {"pmcid": record.get("pmcid"), "title": record.get("title")} for record in notices
         ]
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(
-        json.dumps(artifact, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
-    )
-    print(
-        f"Wrote full-text analysis for {artifact['n_documents']} documents "
-        f"to {output_path}"
-    )
+    output_path.write_text(json.dumps(artifact, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(f"Wrote full-text analysis for {artifact['n_documents']} documents to {output_path}")
     return 0
 
 

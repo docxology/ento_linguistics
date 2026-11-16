@@ -2,9 +2,17 @@
 
 import numpy as np
 import pytest
-from data.data_processing import (clean_data, create_validation_pipeline,
-                             detect_outliers, extract_features, normalize_data,
-                             remove_outliers, standardize_data, transform_data)
+
+from data.data_processing import (
+    clean_data,
+    create_validation_pipeline,
+    detect_outliers,
+    extract_features,
+    normalize_data,
+    remove_outliers,
+    standardize_data,
+    transform_data,
+)
 
 
 class TestCleanData:
@@ -73,9 +81,7 @@ class TestCleanData:
 
     def test_remove_nan_2d_drops_affected_rows(self):
         """Without a fill method, rows containing invalid values are removed."""
-        data = np.array(
-            [[1.0, 2.0], [np.nan, 5.0], [3.0, 4.0], [np.inf, 6.0]]
-        )
+        data = np.array([[1.0, 2.0], [np.nan, 5.0], [3.0, 4.0], [np.inf, 6.0]])
         cleaned = clean_data(data, remove_nan=True, remove_inf=True, fill_method=None)
         np.testing.assert_array_equal(cleaned, np.array([[1.0, 2.0], [3.0, 4.0]]))
 
@@ -86,42 +92,42 @@ class TestNormalizeData:
     def test_z_score_normalization(self):
         """Test z-score normalization."""
         data = np.array([1, 2, 3, 4, 5])
-        normalized, params = normalize_data(data, method="z_score")
+        normalized, _params = normalize_data(data, method="z_score")
         assert np.isclose(np.mean(normalized), 0.0, atol=1e-10)
         assert np.isclose(np.std(normalized), 1.0, atol=1e-10)
 
     def test_z_score_normalization_with_axis(self):
         """Test z-score normalization with axis."""
         data = np.array([[1, 2, 3], [4, 5, 6]])
-        normalized, params = normalize_data(data, method="z_score", axis=0)
+        _normalized, params = normalize_data(data, method="z_score", axis=0)
         assert "mean" in params
         assert "std" in params
 
     def test_min_max_normalization(self):
         """Test min-max normalization."""
         data = np.array([1, 2, 3, 4, 5])
-        normalized, params = normalize_data(data, method="min_max")
+        normalized, _params = normalize_data(data, method="min_max")
         assert np.min(normalized) >= 0
         assert np.max(normalized) <= 1
 
     def test_min_max_normalization_with_axis(self):
         """Test min-max normalization with axis."""
         data = np.array([[1, 2, 3], [4, 5, 6]])
-        normalized, params = normalize_data(data, method="min_max", axis=0)
+        _normalized, params = normalize_data(data, method="min_max", axis=0)
         assert "min" in params
         assert "max" in params
 
     def test_unit_vector_normalization(self):
         """Test unit vector normalization."""
         data = np.array([1, 2, 3, 4, 5])
-        normalized, params = normalize_data(data, method="unit_vector")
+        normalized, _params = normalize_data(data, method="unit_vector")
         norm = np.linalg.norm(normalized)
         assert np.isclose(norm, 1.0, atol=1e-10)
 
     def test_unit_vector_normalization_with_axis(self):
         """Test unit vector normalization with axis."""
         data = np.array([[1, 2, 3], [4, 5, 6]])
-        normalized, params = normalize_data(data, method="unit_vector", axis=1)
+        normalized, _params = normalize_data(data, method="unit_vector", axis=1)
         # Each row should have unit norm
         norms = np.linalg.norm(normalized, axis=1)
         assert np.allclose(norms, 1.0, atol=1e-10)
@@ -147,7 +153,7 @@ class TestStandardizeData:
     def test_standardize_with_params(self):
         """Test standardization with provided parameters."""
         data = np.array([1, 2, 3, 4, 5])
-        standardized, params = standardize_data(data, mean=3.0, std=1.5)
+        _standardized, params = standardize_data(data, mean=3.0, std=1.5)
         assert "mean" in params
         assert params["mean"] == 3.0
 
@@ -165,7 +171,7 @@ class TestDetectOutliers:
     def test_z_score_method(self):
         """Test z-score outlier detection."""
         data = np.array([1, 2, 3, 4, 5, 100])
-        outlier_mask, info = detect_outliers(data, method="z_score", threshold=3.0)
+        _outlier_mask, info = detect_outliers(data, method="z_score", threshold=3.0)
         assert "method" in info
 
     def test_invalid_method(self):

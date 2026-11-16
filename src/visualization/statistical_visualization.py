@@ -8,11 +8,11 @@ effect sizes, and confidence intervals.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
-import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import patches
 
 try:
     from .concept_visualization import ConceptVisualizer
@@ -42,9 +42,9 @@ except (ImportError, ValueError):
 
 __all__ = [
     "StatisticalVisualizer",
-    "plot_statistical_analysis",
-    "plot_layer_comparison",
     "plot_discourse_comparison",
+    "plot_layer_comparison",
+    "plot_statistical_analysis",
 ]
 
 
@@ -55,7 +55,7 @@ class StatisticalVisualizer(ConceptVisualizer):
     correlations, distributions, and other quantitative analyses.
     """
 
-    def __init__(self, figsize: Tuple[int, int] = (12, 8)):
+    def __init__(self, figsize: tuple[int, int] = (12, 8)):
         """Initialize statistical visualizer.
 
         Args:
@@ -73,8 +73,8 @@ class StatisticalVisualizer(ConceptVisualizer):
     @publication_style
     def visualize_statistical_significance(
         self,
-        significance_results: Dict[str, Any],
-        filepath: Optional[Path] = None,
+        significance_results: dict[str, Any],
+        filepath: Path | None = None,
         title: str = "Statistical Significance Analysis",
     ) -> plt.Figure:
         """Visualize statistical significance test results.
@@ -132,7 +132,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 fontsize=MIN_FONT,
                 fontweight="bold",
                 color=status_color,
-                bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
+                bbox={"boxstyle": "round,pad=0.3", "facecolor": "white", "alpha": 0.8},
             )
 
         # Chi-square statistic
@@ -234,8 +234,8 @@ class StatisticalVisualizer(ConceptVisualizer):
     @publication_style
     def create_correlation_matrix_plot(
         self,
-        correlation_data: Dict[str, Dict[str, float]],
-        filepath: Optional[Path] = None,
+        correlation_data: dict[str, dict[str, float]],
+        filepath: Path | None = None,
         title: str = "Correlation Matrix",
     ) -> plt.Figure:
         """Create a correlation matrix heatmap visualization.
@@ -287,7 +287,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                     ha="center",
                     va="center",
                     fontsize=MIN_FONT,
-                    bbox=dict(boxstyle="round,pad=0.2", facecolor="white", alpha=0.8),
+                    bbox={"boxstyle": "round,pad=0.2", "facecolor": "white", "alpha": 0.8},
                 )
 
         ax.set_title(title, fontsize=MIN_FONT + 4, fontweight="bold")
@@ -302,8 +302,8 @@ class StatisticalVisualizer(ConceptVisualizer):
     @publication_style
     def visualize_distribution_comparison(
         self,
-        distribution_data: Dict[str, List[float]],
-        filepath: Optional[Path] = None,
+        distribution_data: dict[str, list[float]],
+        filepath: Path | None = None,
         title: str = "Distribution Comparison",
     ) -> plt.Figure:
         """Visualize and compare multiple data distributions.
@@ -343,9 +343,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         # Histograms
         for i, (name, data) in enumerate(distribution_data.items()):
-            ax3.hist(
-                data, bins=20, alpha=0.7, label=name, color=colors[i], edgecolor="black"
-            )
+            ax3.hist(data, bins=20, alpha=0.7, label=name, color=colors[i], edgecolor="black")
         ax3.set_xlabel("Value", fontsize=MIN_FONT)
         ax3.set_ylabel("Frequency", fontsize=MIN_FONT)
         ax3.set_title("Histogram Comparison", fontsize=MIN_FONT + 2, fontweight="bold")
@@ -374,8 +372,8 @@ class StatisticalVisualizer(ConceptVisualizer):
     @publication_style
     def visualize_effect_sizes(
         self,
-        effect_size_data: Dict[str, Dict[str, float]],
-        filepath: Optional[Path] = None,
+        effect_size_data: dict[str, dict[str, float]],
+        filepath: Path | None = None,
         title: str = "Effect Size Analysis",
     ) -> plt.Figure:
         """Visualize effect sizes with interpretation guidelines.
@@ -460,7 +458,7 @@ class StatisticalVisualizer(ConceptVisualizer):
             va="center",
             fontsize=MIN_FONT,
             style="italic",
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="lightgray", alpha=0.7),
+            bbox={"boxstyle": "round,pad=0.2", "facecolor": "lightgray", "alpha": 0.7},
         )
         ax.text(
             -0.35,
@@ -470,7 +468,7 @@ class StatisticalVisualizer(ConceptVisualizer):
             va="center",
             fontsize=MIN_FONT,
             style="italic",
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="lightblue", alpha=0.7),
+            bbox={"boxstyle": "round,pad=0.2", "facecolor": "lightblue", "alpha": 0.7},
         )
         ax.text(
             -0.65,
@@ -480,7 +478,7 @@ class StatisticalVisualizer(ConceptVisualizer):
             va="center",
             fontsize=MIN_FONT,
             style="italic",
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="orange", alpha=0.7),
+            bbox={"boxstyle": "round,pad=0.2", "facecolor": "orange", "alpha": 0.7},
         )
         ax.text(
             -0.9,
@@ -490,7 +488,7 @@ class StatisticalVisualizer(ConceptVisualizer):
             va="center",
             fontsize=MIN_FONT,
             style="italic",
-            bbox=dict(boxstyle="round,pad=0.2", facecolor="red", alpha=0.7),
+            bbox={"boxstyle": "round,pad=0.2", "facecolor": "red", "alpha": 0.7},
         )
 
         ax.set_yticks(range(len(labels)))
@@ -522,8 +520,8 @@ class StatisticalVisualizer(ConceptVisualizer):
     @publication_style
     def plot_confidence_intervals(
         self,
-        ci_data: Dict[str, Dict[str, float]],
-        filepath: Optional[Path] = None,
+        ci_data: dict[str, dict[str, float]],
+        filepath: Path | None = None,
         title: str = "Confidence Intervals",
     ) -> plt.Figure:
         """Plot confidence intervals for multiple estimates.
@@ -637,8 +635,8 @@ class StatisticalVisualizer(ConceptVisualizer):
     @publication_style
     def create_statistical_dashboard(
         self,
-        dashboard_data: Dict[str, Any],
-        filepath: Optional[Path] = None,
+        dashboard_data: dict[str, Any],
+        filepath: Path | None = None,
         title: str = "Statistical Analysis Dashboard",
     ) -> plt.Figure:
         """Create a comprehensive statistical dashboard.
@@ -748,9 +746,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 yerr_lower = [est - low for est, low in zip(estimates, lowers)]
                 yerr_upper = [up - est for est, up in zip(estimates, uppers)]
 
-                axes[plot_idx].errorbar(
-                    x_pos, estimates, yerr=[yerr_lower, yerr_upper], fmt="o", capsize=5
-                )
+                axes[plot_idx].errorbar(x_pos, estimates, yerr=[yerr_lower, yerr_upper], fmt="o", capsize=5)
                 axes[plot_idx].set_xticks(x_pos)
                 axes[plot_idx].set_xticklabels(groups, rotation=45, ha="right")
                 axes[plot_idx].set_xlabel("Group", fontsize=MIN_FONT)
@@ -762,9 +758,7 @@ class StatisticalVisualizer(ConceptVisualizer):
 
         # Hide unused subplots; label every skipped panel with its metric so
         # the dashboard never shows an anonymous empty panel.
-        pending = [
-            label for key, label in panel_titles.items() if key not in rendered
-        ]
+        pending = [label for key, label in panel_titles.items() if key not in rendered]
         for i in range(plot_idx, len(axes)):
             axes[i].axis("off")
             if i - plot_idx < len(pending):
@@ -782,8 +776,8 @@ class StatisticalVisualizer(ConceptVisualizer):
     @publication_style
     def visualize_hypothesis_testing(
         self,
-        hypothesis_results: List[Dict[str, Any]],
-        filepath: Optional[Path] = None,
+        hypothesis_results: list[dict[str, Any]],
+        filepath: Path | None = None,
         title: str = "Hypothesis Testing Results",
     ) -> plt.Figure:
         """Visualize results from multiple hypothesis tests.
@@ -814,17 +808,13 @@ class StatisticalVisualizer(ConceptVisualizer):
         colors = ["red" if sig else "blue" for sig in significances]
         sizes = [abs(es) * 100 + 50 for es in effect_sizes]  # Size based on effect size
 
-        ax.scatter(
-            p_values, effect_sizes, c=colors, s=sizes, alpha=0.7, edgecolors="black"
-        )
+        ax.scatter(p_values, effect_sizes, c=colors, s=sizes, alpha=0.7, edgecolors="black")
 
         # Add significance threshold line
         ax.axvline(x=0.05, color="red", linestyle="--", alpha=0.7, label="α = 0.05")
 
         # Add labels for significant results
-        for i, (name, p_val, es, sig) in enumerate(
-            zip(test_names, p_values, effect_sizes, significances)
-        ):
+        for i, (name, p_val, es, sig) in enumerate(zip(test_names, p_values, effect_sizes, significances)):
             if sig:
                 ax.annotate(
                     name,
@@ -832,7 +822,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                     xytext=(5, 5),
                     textcoords="offset points",
                     fontsize=MIN_FONT,
-                    bbox=dict(boxstyle="round,pad=0.2", facecolor="yellow", alpha=0.8),
+                    bbox={"boxstyle": "round,pad=0.2", "facecolor": "yellow", "alpha": 0.8},
                 )
 
         ax.set_xlabel("P-Value", fontsize=MIN_FONT)
@@ -861,9 +851,7 @@ class StatisticalVisualizer(ConceptVisualizer):
                 label="Not Significant",
                 linestyle="None",
             ),
-            plt.Line2D(
-                [0], [0], color="red", linestyle="--", label="Significance Threshold"
-            ),
+            plt.Line2D([0], [0], color="red", linestyle="--", label="Significance Threshold"),
         ]
         ax.legend(handles=legend_elements, bbox_to_anchor=(1.05, 1), loc="upper left")
 
@@ -918,7 +906,7 @@ def _format_p(p: float) -> str:
     return f"p = {p:.3f}"
 
 
-def _domain_order(descriptives: Dict[str, Any]) -> List[str]:
+def _domain_order(descriptives: dict[str, Any]) -> list[str]:
     """Order domains canonically first, then any extras lexicographically.
 
     Deterministic regardless of JSON key order or set iteration.
@@ -991,10 +979,10 @@ def plot_statistical_analysis(
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
 
-    descriptives: Dict[str, Any] = stats.get("descriptives") or {}
-    pairwise: List[Dict[str, Any]] = stats.get("pairwise") or []
-    anova: Dict[str, Any] = stats.get("anova") or {}
-    corrections: Dict[str, Any] = stats.get("corrections") or {}
+    descriptives: dict[str, Any] = stats.get("descriptives") or {}
+    pairwise: list[dict[str, Any]] = stats.get("pairwise") or []
+    anova: dict[str, Any] = stats.get("anova") or {}
+    corrections: dict[str, Any] = stats.get("corrections") or {}
 
     fig = plt.figure(figsize=(16, 12))
     gs = fig.add_gridspec(2, 2, height_ratios=[2, 1], hspace=0.45, wspace=0.55)
@@ -1006,10 +994,7 @@ def plot_statistical_analysis(
     # Only domains whose descriptives entry actually carries
     # ``entropy_mean`` (tiny fixtures can omit it); plotting a missing
     # metric is a crash, not a zero.
-    order = [
-        d for d in _domain_order(descriptives)
-        if "entropy_mean" in (descriptives.get(d) or {})
-    ]
+    order = [d for d in _domain_order(descriptives) if "entropy_mean" in (descriptives.get(d) or {})]
     if order:
         means = [float(descriptives[d]["entropy_mean"]) for d in order]
         # Whiskers drawn only when the artifact actually reports
@@ -1035,10 +1020,11 @@ def plot_statistical_analysis(
                 if n > 1 and sd > 0:
                     try:
                         from scipy.stats import t as student_t
+
                         crit = float(student_t.ppf(0.975, n - 1))
                     except ImportError:
                         crit = 1.96
-                    cis.append(crit * sd / (n ** 0.5))
+                    cis.append(crit * sd / (n**0.5))
                 else:
                     cis.append(0.0)
             if not any(c > 0 for c in cis):
@@ -1066,11 +1052,7 @@ def plot_statistical_analysis(
         ax_entropy.set_ylim(0, top * 1.25)
         for bar, domain in zip(bars, order):
             n_terms = descriptives[domain].get("n_terms", 0)
-            ci = (
-                cis[order.index(domain)]
-                if cis
-                else 0.0
-            )
+            ci = cis[order.index(domain)] if cis else 0.0
             ci = ci if np.isfinite(ci) else 0.0
             ax_entropy.annotate(
                 f"n={n_terms}",
@@ -1086,8 +1068,7 @@ def plot_statistical_analysis(
                 fontsize=MIN_FONT,
             )
         ax_entropy.set_ylabel(
-            "Entropy (mean; nominal 95% intervals)" if cis
-            else "Semantic Entropy (mean)",
+            "Entropy (mean; nominal 95% intervals)" if cis else "Semantic Entropy (mean)",
             fontsize=MIN_FONT,
         )
         ax_entropy.set_title("Domain Entropy", fontsize=MIN_FONT + 2, fontweight="bold")
@@ -1108,10 +1089,7 @@ def plot_statistical_analysis(
             for row in pairwise
         ]
         ds = [float(row.get("cohens_d", 0.0)) for row in pairwise]
-        colors = [
-            _SIGNIFICANT_COLOR if row.get("significant_bh") else _NOT_SIGNIFICANT_COLOR
-            for row in pairwise
-        ]
+        colors = [_SIGNIFICANT_COLOR if row.get("significant_bh") else _NOT_SIGNIFICANT_COLOR for row in pairwise]
         ypos = np.arange(len(pairwise))
         ax_effects.barh(
             ypos,
@@ -1150,28 +1128,26 @@ def plot_statistical_analysis(
                     fontweight="bold",
                     color=_SIGNIFICANT_COLOR,
                 )
-        ax_effects.set_xlabel(
-            "Bias-corrected effect size (* = BH-significant)", fontsize=MIN_FONT
-        )
-        ax_effects.set_title(
-            "Pairwise Effect Sizes", fontsize=MIN_FONT + 2, fontweight="bold"
-        )
+        ax_effects.set_xlabel("Bias-corrected effect size (* = BH-significant)", fontsize=MIN_FONT)
+        ax_effects.set_title("Pairwise Effect Sizes", fontsize=MIN_FONT + 2, fontweight="bold")
         ax_effects.grid(True, axis="x", alpha=0.3)
         legend_elements = [
             patches.Patch(
-                facecolor=_SIGNIFICANT_COLOR, edgecolor="black",
-                label="BH-significant", alpha=0.85,
+                facecolor=_SIGNIFICANT_COLOR,
+                edgecolor="black",
+                label="BH-significant",
+                alpha=0.85,
             ),
             patches.Patch(
-                facecolor=_NOT_SIGNIFICANT_COLOR, edgecolor="black",
-                label="Not significant", alpha=0.85,
+                facecolor=_NOT_SIGNIFICANT_COLOR,
+                edgecolor="black",
+                label="Not significant",
+                alpha=0.85,
             ),
         ]
         # Outside the axes so the legend can never collide with bars or
         # their value labels; savefig(bbox_inches="tight") keeps it.
-        ax_effects.legend(
-            handles=legend_elements, loc="upper left", bbox_to_anchor=(1.02, 1)
-        )
+        ax_effects.legend(handles=legend_elements, loc="upper left", bbox_to_anchor=(1.02, 1))
     else:
         _fallback_text(ax_effects, "No pairwise comparisons available")
 
@@ -1231,7 +1207,7 @@ def plot_layer_comparison(
     fulltext_artifact: dict,
     output_dir: str,
     filename: str = "layer_comparison.png",
-    metadata: Optional[Dict[str, Dict[str, Any]]] = None,
+    metadata: dict[str, dict[str, Any]] | None = None,
 ) -> str:
     """Render grouped per-domain entropy bars for the two corpus layers.
 
@@ -1269,37 +1245,25 @@ def plot_layer_comparison(
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
 
-    abstract_desc: Dict[str, Any] = abstract_artifact.get("descriptives") or {}
-    fulltext_desc: Dict[str, Any] = fulltext_artifact.get("descriptives") or {}
+    abstract_desc: dict[str, Any] = abstract_artifact.get("descriptives") or {}
+    fulltext_desc: dict[str, Any] = fulltext_artifact.get("descriptives") or {}
     order = _domain_order({**abstract_desc, **fulltext_desc})
 
     fig = plt.figure(figsize=(16, 9))
     ax = fig.add_subplot(111)
 
     if order:
-        abstract_means = [
-            float((abstract_desc.get(d) or {}).get("entropy_mean", 0.0))
-            for d in order
-        ]
-        fulltext_means = [
-            float((fulltext_desc.get(d) or {}).get("entropy_mean", 0.0))
-            for d in order
-        ]
-        abstract_ns = [
-            int((abstract_desc.get(d) or {}).get("n_terms", 0)) for d in order
-        ]
-        fulltext_ns = [
-            int((fulltext_desc.get(d) or {}).get("n_terms", 0)) for d in order
-        ]
+        abstract_means = [float((abstract_desc.get(d) or {}).get("entropy_mean", 0.0)) for d in order]
+        fulltext_means = [float((fulltext_desc.get(d) or {}).get("entropy_mean", 0.0)) for d in order]
+        abstract_ns = [int((abstract_desc.get(d) or {}).get("n_terms", 0)) for d in order]
+        fulltext_ns = [int((fulltext_desc.get(d) or {}).get("n_terms", 0)) for d in order]
         xpos = np.arange(len(order))
         width = 0.38
         colors = [DOMAIN_PALETTE.get(d, FALLBACK_COLOR) for d in order]
         meta = metadata or {}
 
         def _layer_label(default: str, artifact: dict, layer_meta: dict) -> str:
-            n_docs = layer_meta.get(
-                "n_documents", artifact.get("n_documents")
-            )
+            n_docs = layer_meta.get("n_documents", artifact.get("n_documents"))
             if n_docs is None:
                 return default
             return f"{default}\n(n={n_docs} documents)"
@@ -1311,9 +1275,7 @@ def plot_layer_comparison(
             color=colors,
             edgecolor="black",
             alpha=0.9,
-            label=_layer_label(
-                "Abstract layer", abstract_artifact, meta.get("abstract") or {}
-            ),
+            label=_layer_label("Abstract layer", abstract_artifact, meta.get("abstract") or {}),
         )
         ax.bar(
             xpos + width / 2,
@@ -1323,9 +1285,7 @@ def plot_layer_comparison(
             edgecolor="black",
             alpha=0.55,
             hatch="//",
-            label=_layer_label(
-                "Full-text layer", fulltext_artifact, meta.get("fulltext") or {}
-            ),
+            label=_layer_label("Full-text layer", fulltext_artifact, meta.get("fulltext") or {}),
         )
         ax.set_xticks(xpos)
         ax.set_xticklabels(
@@ -1333,13 +1293,9 @@ def plot_layer_comparison(
             rotation=30,
             ha="right",
         )
-        top = max(
-            max(abstract_means, default=0.0), max(fulltext_means, default=0.0)
-        )
+        top = max(max(abstract_means, default=0.0), max(fulltext_means, default=0.0))
         ax.set_ylim(0, top * 1.25 if top > 0 else 1.0)
-        for x, value, n_terms in zip(
-            xpos - width / 2, abstract_means, abstract_ns
-        ):
+        for x, value, n_terms in zip(xpos - width / 2, abstract_means, abstract_ns):
             ax.annotate(
                 f"{value:.2f}\nn={n_terms}",
                 xy=(x, value),
@@ -1349,9 +1305,7 @@ def plot_layer_comparison(
                 va="bottom",
                 fontsize=MIN_FONT,
             )
-        for x, value, n_terms in zip(
-            xpos + width / 2, fulltext_means, fulltext_ns
-        ):
+        for x, value, n_terms in zip(xpos + width / 2, fulltext_means, fulltext_ns):
             ax.annotate(
                 f"{value:.2f}\nn={n_terms}",
                 xy=(x, value),
@@ -1384,7 +1338,7 @@ def plot_layer_comparison(
 #: first, extras appended lexicographically) shared by
 #: :func:`plot_discourse_comparison`.  Mirrors the token-family
 #: ordering in ``core.manuscript_variables._DISCOURSE_CANONICAL_ORDER``.
-_DISCOURSE_DIMENSIONS: List[Tuple[str, str, Tuple[str, ...]]] = [
+_DISCOURSE_DIMENSIONS: list[tuple[str, str, tuple[str, ...]]] = [
     (
         "patterns",
         "Discourse Patterns",
@@ -1421,14 +1375,10 @@ _DISCOURSE_DIMENSIONS: List[Tuple[str, str, Tuple[str, ...]]] = [
 _LOG_SCALE_RATIO = 100.0
 
 
-def _ordered_discourse_keys(section: str, members: dict) -> List[str]:
+def _ordered_discourse_keys(section: str, members: dict) -> list[str]:
     """Order one discourse dimension's keys canonically, extras sorted."""
-    canonical = next(
-        (c for name, _, c in _DISCOURSE_DIMENSIONS if name == section), ()
-    )
-    return [k for k in canonical if k in members] + sorted(
-        k for k in members if k not in canonical
-    )
+    canonical = next((c for name, _, c in _DISCOURSE_DIMENSIONS if name == section), ())
+    return [k for k in canonical if k in members] + sorted(k for k in members if k not in canonical)
 
 
 @publication_style
@@ -1478,12 +1428,8 @@ def plot_discourse_comparison(
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
 
-    abstract_discourse: Dict[str, Any] = (
-        abstract_artifact.get("discourse") or {}
-    )
-    fulltext_discourse: Dict[str, Any] = (
-        fulltext_artifact.get("discourse") or {}
-    )
+    abstract_discourse: dict[str, Any] = abstract_artifact.get("discourse") or {}
+    fulltext_discourse: dict[str, Any] = fulltext_artifact.get("discourse") or {}
 
     fig = plt.figure(figsize=(18, 7.5))
     axes = fig.subplots(1, 3)
@@ -1493,31 +1439,19 @@ def plot_discourse_comparison(
     has_bars = False
     abstract_n = abstract_discourse.get("n_texts_analyzed")
     fulltext_n = fulltext_discourse.get("n_texts_analyzed")
-    abstract_label = (
-        f"Abstract layer (n={abstract_n} texts)"
-        if abstract_n is not None
-        else "Abstract layer"
-    )
-    fulltext_label = (
-        f"Full-text layer (n={fulltext_n} texts)"
-        if fulltext_n is not None
-        else "Full-text layer"
-    )
+    abstract_label = f"Abstract layer (n={abstract_n} texts)" if abstract_n is not None else "Abstract layer"
+    fulltext_label = f"Full-text layer (n={fulltext_n} texts)" if fulltext_n is not None else "Full-text layer"
 
     for ax, (section, title, _canonical) in zip(axes, _DISCOURSE_DIMENSIONS):
-        members: Dict[str, Any] = abstract_discourse.get(section) or {}
-        extra_members: Dict[str, Any] = fulltext_discourse.get(section) or {}
+        members: dict[str, Any] = abstract_discourse.get(section) or {}
+        extra_members: dict[str, Any] = fulltext_discourse.get(section) or {}
         keys = _ordered_discourse_keys(section, {**members, **extra_members})
         if not keys:
             _fallback_text(ax, f"No {section.replace('_', ' ')} data available")
             continue
         value_key = "usage_frequency" if section == "persuasive" else "frequency"
-        abstract_values = [
-            float((members.get(k) or {}).get(value_key, 0.0)) for k in keys
-        ]
-        fulltext_values = [
-            float((extra_members.get(k) or {}).get(value_key, 0.0)) for k in keys
-        ]
+        abstract_values = [float((members.get(k) or {}).get(value_key, 0.0)) for k in keys]
+        fulltext_values = [float((extra_members.get(k) or {}).get(value_key, 0.0)) for k in keys]
         xpos = np.arange(len(keys))
         width = 0.38
         bars_a = ax.bar(
@@ -1589,8 +1523,12 @@ def plot_discourse_comparison(
                 break
         if handles:
             fig.legend(
-                handles, labels_, loc="upper center", ncol=2,
-                bbox_to_anchor=(0.5, 1.02), frameon=False,
+                handles,
+                labels_,
+                loc="upper center",
+                ncol=2,
+                bbox_to_anchor=(0.5, 1.02),
+                frameon=False,
             )
     filepath = out_path / filename
     save_and_verify(fig, filepath, dpi=300)

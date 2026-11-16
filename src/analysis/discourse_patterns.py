@@ -8,22 +8,22 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Set
+from typing import Any
 
 __all__ = [
-    "DiscoursePattern",
-    "ArgumentativeStructure",
-    "DISCOURSE_MARKERS",
     "CITATION_PATTERN",
-    "identify_patterns_in_text",
+    "DISCOURSE_MARKERS",
+    "ArgumentativeStructure",
+    "DiscoursePattern",
     "extract_argumentative_structure",
     "find_citations",
+    "identify_patterns_in_text",
 ]
 
 CITATION_PATTERN = re.compile(r"\(.*?20\d{2}.*?\)")
 
 
-def find_citations(text: str) -> List[str]:
+def find_citations(text: str) -> list[str]:
     """Find parenthetical citations containing a 20xx year.
 
     Single source of truth for citation matching, shared by
@@ -52,9 +52,9 @@ class DiscoursePattern:
     """
 
     pattern_type: str
-    examples: List[str] = field(default_factory=list)
+    examples: list[str] = field(default_factory=list)
     frequency: int = 0
-    domains: Set[str] = field(default_factory=set)
+    domains: set[str] = field(default_factory=set)
     rhetorical_function: str = ""
 
     def add_example(self, example: str) -> None:
@@ -79,11 +79,11 @@ class ArgumentativeStructure:
         discourse_markers: Linguistic markers used (deduplicated, first-seen order)
     """
 
-    claim: List[str] = field(default_factory=list)
-    evidence: List[str] = field(default_factory=list)
-    warrant: List[str] = field(default_factory=list)
-    qualification: List[str] = field(default_factory=list)
-    discourse_markers: List[str] = field(default_factory=list)
+    claim: list[str] = field(default_factory=list)
+    evidence: list[str] = field(default_factory=list)
+    warrant: list[str] = field(default_factory=list)
+    qualification: list[str] = field(default_factory=list)
+    discourse_markers: list[str] = field(default_factory=list)
 
 
 # Discourse markers for different rhetorical functions
@@ -141,7 +141,7 @@ DISCOURSE_MARKERS = {
 }
 
 
-def identify_patterns_in_text(text: str) -> Dict[str, Dict[str, Any]]:
+def identify_patterns_in_text(text: str) -> dict[str, dict[str, Any]]:
     """Identify discourse patterns in a single text.
 
     Args:
@@ -179,9 +179,7 @@ def identify_patterns_in_text(text: str) -> Dict[str, Dict[str, Any]]:
         }
 
     # Economic metaphor patterns
-    economic_matches = re.findall(
-        r"\b(cost|benefit|trade|exchange|investment|profit|value)\b", text.lower()
-    )
+    economic_matches = re.findall(r"\b(cost|benefit|trade|exchange|investment|profit|value)\b", text.lower())
 
     if economic_matches:
         patterns["economic_metaphors"] = {
@@ -207,7 +205,7 @@ def identify_patterns_in_text(text: str) -> Dict[str, Dict[str, Any]]:
 
 
 def extract_argumentative_structure(
-    sentences: List[str],
+    sentences: list[str],
 ) -> ArgumentativeStructure:
     """Extract argumentative structure from sentences.
 
@@ -221,11 +219,8 @@ def extract_argumentative_structure(
 
     # \b-anchored phrase patterns: substring matching would spuriously fire
     # on words like "maybe" (may), "butter" (but) or "sputter" (utter).
-    def _contains(sentence_lower: str, phrases: List[str]) -> bool:
-        return any(
-            re.search(r"\b" + re.escape(phrase) + r"\b", sentence_lower)
-            for phrase in phrases
-        )
+    def _contains(sentence_lower: str, phrases: list[str]) -> bool:
+        return any(re.search(r"\b" + re.escape(phrase) + r"\b", sentence_lower) for phrase in phrases)
 
     claim_phrases = ["therefore", "thus", "consequently", "we conclude"]
     evidence_phrases = ["research shows", "studies demonstrate", "data indicate"]
@@ -252,7 +247,7 @@ def extract_argumentative_structure(
             structure.qualification.append(sentence.strip())
 
         # Collect discourse markers, deduplicated in first-seen order
-        for category, markers in DISCOURSE_MARKERS.items():
+        for markers in DISCOURSE_MARKERS.values():
             for marker in markers:
                 if marker in seen_markers:
                     continue

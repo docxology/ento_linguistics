@@ -14,7 +14,7 @@ import time
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
@@ -29,6 +29,7 @@ try:
     repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
     sys.path.insert(0, str(repo_root))
     from infrastructure.core import get_logger
+
     INFRASTRUCTURE_AVAILABLE = True
     logger = get_logger("ento_linguistics.literature_mining")
 except ImportError:
@@ -36,15 +37,15 @@ except ImportError:
     logger = logging.getLogger("ento_linguistics.literature_mining")
 
 __all__ = [
-    "Publication",
+    "CORPUS_GROWTH_QUERIES",
+    "ArXivMiner",
     "LiteratureCorpus",
     "PubMedMiner",
-    "ArXivMiner",
+    "Publication",
     "create_entomology_query",
-    "mine_entomology_literature",
-    "CORPUS_GROWTH_QUERIES",
     "is_relevant_social_insect_text",
     "mine_corpus_growth",
+    "mine_entomology_literature",
 ]
 
 
@@ -65,24 +66,24 @@ class Publication:
     """
 
     title: str
-    authors: List[str]
-    abstract: Optional[str] = None
-    doi: Optional[str] = None
-    pmid: Optional[str] = None
-    year: Optional[int] = None
-    journal: Optional[str] = None
-    keywords: List[str] = field(default_factory=list)
-    full_text: Optional[str] = None
+    authors: list[str]
+    abstract: str | None = None
+    doi: str | None = None
+    pmid: str | None = None
+    year: int | None = None
+    journal: str | None = None
+    keywords: list[str] = field(default_factory=list)
+    full_text: str | None = None
 
     def __post_init__(self):
         """Ensure keywords is always a list (field default_factory guarantees this)."""
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Publication":
+    def from_dict(cls, data: dict[str, Any]) -> Publication:
         """Create from dictionary."""
         return cls(**data)
 
@@ -94,7 +95,7 @@ class LiteratureCorpus:
     loading, saving, and querying the literature database.
     """
 
-    def __init__(self, publications: Optional[List[Publication]] = None):
+    def __init__(self, publications: list[Publication] | None = None):
         """Initialize corpus.
 
         Args:
@@ -129,7 +130,7 @@ class LiteratureCorpus:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
     @classmethod
-    def load_from_file(cls, filepath: Path) -> "LiteratureCorpus":
+    def load_from_file(cls, filepath: Path) -> LiteratureCorpus:
         """Load corpus from JSON file.
 
         Args:
@@ -141,12 +142,10 @@ class LiteratureCorpus:
         with open(filepath, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        publications = [
-            Publication.from_dict(pub_data) for pub_data in data["publications"]
-        ]
+        publications = [Publication.from_dict(pub_data) for pub_data in data["publications"]]
         return cls(publications)
 
-    def get_text_corpus(self) -> List[str]:
+    def get_text_corpus(self) -> list[str]:
         """Get all available text content from publications.
 
         Returns:
@@ -170,7 +169,7 @@ class LiteratureCorpus:
 
         return texts
 
-    def search_publications(self, query: str, field: str = "all") -> List[Publication]:
+    def search_publications(self, query: str, field: str = "all") -> list[Publication]:
         """Search publications by text query.
 
         Args:
@@ -184,26 +183,26 @@ class LiteratureCorpus:
         matches = []
 
         for pub in self.publications:
-            if field == "title" or field == "all":
-                if pub.title and query_lower in pub.title.lower():
-                    matches.append(pub)
-                    continue
+            if (field == "title" or field == "all") and pub.title and query_lower in pub.title.lower():
+                matches.append(pub)
+                continue
 
             if field == "abstract" or field == "all":
                 if pub.abstract and query_lower in pub.abstract.lower():
                     matches.append(pub)
                     continue
 
-            if field == "authors" or field == "all":
-                if pub.authors and any(
-                    query_lower in author.lower() for author in pub.authors
-                ):
-                    matches.append(pub)
-                    continue
+            if (
+                (field == "authors" or field == "all")
+                and pub.authors
+                and any(query_lower in author.lower() for author in pub.authors)
+            ):
+                matches.append(pub)
+                continue
 
         return matches
 
-    def get_statistics(self) -> Dict[str, Any]:
+    def get_statistics(self) -> dict[str, Any]:
         """Get corpus statistics.
 
         Returns:
@@ -222,9 +221,7 @@ class LiteratureCorpus:
             "publications_with_abstract": has_abstract,
             "publications_with_full_text": has_full_text,
             "avg_title_length": (
-                sum(len(pub.title or "") for pub in self.publications) / total_pubs
-                if total_pubs > 0
-                else 0
+                sum(len(pub.title or "") for pub in self.publications) / total_pubs if total_pubs > 0 else 0
             ),
             "total_keywords": sum(len(pub.keywords) for pub in self.publications),
         }
@@ -241,7 +238,7 @@ class PubMedMiner:
     BASE_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
     EMAIL = "entolinguistic.research@example.com"  # Should be configured
 
-    def __init__(self, email: Optional[str] = None, enable_cache: bool = True):
+    def __init__(self, email: str | None = None, enable_cache: bool = True):
         """Initialize PubMed miner.
 
         Args:
@@ -250,9 +247,9 @@ class PubMedMiner:
         """
         self.email = email or self.EMAIL
         self.enable_cache = enable_cache
-        self._search_cache: Dict[str, List[str]] = {}  # Cache for search results
+        self._search_cache: dict[str, list[str]] = {}  # Cache for search results
 
-    def search(self, query: str, max_results: int = 100) -> List[str]:
+    def search(self, query: str, max_results: int = 100) -> list[str]:
         """Search PubMed and return PMIDs.
 
         Args:
@@ -329,7 +326,7 @@ class PubMedMiner:
         """Get the number of cached search results."""
         return len(self._search_cache)
 
-    def fetch_publications(self, pmids: List[str]) -> List[Publication]:
+    def fetch_publications(self, pmids: list[str]) -> list[Publication]:
         """Fetch publication details for given PMIDs.
 
         Uses eSummary for metadata (title, authors, journal, year) and
@@ -363,13 +360,10 @@ class PubMedMiner:
             time.sleep(0.5)
 
         abstract_count = sum(1 for p in publications if p.abstract)
-        logger.info(
-            f"Fetched {len(publications)} publications, "
-            f"{abstract_count} with abstracts"
-        )
+        logger.info(f"Fetched {len(publications)} publications, {abstract_count} with abstracts")
         return publications
 
-    def _fetch_batch_summaries(self, pmids: List[str]) -> List[Publication]:
+    def _fetch_batch_summaries(self, pmids: list[str]) -> list[Publication]:
         """Fetch summaries for a batch of PMIDs.
 
         Args:
@@ -382,9 +376,7 @@ class PubMedMiner:
             return []
 
         id_str = ",".join(pmids)
-        summary_url = (
-            f"{self.BASE_URL}esummary.fcgi?" f"db=pubmed&id={id_str}&retmode=json"
-        )
+        summary_url = f"{self.BASE_URL}esummary.fcgi?db=pubmed&id={id_str}&retmode=json"
 
         try:
             with urlopen(
@@ -407,7 +399,7 @@ class PubMedMiner:
             logger.error(f"Error fetching PubMed summaries: {e}")
             return []
 
-    def _fetch_batch_abstracts(self, pmids: List[str]) -> Dict[str, str]:
+    def _fetch_batch_abstracts(self, pmids: list[str]) -> dict[str, str]:
         """Fetch abstracts for a batch of PMIDs using eFetch API.
 
         The eSummary API does not return abstract text. This method uses
@@ -423,10 +415,7 @@ class PubMedMiner:
             return {}
 
         id_str = ",".join(pmids)
-        fetch_url = (
-            f"{self.BASE_URL}efetch.fcgi?"
-            f"db=pubmed&id={id_str}&rettype=abstract&retmode=xml"
-        )
+        fetch_url = f"{self.BASE_URL}efetch.fcgi?db=pubmed&id={id_str}&rettype=abstract&retmode=xml"
 
         try:
             with urlopen(
@@ -461,17 +450,14 @@ class PubMedMiner:
                 if abstract_parts:
                     abstracts[pmid] = " ".join(abstract_parts)
 
-            logger.info(
-                f"eFetch retrieved {len(abstracts)} abstracts "
-                f"from {len(pmids)} PMIDs"
-            )
+            logger.info(f"eFetch retrieved {len(abstracts)} abstracts from {len(pmids)} PMIDs")
             return abstracts
 
         except (URLError, HTTPError, ET.ParseError) as e:
             logger.error(f"Error fetching PubMed abstracts via eFetch: {e}")
             return {}
 
-    def _parse_pubmed_summary(self, data: Dict[str, Any]) -> Optional[Publication]:
+    def _parse_pubmed_summary(self, data: dict[str, Any]) -> Publication | None:
         """Parse PubMed summary data into Publication object.
 
         Args:
@@ -497,9 +483,14 @@ class PubMedMiner:
 
             # Extract other fields
             abstract = data.get("abstract", "")
-            doi = next((entry.get("value") for entry in data.get("articleids", [])
-                        if isinstance(entry, dict) and entry.get("idtype", "").lower() == "doi"
-                        and entry.get("value")), None)
+            doi = next(
+                (
+                    entry.get("value")
+                    for entry in data.get("articleids", [])
+                    if isinstance(entry, dict) and entry.get("idtype", "").lower() == "doi" and entry.get("value")
+                ),
+                None,
+            )
             if doi is None:
                 match = re.search(r"\bdoi:\s*(10\.\S+)", str(data.get("elocationid", "")), re.IGNORECASE)
                 doi = match.group(1) if match else None
@@ -539,9 +530,8 @@ class ArXivMiner:
 
     def __init__(self):
         """Initialize arXiv miner."""
-        pass
 
-    def search(self, query: str, max_results: int = 100) -> List[Publication]:
+    def search(self, query: str, max_results: int = 100) -> list[Publication]:
         """Search arXiv and return publications.
 
         Args:
@@ -557,9 +547,7 @@ class ArXivMiner:
         )
 
         try:
-            with urlopen(
-                Request(search_url, headers={"User-Agent": "Python-EntoLinguistic"})
-            ) as response:
+            with urlopen(Request(search_url, headers={"User-Agent": "Python-EntoLinguistic"})) as response:
                 content = response.read().decode("utf-8")
 
             # Parse XML response
@@ -580,9 +568,7 @@ class ArXivMiner:
             logger.error(f"Error searching arXiv: {e}")
             return []
 
-    def _parse_arxiv_entry(
-        self, entry: ET.Element, ns: Dict[str, str]
-    ) -> Optional[Publication]:
+    def _parse_arxiv_entry(self, entry: ET.Element, ns: dict[str, str]) -> Publication | None:
         """Parse arXiv entry into Publication object.
 
         Args:
@@ -730,79 +716,99 @@ def mine_entomology_literature(max_results: int = 1000) -> LiteratureCorpus:
 CORPUS_GROWTH_QUERIES = [
     (
         "reproductive_skew",
-        '"reproductive skew" AND (insect OR ant OR bee OR wasp OR termite) '
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            '"reproductive skew" AND (insect OR ant OR bee OR wasp OR termite) '
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "kin_recognition",
-        '"kin recognition" AND (insect OR ant OR colony OR bee) '
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            '"kin recognition" AND (insect OR ant OR colony OR bee) '
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "superorganism",
-        "superorganism AND (ant OR insect OR colony) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        ("superorganism AND (ant OR insect OR colony) AND English[Language] AND (journal article[pt] OR review[pt])"),
     ),
     (
         "nestmate_recognition",
-        '("nestmate recognition" OR "nest odour" OR "nest odor") '
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            '("nestmate recognition" OR "nest odour" OR "nest odor") '
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "colony_organization",
-        '("colony organization" OR "social organization") '
-        "AND (insect OR ant OR bee OR wasp OR termite) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            '("colony organization" OR "social organization") '
+            "AND (insect OR ant OR bee OR wasp OR termite) "
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "eusocial_communication",
-        "eusocial AND (communication OR signaling OR pheromone) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            "eusocial AND (communication OR signaling OR pheromone) "
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "sociobiology",
-        "sociobiology AND (insect OR ant OR bee OR colony) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            "sociobiology AND (insect OR ant OR bee OR colony) "
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "kin_selection",
-        '("kin selection" OR "inclusive fitness") '
-        "AND (insect OR ant OR bee OR wasp OR colony) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            '("kin selection" OR "inclusive fitness") '
+            "AND (insect OR ant OR bee OR wasp OR colony) "
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "division_of_labor",
-        '"division of labor" '
-        "AND (ant OR insect OR colony OR bee OR wasp OR termite) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            '"division of labor" '
+            "AND (ant OR insect OR colony OR bee OR wasp OR termite) "
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "foraging_economics",
-        "foraging AND (ant OR insect OR bee OR wasp OR colony) "
-        "AND (cost OR efficiency OR optimal) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            "foraging AND (ant OR insect OR bee OR wasp OR colony) "
+            "AND (cost OR efficiency OR optimal) "
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "caste_queen_worker",
-        "(caste AND (queen OR worker)) AND (ant OR bee OR termite OR wasp) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            "(caste AND (queen OR worker)) AND (ant OR bee OR termite OR wasp) "
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
     (
         "myrmecology_core",
-        "myrmecology OR (Formicidae AND (behavior OR ecology)) "
-        "AND English[Language] "
-        "AND (journal article[pt] OR review[pt])",
+        (
+            "myrmecology OR (Formicidae AND (behavior OR ecology)) "
+            "AND English[Language] "
+            "AND (journal article[pt] OR review[pt])"
+        ),
     ),
 ]
 
@@ -856,11 +862,11 @@ def is_relevant_social_insect_text(text: str) -> bool:
 def mine_corpus_growth(
     max_per_query: int = 150,
     target_new: int = 500,
-    email: Optional[str] = None,
-    since_pdat: Optional[str] = None,
-    exclude_pmids: Optional[set] = None,
-    exclude_text_keys: Optional[set] = None,
-) -> tuple[List[Publication], Dict[str, int], Dict[str, str]]:
+    email: str | None = None,
+    since_pdat: str | None = None,
+    exclude_pmids: set | None = None,
+    exclude_text_keys: set | None = None,
+) -> tuple[list[Publication], dict[str, int], dict[str, str]]:
     """Search and fetch publications for the broadened corpus-growth queries.
 
     Queries ``CORPUS_GROWTH_QUERIES`` in order, fetching metadata and
@@ -894,11 +900,11 @@ def mine_corpus_growth(
         repeated runs idempotent.
     """
     miner = PubMedMiner(email=email)
-    collected: List[Publication] = []
+    collected: list[Publication] = []
     seen_pmids: set = set(exclude_pmids) if exclude_pmids else set()
     seen_text_keys: set = set(exclude_text_keys) if exclude_text_keys else set()
-    hit_counts: Dict[str, int] = {}
-    pmid_to_query: Dict[str, str] = {}
+    hit_counts: dict[str, int] = {}
+    pmid_to_query: dict[str, str] = {}
 
     for i, (name, raw_query) in enumerate(CORPUS_GROWTH_QUERIES, 1):
         query = raw_query
@@ -942,9 +948,7 @@ def mine_corpus_growth(
         else:
             logger.info("  target reached; search-only pass (no fetch)")
 
-        logger.info(
-            f"  collected so far: {len(collected)} unique relevant publications"
-        )
+        logger.info(f"  collected so far: {len(collected)} unique relevant publications")
         if i < len(CORPUS_GROWTH_QUERIES):
             time.sleep(1.0)
 

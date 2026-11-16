@@ -21,7 +21,7 @@ for p in (project_root, src_path, repo_root):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from pipeline.rendering import build_pdf  # noqa: E402
+from pipeline.rendering import build_pdf
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

@@ -4,15 +4,16 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 import networkx as nx
 import numpy as np
 
 from research.network_robustness.study import load_study
 
-__all__ = ["profile", "run", "ensure", "template_values"]
+__all__ = ["ensure", "profile", "run", "template_values"]
 SIZES = (25, 50, 75, 100)
 THRESHOLDS = (1, 2, 5, 10, 20)
 
@@ -129,7 +130,7 @@ def _figures(out: Path, report: dict[str, Any], root: Path) -> None:
 def _graphical_abstract(out: Path, report: dict[str, Any]) -> None:
     """Render an explanatory graphical abstract from receipted source counts."""
     import matplotlib.pyplot as plt
-    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Circle
+    from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch
 
     colors = ["#0072B2", "#E69F00", "#009E73", "#D55E00", "#CC79A7", "#6554A4"]
     fig = plt.figure(figsize=(16, 9), dpi=240, facecolor="#F7F5EF")

@@ -5,11 +5,17 @@ import importlib.util
 import numpy as np
 import pytest
 
-from analysis.statistics import (DescriptiveStats, anova_test,
-                            benjamini_hochberg_correction,
-                            calculate_confidence_interval,
-                            calculate_correlation, calculate_descriptive_stats,
-                            cohens_d, fit_distribution, t_test)
+from analysis.statistics import (
+    DescriptiveStats,
+    anova_test,
+    benjamini_hochberg_correction,
+    calculate_confidence_interval,
+    calculate_correlation,
+    calculate_descriptive_stats,
+    cohens_d,
+    fit_distribution,
+    t_test,
+)
 
 
 class TestDescriptiveStats:
@@ -17,17 +23,13 @@ class TestDescriptiveStats:
 
     def test_stats_creation(self):
         """Test creating descriptive stats."""
-        stats = DescriptiveStats(
-            mean=1.0, std=0.5, median=1.0, min=0.0, max=2.0, q25=0.5, q75=1.5, count=10
-        )
+        stats = DescriptiveStats(mean=1.0, std=0.5, median=1.0, min=0.0, max=2.0, q25=0.5, q75=1.5, count=10)
         assert stats.mean == 1.0
         assert stats.count == 10
 
     def test_to_dict(self):
         """Test converting to dictionary."""
-        stats = DescriptiveStats(
-            mean=1.0, std=0.5, median=1.0, min=0.0, max=2.0, q25=0.5, q75=1.5, count=10
-        )
+        stats = DescriptiveStats(mean=1.0, std=0.5, median=1.0, min=0.0, max=2.0, q25=0.5, q75=1.5, count=10)
         stats_dict = stats.to_dict()
         assert stats_dict["mean"] == 1.0
         assert stats_dict["count"] == 10
@@ -468,9 +470,7 @@ class TestCohensD:
     def test_zero_pooled_sd_returns_zero(self) -> None:
         """Constant samples → undefined effect size, guarded to 0.0."""
         assert cohens_d(np.array([1.0, 1.0, 1.0]), np.array([2.0, 2.0, 2.0])) == 0.0
-        assert cohens_d(
-            np.array([1.0, 1.0, 1.0]), np.array([2.0, 2.0, 2.0]), correction=False
-        ) == 0.0
+        assert cohens_d(np.array([1.0, 1.0, 1.0]), np.array([2.0, 2.0, 2.0]), correction=False) == 0.0
 
     def test_sign_follows_mean_difference(self) -> None:
         """d is negative when the first sample has the smaller mean."""
@@ -480,11 +480,9 @@ class TestCohensD:
 
     def test_unequal_group_sizes(self) -> None:
         """Pooled SD weights groups by their degrees of freedom."""
-        x = np.array([1.0, 2.0, 3.0])           # var = 1, n = 3
+        x = np.array([1.0, 2.0, 3.0])  # var = 1, n = 3
         y = np.array([10.0, 12.0, 14.0, 16.0])  # var = 6.666..., n = 4
-        expected_pooled_sd = np.sqrt(
-            (2 * 1.0 + 3 * (20.0 / 3.0)) / (3 + 4 - 2)
-        )
+        expected_pooled_sd = np.sqrt((2 * 1.0 + 3 * (20.0 / 3.0)) / (3 + 4 - 2))
         expected_d = (2.0 - 13.0) / expected_pooled_sd
         assert cohens_d(x, y, correction=False) == pytest.approx(expected_d)
 
@@ -537,6 +535,4 @@ class TestTTestEqualVar:
         r_pooled = t_test(x, y, equal_var=True)
         r_welch = t_test(x, y, equal_var=False)
         assert r_pooled["t_statistic"] == pytest.approx(r_welch["t_statistic"])
-        assert r_pooled["degrees_of_freedom"] == pytest.approx(
-            r_welch["degrees_of_freedom"]
-        )
+        assert r_pooled["degrees_of_freedom"] == pytest.approx(r_welch["degrees_of_freedom"])

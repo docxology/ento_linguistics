@@ -1,9 +1,10 @@
 """Resource-custody controls with real NLTK files and fresh subprocesses."""
+
 import shutil
 import subprocess
 import sys
-from zipfile import ZipFile
 from pathlib import Path
+from zipfile import ZipFile
 
 import nltk
 import pytest
@@ -32,9 +33,7 @@ def _signature(data_root: Path) -> str:
         "import nltk,sys; nltk.data.path[:]=[sys.argv[1]]; "
         "from core.provenance import analysis_signature; print(analysis_signature())"
     )
-    return subprocess.check_output(
-        [sys.executable, "-c", command, str(data_root)], text=True
-    ).strip()
+    return subprocess.check_output([sys.executable, "-c", command, str(data_root)], text=True).strip()
 
 
 def test_analysis_signature_changes_when_active_tokenizer_changes(tmp_path: Path) -> None:

@@ -7,21 +7,22 @@ ambiguity distributions, and cross-domain significance in scientific discourse.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import numpy as np
-from scipy.stats import t as t_dist, f as f_dist
+from scipy.stats import f as f_dist
+from scipy.stats import t as t_dist
 
 __all__ = [
     "DescriptiveStats",
-    "calculate_descriptive_stats",
-    "t_test",
-    "cohens_d",
-    "calculate_correlation",
-    "calculate_confidence_interval",
-    "fit_distribution",
     "anova_test",
     "benjamini_hochberg_correction",
+    "calculate_confidence_interval",
+    "calculate_correlation",
+    "calculate_descriptive_stats",
+    "cohens_d",
+    "fit_distribution",
+    "t_test",
 ]
 
 
@@ -38,7 +39,7 @@ class DescriptiveStats:
     q75: float  # Third quartile
     count: int
 
-    def to_dict(self) -> Dict[str, float]:
+    def to_dict(self) -> dict[str, float]:
         """Convert to dictionary."""
         return {
             "mean": self.mean,
@@ -76,13 +77,11 @@ def calculate_descriptive_stats(data: np.ndarray) -> DescriptiveStats:
         max=float(np.max(data_flat)),
         q25=float(np.percentile(data_flat, 25)),
         q75=float(np.percentile(data_flat, 75)),
-        count=int(len(data_flat)),
+        count=len(data_flat),
     )
 
 
-def cohens_d(
-    x: np.ndarray, y: np.ndarray, correction: bool = True
-) -> float:
+def cohens_d(x: np.ndarray, y: np.ndarray, correction: bool = True) -> float:
     """Compute Cohen's d effect size from the pooled standard deviation.
 
     d = (mean(x) - mean(y)) / s_pooled where
@@ -135,11 +134,11 @@ def cohens_d(
 
 def t_test(
     sample1: np.ndarray,
-    sample2: Optional[np.ndarray] = None,
-    mu: Optional[float] = None,
+    sample2: np.ndarray | None = None,
+    mu: float | None = None,
     alternative: str = "two-sided",
     equal_var: bool = False,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Perform t-test.
 
     The two-sample test defaults to Welch's unequal-variances t-test: the
@@ -192,6 +191,7 @@ def t_test(
         n1, n2 = len(sample1), len(sample2)
         mean1, mean2 = np.mean(sample1), np.mean(sample2)
         import warnings
+
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", RuntimeWarning)
             var1 = np.var(sample1, ddof=1) if n1 > 1 else 0.0
@@ -204,9 +204,7 @@ def t_test(
                 # Fewer than two total observations: no variance estimate
                 pooled_std = 0.0
             else:
-                pooled_var = (
-                    (n1 - 1) * var1 + (n2 - 1) * var2
-                ) / df
+                pooled_var = ((n1 - 1) * var1 + (n2 - 1) * var2) / df
                 pooled_std = np.sqrt(pooled_var * (1 / n1 + 1 / n2))
         else:
             # Welch standard error (unpooled) — default
@@ -245,9 +243,7 @@ def t_test(
     }
 
 
-def calculate_correlation(
-    x: np.ndarray, y: np.ndarray, method: str = "pearson"
-) -> Dict[str, float]:
+def calculate_correlation(x: np.ndarray, y: np.ndarray, method: str = "pearson") -> dict[str, float]:
     """Calculate correlation between two variables.
 
     Args:
@@ -299,9 +295,7 @@ def calculate_correlation(
     return {"correlation": float(correlation), "p_value": p_value, "method": method}
 
 
-def calculate_confidence_interval(
-    data: np.ndarray, confidence: float = 0.95
-) -> Tuple[float, float]:
+def calculate_confidence_interval(data: np.ndarray, confidence: float = 0.95) -> tuple[float, float]:
     """Calculate confidence interval for mean.
 
     Args:
@@ -316,9 +310,7 @@ def calculate_confidence_interval(
     """
     n = len(data)
     if n < 2:
-        raise ValueError(
-            f"Confidence interval requires at least 2 data points, got {n}"
-        )
+        raise ValueError(f"Confidence interval requires at least 2 data points, got {n}")
     mean = np.mean(data)
     std = np.std(data, ddof=1)
 
@@ -330,7 +322,7 @@ def calculate_confidence_interval(
     return (float(mean - margin), float(mean + margin))
 
 
-def fit_distribution(data: np.ndarray, distribution: str = "normal") -> Dict[str, Any]:
+def fit_distribution(data: np.ndarray, distribution: str = "normal") -> dict[str, Any]:
     """Fit a distribution to data.
 
     Args:
@@ -349,9 +341,7 @@ def fit_distribution(data: np.ndarray, distribution: str = "normal") -> Dict[str
     elif distribution == "exponential":
         mean = float(np.mean(data))
         if mean <= 0:
-            raise ValueError(
-                "Exponential distribution requires strictly positive mean"
-            )
+            raise ValueError("Exponential distribution requires strictly positive mean")
         return {
             "distribution": "exponential",
             "scale": mean,
@@ -368,9 +358,9 @@ def fit_distribution(data: np.ndarray, distribution: str = "normal") -> Dict[str
 
 
 def benjamini_hochberg_correction(
-    p_values: List[float],
+    p_values: list[float],
     q: float = 0.05,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Apply Benjamini-Hochberg false discovery rate correction.
 
     Controls the expected proportion of false discoveries (FDR) at level q
@@ -426,7 +416,7 @@ def benjamini_hochberg_correction(
     }
 
 
-def anova_test(groups: List[np.ndarray]) -> Dict[str, float]:
+def anova_test(groups: list[np.ndarray]) -> dict[str, float]:
     """Perform one-way ANOVA test.
 
     Args:
@@ -441,9 +431,7 @@ def anova_test(groups: List[np.ndarray]) -> Dict[str, float]:
     overall_mean = np.mean(np.concatenate(groups))
 
     # Between-group sum of squares
-    ss_between = sum(
-        n * (mean - overall_mean) ** 2 for n, mean in zip(group_sizes, group_means)
-    )
+    ss_between = sum(n * (mean - overall_mean) ** 2 for n, mean in zip(group_sizes, group_means))
     df_between = len(groups) - 1
 
     # Within-group sum of squares

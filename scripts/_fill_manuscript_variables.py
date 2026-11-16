@@ -18,7 +18,7 @@ for p in (project_root, src_path, repo_root):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from core.manuscript_variables import main  # noqa: E402
+from core.manuscript_variables import main
 
 if __name__ == "__main__":
     main()

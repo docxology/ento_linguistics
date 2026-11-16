@@ -43,6 +43,7 @@ class TestPackageLevelImports:
     def test_statistics_imports(self) -> None:
         """Test that statistics functions are accessible from explicit subpackage imports."""
         import numpy as np
+
         from analysis.statistics import calculate_descriptive_stats
 
         # Test statistics function

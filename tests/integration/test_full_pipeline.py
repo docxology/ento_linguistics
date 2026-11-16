@@ -69,7 +69,7 @@ class TestFullPipeline:
         assert len(terms) > 0
 
         # Validate term structure
-        for name, term in terms.items():
+        for term in terms.values():
             assert hasattr(term, "text")
             assert hasattr(term, "frequency")
             assert hasattr(term, "domains")
@@ -92,11 +92,9 @@ class TestFullPipeline:
 
         # Check that at least some entries are DomainAnalysis objects
         from analysis.domain_analysis import DomainAnalysis
-        domain_analyses = {
-            k: v for k, v in results.items()
-            if isinstance(v, DomainAnalysis)
-        }
-        for domain_name, analysis in domain_analyses.items():
+
+        domain_analyses = {k: v for k, v in results.items() if isinstance(v, DomainAnalysis)}
+        for analysis in domain_analyses.values():
             assert hasattr(analysis, "domain_name")
             assert hasattr(analysis, "key_terms")
             assert hasattr(analysis, "framing_assumptions")
@@ -172,14 +170,17 @@ class TestFullPipeline:
         with open(ds_path) as f:
             ds = json.load(f)
         valid_domains = {
-            "power_and_labor", "unit_of_individuality",
-            "sex_and_reproduction", "behavior_and_identity",
-            "kin_and_relatedness", "economics",
+            "power_and_labor",
+            "unit_of_individuality",
+            "sex_and_reproduction",
+            "behavior_and_identity",
+            "kin_and_relatedness",
+            "economics",
         }
         assert isinstance(ds, dict)
         assert len(ds) > 0
         assert set(ds.keys()) <= valid_domains
-        for domain_name, domain_data in ds.items():
+        for domain_data in ds.values():
             assert "term_count" in domain_data
             assert "total_frequency" in domain_data
             assert "bridging_term_count" in domain_data

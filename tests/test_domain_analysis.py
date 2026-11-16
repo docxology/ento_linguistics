@@ -5,9 +5,9 @@ used in Ento-Linguistic research.
 """
 
 from __future__ import annotations
+
 import json
 from pathlib import Path
-from typing import Dict, List
 
 import numpy as np
 import pytest
@@ -53,7 +53,7 @@ class TestDomainAnalyzer:
         return DomainAnalyzer()
 
     @pytest.fixture
-    def sample_terms(self) -> Dict[str, Term]:
+    def sample_terms(self) -> dict[str, Term]:
         """Create sample terms for testing."""
         return {
             "colony": Term(
@@ -68,9 +68,7 @@ class TestDomainAnalyzer:
                 frequency=8,
                 domains=["behavior_and_identity"],
             ),
-            "caste": Term(
-                text="caste", lemma="caste", frequency=12, domains=["power_and_labor"]
-            ),
+            "caste": Term(text="caste", lemma="caste", frequency=12, domains=["power_and_labor"]),
             "queen": Term(
                 text="queen",
                 lemma="queen",
@@ -92,9 +90,10 @@ class TestDomainAnalyzer:
         }
 
     @pytest.fixture
-    def sample_texts(self) -> List[str]:
+    def sample_texts(self) -> list[str]:
         """Sample texts from real corpus for context analysis."""
         from data.loader import DataLoader
+
         try:
             loader = DataLoader()
             return loader.load_corpus("corpus/abstracts.json")[:3]
@@ -114,16 +113,12 @@ class TestDomainAnalyzer:
     def test_analyze_individuality_domain(
         self,
         analyzer: DomainAnalyzer,
-        sample_terms: Dict[str, Term],
-        sample_texts: List[str],
+        sample_terms: dict[str, Term],
+        sample_texts: list[str],
     ) -> None:
         """Test individuality domain analysis."""
         analysis = analyzer._analyze_individuality_domain(
-            [
-                term
-                for term in sample_terms.values()
-                if "unit_of_individuality" in term.domains
-            ],
+            [term for term in sample_terms.values() if "unit_of_individuality" in term.domains],
             sample_texts,
         )
 
@@ -137,62 +132,44 @@ class TestDomainAnalyzer:
     def test_analyze_behavior_domain(
         self,
         analyzer: DomainAnalyzer,
-        sample_terms: Dict[str, Term],
-        sample_texts: List[str],
+        sample_terms: dict[str, Term],
+        sample_texts: list[str],
     ) -> None:
         """Test behavior and identity domain analysis."""
         analysis = analyzer._analyze_behavior_domain(
-            [
-                term
-                for term in sample_terms.values()
-                if "behavior_and_identity" in term.domains
-            ],
+            [term for term in sample_terms.values() if "behavior_and_identity" in term.domains],
             sample_texts,
         )
 
         assert analysis.domain_name == "behavior_and_identity"
         assert "foraging" in analysis.key_terms or "worker" in analysis.key_terms
-        assert any(
-            "identity" in assumption.lower()
-            for assumption in analysis.framing_assumptions
-        )
+        assert any("identity" in assumption.lower() for assumption in analysis.framing_assumptions)
 
     def test_analyze_power_domain(
         self,
         analyzer: DomainAnalyzer,
-        sample_terms: Dict[str, Term],
-        sample_texts: List[str],
+        sample_terms: dict[str, Term],
+        sample_texts: list[str],
     ) -> None:
         """Test power and labor domain analysis."""
         analysis = analyzer._analyze_power_domain(
-            [
-                term
-                for term in sample_terms.values()
-                if "power_and_labor" in term.domains
-            ],
+            [term for term in sample_terms.values() if "power_and_labor" in term.domains],
             sample_texts,
         )
 
         assert analysis.domain_name == "power_and_labor"
         assert "caste" in analysis.key_terms or "queen" in analysis.key_terms
-        assert any(
-            "hierarch" in assumption.lower()
-            for assumption in analysis.framing_assumptions
-        )
+        assert any("hierarch" in assumption.lower() for assumption in analysis.framing_assumptions)
 
     def test_analyze_reproduction_domain(
         self,
         analyzer: DomainAnalyzer,
-        sample_terms: Dict[str, Term],
-        sample_texts: List[str],
+        sample_terms: dict[str, Term],
+        sample_texts: list[str],
     ) -> None:
         """Test sex and reproduction domain analysis."""
         analysis = analyzer._analyze_reproduction_domain(
-            [
-                term
-                for term in sample_terms.values()
-                if "sex_and_reproduction" in term.domains
-            ],
+            [term for term in sample_terms.values() if "sex_and_reproduction" in term.domains],
             sample_texts,
         )
 
@@ -202,14 +179,12 @@ class TestDomainAnalyzer:
     def test_analyze_kinship_domain(
         self,
         analyzer: DomainAnalyzer,
-        sample_terms: Dict[str, Term],
-        sample_texts: List[str],
+        sample_terms: dict[str, Term],
+        sample_texts: list[str],
     ) -> None:
         """Test kin and relatedness domain analysis."""
         # Create a sample term for kinship domain
-        kinship_terms = [
-            Term(text="kin", lemma="kin", frequency=5, domains=["kin_and_relatedness"])
-        ]
+        kinship_terms = [Term(text="kin", lemma="kin", frequency=5, domains=["kin_and_relatedness"])]
 
         analysis = analyzer._analyze_kinship_domain(kinship_terms, sample_texts)
 
@@ -219,14 +194,12 @@ class TestDomainAnalyzer:
     def test_analyze_economics_domain(
         self,
         analyzer: DomainAnalyzer,
-        sample_terms: Dict[str, Term],
-        sample_texts: List[str],
+        sample_terms: dict[str, Term],
+        sample_texts: list[str],
     ) -> None:
         """Test economics domain analysis."""
         # Create a sample term for economics domain
-        econ_terms = [
-            Term(text="resource", lemma="resource", frequency=7, domains=["economics"])
-        ]
+        econ_terms = [Term(text="resource", lemma="resource", frequency=7, domains=["economics"])]
 
         analysis = analyzer._analyze_economics_domain(econ_terms, sample_texts)
 
@@ -236,8 +209,8 @@ class TestDomainAnalyzer:
     def test_analyze_all_domains(
         self,
         analyzer: DomainAnalyzer,
-        sample_terms: Dict[str, Term],
-        sample_texts: List[str],
+        sample_terms: dict[str, Term],
+        sample_texts: list[str],
     ) -> None:
         """Test analyzing all domains."""
         analyses = analyzer.analyze_all_domains(sample_terms, sample_texts)
@@ -254,9 +227,7 @@ class TestDomainAnalyzer:
             assert domain in analyses
             assert analyses[domain].domain_name == domain
 
-    def test_group_terms_by_domain(
-        self, analyzer: DomainAnalyzer, sample_terms: Dict[str, Term]
-    ) -> None:
+    def test_group_terms_by_domain(self, analyzer: DomainAnalyzer, sample_terms: dict[str, Term]) -> None:
         """Test grouping terms by domain."""
         domain_groups = analyzer._group_terms_by_domain(sample_terms)
 
@@ -268,9 +239,7 @@ class TestDomainAnalyzer:
 
         # Check specific domains
         if "unit_of_individuality" in domain_groups:
-            assert any(
-                term.text == "colony" for term in domain_groups["unit_of_individuality"]
-            )
+            assert any(term.text == "colony" for term in domain_groups["unit_of_individuality"])
 
         if "power_and_labor" in domain_groups:
             power_terms = [term.text for term in domain_groups["power_and_labor"]]
@@ -339,9 +308,7 @@ class TestDomainAnalyzer:
 
         assert isinstance(comparison, dict)
         assert "shared_assumptions" in comparison
-        assert (
-            len(comparison["shared_assumptions"]) >= 1
-        )  # Should find shared assumption
+        assert len(comparison["shared_assumptions"]) >= 1  # Should find shared assumption
 
     def test_empty_domain_handling(self, analyzer: DomainAnalyzer) -> None:
         """Test handling of domains with no terms."""
@@ -383,9 +350,7 @@ class TestDomainAnalysisIntegration:
                 frequency=9,
                 domains=["behavior_and_identity", "power_and_labor"],
             ),
-            Term(
-                text="caste", lemma="caste", frequency=15, domains=["power_and_labor"]
-            ),
+            Term(text="caste", lemma="caste", frequency=15, domains=["power_and_labor"]),
             Term(
                 text="queen",
                 lemma="queen",
@@ -542,7 +507,7 @@ class TestQuantifyAmbiguityDelegation:
         assert HIGH_ENTROPY_THRESHOLD == 2.0
 
         # Check that results contain expected fields from SemanticEntropyResult
-        for term_text, score in result["term_ambiguity_scores"].items():
+        for score in result["term_ambiguity_scores"].values():
             assert "entropy_bits" in score
             assert "is_high_entropy" in score
             assert isinstance(score["entropy_bits"], float)
@@ -569,9 +534,7 @@ class TestCooccurrenceAndSignificanceContract:
             Term(text="queen", lemma="queen", domains=["power_and_labor"], frequency=2),
             Term(text="colony", lemma="colony", domains=["unit_of_individuality"], frequency=2),
         ]
-        result = analyzer.analyze_term_cooccurrence(
-            terms, ["queen colony queen colony queen colony"]
-        )
+        result = analyzer.analyze_term_cooccurrence(terms, ["queen colony queen colony queen colony"])
         # All alternating positions lie within the default window: 9
         # co-occurring (queen, colony) pairs, each unordered pair counted
         # exactly once (the old double-counting implementation reported 18).
@@ -583,30 +546,25 @@ class TestCooccurrenceAndSignificanceContract:
         analyzer = DomainAnalyzer()
         result = analyzer.calculate_statistical_significance({"a": 10, "b": 2})
         import math
+
         n, k, chi2 = 12, 2, result["chi_square_statistic"]
         assert result["effect_size"] == pytest.approx(math.sqrt(chi2 / (n * (k - 1))))
 
     def test_analyze_all_domains_has_no_cross_domain_key(self):
         analyzer = DomainAnalyzer()
         terms = {
-            "colony": Term(text="colony", lemma="colony",
-                           domains=["unit_of_individuality"], frequency=5),
-            "queen": Term(text="queen", lemma="queen",
-                          domains=["power_and_labor"], frequency=5),
+            "colony": Term(text="colony", lemma="colony", domains=["unit_of_individuality"], frequency=5),
+            "queen": Term(text="queen", lemma="queen", domains=["power_and_labor"], frequency=5),
         }
-        texts = ["The queen ant lays eggs in the colony. The colony is a superorganism. "
-                 "Queens control workers. " * 3]
+        texts = ["The queen ant lays eggs in the colony. The colony is a superorganism. Queens control workers. " * 3]
         analyses = analyzer.analyze_all_domains(terms, texts)
         assert "_cross_domain" not in analyses
         assert all(isinstance(a, DomainAnalysis) for a in analyses.values())
 
     def test_confidence_scores_are_content_word_ratios(self):
         analyzer = DomainAnalyzer()
-        terms = [Term(text="queen", lemma="queen", domains=["power_and_labor"],
-                      frequency=5)]
-        scores = analyzer.generate_confidence_scores(
-            ["Queen dominance implies worker subordination"], terms, ["texts"]
-        )
+        terms = [Term(text="queen", lemma="queen", domains=["power_and_labor"], frequency=5)]
+        scores = analyzer.generate_confidence_scores(["Queen dominance implies worker subordination"], terms, ["texts"])
         for value in scores.values():
             assert 0.0 <= value <= 1.0
 
@@ -618,7 +576,7 @@ class TestIterDomainTermEntropies:
     """Public accessor grouping valid per-term entropies by canonical domain."""
 
     @staticmethod
-    def _polysemous_texts(term: str) -> List[str]:
+    def _polysemous_texts(term: str) -> list[str]:
         """Six deterministic sentences giving the term two distinct senses."""
         return [
             f"The {term} functions as a reproductive unit in the colony.",
@@ -633,8 +591,9 @@ class TestIterDomainTermEntropies:
         """Valid entropies land under every canonical domain of the term."""
         analyzer = DomainAnalyzer()
         terms = [
-            Term(text="lineage", lemma="lineage", frequency=6,
-                 domains=["kin_and_relatedness", "unit_of_individuality"]),
+            Term(
+                text="lineage", lemma="lineage", frequency=6, domains=["kin_and_relatedness", "unit_of_individuality"]
+            ),
         ]
         texts = self._polysemous_texts("lineage")
 
@@ -651,24 +610,20 @@ class TestIterDomainTermEntropies:
         """The accessor tolerates the mapping form used by analyze_all_domains."""
         analyzer = DomainAnalyzer()
         terms = {
-            "lineage": Term(text="lineage", lemma="lineage", frequency=6,
-                            domains=["kin_and_relatedness"]),
+            "lineage": Term(text="lineage", lemma="lineage", frequency=6, domains=["kin_and_relatedness"]),
         }
         texts = self._polysemous_texts("lineage")
 
         entropies = analyzer.iter_domain_term_entropies(terms, texts)
         assert list(entropies) == ["kin_and_relatedness"]
-        assert entropies["kin_and_relatedness"] and \
-            entropies["kin_and_relatedness"][0] > 0.0
+        assert entropies["kin_and_relatedness"] and entropies["kin_and_relatedness"][0] > 0.0
 
     def test_excludes_terms_with_too_few_contexts(self) -> None:
         """Terms below min_contexts are excluded, never folded in as 0.0."""
         analyzer = DomainAnalyzer()
         terms = [
-            Term(text="lineage", lemma="lineage", frequency=6,
-                 domains=["kin_and_relatedness"]),
-            Term(text="haplotype", lemma="haplotype", frequency=1,
-                 domains=["kin_and_relatedness"]),
+            Term(text="lineage", lemma="lineage", frequency=6, domains=["kin_and_relatedness"]),
+            Term(text="haplotype", lemma="haplotype", frequency=1, domains=["kin_and_relatedness"]),
         ]
         texts = self._polysemous_texts("lineage") + ["One stray haplotype mention."]
 
@@ -682,10 +637,8 @@ class TestIterDomainTermEntropies:
         """quantify_ambiguity_metrics and the accessor share one implementation."""
         analyzer = DomainAnalyzer()
         terms = [
-            Term(text="lineage", lemma="lineage", frequency=6,
-                 domains=["kin_and_relatedness"]),
-            Term(text="haplotype", lemma="haplotype", frequency=1,
-                 domains=["kin_and_relatedness"]),
+            Term(text="lineage", lemma="lineage", frequency=6, domains=["kin_and_relatedness"]),
+            Term(text="haplotype", lemma="haplotype", frequency=1, domains=["kin_and_relatedness"]),
         ]
         texts = self._polysemous_texts("lineage") + ["One stray haplotype mention."]
 
@@ -695,17 +648,14 @@ class TestIterDomainTermEntropies:
 
         assert metrics["n_valid_terms"] == 1
         assert metrics["n_excluded_insufficient_contexts"] == 1
-        assert metrics["average_ambiguity_score"] == pytest.approx(
-            float(np.mean(entropies["kin_and_relatedness"]))
-        )
+        assert metrics["average_ambiguity_score"] == pytest.approx(float(np.mean(entropies["kin_and_relatedness"])))
         assert metrics["average_ambiguity_score"] > 0.0
 
     def test_no_valid_terms_reports_no_fake_average(self) -> None:
         """When nothing qualifies, no fabricated 0.0 average is emitted."""
         analyzer = DomainAnalyzer()
         terms = [
-            Term(text="haplotype", lemma="haplotype", frequency=1,
-                 domains=["economics"]),
+            Term(text="haplotype", lemma="haplotype", frequency=1, domains=["economics"]),
         ]
         texts = ["One stray haplotype mention."]
 
@@ -733,7 +683,7 @@ class TestDomainAmbiguityRealData:
 
     @pytest.fixture(scope="class")
     @classmethod
-    def real_texts(cls) -> List[str]:
+    def real_texts(cls) -> list[str]:
         """Load a real slice of data/corpus/abstracts.json."""
         if not CORPUS_PATH.exists():
             pytest.skip("real corpus data/corpus/abstracts.json not available")
@@ -743,11 +693,9 @@ class TestDomainAmbiguityRealData:
 
     @pytest.fixture(scope="class")
     @classmethod
-    def real_terms(cls, real_texts: List[str]) -> Dict[str, Term]:
+    def real_terms(cls, real_texts: list[str]) -> dict[str, Term]:
         """Reconstruct real pipeline-extracted terms occurring in the slice."""
-        terms_path = CORPUS_PATH.parent.parent.parent / "output" / "data" / (
-            "extracted_terms.json"
-        )
+        terms_path = CORPUS_PATH.parent.parent.parent / "output" / "data" / ("extracted_terms.json")
         if not terms_path.exists():
             pytest.skip("real extracted terms output/data/extracted_terms.json not available")
 
@@ -757,7 +705,7 @@ class TestDomainAmbiguityRealData:
         import re
 
         slice_text = " ".join(real_texts).lower()
-        terms: Dict[str, Term] = {}
+        terms: dict[str, Term] = {}
         for name, data in raw.items():
             if not re.search(rf"\b{re.escape(name)}\b", slice_text):
                 continue
@@ -783,15 +731,19 @@ class TestDomainAmbiguityRealData:
     @pytest.fixture(scope="class")
     @classmethod
     def analyses(
-        cls, analyzer: DomainAnalyzer,
-        real_terms: Dict[str, Term], real_texts: List[str],
-    ) -> Dict[str, DomainAnalysis]:
+        cls,
+        analyzer: DomainAnalyzer,
+        real_terms: dict[str, Term],
+        real_texts: list[str],
+    ) -> dict[str, DomainAnalysis]:
         """One end-to-end domain_analysis run over the real slice."""
         return analyzer.analyze_all_domains(real_terms, real_texts)
 
     def test_domain_ambiguity_mean_nonzero_and_consistent(
-        self, analyzer: DomainAnalyzer, real_texts: List[str],
-        real_terms: Dict[str, Term],
+        self,
+        analyzer: DomainAnalyzer,
+        real_texts: list[str],
+        real_terms: dict[str, Term],
     ) -> None:
         """Domain ambiguity means are non-zero and equal the accessor's means."""
         entropies = analyzer.iter_domain_term_entropies(real_terms, real_texts)
@@ -810,30 +762,25 @@ class TestDomainAmbiguityRealData:
                 continue
 
             expected_mean = float(np.mean(domain_values))
-            assert expected_mean > 0.0, (
-                f"{domain}: real per-term entropies should be non-zero"
-            )
+            assert expected_mean > 0.0, f"{domain}: real per-term entropies should be non-zero"
             assert metrics["n_valid_terms"] == len(domain_values)
             assert metrics["average_ambiguity_score"] == pytest.approx(expected_mean)
             assert metrics["average_entropy"] == pytest.approx(expected_mean)
             domains_with_valid_terms += 1
 
         assert domains_with_valid_terms > 0, (
-            "at least one domain must have terms with >= min_contexts "
-            "on the real corpus slice"
+            "at least one domain must have terms with >= min_contexts on the real corpus slice"
         )
 
     def test_quantify_matches_analyze_all_domains_output(
-        self, analyses: Dict[str, DomainAnalysis],
+        self,
+        analyses: dict[str, DomainAnalysis],
     ) -> None:
         """analyze_all_domains propagates the fixed ambiguity score."""
-        assert analyses and all(
-            isinstance(a, DomainAnalysis) for a in analyses.values()
-        )
+        assert analyses and all(isinstance(a, DomainAnalysis) for a in analyses.values())
         non_zero = [
-            name for name, analysis in analyses.items()
-            if analysis.ambiguity_metrics.get("domain_metrics", {}).get(
-                "average_ambiguity_score", 0.0
-            ) > 0.0
+            name
+            for name, analysis in analyses.items()
+            if analysis.ambiguity_metrics.get("domain_metrics", {}).get("average_ambiguity_score", 0.0) > 0.0
         ]
         assert non_zero, "no domain reported a non-zero ambiguity score"

@@ -1,7 +1,7 @@
 """Execute the separately receipted full-abstract robustness extension."""
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 from .study import Protocol, run
 

@@ -11,19 +11,19 @@ import argparse
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import matplotlib.pyplot as plt
 
-from visualization.concept_visualization import ConceptVisualizer
 from analysis.conceptual_mapping import ConceptualMapper
 from analysis.discourse_analysis import DiscourseAnalyzer
 from analysis.domain_analysis import DomainAnalyzer
-from data.literature_mining import LiteratureCorpus, mine_entomology_literature
 from analysis.term_extraction import TerminologyExtractor
 from analysis.text_analysis import TextProcessor
-
 from core.logging import get_logger
+from data.literature_mining import LiteratureCorpus, mine_entomology_literature
+from visualization.concept_visualization import ConceptVisualizer
+
 # Directory creation handled inline
 from visualization.figure_manager import FigureManager
 
@@ -37,7 +37,7 @@ class LiteratureAnalysisPipeline:
     through visualization and reporting.
     """
 
-    def __init__(self, output_dir: Optional[Path] = None):
+    def __init__(self, output_dir: Path | None = None):
         """Initialize the analysis pipeline.
 
         Args:
@@ -58,13 +58,9 @@ class LiteratureAnalysisPipeline:
         self.text_processor = TextProcessor()
         self.figure_manager = FigureManager()
 
-        logger.info(
-            f"Initialized analysis pipeline with output directory: {self.output_dir}"
-        )
+        logger.info(f"Initialized analysis pipeline with output directory: {self.output_dir}")
 
-    def run_complete_analysis(
-        self, max_publications: int = 500, use_cached_data: bool = True
-    ) -> Dict[str, Any]:
+    def run_complete_analysis(self, max_publications: int = 500, use_cached_data: bool = True) -> dict[str, Any]:
         """Run the complete Ento-Linguistic analysis pipeline.
 
         This method orchestrates the full analysis workflow: literature collection,
@@ -141,14 +137,10 @@ class LiteratureAnalysisPipeline:
 
             # Stage 5: Domain Analysis
             logger.info("Stage 5: Domain-specific analysis")
-            domain_analyses = self._analyze_domains(
-                terminology.extracted_terms, processed_texts
-            )
+            domain_analyses = self._analyze_domains(terminology.extracted_terms, processed_texts)
             results["stages"]["domain_analysis"] = {
                 "domains_analyzed": len(domain_analyses),
-                "domain_report_file": str(
-                    self.reports_dir / "domain_analysis_report.md"
-                ),
+                "domain_report_file": str(self.reports_dir / "domain_analysis_report.md"),
             }
 
             # Stage 6: Discourse Analysis
@@ -156,22 +148,16 @@ class LiteratureAnalysisPipeline:
             discourse_profile = self._analyze_discourse(processed_texts)
             results["stages"]["discourse_analysis"] = {
                 "patterns_identified": len(discourse_profile.get("patterns", {})),
-                "structures_found": len(
-                    discourse_profile.get("argumentative_structures", [])
-                ),
+                "structures_found": len(discourse_profile.get("argumentative_structures", [])),
                 "discourse_file": str(self.data_dir / "discourse_analysis.json"),
             }
 
             # Stage 7: Visualization Generation
             logger.info("Stage 7: Visualization generation")
-            visualizations = self._generate_visualizations(
-                concept_map, terminology.extracted_terms, domain_analyses
-            )
+            visualizations = self._generate_visualizations(concept_map, terminology.extracted_terms, domain_analyses)
             results["stages"]["visualization"] = {
                 "figures_generated": len(visualizations),
-                "visualization_metadata": str(
-                    self.data_dir / "visualization_metadata.json"
-                ),
+                "visualization_metadata": str(self.data_dir / "visualization_metadata.json"),
             }
 
             # Calculate timing
@@ -211,14 +197,10 @@ class LiteratureAnalysisPipeline:
             logger.error(f"Pipeline failed: {e}")
             raise
 
-        logger.debug(
-            f"run_complete_analysis() exit: status={results['pipeline_metadata'].get('status', 'unknown')}"
-        )
+        logger.debug(f"run_complete_analysis() exit: status={results['pipeline_metadata'].get('status', 'unknown')}")
         return results
 
-    def _collect_literature(
-        self, max_publications: int, use_cached: bool
-    ) -> LiteratureCorpus:
+    def _collect_literature(self, max_publications: int, use_cached: bool) -> LiteratureCorpus:
         """Collect entomological literature from PubMed and arXiv.
 
         Args:
@@ -237,9 +219,7 @@ class LiteratureAnalysisPipeline:
         if max_publications <= 0:
             error_msg = f"max_publications must be positive, got {max_publications}"
             logger.error(error_msg)
-            logger.error(
-                "Suggestion: Set max_publications to a positive integer (e.g., 500 for moderate collection)"
-            )
+            logger.error("Suggestion: Set max_publications to a positive integer (e.g., 500 for moderate collection)")
             raise ValueError(error_msg)
 
         if max_publications > 10000:
@@ -252,20 +232,16 @@ class LiteratureAnalysisPipeline:
             logger.info(f"Loading cached literature corpus from {corpus_file}")
             corpus = LiteratureCorpus.load_from_file(corpus_file)
         else:
-            logger.info(
-                f"Mining new literature corpus (max {max_publications} publications)"
-            )
+            logger.info(f"Mining new literature corpus (max {max_publications} publications)")
             corpus = mine_entomology_literature(max_publications)
 
             # Save corpus
             corpus.save_to_file(corpus_file)
-            logger.info(
-                f"Saved literature corpus with {len(corpus.publications)} publications"
-            )
+            logger.info(f"Saved literature corpus with {len(corpus.publications)} publications")
 
         return corpus
 
-    def _process_texts(self, corpus: LiteratureCorpus) -> List[str]:
+    def _process_texts(self, corpus: LiteratureCorpus) -> list[str]:
         """Process and normalize text corpus.
 
         Args:
@@ -286,7 +262,7 @@ class LiteratureAnalysisPipeline:
         logger.info(f"Processed {len(processed_texts)} texts for analysis")
         return processed_texts
 
-    def _extract_terminology(self, texts: List[str]) -> TerminologyExtractor:
+    def _extract_terminology(self, texts: list[str]) -> TerminologyExtractor:
         """Extract terminology from processed texts.
 
         Args:
@@ -299,10 +275,7 @@ class LiteratureAnalysisPipeline:
         terms = extractor.extract_terms(texts, min_frequency=3)
 
         # Save terminology data
-        terms_data = {
-            term: extractor.extracted_terms[term].to_dict()
-            for term in extractor.extracted_terms
-        }
+        terms_data = {term: extractor.extracted_terms[term].to_dict() for term in extractor.extracted_terms}
         terms_file = self.data_dir / "terminology.json"
         with open(terms_file, "w", encoding="utf-8") as f:
             json.dump(terms_data, f, indent=2, ensure_ascii=False)
@@ -314,7 +287,7 @@ class LiteratureAnalysisPipeline:
         logger.info(f"Extracted {len(terms)} terminology items")
         return extractor
 
-    def _create_concept_map(self, terms: Dict[str, Any]) -> Any:
+    def _create_concept_map(self, terms: dict[str, Any]) -> Any:
         """Create conceptual mapping from extracted terms.
 
         Args:
@@ -333,9 +306,7 @@ class LiteratureAnalysisPipeline:
         logger.info(f"Created concept map with {len(concept_map.concepts)} concepts")
         return concept_map
 
-    def _analyze_domains(
-        self, terms: Dict[str, Any], texts: List[str]
-    ) -> Dict[str, Any]:
+    def _analyze_domains(self, terms: dict[str, Any], texts: list[str]) -> dict[str, Any]:
         """Perform domain-specific analysis.
 
         Args:
@@ -352,7 +323,7 @@ class LiteratureAnalysisPipeline:
         report_content = "# Ento-Linguistic Domain Analysis Report\n\n"
         report_content += f"Analysis performed on {datetime.now().isoformat()}\n\n"
 
-        for domain_name, analysis in domain_analyses.items():
+        for analysis in domain_analyses.values():
             report_content += analyzer.generate_domain_report(analysis)
             report_content += "\n\n---\n\n"
 
@@ -364,7 +335,7 @@ class LiteratureAnalysisPipeline:
         logger.info(f"Completed domain analysis for {len(domain_analyses)} domains")
         return domain_analyses
 
-    def _analyze_discourse(self, texts: List[str]) -> Dict[str, Any]:
+    def _analyze_discourse(self, texts: list[str]) -> dict[str, Any]:
         """Analyze discourse patterns in texts.
 
         Args:
@@ -384,8 +355,8 @@ class LiteratureAnalysisPipeline:
         return profile
 
     def _generate_visualizations(
-        self, concept_map: Any, terms: Dict[str, Any], domain_analyses: Dict[str, Any]
-    ) -> Dict[str, plt.Figure]:
+        self, concept_map: Any, terms: dict[str, Any], domain_analyses: dict[str, Any]
+    ) -> dict[str, plt.Figure]:
         """Generate visualizations for analysis results.
 
         Args:
@@ -409,6 +380,7 @@ class LiteratureAnalysisPipeline:
 
         # Terminology network — compute relationships from shared domains
         import numpy as np
+
         co_occurrence = {}
         term_list = list(terms.items())[:30]  # Limit for visualization
         for i, (t1_name, t1_obj) in enumerate(term_list):
@@ -466,9 +438,7 @@ class LiteratureAnalysisPipeline:
                 ambiguity_score = (
                     ambiguity_metrics.get("domain_metrics", {}).get(
                         "average_ambiguity_score",
-                        ambiguity_metrics.get("domain_metrics", {}).get(
-                            "average_context_diversity", 0.0
-                        ),
+                        ambiguity_metrics.get("domain_metrics", {}).get("average_context_diversity", 0.0),
                     )
                     if ambiguity_metrics
                     else 0.0
@@ -483,9 +453,7 @@ class LiteratureAnalysisPipeline:
 
                 domain_stats[domain_name] = {
                     "term_count": len(key_terms),
-                    "total_frequency": sum(
-                        getattr(terms.get(term), "frequency", 0) for term in key_terms
-                    ),
+                    "total_frequency": sum(getattr(terms.get(term), "frequency", 0) for term in key_terms),
                     "avg_confidence": avg_conf,
                     "bridging_terms": bridging,
                     "ambiguity_score": ambiguity_score,
@@ -510,14 +478,12 @@ class LiteratureAnalysisPipeline:
                 logger.warning(f"Failed to register domain_comparison figure: {e}")
 
         # Export visualization metadata
-        visualizer.export_visualization_metadata(
-            figures, self.data_dir / "visualization_metadata.json"
-        )
+        visualizer.export_visualization_metadata(figures, self.data_dir / "visualization_metadata.json")
 
         logger.info(f"Generated {len(figures)} visualizations")
         return figures
 
-    def _generate_final_report(self, results: Dict[str, Any]) -> str:
+    def _generate_final_report(self, results: dict[str, Any]) -> str:
         """Generate final analysis report.
 
         Args:
@@ -529,7 +495,7 @@ class LiteratureAnalysisPipeline:
         report_content = f"""# Ento-Linguistic Literature Analysis Report
 
 **Analysis Date:** {datetime.now().isoformat()}
-**Duration:** {results['pipeline_metadata']['duration_seconds']:.1f} seconds
+**Duration:** {results["pipeline_metadata"]["duration_seconds"]:.1f} seconds
 
 ## Executive Summary
 
@@ -538,28 +504,28 @@ This report presents the results of a comprehensive Ento-Linguistic analysis of 
 ## Analysis Overview
 
 ### Literature Corpus
-- **Publications Analyzed:** {results['stages']['literature_collection']['publications_found']}
-- **Text Processing:** {results['stages']['text_processing']['texts_processed']} texts processed
-- **Total Tokens:** {results['stages']['text_processing']['total_tokens']:,}
+- **Publications Analyzed:** {results["stages"]["literature_collection"]["publications_found"]}
+- **Text Processing:** {results["stages"]["text_processing"]["texts_processed"]} texts processed
+- **Total Tokens:** {results["stages"]["text_processing"]["total_tokens"]:,}
 
 ### Terminology Extraction
-- **Terms Identified:** {results['stages']['terminology_extraction']['terms_extracted']}
+- **Terms Identified:** {results["stages"]["terminology_extraction"]["terms_extracted"]}
 - **Domains Covered:** 6 Ento-Linguistic domains
 - **Extraction Method:** Linguistic pattern recognition with domain-specific filtering
 
 ### Conceptual Mapping
-- **Concepts Mapped:** {results['stages']['conceptual_mapping']['concepts_mapped']}
-- **Relationships Identified:** {results['stages']['conceptual_mapping']['relationships_found']}
+- **Concepts Mapped:** {results["stages"]["conceptual_mapping"]["concepts_mapped"]}
+- **Relationships Identified:** {results["stages"]["conceptual_mapping"]["relationships_found"]}
 - **Mapping Approach:** Semantic clustering with domain integration
 
 ### Domain Analysis
-- **Domains Analyzed:** {results['stages']['domain_analysis']['domains_analyzed']}
+- **Domains Analyzed:** {results["stages"]["domain_analysis"]["domains_analyzed"]}
 - **Key Findings:** Domain-specific ambiguities and framing assumptions identified
 - **Recommendations:** Clearer communication guidelines developed
 
 ### Discourse Analysis
-- **Patterns Identified:** {results['stages']['discourse_analysis']['patterns_identified']}
-- **Argumentative Structures:** {results['stages']['discourse_analysis']['structures_found']}
+- **Patterns Identified:** {results["stages"]["discourse_analysis"]["patterns_identified"]}
+- **Argumentative Structures:** {results["stages"]["discourse_analysis"]["structures_found"]}
 - **Rhetorical Strategies:** Anthropomorphic, hierarchical, and economic framing patterns
 
 ## Key Findings
@@ -658,21 +624,15 @@ def main() -> None:
         $ python scripts/_literature_analysis_pipeline.py --no-cache --output-dir /custom/path
     """
 
-    parser = argparse.ArgumentParser(
-        description="Ento-Linguistic Literature Analysis Pipeline"
-    )
+    parser = argparse.ArgumentParser(description="Ento-Linguistic Literature Analysis Pipeline")
     parser.add_argument(
         "--max-publications",
         type=int,
         default=500,
         help="Maximum number of publications to analyze",
     )
-    parser.add_argument(
-        "--output-dir", type=Path, help="Output directory (default: project output)"
-    )
-    parser.add_argument(
-        "--no-cache", action="store_true", help="Force fresh literature collection"
-    )
+    parser.add_argument("--output-dir", type=Path, help="Output directory (default: project output)")
+    parser.add_argument("--no-cache", action="store_true", help="Force fresh literature collection")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
 
     args = parser.parse_args()
@@ -685,29 +645,17 @@ def main() -> None:
 
     # Run pipeline
     pipeline = LiteratureAnalysisPipeline(args.output_dir)
-    results = pipeline.run_complete_analysis(
-        max_publications=args.max_publications, use_cached_data=not args.no_cache
-    )
+    results = pipeline.run_complete_analysis(max_publications=args.max_publications, use_cached_data=not args.no_cache)
 
     # Print summary
     logger.info("\n" + "=" * 60)
     logger.info("ENTO-LINGUISTIC ANALYSIS PIPELINE COMPLETED")
     logger.info("=" * 60)
-    logger.info(
-        f"Publications analyzed: {results['stages']['literature_collection']['publications_found']}"
-    )
-    logger.info(
-        f"Terms extracted: {results['stages']['terminology_extraction']['terms_extracted']}"
-    )
-    logger.info(
-        f"Concepts mapped: {results['stages']['conceptual_mapping']['concepts_mapped']}"
-    )
-    logger.info(
-        f"Domains analyzed: {results['stages']['domain_analysis']['domains_analyzed']}"
-    )
-    logger.info(
-        f"Pipeline execution time: {results['pipeline_metadata']['duration_seconds']:.1f}s"
-    )
+    logger.info(f"Publications analyzed: {results['stages']['literature_collection']['publications_found']}")
+    logger.info(f"Terms extracted: {results['stages']['terminology_extraction']['terms_extracted']}")
+    logger.info(f"Concepts mapped: {results['stages']['conceptual_mapping']['concepts_mapped']}")
+    logger.info(f"Domains analyzed: {results['stages']['domain_analysis']['domains_analyzed']}")
+    logger.info(f"Pipeline execution time: {results['pipeline_metadata']['duration_seconds']:.1f}s")
     logger.info(f"Output directory: {results['pipeline_metadata']['output_directory']}")
     logger.info("=" * 60)
 

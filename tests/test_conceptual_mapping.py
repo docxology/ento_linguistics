@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 import tempfile
 from pathlib import Path
-from typing import Dict
 
 import pytest
 
@@ -148,12 +147,8 @@ class TestConceptMap:
     def test_add_relationship(self, concept_map: ConceptMap) -> None:
         """Test adding relationships between concepts."""
         # Add concepts first
-        concept1 = Concept(
-            "colony", "Colony concept", {"colony"}, {"unit_of_individuality"}
-        )
-        concept2 = Concept(
-            "division_labor", "Division of labor", {"worker"}, {"behavior_and_identity"}
-        )
+        concept1 = Concept("colony", "Colony concept", {"colony"}, {"unit_of_individuality"})
+        concept2 = Concept("division_labor", "Division of labor", {"worker"}, {"behavior_and_identity"})
         concept_map.add_concept(concept1)
         concept_map.add_concept(concept2)
 
@@ -198,12 +193,8 @@ class TestConceptMap:
 
     def test_find_concept_overlaps_queen(self, concept_map: ConceptMap) -> None:
         """Test finding overlapping terms between concepts with queen."""
-        concept1 = Concept(
-            "colony", "Colony concept", {"colony", "queen"}, {"unit_of_individuality"}
-        )
-        concept2 = Concept(
-            "labor", "Labor concept", {"queen", "worker"}, {"power_and_labor"}
-        )
+        concept1 = Concept("colony", "Colony concept", {"colony", "queen"}, {"unit_of_individuality"})
+        concept2 = Concept("labor", "Labor concept", {"queen", "worker"}, {"power_and_labor"})
         concept_map.add_concept(concept1)
         concept_map.add_concept(concept2)
 
@@ -223,7 +214,7 @@ class TestConceptualMapper:
         return ConceptualMapper()
 
     @pytest.fixture
-    def sample_terms(self) -> Dict[str, Term]:
+    def sample_terms(self) -> dict[str, Term]:
         """Create sample terms for testing."""
         terms = {}
 
@@ -249,16 +240,14 @@ class TestConceptualMapper:
 
     def test_base_concepts_structure(self, mapper: ConceptualMapper) -> None:
         """Test that base concepts have required structure."""
-        for concept_name, concept_data in mapper.BASE_CONCEPTS.items():
+        for concept_data in mapper.BASE_CONCEPTS.values():
             assert "description" in concept_data
             assert "domains" in concept_data
             assert "key_terms" in concept_data
             assert isinstance(concept_data["domains"], list)
             assert isinstance(concept_data["key_terms"], list)
 
-    def test_build_concept_map(
-        self, mapper: ConceptualMapper, sample_terms: Dict[str, Term]
-    ) -> None:
+    def test_build_concept_map(self, mapper: ConceptualMapper, sample_terms: dict[str, Term]) -> None:
         """Test building a concept map from terms."""
         concept_map = mapper.build_concept_map(sample_terms)
 
@@ -269,17 +258,13 @@ class TestConceptualMapper:
         concept_names = set(concept_map.concepts.keys())
         assert len(concept_names) > 0
 
-    def test_map_term_to_concepts(
-        self, mapper: ConceptualMapper, sample_terms: Dict[str, Term]
-    ) -> None:
+    def test_map_term_to_concepts(self, mapper: ConceptualMapper, sample_terms: dict[str, Term]) -> None:
         """Test mapping individual terms to concepts."""
         term = sample_terms["queen"]
 
         # Initialize base concepts first (this is normally done in build_concept_map)
         for concept_name, concept_data in mapper.BASE_CONCEPTS.items():
-            concept = Concept(
-                name=concept_name, description=concept_data["description"]
-            )
+            concept = Concept(name=concept_name, description=concept_data["description"])
             for domain in concept_data["domains"]:
                 concept.add_domain(domain)
             for term_text in concept_data["key_terms"]:
@@ -302,9 +287,7 @@ class TestConceptualMapper:
         # Should have created relationships
         assert isinstance(mapper.concept_map.concept_relationships, dict)
 
-    def test_identify_conceptual_boundaries(
-        self, mapper: ConceptualMapper, sample_terms: Dict[str, Term]
-    ) -> None:
+    def test_identify_conceptual_boundaries(self, mapper: ConceptualMapper, sample_terms: dict[str, Term]) -> None:
         """Test identifying conceptual boundaries."""
         # First build a concept map with some terms
         mapper.build_concept_map(sample_terms)
@@ -347,9 +330,7 @@ class TestConceptualMapper:
         # Should still have base concepts
         assert len(empty_map.concepts) >= len(mapper.BASE_CONCEPTS)
 
-    def test_concept_map_validation(
-        self, mapper: ConceptualMapper, sample_terms: Dict[str, Term]
-    ) -> None:
+    def test_concept_map_validation(self, mapper: ConceptualMapper, sample_terms: dict[str, Term]) -> None:
         """Test validation of concept maps."""
         concept_map = mapper.build_concept_map(sample_terms)
 
@@ -363,7 +344,7 @@ class TestConceptualMapper:
             assert concept.description
 
     def test_export_concept_map_json(
-        self, mapper: ConceptualMapper, sample_terms: Dict[str, Term], tmp_path: Path
+        self, mapper: ConceptualMapper, sample_terms: dict[str, Term], tmp_path: Path
     ) -> None:
         """Test JSON export of concept map."""
         mapper.build_concept_map(sample_terms)
@@ -460,28 +441,38 @@ def expanded_sample_terms():
     """Create sample terms for expanded conceptual mapping tests."""
     return {
         "colony": Term(
-            text="colony", lemma="colony",
-            domains=["behavioral"], frequency=15,
+            text="colony",
+            lemma="colony",
+            domains=["behavioral"],
+            frequency=15,
             contexts=["The colony structure is complex"],
         ),
         "pheromone": Term(
-            text="pheromone", lemma="pheromone",
-            domains=["chemical"], frequency=12,
+            text="pheromone",
+            lemma="pheromone",
+            domains=["chemical"],
+            frequency=12,
             contexts=["Pheromone signaling is key"],
         ),
         "worker": Term(
-            text="worker", lemma="worker",
-            domains=["behavioral"], frequency=10,
+            text="worker",
+            lemma="worker",
+            domains=["behavioral"],
+            frequency=10,
             contexts=["Worker bees perform tasks"],
         ),
         "mandible": Term(
-            text="mandible", lemma="mandible",
-            domains=["morphological"], frequency=5,
+            text="mandible",
+            lemma="mandible",
+            domains=["morphological"],
+            frequency=5,
             contexts=["The mandible structure varies"],
         ),
         "forager": Term(
-            text="forager", lemma="forager",
-            domains=["behavioral"], frequency=8,
+            text="forager",
+            lemma="forager",
+            domains=["behavioral"],
+            frequency=8,
             contexts=["Forager bees collect nectar"],
         ),
     }
@@ -508,7 +499,7 @@ class TestConceptMapAdvancedMethods:
     def test_get_concept_centrality(self, populated_concept_map):
         centrality = populated_concept_map.get_concept_centrality()
         assert isinstance(centrality, dict)
-        for concept_name, metrics in centrality.items():
+        for metrics in centrality.values():
             assert isinstance(metrics, dict)
 
     def test_get_relationship_strengths(self, populated_concept_map):
@@ -723,10 +714,8 @@ class TestConceptualMapperExport:
     def test_export_json_full(self):
         mapper = ConceptualMapper()
         terms = {
-            "colony": Term(text="colony", lemma="colony",
-                          domains=["behavioral"], frequency=15),
-            "worker": Term(text="worker", lemma="worker",
-                          domains=["behavioral"], frequency=10),
+            "colony": Term(text="colony", lemma="colony", domains=["behavioral"], frequency=15),
+            "worker": Term(text="worker", lemma="worker", domains=["behavioral"], frequency=10),
         }
         mapper.build_concept_map(terms)
         with tempfile.TemporaryDirectory() as tmp:
@@ -770,12 +759,9 @@ class TestConceptualMapperAnalysis:
 
     def test_detect_anthropomorphic(self, cov_mapper):
         terms = {
-            "decides": Term(text="decides", lemma="decide",
-                           domains=["behavioral"], frequency=5),
-            "chooses": Term(text="chooses", lemma="choose",
-                           domains=["behavioral"], frequency=3),
-            "antenna": Term(text="antenna", lemma="antenna",
-                           domains=["morphological"], frequency=8),
+            "decides": Term(text="decides", lemma="decide", domains=["behavioral"], frequency=5),
+            "chooses": Term(text="chooses", lemma="choose", domains=["behavioral"], frequency=3),
+            "antenna": Term(text="antenna", lemma="antenna", domains=["morphological"], frequency=8),
         }
         cov_mapper.build_concept_map(terms)
         result = cov_mapper.detect_anthropomorphic_concepts()
@@ -783,10 +769,8 @@ class TestConceptualMapperAnalysis:
 
     def test_conceptual_boundaries(self, cov_mapper):
         terms = {
-            "colony": Term(text="colony", lemma="colony",
-                          domains=["behavioral", "ecological"], frequency=15),
-            "pheromone": Term(text="pheromone", lemma="pheromone",
-                            domains=["chemical"], frequency=10),
+            "colony": Term(text="colony", lemma="colony", domains=["behavioral", "ecological"], frequency=15),
+            "pheromone": Term(text="pheromone", lemma="pheromone", domains=["chemical"], frequency=10),
         }
         cov_mapper.build_concept_map(terms)
         result = cov_mapper.identify_conceptual_boundaries()
@@ -794,12 +778,9 @@ class TestConceptualMapperAnalysis:
 
     def test_conceptual_hierarchy(self, cov_mapper):
         terms = {
-            "colony": Term(text="colony", lemma="colony",
-                          domains=["behavioral"], frequency=15),
-            "worker": Term(text="worker", lemma="worker",
-                          domains=["behavioral"], frequency=10),
-            "queen": Term(text="queen", lemma="queen",
-                         domains=["behavioral"], frequency=8),
+            "colony": Term(text="colony", lemma="colony", domains=["behavioral"], frequency=15),
+            "worker": Term(text="worker", lemma="worker", domains=["behavioral"], frequency=10),
+            "queen": Term(text="queen", lemma="queen", domains=["behavioral"], frequency=8),
         }
         cov_mapper.build_concept_map(terms)
         result = cov_mapper.analyze_conceptual_hierarchy()
@@ -834,32 +815,36 @@ class TestMapTermDomainBranches:
 
     def test_kin_domain_mapping(self, branch_mapper):
         terms = {
-            "kin_selection": Term(text="kin_selection", lemma="kin_selection",
-                                  domains=["kin_and_relatedness"], frequency=5),
+            "kin_selection": Term(
+                text="kin_selection", lemma="kin_selection", domains=["kin_and_relatedness"], frequency=5
+            ),
         }
         result = branch_mapper.build_concept_map(terms)
         assert "kin_selection" in result.concepts["kinship_systems"].terms
 
     def test_economics_domain_mapping(self, branch_mapper):
         terms = {
-            "resource_allocation": Term(text="resource_allocation", lemma="resource_allocation",
-                                        domains=["economics"], frequency=5),
+            "resource_allocation": Term(
+                text="resource_allocation", lemma="resource_allocation", domains=["economics"], frequency=5
+            ),
         }
         result = branch_mapper.build_concept_map(terms)
         assert "resource_allocation" in result.concepts["resource_economics"].terms
 
     def test_unit_of_individuality_mapping(self, branch_mapper):
         terms = {
-            "superorganism": Term(text="superorganism", lemma="superorganism",
-                                   domains=["unit_of_individuality"], frequency=5),
+            "superorganism": Term(
+                text="superorganism", lemma="superorganism", domains=["unit_of_individuality"], frequency=5
+            ),
         }
         result = branch_mapper.build_concept_map(terms)
         assert "superorganism" in result.concepts["biological_individuality"].terms
 
     def test_sex_reproduction_mapping(self, branch_mapper):
         terms = {
-            "haplodiploidy": Term(text="haplodiploidy", lemma="haplodiploidy",
-                                  domains=["sex_and_reproduction"], frequency=5),
+            "haplodiploidy": Term(
+                text="haplodiploidy", lemma="haplodiploidy", domains=["sex_and_reproduction"], frequency=5
+            ),
         }
         result = branch_mapper.build_concept_map(terms)
         assert "haplodiploidy" in result.concepts["reproductive_biology"].terms
@@ -874,49 +859,44 @@ class TestSemanticConceptMapping:
 
     def test_individuality_semantic(self, sem_mapper):
         terms = {
-            "unit_entity": Term(text="unit_entity", lemma="unit_entity",
-                                domains=[], frequency=5),
+            "unit_entity": Term(text="unit_entity", lemma="unit_entity", domains=[], frequency=5),
         }
         result = sem_mapper.build_concept_map(terms)
         assert "unit_entity" in result.concepts["biological_individuality"].terms
 
     def test_social_semantic(self, sem_mapper):
         terms = {
-            "social_group": Term(text="social_group", lemma="social_group",
-                                 domains=[], frequency=3),
+            "social_group": Term(text="social_group", lemma="social_group", domains=[], frequency=3),
         }
         result = sem_mapper.build_concept_map(terms)
         assert "social_group" in result.concepts["social_organization"].terms
 
     def test_reproductive_semantic(self, sem_mapper):
         terms = {
-            "mating_flight": Term(text="mating_flight", lemma="mating_flight",
-                                   domains=[], frequency=3),
+            "mating_flight": Term(text="mating_flight", lemma="mating_flight", domains=[], frequency=3),
         }
         result = sem_mapper.build_concept_map(terms)
         assert "mating_flight" in result.concepts["reproductive_biology"].terms
 
     def test_kinship_semantic(self, sem_mapper):
         terms = {
-            "kin_group": Term(text="kin_group", lemma="kin_group",
-                              domains=[], frequency=3),
+            "kin_group": Term(text="kin_group", lemma="kin_group", domains=[], frequency=3),
         }
         result = sem_mapper.build_concept_map(terms)
         assert "kin_group" in result.concepts["kinship_systems"].terms
 
     def test_economic_semantic(self, sem_mapper):
         terms = {
-            "resource_cost": Term(text="resource_cost", lemma="resource_cost",
-                                   domains=[], frequency=3),
+            "resource_cost": Term(text="resource_cost", lemma="resource_cost", domains=[], frequency=3),
         }
         result = sem_mapper.build_concept_map(terms)
         assert "resource_cost" in result.concepts["resource_economics"].terms
 
     def test_behavioral_semantic(self, sem_mapper):
         terms = {
-            "behavioral_adaptation": Term(text="behavioral_adaptation",
-                                           lemma="behavioral_adaptation",
-                                           domains=[], frequency=3),
+            "behavioral_adaptation": Term(
+                text="behavioral_adaptation", lemma="behavioral_adaptation", domains=[], frequency=3
+            ),
         }
         result = sem_mapper.build_concept_map(terms)
         assert "behavioral_adaptation" in result.concepts["behavioral_ecology"].terms
@@ -971,25 +951,27 @@ class TestFindConceptGapsCoverage:
     def test_with_gaps(self):
         mapper = ConceptualMapper()
         terms = {
-            "colony": Term(text="colony", lemma="colony",
-                          domains=["behavioral"], frequency=5),
+            "colony": Term(text="colony", lemma="colony", domains=["behavioral"], frequency=5),
         }
         mapper.build_concept_map(terms)
-        gaps = mapper.find_concept_gaps({
-            "unknown_domain": ["xyz_term", "abc_term"],
-        })
+        gaps = mapper.find_concept_gaps(
+            {
+                "unknown_domain": ["xyz_term", "abc_term"],
+            }
+        )
         assert "unknown_domain" in gaps
 
     def test_no_gaps(self):
         mapper = ConceptualMapper()
         terms = {
-            "colony": Term(text="colony", lemma="colony",
-                          domains=["behavioral"], frequency=5),
+            "colony": Term(text="colony", lemma="colony", domains=["behavioral"], frequency=5),
         }
         mapper.build_concept_map(terms)
-        gaps = mapper.find_concept_gaps({
-            "behavioral": ["colony"],
-        })
+        gaps = mapper.find_concept_gaps(
+            {
+                "behavioral": ["colony"],
+            }
+        )
         assert "behavioral" not in gaps
 
 

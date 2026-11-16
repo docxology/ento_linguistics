@@ -11,14 +11,14 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from visualization.concept_visualization import ConceptVisualizer
 from analysis.conceptual_mapping import ConceptualMapper
-from data.literature_mining import LiteratureCorpus
 from analysis.term_extraction import TerminologyExtractor
-
 from core.logging import get_logger
+from data.literature_mining import LiteratureCorpus
+from visualization.concept_visualization import ConceptVisualizer
+
 # Directory creation handled inline
 from visualization.figure_manager import FigureManager
 
@@ -32,7 +32,7 @@ class ConceptualMappingScript:
     relates to conceptual structures in Ento-Linguistic research.
     """
 
-    def __init__(self, output_dir: Optional[Path] = None):
+    def __init__(self, output_dir: Path | None = None):
         """Initialize conceptual mapping script.
 
         Args:
@@ -52,13 +52,9 @@ class ConceptualMappingScript:
         self.figure_manager = FigureManager()
         self.visualizer = ConceptVisualizer()
 
-        logger.info(
-            f"Initialized conceptual mapping script with output directory: {self.output_dir}"
-        )
+        logger.info(f"Initialized conceptual mapping script with output directory: {self.output_dir}")
 
-    def generate_concept_map(
-        self, corpus_file: Optional[Path] = None, analysis_type: str = "full"
-    ) -> Dict[str, Any]:
+    def generate_concept_map(self, corpus_file: Path | None = None, analysis_type: str = "full") -> dict[str, Any]:
         """Generate conceptual map from literature.
 
         Args:
@@ -85,14 +81,14 @@ class ConceptualMappingScript:
             >>> results = script.generate_concept_map(analysis_type="full")
             >>> print(f"Extracted {results['terms_extracted']} terms")
         """
-        logger.debug(
-            f"generate_concept_map() entry: corpus_file={corpus_file}, analysis_type={analysis_type}"
-        )
+        logger.debug(f"generate_concept_map() entry: corpus_file={corpus_file}, analysis_type={analysis_type}")
         logger.info(f"Generating conceptual map (analysis type: {analysis_type})")
 
         # Validate inputs
         if analysis_type not in ["full", "terminology_only", "concepts_only"]:
-            error_msg = f"Invalid analysis_type '{analysis_type}'. Must be one of: full, terminology_only, concepts_only"
+            error_msg = (
+                f"Invalid analysis_type '{analysis_type}'. Must be one of: full, terminology_only, concepts_only"
+            )
             logger.error(error_msg)
             logger.error(
                 "Suggestion: Use 'full' for complete analysis, 'terminology_only' for term extraction only, or 'concepts_only' for mapping only"
@@ -151,12 +147,10 @@ class ConceptualMappingScript:
         self._save_concept_data(concept_map, terms)
 
         logger.info("Conceptual mapping completed")
-        logger.debug(
-            f"generate_concept_map() exit: results_keys={list(results.keys())}"
-        )
+        logger.debug(f"generate_concept_map() exit: results_keys={list(results.keys())}")
         return results
 
-    def _load_corpus(self, corpus_file: Optional[Path]) -> LiteratureCorpus:
+    def _load_corpus(self, corpus_file: Path | None) -> LiteratureCorpus:
         """Load literature corpus.
 
         Args:
@@ -177,7 +171,7 @@ class ConceptualMappingScript:
                 logger.warning("No corpus file found, creating empty corpus")
                 return LiteratureCorpus()
 
-    def _analyze_terminology_only(self, terms: Dict[str, Any]) -> Dict[str, Any]:
+    def _analyze_terminology_only(self, terms: dict[str, Any]) -> dict[str, Any]:
         """Analyze terminology without conceptual mapping.
 
         Args:
@@ -209,7 +203,7 @@ class ConceptualMappingScript:
             "visualization_file": str(self.figures_dir / "terminology_overview.png"),
         }
 
-    def _analyze_concepts_only(self, concept_map: Any) -> Dict[str, Any]:
+    def _analyze_concepts_only(self, concept_map: Any) -> dict[str, Any]:
         """Analyze concepts without detailed terminology.
 
         Args:
@@ -232,17 +226,14 @@ class ConceptualMappingScript:
         relationship_stats = {
             "total_relationships": len(concept_map.concept_relationships),
             "avg_relationship_strength": (
-                sum(concept_map.concept_relationships.values())
-                / len(concept_map.concept_relationships)
+                sum(concept_map.concept_relationships.values()) / len(concept_map.concept_relationships)
                 if concept_map.concept_relationships
                 else 0
             ),
         }
 
         # Generate concept visualization
-        self.visualizer.visualize_concept_map(
-            concept_map, filepath=self.figures_dir / "concepts_only_map.png"
-        )
+        self.visualizer.visualize_concept_map(concept_map, filepath=self.figures_dir / "concepts_only_map.png")
 
         return {
             "analysis_type": "concepts_only",
@@ -252,9 +243,7 @@ class ConceptualMappingScript:
             "visualization_file": str(self.figures_dir / "concepts_only_map.png"),
         }
 
-    def _generate_concept_visualizations(
-        self, concept_map: Any, terms: Dict[str, Any]
-    ) -> Dict[str, str]:
+    def _generate_concept_visualizations(self, concept_map: Any, terms: dict[str, Any]) -> dict[str, str]:
         """Generate visualizations for conceptual mapping.
 
         Args:
@@ -285,9 +274,7 @@ class ConceptualMappingScript:
                 # Create relationship if terms share domains
                 shared_domains = set(term1_domains) & set(term2_domains)
                 if shared_domains:
-                    weight = len(shared_domains) / max(
-                        len(term1_domains), len(term2_domains)
-                    )
+                    weight = len(shared_domains) / max(len(term1_domains), len(term2_domains))
                     relationships[(term1, term2)] = weight
 
         if relationships:
@@ -296,9 +283,7 @@ class ConceptualMappingScript:
                 relationships,
                 filepath=self.figures_dir / "terminology_network.png",
             )
-            visualizations["terminology_network"] = str(
-                self.figures_dir / "terminology_network.png"
-            )
+            visualizations["terminology_network"] = str(self.figures_dir / "terminology_network.png")
 
         # Concept hierarchy
         hierarchy_data = self._extract_hierarchy_data(concept_map)
@@ -306,9 +291,7 @@ class ConceptualMappingScript:
             self.visualizer.visualize_concept_hierarchy(
                 hierarchy_data, filepath=self.figures_dir / "concept_hierarchy.png"
             )
-            visualizations["concept_hierarchy"] = str(
-                self.figures_dir / "concept_hierarchy.png"
-            )
+            visualizations["concept_hierarchy"] = str(self.figures_dir / "concept_hierarchy.png")
 
         # Anthropomorphic concepts analysis
         anthropomorphic_data = self._extract_anthropomorphic_data(concept_map)
@@ -317,9 +300,7 @@ class ConceptualMappingScript:
                 anthropomorphic_data,
                 filepath=self.figures_dir / "anthropomorphic_analysis.png",
             )
-            visualizations["anthropomorphic_analysis"] = str(
-                self.figures_dir / "anthropomorphic_analysis.png"
-            )
+            visualizations["anthropomorphic_analysis"] = str(self.figures_dir / "anthropomorphic_analysis.png")
 
         # Save visualization metadata
         self.visualizer.export_visualization_metadata(
@@ -329,7 +310,7 @@ class ConceptualMappingScript:
 
         return visualizations
 
-    def _extract_hierarchy_data(self, concept_map: Any) -> Dict[str, Any]:
+    def _extract_hierarchy_data(self, concept_map: Any) -> dict[str, Any]:
         """Extract hierarchy data for visualization.
 
         Args:
@@ -348,12 +329,8 @@ class ConceptualMappingScript:
         if centrality_scores:
             centrality_values = list(centrality_scores.values())
             threshold = sum(centrality_values) / len(centrality_values)
-            core_concepts = [
-                c for c, score in centrality_scores.items() if score > threshold
-            ]
-            peripheral_concepts = [
-                c for c, score in centrality_scores.items() if score <= threshold
-            ]
+            core_concepts = [c for c, score in centrality_scores.items() if score > threshold]
+            peripheral_concepts = [c for c, score in centrality_scores.items() if score <= threshold]
         else:
             core_concepts = []
             peripheral_concepts = []
@@ -365,7 +342,7 @@ class ConceptualMappingScript:
             "hierarchy_depth": 2,  # Simplified
         }
 
-    def _extract_anthropomorphic_data(self, concept_map: Any) -> Dict[str, List[str]]:
+    def _extract_anthropomorphic_data(self, concept_map: Any) -> dict[str, list[str]]:
         """Extract anthropomorphic concept data.
 
         Args:
@@ -378,9 +355,7 @@ class ConceptualMappingScript:
         mapper.concept_map = concept_map
         return mapper.detect_anthropomorphic_concepts()
 
-    def _generate_concept_report(
-        self, concept_map: Any, terms: Dict[str, Any], results: Dict[str, Any]
-    ) -> str:
+    def _generate_concept_report(self, concept_map: Any, terms: dict[str, Any], results: dict[str, Any]) -> str:
         """Generate conceptual mapping report.
 
         Args:
@@ -399,9 +374,9 @@ This report presents the results of conceptual mapping analysis, showing how ter
 
 ## Analysis Summary
 
-- **Terms Extracted**: {results['terms_extracted']}
-- **Concepts Mapped**: {results['concepts_mapped']}
-- **Relationships Identified**: {results['relationships_found']}
+- **Terms Extracted**: {results["terms_extracted"]}
+- **Concepts Mapped**: {results["concepts_mapped"]}
+- **Relationships Identified**: {results["relationships_found"]}
 
 ## Concept Map Structure
 
@@ -414,8 +389,8 @@ The following concepts form the foundation of the Ento-Linguistic framework:
             report_content += f"""#### {name}
 - **Description**: {concept.description}
 - **Associated Terms**: {len(concept.terms)} terms
-- **Domains**: {', '.join(concept.domains)}
-- **Sample Terms**: {', '.join(list(concept.terms)[:5])}
+- **Domains**: {", ".join(concept.domains)}
+- **Sample Terms**: {", ".join(list(concept.terms)[:5])}
 
 """
 
@@ -426,9 +401,7 @@ The following concepts form the foundation of the Ento-Linguistic framework:
 """
 
         # Sort relationships by strength
-        sorted_relationships = sorted(
-            concept_map.concept_relationships.items(), key=lambda x: x[1], reverse=True
-        )[:10]
+        sorted_relationships = sorted(concept_map.concept_relationships.items(), key=lambda x: x[1], reverse=True)[:10]
 
         for (concept1, concept2), weight in sorted_relationships:
             report_content += f"- **{concept1} -> {concept2}**: {weight:.3f}\n"
@@ -445,15 +418,11 @@ The following concepts form the foundation of the Ento-Linguistic framework:
         for term in terms:
             term_concept_counts[term] = len(concept_map.get_term_concepts(term))
 
-        sorted_terms = sorted(
-            term_concept_counts.items(), key=lambda x: x[1], reverse=True
-        )[:10]
+        sorted_terms = sorted(term_concept_counts.items(), key=lambda x: x[1], reverse=True)[:10]
 
         for term, count in sorted_terms:
             concepts = concept_map.get_term_concepts(term)
-            report_content += (
-                f"- **{term}**: Connected to {count} concepts ({', '.join(concepts)})\n"
-            )
+            report_content += f"- **{term}**: Connected to {count} concepts ({', '.join(concepts)})\n"
 
         report_content += """
 
@@ -467,9 +436,7 @@ The following concepts form the foundation of the Ento-Linguistic framework:
             for domain in concept.domains:
                 domain_concept_counts[domain] = domain_concept_counts.get(domain, 0) + 1
 
-        for domain, count in sorted(
-            domain_concept_counts.items(), key=lambda x: x[1], reverse=True
-        ):
+        for domain, count in sorted(domain_concept_counts.items(), key=lambda x: x[1], reverse=True):
             domain_name = domain.replace("_", " ").title()
             report_content += f"- **{domain_name}**: {count} concepts\n"
 
@@ -524,7 +491,7 @@ The analysis suggests opportunities for improving scientific communication throu
 
         return str(report_file)
 
-    def _save_concept_data(self, concept_map: Any, terms: Dict[str, Any]) -> None:
+    def _save_concept_data(self, concept_map: Any, terms: dict[str, Any]) -> None:
         """Save concept mapping data to files.
 
         Args:
@@ -541,7 +508,7 @@ The analysis suggests opportunities for improving scientific communication throu
         with open(self.data_dir / "terminology.json", "w", encoding="utf-8") as f:
             json.dump(terms_data, f, indent=2, ensure_ascii=False)
 
-    def _generate_terminology_visualization(self, terms: Dict[str, Any]) -> str:
+    def _generate_terminology_visualization(self, terms: dict[str, Any]) -> str:
         """Generate overview visualization of terminology.
 
         Args:
@@ -602,9 +569,7 @@ def main() -> None:
         $ python scripts/_conceptual_mapping_script.py --corpus-file /path/to/corpus.json --output-dir /output/path
     """
     parser = argparse.ArgumentParser(description="Ento-Linguistic Conceptual Mapping")
-    parser.add_argument(
-        "--corpus-file", type=Path, help="Path to literature corpus JSON file"
-    )
+    parser.add_argument("--corpus-file", type=Path, help="Path to literature corpus JSON file")
     parser.add_argument("--output-dir", type=Path, help="Output directory")
     parser.add_argument(
         "--analysis-type",

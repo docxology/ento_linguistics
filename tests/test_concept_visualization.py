@@ -12,11 +12,10 @@ matplotlib.use("Agg")  # Use non-interactive backend for testing
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-
 import networkx as nx
 
-from visualization.concept_visualization import ConceptVisualizer
 from analysis.conceptual_mapping import Concept, ConceptMap
+from visualization.concept_visualization import ConceptVisualizer
 
 
 class TestConceptVisualizer:
@@ -93,9 +92,7 @@ class TestConceptVisualizer:
 
         plt.close(fig)
 
-    def test_create_domain_comparison_plot(
-        self, visualizer: ConceptVisualizer, tmp_path: Path
-    ) -> None:
+    def test_create_domain_comparison_plot(self, visualizer: ConceptVisualizer, tmp_path: Path) -> None:
         """Test domain comparison plot creation."""
         domain_data = {
             "unit_of_individuality": {"terms": 50, "confidence": 0.8},
@@ -114,9 +111,7 @@ class TestConceptVisualizer:
 
         plt.close(fig)
 
-    def test_visualize_terminology_network(
-        self, visualizer: ConceptVisualizer, tmp_path: Path
-    ) -> None:
+    def test_visualize_terminology_network(self, visualizer: ConceptVisualizer, tmp_path: Path) -> None:
         """Test terminology network visualization."""
         terms = [
             ("colony", {"domains": ["unit_of_individuality"], "frequency": 10}),
@@ -142,9 +137,7 @@ class TestConceptVisualizer:
 
         plt.close(fig)
 
-    def test_get_concept_color(
-        self, visualizer: ConceptVisualizer, sample_concept_map: ConceptMap
-    ) -> None:
+    def test_get_concept_color(self, visualizer: ConceptVisualizer, sample_concept_map: ConceptMap) -> None:
         """Test concept color retrieval."""
         color = visualizer._get_concept_color("colony_organization", sample_concept_map)
         # Deterministic primary domain: sorted(domains)[0] == "power_and_labor"
@@ -154,20 +147,22 @@ class TestConceptVisualizer:
         color = visualizer._get_concept_color("unknown_concept", sample_concept_map)
         assert color == "#7f7f7f"  # Default gray
 
-    def test_primary_domain_selection_deterministic(
-        self, sample_concept_map: ConceptMap
-    ) -> None:
+    def test_primary_domain_selection_deterministic(self, sample_concept_map: ConceptMap) -> None:
         """Primary-domain pick is stable regardless of set iteration order."""
         viz = ConceptVisualizer()
         cmap_a = ConceptMap()
         c_a = Concept(
-            name="x", description="d", terms=set(),
+            name="x",
+            description="d",
+            terms=set(),
             domains={"unit_of_individuality", "power_and_labor"},
         )
         cmap_a.concepts["x"] = c_a
         cmap_b = ConceptMap()
         c_b = Concept(
-            name="x", description="d", terms=set(),
+            name="x",
+            description="d",
+            terms=set(),
             domains={"power_and_labor", "unit_of_individuality"},
         )
         cmap_b.concepts["x"] = c_b
@@ -182,7 +177,8 @@ class TestConceptVisualizer:
         viz = ConceptVisualizer()
         cmap = ConceptMap()
         c = Concept(
-            name="foraging", description="food retrieval",
+            name="foraging",
+            description="food retrieval",
             terms={"scout", "trail"},
             domains={"behavior_and_identity", "economics"},
         )
@@ -192,15 +188,22 @@ class TestConceptVisualizer:
         figures = [
             viz.visualize_concept_map(cmap),
             viz.visualize_concept_hierarchy(
-                {"centrality_scores": {"a": 2, "b": 1},
-                 "core_concepts": ["a"], "peripheral_concepts": ["b"]}
+                {"centrality_scores": {"a": 2, "b": 1}, "core_concepts": ["a"], "peripheral_concepts": ["b"]}
             ),
-            viz.create_domain_patterns_grid(terms={
-                "drone": type("T", (), {
-                    "text": "drone", "frequency": 5,
-                    "domains": ["sex_and_reproduction"], "pos_tags": ["NN"],
-                })(),
-            }),
+            viz.create_domain_patterns_grid(
+                terms={
+                    "drone": type(
+                        "T",
+                        (),
+                        {
+                            "text": "drone",
+                            "frequency": 5,
+                            "domains": ["sex_and_reproduction"],
+                            "pos_tags": ["NN"],
+                        },
+                    )(),
+                }
+            ),
         ]
         for fig in figures:
             assert isinstance(fig, plt.Figure)
@@ -210,10 +213,7 @@ class TestConceptVisualizer:
                 sizes.append(ax.xaxis.label.get_fontsize())
                 sizes.append(ax.yaxis.label.get_fontsize())
                 sizes.extend(t.get_fontsize() for t in ax.texts)
-                sizes.extend(
-                    lab.get_fontsize()
-                    for lab in ax.get_xticklabels() + ax.get_yticklabels()
-                )
+                sizes.extend(lab.get_fontsize() for lab in ax.get_xticklabels() + ax.get_yticklabels())
             suptitle = getattr(fig, "_suptitle", None)
             if suptitle is not None:
                 sizes.append(suptitle.get_fontsize())
@@ -277,9 +277,7 @@ class TestConceptVisualizer:
         assert len(concept_map.concepts) == 1
         assert len(concept_map.concept_relationships) == 0
 
-    def test_visualize_concept_hierarchy(
-        self, visualizer: ConceptVisualizer, tmp_path: Path
-    ) -> None:
+    def test_visualize_concept_hierarchy(self, visualizer: ConceptVisualizer, tmp_path: Path) -> None:
         """Test concept hierarchy visualization."""
         # Test with empty hierarchy (should not save file)
         hierarchy_data = {}
@@ -306,9 +304,7 @@ class TestConceptVisualizer:
         assert filepath.exists()
         plt.close(fig)
 
-    def test_create_anthropomorphic_analysis_plot(
-        self, visualizer: ConceptVisualizer, tmp_path: Path
-    ) -> None:
+    def test_create_anthropomorphic_analysis_plot(self, visualizer: ConceptVisualizer, tmp_path: Path) -> None:
         """Test anthropomorphic analysis plot creation."""
         anthropomorphic_data = {
             "sentences": [
@@ -320,16 +316,12 @@ class TestConceptVisualizer:
         }
 
         filepath = tmp_path / "anthropomorphic.png"
-        fig = visualizer.create_anthropomorphic_analysis_plot(
-            anthropomorphic_data, filepath
-        )
+        fig = visualizer.create_anthropomorphic_analysis_plot(anthropomorphic_data, filepath)
         assert isinstance(fig, plt.Figure)
         assert filepath.exists()
         plt.close(fig)
 
-    def test_export_visualization_metadata(
-        self, visualizer: ConceptVisualizer, tmp_path: Path
-    ) -> None:
+    def test_export_visualization_metadata(self, visualizer: ConceptVisualizer, tmp_path: Path) -> None:
         """Test visualization metadata export."""
         # Create some test figures
         fig1, ax1 = plt.subplots()
@@ -579,9 +571,7 @@ class TestCreateInteractiveConceptNetwork:
         visualizer = ConceptVisualizer()
         with tempfile.TemporaryDirectory() as tmp:
             output_dir = Path(tmp)
-            result = visualizer.create_interactive_concept_network(
-                populated_concept_map, output_dir
-            )
+            result = visualizer.create_interactive_concept_network(populated_concept_map, output_dir)
             assert isinstance(result, str)
             assert Path(result).exists()
         plt.close("all")
@@ -598,9 +588,7 @@ class TestCreateFallbackCooccurrencePlot:
             "queen": {"colony": 10, "reproduction": 7},
         }
         fig, ax = plt.subplots()
-        visualizer._create_fallback_cooccurrence_plot(
-            cooccurrence_matrix, ax, "Co-occurrence"
-        )
+        visualizer._create_fallback_cooccurrence_plot(cooccurrence_matrix, ax, "Co-occurrence")
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
 
@@ -676,9 +664,7 @@ class TestVisualizeTerminologyNetworkBranches:
             ("worker", "forager"): 0.7,
             ("colony", "pheromone"): 0.5,
         }
-        fig = visualizer.visualize_terminology_network(
-            terms, relationships, title="Full Network"
-        )
+        fig = visualizer.visualize_terminology_network(terms, relationships, title="Full Network")
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
 
@@ -691,9 +677,7 @@ class TestVisualizeTerminologyNetworkBranches:
         relationships = {("a", "b"): 0.5}
         with tempfile.TemporaryDirectory() as tmp:
             filepath = Path(tmp) / "network.png"
-            fig = visualizer.visualize_terminology_network(
-                terms, relationships, filepath=filepath
-            )
+            fig = visualizer.visualize_terminology_network(terms, relationships, filepath=filepath)
             assert filepath.exists()
             plt.close(fig)
 
@@ -711,17 +695,13 @@ class TestVisualizeTermCooccurrence:
         visualizer = ConceptVisualizer()
         with tempfile.TemporaryDirectory() as tmp:
             filepath = Path(tmp) / "cooccurrence.png"
-            fig = visualizer.visualize_term_cooccurrence(
-                cooccurrence_matrix, filepath=filepath
-            )
+            fig = visualizer.visualize_term_cooccurrence(cooccurrence_matrix, filepath=filepath)
             assert filepath.exists()
             plt.close(fig)
 
     def test_custom_title(self, cooccurrence_matrix):
         visualizer = ConceptVisualizer()
-        fig = visualizer.visualize_term_cooccurrence(
-            cooccurrence_matrix, title="Custom Network"
-        )
+        fig = visualizer.visualize_term_cooccurrence(cooccurrence_matrix, title="Custom Network")
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
 
@@ -766,17 +746,13 @@ class TestCreateDomainOverlapHeatmap:
         visualizer = ConceptVisualizer()
         with tempfile.TemporaryDirectory() as tmp:
             filepath = Path(tmp) / "overlap.png"
-            fig = visualizer.create_domain_overlap_heatmap(
-                domain_overlaps, filepath=filepath
-            )
+            fig = visualizer.create_domain_overlap_heatmap(domain_overlaps, filepath=filepath)
             assert filepath.exists()
             plt.close(fig)
 
     def test_custom_title(self, domain_overlaps):
         visualizer = ConceptVisualizer()
-        fig = visualizer.create_domain_overlap_heatmap(
-            domain_overlaps, title="Cross-Domain Overlap"
-        )
+        fig = visualizer.create_domain_overlap_heatmap(domain_overlaps, title="Cross-Domain Overlap")
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
 
@@ -828,9 +804,7 @@ class TestAdditionalVisualizerEdgeCases:
         relationships = {
             ("colony", "worker"): 0.8,
         }
-        fig = visualizer.visualize_terminology_network(
-            terms, relationships, title="Custom Term Network"
-        )
+        fig = visualizer.visualize_terminology_network(terms, relationships, title="Custom Term Network")
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
 
@@ -842,9 +816,7 @@ class TestAdditionalVisualizerEdgeCases:
                 "intentional": ["decides", "chooses"],
                 "emotional": ["happy", "angry"],
             }
-            fig = visualizer.create_anthropomorphic_analysis_plot(
-                anthro_data, filepath=filepath
-            )
+            fig = visualizer.create_anthropomorphic_analysis_plot(anthro_data, filepath=filepath)
             assert isinstance(fig, plt.Figure)
             plt.close(fig)
 
@@ -934,6 +906,7 @@ class TestConceptVisualizerFallbackPaths:
         }
         viz._create_fallback_cooccurrence_plot(matrix, ax, "Pairs")
         plt.close(fig)
+
     def test_get_concept_color_3d_no_domain(self):
         """_get_concept_color_3d returns gray for concepts without domains."""
         viz = ConceptVisualizer()
@@ -957,12 +930,16 @@ class TestConceptVisualizerFallbackPaths:
 
         terms = {
             "queen": SimpleNamespace(
-                frequency=10, domains=["unit_of_individuality"],
-                semantic_entropy=1.5, pos_tags=["NN"],
+                frequency=10,
+                domains=["unit_of_individuality"],
+                semantic_entropy=1.5,
+                pos_tags=["NN"],
             ),
             "worker": SimpleNamespace(
-                frequency=8, domains=["power_and_labor"],
-                semantic_entropy=1.2, pos_tags=["NN"],
+                frequency=8,
+                domains=["power_and_labor"],
+                semantic_entropy=1.2,
+                pos_tags=["NN"],
             ),
         }
         domain_data = {
@@ -984,12 +961,14 @@ class TestConceptVisualizerFallbackPaths:
 
         terms = {
             "drone": SimpleNamespace(
-                text="drone", frequency=5,
+                text="drone",
+                frequency=5,
                 domains=["sex_and_reproduction"],
                 pos_tags=["NN"],
             ),
             "nurse bee": SimpleNamespace(
-                text="nurse bee", frequency=3,
+                text="nurse bee",
+                frequency=3,
                 domains=["behavior_and_identity"],
                 pos_tags=[],
             ),
@@ -997,7 +976,6 @@ class TestConceptVisualizerFallbackPaths:
         fig = viz.create_domain_patterns_grid(terms=terms)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
-
 
 
 class TestDomainComparisonWithTerms:
@@ -1027,25 +1005,21 @@ class TestDomainComparisonWithTerms:
             "allocation": self._term("allocation", ["economics"]),
             "kinship": self._term("kinship", ["kin_and_relatedness"]),
         }
-        domain_data = {d: {"term_count": 1, "avg_confidence": 0.5,
-                           "total_frequency": 5}
-                       for d in sorted({d for t in terms.values() for d in t.domains})}
+        domain_data = {
+            d: {"term_count": 1, "avg_confidence": 0.5, "total_frequency": 5}
+            for d in sorted({d for t in terms.values() for d in t.domains})
+        }
         filepath = tmp_path / "domain_comparison.png"
-        fig = viz.create_domain_comparison_plot(
-            domain_data, filepath=filepath, terms=terms
-        )
+        fig = viz.create_domain_comparison_plot(domain_data, filepath=filepath, terms=terms)
         assert isinstance(fig, plt.Figure)
         assert filepath.exists()
         plt.close(fig)
 
-    def test_domain_comparison_cace_without_terms(
-        self, tmp_path: Path
-    ) -> None:
+    def test_domain_comparison_cace_without_terms(self, tmp_path: Path) -> None:
         """CACE panel marks missing term input as unavailable."""
         viz = ConceptVisualizer()
         domain_data = {
-            "unit_of_individuality": {"term_count": 3, "avg_confidence": 0.7,
-                                      "total_frequency": 9},
+            "unit_of_individuality": {"term_count": 3, "avg_confidence": 0.7, "total_frequency": 9},
         }
         fig = viz.create_domain_comparison_plot(domain_data, terms=None)
         assert isinstance(fig, plt.Figure)
@@ -1122,8 +1096,10 @@ class TestSharedFigureHelpers:
         ax.set_xlim(0, 1)
         ax.set_ylim(0, 1)
         labels = place_labels(
-            ax, [("alpha label", (0.4, 0.5)), ("beta label", (0.6, 0.5))],
-            fontsize=16, drop_on_fail=True,
+            ax,
+            [("alpha label", (0.4, 0.5)), ("beta label", (0.6, 0.5))],
+            fontsize=16,
+            drop_on_fail=True,
         )
         fig.canvas.draw()
         renderer = fig.canvas.get_renderer()
@@ -1139,8 +1115,10 @@ class TestSharedFigureHelpers:
         fig, ax = plt.subplots()
         fig.canvas.draw()
         labels = place_labels(
-            ax, [("blocked", (0.5, 0.5))],
-            avoid_boxes=[ax.get_window_extent()], drop_on_fail=True,
+            ax,
+            [("blocked", (0.5, 0.5))],
+            avoid_boxes=[ax.get_window_extent()],
+            drop_on_fail=True,
         )
         assert labels == [None]
         plt.close(fig)
@@ -1150,8 +1128,10 @@ class TestSharedFigureHelpers:
 
         fig, ax = plt.subplots(figsize=(8, 6))
         labels = place_labels(
-            ax, [("alpha", (0.25, 0.5)), ("beta", (0.75, 0.5))],
-            offsets=iter([(8, 6, "left", "bottom")]), drop_on_fail=True,
+            ax,
+            [("alpha", (0.25, 0.5)), ("beta", (0.75, 0.5))],
+            offsets=iter([(8, 6, "left", "bottom")]),
+            drop_on_fail=True,
         )
         assert all(label is not None for label in labels)
         plt.close(fig)
@@ -1197,16 +1177,18 @@ class TestSharedFigureHelpers:
 
         names = [f"queen-{chr(97 + i // 26)}{chr(97 + i % 26)}" for i in range(96)]
         names += ["ant", "nest", "brood", "egg", "f1"]
-        terms = {name: Term(text=name, lemma=name, frequency=3,
-                            domains=["unit_of_individuality"]) for name in names}
+        terms = {name: Term(text=name, lemma=name, frequency=3, domains=["unit_of_individuality"]) for name in names}
         fig = ConceptVisualizer().create_domain_patterns_grid(terms)
         fig.canvas.draw()
         renderer = fig.canvas.get_renderer()
-        labels = [text for text in fig.axes[0].findobj(matplotlib.text.Text)
-                  if any(text.get_text().startswith(label) for label in WORD_FORMATION_LABELS)]
+        labels = [
+            text
+            for text in fig.axes[0].findobj(matplotlib.text.Text)
+            if any(text.get_text().startswith(label) for label in WORD_FORMATION_LABELS)
+        ]
         assert len(labels) == 3
         boxes = [text.get_window_extent(renderer) for text in labels]
-        assert not any(a.overlaps(b) for i, a in enumerate(boxes) for b in boxes[i + 1:])
+        assert not any(a.overlaps(b) for i, a in enumerate(boxes) for b in boxes[i + 1 :])
         plt.close(fig)
 
     def test_pie_and_grid_agree_on_unit_of_individuality(self, tmp_path):
@@ -1216,8 +1198,7 @@ class TestSharedFigureHelpers:
         from visualization._style import classify_word_formation
 
         names = ["ant", "colony", "social", "queen-worker", "nest-site", "caste-specific"]
-        terms = {n: Term(text=n, lemma=n, domains=["unit_of_individuality"], frequency=3)
-                 for n in names}
+        terms = {n: Term(text=n, lemma=n, domains=["unit_of_individuality"], frequency=3) for n in names}
         results = {"terms": terms, "domain_analyses": {}}
         path = mf.generate_unit_of_individuality_patterns(results, str(tmp_path))
         assert Path(path).is_file()
@@ -1239,10 +1220,12 @@ class TestConceptHierarchyStrength:
     def test_bars_use_weighted_degree_not_constant_degree(self):
         viz = ConceptVisualizer()
         data = {
-            "centrality_scores": {"biological_individuality": 1.41, "kinship_systems": 0.04,
-                                  "resource_economics": 0.79},
-            "term_counts": {"biological_individuality": 88, "kinship_systems": 83,
-                            "resource_economics": 28},
+            "centrality_scores": {
+                "biological_individuality": 1.41,
+                "kinship_systems": 0.04,
+                "resource_economics": 0.79,
+            },
+            "term_counts": {"biological_individuality": 88, "kinship_systems": 83, "resource_economics": 28},
         }
         fig = viz.visualize_concept_hierarchy(data)
         ax1, ax2 = fig.axes[:2]
@@ -1264,9 +1247,9 @@ class TestConceptHierarchyStrength:
 
         cm = ConceptMap()
         for name, n in (("a_x", 3), ("b_y", 2), ("c_z", 1)):
-            cm.add_concept(Concept(name=name, description=name,
-                                   terms={f"{name}{i}" for i in range(n)},
-                                   domains={"economics"}))
+            cm.add_concept(
+                Concept(name=name, description=name, terms={f"{name}{i}" for i in range(n)}, domains={"economics"})
+            )
         cm.concept_relationships[("a_x", "b_y")] = 0.5
         cm.concept_relationships[("a_x", "c_z")] = 0.25
         cm.concept_relationships[("b_y", "c_z")] = 0.0
@@ -1278,28 +1261,27 @@ class TestConceptHierarchyStrength:
 def test_observed_pair_ranking_uses_actual_edge_counts() -> None:
     """Ranking and labels preserve independent shared-document counts and ties."""
     visualizer = ConceptVisualizer()
-    terms = {name: {"domains": ["unit_of_individuality"], "frequency": 20}
-             for name in ["worker", "queen", "colony"]}
-    relationships = {("worker", "queen"): 3, ("queen", "colony"): 5,
-                     ("worker", "colony"): 3}
+    terms = {name: {"domains": ["unit_of_individuality"], "frequency": 20} for name in ["worker", "queen", "colony"]}
+    relationships = {("worker", "queen"): 3, ("queen", "colony"): 5, ("worker", "colony"): 3}
     fig = visualizer.visualize_terminology_network(terms, relationships)
     rank_ax = fig.axes[1]
     assert [p.get_width() for p in rank_ax.patches] == [5, 3, 3]
     assert [label.get_text() for label in rank_ax.get_yticklabels()] == [
-        "colony + queen", "colony + worker", "queen + worker"]
+        "colony + queen",
+        "colony + worker",
+        "queen + worker",
+    ]
     assert {text.get_text() for text in rank_ax.texts} == {"5", "3"}
     plt.close(fig)
 
 
 def test_domain_horizontal_bars_preserve_counts_and_missing_cace() -> None:
     """Counts have a common readable row order; absent scoring inputs say n/a."""
-    data = {"economics": {"term_count": 5},
-            "unit_of_individuality": {"term_count": 12}}
+    data = {"economics": {"term_count": 5}, "unit_of_individuality": {"term_count": 12}}
     fig = ConceptVisualizer().create_domain_comparison_plot(data)
     count_ax = fig.axes[0]
     assert [bar.get_width() for bar in count_ax.patches] == [12, 5]
-    assert [label.get_text() for label in count_ax.get_yticklabels()] == [
-        "Unit of Individuality", "Economics"]
+    assert [label.get_text() for label in count_ax.get_yticklabels()] == ["Unit of Individuality", "Economics"]
     assert all(label.get_rotation() == 0 for label in count_ax.get_yticklabels())
     assert [text.get_text() for text in fig.axes[5].texts] == ["n/a", "n/a"]
     plt.close(fig)

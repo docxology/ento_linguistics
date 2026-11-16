@@ -4,13 +4,13 @@ Importable logic used by the thin orchestrator
 ``scripts/_fill_manuscript_variables.py``: builds a ``{{VAR}}`` → value map
 from pipeline JSON outputs and substitutes it into the manuscript markdown.
 """
+
 from __future__ import annotations
 
 import json
 import re
 import statistics
 from pathlib import Path
-from typing import Optional
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent.parent
 MANUSCRIPT_DIR = PROJECT_DIR / "docs" / "manuscript"
@@ -24,6 +24,7 @@ CORPUS_DIR = PROJECT_DIR / "data" / "corpus"
 RENDER_STAGE_PREFIXES = ("NULLNET_", "NETREAD_")
 # Figures from the same extension, validated by its receipt and by the renderer.
 RENDER_STAGE_FIGURE_DIR = "output/extensions/"
+
 
 def load_json(path: Path) -> dict:
     """Load a JSON file, returning empty dict if missing."""
@@ -46,6 +47,7 @@ def count_publications(corpus_dir: Path) -> int:
     if isinstance(data, dict) and "abstracts" in data:
         return len(data["abstracts"])
     return 0
+
 
 def _fmt_stat(value) -> str:
     """Format a numeric statistic with 4 decimals.
@@ -96,6 +98,7 @@ def _fmt_p(value) -> str:
         return "<0.0001"
     return f"{p:.4f}"
 
+
 def _fmt_cace(value) -> str:
     """Format a CACE dimension score with 2 decimals.
 
@@ -144,22 +147,12 @@ def build_variable_map(
 
     # Count candidate terms and domain-assigned terms
     num_candidate_terms = len(extracted_terms)
-    domain_assigned = {
-        k: v
-        for k, v in extracted_terms.items()
-        if v.get("domains") and len(v["domains"]) > 0
-    }
+    domain_assigned = {k: v for k, v in extracted_terms.items() if v.get("domains") and len(v["domains"]) > 0}
     num_domain_terms = len(domain_assigned)
 
     # Domain-label overlap, not longitudinal semantic drift.
-    multi_domain = {
-        k: v for k, v in domain_assigned.items() if len(v.get("domains", [])) > 1
-    }
-    drift_pct = (
-        f"{100 * len(multi_domain) / max(1, len(domain_assigned)):.1f}"
-        if domain_assigned
-        else "0.0"
-    )
+    multi_domain = {k: v for k, v in domain_assigned.items() if len(v.get("domains", [])) > 1}
+    drift_pct = f"{100 * len(multi_domain) / max(1, len(domain_assigned)):.1f}" if domain_assigned else "0.0"
 
     # Top terms from corpus_stats
     top_tokens = corpus_stats.get("most_common_tokens", [])
@@ -209,29 +202,17 @@ def build_variable_map(
         variables[f"DOMAIN_{var_prefix}_TERMS"] = str(domain.get("term_count", 0))
         variables[f"DOMAIN_{var_prefix}_N_TERMS"] = str(domain.get("entropy_valid_terms", domain.get("term_count", 0)))
         variables[f"DOMAIN_{var_prefix}_FREQ"] = str(domain.get("total_frequency", 0))
-        variables[f"DOMAIN_{var_prefix}_BRIDGING"] = str(
-            domain.get("bridging_term_count", 0)
-        )
-        variables[f"DOMAIN_{var_prefix}_ENTROPY"] = (
-            f"{domain.get('semantic_entropy', 0):.2f}"
-        )
+        variables[f"DOMAIN_{var_prefix}_BRIDGING"] = str(domain.get("bridging_term_count", 0))
+        variables[f"DOMAIN_{var_prefix}_ENTROPY"] = f"{domain.get('semantic_entropy', 0):.2f}"
         anthropomorphic_pct = domain.get("anthropomorphic_proportion", 0) * 100
-        variables[f"DOMAIN_{var_prefix}_ANTHROPOMORPHIC_PROPORTION_PCT"] = (
-            f"{anthropomorphic_pct:.1f}"
-        )
-        variables[f"DOMAIN_{var_prefix}_HIGH_ENTROPY_PCT"] = (
-            f"{domain.get('high_entropy_pct', 0.0):.1f}"
-        )
+        variables[f"DOMAIN_{var_prefix}_ANTHROPOMORPHIC_PROPORTION_PCT"] = f"{anthropomorphic_pct:.1f}"
+        variables[f"DOMAIN_{var_prefix}_HIGH_ENTROPY_PCT"] = f"{domain.get('high_entropy_pct', 0.0):.1f}"
 
     # --- Corpus-level entropy aggregates ---
-    all_entropies = [
-        d.get("semantic_entropy", 0) for d in domain_stats.values()
-    ]
+    all_entropies = [d.get("semantic_entropy", 0) for d in domain_stats.values()]
     all_term_counts = [d.get("entropy_valid_terms", d.get("term_count", 0)) for d in domain_stats.values()]
     if all_entropies and all_term_counts and sum(all_term_counts) > 0:
-        weighted_entropy = sum(
-            e * n for e, n in zip(all_entropies, all_term_counts)
-        ) / sum(all_term_counts)
+        weighted_entropy = sum(e * n for e, n in zip(all_entropies, all_term_counts)) / sum(all_term_counts)
         variables["CORPUS_OVERALL_ENTROPY"] = f"{weighted_entropy:.2f}"
     else:
         variables["CORPUS_OVERALL_ENTROPY"] = "0.00"
@@ -240,9 +221,7 @@ def build_variable_map(
     total_domain_terms = sum(all_term_counts)
     total_high = sum(all_high_counts)
     if total_domain_terms > 0:
-        variables["CORPUS_OVERALL_HIGH_ENTROPY_PCT"] = (
-            f"{100 * total_high / total_domain_terms:.1f}"
-        )
+        variables["CORPUS_OVERALL_HIGH_ENTROPY_PCT"] = f"{100 * total_high / total_domain_terms:.1f}"
     else:
         variables["CORPUS_OVERALL_HIGH_ENTROPY_PCT"] = "0.0"
 
@@ -291,8 +270,8 @@ def build_variable_map(
 
 def build_statistical_tokens(
     stats_artifact: dict,
-    fulltext_artifact: Optional[dict] = None,
-    bhl_data_dir: Optional[Path] = None,
+    fulltext_artifact: dict | None = None,
+    bhl_data_dir: Path | None = None,
 ) -> dict:
     """Map the statistical-analysis artifact onto inferential template tokens.
 
@@ -346,9 +325,7 @@ def build_statistical_tokens(
 
     corrections = stats_artifact.get("corrections") or {}
     if corrections:
-        variables["PAIRWISE_N_COMPARISONS"] = str(
-            corrections.get("n_comparisons", 0)
-        )
+        variables["PAIRWISE_N_COMPARISONS"] = str(corrections.get("n_comparisons", 0))
         variables["CORRECTION_METHOD"] = str(corrections.get("method", ""))
 
     # Pairwise tokens: PAIRWISE_<SLUG_A>_<SLUG_B>_{T,P,P_BH,D,SIGNIFICANT}
@@ -362,9 +339,7 @@ def build_statistical_tokens(
         variables[f"{prefix}_P"] = _fmt_p(pair.get("p"))
         variables[f"{prefix}_P_BH"] = _fmt_p(pair.get("p_bh"))
         variables[f"{prefix}_D"] = _fmt_stat(pair.get("cohens_d"))
-        variables[f"{prefix}_SIGNIFICANT"] = (
-            "yes" if pair.get("significant_bh") else "no"
-        )
+        variables[f"{prefix}_SIGNIFICANT"] = "yes" if pair.get("significant_bh") else "no"
 
     # Per-domain CACE aggregate tokens.  Domains with no sampled CACE
     # terms are absent from the ``cace`` section and emit no tokens.
@@ -374,9 +349,7 @@ def build_statistical_tokens(
         variables[f"CACE_{slug}_MIN"] = _fmt_cace(entry.get("min"))
         variables[f"CACE_{slug}_MAX"] = _fmt_cace(entry.get("max"))
         variables[f"CACE_{slug}_CLARITY"] = _fmt_cace(entry.get("clarity"))
-        variables[f"CACE_{slug}_APPROPRIATENESS"] = _fmt_cace(
-            entry.get("appropriateness")
-        )
+        variables[f"CACE_{slug}_APPROPRIATENESS"] = _fmt_cace(entry.get("appropriateness"))
         variables[f"CACE_{slug}_CONSISTENCY"] = _fmt_cace(entry.get("consistency"))
         variables[f"CACE_{slug}_EVOLVABILITY"] = _fmt_cace(entry.get("evolvability"))
         variables[f"CACE_{slug}_N"] = str(entry.get("n_terms", 0))
@@ -385,15 +358,9 @@ def build_statistical_tokens(
     for term, entry in (stats_artifact.get("cace_terms") or {}).items():
         slug = str(term).upper().replace("-", "_").replace(" ", "_")
         variables[f"CACE_TERM_{slug}_CLARITY"] = _fmt_cace(entry.get("clarity"))
-        variables[f"CACE_TERM_{slug}_APPROPRIATENESS"] = _fmt_cace(
-            entry.get("appropriateness")
-        )
-        variables[f"CACE_TERM_{slug}_CONSISTENCY"] = _fmt_cace(
-            entry.get("consistency")
-        )
-        variables[f"CACE_TERM_{slug}_EVOLVABILITY"] = _fmt_cace(
-            entry.get("evolvability")
-        )
+        variables[f"CACE_TERM_{slug}_APPROPRIATENESS"] = _fmt_cace(entry.get("appropriateness"))
+        variables[f"CACE_TERM_{slug}_CONSISTENCY"] = _fmt_cace(entry.get("consistency"))
+        variables[f"CACE_TERM_{slug}_EVOLVABILITY"] = _fmt_cace(entry.get("evolvability"))
         variables[f"CACE_TERM_{slug}_AGGREGATE"] = _fmt_cace(entry.get("aggregate"))
         extracted = entry.get("in_corpus")
         variables[f"CACE_TERM_{slug}_IN_CORPUS"] = (
@@ -403,7 +370,7 @@ def build_statistical_tokens(
     return variables
 
 
-def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
+def _build_fulltext_tokens(fulltext_artifact: dict | None) -> dict:
     """Map the full-text-layer artifact onto the FULLTEXT_* token family.
 
     Emits (all omitted when the artifact is absent/empty, never KeyError):
@@ -448,36 +415,23 @@ def _build_fulltext_tokens(fulltext_artifact: Optional[dict]) -> dict:
     variables["FULLTEXT_DOCUMENTS"] = str(fulltext_artifact.get("n_documents", 0))
     if "excluded_editorial_notices" in fulltext_artifact:
         variables["FULLTEXT_STORED_RECORDS"] = str(fulltext_artifact["stored_records"])
-        variables["FULLTEXT_EXCLUDED_NOTICES"] = str(
-            len(fulltext_artifact["excluded_editorial_notices"])
-        )
-    token_counts = [
-        int(doc.get("token_count", 0))
-        for doc in fulltext_artifact.get("documents") or []
-    ]
+        variables["FULLTEXT_EXCLUDED_NOTICES"] = str(len(fulltext_artifact["excluded_editorial_notices"]))
+    token_counts = [int(doc.get("token_count", 0)) for doc in fulltext_artifact.get("documents") or []]
     if token_counts:
         variables["FULLTEXT_TOTAL_TOKENS"] = str(sum(token_counts))
         variables["FULLTEXT_MEDIAN_TOKENS"] = _fmt_count(statistics.median(token_counts))
     for domain, entry in (fulltext_artifact.get("descriptives") or {}).items():
         slug = str(domain).upper()
         variables[f"FULLTEXT_DOMAIN_{slug}_TERMS"] = str(entry.get("n_terms", 0))
-        variables[f"FULLTEXT_DOMAIN_{slug}_ENTROPY"] = _fmt_stat(
-            entry.get("entropy_mean")
-        )
+        variables[f"FULLTEXT_DOMAIN_{slug}_ENTROPY"] = _fmt_stat(entry.get("entropy_mean"))
     for domain, entry in (fulltext_artifact.get("framing") or {}).items():
         if domain == "overall":
             continue
-        variables[f"FULLTEXT_DOMAIN_{str(domain).upper()}_ANTHROPOMORPHIC"] = (
-            _fmt_stat(entry.get("proportion"))
-        )
+        variables[f"FULLTEXT_DOMAIN_{str(domain).upper()}_ANTHROPOMORPHIC"] = _fmt_stat(entry.get("proportion"))
     overall = (fulltext_artifact.get("framing") or {}).get("overall")
     if overall:
-        variables["FULLTEXT_ANTHROPOMORPHIC_OVERALL"] = _fmt_stat(
-            overall.get("proportion")
-        )
-    variables["FULLTEXT_PAIRWISE_N"] = str(
-        len(fulltext_artifact.get("pairwise") or [])
-    )
+        variables["FULLTEXT_ANTHROPOMORPHIC_OVERALL"] = _fmt_stat(overall.get("proportion"))
+    variables["FULLTEXT_PAIRWISE_N"] = str(len(fulltext_artifact.get("pairwise") or []))
     anova = fulltext_artifact.get("anova") or {}
     if anova:
         variables["FULLTEXT_ANOVA_F"] = _fmt_stat(anova.get("F"))
@@ -513,12 +467,10 @@ _DISCOURSE_CANONICAL_ORDER: dict[str, tuple[str, ...]] = {
 def _discourse_order(section: str, keys: dict) -> list[str]:
     """Order discourse-section keys canonically first, extras sorted."""
     canonical = _DISCOURSE_CANONICAL_ORDER.get(section, ())
-    return [k for k in canonical if k in keys] + sorted(
-        k for k in keys if k not in canonical
-    )
+    return [k for k in canonical if k in keys] + sorted(k for k in keys if k not in canonical)
 
 
-def _build_discourse_tokens(artifact: Optional[dict], prefix: str) -> dict:
+def _build_discourse_tokens(artifact: dict | None, prefix: str) -> dict:
     """Map a layer artifact's ``discourse`` section onto a token family.
 
     Bounded, documented emission (all omitted when the artifact or its
@@ -559,12 +511,12 @@ def _build_discourse_tokens(artifact: Optional[dict], prefix: str) -> dict:
         variables[f"{prefix}_DISCOURSE_N_ANALYZED"] = str(int(n_analyzed))
     sample_fraction = discourse.get("sample_fraction")
     if sample_fraction is not None:
-        variables[f"{prefix}_DISCOURSE_SAMPLE_FRACTION"] = _fmt_stat(
-            sample_fraction
-        )
+        variables[f"{prefix}_DISCOURSE_SAMPLE_FRACTION"] = _fmt_stat(sample_fraction)
         variables[f"{prefix}_DISCOURSE_SAMPLE_PERCENT"] = f"{float(sample_fraction) * 100:.1f}"
-    for source_key, token in (("n_texts_excluded_min_length", "EXCLUDED_MIN_LENGTH"),
-                              ("min_text_length", "MIN_TEXT_LENGTH")):
+    for source_key, token in (
+        ("n_texts_excluded_min_length", "EXCLUDED_MIN_LENGTH"),
+        ("min_text_length", "MIN_TEXT_LENGTH"),
+    ):
         if discourse.get(source_key) is not None:
             variables[f"{prefix}_DISCOURSE_{token}"] = str(int(discourse[source_key]))
     for section, value_key in (("patterns", "frequency"), ("rhetorical", "frequency")):
@@ -574,20 +526,17 @@ def _build_discourse_tokens(artifact: Optional[dict], prefix: str) -> dict:
             frequency = entry.get(value_key)
             if frequency is not None:
                 slug = str(key).upper()
-                variables[f"{prefix}_{section.upper()}_{slug}"] = str(
-                    int(frequency)
-                )
+                variables[f"{prefix}_{section.upper()}_{slug}"] = str(int(frequency))
     argumentative: dict = discourse.get("argumentative") or {}
     n_structures = argumentative.get("n_structures")
     if n_structures is not None:
         variables[f"{prefix}_ARG_STRUCTURES"] = str(int(n_structures))
-    metaphorical = (discourse.get("persuasive") or {}).get(
-        "metaphorical_language"
-    ) or {}
+    metaphorical = (discourse.get("persuasive") or {}).get("metaphorical_language") or {}
     usage = metaphorical.get("usage_frequency")
     if usage is not None:
         variables[f"{prefix}_PERSUASIVE_METAPHORICAL"] = str(int(usage))
     return variables
+
 
 BHL_DATA_DIR = PROJECT_DIR / "data" / "bhl"
 
@@ -631,7 +580,7 @@ BHL_CANONICAL_TERMS: tuple[str, ...] = (
 )
 
 
-def _load_bhl_artifact(data_dir: Optional[Path] = None) -> dict:
+def _load_bhl_artifact(data_dir: Path | None = None) -> dict:
     """Load the BHL era-stratified artifact.
 
     Args:
@@ -646,7 +595,7 @@ def _load_bhl_artifact(data_dir: Optional[Path] = None) -> dict:
     return load_json(directory / "era_term_usage.json")
 
 
-def _build_bhl_tokens(bhl_artifact: Optional[dict]) -> dict:
+def _build_bhl_tokens(bhl_artifact: dict | None) -> dict:
     """Map the BHL historical-layer artifact onto the BHL_* token family.
 
     Emits (all omitted when the artifact is absent/empty, never KeyError):
@@ -685,10 +634,7 @@ def _build_bhl_tokens(bhl_artifact: Optional[dict]) -> dict:
     source: dict = bhl_artifact.get("source") or {}
     total_documents = source.get("documents")
     if total_documents is None:
-        total_documents = sum(
-            int((eras.get(era) or {}).get("documents", 0))
-            for era in BHL_ERA_KEYS
-        )
+        total_documents = sum(int((eras.get(era) or {}).get("documents", 0)) for era in BHL_ERA_KEYS)
     variables["BHL_DOCUMENTS"] = str(total_documents)
     for era in BHL_ERA_KEYS:
         era_upper = era.upper()
@@ -705,31 +651,20 @@ def _build_bhl_tokens(bhl_artifact: Optional[dict]) -> dict:
             if term not in carried_terms:
                 continue
             slug = term.upper().replace("-", "_").replace(" ", "_")
-            variables[f"BHL_{era_upper}_{slug}_PER_10K"] = _fmt_stat(
-                frequencies.get(term, 0.0)
-            )
+            variables[f"BHL_{era_upper}_{slug}_PER_10K"] = _fmt_stat(frequencies.get(term, 0.0))
         # Expanded per-era full-stack sections (omit when absent or
         # degenerate — the empty eras of an earlier harvest carry
         # none of these keys).
         extraction = entry.get("extraction") or {}
         if extraction:
-            variables[f"BHL_{era_upper}_TERMS"] = str(
-                int(extraction.get("n_terms", 0))
-            )
+            variables[f"BHL_{era_upper}_TERMS"] = str(int(extraction.get("n_terms", 0)))
         term_entropies = (entry.get("entropy") or {}).get("terms") or {}
         if term_entropies:
-            mean_entropy = (
-                sum(float(v) for v in term_entropies.values())
-                / len(term_entropies)
-            )
-            variables[f"BHL_{era_upper}_ENTROPY_MEAN"] = _fmt_stat(
-                mean_entropy
-            )
+            mean_entropy = sum(float(v) for v in term_entropies.values()) / len(term_entropies)
+            variables[f"BHL_{era_upper}_ENTROPY_MEAN"] = _fmt_stat(mean_entropy)
         overall_framing = (entry.get("framing") or {}).get("overall") or {}
         if overall_framing:
-            variables[f"BHL_{era_upper}_FRAMING"] = _fmt_stat(
-                overall_framing.get("proportion")
-            )
+            variables[f"BHL_{era_upper}_FRAMING"] = _fmt_stat(overall_framing.get("proportion"))
     return variables
 
 
@@ -774,7 +709,7 @@ def fill_manuscript(
             print(f"  WARNING: Unknown variable {{{{{var_name}}}}} in {md_path.name}")
             return match.group(0)  # Leave unknown variables unchanged
 
-        new_content = pattern.sub(replacer, content)
+        pattern.sub(replacer, content)
 
         if count > 0:
             if not dry_run:

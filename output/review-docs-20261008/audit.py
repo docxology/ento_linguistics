@@ -1,15 +1,18 @@
 """Inventory every tracked Markdown file and inspect Pandoc-parsed local links."""
+
+import argparse
 import hashlib
 import json
 import os
-from pathlib import Path
-from typing import Any, Iterator
 import subprocess
-import argparse
+from collections.abc import Iterator
+from pathlib import Path
+from typing import Any
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path.cwd()
 TRACKED = set(subprocess.check_output(["git", "ls-files"], text=True).splitlines())
+
 
 def links(node: Any) -> Iterator[str]:
     """Yield explicit Markdown links/images from Pandoc AST nodes."""
@@ -21,6 +24,7 @@ def links(node: Any) -> Iterator[str]:
     elif isinstance(node, list):
         for v in node:
             yield from links(v)
+
 
 def inspect_link(source: Path, target: str) -> dict[str, str] | None:
     """Return a missing/local-only issue for a local link; otherwise None."""
@@ -35,6 +39,7 @@ def inspect_link(source: Path, target: str) -> dict[str, str] | None:
         return {"source": str(source), "target": target, "resolved": name, "issue": "local_only"}
     return None
 
+
 def main() -> None:
     """Write the tracked-file receipt and fail on local-link issues."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -44,23 +49,42 @@ def main() -> None:
     rows, issues, warnings = [], [], []
     for name in files:
         p = Path(name)
-        run = subprocess.run(["pandoc", "--from=markdown", "--to=json", name], text=True, capture_output=True, check=True)
+        run = subprocess.run(
+            ["pandoc", "--from=markdown", "--to=json", name], text=True, capture_output=True, check=True
+        )
         ast = json.loads(run.stdout)
         targets = list(links(ast))
-        rows.append({"path": name, "sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "lines": len(p.read_text().splitlines()), "links": len(targets)})
+        rows.append(
+            {
+                "path": name,
+                "sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
+                "lines": len(p.read_text().splitlines()),
+                "links": len(targets),
+            }
+        )
         if run.stderr:
             warnings.append({"path": name, "stderr": run.stderr})
         issues.extend(v for t in targets if (v := inspect_link(p, t)))
     # Real missing and real local-only controls: neither may pass.
-    assert inspect_link(Path("README.md"), "output/review-docs-20261008/nonexistent-negative-control.md")["issue"] == "missing"
+    assert (
+        inspect_link(Path("README.md"), "output/review-docs-20261008/nonexistent-negative-control.md")["issue"]
+        == "missing"
+    )
     marker = Path("output/review-docs-20261008/negative-control-local.txt")
     marker.write_text("Real local-only link negative control.\n")
     assert inspect_link(Path("README.md"), str(marker))["issue"] == "local_only"
-    result = {"files": rows, "total": len(rows), "local_link_issues": issues, "pandoc_warnings": warnings, "negative_controls": "PASS"}
+    result = {
+        "files": rows,
+        "total": len(rows),
+        "local_link_issues": issues,
+        "pandoc_warnings": warnings,
+        "negative_controls": "PASS",
+    }
     args.output.write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps({"total": len(rows), "issues": issues, "warnings": warnings}, indent=2))
     if issues:
         raise SystemExit(1)
+
 
 if __name__ == "__main__":
     main()

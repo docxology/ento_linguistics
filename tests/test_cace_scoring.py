@@ -8,14 +8,15 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+
 from analysis.cace_scoring import (
     ANTHROPOMORPHIC_TERMS,
     CACEScore,
     compare_terms_cace,
     evaluate_term_cace,
+    mean_context_similarity,
     score_appropriateness,
     score_clarity,
-    mean_context_similarity,
     score_evolvability,
 )
 
@@ -40,8 +41,12 @@ class TestCACEScore:
     def test_to_dict(self):
         """Test serialization."""
         score = CACEScore(
-            term="test", clarity=0.5, appropriateness=0.5,
-            consistency=0.5, evolvability=0.5, aggregate=0.5,
+            term="test",
+            clarity=0.5,
+            appropriateness=0.5,
+            consistency=0.5,
+            evolvability=0.5,
+            aggregate=0.5,
         )
         d = score.to_dict()
         assert d["term"] == "test"
@@ -123,9 +128,7 @@ class TestScoreAppropriateness:
     def test_cross_domain_penalty(self):
         """Terms in multiple domains get additional penalty."""
         single = score_appropriateness("queen", domains=["power_and_labor"])
-        multi = score_appropriateness(
-            "queen", domains=["power_and_labor", "sex_and_reproduction"]
-        )
+        multi = score_appropriateness("queen", domains=["power_and_labor", "sex_and_reproduction"])
         assert single >= multi
 
     def test_scores_bounded(self):
@@ -240,10 +243,14 @@ class TestEvaluateTermCACE:
             contexts=[],
             domains=["unit_of_individuality"],
         )
-        expected_aggregate = np.mean([
-            result.clarity, result.appropriateness,
-            result.consistency, result.evolvability,
-        ])
+        expected_aggregate = np.mean(
+            [
+                result.clarity,
+                result.appropriateness,
+                result.consistency,
+                result.evolvability,
+            ]
+        )
         assert result.aggregate == pytest.approx(expected_aggregate, abs=1e-6)
 
     def test_all_scores_bounded(self):
@@ -322,8 +329,14 @@ class TestEvaluateTermCACEEdgeCases:
             term="slave",
             semantic_entropy=10.0,
             contexts=["slave labor in the colony"] * 20,
-            domains=["power_and_labor", "behavior_and_identity", "economics",
-                     "unit_of_individuality", "sex_and_reproduction", "kin_and_relatedness"],
+            domains=[
+                "power_and_labor",
+                "behavior_and_identity",
+                "economics",
+                "unit_of_individuality",
+                "sex_and_reproduction",
+                "kin_and_relatedness",
+            ],
         )
         assert 0.0 <= result.clarity <= 1.0
         assert 0.0 <= result.appropriateness <= 1.0
@@ -354,8 +367,7 @@ class TestEvaluateTermCACEEdgeCases:
             contexts=[],
             domains=["sex_and_reproduction"],
         )
-        expected = np.mean([result.clarity, result.appropriateness,
-                           result.consistency, result.evolvability])
+        expected = np.mean([result.clarity, result.appropriateness, result.consistency, result.evolvability])
         assert result.aggregate == pytest.approx(expected, abs=1e-6)
 
 
@@ -394,10 +406,19 @@ class TestCACEParametrized:
         score = score_appropriateness(term)
         assert score < 1.0, f"'{term}' should be penalized but scored {score}"
 
-    @pytest.mark.parametrize("term", [
-        "haplodiploidy", "trophallaxis", "stigmergy", "nestmate",
-        "superorganism", "brood", "pheromone", "mandible",
-    ])
+    @pytest.mark.parametrize(
+        "term",
+        [
+            "haplodiploidy",
+            "trophallaxis",
+            "stigmergy",
+            "nestmate",
+            "superorganism",
+            "brood",
+            "pheromone",
+            "mandible",
+        ],
+    )
     def test_non_anthropomorphic_terms_score_perfect_appropriateness(self, term):
         """Scientific terms must score 1.0 on appropriateness."""
         score = score_appropriateness(term)
@@ -410,7 +431,7 @@ class TestCACEParametrized:
         score = score_appropriateness("queen", domains=domains)
         assert 0.0 <= score <= 1.0
         if n_domains > 1:
-            score_fewer = score_appropriateness("queen", domains=ALL_DOMAINS[:n_domains - 1])
+            score_fewer = score_appropriateness("queen", domains=ALL_DOMAINS[: n_domains - 1])
             assert score <= score_fewer
 
 
@@ -420,12 +441,16 @@ class TestScaleWordBoundary:
     def test_word_boundary_scale_matching(self):
         # "general" contains "gene" as substring but is not the gene level
         single = score_evolvability(
-            "colony", domains=["economics"],
+            "colony",
+            domains=["economics"],
             contexts=["In general, colony economics follow market models widely."],
         )
         multi = score_evolvability(
-            "colony", domains=["economics"],
-            contexts=["In general, colony economics follow market models.",
-                      "The gene regulates colony behavior across organisms."],
+            "colony",
+            domains=["economics"],
+            contexts=[
+                "In general, colony economics follow market models.",
+                "The gene regulates colony behavior across organisms.",
+            ],
         )
         assert multi > single

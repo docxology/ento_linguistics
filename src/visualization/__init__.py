@@ -5,19 +5,19 @@ terminology networks, domain comparisons, and statistical diagnostics.
 """
 
 from .concept_visualization import ConceptVisualizer
-from .plots import plot_concept_network, plot_term_frequency, plot_domain_distribution
+from .figure_manager import FigureManager, FigureMetadata
+from .plots import plot_concept_network, plot_domain_distribution, plot_term_frequency
 from .statistical_visualization import StatisticalVisualizer
 from .visualization import VisualizationEngine, create_multi_panel_figure
-from .figure_manager import FigureManager, FigureMetadata
 
 __all__ = [
     "ConceptVisualizer",
-    "plot_concept_network",
-    "plot_term_frequency",
-    "plot_domain_distribution",
+    "FigureManager",
+    "FigureMetadata",
     "StatisticalVisualizer",
     "VisualizationEngine",
     "create_multi_panel_figure",
-    "FigureManager",
-    "FigureMetadata",
+    "plot_concept_network",
+    "plot_domain_distribution",
+    "plot_term_frequency",
 ]

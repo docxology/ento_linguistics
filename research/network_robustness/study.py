@@ -13,7 +13,7 @@ from numpy.typing import NDArray
 
 from .model import MatrixError, curveball_trade, project
 
-__all__ = ["Protocol", "StudyData", "load_study", "sample_chain", "summarize", "run"]
+__all__ = ["Protocol", "StudyData", "load_study", "run", "sample_chain", "summarize"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -132,7 +132,7 @@ class MetricSummary:
 
 def summarize(values: NDArray[np.float64], observed: float) -> MetricSummary:
     """Compare observation with finite-chain distributions and between-chain spread."""
-    chains, samples = values.shape
+    _chains, samples = values.shape
     within = float(np.var(values, axis=1, ddof=1).mean())
     between = float(samples * np.var(values.mean(axis=1), ddof=1))
     rhat = float(np.sqrt(((samples - 1) * within / samples + between / samples) / within)) if within > 0 else None
@@ -160,8 +160,7 @@ def run(root: Path, out: Path, protocol: Protocol) -> None:
     observed = project([set(row) for row in data.rows], len(data.terms))
     values = np.stack([sample_chain(data, protocol, seed) for seed in protocol.seeds])
     sizes = {
-        count: asdict(project([set(v for v in row if v < count) for row in data.rows], count))
-        for count in (25, 50, 100)
+        count: asdict(project([{v for v in row if v < count} for row in data.rows], count)) for count in (25, 50, 100)
     }
     report = {
         "status": "completed",

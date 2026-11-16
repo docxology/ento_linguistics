@@ -6,24 +6,24 @@ indicators for validating terminology extraction and discourse analysis models.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Dict, Optional
 
 import numpy as np
 
 __all__ = [
-    "calculate_accuracy",
-    "calculate_precision_recall_f1",
-    "calculate_convergence_metrics",
-    "calculate_snr",
-    "calculate_psnr",
-    "calculate_ssim",
-    "calculate_effect_size",
     "CustomMetric",
+    "calculate_accuracy",
     "calculate_all_metrics",
-    "calculate_impact_score",
     "calculate_coherence",
     "calculate_consistency",
+    "calculate_convergence_metrics",
+    "calculate_effect_size",
+    "calculate_impact_score",
+    "calculate_precision_recall_f1",
+    "calculate_psnr",
+    "calculate_snr",
+    "calculate_ssim",
 ]
 
 
@@ -46,7 +46,7 @@ def calculate_accuracy(predictions: np.ndarray, targets: np.ndarray) -> float:
 
 def calculate_precision_recall_f1(
     predictions: np.ndarray, targets: np.ndarray, positive_class: int = 1
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Calculate precision, recall, and F1 score.
 
     Args:
@@ -60,15 +60,9 @@ def calculate_precision_recall_f1(
     if len(predictions) != len(targets):
         raise ValueError("predictions and targets must have same length")
 
-    true_positives = np.sum(
-        (predictions == positive_class) & (targets == positive_class)
-    )
-    false_positives = np.sum(
-        (predictions == positive_class) & (targets != positive_class)
-    )
-    false_negatives = np.sum(
-        (predictions != positive_class) & (targets == positive_class)
-    )
+    true_positives = np.sum((predictions == positive_class) & (targets == positive_class))
+    false_positives = np.sum((predictions == positive_class) & (targets != positive_class))
+    false_negatives = np.sum((predictions != positive_class) & (targets == positive_class))
 
     precision = true_positives / (true_positives + false_positives + 1e-10)
     recall = true_positives / (true_positives + false_negatives + 1e-10)
@@ -77,9 +71,7 @@ def calculate_precision_recall_f1(
     return {"precision": float(precision), "recall": float(recall), "f1": float(f1)}
 
 
-def calculate_convergence_metrics(
-    values: np.ndarray, target: Optional[float] = None
-) -> Dict[str, float]:
+def calculate_convergence_metrics(values: np.ndarray, target: float | None = None) -> dict[str, float]:
     """Calculate convergence metrics.
 
     Args:
@@ -106,9 +98,7 @@ def calculate_convergence_metrics(
     return {
         "final_error": convergence.error,
         "convergence_rate": convergence.convergence_rate or 0.0,
-        "iterations_to_convergence": (
-            iterations if iterations is not None else len(values)
-        ),
+        "iterations_to_convergence": (iterations if iterations is not None else len(values)),
         "is_converged": convergence.is_converged,
         "mean_residual": float(np.mean(residuals)),
         "max_residual": float(np.max(residuals)),
@@ -121,14 +111,14 @@ class _ConvergenceSummary:
     """Core-native convergence summary (relocated down-layer)."""
 
     error: float
-    convergence_rate: Optional[float]
-    iterations_to_convergence: Optional[int]
+    convergence_rate: float | None
+    iterations_to_convergence: int | None
     is_converged: bool
 
 
 def _analyze_convergence(
     values: np.ndarray,
-    target: Optional[float] = None,
+    target: float | None = None,
     tolerance: float = 1e-6,
     window_size: int = 10,
 ) -> _ConvergenceSummary:
@@ -191,7 +181,7 @@ def _analyze_convergence(
     )
 
 
-def calculate_snr(signal: np.ndarray, noise: Optional[np.ndarray] = None) -> float:
+def calculate_snr(signal: np.ndarray, noise: np.ndarray | None = None) -> float:
     """Calculate Signal-to-Noise Ratio (SNR).
 
     Args:
@@ -219,9 +209,7 @@ def calculate_snr(signal: np.ndarray, noise: Optional[np.ndarray] = None) -> flo
     return float(snr_db)
 
 
-def calculate_psnr(
-    original: np.ndarray, reconstructed: np.ndarray, max_value: Optional[float] = None
-) -> float:
+def calculate_psnr(original: np.ndarray, reconstructed: np.ndarray, max_value: float | None = None) -> float:
     """Calculate Peak Signal-to-Noise Ratio (PSNR).
 
     Args:
@@ -241,9 +229,7 @@ def calculate_psnr(
     return float(psnr)
 
 
-def calculate_ssim(
-    image1: np.ndarray, image2: np.ndarray, window_size: int = 11
-) -> float:
+def calculate_ssim(image1: np.ndarray, image2: np.ndarray, window_size: int = 11) -> float:
     """Calculate Structural Similarity Index (SSIM).
 
     Simplified global-only implementation - for full windowed SSIM use
@@ -281,14 +267,12 @@ def calculate_ssim(
     c1 = (0.01 * data_range) ** 2
     c2 = (0.03 * data_range) ** 2
 
-    ssim = ((2 * mu1 * mu2 + c1) * (2 * sigma12 + c2)) / (
-        (mu1**2 + mu2**2 + c1) * (sigma1_sq + sigma2_sq + c2) + 1e-10
-    )
+    ssim = ((2 * mu1 * mu2 + c1) * (2 * sigma12 + c2)) / ((mu1**2 + mu2**2 + c1) * (sigma1_sq + sigma2_sq + c2) + 1e-10)
 
     return float(ssim)
 
 
-def calculate_effect_size(group1: np.ndarray, group2: np.ndarray) -> Dict[str, float]:
+def calculate_effect_size(group1: np.ndarray, group2: np.ndarray) -> dict[str, float]:
     """Calculate effect size (Cohen's d).
 
     Args:
@@ -355,12 +339,12 @@ class CustomMetric:
 
 
 def calculate_all_metrics(
-    predictions: Optional[np.ndarray] = None,
-    targets: Optional[np.ndarray] = None,
-    values: Optional[np.ndarray] = None,
-    signal: Optional[np.ndarray] = None,
-    noise: Optional[np.ndarray] = None,
-) -> Dict[str, float]:
+    predictions: np.ndarray | None = None,
+    targets: np.ndarray | None = None,
+    values: np.ndarray | None = None,
+    signal: np.ndarray | None = None,
+    noise: np.ndarray | None = None,
+) -> dict[str, float]:
     """Calculate all applicable metrics.
 
     Args:
@@ -447,10 +431,7 @@ def calculate_consistency(values1: np.ndarray, values2: np.ndarray) -> float:
         ValueError: If the sequences have different lengths
     """
     if len(values1) != len(values2):
-        raise ValueError(
-            f"values1 and values2 must have the same length "
-            f"({len(values1)} != {len(values2)})"
-        )
+        raise ValueError(f"values1 and values2 must have the same length ({len(values1)} != {len(values2)})")
 
     if len(values1) < 2:
         return float("nan")

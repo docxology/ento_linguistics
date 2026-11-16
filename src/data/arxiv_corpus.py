@@ -31,9 +31,9 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
@@ -60,7 +60,7 @@ CORPUS_DIR = Path(__file__).resolve().parents[2] / "data" / "corpus"
 #: Category-restricted arXiv queries, one per ento-linguistic topic.
 #: ``cat:`` filters keep results inside quantitative biology (population &
 #: evolutionary biology) and nonlinear sciences (adaptation & organization).
-ARXIV_QUERIES: Dict[str, str] = {
+ARXIV_QUERIES: dict[str, str] = {
     "ant_colonies": '(cat:q-bio.PE OR cat:nlin.AO) AND all:"ant colonies"',
     "eusociality": '(cat:q-bio.PE OR cat:nlin.AO) AND all:"eusociality"',
     "superorganisms": '(cat:q-bio.PE OR cat:nlin.AO) AND all:"superorganisms"',
@@ -73,7 +73,7 @@ _ABSTRACT_KEY_CHARS = 100  # matches the PubMed corpus dedupe convention
 
 def _utcnow() -> str:
     """Current UTC timestamp in ISO-8601 format."""
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+    return datetime.now(UTC).isoformat(timespec="seconds")
 
 
 def _sleep(seconds: float) -> None:
@@ -113,7 +113,7 @@ class EnrichedArXivMiner(ArXivMiner):
     # used by the base class (primary_category lives here).
     AX_NS = {"ax": "http://arxiv.org/schemas/atom"}
 
-    def search_full(self, query: str, max_results: int = 100) -> List[Dict[str, Any]]:
+    def search_full(self, query: str, max_results: int = 100) -> list[dict[str, Any]]:
         """Search arXiv and return raw record dicts with arXiv-specific fields.
 
         Args:
@@ -135,9 +135,7 @@ class EnrichedArXivMiner(ArXivMiner):
             f"&sortBy=submittedDate&sortOrder=descending"
         )
         try:
-            with urlopen(
-                Request(url, headers={"User-Agent": "Python-EntoLinguistic"})
-            ) as response:
+            with urlopen(Request(url, headers={"User-Agent": "Python-EntoLinguistic"})) as response:
                 content = response.read().decode("utf-8")
         except Exception as exc:  # noqa: BLE001 - mirrors base-class error policy
             self._log_error(f"Error searching arXiv: {exc}")
@@ -150,16 +148,14 @@ class EnrichedArXivMiner(ArXivMiner):
             return []
 
         ns = {"arxiv": "http://www.w3.org/2005/Atom"}
-        records: List[Dict[str, Any]] = []
+        records: list[dict[str, Any]] = []
         for entry in root.findall("arxiv:entry", ns):
             record = self._parse_entry_full(entry, ns)
             if record is not None:
                 records.append(record)
         return records
 
-    def _parse_entry_full(
-        self, entry: ET.Element, ns: Dict[str, str]
-    ) -> Optional[Dict[str, Any]]:
+    def _parse_entry_full(self, entry: ET.Element, ns: dict[str, str]) -> dict[str, Any] | None:
         """Parse one Atom ``<entry>`` into a record dict, or ``None``."""
         title_el = entry.find("arxiv:title", ns)
         title = title_el.text.strip() if title_el is not None and title_el.text else ""
@@ -173,24 +169,20 @@ class EnrichedArXivMiner(ArXivMiner):
             if name is not None and name.text
         ]
         summary_el = entry.find("arxiv:summary", ns)
-        abstract = (
-            summary_el.text.strip()
-            if summary_el is not None and summary_el.text
-            else None
-        )
+        abstract = summary_el.text.strip() if summary_el is not None and summary_el.text else None
         doi_el = entry.find("arxiv:doi", ns)
         if doi_el is None or not doi_el.text:
             doi_el = entry.find("ax:doi", self.AX_NS)
         doi = doi_el.text.strip() if doi_el is not None and doi_el.text else None
 
-        arxiv_id: Optional[str] = None
+        arxiv_id: str | None = None
         id_el = entry.find("arxiv:id", ns)
         if id_el is not None and id_el.text:
             match = re.search(r"arxiv\.org/abs/(.+?)\s*$", id_el.text.strip())
             if match:
                 arxiv_id = re.sub(r"v\d+$", "", match.group(1))
 
-        primary_category: Optional[str] = None
+        primary_category: str | None = None
         pc_el = entry.find("ax:primary_category", self.AX_NS)
         if pc_el is not None and pc_el.get("term"):
             primary_category = pc_el.get("term")
@@ -201,7 +193,7 @@ class EnrichedArXivMiner(ArXivMiner):
                     primary_category = term
                     break
 
-        published: Optional[str] = None
+        published: str | None = None
         pub_el = entry.find("arxiv:published", ns)
         if pub_el is not None and pub_el.text:
             published = pub_el.text.strip()
@@ -223,7 +215,7 @@ class EnrichedArXivMiner(ArXivMiner):
         logger.error(message)
 
 
-def load_pubmed_keys(corpus_dir: Path) -> Dict[str, set]:
+def load_pubmed_keys(corpus_dir: Path) -> dict[str, set]:
     """Load dedupe keys for the PubMed corpus.
 
     Reads ``abstracts.json`` (abstract strings) and ``provenance.json``
@@ -257,8 +249,8 @@ def load_pubmed_keys(corpus_dir: Path) -> Dict[str, set]:
 
 
 def dedupe_against_pubmed(
-    records: List[Dict[str, Any]], pubmed_keys: Dict[str, set]
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    records: list[dict[str, Any]], pubmed_keys: dict[str, set]
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Split records into kept vs. duplicates of the PubMed corpus.
 
     A record is a duplicate if its DOI, normalized title, or normalized
@@ -267,8 +259,8 @@ def dedupe_against_pubmed(
     Returns:
         ``(kept, duplicates)`` tuple of record lists.
     """
-    kept: List[Dict[str, Any]] = []
-    duplicates: List[Dict[str, Any]] = []
+    kept: list[dict[str, Any]] = []
+    duplicates: list[dict[str, Any]] = []
     for record in records:
         doi = (record.get("doi") or "").strip().lower() or None
         title = normalize_title(record.get("title") or "")
@@ -284,7 +276,7 @@ def dedupe_against_pubmed(
     return kept, duplicates
 
 
-def build_record(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+def build_record(raw: dict[str, Any]) -> dict[str, Any] | None:
     """Validate and normalize a raw arXiv record dict.
 
     Returns ``None`` if the record lacks an arXiv ID, title, or abstract.
@@ -305,11 +297,11 @@ def build_record(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 def harvest_arxiv(
     target: int = 100,
     max_per_query: int = 80,
-    corpus_dir: Optional[Path] = None,
-    miner: Optional[EnrichedArXivMiner] = None,
+    corpus_dir: Path | None = None,
+    miner: EnrichedArXivMiner | None = None,
     query_sleep: float = 3.0,
     dry_run: bool = False,
-) -> Tuple[List[Dict[str, Any]], Dict[str, Any], Dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]]:
     """Harvest arXiv preprints into ``arxiv_records.json`` (+ provenance).
 
     Resumable: arXiv IDs already present in ``arxiv_records.json`` are skipped,
@@ -332,8 +324,8 @@ def harvest_arxiv(
     records_path = corpus_dir / "arxiv_records.json"
     provenance_path = corpus_dir / "arxiv_provenance.json"
 
-    existing: List[Dict[str, Any]] = []
-    existing_provenance_records: Dict[str, Dict[str, Any]] = {}
+    existing: list[dict[str, Any]] = []
+    existing_provenance_records: dict[str, dict[str, Any]] = {}
     if records_path.exists():
         existing = json.loads(records_path.read_text(encoding="utf-8"))
     if provenance_path.exists():
@@ -345,9 +337,9 @@ def harvest_arxiv(
 
     pubmed_keys = load_pubmed_keys(corpus_dir)
 
-    new_records: List[Dict[str, Any]] = []
-    query_of: Dict[str, str] = {}  # arxiv_id -> originating query name
-    query_stats: Dict[str, Dict[str, int]] = {}
+    new_records: list[dict[str, Any]] = []
+    query_of: dict[str, str] = {}  # arxiv_id -> originating query name
+    query_stats: dict[str, dict[str, int]] = {}
     retrieved_at = _utcnow()
 
     for query_name, query in ARXIV_QUERIES.items():
@@ -362,9 +354,7 @@ def harvest_arxiv(
             record = build_record(raw)
             if record is None:
                 continue
-            if not is_relevant_social_insect_text(
-                record["title"] + " " + (record["abstract"] or "")
-            ):
+            if not is_relevant_social_insect_text(record["title"] + " " + (record["abstract"] or "")):
                 continue
             # Internal dedupe (within this run and against existing records).
             if record["arxiv_id"] in seen_ids:
@@ -424,20 +414,14 @@ def harvest_arxiv(
 
     if not dry_run and new_records:
         corpus_dir.mkdir(parents=True, exist_ok=True)
-        records_path.write_text(
-            json.dumps(records, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
-        provenance_path.write_text(
-            json.dumps(provenance, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
+        records_path.write_text(json.dumps(records, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        provenance_path.write_text(json.dumps(provenance, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return records, provenance, stats
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point for the arXiv harvest layer."""
-    parser = argparse.ArgumentParser(
-        description="Harvest arXiv preprints into the Ento-Linguistic corpus."
-    )
+    parser = argparse.ArgumentParser(description="Harvest arXiv preprints into the Ento-Linguistic corpus.")
     parser.add_argument(
         "--target",
         type=int,
@@ -463,17 +447,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    records, _provenance, stats = harvest_arxiv(
+    _records, _provenance, stats = harvest_arxiv(
         target=args.target,
         max_per_query=args.max_per_query,
         corpus_dir=args.corpus_dir,
         dry_run=args.dry_run,
     )
     mode = "dry-run" if args.dry_run else "written"
-    print(
-        f"arXiv harvest [{mode}]: existing={stats['existing']} "
-        f"new={stats['new']} total={stats['total']}"
-    )
+    print(f"arXiv harvest [{mode}]: existing={stats['existing']} new={stats['new']} total={stats['total']}")
     for name, counts in stats["query_stats"].items():
         print(f"  {name}: kept={counts['kept']} duplicates={counts['duplicates']}")
     return 0

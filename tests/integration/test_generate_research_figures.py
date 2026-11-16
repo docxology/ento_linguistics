@@ -1,8 +1,8 @@
 """Comprehensive tests for the generate_research_figures.py script to ensure 100% coverage."""
 
-import os
-import json
 import hashlib
+import json
+import os
 import shutil
 import subprocess
 import sys
@@ -10,7 +10,6 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-
 
 SUBPROCESS_TIMEOUT_SECONDS = 1800
 
@@ -88,10 +87,12 @@ if __name__ == "__main__":
         original_path = sys.path.copy()
         try:
             # Execute the function in a subprocess to test it properly
-            result = run_subprocess([sys.executable, str(test_script)],
-            cwd=str(tmp_path),
-            capture_output=True,
-            text=True,)
+            result = run_subprocess(
+                [sys.executable, str(test_script)],
+                cwd=str(tmp_path),
+                capture_output=True,
+                text=True,
+            )
 
             assert result.returncode == 0
             # The function should execute without error
@@ -130,10 +131,12 @@ if __name__ == "__main__":
         )
 
         # Test directory creation
-        result = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(tmp_path),
-        capture_output=True,
-        text=True,)
+        result = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(tmp_path),
+            capture_output=True,
+            text=True,
+        )
 
         assert result.returncode == 0
         assert "Output:" in result.stdout
@@ -150,13 +153,13 @@ if __name__ == "__main__":
         project_dir = test_root / "project"
         src_dir = project_dir / "src"
         src_dir.mkdir(parents=True)
-        
+
         # Create core package
         core_dir = src_dir / "core"
         core_dir.mkdir()
         (core_dir / "__init__.py").write_text("")
         (src_dir / "__init__.py").write_text("")
-        
+
         # Create visualization package
         viz_dir = src_dir / "visualization"
         viz_dir.mkdir()
@@ -271,10 +274,12 @@ if __name__ == "__main__":
         )
 
         # Run the test script
-        result = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,)
+        result = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+        )
 
         # Debug: Log stdout and stderr if the script failed
         if result.returncode != 0:
@@ -308,13 +313,13 @@ if __name__ == "__main__":
 
         src_dir = test_root / "src"
         src_dir.mkdir()
-        
+
         # Create core package
         core_dir = src_dir / "core"
         core_dir.mkdir()
         (core_dir / "__init__.py").write_text("")
         (src_dir / "__init__.py").write_text("")
-        
+
         # Create visualization package
         viz_dir = src_dir / "visualization"
         viz_dir.mkdir()
@@ -418,10 +423,12 @@ if __name__ == "__main__":
         )
 
         # Run the test script
-        result = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(test_root),
-        capture_output=True,
-        text=True,)
+        result = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(test_root),
+            capture_output=True,
+            text=True,
+        )
 
         # Should succeed
         assert result.returncode == 0
@@ -456,7 +463,6 @@ if __name__ == "__main__":
         (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
         shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
 
-
         # Run the script with PYTHONPATH pointing to the real project
         # so src.analysis, src.visualization etc. are importable
         project_root = str(Path(__file__).parent.parent.parent)  # ento_linguistics/
@@ -465,11 +471,13 @@ if __name__ == "__main__":
         env = os.environ.copy()
         env["PYTHONPATH"] = f"{src_path}:{project_root}:{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        result = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(test_root),
-        capture_output=True,
-        text=True,
-        env=env,)
+        result = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(test_root),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
         # Should succeed
         assert result.returncode == 0, f"Script failed:\n{result.stderr}"
@@ -498,8 +506,11 @@ if __name__ == "__main__":
 
         # Copy script
         script_path = os.path.join(
-            os.path.dirname(__file__), "..", "..",
-            "scripts", "02_generate_figures.py",
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "scripts",
+            "02_generate_figures.py",
         )
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
@@ -510,7 +521,6 @@ if __name__ == "__main__":
         (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
         shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
 
-
         # Include real project src/ for analysis imports
         project_root = str(Path(__file__).parent.parent.parent)
         repo_root = str(Path(__file__).parent.parent.parent.parent.parent)
@@ -518,11 +528,13 @@ if __name__ == "__main__":
         env = os.environ.copy()
         env["PYTHONPATH"] = f"{src_path}:{project_root}:{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        result = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(test_root),
-        capture_output=True,
-        text=True,
-        env=env,)
+        result = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(test_root),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
         assert result.returncode == 0, f"Script failed:\n{result.stderr}"
 
@@ -539,8 +551,11 @@ if __name__ == "__main__":
         test_root.mkdir()
 
         script_path = os.path.join(
-            os.path.dirname(__file__), "..", "..",
-            "scripts", "02_generate_figures.py",
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "scripts",
+            "02_generate_figures.py",
         )
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
@@ -551,16 +566,17 @@ if __name__ == "__main__":
         (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
         shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
 
-
         # Deliberately exclude real project from PYTHONPATH
         env = os.environ.copy()
         env["PYTHONPATH"] = str(tmp_path)  # Empty path
 
-        result = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(test_root),
-        capture_output=True,
-        text=True,
-        env=env,)
+        result = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(test_root),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
         # Script should fail because analysis modules are required for the
         # figure generation pipeline (DataLoader is handled gracefully but
@@ -581,8 +597,11 @@ if __name__ == "__main__":
         test_root.mkdir()
 
         script_path = os.path.join(
-            os.path.dirname(__file__), "..", "..",
-            "scripts", "02_generate_figures.py",
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "scripts",
+            "02_generate_figures.py",
         )
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
@@ -593,18 +612,19 @@ if __name__ == "__main__":
         (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
         shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
 
-
         project_root = str(Path(__file__).parent.parent.parent)
         repo_root = str(Path(__file__).parent.parent.parent.parent.parent)
         src_path = os.path.join(project_root, "src")
         env = os.environ.copy()
         env["PYTHONPATH"] = f"{src_path}:{project_root}:{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        result = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(test_root),
-        capture_output=True,
-        text=True,
-        env=env,)
+        result = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(test_root),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
         # Should succeed — the script sets MPLBACKEND=Agg at runtime
         assert result.returncode == 0, f"Script failed:\n{result.stderr}"
@@ -615,8 +635,11 @@ if __name__ == "__main__":
         test_root.mkdir()
 
         script_path = os.path.join(
-            os.path.dirname(__file__), "..", "..",
-            "scripts", "02_generate_figures.py",
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "scripts",
+            "02_generate_figures.py",
         )
         test_script = test_root / "scripts" / "02_generate_figures.py"
         test_script.parent.mkdir()
@@ -627,28 +650,32 @@ if __name__ == "__main__":
         (corpus_dir / "abstracts.json").write_text(json.dumps(json.loads(real_source.read_text())[:200]))
         shutil.copy2(real_source.with_name("provenance.json"), corpus_dir / "provenance.json")
 
-
         project_root = str(Path(__file__).parent.parent.parent)
         repo_root = str(Path(__file__).parent.parent.parent.parent.parent)
         src_path = os.path.join(project_root, "src")
         env = os.environ.copy()
         env["PYTHONPATH"] = f"{src_path}:{project_root}:{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        result1 = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(test_root),
-        capture_output=True,
-        text=True,
-        env=env,)
+        result1 = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(test_root),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
         assert result1.returncode == 0, result1.stderr
-        first_hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                        for p in (test_root / "output" / "figures").glob("*.png")}
+        first_hashes = {
+            p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (test_root / "output" / "figures").glob("*.png")
+        }
         assert first_hashes
-        result2 = run_subprocess([sys.executable, str(test_script)],
-        cwd=str(test_root),
-        capture_output=True,
-        text=True,
-        env=env,)
+        result2 = run_subprocess(
+            [sys.executable, str(test_script)],
+            cwd=str(test_root),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
         # Both should succeed
         assert result1.returncode == 0, f"Run 1 failed:\n{result1.stderr}"
@@ -657,11 +684,10 @@ if __name__ == "__main__":
         # Check that domain comparison figure exists after both runs
         data_path = test_root / "output" / "figures" / "domain_comparison.png"
         assert data_path.exists()
-        second_hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                         for p in (test_root / "output" / "figures").glob("*.png")}
+        second_hashes = {
+            p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (test_root / "output" / "figures").glob("*.png")
+        }
         assert first_hashes == second_hashes
-
-
 
 
 if __name__ == "__main__":

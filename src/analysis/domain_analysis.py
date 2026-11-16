@@ -10,13 +10,14 @@ from __future__ import annotations
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
+from core.parallel import map_ordered
+
 from .term_extraction import Term, filter_matching_sentences
 from .text_analysis import LinguisticFeatureExtractor, TextProcessor
-from core.parallel import map_ordered
 
 __all__ = [
     "DomainAnalysis",
@@ -27,7 +28,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from .semantic_entropy import SemanticEntropyResult
 
 
-def _entropy_task(item: Tuple[str, List[List[str]]]) -> "SemanticEntropyResult":
+def _entropy_task(item: tuple[str, list[list[str]]]) -> SemanticEntropyResult:
     """Compute one term's semantic entropy from its candidate sentences.
 
     Module-level so the process pool can pickle it (the in-method closure
@@ -39,7 +40,7 @@ def _entropy_task(item: Tuple[str, List[List[str]]]) -> "SemanticEntropyResult":
     from .semantic_entropy import calculate_semantic_entropy
 
     key, term_candidates = item
-    contexts: List[str] = []
+    contexts: list[str] = []
     for sentences in term_candidates:
         for sentence in filter_matching_sentences(sentences, key):
             clean_context = sentence.strip()
@@ -47,12 +48,39 @@ def _entropy_task(item: Tuple[str, List[List[str]]]) -> "SemanticEntropyResult":
                 contexts.append(clean_context)
     return calculate_semantic_entropy(term=key, contexts=contexts)
 
+
 # Function words excluded from lexical keyword-support computation so that
 # stop-word overlap cannot inflate support ratios.
 _CONTENT_STOP_WORDS = {
-    "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in",
-    "is", "it", "of", "on", "or", "that", "the", "to", "was", "were",
-    "which", "with", "rather", "than", "into", "over", "not", "no",
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "by",
+    "for",
+    "from",
+    "in",
+    "is",
+    "it",
+    "of",
+    "on",
+    "or",
+    "that",
+    "the",
+    "to",
+    "was",
+    "were",
+    "which",
+    "with",
+    "rather",
+    "than",
+    "into",
+    "over",
+    "not",
+    "no",
 }
 
 
@@ -77,18 +105,18 @@ class DomainAnalysis:
     """
 
     domain_name: str
-    key_terms: List[str] = field(default_factory=list)
-    term_patterns: Dict[str, int] = field(default_factory=dict)
-    framing_assumptions: List[str] = field(default_factory=list)
-    conceptual_structure: Dict[str, Any] = field(default_factory=dict)
-    ambiguities: List[Dict[str, Any]] = field(default_factory=list)
-    recommendations: List[str] = field(default_factory=list)
-    frequency_stats: Dict[str, Any] = field(default_factory=dict)
-    cooccurrence_analysis: Dict[str, Any] = field(default_factory=dict)
-    ambiguity_metrics: Dict[str, Any] = field(default_factory=dict)
-    confidence_scores: Dict[str, float] = field(default_factory=dict)
-    conceptual_metrics: Dict[str, Any] = field(default_factory=dict)
-    statistical_significance: Dict[str, Any] = field(default_factory=dict)
+    key_terms: list[str] = field(default_factory=list)
+    term_patterns: dict[str, int] = field(default_factory=dict)
+    framing_assumptions: list[str] = field(default_factory=list)
+    conceptual_structure: dict[str, Any] = field(default_factory=dict)
+    ambiguities: list[dict[str, Any]] = field(default_factory=list)
+    recommendations: list[str] = field(default_factory=list)
+    frequency_stats: dict[str, Any] = field(default_factory=dict)
+    cooccurrence_analysis: dict[str, Any] = field(default_factory=dict)
+    ambiguity_metrics: dict[str, Any] = field(default_factory=dict)
+    confidence_scores: dict[str, float] = field(default_factory=dict)
+    conceptual_metrics: dict[str, Any] = field(default_factory=dict)
+    statistical_significance: dict[str, Any] = field(default_factory=dict)
 
 
 class DomainAnalyzer:
@@ -103,9 +131,7 @@ class DomainAnalyzer:
         self.text_processor = TextProcessor()
         self.feature_extractor = LinguisticFeatureExtractor()
 
-    def analyze_all_domains(
-        self, terms: Dict[str, Term], texts: List[str]
-    ) -> Dict[str, DomainAnalysis]:
+    def analyze_all_domains(self, terms: dict[str, Term], texts: list[str]) -> dict[str, DomainAnalysis]:
         """Analyze all six Ento-Linguistic domains.
 
         Args:
@@ -150,30 +176,22 @@ class DomainAnalyzer:
                 analysis = domain_methods[domain_name](terms_list, texts)
 
                 # Add statistical analysis
-                analysis.frequency_stats = self.analyze_term_frequency_distribution(
-                    terms_list, texts
-                )
-                analysis.cooccurrence_analysis = self.analyze_term_cooccurrence(
-                    terms_list, texts
-                )
-                analysis.ambiguity_metrics = self.quantify_ambiguity_metrics(
-                    terms_list, texts
-                )
+                analysis.frequency_stats = self.analyze_term_frequency_distribution(terms_list, texts)
+                analysis.cooccurrence_analysis = self.analyze_term_cooccurrence(terms_list, texts)
+                analysis.ambiguity_metrics = self.quantify_ambiguity_metrics(terms_list, texts)
                 analysis.confidence_scores = self.generate_confidence_scores(
                     analysis.framing_assumptions, terms_list, texts
                 )
                 analysis.conceptual_metrics = self.quantify_conceptual_structure(
                     analysis.conceptual_structure, terms_list
                 )
-                analysis.statistical_significance = (
-                    self.calculate_statistical_significance(analysis.term_patterns)
-                )
+                analysis.statistical_significance = self.calculate_statistical_significance(analysis.term_patterns)
 
                 domain_analyses[domain_name] = analysis
 
         return domain_analyses
 
-    def _group_terms_by_domain(self, terms: Dict[str, Term]) -> Dict[str, List[Term]]:
+    def _group_terms_by_domain(self, terms: dict[str, Term]) -> dict[str, list[Term]]:
         """Group terms by their Ento-Linguistic domains.
 
         Args:
@@ -190,9 +208,7 @@ class DomainAnalyzer:
 
         return dict(domain_groups)
 
-    def _analyze_individuality_domain(
-        self, terms: List[Term], texts: List[str]
-    ) -> DomainAnalysis:
+    def _analyze_individuality_domain(self, terms: list[Term], texts: list[str]) -> DomainAnalysis:
         """Analyze the Unit of Individuality domain.
 
         Args:
@@ -254,9 +270,7 @@ class DomainAnalyzer:
 
         return analysis
 
-    def _analyze_behavior_domain(
-        self, terms: List[Term], texts: List[str]
-    ) -> DomainAnalysis:
+    def _analyze_behavior_domain(self, terms: list[Term], texts: list[str]) -> DomainAnalysis:
         """Analyze the Behavior and Identity domain.
 
         Args:
@@ -322,9 +336,7 @@ class DomainAnalyzer:
 
         return analysis
 
-    def _analyze_power_domain(
-        self, terms: List[Term], texts: List[str]
-    ) -> DomainAnalysis:
+    def _analyze_power_domain(self, terms: list[Term], texts: list[str]) -> DomainAnalysis:
         """Analyze the Power & Labor domain.
 
         Args:
@@ -390,9 +402,7 @@ class DomainAnalyzer:
 
         return analysis
 
-    def _analyze_reproduction_domain(
-        self, terms: List[Term], texts: List[str]
-    ) -> DomainAnalysis:
+    def _analyze_reproduction_domain(self, terms: list[Term], texts: list[str]) -> DomainAnalysis:
         """Analyze the Sex & Reproduction domain.
 
         Args:
@@ -468,9 +478,7 @@ class DomainAnalyzer:
 
         return analysis
 
-    def _analyze_kinship_domain(
-        self, terms: List[Term], texts: List[str]
-    ) -> DomainAnalysis:
+    def _analyze_kinship_domain(self, terms: list[Term], texts: list[str]) -> DomainAnalysis:
         """Analyze the Kin & Relatedness domain.
 
         Args:
@@ -542,9 +550,7 @@ class DomainAnalyzer:
 
         return analysis
 
-    def _analyze_economics_domain(
-        self, terms: List[Term], texts: List[str]
-    ) -> DomainAnalysis:
+    def _analyze_economics_domain(self, terms: list[Term], texts: list[str]) -> DomainAnalysis:
         """Analyze the Economics domain.
 
         Args:
@@ -612,7 +618,7 @@ class DomainAnalyzer:
 
         return analysis
 
-    def _extract_key_terms(self, term_texts: List[str], top_n: int = 10) -> List[str]:
+    def _extract_key_terms(self, term_texts: list[str], top_n: int = 10) -> list[str]:
         """Extract most important terms by frequency.
 
         Args:
@@ -625,7 +631,7 @@ class DomainAnalyzer:
         term_counts = Counter(term_texts)
         return [term for term, _ in term_counts.most_common(top_n)]
 
-    def _analyze_term_patterns(self, terms: List[Term]) -> Dict[str, int]:
+    def _analyze_term_patterns(self, terms: list[Term]) -> dict[str, int]:
         """Count linguistic features in terms.
 
         Features are non-exclusive (a term can be both compound and numeric)
@@ -691,10 +697,10 @@ class DomainAnalyzer:
             recommendations = analysis.recommendations
 
         report = f"""
-# {domain_name.replace('_', ' ').title()} Domain Analysis
+# {domain_name.replace("_", " ").title()} Domain Analysis
 
 ## Key Terms
-{', '.join(key_terms)}
+{", ".join(key_terms)}
 
 ## Term Patterns
 {chr(10).join(f"- {pattern}: {count}" for pattern, count in term_patterns.items())}
@@ -710,7 +716,7 @@ class DomainAnalyzer:
 """
         return report
 
-    def compare_domains(self, analyses: Dict[str, DomainAnalysis]) -> Dict[str, Any]:
+    def compare_domains(self, analyses: dict[str, DomainAnalysis]) -> dict[str, Any]:
         """Compare patterns across domains.
 
         Args:
@@ -720,20 +726,14 @@ class DomainAnalyzer:
             Comparison results
         """
         comparison = {
-            "domain_sizes": {
-                name: len(analysis.key_terms) for name, analysis in analyses.items()
-            },
+            "domain_sizes": {name: len(analysis.key_terms) for name, analysis in analyses.items()},
             "shared_assumptions": self._find_shared_assumptions(analyses),
-            "heuristic_cross_domain_notes": self._heuristic_cross_domain_notes(
-                analyses
-            ),
+            "heuristic_cross_domain_notes": self._heuristic_cross_domain_notes(analyses),
         }
 
         return comparison
 
-    def _find_shared_assumptions(
-        self, analyses: Dict[str, DomainAnalysis]
-    ) -> List[str]:
+    def _find_shared_assumptions(self, analyses: dict[str, DomainAnalysis]) -> list[str]:
         """Find assumptions shared across domains.
 
         Args:
@@ -747,15 +747,11 @@ class DomainAnalyzer:
             all_assumptions.extend(analysis.framing_assumptions)
 
         assumption_counts = Counter(all_assumptions)
-        shared = [
-            assumption for assumption, count in assumption_counts.items() if count > 1
-        ]
+        shared = [assumption for assumption, count in assumption_counts.items() if count > 1]
 
         return shared
 
-    def _heuristic_cross_domain_notes(
-        self, analyses: Dict[str, DomainAnalysis]
-    ) -> List[Dict[str, Any]]:
+    def _heuristic_cross_domain_notes(self, analyses: dict[str, DomainAnalysis]) -> list[dict[str, Any]]:
         """Return fixed editorial notes about cross-domain framing.
 
         IMPORTANT — NON-EMPIRICAL OUTPUT: the returned list is a hardcoded
@@ -783,9 +779,7 @@ class DomainAnalyzer:
 
         return heuristic_notes
 
-    def analyze_term_frequency_distribution(
-        self, terms: List[Term], texts: List[str]
-    ) -> Dict[str, Any]:
+    def analyze_term_frequency_distribution(self, terms: list[Term], texts: list[str]) -> dict[str, Any]:
         """Analyze term frequency distributions within domains.
 
         Args:
@@ -822,21 +816,15 @@ class DomainAnalyzer:
             }
 
             # Most frequent terms
-            sorted_terms = sorted(
-                zip(term_texts, term_freqs), key=lambda x: x[1], reverse=True
-            )
-            stats["top_terms"] = [
-                {"term": term, "frequency": freq} for term, freq in sorted_terms[:10]
-            ]
+            sorted_terms = sorted(zip(term_texts, term_freqs), key=lambda x: x[1], reverse=True)
+            stats["top_terms"] = [{"term": term, "frequency": freq} for term, freq in sorted_terms[:10]]
 
         else:
             stats = {"error": "No terms provided for analysis"}
 
         return stats
 
-    def analyze_term_cooccurrence(
-        self, terms: List[Term], texts: List[str], window_size: int = 50
-    ) -> Dict[str, Any]:
+    def analyze_term_cooccurrence(self, terms: list[Term], texts: list[str], window_size: int = 50) -> dict[str, Any]:
         """Analyze co-occurrence patterns between terms.
 
         Each unordered term pair co-occurring within ``window_size`` tokens is
@@ -858,7 +846,7 @@ class DomainAnalyzer:
 
         term_set = {term.text.lower() for term in terms}
         n_terms = len(term_set)
-        pair_counts: Dict[tuple, int] = defaultdict(int)
+        pair_counts: dict[tuple, int] = defaultdict(int)
         half_window = window_size // 2
 
         # Build canonical (unordered) pair counts with set membership lookups
@@ -876,7 +864,7 @@ class DomainAnalyzer:
                         pair_counts[pair] += 1
 
         # Rebuild the symmetric matrix for JSON serialization
-        cooccurrence_matrix: Dict[str, Dict[str, int]] = defaultdict(dict)
+        cooccurrence_matrix: dict[str, dict[str, int]] = defaultdict(dict)
         for (term1, term2), count in pair_counts.items():
             cooccurrence_matrix[term1][term2] = count
             cooccurrence_matrix[term2][term1] = count
@@ -887,14 +875,10 @@ class DomainAnalyzer:
             "cooccurrence_matrix": dict(cooccurrence_matrix),
             "total_cooccurrences": total_cooccurrences,
             "unique_term_pairs": len(pair_counts),
-            "average_cooccurrences_per_term": (
-                total_cooccurrences / n_terms if n_terms else 0
-            ),
+            "average_cooccurrences_per_term": (total_cooccurrences / n_terms if n_terms else 0),
         }
 
-    def _compute_term_entropy_results(
-        self, terms: List[Term], texts: List[str]
-    ) -> Dict[str, "SemanticEntropyResult"]:
+    def _compute_term_entropy_results(self, terms: list[Term], texts: list[str]) -> dict[str, SemanticEntropyResult]:
         """Compute per-term semantic entropy (single shared implementation).
 
         Tokenizes every text once, matches whole-word sentence contexts
@@ -929,18 +913,14 @@ class DomainAnalyzer:
         """
         from nltk.tokenize import sent_tokenize
 
-        from .semantic_entropy import calculate_semantic_entropy
-
         # Tokenize every text once; reuse the sentence lists for all terms
         tokenized_texts = [sent_tokenize(text) for text in texts]
 
         # ── Inverted part-token index (pruning only; regex decides) ──
         part_re = re.compile(r"[a-z0-9]+")
-        term_keys: List[str] = [term.text.lower() for term in terms]
-        term_parts: Dict[str, frozenset] = {
-            key: frozenset(part_re.findall(key)) for key in term_keys
-        }
-        part_to_keys: Dict[str, List[str]] = defaultdict(list)
+        term_keys: list[str] = [term.text.lower() for term in terms]
+        term_parts: dict[str, frozenset] = {key: frozenset(part_re.findall(key)) for key in term_keys}
+        part_to_keys: dict[str, list[str]] = defaultdict(list)
         for key, parts in term_parts.items():
             for part in sorted(parts):
                 part_to_keys[part].append(key)
@@ -949,14 +929,12 @@ class DomainAnalyzer:
         # term present in the sentence.  Collected in (text, sentence)
         # order so the regex scan below sees the same sentence sequence
         # the naive per-text loop would.
-        candidates: Dict[str, List[List[str]]] = {
-            key: [] for key in dict.fromkeys(term_keys)
-        }
+        candidates: dict[str, list[list[str]]] = {key: [] for key in dict.fromkeys(term_keys)}
         for sentences in tokenized_texts:
-            matched_in_text: Dict[str, List[str]] = defaultdict(list)
+            matched_in_text: dict[str, list[str]] = defaultdict(list)
             for sentence in sentences:
                 sentence_parts = set(part_re.findall(sentence.lower()))
-                hits: Dict[str, int] = {}
+                hits: dict[str, int] = {}
                 for part in sentence_parts:
                     keys = part_to_keys.get(part)
                     if keys:
@@ -969,12 +947,12 @@ class DomainAnalyzer:
                 candidates[key].append(matched)
 
         # ── Per-term work (regex context extraction + entropy) ─────────
-        work_items: List[Tuple[str, List[List[str]]]] = [
+        work_items: list[tuple[str, list[list[str]]]] = [
             (term.text.lower(), candidates[term.text.lower()]) for term in terms
         ]
         computed = map_ordered(_entropy_task, work_items)
 
-        results: Dict[str, "SemanticEntropyResult"] = {}
+        results: dict[str, SemanticEntropyResult] = {}
         for term, result in zip(terms, computed):
             results[term.text.lower()] = result
 
@@ -982,9 +960,9 @@ class DomainAnalyzer:
 
     def iter_domain_term_entropies(
         self,
-        terms: Union[List[Term], Dict[str, Term]],
-        texts: List[str],
-    ) -> Dict[str, List[float]]:
+        terms: list[Term] | dict[str, Term],
+        texts: list[str],
+    ) -> dict[str, list[float]]:
         """Return valid per-term semantic entropies grouped by domain.
 
         Shares the per-term implementation with
@@ -1009,7 +987,7 @@ class DomainAnalyzer:
         term_list = list(terms.values()) if isinstance(terms, dict) else list(terms)
         results = self._compute_term_entropy_results(term_list, texts)
 
-        domain_entropies: Dict[str, List[float]] = defaultdict(list)
+        domain_entropies: dict[str, list[float]] = defaultdict(list)
         for term in term_list:
             result = results.get(term.text.lower())
             term.entropy_status = result.status if result is not None else None
@@ -1024,9 +1002,7 @@ class DomainAnalyzer:
 
         return dict(domain_entropies)
 
-    def quantify_ambiguity_metrics(
-        self, terms: List[Term], texts: List[str]
-    ) -> Dict[str, Any]:
+    def quantify_ambiguity_metrics(self, terms: list[Term], texts: list[str]) -> dict[str, Any]:
         """Quantify ambiguity metrics for terms using Shannon Entropy.
 
         Delegates per-term entropy computation to the shared
@@ -1053,7 +1029,7 @@ class DomainAnalyzer:
 
         entropy_results = self._compute_term_entropy_results(terms, texts)
 
-        ambiguity_scores: Dict[str, Any] = {}
+        ambiguity_scores: dict[str, Any] = {}
         for term_text, result in entropy_results.items():
             ambiguity_scores[term_text] = {
                 "total_occurrences": result.n_contexts,
@@ -1069,20 +1045,13 @@ class DomainAnalyzer:
         # Overall domain ambiguity metrics, excluding failed/unusable results
         if ambiguity_scores:
             domain_scores = list(ambiguity_scores.values())
-            valid_scores = [
-                s["entropy_bits"] for s in domain_scores if s["status"] == "ok"
-            ]
+            valid_scores = [s["entropy_bits"] for s in domain_scores if s["status"] == "ok"]
 
-            n_insufficient = sum(
-                1 for s in domain_scores if s["status"] == "insufficient_contexts"
-            )
+            n_insufficient = sum(1 for s in domain_scores if s["status"] == "insufficient_contexts")
             n_errors = sum(1 for s in domain_scores if s["status"] == "error")
 
             if valid_scores:
-                valid_normalized = [
-                    s["entropy_normalized"] for s in domain_scores
-                    if s["status"] == "ok"
-                ]
+                valid_normalized = [s["entropy_normalized"] for s in domain_scores if s["status"] == "ok"]
                 average_entropy = float(np.mean(valid_scores))
                 overall_metrics = {
                     "average_entropy": average_entropy,
@@ -1102,9 +1071,9 @@ class DomainAnalyzer:
                     "n_excluded_errors": n_errors,
                     "total_information_loss_bits": float(np.sum(valid_scores)),
                     "highly_ambiguous_terms": [
-                        term for term, score in ambiguity_scores.items()
-                        if score["status"] == "ok"
-                        and score["entropy_bits"] > HIGH_ENTROPY_THRESHOLD
+                        term
+                        for term, score in ambiguity_scores.items()
+                        if score["status"] == "ok" and score["entropy_bits"] > HIGH_ENTROPY_THRESHOLD
                     ],
                 }
             else:
@@ -1117,8 +1086,7 @@ class DomainAnalyzer:
                     "n_excluded_insufficient_contexts": n_insufficient,
                     "n_excluded_errors": n_errors,
                     "warning": (
-                        "No term had enough contexts to compute semantic "
-                        "entropy; average entropy is undefined."
+                        "No term had enough contexts to compute semantic entropy; average entropy is undefined."
                     ),
                 }
         else:
@@ -1129,9 +1097,7 @@ class DomainAnalyzer:
             "domain_metrics": overall_metrics,
         }
 
-    def analyze_cross_domain_overlap(
-        self, terms: Dict[str, Term]
-    ) -> Dict[str, Any]:
+    def analyze_cross_domain_overlap(self, terms: dict[str, Term]) -> dict[str, Any]:
         """Analyze overlap between terms across different domains.
 
         Args:
@@ -1178,10 +1144,7 @@ class DomainAnalyzer:
                                 )
                             )
                             * 100
-                            if min(
-                                len(domain_terms[domain1]), len(domain_terms[domain2])
-                            )
-                            > 0
+                            if min(len(domain_terms[domain1]), len(domain_terms[domain2])) > 0
                             else 0
                         ),
                     }
@@ -1195,19 +1158,15 @@ class DomainAnalyzer:
             "domain_pair_overlaps": dict(overlap_stats),
             "total_unique_shared_terms": len(all_shared_terms),
             "average_overlap_percentage": (
-                np.mean(
-                    [stats["overlap_percentage"] for stats in overlap_stats.values()]
-                )
-                if overlap_stats
-                else 0
+                np.mean([stats["overlap_percentage"] for stats in overlap_stats.values()]) if overlap_stats else 0
             ),
         }
 
     def calculate_statistical_significance(
         self,
-        term_patterns: Dict[str, int],
-        expected_patterns: Optional[Dict[str, float]] = None,
-    ) -> Dict[str, Any]:
+        term_patterns: dict[str, int],
+        expected_patterns: dict[str, float] | None = None,
+    ) -> dict[str, Any]:
         """Calculate statistical significance for term patterns.
 
         Args:
@@ -1226,25 +1185,18 @@ class DomainAnalyzer:
         # If no expected patterns, use uniform distribution
         if expected_patterns is None:
             total_patterns = sum(term_patterns.values())
-            expected_patterns = {
-                pattern: total_patterns / len(term_patterns)
-                for pattern in term_patterns.keys()
-            }
+            expected_patterns = {pattern: total_patterns / len(term_patterns) for pattern in term_patterns}
 
         # Chi-square test for pattern significance
         observed = list(term_patterns.values())
-        expected = [
-            expected_patterns.get(pattern, 0) for pattern in term_patterns.keys()
-        ]
+        expected = [expected_patterns.get(pattern, 0) for pattern in term_patterns]
 
         n_total = sum(observed)
         k = len(observed)
         try:
             chi2_stat, p_value = stats.chisquare(observed, expected)
             significant_patterns = [
-                pattern
-                for pattern, freq in term_patterns.items()
-                if freq > expected_patterns.get(pattern, 0)
+                pattern for pattern, freq in term_patterns.items() if freq > expected_patterns.get(pattern, 0)
             ]
 
             return {
@@ -1255,23 +1207,19 @@ class DomainAnalyzer:
                 "is_significant": p_value < 0.05,
                 # Cramer's V for the goodness-of-fit case:
                 # V = sqrt(chi2 / (N * (k - 1))), k = number of categories
-                "effect_size": float(
-                    np.sqrt(chi2_stat / (n_total * (k - 1)))
-                )
-                if n_total > 0 and k > 1
-                else 0.0,
+                "effect_size": float(np.sqrt(chi2_stat / (n_total * (k - 1)))) if n_total > 0 and k > 1 else 0.0,
             }
         except ValueError as e:
             # scipy raises ValueError for degenerate contingency input
             # (e.g. zero totals or non-positive expected frequencies)
             return {
-                "error": f"Statistical analysis failed: {str(e)}",
+                "error": f"Statistical analysis failed: {e!s}",
                 "observed_patterns": term_patterns,
             }
 
     def generate_confidence_scores(
-        self, framing_assumptions: List[str], terms: List[Term], texts: List[str]
-    ) -> Dict[str, float]:
+        self, framing_assumptions: list[str], terms: list[Term], texts: list[str]
+    ) -> dict[str, float]:
         """Generate lexical keyword-support ratios for framing assumptions.
 
         IMPORTANT — NOT STATISTICAL CONFIDENCE: the returned values are the
@@ -1292,9 +1240,7 @@ class DomainAnalyzer:
         for assumption in framing_assumptions:
             # Content words only: function words must not inflate support
             assumption_keywords = [
-                word
-                for word in assumption.lower().split()
-                if word.isalpha() and word not in _CONTENT_STOP_WORDS
+                word for word in assumption.lower().split() if word.isalpha() and word not in _CONTENT_STOP_WORDS
             ]
             if not assumption_keywords or not terms:
                 confidence_scores[assumption] = 0.0
@@ -1304,18 +1250,12 @@ class DomainAnalyzer:
             for term in terms:
                 term_vocab.update(term.text.lower().replace("_", " ").replace("-", " ").split())
 
-            supported_keywords = sum(
-                1 for keyword in assumption_keywords if keyword in term_vocab
-            )
-            confidence_scores[assumption] = supported_keywords / len(
-                assumption_keywords
-            )
+            supported_keywords = sum(1 for keyword in assumption_keywords if keyword in term_vocab)
+            confidence_scores[assumption] = supported_keywords / len(assumption_keywords)
 
         return confidence_scores
 
-    def quantify_conceptual_structure(
-        self, conceptual_structure: Dict[str, Any], terms: List[Term]
-    ) -> Dict[str, Any]:
+    def quantify_conceptual_structure(self, conceptual_structure: dict[str, Any], terms: list[Term]) -> dict[str, Any]:
         """Quantify conceptual structure metrics.
 
         Args:
@@ -1329,23 +1269,15 @@ class DomainAnalyzer:
 
         # Concept coverage - how many terms map to concepts
         total_concepts = 0
-        for key, value in conceptual_structure.items():
-            if isinstance(value, list):
-                total_concepts += len(value)
-            elif isinstance(value, dict):
+        for value in conceptual_structure.values():
+            if isinstance(value, (list, dict)):
                 total_concepts += len(value)
 
         metrics["total_concepts"] = total_concepts
-        metrics["terms_per_concept"] = (
-            len(terms) / total_concepts if total_concepts > 0 else 0
-        )
+        metrics["terms_per_concept"] = len(terms) / total_concepts if total_concepts > 0 else 0
 
         # Concept diversity - number of different concept types
-        concept_types = sum(
-            1
-            for value in conceptual_structure.values()
-            if isinstance(value, (list, dict))
-        )
+        concept_types = sum(1 for value in conceptual_structure.values() if isinstance(value, (list, dict)))
         metrics["concept_types"] = concept_types
 
         # Structural complexity - nested levels
@@ -1358,8 +1290,6 @@ class DomainAnalyzer:
                 return current_depth
 
         metrics["structural_depth"] = calculate_depth(conceptual_structure)
-        metrics["structural_complexity_score"] = (
-            concept_types * metrics["structural_depth"]
-        )
+        metrics["structural_complexity_score"] = concept_types * metrics["structural_depth"]
 
         return metrics

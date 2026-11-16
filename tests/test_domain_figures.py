@@ -178,16 +178,12 @@ class TestGeneratorBasics:
         assert result == {"error": "Invalid domain name: not_a_domain"}
         assert list(generator.figures_dir.glob("*.png")) == []
 
-    def test_missing_corpus_yields_no_terms_error(
-        self, generator: DomainFigureGenerator
-    ) -> None:
+    def test_missing_corpus_yields_no_terms_error(self, generator: DomainFigureGenerator) -> None:
         # No corpus_file and no default corpus in tmp data_dir -> empty corpus.
         result = generator.generate_domain_figures("behavior_and_identity")
         assert result == {"error": "No terms found for domain behavior_and_identity"}
 
-    def test_load_corpus_uses_default_file(
-        self, generator: DomainFigureGenerator, tmp_path: Path
-    ) -> None:
+    def test_load_corpus_uses_default_file(self, generator: DomainFigureGenerator, tmp_path: Path) -> None:
         from data.literature_mining import LiteratureCorpus
 
         default = generator.data_dir / "literature_corpus.json"
@@ -213,9 +209,7 @@ class TestGeneratorBasics:
         assert len(loaded.publications) == 1
         assert loaded.publications[0].title == "T"
 
-    def test_load_corpus_empty_when_no_file_anywhere(
-        self, generator: DomainFigureGenerator
-    ) -> None:
+    def test_load_corpus_empty_when_no_file_anywhere(self, generator: DomainFigureGenerator) -> None:
         corpus = generator._load_corpus(None)
         assert corpus.publications == []
 
@@ -230,9 +224,7 @@ class TestGenerateDomainFigures:
         small_corpus_file: Path,
         tmp_path: Path,
     ) -> None:
-        result = generator.generate_domain_figures(
-            "behavior_and_identity", small_corpus_file
-        )
+        result = generator.generate_domain_figures("behavior_and_identity", small_corpus_file)
         assert "error" not in result
         assert result["domain"] == "behavior_and_identity"
         assert result["terms_visualized"] >= 1
@@ -244,20 +236,13 @@ class TestGenerateDomainFigures:
         # Figure registry was written into tmp and records the manuscript label.
         registry = json.loads((tmp_path / "figure_registry.json").read_text())
         assert "fig:behavior_identity_frequencies" in registry
-        assert (
-            registry["fig:behavior_identity_frequencies"]["filename"]
-            == "behavior_and_identity_term_frequencies.png"
-        )
+        assert registry["fig:behavior_identity_frequencies"]["filename"] == "behavior_and_identity_term_frequencies.png"
 
-    def test_generate_all_domains_summary(
-        self, generator: DomainFigureGenerator, small_corpus_file: Path
-    ) -> None:
+    def test_generate_all_domains_summary(self, generator: DomainFigureGenerator, small_corpus_file: Path) -> None:
         summary = generator.generate_all_domain_figures(small_corpus_file)
         assert summary["domains_processed"] >= 1
         assert summary["total_figures_generated"] >= 1
-        successful = [
-            r for r in summary["individual_domains"].values() if "error" not in r
-        ]
+        successful = [r for r in summary["individual_domains"].values() if "error" not in r]
         assert successful, "seed passage should yield terms in at least one domain"
         for results in successful:
             assert results["figures_generated"] >= 1
@@ -281,15 +266,11 @@ class TestGenerateDomainFigures:
 
 
 class TestTermFrequencyPlot:
-    def test_creates_png_with_labels(
-        self, generator: DomainFigureGenerator, real_terms: dict, tmp_path: Path
-    ) -> None:
+    def test_creates_png_with_labels(self, generator: DomainFigureGenerator, real_terms: dict, tmp_path: Path) -> None:
         domain_terms = terms_for_domain(real_terms, "unit_of_individuality", 8)
         assert len(domain_terms) >= 2
         with keep_figures_open():
-            path = generator._generate_term_frequency_plot(
-                "unit_of_individuality", domain_terms
-            )
+            path = generator._generate_term_frequency_plot("unit_of_individuality", domain_terms)
             assert path is not None
             assert_valid_png(Path(path))
             fig = plt.gcf()
@@ -311,25 +292,19 @@ class TestAmbiguityPlot:
                 "term": term,
                 "contexts": [f"Context {i} for {term}", f"Another use of {term}"],
             }
-            for i, term in enumerate(
-                terms_for_domain(real_terms, "sex_and_reproduction", 3)
-            )
+            for i, term in enumerate(terms_for_domain(real_terms, "sex_and_reproduction", 3))
         ]
         path = generator._generate_ambiguity_plot("sex_and_reproduction", ambiguities)
         assert path is not None
         assert_valid_png(Path(path))
         assert Path(path).name == "sex_and_reproduction_ambiguities.png"
 
-    def test_empty_ambiguities_returns_none(
-        self, generator: DomainFigureGenerator
-    ) -> None:
+    def test_empty_ambiguities_returns_none(self, generator: DomainFigureGenerator) -> None:
         assert generator._generate_ambiguity_plot("economics", []) is None
 
 
 class TestPatternPlot:
-    def test_single_pattern_uses_bar_chart(
-        self, generator: DomainFigureGenerator
-    ) -> None:
+    def test_single_pattern_uses_bar_chart(self, generator: DomainFigureGenerator) -> None:
         with keep_figures_open():
             path = generator._generate_pattern_plot("economics", {"compound": 7})
             assert path is not None
@@ -339,9 +314,7 @@ class TestPatternPlot:
             assert ax.get_ylabel() == "Count"
             assert [t.get_text() for t in ax.get_xticklabels()] == ["Compound"]
 
-    def test_multiple_patterns_uses_pie_chart(
-        self, generator: DomainFigureGenerator
-    ) -> None:
+    def test_multiple_patterns_uses_pie_chart(self, generator: DomainFigureGenerator) -> None:
         patterns = {"compound": 5, "simple": 3, "hybrid": 2}
         path = generator._generate_pattern_plot("economics", patterns)
         assert path is not None
@@ -353,9 +326,7 @@ class TestPatternPlot:
 
 
 class TestDomainNetwork:
-    def test_creates_png_for_three_or_more_terms(
-        self, generator: DomainFigureGenerator, real_terms: dict
-    ) -> None:
+    def test_creates_png_for_three_or_more_terms(self, generator: DomainFigureGenerator, real_terms: dict) -> None:
         domain_terms = terms_for_domain(real_terms, "kin_and_relatedness", 6)
         assert len(domain_terms) >= 3
         path = generator._generate_domain_network("kin_and_relatedness", domain_terms)
@@ -363,9 +334,7 @@ class TestDomainNetwork:
         assert_valid_png(Path(path))
         assert Path(path).name == "kin_and_relatedness_network.png"
 
-    def test_unknown_domain_renders_fallback_color(
-        self, generator: DomainFigureGenerator, real_terms: dict
-    ) -> None:
+    def test_unknown_domain_renders_fallback_color(self, generator: DomainFigureGenerator, real_terms: dict) -> None:
         """Unknown domain name -> every node drawn in the neutral FALLBACK_COLOR."""
         domain_terms = terms_for_domain(real_terms, "kin_and_relatedness", 4)
         with keep_figures_open():
@@ -373,43 +342,31 @@ class TestDomainNetwork:
             assert path is not None
             assert_valid_png(Path(path))
             ax = plt.gcf().axes[0]
-            node_collections = [
-                c for c in ax.collections if hasattr(c, "get_facecolor")
-            ]
+            node_collections = [c for c in ax.collections if hasattr(c, "get_facecolor")]
             assert node_collections, "network nodes should be drawn as artists"
             facecolors = node_collections[0].get_facecolor()
             expected_rgb = matplotlib.colors.to_rgba(FALLBACK_COLOR)[:3]
             for row in facecolors:
                 # Nodes render with alpha=0.7; compare RGB channels only.
-                assert tuple(float(v) for v in row[:3]) == pytest.approx(
-                    expected_rgb
-                )
+                assert tuple(float(v) for v in row[:3]) == pytest.approx(expected_rgb)
             assert ax.get_title() == "Term Relationship Network - Mystery Domain"
 
-    def test_fewer_than_three_terms_returns_none(
-        self, generator: DomainFigureGenerator, real_terms: dict
-    ) -> None:
+    def test_fewer_than_three_terms_returns_none(self, generator: DomainFigureGenerator, real_terms: dict) -> None:
         domain_terms = terms_for_domain(real_terms, "economics", 2)
         assert generator._generate_domain_network("economics", domain_terms) is None
 
 
 class TestDomainSpecificFigures:
-    def test_full_analysis_generates_all_four_figures(
-        self, generator: DomainFigureGenerator, real_terms: dict
-    ) -> None:
+    def test_full_analysis_generates_all_four_figures(self, generator: DomainFigureGenerator, real_terms: dict) -> None:
         domain_terms = terms_for_domain(real_terms, "unit_of_individuality", 7)
         assert len(domain_terms) > 5
         ambiguity_term = next(iter(domain_terms))
         analysis = DomainAnalysis(
             domain_name="unit_of_individuality",
-            ambiguities=[
-                {"term": ambiguity_term, "contexts": ["ctx one", "ctx two"]}
-            ],
+            ambiguities=[{"term": ambiguity_term, "contexts": ["ctx one", "ctx two"]}],
             term_patterns={"compound": 4, "simple": 2},
         )
-        figures = generator._generate_domain_specific_figures(
-            "unit_of_individuality", domain_terms, analysis
-        )
+        figures = generator._generate_domain_specific_figures("unit_of_individuality", domain_terms, analysis)
         assert set(figures) == {
             "term_frequency",
             "ambiguity_analysis",
@@ -419,23 +376,17 @@ class TestDomainSpecificFigures:
         for fig_path in figures.values():
             assert_valid_png(Path(fig_path))
 
-    def test_sparse_analysis_skips_empty_sections(
-        self, generator: DomainFigureGenerator, real_terms: dict
-    ) -> None:
+    def test_sparse_analysis_skips_empty_sections(self, generator: DomainFigureGenerator, real_terms: dict) -> None:
         domain_terms = terms_for_domain(real_terms, "economics", 2)
         analysis = DomainAnalysis(domain_name="economics")
-        figures = generator._generate_domain_specific_figures(
-            "economics", domain_terms, analysis
-        )
+        figures = generator._generate_domain_specific_figures("economics", domain_terms, analysis)
         # Only the frequency plot qualifies: no ambiguities, no patterns, <=5 terms.
         assert set(figures) == {"term_frequency"}
         assert_valid_png(Path(figures["term_frequency"]))
 
 
 class TestComparativeFigures:
-    def test_single_successful_domain_produces_nothing(
-        self, generator: DomainFigureGenerator
-    ) -> None:
+    def test_single_successful_domain_produces_nothing(self, generator: DomainFigureGenerator) -> None:
         results = {
             "economics": {"terms_visualized": 3, "figures_generated": 1},
             "kin_and_relatedness": {"error": "No terms found"},
@@ -449,13 +400,9 @@ class TestComparativeFigures:
         for domain in ("economics", "kin_and_relatedness"):
             extracted = {
                 term: {"frequency": term_obj.frequency}
-                for term, term_obj in terms_for_domain(
-                    real_terms, domain, 5
-                ).items()
+                for term, term_obj in terms_for_domain(real_terms, domain, 5).items()
             }
-            with open(
-                generator.data_dir / f"{domain}_analysis.json", "w", encoding="utf-8"
-            ) as f:
+            with open(generator.data_dir / f"{domain}_analysis.json", "w", encoding="utf-8") as f:
                 json.dump({"extracted_terms": extracted}, f)
         results = {
             "economics": {"terms_visualized": 5},
@@ -469,9 +416,7 @@ class TestComparativeFigures:
         assert registered is not None
         assert registered.filename == "domain_comparison.png"
 
-    def test_missing_analysis_files_produces_nothing(
-        self, generator: DomainFigureGenerator
-    ) -> None:
+    def test_missing_analysis_files_produces_nothing(self, generator: DomainFigureGenerator) -> None:
         results = {
             "economics": {"terms_visualized": 5},
             "kin_and_relatedness": {"terms_visualized": 5},
@@ -486,9 +431,7 @@ class TestComparativeFigures:
 
 
 class TestMainEntryPoint:
-    def test_main_single_domain(
-        self, monkeypatch, tmp_path: Path, small_corpus_file: Path
-    ) -> None:
+    def test_main_single_domain(self, monkeypatch, tmp_path: Path, small_corpus_file: Path) -> None:
         from pipeline import domain_figures as mod
         from visualization.figure_manager import FigureManager
 
@@ -514,9 +457,7 @@ class TestMainEntryPoint:
         mod.main()
         assert (outdir / "figures" / "behavior_and_identity_term_frequencies.png").exists()
 
-    def test_main_reports_failure_when_no_terms(
-        self, monkeypatch, tmp_path: Path
-    ) -> None:
+    def test_main_reports_failure_when_no_terms(self, monkeypatch, tmp_path: Path) -> None:
         from pipeline import domain_figures as mod
         from visualization.figure_manager import FigureManager
 
@@ -549,13 +490,9 @@ class TestPrimaryDomain:
 
     def test_deterministic_minimum(self) -> None:
         assert primary_domain({"economics", "kin_and_relatedness"}) == "economics"
-        assert primary_domain(["behavior_and_identity", "economics"]) == (
-            "behavior_and_identity"
-        )
+        assert primary_domain(["behavior_and_identity", "economics"]) == ("behavior_and_identity")
         # Insertion order must not matter.
-        assert primary_domain(["economics", "behavior_and_identity"]) == (
-            "behavior_and_identity"
-        )
+        assert primary_domain(["economics", "behavior_and_identity"]) == ("behavior_and_identity")
 
 
 class TestPublicationRc:
@@ -579,10 +516,9 @@ class TestPublicationRc:
 
     def test_restored_after_exception(self) -> None:
         before_font = plt.rcParams["font.size"]
-        with pytest.raises(RuntimeError, match="plot blew up"):
-            with publication_rc():
-                assert plt.rcParams["font.size"] == MIN_FONT
-                raise RuntimeError("plot blew up")
+        with pytest.raises(RuntimeError, match="plot blew up"), publication_rc():
+            assert plt.rcParams["font.size"] == MIN_FONT
+            raise RuntimeError("plot blew up")
         assert plt.rcParams["font.size"] == before_font
 
 

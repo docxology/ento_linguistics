@@ -106,6 +106,7 @@ def receipt_fixture(out):
     import json
     from dataclasses import asdict
     from pathlib import Path
+
     from research.network_robustness.study import Protocol
 
     root = Path(__file__).resolve().parents[1]
@@ -142,6 +143,7 @@ def test_receipt_rejects_changed_real_output(tmp_path):
 
 def test_empty_extension_inventory_is_rejected(tmp_path):
     import json
+
     from research.network_robustness.receipt import validate_receipt
     from research.network_robustness.study import Protocol
 
@@ -156,6 +158,7 @@ def test_empty_extension_inventory_is_rejected(tmp_path):
 def test_self_hashed_corruption_is_rejected(tmp_path, artifact):
     import hashlib
     import json
+
     from research.network_robustness.receipt import validate_receipt
     from research.network_robustness.study import Protocol
 
@@ -179,6 +182,7 @@ def test_self_hashed_corruption_is_rejected(tmp_path, artifact):
 def test_self_hashed_semantic_inconsistency_is_rejected(tmp_path, mutation):
     import hashlib
     import json
+
     from research.network_robustness.receipt import validate_receipt
     from research.network_robustness.study import Protocol
 
@@ -227,7 +231,9 @@ def test_png_with_valid_checksums_but_invalid_pixel_stream_is_rejected(tmp_path)
     import json
     import struct
     import zlib
+
     from PIL import Image
+
     from research.network_robustness.receipt import validate_receipt
     from research.network_robustness.study import Protocol
 

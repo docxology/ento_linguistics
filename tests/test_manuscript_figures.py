@@ -5,6 +5,7 @@ Exercises the real analysis pipeline on a small subset of the real corpus
 generator produces a real file, propagates save failures, and never registers
 a figure that was not saved.
 """
+
 from __future__ import annotations
 
 import json
@@ -93,7 +94,7 @@ def test_run_analysis_pipeline_real_data(results):
     assert isinstance(results["relationships"], dict)
     assert results["domain_data"], "domain data must be populated"
 
-    for domain, data in results["domain_data"].items():
+    for data in results["domain_data"].values():
         assert data["term_count"] >= 0
         assert "semantic_entropy" in data
         assert "bridging_terms" in data
@@ -101,11 +102,12 @@ def test_run_analysis_pipeline_real_data(results):
 
 def test_document_cooccurrences_never_invents_shared_domain_edges():
     from analysis.term_extraction import Term
-    terms = {name: Term(text=name, lemma=name, domains=["power_and_labor"], frequency=2)
-             for name in ("queen", "worker")}
+
+    terms = {
+        name: Term(text=name, lemma=name, domains=["power_and_labor"], frequency=2) for name in ("queen", "worker")
+    }
     assert mf.document_cooccurrences(terms, ["The queen lays eggs.", "A worker forages."]) == {}
-    assert mf.document_cooccurrences(terms, ["Queen and worker interact. Queen returns."]) == {
-        ("queen", "worker"): 1}
+    assert mf.document_cooccurrences(terms, ["Queen and worker interact. Queen returns."]) == {("queen", "worker"): 1}
     assert mf.document_cooccurrences(terms, ["Queens and coworkers interact."]) == {}
     with pytest.raises(ValueError):
         mf.document_cooccurrences(terms, [], max_terms=1)
@@ -205,28 +207,21 @@ class TestFailurePropagation:
 
     def test_unit_patterns_no_terms_returns_empty_string(self, figure_dir):
         """No terms in the domain -> no file, empty path."""
-        path = mf.generate_unit_of_individuality_patterns(
-            {"terms": {}, "domain_analyses": {}}, str(figure_dir)
-        )
+        path = mf.generate_unit_of_individuality_patterns({"terms": {}, "domain_analyses": {}}, str(figure_dir))
         assert path == ""
         assert not (Path(figure_dir) / "unit_of_individuality_patterns.png").exists()
 
     def test_power_labor_frequencies_no_terms_returns_empty_string(self, figure_dir):
-        path = mf.generate_power_labor_term_frequencies(
-            {"terms": {}}, str(figure_dir)
-        )
+        path = mf.generate_power_labor_term_frequencies({"terms": {}}, str(figure_dir))
         assert path == ""
 
     def test_power_labor_ambiguities_no_entropy_returns_empty_string(self, figure_dir):
         """Terms exist but all entropy is zero -> no figure."""
         from analysis.term_extraction import Term
 
-        term = Term(text="worker", lemma="worker", frequency=5,
-                    domains=["power_and_labor"])
+        term = Term(text="worker", lemma="worker", frequency=5, domains=["power_and_labor"])
         term.semantic_entropy = 0.0
-        path = mf.generate_power_labor_ambiguities(
-            {"terms": {"worker": term}}, str(figure_dir)
-        )
+        path = mf.generate_power_labor_ambiguities({"terms": {"worker": term}}, str(figure_dir))
         assert path == ""
 
     def test_unwritable_target_propagates_error(self, framing_results, tmp_path):
@@ -253,8 +248,7 @@ def test_save_analysis_data_writes_real_files(results, tmp_path):
     domain_stats = json.loads((data_dir / "domain_statistics.json").read_text())
     assert domain_stats, "domain statistics must be populated"
     first = next(iter(domain_stats.values()))
-    assert {"term_count", "semantic_entropy",
-            "anthropomorphic_proportion"} <= set(first)
+    assert {"term_count", "semantic_entropy", "anthropomorphic_proportion"} <= set(first)
 
     terms_summary = json.loads((data_dir / "extracted_terms.json").read_text())
     assert terms_summary
@@ -265,16 +259,12 @@ def test_save_analysis_data_writes_real_files(results, tmp_path):
 # ── Figure registry ──────────────────────────────────────────────────
 
 
-def test_register_figures_only_registers_saved_files(
-    results, figure_dir
-):
+def test_register_figures_only_registers_saved_files(results, figure_dir):
     """Registry must contain only figures that actually exist on disk."""
     path_a = mf.generate_concept_map(results, str(figure_dir))
     assert path_a
 
-    mf._register_figures_with_manager(
-        [path_a, str(figure_dir / "never_generated.png")], str(figure_dir)
-    )
+    mf._register_figures_with_manager([path_a, str(figure_dir / "never_generated.png")], str(figure_dir))
 
     registry_file = figure_dir / "figure_registry.json"
     assert registry_file.exists()
@@ -331,6 +321,7 @@ def test_project_root_selects_its_own_corpus(real_corpus, tmp_path):
 
 def test_provenance_required_excludes_unidentified_text_without_editing_it(real_corpus, tmp_path):
     import hashlib
+
     corpus_dir = tmp_path / "data" / "corpus"
     corpus_dir.mkdir(parents=True)
     corpus_file = corpus_dir / "abstracts.json"

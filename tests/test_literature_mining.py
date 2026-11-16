@@ -11,14 +11,19 @@ import re
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import List
 
 import pytest
-from data.literature_mining import (ArXivMiner, CORPUS_GROWTH_QUERIES,
-                                   LiteratureCorpus, Publication, PubMedMiner,
-                                   create_entomology_query,
-                                   mine_corpus_growth,
-                                   mine_entomology_literature)
+
+from data.literature_mining import (
+    CORPUS_GROWTH_QUERIES,
+    ArXivMiner,
+    LiteratureCorpus,
+    Publication,
+    PubMedMiner,
+    create_entomology_query,
+    mine_corpus_growth,
+    mine_entomology_literature,
+)
 
 
 class TestPublication:
@@ -88,7 +93,7 @@ class TestLiteratureCorpus:
     """Test LiteratureCorpus functionality."""
 
     @pytest.fixture
-    def sample_publications(self) -> List[Publication]:
+    def sample_publications(self) -> list[Publication]:
         """Create sample publications for testing."""
         return [
             Publication(
@@ -112,7 +117,7 @@ class TestLiteratureCorpus:
         ]
 
     @pytest.fixture
-    def corpus(self, sample_publications: List[Publication]) -> LiteratureCorpus:
+    def corpus(self, sample_publications: list[Publication]) -> LiteratureCorpus:
         """Create a LiteratureCorpus with sample data."""
         return LiteratureCorpus(sample_publications)
 
@@ -130,7 +135,6 @@ class TestLiteratureCorpus:
 
         assert len(corpus.publications) == initial_count + 1
         assert corpus.publications[-1] == new_pub
-
 
     def test_corpus_save_load(self, corpus: LiteratureCorpus, tmp_path: Path) -> None:
         """Test saving and loading corpus to/from file."""
@@ -182,9 +186,7 @@ class TestLiteratureCorpus:
         # Search by author
         results = corpus.search_publications("wilson", field="all")
         assert len(results) >= 1
-        assert any(
-            "wilson" in author.lower() for pub in results for author in pub.authors
-        )
+        assert any("wilson" in author.lower() for pub in results for author in pub.authors)
 
         # Search all fields
         results = corpus.search_publications("evolution", field="all")
@@ -240,9 +242,7 @@ class TestPubMedMiner:
         miner.BASE_URL = httpserver.url_for("")  # Just the server URL without path
 
         try:
-            results = miner.search(
-                "ant+colony", max_results=10
-            )  # Use URL-encoded query
+            results = miner.search("ant+colony", max_results=10)  # Use URL-encoded query
 
             assert len(results) == 2
             assert "12345" in results
@@ -253,9 +253,7 @@ class TestPubMedMiner:
     def test_search_error_handling(self, httpserver, miner: PubMedMiner) -> None:
         """Test PubMed search error handling."""
         # Configure server to return 500 error
-        httpserver.expect_request("/esearch.fcgi").respond_with_data(
-            "Internal Server Error", status=500
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_data("Internal Server Error", status=500)
 
         # Temporarily override the base URL
         original_base_url = miner.BASE_URL
@@ -302,9 +300,7 @@ class TestPubMedMiner:
         finally:
             miner.BASE_URL = original_base_url
 
-    def test_fetch_publications_parse_error(
-        self, httpserver, miner: PubMedMiner
-    ) -> None:
+    def test_fetch_publications_parse_error(self, httpserver, miner: PubMedMiner) -> None:
         """Test handling of PubMed parsing errors."""
         # Configure server to return invalid JSON
         httpserver.expect_request("/esummary.fcgi").respond_with_data("invalid json")
@@ -378,9 +374,7 @@ class TestPubMedMiner:
 
     def test_search_json_decode_error(self, httpserver, miner: PubMedMiner) -> None:
         """Test search when server returns non-JSON response."""
-        httpserver.expect_request("/esearch.fcgi").respond_with_data(
-            "not json", content_type="text/plain"
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_data("not json", content_type="text/plain")
         original_base_url = miner.BASE_URL
         miner.BASE_URL = httpserver.url_for("/")
         try:
@@ -441,18 +435,14 @@ class TestPubMedMiner:
     def test_search_by_authors(self) -> None:
         """Test searching corpus by author field."""
         corpus = LiteratureCorpus()
-        corpus.add_publication(Publication(
-            title="Test", authors=["Jane Smith", "John Doe"]
-        ))
+        corpus.add_publication(Publication(title="Test", authors=["Jane Smith", "John Doe"]))
         results = corpus.search_publications("Smith", field="authors")
         assert len(results) == 1
 
     def test_get_text_with_full_text(self) -> None:
         """Test text corpus extraction with full_text field."""
         corpus = LiteratureCorpus()
-        corpus.add_publication(Publication(
-            title="T", authors=["A"], full_text="Full text content here"
-        ))
+        corpus.add_publication(Publication(title="T", authors=["A"], full_text="Full text content here"))
         texts = corpus.get_text_corpus()
         assert any("Full text content" in t for t in texts)
 
@@ -479,9 +469,7 @@ class TestArXivMiner:
         </feed>"""
 
         # Configure local test server
-        httpserver.expect_request("/api/query").respond_with_data(
-            xml_response, content_type="application/xml"
-        )
+        httpserver.expect_request("/api/query").respond_with_data(xml_response, content_type="application/xml")
 
         # Temporarily override the base URL
         original_base_url = miner.BASE_URL
@@ -500,9 +488,7 @@ class TestArXivMiner:
     def test_search_error_handling(self, httpserver, miner: ArXivMiner) -> None:
         """Test ArXiv search error handling."""
         # Configure server to return 500 error
-        httpserver.expect_request("/api/query").respond_with_data(
-            "Internal Server Error", status=500
-        )
+        httpserver.expect_request("/api/query").respond_with_data("Internal Server Error", status=500)
 
         # Temporarily override the base URL
         original_base_url = miner.BASE_URL
@@ -601,9 +587,7 @@ class TestArXivMiner:
 
     def test_search_invalid_xml(self, httpserver, miner: ArXivMiner) -> None:
         """Test ArXiv search when server returns invalid XML."""
-        httpserver.expect_request("/api/query").respond_with_data(
-            "invalid xml <<<", content_type="application/xml"
-        )
+        httpserver.expect_request("/api/query").respond_with_data("invalid xml <<<", content_type="application/xml")
         original_base_url = miner.BASE_URL
         miner.BASE_URL = httpserver.url_for("/api/query?")
         try:
@@ -667,7 +651,6 @@ class TestLiteratureMiningIntegration:
         stats = corpus.get_statistics()
         assert stats["total_publications"] == 2
         assert stats["publications_with_abstract"] == 2
-
 
     def test_full_mining_workflow(self, tmp_path: Path) -> None:
         """Test a complete mining workflow."""
@@ -756,9 +739,7 @@ class TestMineEntomologyLiteratureWithServer:
 
     def test_with_httpserver(self, httpserver, monkeypatch) -> None:
         """Test mine_entomology_literature with real HTTP server."""
-        pubmed_search_response = {
-            "esearchresult": {"idlist": ["111", "222"]}
-        }
+        pubmed_search_response = {"esearchresult": {"idlist": ["111", "222"]}}
         httpserver.expect_request("/esearch.fcgi").respond_with_json(pubmed_search_response)
 
         pubmed_summary_response = {
@@ -783,9 +764,7 @@ class TestMineEntomologyLiteratureWithServer:
     <published>2024-01-15T00:00:00Z</published>
   </entry>
 </feed>"""
-        httpserver.expect_request("/api/query").respond_with_data(
-            arxiv_xml_response, content_type="application/xml"
-        )
+        httpserver.expect_request("/api/query").respond_with_data(arxiv_xml_response, content_type="application/xml")
 
         test_base = httpserver.url_for("/")
         monkeypatch.setattr(PubMedMiner, "BASE_URL", test_base)
@@ -838,10 +817,7 @@ class TestLiteratureCorpusExpanded:
 
     def test_filter_by_year_range(self, corpus_with_data: LiteratureCorpus) -> None:
         """Test filtering publications by year range."""
-        pubs = [
-            p for p in corpus_with_data.publications
-            if p.year and 2020 <= p.year <= 2021
-        ]
+        pubs = [p for p in corpus_with_data.publications if p.year and 2020 <= p.year <= 2021]
         assert len(pubs) == 2
 
     def test_search_title_match(self, corpus_with_data: LiteratureCorpus) -> None:
@@ -931,9 +907,7 @@ class TestPubMedMinerParsing:
         miner = PubMedMiner(enable_cache=False)
         assert miner._fetch_batch_abstracts([]) == {}
 
-    def test_fetch_batch_abstracts_xml_parsing(
-        self, httpserver, monkeypatch
-    ) -> None:
+    def test_fetch_batch_abstracts_xml_parsing(self, httpserver, monkeypatch) -> None:
         """_fetch_batch_abstracts parses PubMed eFetch XML over real HTTP."""
         miner = PubMedMiner(enable_cache=False)
         xml_content = """<?xml version="1.0"?>
@@ -959,9 +933,7 @@ class TestPubMedMinerParsing:
                 </MedlineCitation>
             </PubmedArticle>
         </PubmedArticleSet>"""
-        httpserver.expect_request("/efetch.fcgi").respond_with_data(
-            xml_content, content_type="application/xml"
-        )
+        httpserver.expect_request("/efetch.fcgi").respond_with_data(xml_content, content_type="application/xml")
         monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
 
         abstracts = miner._fetch_batch_abstracts(["12345"])
@@ -1022,12 +994,11 @@ class TestArXivMinerParsing:
         assert pub.year == 2023
         assert pub.journal == "arXiv"
 
+
 class TestPubMedMinerUncoveredPaths:
     """Real-HTTP tests for PubMed search/fetch paths not covered elsewhere."""
 
-    def test_search_returns_empty_on_non_200_status(
-        self, httpserver, monkeypatch
-    ) -> None:
+    def test_search_returns_empty_on_non_200_status(self, httpserver, monkeypatch) -> None:
         """A 2xx-but-not-200 response is rejected without parsing."""
         miner = PubMedMiner(enable_cache=False)
         httpserver.expect_request("/esearch.fcgi").respond_with_data("", status=204)
@@ -1035,22 +1006,16 @@ class TestPubMedMinerUncoveredPaths:
 
         assert miner.search("ants") == []
 
-    def test_search_without_cache_does_not_store(
-        self, httpserver, monkeypatch
-    ) -> None:
+    def test_search_without_cache_does_not_store(self, httpserver, monkeypatch) -> None:
         """With caching disabled, search results are never cached."""
         miner = PubMedMiner(enable_cache=False)
-        httpserver.expect_request("/esearch.fcgi").respond_with_json(
-            {"esearchresult": {"idlist": ["1", "2"]}}
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_json({"esearchresult": {"idlist": ["1", "2"]}})
         monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
 
         assert miner.search("ants", max_results=10) == ["1", "2"]
         assert miner.get_cache_size() == 0
 
-    def test_search_invalid_utf8_response(
-        self, httpserver, monkeypatch
-    ) -> None:
+    def test_search_invalid_utf8_response(self, httpserver, monkeypatch) -> None:
         """A non-UTF-8 body is logged and yields no results."""
         miner = PubMedMiner(enable_cache=False)
         httpserver.expect_request("/esearch.fcgi").respond_with_data(
@@ -1060,9 +1025,7 @@ class TestPubMedMinerUncoveredPaths:
 
         assert miner.search("ants") == []
 
-    def test_fetch_publications_merges_efetch_abstracts(
-        self, httpserver, monkeypatch
-    ) -> None:
+    def test_fetch_publications_merges_efetch_abstracts(self, httpserver, monkeypatch) -> None:
         """Abstracts from eFetch fill in summaries fetched without one."""
         miner = PubMedMiner(enable_cache=False)
         summary_response = {
@@ -1090,9 +1053,7 @@ class TestPubMedMinerUncoveredPaths:
             </PubmedArticle>
         </PubmedArticleSet>"""
         httpserver.expect_request("/esummary.fcgi").respond_with_json(summary_response)
-        httpserver.expect_request("/efetch.fcgi").respond_with_data(
-            efetch_xml, content_type="application/xml"
-        )
+        httpserver.expect_request("/efetch.fcgi").respond_with_data(efetch_xml, content_type="application/xml")
         monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
         monkeypatch.setattr(time, "sleep", lambda _: None)
 
@@ -1102,9 +1063,7 @@ class TestPubMedMinerUncoveredPaths:
         assert publications[0].abstract == "METHODS: We studied ants."
         assert publications[0].journal == "Journal of Entomology"
 
-    def test_fetch_batch_summaries_skips_unparseable_entries(
-        self, httpserver, monkeypatch
-    ) -> None:
+    def test_fetch_batch_summaries_skips_unparseable_entries(self, httpserver, monkeypatch) -> None:
         """Summary entries without a title are skipped, not crashing the batch."""
         miner = PubMedMiner(enable_cache=False)
         summary_response = {
@@ -1139,9 +1098,7 @@ class TestPubMedMinerUncoveredPaths:
 class TestArXivMinerUncoveredPaths:
     """Real-HTTP tests for arXiv search paths not covered elsewhere."""
 
-    def test_search_skips_unparseable_entries(
-        self, httpserver, monkeypatch
-    ) -> None:
+    def test_search_skips_unparseable_entries(self, httpserver, monkeypatch) -> None:
         """Entries without a title are skipped during search parsing."""
         miner = ArXivMiner()
         xml_response = """<?xml version="1.0" encoding="UTF-8"?>
@@ -1157,9 +1114,7 @@ class TestArXivMinerUncoveredPaths:
                 <published>2022-05-01T00:00:00Z</published>
             </entry>
         </feed>"""
-        httpserver.expect_request("/api/query").respond_with_data(
-            xml_response, content_type="application/xml"
-        )
+        httpserver.expect_request("/api/query").respond_with_data(xml_response, content_type="application/xml")
         monkeypatch.setattr(ArXivMiner, "BASE_URL", httpserver.url_for("/api/query?"))
 
         results = miner.search("ants")
@@ -1205,9 +1160,7 @@ class TestMineEntomologyLiteratureEdgePaths:
 
     def test_empty_pubmed_and_unrelated_arxiv_results(self, httpserver, monkeypatch) -> None:
         """Empty PubMed results skip fetching; non-entomology arXiv papers are filtered out."""
-        httpserver.expect_request("/esearch.fcgi").respond_with_json(
-            {"esearchresult": {"idlist": []}}
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_json({"esearchresult": {"idlist": []}})
         arxiv_xml = """<?xml version="1.0" encoding="UTF-8"?>
         <feed xmlns="http://www.w3.org/2005/Atom">
           <entry>
@@ -1217,9 +1170,7 @@ class TestMineEntomologyLiteratureEdgePaths:
             <published>2024-02-01T00:00:00Z</published>
           </entry>
         </feed>"""
-        httpserver.expect_request("/api/query").respond_with_data(
-            arxiv_xml, content_type="application/xml"
-        )
+        httpserver.expect_request("/api/query").respond_with_data(arxiv_xml, content_type="application/xml")
         monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
         monkeypatch.setattr(ArXivMiner, "BASE_URL", httpserver.url_for("/api/query?"))
         monkeypatch.setattr(time, "sleep", lambda _: None)
@@ -1238,15 +1189,12 @@ class TestMineCorpusGrowth:
         "foraging and brood care tasks within the nest."
     )
     ABSTRACT_B = (
-        "Task allocation among workers emerges from local interactions rather "
-        "than centralized control by the queen."
+        "Task allocation among workers emerges from local interactions rather than centralized control by the queen."
     )
 
-    def _serve_pubmed(self, httpserver, pmids: List[str]) -> None:
+    def _serve_pubmed(self, httpserver, pmids: list[str]) -> None:
         """Serve real eutils-format responses for the growth queries."""
-        httpserver.expect_request("/esearch.fcgi").respond_with_json(
-            {"esearchresult": {"idlist": pmids}}
-        )
+        httpserver.expect_request("/esearch.fcgi").respond_with_json({"esearchresult": {"idlist": pmids}})
         httpserver.expect_request("/esummary.fcgi").respond_with_json(
             {
                 "result": {
@@ -1282,13 +1230,9 @@ class TestMineCorpusGrowth:
   </MedlineCitation>
 </PubmedArticle>
 </PubmedArticleSet>"""
-        httpserver.expect_request("/efetch.fcgi").respond_with_data(
-            efetch_xml, content_type="text/xml"
-        )
+        httpserver.expect_request("/efetch.fcgi").respond_with_data(efetch_xml, content_type="text/xml")
 
-    def test_since_pdat_appends_date_window_to_every_query(
-        self, httpserver, monkeypatch
-    ) -> None:
+    def test_since_pdat_appends_date_window_to_every_query(self, httpserver, monkeypatch) -> None:
         """Every esearch request carries the PDAT date-window clause."""
         terms = []
 
@@ -1300,9 +1244,7 @@ class TestMineCorpusGrowth:
         monkeypatch.setattr(PubMedMiner, "BASE_URL", httpserver.url_for("/"))
         monkeypatch.setattr(time, "sleep", lambda _: None)
 
-        pubs, hits, mapping = mine_corpus_growth(
-            since_pdat="2020/01/01", max_per_query=10
-        )
+        pubs, hits, mapping = mine_corpus_growth(since_pdat="2020/01/01", max_per_query=10)
 
         assert pubs == []
         assert mapping == {}

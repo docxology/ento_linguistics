@@ -7,9 +7,9 @@ used in Ento-Linguistic research.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List
 
 import pytest
+
 from analysis.term_extraction import Term, TerminologyExtractor
 
 
@@ -117,7 +117,7 @@ class TestTerminologyExtractor:
         assert result == {}
 
     @pytest.fixture
-    def sample_texts(self) -> List[str]:
+    def sample_texts(self) -> list[str]:
         """Sample entomological texts for testing."""
         return [
             "Ant colonies exhibit eusocial behavior with complex division of labor.",
@@ -131,9 +131,7 @@ class TestTerminologyExtractor:
         assert extractor.extracted_terms == {}
         assert extractor.text_processor is not None
 
-    def test_extract_terms_basic(
-        self, extractor: TerminologyExtractor, sample_texts: List[str]
-    ) -> None:
+    def test_extract_terms_basic(self, extractor: TerminologyExtractor, sample_texts: list[str]) -> None:
         """Test basic term extraction."""
         terms = extractor.extract_terms(sample_texts, min_frequency=1)
 
@@ -141,9 +139,7 @@ class TestTerminologyExtractor:
         assert isinstance(terms, dict)
         assert all(isinstance(term, Term) for term in terms.values())
 
-    def test_extract_terms_frequency_filtering(
-        self, extractor: TerminologyExtractor
-    ) -> None:
+    def test_extract_terms_frequency_filtering(self, extractor: TerminologyExtractor) -> None:
         """Test term extraction with frequency filtering."""
         texts = [
             "eusocial colony behavior",  # "eusocial" appears once, "colony" appears once
@@ -169,9 +165,7 @@ class TestTerminologyExtractor:
         assert "power_and_labor" in extractor.classify_term_domains("caste")
         assert "sex_and_reproduction" in extractor.classify_term_domains("queen")
 
-    def test_domain_classification_unknown_term(
-        self, extractor: TerminologyExtractor
-    ) -> None:
+    def test_domain_classification_unknown_term(self, extractor: TerminologyExtractor) -> None:
         """Test classification of unknown terms."""
         domains = extractor.classify_term_domains("unknown_term_xyz")
 
@@ -254,13 +248,24 @@ class TestTerminologyExtractor:
     def test_export_terms_csv_with_populated_data(self, extractor: TerminologyExtractor, tmp_path) -> None:
         """Test CSV export with pre-populated terms."""
         import csv
+
         extractor.extracted_terms = {
-            "colony": Term(text="colony", lemma="colony",
-                          domains=["behavioral"], frequency=10,
-                          confidence=0.8, contexts=["The colony grows"]),
-            "worker": Term(text="worker", lemma="worker",
-                          domains=["behavioral"], frequency=5,
-                          confidence=0.6, contexts=["Workers forage"]),
+            "colony": Term(
+                text="colony",
+                lemma="colony",
+                domains=["behavioral"],
+                frequency=10,
+                confidence=0.8,
+                contexts=["The colony grows"],
+            ),
+            "worker": Term(
+                text="worker",
+                lemma="worker",
+                domains=["behavioral"],
+                frequency=5,
+                confidence=0.6,
+                contexts=["Workers forage"],
+            ),
         }
         filepath = tmp_path / "terms.csv"
         extractor.export_terms_csv(str(filepath))
@@ -272,9 +277,7 @@ class TestTerminologyExtractor:
     def test_context_extraction_efficient(self, extractor: TerminologyExtractor) -> None:
         """Test term context extraction via pre-computed positions."""
         texts = ["The ant colony exhibits complex behavior patterns."]
-        tokens_list = [
-            ["the", "ant", "colony", "exhibits", "complex", "behavior", "patterns"]
-        ]
+        tokens_list = [["the", "ant", "colony", "exhibits", "complex", "behavior", "patterns"]]
 
         term = Term(text="colony", lemma="colony")
         extractor._extract_term_contexts_efficient(
@@ -304,9 +307,7 @@ class TestTerminologyExtractor:
         confidence2 = extractor._calculate_extraction_confidence(term2)
         assert confidence2 < confidence1
 
-    def test_domain_statistics(
-        self, extractor: TerminologyExtractor, sample_texts: List[str]
-    ) -> None:
+    def test_domain_statistics(self, extractor: TerminologyExtractor, sample_texts: list[str]) -> None:
         """Test domain statistics generation."""
         terms = extractor.extract_terms(sample_texts, min_frequency=1)
         stats = extractor.get_domain_statistics()
@@ -339,15 +340,11 @@ class TestTerminologyExtractor:
         """Test co-occurrence when terms don't appear together."""
         texts = ["ant behavior", "colony organization"]
 
-        cooccurrences = extractor.find_term_cooccurrences(
-            "ant", "colony", texts, window_size=2
-        )
+        cooccurrences = extractor.find_term_cooccurrences("ant", "colony", texts, window_size=2)
 
         assert cooccurrences == 0  # Terms don't co-occur within window
 
-    def test_csv_export(
-        self, extractor: TerminologyExtractor, sample_texts: List[str], tmp_path: Path
-    ) -> None:
+    def test_csv_export(self, extractor: TerminologyExtractor, sample_texts: list[str], tmp_path: Path) -> None:
         """Test CSV export functionality."""
         extractor.extract_terms(sample_texts, min_frequency=1)
 
@@ -394,7 +391,7 @@ class TestTerminologyExtractionIntegration:
         return TerminologyExtractor()
 
     @pytest.fixture
-    def sample_texts(self) -> List[str]:
+    def sample_texts(self) -> list[str]:
         """Sample entomological texts for testing."""
         return [
             "Ant colonies exhibit eusocial behavior with complex division of labor.",
@@ -493,9 +490,7 @@ class TestTerminologyExtractionIntegration:
         for term_text in terms1_set:
             assert terms1[term_text].frequency == terms2[term_text].frequency
 
-    def test_create_domain_seed_expansion(
-        self, extractor: TerminologyExtractor, sample_texts: List[str]
-    ) -> None:
+    def test_create_domain_seed_expansion(self, extractor: TerminologyExtractor, sample_texts: list[str]) -> None:
         """Test domain seed expansion functionality."""
         from analysis.term_extraction import create_domain_seed_expansion
 
@@ -509,7 +504,7 @@ class TestTerminologyExtractionIntegration:
         assert len(expanded) > 0
 
         # Should contain all original domains
-        for domain in extractor.DOMAIN_SEEDS.keys():
+        for domain in extractor.DOMAIN_SEEDS:
             assert domain in expanded
             assert isinstance(expanded[domain], set)
             # Should have at least the original seeds
@@ -559,23 +554,22 @@ class TestTerminologyExtractionIntegration:
             assert term.frequency >= 2, f"Term {name} below min_frequency"
             assert 0.0 <= term.confidence <= 1.0, f"Term {name} confidence out of bounds"
 
-    @pytest.mark.parametrize("domain_term,expected_domain", [
-        ("colony", "unit_of_individuality"),
-        ("foraging", "behavior_and_identity"),
-        ("caste", "power_and_labor"),
-        ("queen", "sex_and_reproduction"),
-        ("relatedness", "kin_and_relatedness"),
-        ("resource", "economics"),
-    ])
-    def test_domain_classification_parametrized(
-        self, domain_term: str, expected_domain: str
-    ) -> None:
+    @pytest.mark.parametrize(
+        "domain_term,expected_domain",
+        [
+            ("colony", "unit_of_individuality"),
+            ("foraging", "behavior_and_identity"),
+            ("caste", "power_and_labor"),
+            ("queen", "sex_and_reproduction"),
+            ("relatedness", "kin_and_relatedness"),
+            ("resource", "economics"),
+        ],
+    )
+    def test_domain_classification_parametrized(self, domain_term: str, expected_domain: str) -> None:
         """Each known term should classify into its expected domain."""
         extractor = TerminologyExtractor()
         domains = extractor.classify_term_domains(domain_term)
-        assert expected_domain in domains, (
-            f"'{domain_term}' not classified into {expected_domain}, got {domains}"
-        )
+        assert expected_domain in domains, f"'{domain_term}' not classified into {expected_domain}, got {domains}"
 
 
 class TestExtractionIsolationAndBoundaries:
@@ -584,16 +578,24 @@ class TestExtractionIsolationAndBoundaries:
     def test_second_extraction_does_not_inherit_first_corpus(self):
         extractor = TerminologyExtractor()
         first = extractor.extract_terms(
-            ["The queen ant lays eggs in the colony. The colony forages. "
-             "Queens reproduce. Worker ants forage for the colony. "
-             "The queen controls workers in the colony."],
+            [
+                (
+                    "The queen ant lays eggs in the colony. The colony forages. "
+                    "Queens reproduce. Worker ants forage for the colony. "
+                    "The queen controls workers in the colony."
+                )
+            ],
             min_frequency=2,
         )
         assert "queen" in first
         second = extractor.extract_terms(
-            ["Bacterial colony grows on the plate. The colony invests resources. "
-             "Resource allocation matters. The colony trades resources. "
-             "Bacteria optimize investment."],
+            [
+                (
+                    "Bacterial colony grows on the plate. The colony invests resources. "
+                    "Resource allocation matters. The colony trades resources. "
+                    "Bacteria optimize investment."
+                )
+            ],
             min_frequency=2,
         )
         assert "queen" not in second

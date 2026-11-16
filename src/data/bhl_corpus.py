@@ -51,44 +51,44 @@ import logging
 import os
 import re
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 __all__ = [
     "BHL_API_BASE",
-    "BHL_SEARCH_OP",
     "BHL_FULLTEXT_SEARCHTYPE",
-    "BHL_SEARCH_MAX_ROWS",
     "BHL_KEYED_QUERY",
-    "SEARCH_INSIDE_TERMS",
+    "BHL_SEARCH_MAX_PAGES",
+    "BHL_SEARCH_MAX_ROWS",
+    "BHL_SEARCH_OP",
+    "BHL_SEARCH_QUERY",
+    "CORPUS_FIELDS",
+    "DATA_DIR",
+    "ERA_BOUNDS",
+    "IA_ADVANCEDSEARCH_URL",
+    "IA_DOWNLOAD_URL",
+    "IA_METADATA_URL",
     "SEARCH_INSIDE_DATE_FROM",
     "SEARCH_INSIDE_DATE_TO",
     "SEARCH_INSIDE_ITEM_CAP",
-    "IA_ADVANCEDSEARCH_URL",
-    "IA_METADATA_URL",
-    "IA_DOWNLOAD_URL",
-    "BHL_SEARCH_QUERY",
-    "CORPUS_FIELDS",
-    "ERA_BOUNDS",
-    "DATA_DIR",
+    "SEARCH_INSIDE_TERMS",
     "SHARD_SIZE",
-    "era_for_year",
-    "is_relevant_bhl_record",
-    "parse_advancedsearch_doc",
-    "parse_publication_search_doc",
     "BHLHarvester",
-    "shard_paths",
-    "read_shard",
+    "era_for_year",
+    "harvest_bhl",
+    "is_relevant_bhl_record",
     "load_corpus_records",
     "load_provenance",
-    "BHL_SEARCH_MAX_PAGES",
-    "write_readme",
-    "harvest_bhl",
     "main",
+    "parse_advancedsearch_doc",
+    "parse_publication_search_doc",
+    "read_shard",
+    "shard_paths",
+    "write_readme",
 ]
 
 logger = logging.getLogger(__name__)
@@ -122,7 +122,7 @@ BHL_SEARCH_MAX_PAGES = 50
 
 #: Keyed-search terms and date window per the brief (recorded verbatim
 #: in ``data/bhl/README.md``).
-SEARCH_INSIDE_TERMS: Tuple[str, ...] = (
+SEARCH_INSIDE_TERMS: tuple[str, ...] = (
     "ants",
     "ant",
     "Formicidae",
@@ -156,15 +156,15 @@ BHL_KEYED_QUERY = (
 # literature; the date range implements the 1850-1970 brief window.
 BHL_SEARCH_QUERY = (
     'collection:"biodiversity" AND mediatype:texts '
-    'AND (title:(ants OR ant OR Formicidae OR myrmecology) '
+    "AND (title:(ants OR ant OR Formicidae OR myrmecology) "
     'OR subject:(Formicidae OR ants OR myrmecology OR "social insects" '
-    'OR eusocial)) '
+    "OR eusocial)) "
     "AND date:[1850-01-01 TO 1970-12-31]"
 )
 
 #: Word-boundary relevance filter over title+text (guards against
 #: tangential subject hits such as generic "insect" catalogues).
-RELEVANCE_TERMS: Tuple[str, ...] = (
+RELEVANCE_TERMS: tuple[str, ...] = (
     r"\bants?\b",
     r"\bFormicidae\b",
     r"\bmyrmecolog(?:y|ical)\b",
@@ -174,7 +174,7 @@ RELEVANCE_TERMS: Tuple[str, ...] = (
 _RELEVANCE_RE = re.compile("|".join(RELEVANCE_TERMS), re.IGNORECASE)
 
 #: Output record fields (order-stable for shard serialization).
-CORPUS_FIELDS: Tuple[str, ...] = (
+CORPUS_FIELDS: tuple[str, ...] = (
     "bhl_id",
     "ia_identifier",
     "title",
@@ -187,7 +187,7 @@ CORPUS_FIELDS: Tuple[str, ...] = (
 )
 
 #: Era buckets per the brief; years outside these bounds are dropped.
-ERA_BOUNDS: Dict[str, Tuple[int, int]] = {
+ERA_BOUNDS: dict[str, tuple[int, int]] = {
     "era_1850_1899": (1850, 1899),
     "era_1900_1949": (1900, 1949),
     "era_1950_1970": (1950, 1970),
@@ -203,7 +203,7 @@ DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "bhl"
 # ── Era bucketing ─────────────────────────────────────────────────────
 
 
-def era_for_year(year: Optional[int]) -> Optional[str]:
+def era_for_year(year: int | None) -> str | None:
     """Map a publication year to its era bucket name.
 
     Args:
@@ -222,7 +222,7 @@ def era_for_year(year: Optional[int]) -> Optional[str]:
     return None
 
 
-def is_relevant_bhl_record(record: Dict[str, Any]) -> bool:
+def is_relevant_bhl_record(record: dict[str, Any]) -> bool:
     """Return True when the record text mentions a relevance term.
 
     Checked against the concatenated title/text with word-boundary,
@@ -235,16 +235,14 @@ def is_relevant_bhl_record(record: Dict[str, Any]) -> bool:
     Returns:
         True if any relevance term occurs.
     """
-    haystack = " ".join(
-        str(record.get(field) or "") for field in ("title", "full_text")
-    )
+    haystack = " ".join(str(record.get(field) or "") for field in ("title", "full_text"))
     return bool(_RELEVANCE_RE.search(haystack))
 
 
 # ── JSON parsing ──────────────────────────────────────────────────────
 
 
-def _as_int(value: Any) -> Optional[int]:
+def _as_int(value: Any) -> int | None:
     """Coerce a scalar to int when possible, else ``None``."""
     try:
         return int(str(value).strip())
@@ -252,7 +250,7 @@ def _as_int(value: Any) -> Optional[int]:
         return None
 
 
-def _as_date(value: Any) -> Optional[str]:
+def _as_date(value: Any) -> str | None:
     """Return a normalized ISO date string for common IA date shapes.
 
     Accepts ``YYYY``, ``YYYY-MM`` and ``YYYY-MM-DD`` strings and
@@ -277,7 +275,7 @@ def _as_date(value: Any) -> Optional[str]:
     return None
 
 
-def parse_advancedsearch_doc(payload: str) -> List[Dict[str, Any]]:
+def parse_advancedsearch_doc(payload: str) -> list[dict[str, Any]]:
     """Parse one IA ``advancedsearch.php`` response into candidate stubs.
 
     Args:
@@ -289,7 +287,7 @@ def parse_advancedsearch_doc(payload: str) -> List[Dict[str, Any]]:
         without an identifier are skipped (they cannot be fetched).
     """
     response = json.loads(payload).get("response", {})
-    stubs: List[Dict[str, Any]] = []
+    stubs: list[dict[str, Any]] = []
     for doc in response.get("docs", []):
         identifier = doc.get("identifier")
         if not identifier:
@@ -301,15 +299,13 @@ def parse_advancedsearch_doc(payload: str) -> List[Dict[str, Any]]:
                 "title": str(doc.get("title") or ""),
                 "publication_date": date_text,
                 "year": _as_int(date_text.split("-")[0]) if date_text else None,
-                "collections": [
-                    str(c) for c in (doc.get("collection") or [])
-                ],
+                "collections": [str(c) for c in (doc.get("collection") or [])],
             }
         )
     return stubs
 
 
-def parse_publication_search_doc(payload: str) -> List[Dict[str, Any]]:
+def parse_publication_search_doc(payload: str) -> list[dict[str, Any]]:
     """Parse one BHL ``PublicationSearch`` response into publication stubs.
 
     Args:
@@ -323,7 +319,7 @@ def parse_publication_search_doc(payload: str) -> List[Dict[str, Any]]:
         a harvestable item.
     """
     response = json.loads(payload)
-    stubs: List[Dict[str, Any]] = []
+    stubs: list[dict[str, Any]] = []
     for pub in response.get("Result") or []:
         if not isinstance(pub, dict):
             continue
@@ -371,8 +367,8 @@ class BHLHarvester:
 
     def __init__(
         self,
-        api_key: Optional[str] = None,
-        delay: Optional[float] = None,
+        api_key: str | None = None,
+        delay: float | None = None,
     ):
         """Store API-key and pacing configuration.
 
@@ -406,12 +402,10 @@ class BHLHarvester:
         Raises:
             RuntimeError: After ``MAX_RETRIES`` failed attempts.
         """
-        last_error: Optional[Exception] = None
+        last_error: Exception | None = None
         for attempt in range(1, self.MAX_RETRIES + 1):
             try:
-                request = Request(
-                    url, headers={"User-Agent": "ento-linguistics-bhl/1.0"}
-                )
+                request = Request(url, headers={"User-Agent": "ento-linguistics-bhl/1.0"})
                 with urlopen(request, timeout=timeout) as response:
                     body = response.read()
                 return body if binary else body.decode("utf-8", "replace")
@@ -439,7 +433,7 @@ class BHLHarvester:
             return text.replace(self.api_key, "***BHL_API_KEY***")
         return text
 
-    def _api3_get(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    def _api3_get(self, params: dict[str, Any]) -> dict[str, Any]:
         """Issue one BHL API v3 JSON call and return the parsed body.
 
         Raises:
@@ -454,15 +448,12 @@ class BHLHarvester:
         response = json.loads(payload)
         status = str(response.get("Status", "error"))
         if status.lower() != "ok":
-            raise RuntimeError(
-                f"BHL API v3 {params.get('op')} failed: "
-                f"{response.get('ErrorMessage') or status}"
-            )
+            raise RuntimeError(f"BHL API v3 {params.get('op')} failed: {response.get('ErrorMessage') or status}")
         return response
 
     # ── Keyless transports ────────────────────────────────────────
 
-    def check_api_key(self) -> Dict[str, Any]:
+    def check_api_key(self) -> dict[str, Any]:
         """Probe BHL API v3 with the configured key (or keyless).
 
         Returns:
@@ -491,9 +482,7 @@ class BHLHarvester:
             return {
                 "endpoint": BHL_API_BASE,
                 "keyed": bool(self.api_key),
-                "status": f"HTTP {exc.code}" + (
-                    " (key required)" if exc.code in (401, 403) else ""
-                ),
+                "status": f"HTTP {exc.code}" + (" (key required)" if exc.code in (401, 403) else ""),
                 "ok": False,
             }
         except (URLError, ValueError) as exc:
@@ -508,7 +497,7 @@ class BHLHarvester:
         self,
         query: str = BHL_SEARCH_QUERY,
         rows: int = 1000,
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Run the IA advancedsearch for BHL-collection candidates.
 
         Pages through results with ``start`` offsets until fewer than
@@ -524,9 +513,9 @@ class BHLHarvester:
             :func:`parse_advancedsearch_doc`).
         """
         page_size = min(rows, 200)
-        stubs: List[Dict[str, Any]] = []
+        stubs: list[dict[str, Any]] = []
         start = 0
-        total: Optional[int] = None
+        total: int | None = None
         while True:
             params = urlencode(
                 {
@@ -558,7 +547,7 @@ class BHLHarvester:
         date_from: int = SEARCH_INSIDE_DATE_FROM,
         date_to: int = SEARCH_INSIDE_DATE_TO,
         rows: int = BHL_SEARCH_MAX_ROWS,
-    ) -> Tuple[List[Dict[str, Any]], bool]:
+    ) -> tuple[list[dict[str, Any]], bool]:
         """Run the keyed full-text search for one term.
 
         Pages through BHL API v3 ``PublicationSearch`` with
@@ -585,7 +574,7 @@ class BHLHarvester:
             when the term's hit list exceeded the API page cap.
         """
         page_size = max(1, min(rows, BHL_SEARCH_MAX_ROWS))
-        pubs: List[Dict[str, Any]] = []
+        pubs: list[dict[str, Any]] = []
         truncated = False
         page = 1
         while True:
@@ -598,9 +587,7 @@ class BHLHarvester:
                     "pageSize": page_size,
                 }
             )
-            docs = parse_publication_search_doc(
-                json.dumps({"Result": response.get("Result") or []})
-            )
+            docs = parse_publication_search_doc(json.dumps({"Result": response.get("Result") or []}))
             pubs.extend(docs)
             if len(docs) < page_size:
                 break
@@ -609,11 +596,7 @@ class BHLHarvester:
                 break
             page += 1
             time.sleep(self.delay)
-        in_window = [
-            pub
-            for pub in pubs
-            if pub["year"] is not None and date_from <= pub["year"] <= date_to
-        ]
+        in_window = [pub for pub in pubs if pub["year"] is not None and date_from <= pub["year"] <= date_to]
         logger.info(
             "PublicationSearch %r: %d publications, %d within %d-%d%s",
             query,
@@ -625,7 +608,7 @@ class BHLHarvester:
         )
         return in_window, truncated
 
-    def get_part_item_id(self, part_id: int) -> Optional[int]:
+    def get_part_item_id(self, part_id: int) -> int | None:
         """Resolve a BHL PartID to its containing ItemID (keyed).
 
         Args:
@@ -642,7 +625,7 @@ class BHLHarvester:
         first = result[0]
         return _as_int(first.get("ItemID")) if isinstance(first, dict) else None
 
-    def get_item_stub(self, item_id: int) -> Optional[Dict[str, Any]]:
+    def get_item_stub(self, item_id: int) -> dict[str, Any] | None:
         """Build a harvest stub for a BHL ItemID (keyed).
 
         Only items digitized from the Internet Archive carry a
@@ -677,7 +660,7 @@ class BHLHarvester:
         self,
         data_dir: Path,
         cap: int = SEARCH_INSIDE_ITEM_CAP,
-    ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """Enumerate, merge, and cap the keyed full-text candidates.
 
         For each term in :data:`SEARCH_INSIDE_TERMS` the full-text
@@ -707,13 +690,13 @@ class BHLHarvester:
         results_path = data_dir / "searchinside_results.json"
         items_path = data_dir / "searchinside_items.json"
 
-        results: Dict[str, Any] = {"terms": {}}
+        results: dict[str, Any] = {"terms": {}}
         if results_path.exists():
             results = json.loads(results_path.read_text(encoding="utf-8"))
         results.setdefault("terms", {})
         results.setdefault("truncated", {})
-        per_term_pubs: Dict[str, int] = {}
-        per_term_truncated: Dict[str, bool] = {}
+        per_term_pubs: dict[str, int] = {}
+        per_term_truncated: dict[str, bool] = {}
         for term in SEARCH_INSIDE_TERMS:
             if term in results["terms"]:
                 pubs = results["terms"][term]
@@ -730,7 +713,7 @@ class BHLHarvester:
             per_term_truncated[term] = term_truncated
             time.sleep(self.delay)
 
-        items_doc: Dict[str, Any] = {"part_to_item": {}, "items": [], "stubs": {}}
+        items_doc: dict[str, Any] = {"part_to_item": {}, "items": [], "stubs": {}}
         if items_path.exists():
             items_doc = json.loads(items_path.read_text(encoding="utf-8"))
         items_doc.setdefault("part_to_item", {})
@@ -743,20 +726,15 @@ class BHLHarvester:
                 json.dumps(items_doc, ensure_ascii=False, indent=1) + "\n",
             )
 
-        part_cache = {
-            _as_int(key): value
-            for key, value in items_doc["part_to_item"].items()
-        }
-        item_entries: Dict[int, Dict[str, Any]] = {}
+        part_cache = {_as_int(key): value for key, value in items_doc["part_to_item"].items()}
+        item_entries: dict[int, dict[str, Any]] = {}
         for entry in items_doc["items"]:
             if isinstance(entry, dict) and _as_int(entry.get("bhl_item_id")):
                 item_entries[_as_int(entry["bhl_item_id"])] = entry
 
-        def _terms(pubs_by_term: Dict[str, List[Dict[str, Any]]]) -> Any:
+        def _terms(pubs_by_term: dict[str, list[dict[str, Any]]]) -> Any:
             """Interleave per-term result lists by relevance rank."""
-            iterators = [
-                (term, iter(pubs)) for term, pubs in pubs_by_term.items()
-            ]
+            iterators = [(term, iter(pubs)) for term, pubs in pubs_by_term.items()]
             exhausted = {term: False for term, _ in iterators}
             while not all(exhausted.values()):
                 for term, iterator in iterators:
@@ -799,7 +777,7 @@ class BHLHarvester:
         _persist_items()
 
         # Resolve each candidate item to an IA-backed stub (cached).
-        stubs: List[Dict[str, Any]] = []
+        stubs: list[dict[str, Any]] = []
         seen_identifiers: set = set()
         for item_id, entry in item_entries.items():
             key = str(item_id)
@@ -835,8 +813,7 @@ class BHLHarvester:
             "stubs": len(stubs),
         }
         logger.info(
-            "Keyed search inside: %d candidate items (cap %d, truncated=%s), "
-            "%d IA-backed stubs",
+            "Keyed search inside: %d candidate items (cap %d, truncated=%s), %d IA-backed stubs",
             len(item_entries),
             cap,
             truncated,
@@ -844,7 +821,7 @@ class BHLHarvester:
         )
         return stubs, stats
 
-    def fetch_item_metadata(self, identifier: str) -> Dict[str, Any]:
+    def fetch_item_metadata(self, identifier: str) -> dict[str, Any]:
         """Fetch one item's IA metadata (files, date, collections).
 
         Args:
@@ -856,11 +833,7 @@ class BHLHarvester:
         """
         payload = self._get(IA_METADATA_URL.format(identifier=identifier))
         doc = json.loads(payload)
-        files = [
-            f["name"]
-            for f in doc.get("files", [])
-            if isinstance(f, dict) and f.get("name")
-        ]
+        files = [f["name"] for f in doc.get("files", []) if isinstance(f, dict) and f.get("name")]
         return {"metadata": doc.get("metadata", {}), "files": files}
 
     def fetch_full_text(self, identifier: str) -> str:
@@ -885,10 +858,10 @@ class BHLHarvester:
 
     def build_record(
         self,
-        stub: Dict[str, Any],
-        item_meta: Dict[str, Any],
+        stub: dict[str, Any],
+        item_meta: dict[str, Any],
         full_text: str,
-    ) -> Optional[Dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """Assemble one corpus record from a candidate stub.
 
         Publication date prefers the item metadata ``date``/``year``
@@ -905,12 +878,7 @@ class BHLHarvester:
             when the item cannot be dated inside the window.
         """
         md = item_meta.get("metadata", {})
-        date_text = (
-            _as_date(md.get("date"))
-            or _as_date(md.get("year"))
-            or stub.get("publication_date")
-            or ""
-        )
+        date_text = _as_date(md.get("date")) or _as_date(md.get("year")) or stub.get("publication_date") or ""
         year = _as_int(date_text.split("-")[0]) if date_text else None
         era = era_for_year(year)
         if era is None:
@@ -945,9 +913,9 @@ class BHLHarvester:
         data_dir: Path,
         provenance_path: Path,
         query: str = BHL_SEARCH_QUERY,
-        target: Optional[int] = None,
-        stubs: Optional[List[Dict[str, Any]]] = None,
-    ) -> Dict[str, Any]:
+        target: int | None = None,
+        stubs: list[dict[str, Any]] | None = None,
+    ) -> dict[str, Any]:
         """Resumable sharded harvest of BHL-collection candidates.
 
         Items already present in ``data_dir`` shards are skipped.
@@ -992,15 +960,15 @@ class BHLHarvester:
         time.sleep(self.delay)
 
         shards = shard_paths(data_dir)
-        buffer: List[Dict[str, Any]] = []
-        pending: Optional[Path] = shards[-1] if shards else None
+        buffer: list[dict[str, Any]] = []
+        pending: Path | None = shards[-1] if shards else None
         if shards:
             buffer = read_shard(shards[-1])
         buffer_start = len(buffer)
         next_shard = len(shards)
 
         provenance = load_provenance(provenance_path)
-        retrieved_at = datetime.now(timezone.utc).isoformat()
+        retrieved_at = datetime.now(UTC).isoformat()
         harvested = 0
         fetched = 0
         no_text = 0
@@ -1066,10 +1034,7 @@ class BHLHarvester:
                 buffer = []
                 _atomic_write_text(
                     provenance_path,
-                    json.dumps(
-                        provenance, ensure_ascii=False, indent=1, sort_keys=True
-                    )
-                    + "\n",
+                    json.dumps(provenance, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
                 )
             logger.info(
                 "Progress: %d/%d candidates fetched, %d new records (at %s)",
@@ -1092,8 +1057,7 @@ class BHLHarvester:
             write_shard(path, buffer)
         _atomic_write_text(
             provenance_path,
-            json.dumps(provenance, ensure_ascii=False, indent=1, sort_keys=True)
-            + "\n",
+            json.dumps(provenance, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
         )
         summary = {
             "candidates": len(stubs),
@@ -1119,21 +1083,19 @@ def shard_filename(index: int) -> str:
     return f"bhl_shard_{index:05d}.json"
 
 
-def shard_paths(data_dir: Path) -> List[Path]:
+def shard_paths(data_dir: Path) -> list[Path]:
     """Shard files in concatenation (filename) order."""
     if not data_dir.exists():
         return []
     return sorted(data_dir.glob("bhl_shard_*.json"))
 
 
-def write_shard(path: Path, records: List[Dict[str, Any]]) -> None:
+def write_shard(path: Path, records: list[dict[str, Any]]) -> None:
     """Atomically write one shard file (tmp file + rename)."""
-    _atomic_write_text(
-        path, json.dumps(records, ensure_ascii=False, indent=1) + "\n"
-    )
+    _atomic_write_text(path, json.dumps(records, ensure_ascii=False, indent=1) + "\n")
 
 
-def read_shard(path: Path) -> List[Dict[str, Any]]:
+def read_shard(path: Path) -> list[dict[str, Any]]:
     """Read one shard file into a record list (empty when absent)."""
     if not path.exists():
         return []
@@ -1142,8 +1104,8 @@ def read_shard(path: Path) -> List[Dict[str, Any]]:
 
 def load_corpus_records(
     data_dir: Path,
-    provenance_path: Optional[Path] = None,
-) -> List[Dict[str, Any]]:
+    provenance_path: Path | None = None,
+) -> list[dict[str, Any]]:
     """Load the whole corpus in shard order.
 
     Args:
@@ -1155,13 +1117,13 @@ def load_corpus_records(
         Records across all shards, filename order (concatenation
         order).  Empty when no shards exist.
     """
-    records: List[Dict[str, Any]] = []
+    records: list[dict[str, Any]] = []
     for path in shard_paths(data_dir):
         records.extend(read_shard(path))
     return records
 
 
-def load_provenance(provenance_path: Path) -> Dict[str, Any]:
+def load_provenance(provenance_path: Path) -> dict[str, Any]:
     """Load the provenance sidecar (empty mapping when absent)."""
     if not provenance_path.exists():
         return {}
@@ -1169,10 +1131,10 @@ def load_provenance(provenance_path: Path) -> Dict[str, Any]:
 
 
 def build_provenance(
-    records: List[Dict[str, Any]],
+    records: list[dict[str, Any]],
     query: str,
-    retrieved_at: Optional[str] = None,
-) -> Dict[str, Dict[str, Any]]:
+    retrieved_at: str | None = None,
+) -> dict[str, dict[str, Any]]:
     """Build the ``sha256(full_text)`` -> provenance-entry mapping.
 
     Args:
@@ -1184,8 +1146,8 @@ def build_provenance(
         Mapping digest -> ``{bhl_id, ia_identifier, title,
         publication_date, era, collections, url, query, retrieved_at}``.
     """
-    retrieved_at = retrieved_at or datetime.now(timezone.utc).isoformat()
-    provenance: Dict[str, Dict[str, Any]] = {}
+    retrieved_at = retrieved_at or datetime.now(UTC).isoformat()
+    provenance: dict[str, dict[str, Any]] = {}
     for record in records:
         full_text = record.get("full_text") or ""
         digest = hashlib.sha256(full_text.encode("utf-8")).hexdigest()
@@ -1214,12 +1176,12 @@ def _atomic_write_text(path: Path, text: str) -> None:
 # ── README ────────────────────────────────────────────────────────────
 
 
-def _coverage_stats(data_dir: Path) -> Dict[str, Any]:
+def _coverage_stats(data_dir: Path) -> dict[str, Any]:
     """Compute corpus coverage statistics streaming over the shards."""
     count = 0
     body_chars = 0
-    years: List[int] = []
-    eras: Dict[str, int] = {}
+    years: list[int] = []
+    eras: dict[str, int] = {}
     for path in shard_paths(data_dir):
         for record in read_shard(path):
             count += 1
@@ -1234,7 +1196,7 @@ def _coverage_stats(data_dir: Path) -> Dict[str, Any]:
 def write_readme(
     output_dir: Path,
     query: str = BHL_SEARCH_QUERY,
-    summary: Optional[Dict[str, Any]] = None,
+    summary: dict[str, Any] | None = None,
 ) -> Path:
     """Write ``README.md`` documenting the harvested BHL corpus.
 
@@ -1253,13 +1215,8 @@ def write_readme(
     """
     stats = _coverage_stats(output_dir)
     shards = [p.name for p in shard_paths(output_dir)]
-    era_lines = "\n".join(
-        f"- `{era}`: {count} documents"
-        for era, count in sorted(stats["eras"].items())
-    )
-    year_line = (
-        f"{min(stats['years'])}-{max(stats['years'])}" if stats["years"] else "n/a"
-    )
+    era_lines = "\n".join(f"- `{era}`: {count} documents" for era, count in sorted(stats["eras"].items()))
+    year_line = f"{min(stats['years'])}-{max(stats['years'])}" if stats["years"] else "n/a"
     shard_lines = "\n".join(f"- `{name}`" for name in shards) or "- (none yet)"
     api_block = ""
     if summary and isinstance(summary.get("api_check"), dict):
@@ -1389,10 +1346,10 @@ Issued against `https://archive.org/advancedsearch.php` with
    Formicidae, myrmecology/myrmecological, eusocial/eusociality,
    "social insects".
 
-## Era coverage ({stats['count']} documents)
+## Era coverage ({stats["count"]} documents)
 
 - Publication years: {year_line}
-- Body text: {stats['body_chars']:,} characters
+- Body text: {stats["body_chars"]:,} characters
 - Documents per era:
 
 {era_lines}
@@ -1430,12 +1387,12 @@ uv run python src/pipeline/bhl_analysis.py
 
 
 def harvest_bhl(
-    data_dir: Optional[Path] = None,
+    data_dir: Path | None = None,
     query: str = BHL_SEARCH_QUERY,
-    target: Optional[int] = None,
-    api_key: Optional[str] = None,
+    target: int | None = None,
+    api_key: str | None = None,
     keyed: bool = False,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Harvest the BHL historical corpus (search + fetch + shard).
 
     Convenience wrapper around :class:`BHLHarvester` used by tests and
@@ -1462,13 +1419,8 @@ def harvest_bhl(
     harvester = BHLHarvester(api_key=api_key)
     if keyed:
         if not harvester.api_key:
-            raise RuntimeError(
-                "keyed harvest requires a BHL API v3 key "
-                "($BHL_API_KEY or --api-key)"
-            )
-        stubs, keyed_stats = harvester.collect_search_inside_candidates(
-            data_dir
-        )
+            raise RuntimeError("keyed harvest requires a BHL API v3 key ($BHL_API_KEY or --api-key)")
+        stubs, keyed_stats = harvester.collect_search_inside_candidates(data_dir)
         summary = harvester.harvest_sharded(
             data_dir,
             data_dir / "provenance.json",
@@ -1488,7 +1440,7 @@ def harvest_bhl(
     return summary
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     """CLI entry point: harvest the BHL historical corpus into shards.
 
     Resumable: stored items are skipped; re-running continues an
@@ -1516,10 +1468,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument(
         "--keyed",
         action="store_true",
-        help=(
-            "Run the keyed BHL API v3 full-text search upgrade "
-            "(requires $BHL_API_KEY or --api-key)"
-        ),
+        help=("Run the keyed BHL API v3 full-text search upgrade (requires $BHL_API_KEY or --api-key)"),
     )
     parser.add_argument(
         "--data-dir",

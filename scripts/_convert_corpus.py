@@ -3,6 +3,7 @@
 
 Delegates conversion logic to ``src/data/loader.py`` (``convert_corpus``).
 """
+
 from __future__ import annotations
 
 import os
@@ -16,7 +17,7 @@ for p in (project_root, src_path, repo_root):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from data.loader import convert_corpus  # noqa: E402
+from data.loader import convert_corpus
 
 if __name__ == "__main__":
     convert_corpus()

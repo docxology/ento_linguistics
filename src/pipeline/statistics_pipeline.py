@@ -36,7 +36,7 @@ artifact's ``skipped`` list instead of being fabricated as 0.0.
 from __future__ import annotations
 
 from itertools import combinations
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any
 
 import numpy as np
 
@@ -52,8 +52,6 @@ from analysis.persuasive_analysis import (
     _calculate_technique_impact,
     _rate_technique_effectiveness,
 )
-from analysis.text_analysis import LinguisticFeatureExtractor, TextProcessor
-from core.parallel import map_ordered
 from analysis.statistics import (
     anova_test,
     benjamini_hochberg_correction,
@@ -61,12 +59,14 @@ from analysis.statistics import (
     t_test,
 )
 from analysis.term_extraction import Term
+from analysis.text_analysis import LinguisticFeatureExtractor, TextProcessor
+from core.parallel import map_ordered
 
 __all__ = [
     "ABSTRACT_LAYER",
-    "CANONICAL_DOMAINS",
     "CACE_SAMPLE_SIZE",
     "CACE_TABLE_TERMS",
+    "CANONICAL_DOMAINS",
     "add_discourse_analysis",
     "build_statistical_analysis",
 ]
@@ -151,8 +151,8 @@ CACE_TABLE_TERMS: tuple = (
 
 
 def _as_term_list(
-    terms: Union[List[Term], Dict[str, Term]],
-) -> List[Term]:
+    terms: list[Term] | dict[str, Term],
+) -> list[Term]:
     """Normalize the terms argument to a list of ``Term`` objects.
 
     Args:
@@ -165,7 +165,7 @@ def _as_term_list(
     return list(terms.values()) if isinstance(terms, dict) else list(terms)
 
 
-def _group_terms_by_domain(terms: List[Term]) -> Dict[str, List[Term]]:
+def _group_terms_by_domain(terms: list[Term]) -> dict[str, list[Term]]:
     """Group terms by domain assignment, preserving term iteration order.
 
     Args:
@@ -175,14 +175,14 @@ def _group_terms_by_domain(terms: List[Term]) -> Dict[str, List[Term]]:
         Mapping from domain name to the terms assigned to it (a term in
         several domains appears in each of them).
     """
-    grouped: Dict[str, List[Term]] = {}
+    grouped: dict[str, list[Term]] = {}
     for term in terms:
         for domain in term.domains:
             grouped.setdefault(domain, []).append(term)
     return grouped
 
 
-def _cace_sample(domain_terms: List[Term]) -> List[Term]:
+def _cace_sample(domain_terms: list[Term]) -> list[Term]:
     """Select the bounded, deterministically ordered CACE sample.
 
     Sampling rule (documented contract): order the domain's terms by
@@ -201,10 +201,10 @@ def _cace_sample(domain_terms: List[Term]) -> List[Term]:
 
 def _format_domain_descriptives(
     domain: str,
-    entropy_values: List[float],
-    domain_terms: List[Term],
-    cace_scores: Optional[List[CACEScore]] = None,
-) -> Dict[str, Any]:
+    entropy_values: list[float],
+    domain_terms: list[Term],
+    cace_scores: list[CACEScore] | None = None,
+) -> dict[str, Any]:
     """Build one domain's entry of the ``descriptives`` section.
 
     Args:
@@ -222,7 +222,7 @@ def _format_domain_descriptives(
         valid per-term entropy — absent keys mean "no data", never a
         fabricated 0.0.
     """
-    entry: Dict[str, Any] = {
+    entry: dict[str, Any] = {
         "n_terms": len(entropy_values),
         "bridging_count": sum(1 for t in domain_terms if len(t.domains) > 1),
     }
@@ -245,17 +245,13 @@ def _format_domain_descriptives(
         # Reuse the already-computed mean instead.
         entry["ambiguity_mean"] = entry["entropy_mean"]
 
-    scores = (
-        cace_scores
-        if cace_scores is not None
-        else _domain_cace_scores(domain_terms)
-    )
+    scores = cace_scores if cace_scores is not None else _domain_cace_scores(domain_terms)
     if scores:
         entry["cace_mean"] = float(np.mean([s.aggregate for s in scores]))
     return entry
 
 
-def _domain_cace_scores(domain_terms: List[Term]) -> List[CACEScore]:
+def _domain_cace_scores(domain_terms: list[Term]) -> list[CACEScore]:
     """Score the bounded, deterministic CACE sample for one domain.
 
     Shared by the ``descriptives`` CACE mean and the per-domain ``cace``
@@ -273,7 +269,7 @@ def _domain_cace_scores(domain_terms: List[Term]) -> List[CACEScore]:
     ]
 
 
-def _format_domain_cace_entry(scores: List[CACEScore]) -> Dict[str, Any]:
+def _format_domain_cace_entry(scores: list[CACEScore]) -> dict[str, Any]:
     """Build one domain's entry of the ``cace`` section.
 
     Args:
@@ -301,7 +297,7 @@ def _format_domain_cace_entry(scores: List[CACEScore]) -> Dict[str, Any]:
     }
 
 
-def _format_cace_term_entry(term: str, term_data: Optional[Term]) -> Dict[str, Any]:
+def _format_cace_term_entry(term: str, term_data: Term | None) -> dict[str, Any]:
     """Build one entry of the ``cace_terms`` section.
 
     Args:
@@ -324,9 +320,7 @@ def _format_cace_term_entry(term: str, term_data: Optional[Term]) -> Dict[str, A
         )
         in_corpus = True
     else:
-        score = evaluate_term_cace(
-            term=term, semantic_entropy=0.0, contexts=[], domains=[]
-        )
+        score = evaluate_term_cace(term=term, semantic_entropy=0.0, contexts=[], domains=[])
         in_corpus = False
     return {
         "clarity": score.clarity,
@@ -338,7 +332,7 @@ def _format_cace_term_entry(term: str, term_data: Optional[Term]) -> Dict[str, A
     }
 
 
-def _domain_term_counts(terms: List[Term]) -> Dict[str, Dict[str, Any]]:
+def _domain_term_counts(terms: list[Term]) -> dict[str, dict[str, Any]]:
     """Count extracted terms per canonical domain assignment.
 
     Same semantics as ``pipeline.fulltext_pipeline._domain_term_counts``:
@@ -351,7 +345,7 @@ def _domain_term_counts(terms: List[Term]) -> Dict[str, Dict[str, Any]]:
         Mapping from domain name to ``{"term_count",
         "bridging_term_count", "total_frequency"}``, sorted by domain.
     """
-    counts: Dict[str, Dict[str, Any]] = {}
+    counts: dict[str, dict[str, Any]] = {}
     for term in terms:
         for domain in term.domains:
             entry = counts.setdefault(
@@ -370,13 +364,13 @@ def _domain_term_counts(terms: List[Term]) -> Dict[str, Dict[str, Any]]:
 # its own singletons via the pool initializer; the lazy guards also cover
 # the serial fallback path, which runs tasks in the parent process.
 # ---------------------------------------------------------------------------
-_WORKER_TOKEN_DOMAINS: Optional[Dict[str, List[str]]] = None
-_WORKER_PROCESSOR: Optional[TextProcessor] = None
-_WORKER_FEATURE_EXTRACTOR: Optional[LinguisticFeatureExtractor] = None
+_WORKER_TOKEN_DOMAINS: dict[str, list[str]] | None = None
+_WORKER_PROCESSOR: TextProcessor | None = None
+_WORKER_FEATURE_EXTRACTOR: LinguisticFeatureExtractor | None = None
 
 
 def _init_framing_workers(
-    token_domains: Optional[Dict[str, List[str]]] = None,
+    token_domains: dict[str, list[str]] | None = None,
 ) -> None:
     """Initialize per-worker framing state (pool initializer)."""
     global _WORKER_TOKEN_DOMAINS, _WORKER_PROCESSOR, _WORKER_FEATURE_EXTRACTOR
@@ -388,7 +382,7 @@ def _init_framing_workers(
         _WORKER_FEATURE_EXTRACTOR = LinguisticFeatureExtractor()
 
 
-def _framing_text_task(text: str) -> Tuple[Dict[str, int], Dict[str, int], Dict[str, int], Dict[str, int], int, int]:
+def _framing_text_task(text: str) -> tuple[dict[str, int], dict[str, int], dict[str, int], dict[str, int], int, int]:
     """Per-text anthropomorphic-framing task for :func:`map_ordered`.
 
     Performs exactly the per-text computation of the serial
@@ -408,10 +402,10 @@ def _framing_text_task(text: str) -> Tuple[Dict[str, int], Dict[str, int], Dict[
     token_domains = _WORKER_TOKEN_DOMAINS
     tokens = processor.process_text(text, lemmatize=False)
     n_tokens = len(tokens)
-    domain_contexts: Dict[str, int] = {}
-    domain_framed: Dict[str, int] = {}
-    term_contexts: Dict[str, int] = {}
-    term_framed: Dict[str, int] = {}
+    domain_contexts: dict[str, int] = {}
+    domain_framed: dict[str, int] = {}
+    term_contexts: dict[str, int] = {}
+    term_framed: dict[str, int] = {}
     overall_contexts = 0
     overall_framed = 0
     for position, token in enumerate(tokens):
@@ -421,11 +415,7 @@ def _framing_text_task(text: str) -> Tuple[Dict[str, int], Dict[str, int], Dict[
         start = max(0, position - FRAMING_CONTEXT_WINDOW)
         end = min(n_tokens, position + FRAMING_CONTEXT_WINDOW + 1)
         context = " ".join(tokens[start:end])
-        is_framed = bool(
-            feature_extractor.extract_framing_features(context)[
-                "anthropomorphic_terms"
-            ]
-        )
+        is_framed = bool(feature_extractor.extract_framing_features(context)["anthropomorphic_terms"])
         for domain in domains:
             domain_contexts[domain] = domain_contexts.get(domain, 0) + 1
             if is_framed:
@@ -446,9 +436,7 @@ def _framing_text_task(text: str) -> Tuple[Dict[str, int], Dict[str, int], Dict[
     )
 
 
-def _framing_section(
-    terms: List[Term], texts: List[str]
-) -> "Tuple[Dict[str, Any], Dict[str, Any]]":
+def _framing_section(terms: list[Term], texts: list[str]) -> tuple[dict[str, Any], dict[str, Any]]:
     """Compute abstract-layer anthropomorphic-framing proportions.
 
     Occurrence-context semantics identical to the full-text layer's
@@ -479,9 +467,7 @@ def _framing_section(
         "n_contexts": int, "domains": [..]}`` (the per-term data behind
         the anthropomorphic-terminology figure).
     """
-    token_domains: Dict[str, List[str]] = {
-        term.text: list(term.domains) for term in terms if term.domains
-    }
+    token_domains: dict[str, list[str]] = {term.text: list(term.domains) for term in terms if term.domains}
     if not token_domains or not texts:
         return {}, {}
 
@@ -497,10 +483,10 @@ def _framing_section(
         initializer=_init_framing_workers,
         initargs=(token_domains,),
     )
-    domain_contexts: Dict[str, int] = {}
-    domain_framed: Dict[str, int] = {}
-    term_contexts: Dict[str, int] = {}
-    term_framed: Dict[str, int] = {}
+    domain_contexts: dict[str, int] = {}
+    domain_framed: dict[str, int] = {}
+    term_contexts: dict[str, int] = {}
+    term_framed: dict[str, int] = {}
     overall_contexts = 0
     overall_framed = 0
     for (
@@ -522,7 +508,7 @@ def _framing_section(
         overall_contexts += text_overall_contexts
         overall_framed += text_overall_framed
 
-    framing: Dict[str, Any] = {}
+    framing: dict[str, Any] = {}
     for domain in sorted(domain_contexts):
         n_contexts = domain_contexts[domain]
         if not n_contexts:
@@ -537,7 +523,7 @@ def _framing_section(
             "n_contexts": overall_contexts,
         }
 
-    framing_terms: Dict[str, Any] = {}
+    framing_terms: dict[str, Any] = {}
     for term_text in sorted(term_contexts):
         n_contexts = term_contexts[term_text]
         if not n_contexts:
@@ -550,7 +536,7 @@ def _framing_section(
     return framing, framing_terms
 
 
-def _discourse_sample(texts: List[str]) -> "Tuple[List[str], int, float]":
+def _discourse_sample(texts: list[str]) -> tuple[list[str], int, float]:
     """Select the deterministic discourse-analysis sample.
 
     Texts below ``DISCOURSE_MIN_TEXT_LENGTH`` characters are excluded
@@ -567,17 +553,12 @@ def _discourse_sample(texts: List[str]) -> "Tuple[List[str], int, float]":
     Returns:
         ``(analysis_texts, n_excluded, sample_fraction)``.
     """
-    eligible = [
-        t for t in texts if isinstance(t, str) and len(t) >= DISCOURSE_MIN_TEXT_LENGTH
-    ]
+    eligible = [t for t in texts if isinstance(t, str) and len(t) >= DISCOURSE_MIN_TEXT_LENGTH]
     n_excluded = len(texts) - len(eligible)
     if not eligible:
         return [], n_excluded, 0.0
     total_chars = sum(len(t) for t in eligible)
-    if (
-        total_chars > DISCOURSE_BUDGET_CHARS
-        and len(eligible) > DISCOURSE_SAMPLE_TARGET
-    ):
+    if total_chars > DISCOURSE_BUDGET_CHARS and len(eligible) > DISCOURSE_SAMPLE_TARGET:
         stride = -(-len(eligible) // DISCOURSE_SAMPLE_TARGET)  # ceil division
         sample = eligible[::stride]
         fraction = round(len(sample) / len(eligible), 6)
@@ -591,7 +572,7 @@ def _discourse_sample(texts: List[str]) -> "Tuple[List[str], int, float]":
 # task, so each worker builds its own analyzer via the pool initializer
 # (the lazy guard also covers the serial fallback path).
 # ---------------------------------------------------------------------------
-_WORKER_DISCOURSE_ANALYZER: Optional[DiscourseAnalyzer] = None
+_WORKER_DISCOURSE_ANALYZER: DiscourseAnalyzer | None = None
 
 
 def _init_discourse_worker() -> None:
@@ -601,7 +582,7 @@ def _init_discourse_worker() -> None:
         _WORKER_DISCOURSE_ANALYZER = DiscourseAnalyzer()
 
 
-def _discourse_text_task(text: str) -> Dict[str, Any]:
+def _discourse_text_task(text: str) -> dict[str, Any]:
     """Per-text discourse-analysis task for :func:`map_ordered`.
 
     Runs the same single-text passes the serial ``_discourse_section``
@@ -615,14 +596,12 @@ def _discourse_text_task(text: str) -> Dict[str, Any]:
     return {
         "patterns": identify_patterns_in_text(text),
         "rhetorical": analyze_rhetorical_strategies([text]),
-        "structures": _WORKER_DISCOURSE_ANALYZER.analyze_argumentative_structures(
-            [text]
-        ),
+        "structures": _WORKER_DISCOURSE_ANALYZER.analyze_argumentative_structures([text]),
         "persuasive": analyze_persuasive_techniques([text]),
     }
 
 
-def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
+def _discourse_section(texts: list[str]) -> dict[str, Any] | None:
     """Compute the corpus-level ``discourse`` section.
 
     Aggregates, over the (deterministically bounded) eligible texts:
@@ -673,9 +652,9 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
 
     # Patterns — per-pattern instance counts, examples and domains merged
     # in sample order (emitted keyed by sorted pattern type, as before).
-    pattern_examples: Dict[str, List[str]] = {}
-    pattern_domains: Dict[str, Set[str]] = {}
-    pattern_functions: Dict[str, str] = {}
+    pattern_examples: dict[str, list[str]] = {}
+    pattern_domains: dict[str, set[str]] = {}
+    pattern_functions: dict[str, str] = {}
     for result in results:
         for pattern_type, pattern_data in result["patterns"].items():
             if pattern_type not in pattern_examples:
@@ -686,7 +665,7 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
             if "domain" in pattern_data:
                 pattern_domains[pattern_type].add(pattern_data["domain"])
 
-    patterns: Dict[str, Any] = {}
+    patterns: dict[str, Any] = {}
     for pattern_type in sorted(pattern_examples):
         patterns[pattern_type] = {
             "frequency": len(pattern_examples[pattern_type]),
@@ -696,18 +675,14 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
         }
 
     # Rhetorical strategies — frequencies and text coverage (integers).
-    rhetorical_freq: Dict[str, int] = {}
-    rhetorical_text_count: Dict[str, int] = {}
+    rhetorical_freq: dict[str, int] = {}
+    rhetorical_text_count: dict[str, int] = {}
     for result in results:
         for strategy, data in result["rhetorical"].items():
-            rhetorical_freq[strategy] = rhetorical_freq.get(strategy, 0) + int(
-                data.get("frequency", 0)
-            )
-            rhetorical_text_count[strategy] = rhetorical_text_count.get(
-                strategy, 0
-            ) + int(data.get("text_count", 0))
+            rhetorical_freq[strategy] = rhetorical_freq.get(strategy, 0) + int(data.get("frequency", 0))
+            rhetorical_text_count[strategy] = rhetorical_text_count.get(strategy, 0) + int(data.get("text_count", 0))
 
-    rhetorical: Dict[str, Any] = {
+    rhetorical: dict[str, Any] = {
         strategy: {
             "frequency": rhetorical_freq[strategy],
             "text_count": rhetorical_text_count[strategy],
@@ -720,7 +695,7 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
     structures = []
     for result in results:
         structures.extend(result["structures"])
-    marker_counts: Dict[str, int] = {}
+    marker_counts: dict[str, int] = {}
     n_with_evidence = 0
     n_with_warrant = 0
     n_with_qualification = 0
@@ -739,29 +714,23 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
             for marker in structure.discourse_markers:
                 marker_counts[marker] = marker_counts.get(marker, 0) + 1
     n_structures = len(structures)
-    argumentative: Dict[str, Any] = {
+    argumentative: dict[str, Any] = {
         "n_structures": n_structures,
         "n_with_evidence": n_with_evidence,
         "n_with_warrant": n_with_warrant,
         "n_with_qualification": n_with_qualification,
         "n_with_discourse_markers": n_with_markers,
-        "mean_discourse_markers": (
-            round(marker_total / n_with_markers, 6) if n_with_markers else 0.0
-        ),
-        "top_discourse_markers": dict(
-            sorted(marker_counts.items(), key=lambda kv: (-kv[1], kv[0]))[:10]
-        ),
-        "example_claims": [
-            claim[:200] for claim in (s.claim for s in structures) if claim
-        ][:5],
+        "mean_discourse_markers": (round(marker_total / n_with_markers, 6) if n_with_markers else 0.0),
+        "top_discourse_markers": dict(sorted(marker_counts.items(), key=lambda kv: (-kv[1], kv[0]))[:10]),
+        "example_claims": [claim[:200] for claim in (s.claim for s in structures) if claim][:5],
     }
 
     # Persuasive techniques — counts and example lists merged in sample
     # order, then the same effectiveness computation as
     # ``measure_persuasive_effectiveness`` applied to the merged totals
     # (the function's own expressions, verbatim).
-    technique_counts: Dict[str, int] = {}
-    technique_examples: Dict[str, List[str]] = {}
+    technique_counts: dict[str, int] = {}
+    technique_examples: dict[str, list[str]] = {}
     for result in results:
         for technique, data in result["persuasive"].items():
             if technique not in technique_counts:
@@ -770,7 +739,7 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
             technique_counts[technique] += int(data.get("count", 0))
             technique_examples[technique].extend(data.get("examples", []))
 
-    persuasive: Dict[str, Any] = {}
+    persuasive: dict[str, Any] = {}
     for technique in sorted(technique_counts):
         merged_data = {
             "count": technique_counts[technique],
@@ -782,9 +751,7 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
             "usage_frequency": usage_frequency,
             "context_relevance": context_relevance,
             "heuristic_impact_index": _calculate_technique_impact(merged_data),
-            "heuristic_effectiveness_band": _rate_technique_effectiveness(
-                merged_data
-            ),
+            "heuristic_effectiveness_band": _rate_technique_effectiveness(merged_data),
             "success_examples": merged_data.get("examples", [])[:3],
             "usage_distribution": merged_data.get("distribution", {}),
         }
@@ -802,9 +769,7 @@ def _discourse_section(texts: List[str]) -> Optional[Dict[str, Any]]:
     }
 
 
-def add_discourse_analysis(
-    artifact: Dict[str, Any], texts: List[str]
-) -> Dict[str, Any]:
+def add_discourse_analysis(artifact: dict[str, Any], texts: list[str]) -> dict[str, Any]:
     """Merge the corpus-level ``discourse`` section into an artifact.
 
     Public merge path used by the figure pipeline to add the discourse
@@ -829,11 +794,11 @@ def add_discourse_analysis(
 
 
 def build_statistical_analysis(
-    terms: Union[List[Term], Dict[str, Term]],
-    texts: List[str],
+    terms: list[Term] | dict[str, Term],
+    texts: list[str],
     metric: str = "semantic_entropy",
-    layer: Optional[str] = None,
-) -> Dict[str, Any]:
+    layer: str | None = None,
+) -> dict[str, Any]:
     """Build the frozen statistical-analysis artifact from real term data.
 
     Computes, over the six canonical Ento-Linguistic domains:
@@ -904,8 +869,7 @@ def build_statistical_analysis(
     """
     if metric != "semantic_entropy":
         raise ValueError(
-            f"Unsupported metric {metric!r}: only 'semantic_entropy' is "
-            "implemented by the wave-1 entropy contract"
+            f"Unsupported metric {metric!r}: only 'semantic_entropy' is implemented by the wave-1 entropy contract"
         )
 
     analyzer = DomainAnalyzer()
@@ -917,18 +881,16 @@ def build_statistical_analysis(
     # map to an empty list.
     domain_entropies = analyzer.iter_domain_term_entropies(term_list, texts)
 
-    descriptives: Dict[str, Any] = {}
-    cace: Dict[str, Any] = {}
-    entropy_groups: Dict[str, np.ndarray] = {}
-    skipped: List[Dict[str, str]] = []
+    descriptives: dict[str, Any] = {}
+    cace: dict[str, Any] = {}
+    entropy_groups: dict[str, np.ndarray] = {}
+    skipped: list[dict[str, str]] = []
 
     for domain in sorted(CANONICAL_DOMAINS):
         domain_terms = grouped.get(domain, [])
         values = domain_entropies.get(domain, [])
         domain_cace = _domain_cace_scores(domain_terms)
-        descriptives[domain] = _format_domain_descriptives(
-            domain, values, domain_terms, cace_scores=domain_cace
-        )
+        descriptives[domain] = _format_domain_descriptives(domain, values, domain_terms, cace_scores=domain_cace)
         if domain_cace:
             cace[domain] = _format_domain_cace_entry(domain_cace)
         if len(values) >= 2:
@@ -938,16 +900,13 @@ def build_statistical_analysis(
                 {
                     "kind": "domain_group",
                     "domain": domain,
-                    "reason": (
-                        f"only {len(values)} valid per-term entropy value(s); "
-                        "n < 2 groups cannot be tested"
-                    ),
+                    "reason": (f"only {len(values)} valid per-term entropy value(s); n < 2 groups cannot be tested"),
                 }
             )
 
     # ── Pairwise Welch t-tests + BH correction ────────────────────────
-    pairwise: List[Dict[str, Any]] = []
-    tested: List[str] = sorted(entropy_groups)
+    pairwise: list[dict[str, Any]] = []
+    tested: list[str] = sorted(entropy_groups)
     for domain_a, domain_b in combinations(tested, 2):
         x = entropy_groups[domain_a]
         y = entropy_groups[domain_b]
@@ -962,8 +921,8 @@ def build_statistical_analysis(
                 "p": float(result["p_value"]),
                 "p_bh": 0.0,  # filled in below after BH correction
                 "cohens_d": cohens_d(x, y, correction=True),
-                "n_a": int(len(x)),
-                "n_b": int(len(y)),
+                "n_a": len(x),
+                "n_b": len(y),
                 "significant_bh": False,  # filled in below
             }
         )
@@ -975,15 +934,13 @@ def build_statistical_analysis(
         entry["significant_bh"] = bool(p_bh < BH_ALPHA)
 
     # ── Omnibus one-way ANOVA with explicit eta-squared ───────────────
-    anova: Dict[str, Any] = {}
+    anova: dict[str, Any] = {}
     group_list = [entropy_groups[d] for d in tested]
     if len(group_list) >= 2:
         f_result = anova_test(group_list)
         all_values = np.concatenate(group_list)
         overall_mean = float(np.mean(all_values))
-        ss_between = sum(
-            len(g) * (float(np.mean(g)) - overall_mean) ** 2 for g in group_list
-        )
+        ss_between = sum(len(g) * (float(np.mean(g)) - overall_mean) ** 2 for g in group_list)
         ss_total = float(np.sum((all_values - overall_mean) ** 2))
         eta_squared = ss_between / ss_total if ss_total > 0 else 0.0
         anova = {
@@ -998,21 +955,17 @@ def build_statistical_analysis(
         skipped.append(
             {
                 "kind": "anova",
-                "reason": (
-                    f"only {len(group_list)} testable domain group(s); "
-                    "one-way ANOVA requires at least 2"
-                ),
+                "reason": (f"only {len(group_list)} testable domain group(s); one-way ANOVA requires at least 2"),
             }
         )
 
     # ── Representative-term CACE evaluations (S02 table) ───────────────
     term_lookup = {t.text.lower().strip(): t for t in term_list}
-    cace_terms: Dict[str, Any] = {
-        name: _format_cace_term_entry(name, term_lookup.get(name))
-        for name in CACE_TABLE_TERMS
+    cace_terms: dict[str, Any] = {
+        name: _format_cace_term_entry(name, term_lookup.get(name)) for name in CACE_TABLE_TERMS
     }
 
-    artifact: Dict[str, Any] = {
+    artifact: dict[str, Any] = {
         "interpretation": {
             "tests": "exploratory comparisons of term entropies, not calibrated population inference",
             "independence": "terms may share documents and belong to multiple domain groups",

@@ -1,10 +1,9 @@
 """Reporting utilities - thin wrapper around infrastructure reporting."""
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 import numpy as np
-
 
 # Lazy imports to avoid import issues during test collection
 _HAS_INFRASTRUCTURE = None
@@ -15,6 +14,7 @@ def _check_infrastructure():
     if _HAS_INFRASTRUCTURE is None:
         try:
             import infrastructure.reporting  # noqa: F401
+
             _HAS_INFRASTRUCTURE = True
         except ImportError:
             _HAS_INFRASTRUCTURE = False
@@ -91,7 +91,7 @@ def save_pipeline_report(*args, **kwargs):
 class ReportGenerator:
     """Generate reports from simulation and analysis results."""
 
-    def __init__(self, output_dir: Optional[Union[str, Path]] = None):
+    def __init__(self, output_dir: str | Path | None = None):
         """Initialize report generator.
 
         Args:
@@ -100,9 +100,7 @@ class ReportGenerator:
         self.output_dir = Path(output_dir) if output_dir else Path("output/reports")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-    def generate_markdown_report(
-        self, title: str, results: Dict[str, Any], filename: Optional[str] = None
-    ) -> Path:
+    def generate_markdown_report(self, title: str, results: dict[str, Any], filename: str | None = None) -> Path:
         """Generate markdown report.
 
         Args:
@@ -155,9 +153,7 @@ class ReportGenerator:
 
         return report_path
 
-    def generate_latex_report(
-        self, title: str, results: Dict[str, Any], filename: Optional[str] = None
-    ) -> Path:
+    def generate_latex_report(self, title: str, results: dict[str, Any], filename: str | None = None) -> Path:
         """Generate LaTeX report.
 
         Args:
@@ -204,9 +200,7 @@ class ReportGenerator:
 
         return report_path
 
-    def generate_html_report(
-        self, title: str, results: Dict[str, Any], filename: Optional[str] = None
-    ) -> Path:
+    def generate_html_report(self, title: str, results: dict[str, Any], filename: str | None = None) -> Path:
         """Generate HTML report.
 
         Args:
@@ -260,9 +254,9 @@ class ReportGenerator:
     def save_structured_report(
         self,
         stage_name: str,
-        results: Dict[str, Any],
+        results: dict[str, Any],
         pipeline_duration: float = 0.0,
-    ) -> Dict[str, Path]:
+    ) -> dict[str, Path]:
         """Persist a structured multi-format report using infrastructure.reporting.
 
         Args:
@@ -276,6 +270,7 @@ class ReportGenerator:
         if not _check_infrastructure():
             # Fall back to a simple JSON save when infrastructure is unavailable
             import json
+
             report_path = self.output_dir / f"{stage_name}_report.json"
             with open(report_path, "w") as f:
                 json.dump(results, f, indent=2, default=str)
@@ -284,9 +279,7 @@ class ReportGenerator:
         error_agg = get_error_aggregator()
         gen_report = _get_infra_generate_pipeline_report()
         report = gen_report(
-            stage_results=[
-                {"name": stage_name, "exit_code": 0, "duration": pipeline_duration}
-            ],
+            stage_results=[{"name": stage_name, "exit_code": 0, "duration": pipeline_duration}],
             total_duration=pipeline_duration,
             repo_root=Path("."),
             validation_results=results,
@@ -295,9 +288,7 @@ class ReportGenerator:
         sav_report = _get_infra_save_pipeline_report()
         return sav_report(report, self.output_dir)
 
-    def extract_key_findings(
-        self, results: Dict[str, Any], threshold: float = 0.1
-    ) -> List[str]:
+    def extract_key_findings(self, results: dict[str, Any], threshold: float = 0.1) -> list[str]:
         """Extract key findings from results.
 
         Args:
@@ -320,9 +311,7 @@ class ReportGenerator:
         if "convergence" in results:
             conv = results["convergence"]
             if conv.get("is_converged", False):
-                findings.append(
-                    f"Simulation converged in {conv.get('iterations', 'N/A')} iterations"
-                )
+                findings.append(f"Simulation converged in {conv.get('iterations', 'N/A')} iterations")
             else:
                 findings.append("Simulation did not converge within tolerance")
 
@@ -334,9 +323,7 @@ class ReportGenerator:
 
         return findings
 
-    def create_comparison_report(
-        self, runs: List[Dict[str, Any]], comparison_metrics: List[str]
-    ) -> Dict[str, Any]:
+    def create_comparison_report(self, runs: list[dict[str, Any]], comparison_metrics: list[str]) -> dict[str, Any]:
         """Create comparison report across multiple runs.
 
         Args:
@@ -369,7 +356,7 @@ class ReportGenerator:
 
         return report
 
-    def _format_summary(self, summary: Dict[str, Any]) -> List[str]:
+    def _format_summary(self, summary: dict[str, Any]) -> list[str]:
         """Format summary section."""
         lines = []
         for key, value in summary.items():
@@ -380,7 +367,7 @@ class ReportGenerator:
         lines.append("")
         return lines
 
-    def _format_summary_latex(self, summary: Dict[str, Any]) -> List[str]:
+    def _format_summary_latex(self, summary: dict[str, Any]) -> list[str]:
         """Format summary for LaTeX."""
         lines = []
         for key, value in summary.items():
@@ -391,7 +378,7 @@ class ReportGenerator:
         lines.append("")
         return lines
 
-    def _format_summary_html(self, summary: Dict[str, Any]) -> str:
+    def _format_summary_html(self, summary: dict[str, Any]) -> str:
         """Format summary for HTML."""
         html = "<ul>\n"
         for key, value in summary.items():
@@ -402,7 +389,7 @@ class ReportGenerator:
         html += "</ul>"
         return html
 
-    def _format_details(self, details: Dict[str, Any]) -> List[str]:
+    def _format_details(self, details: dict[str, Any]) -> list[str]:
         """Format details section."""
         lines = []
         for section, content in details.items():
@@ -419,7 +406,7 @@ class ReportGenerator:
             lines.append("")
         return lines
 
-    def _format_table(self, name: str, data: Dict[str, List[Any]]) -> List[str]:
+    def _format_table(self, name: str, data: dict[str, list[Any]]) -> list[str]:
         """Format table for markdown."""
         lines = [f"### {name}", ""]
 
@@ -439,7 +426,7 @@ class ReportGenerator:
         lines.append("")
         return lines
 
-    def _format_table_latex(self, name: str, data: Dict[str, List[Any]]) -> List[str]:
+    def _format_table_latex(self, name: str, data: dict[str, list[Any]]) -> list[str]:
         """Format table for LaTeX."""
         lines = [
             f"\\subsection{{{name}}}",
@@ -482,8 +469,8 @@ class ReportGenerator:
 
 # Re-export infrastructure functions and local classes for API consistency
 __all__ = [
-    "generate_pipeline_report",
-    "save_pipeline_report",
-    "get_error_aggregator",
     "ReportGenerator",
+    "generate_pipeline_report",
+    "get_error_aggregator",
+    "save_pipeline_report",
 ]

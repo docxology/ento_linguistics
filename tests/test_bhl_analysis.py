@@ -9,13 +9,14 @@ from __future__ import annotations
 import json
 
 import pytest
+
 from pipeline.bhl_analysis import (
     ARTIFACT_NAME,
     ENTROPY_TOP_TERMS,
     ERA_KEYS,
     OCR_MIN_TERM_FREQUENCY,
-    analyze_eras,
     analyze_era_stack,
+    analyze_eras,
     build_artifact,
     clean_ocr_text,
     domain_vocabularies,
@@ -109,8 +110,7 @@ class TestAnalyzeEras:
             assert stats["documents"] == 0
             assert stats["tokens"] == 0
             assert stats["terms_per_10k"] == {
-                t: 0.0 for t in ("colony", "superorganism", "division of labor",
-                                 "foraging", "cost", "benefit")
+                t: 0.0 for t in ("colony", "superorganism", "division of labor", "foraging", "cost", "benefit")
             }
             assert stats["domains_per_10k"] == {
                 "unit_of_individuality": 0.0,
@@ -200,6 +200,8 @@ class TestMainCli:
         rc = main(["--data-dir", str(data_dir)])
         assert rc == 0
         assert (data_dir / ARTIFACT_NAME).exists()
+
+
 # ── Full-stack extension (clean_ocr_text + analyze_era_stack) ────────
 
 _RICH_ERA_TEXTS = [
@@ -247,9 +249,8 @@ def rich_stack():
 def expanded_artifact(tmp_path_factory):
     """Shared artifact: one populated era, two degenerate eras."""
     records = _era_records() + _noise_era_records("era_1900_1949")
-    return build_artifact(
-        tmp_path_factory.mktemp("bhl_build"), records=records
-    )
+    return build_artifact(tmp_path_factory.mktemp("bhl_build"), records=records)
+
 
 class TestCleanOcrText:
     def test_drops_digit_runs_and_single_letters(self):
@@ -258,9 +259,7 @@ class TestCleanOcrText:
         assert clean_ocr_text("page 12; fol. a v 3, ANTS") == "page fol. ants"
 
     def test_keeps_words_and_hyphen_compounds(self):
-        assert clean_ocr_text("The COLONY-LEVEL x foraging.") == (
-            "the colony-level foraging."
-        )
+        assert clean_ocr_text("The COLONY-LEVEL x foraging.") == ("the colony-level foraging.")
 
     def test_keeps_letters_inside_words(self):
         # OCR mangle "iiV" is not a folio single letter: kept whole.
@@ -275,7 +274,7 @@ class TestAnalyzeEraStack:
         extraction = rich_stack["extraction"]
         assert extraction["n_terms"] > 0
         assert extraction["min_frequency"] == OCR_MIN_TERM_FREQUENCY
-        for domain, entry in extraction["domains"].items():
+        for entry in extraction["domains"].values():
             assert entry["term_count"] >= 1
             assert entry["total_frequency"] >= entry["term_count"]
 
@@ -283,13 +282,9 @@ class TestAnalyzeEraStack:
         entropy = rich_stack["entropy"]
         assert entropy is not None
         assert entropy["n_terms_evaluated"] <= ENTROPY_TOP_TERMS
-        assert (
-            entropy["n_valid"] + entropy["n_excluded"]
-            == entropy["n_terms_evaluated"]
-        )
+        assert entropy["n_valid"] + entropy["n_excluded"] == entropy["n_terms_evaluated"]
         assert entropy["n_valid"] >= 1, (
-            "the synthetic era repeats terms across sentences, so at "
-            "least one bounded term must reach ok status"
+            "the synthetic era repeats terms across sentences, so at least one bounded term must reach ok status"
         )
         for value in entropy["terms"].values():
             assert value >= 0.0
@@ -360,7 +355,5 @@ class TestBuildArtifactExpanded:
         assert noise_era["extraction"]["n_terms"] == 0
         assert noise_era["entropy"] is None
         assert noise_era["framing"] is None
-        noise_skips = {
-            e["kind"] for e in artifact["skipped"] if e.get("era") == "era_1900_1949"
-        }
+        noise_skips = {e["kind"] for e in artifact["skipped"] if e.get("era") == "era_1900_1949"}
         assert "era_stack" in noise_skips

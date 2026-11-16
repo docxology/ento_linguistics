@@ -9,7 +9,6 @@ from pathlib import Path
 
 import pytest
 
-
 SUBPROCESS_TIMEOUT_SECONDS = 1800
 _CLI_DEPS_MISSING = False
 
@@ -36,8 +35,7 @@ def _find_repo_root() -> Path:
         if (parent / "template" / "infrastructure" / "__init__.py").exists():
             return parent / "template"
     raise RuntimeError(
-        "Could not locate template/ repo root (no infrastructure/__init__.py "
-        "found in any parent directory)."
+        "Could not locate template/ repo root (no infrastructure/__init__.py found in any parent directory)."
     )
 
 
@@ -50,43 +48,66 @@ def _get_infrastructure_paths():
     repo_root = _find_repo_root()
     # Infrastructure CLI is at infrastructure/validation/cli/markdown.py
     cli_script = repo_root / "infrastructure" / "validation" / "cli" / "main.py"
-    glossary_script = (
-        repo_root / "infrastructure" / "documentation" / "generate_glossary_cli.py"
-    )
+    glossary_script = repo_root / "infrastructure" / "documentation" / "generate_glossary_cli.py"
     return repo_root, cli_script, glossary_script
+
 
 # Small deterministic abstract corpus copied into sandbox projects in
 # place of the real data/corpus/abstracts.json (1,907 records). Covers
 # all six Ento-Linguistic domains so the sandboxed figure-generation
 # stage exercises the same analysis paths on a fixture-sized input.
 _SANDBOX_FIXTURE_ABSTRACTS = [
-    "The queen lays eggs continuously in the brood chamber while workers "
-    "tend the brood and maintain the nest structure of the colony.",
-    "Eusocial insect colonies exhibit a reproductive division of labor in "
-    "which the queen caste produces offspring and the worker caste performs "
-    "colony maintenance tasks.",
-    "Foraging behavior in harvester ants is regulated by local interactions "
-    "among nestmates rather than by centralized control from the queen.",
-    "Haplodiploidy in the Hymenoptera creates asymmetric relatedness among "
-    "full sisters, shaping the evolution of eusocial reproduction.",
-    "Colony-level selection may operate as a superorganism when individual "
-    "fitness is subordinated to collective reproductive outcomes.",
-    "Task allocation in ant colonies follows economic principles: workers "
-    "switch between foraging and nest maintenance to maximize the colony's "
-    "net energy intake.",
-    "Cuticular hydrocarbon profiles mediate nestmate recognition, and "
-    "workers reject non-nestmates at the colony entrance.",
-    "Reproductive conflict in the colony is suppressed by worker policing: "
-    "eggs laid by workers are removed while the queen's eggs survive.",
-    "The soldier caste in Pheidole colonies specializes in defense while "
-    "minor workers perform brood care and forage for the colony.",
-    "Trophallaxis distributes food resources among nestmates, creating a "
-    "colony-wide economy of shared protein and carbohydrate.",
-    "Colony size predicts allometric scaling of worker body size, with "
-    "larger colonies producing more specialized castes.",
-    "Seed dispersal by ants is a mutualism: the colony gains elaiosome "
-    "nutrition while the plant's seeds are cached in nutrient-rich nest "
-    "refuse.",
+    (
+        "The queen lays eggs continuously in the brood chamber while workers "
+        "tend the brood and maintain the nest structure of the colony."
+    ),
+    (
+        "Eusocial insect colonies exhibit a reproductive division of labor in "
+        "which the queen caste produces offspring and the worker caste performs "
+        "colony maintenance tasks."
+    ),
+    (
+        "Foraging behavior in harvester ants is regulated by local interactions "
+        "among nestmates rather than by centralized control from the queen."
+    ),
+    (
+        "Haplodiploidy in the Hymenoptera creates asymmetric relatedness among "
+        "full sisters, shaping the evolution of eusocial reproduction."
+    ),
+    (
+        "Colony-level selection may operate as a superorganism when individual "
+        "fitness is subordinated to collective reproductive outcomes."
+    ),
+    (
+        "Task allocation in ant colonies follows economic principles: workers "
+        "switch between foraging and nest maintenance to maximize the colony's "
+        "net energy intake."
+    ),
+    (
+        "Cuticular hydrocarbon profiles mediate nestmate recognition, and "
+        "workers reject non-nestmates at the colony entrance."
+    ),
+    (
+        "Reproductive conflict in the colony is suppressed by worker policing: "
+        "eggs laid by workers are removed while the queen's eggs survive."
+    ),
+    (
+        "The soldier caste in Pheidole colonies specializes in defense while "
+        "minor workers perform brood care and forage for the colony."
+    ),
+    (
+        "Trophallaxis distributes food resources among nestmates, creating a "
+        "colony-wide economy of shared protein and carbohydrate."
+    ),
+    (
+        "Colony size predicts allometric scaling of worker body size, with "
+        "larger colonies producing more specialized castes."
+    ),
+    (
+        "Seed dispersal by ants is a mutualism: the colony gains elaiosome "
+        "nutrition while the plant's seeds are cached in nutrient-rich nest "
+        "refuse."
+    ),
 ]
 
 
@@ -156,7 +177,7 @@ def _setup_test_project_structure(tmp_path: Path, test_name: str) -> Path:
         corpus_dir.mkdir(parents=True, exist_ok=True)
         (corpus_dir / "abstracts.json").write_text(
             json.dumps(json.loads((data_src / "corpus" / "abstracts.json").read_text())[:200], indent=2),
-            encoding="utf-8"
+            encoding="utf-8",
         )
 
     # Regression guard: a sandbox must never receive the heavy full-text
@@ -202,10 +223,7 @@ def _skip_if_cli_deps_missing(result) -> None:
     combined = (result.stdout or "") + (result.stderr or "")
     if result.returncode != 0 and "no module named" in combined.lower():
         _CLI_DEPS_MISSING = True
-        pytest.skip(
-            f"infrastructure CLI dependency missing in test environment: "
-            f"{combined[:200]}"
-        )
+        pytest.skip(f"infrastructure CLI dependency missing in test environment: {combined[:200]}")
 
 
 @pytest.mark.skipif(
@@ -220,10 +238,7 @@ class TestFullPipelineIntegration:
         """Skip before spawning any subprocess once the missing-deps verdict
         has been proven by an earlier probe in this session."""
         if _CLI_DEPS_MISSING:
-            pytest.skip(
-                "infrastructure CLI dependency missing in test environment "
-                "(cached verdict from earlier probe)"
-            )
+            pytest.skip("infrastructure CLI dependency missing in test environment (cached verdict from earlier probe)")
 
     def test_complete_pipeline_execution(self, tmp_path):
         """Test the complete pipeline from scripts to validation to glossary generation."""
@@ -259,11 +274,13 @@ More content here.
         project_src = str(Path(__file__).resolve().parents[2] / "src")
         env["PYTHONPATH"] = f"{repo_root}:{project_src}:{env.get('PYTHONPATH', '')}"
 
-        result1 = run_subprocess([sys.executable, str(example_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env=env,)
+        result1 = run_subprocess(
+            [sys.executable, str(example_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
         if result1.returncode != 0:
             print(f"STDOUT: {result1.stdout}")
@@ -280,11 +297,13 @@ More content here.
 
         # Step 2: Run generate_research_figures.py script
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result2 = run_subprocess([sys.executable, str(research_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env=env,)
+        result2 = run_subprocess(
+            [sys.executable, str(research_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env=env,
+        )
 
         # Should succeed and generate more outputs
         assert result2.returncode == 0
@@ -304,48 +323,42 @@ More content here.
             **os.environ,
             "PYTHONPATH": f"{repo_root}:{os.environ.get('PYTHONPATH', '')}",
         }
-        result3 = run_subprocess([sys.executable, str(cli_script), "markdown", str(manuscript_dir)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env=test_env,)
+        result3 = run_subprocess(
+            [sys.executable, str(cli_script), "markdown", str(manuscript_dir)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env=test_env,
+        )
 
         # Should pass validation (all references exist) - exit code 0 means success
         # If validation fails due to missing dependencies, provide helpful error message
-        if (
-            result3.returncode != 0
-            and "validation passed" not in result3.stdout.lower()
-        ):
+        if result3.returncode != 0 and "validation passed" not in result3.stdout.lower():
             combined_output = result3.stdout + result3.stderr
             # Skip when the infrastructure CLI's own dependencies (yaml,
             # markdown_it, ...) are not installed in this environment.
             if "no module named" in combined_output.lower():
                 global _CLI_DEPS_MISSING
                 _CLI_DEPS_MISSING = True
-                pytest.skip(
-                    f"infrastructure CLI dependency missing in test environment: "
-                    f"{combined_output[:200]}"
-                )
+                pytest.skip(f"infrastructure CLI dependency missing in test environment: {combined_output[:200]}")
         assert result3.returncode == 0 or "validation passed" in result3.stdout.lower()
 
         # Step 4: Run glossary generation using infrastructure module
-        result4 = run_subprocess([
-            sys.executable,
-            str(glossary_script),
-            str(project_dir / "src"),
-            str(manuscript_dir / "98_symbols_glossary.md"),
-        ],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        result4 = run_subprocess(
+            [
+                sys.executable,
+                str(glossary_script),
+                str(project_dir / "src"),
+                str(manuscript_dir / "98_symbols_glossary.md"),
+            ],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env={**os.environ, "PYTHONPATH": str(repo_root)},
+        )
 
         # Should succeed and generate glossary
-        assert (
-            result4.returncode == 0
-            or "Generated" in result4.stdout
-            or "glossary" in result4.stdout.lower()
-        )
+        assert result4.returncode == 0 or "Generated" in result4.stdout or "glossary" in result4.stdout.lower()
 
         # Verify glossary was created/updated (if CLI ran successfully)
         glossary_file = project_dir / "manuscript" / "98_symbols_glossary.md"
@@ -353,21 +366,19 @@ More content here.
             # Check that glossary contains real API entries from project/src/
             with open(glossary_file, "r") as f:
                 content = f.read()
-            assert (
-                "example" in content.lower()
-                or "function" in content.lower()
-                or len(content) > 0
-            )
+            assert "example" in content.lower() or "function" in content.lower() or len(content) > 0
         else:
             # Glossary generation may have different behavior - just verify command didn't error
             assert "error" not in result4.stderr.lower() if result4.stderr else True
 
         # Step 5: Run markdown validation again to ensure everything still works
-        result5 = run_subprocess([sys.executable, str(cli_script), "markdown", str(manuscript_dir)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        result5 = run_subprocess(
+            [sys.executable, str(cli_script), "markdown", str(manuscript_dir)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env={**os.environ, "PYTHONPATH": str(repo_root)},
+        )
 
         # Should still pass validation
         assert result5.returncode == 0 or "validation passed" in result5.stdout.lower()
@@ -377,7 +388,7 @@ More content here.
         test_root = _setup_test_project_structure(tmp_path, "manuscript_pipeline")
         project_dir = test_root / "project"
         manuscript_dir = project_dir / "manuscript"
-        repo_root, cli_script, glossary_script = _get_infrastructure_paths()
+        repo_root, cli_script, _glossary_script = _get_infrastructure_paths()
 
         # Create realistic manuscript sections
         sections = {
@@ -457,19 +468,23 @@ accuracy = \frac{TP}{TP + FP}
 
         # Run research figures script
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result = run_subprocess([sys.executable, str(research_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,)
+        result = run_subprocess(
+            [sys.executable, str(research_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+        )
 
         assert result.returncode == 0
 
         # Run validation on manuscript using infrastructure module
-        result2 = run_subprocess([sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        result2 = run_subprocess(
+            [sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env={**os.environ, "PYTHONPATH": str(repo_root)},
+        )
 
         # Should pass validation in non-strict mode
         _skip_if_cli_deps_missing(result2)
@@ -497,39 +512,47 @@ This is fine.
 
         # Run scripts (should succeed despite issues)
         example_script = project_dir / "scripts" / "_example_figure.py"
-        result1 = run_subprocess([sys.executable, str(example_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,)
+        result1 = run_subprocess(
+            [sys.executable, str(example_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+        )
         assert result1.returncode == 0
 
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result2 = run_subprocess([sys.executable, str(research_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,)
+        result2 = run_subprocess(
+            [sys.executable, str(research_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+        )
         assert result2.returncode == 0
 
         # Run validation in non-strict mode (should pass despite issues)
-        result3 = run_subprocess([sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        result3 = run_subprocess(
+            [sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env={**os.environ, "PYTHONPATH": str(repo_root)},
+        )
         _skip_if_cli_deps_missing(result3)
         assert result3.returncode == 0 or "validation" in result3.stdout.lower()
 
         # Run glossary generation (should succeed)
-        result4 = run_subprocess([
-            sys.executable,
-            str(glossary_script),
-            str(project_dir / "src"),
-            str(project_dir / "manuscript" / "98_symbols_glossary.md"),
-        ],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        result4 = run_subprocess(
+            [
+                sys.executable,
+                str(glossary_script),
+                str(project_dir / "src"),
+                str(project_dir / "manuscript" / "98_symbols_glossary.md"),
+            ],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env={**os.environ, "PYTHONPATH": str(repo_root)},
+        )
         _skip_if_cli_deps_missing(result4)
         assert result4.returncode == 0 or "Generated" in result4.stdout
 
@@ -537,7 +560,7 @@ This is fine.
         """Test that the complete pipeline produces deterministic results."""
         test_root = _setup_test_project_structure(tmp_path, "deterministic_pipeline")
         project_dir = test_root / "project"
-        repo_root, cli_script, glossary_script = _get_infrastructure_paths()
+        repo_root, _cli_script, _glossary_script = _get_infrastructure_paths()
 
         # Create basic markdown
         (project_dir / "manuscript" / "01_test.md").write_text(
@@ -561,16 +584,12 @@ x^2 + y^2 = z^2
         # the scripts add project_root/src to sys.path themselves.
         env["PYTHONPATH"] = f"{repo_root}:{env.get('PYTHONPATH', '')}"
 
-        run_subprocess([sys.executable, str(example_script)],
-        cwd=str(project_dir),
-        check=True,
-        capture_output=True,
-        env=env)
-        run_subprocess([sys.executable, str(research_script)],
-        cwd=str(project_dir),
-        check=True,
-        capture_output=True,
-        env=env)
+        run_subprocess(
+            [sys.executable, str(example_script)], cwd=str(project_dir), check=True, capture_output=True, env=env
+        )
+        run_subprocess(
+            [sys.executable, str(research_script)], cwd=str(project_dir), check=True, capture_output=True, env=env
+        )
 
         # Capture output 1
         out_fig = project_dir / "output" / "figures" / "domain_comparison.png"
@@ -578,16 +597,12 @@ x^2 + y^2 = z^2
         content1 = out_fig.read_bytes()
 
         # Run 2: Execute scripts again
-        run_subprocess([sys.executable, str(example_script)],
-        cwd=str(project_dir),
-        check=True,
-        capture_output=True,
-        env=env)
-        run_subprocess([sys.executable, str(research_script)],
-        cwd=str(project_dir),
-        check=True,
-        capture_output=True,
-        env=env)
+        run_subprocess(
+            [sys.executable, str(example_script)], cwd=str(project_dir), check=True, capture_output=True, env=env
+        )
+        run_subprocess(
+            [sys.executable, str(research_script)], cwd=str(project_dir), check=True, capture_output=True, env=env
+        )
 
         # Capture output 2
         content2 = out_fig.read_bytes()
@@ -615,7 +630,7 @@ x^2 + y^2 = z^2
         if infrastructure_src.exists():
             shutil.copytree(infrastructure_src, test_root / "infrastructure")
 
-        test_repo_root, cli_script, glossary_script = _get_infrastructure_paths()
+        test_repo_root, cli_script, _glossary_script = _get_infrastructure_paths()
 
         # Create minimal structure without full src/
         (test_root / "src").mkdir()
@@ -667,20 +682,18 @@ x^2 + y^2 = z^2
         )
 
         # Run validation using infrastructure module - should detect missing images
-        result = run_subprocess([sys.executable, str(cli_script), "markdown", str(test_root / "manuscript")],
-        cwd=str(test_root),
-        capture_output=True,
-        text=True,
-        env={**os.environ, "PYTHONPATH": str(test_repo_root)},)
+        result = run_subprocess(
+            [sys.executable, str(cli_script), "markdown", str(test_root / "manuscript")],
+            cwd=str(test_root),
+            capture_output=True,
+            text=True,
+            env={**os.environ, "PYTHONPATH": str(test_repo_root)},
+        )
 
         # Should handle missing dependencies gracefully (validation still runs)
         # Either it passes with issues reported, or fails with validation errors
         _skip_if_cli_deps_missing(result)
-        assert (
-            "missing" in result.stdout.lower()
-            or result.returncode == 0
-            or "validation" in result.stdout.lower()
-        )
+        assert "missing" in result.stdout.lower() or result.returncode == 0 or "validation" in result.stdout.lower()
 
     def test_pipeline_cross_component_integration(self, tmp_path):
         """Test that different components properly integrate with each other."""
@@ -729,46 +742,54 @@ This demonstrates that all components work together properly.
 
         # Run example figure script
         example_script = project_dir / "scripts" / "_example_figure.py"
-        result1 = run_subprocess([sys.executable, str(example_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env=clean_env,)
+        result1 = run_subprocess(
+            [sys.executable, str(example_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env=clean_env,
+        )
         assert result1.returncode == 0, (
             f"_example_figure.py failed\nstdout: {result1.stdout[:500]}\nstderr: {result1.stderr[:500]}"
         )
 
         # Run research figures script
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result2 = run_subprocess([sys.executable, str(research_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env=clean_env,)
+        result2 = run_subprocess(
+            [sys.executable, str(research_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env=clean_env,
+        )
         assert result2.returncode == 0, (
             f"02_generate_figures.py failed\nstdout: {result2.stdout[:500]}\nstderr: {result2.stderr[:500]}"
         )
 
         # Run validation using infrastructure module
-        result3 = run_subprocess([sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env={**clean_env, "PYTHONPATH": str(repo_root)},)
+        result3 = run_subprocess(
+            [sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env={**clean_env, "PYTHONPATH": str(repo_root)},
+        )
         _skip_if_cli_deps_missing(result3)
         assert result3.returncode == 0 or "validation" in result3.stdout.lower()
 
         # Run glossary generation using infrastructure module
-        result4 = run_subprocess([
-            sys.executable,
-            str(glossary_script),
-            str(project_dir / "src"),
-            str(project_dir / "manuscript" / "98_symbols_glossary.md"),
-        ],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        env={**clean_env, "PYTHONPATH": str(repo_root)},)
+        result4 = run_subprocess(
+            [
+                sys.executable,
+                str(glossary_script),
+                str(project_dir / "src"),
+                str(project_dir / "manuscript" / "98_symbols_glossary.md"),
+            ],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            env={**clean_env, "PYTHONPATH": str(repo_root)},
+        )
         _skip_if_cli_deps_missing(result4)
         assert result4.returncode == 0 or "Generated" in result4.stdout
 
@@ -799,11 +820,7 @@ This demonstrates that all components work together properly.
             with open(glossary_file, "r") as f:
                 content = f.read()
             # Check for expected content - relaxed assertions
-            assert (
-                "example" in content.lower()
-                or "function" in content.lower()
-                or len(content) > 0
-            )
+            assert "example" in content.lower() or "function" in content.lower() or len(content) > 0
         else:
             # Glossary generation may have failed silently - verify the command ran
             assert result4.returncode == 0 or "error" not in result4.stderr.lower()
@@ -835,49 +852,50 @@ Reference to equation \eqref{{eq:section_{i}}}.
 
         # Run scripts (they should handle large content gracefully)
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result = run_subprocess([sys.executable, str(research_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        timeout=60,)  # 60 second timeout
+        result = run_subprocess(
+            [sys.executable, str(research_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )  # 60 second timeout
 
         # Handle missing analysis dependencies (e.g., nltk) that may not
         # be installed in every test environment.  The generate_figures
         # script can still succeed in degraded mode without them.
         combined = result.stdout + result.stderr
-        if result.returncode != 0 and (
-            "ModuleNotFoundError" in combined
-            or "No module named" in combined
-        ):
-            pytest.skip(
-                f"Analysis dependency missing in test environment: {combined[:200]}"
-            )
+        if result.returncode != 0 and ("ModuleNotFoundError" in combined or "No module named" in combined):
+            pytest.skip(f"Analysis dependency missing in test environment: {combined[:200]}")
         assert result.returncode == 0
 
         # Run validation (should handle large files) using infrastructure module
-        result2 = run_subprocess([sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        timeout=60,
-        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        result2 = run_subprocess(
+            [sys.executable, str(cli_script), "markdown", str(project_dir / "manuscript")],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            timeout=60,
+            env={**os.environ, "PYTHONPATH": str(repo_root)},
+        )
 
         # Should complete successfully
         _skip_if_cli_deps_missing(result2)
         assert result2.returncode == 0 or "validation" in result2.stdout.lower()
 
         # Run glossary generation using infrastructure module
-        result3 = run_subprocess([
-            sys.executable,
-            str(glossary_script),
-            str(project_dir / "src"),
-            str(project_dir / "manuscript" / "98_symbols_glossary.md"),
-        ],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,
-        timeout=60,
-        env={**os.environ, "PYTHONPATH": str(repo_root)},)
+        result3 = run_subprocess(
+            [
+                sys.executable,
+                str(glossary_script),
+                str(project_dir / "src"),
+                str(project_dir / "manuscript" / "98_symbols_glossary.md"),
+            ],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+            timeout=60,
+            env={**os.environ, "PYTHONPATH": str(repo_root)},
+        )
 
         _skip_if_cli_deps_missing(result3)
         assert result3.returncode == 0 or "Generated" in result3.stdout
@@ -1051,17 +1069,21 @@ For implementation details, see the API documentation in the symbols glossary.
         # clean-slate run, so it must run BEFORE _example_figure.py — otherwise
         # the example figure/data generated first would be deleted.
         research_script = project_dir / "scripts" / "02_generate_figures.py"
-        result2 = run_subprocess([sys.executable, str(research_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,)
+        result2 = run_subprocess(
+            [sys.executable, str(research_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+        )
         assert result2.returncode == 0
 
         example_script = project_dir / "scripts" / "_example_figure.py"
-        result1 = run_subprocess([sys.executable, str(example_script)],
-        cwd=str(project_dir),
-        capture_output=True,
-        text=True,)
+        result1 = run_subprocess(
+            [sys.executable, str(example_script)],
+            cwd=str(project_dir),
+            capture_output=True,
+            text=True,
+        )
         assert result1.returncode == 0
 
         # Verify all components worked together
