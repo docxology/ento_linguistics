@@ -40,6 +40,10 @@ Generation rejects any placeholder its variable map cannot resolve, except the `
 
 The final receipt must match the current sources, corpus, selected NLTK resources and registered artifacts. A successful render establishes artifact coherence, not scientific validity. See [reproducibility](../reference/reproducibility.md) for unresolved custody, relevance, license and annotation limits.
 
+Use [portable PDF and HTML](template-render.md) to check that the same
+source renders from the retained release artifacts. This build exercises
+publication formatting and frozen evidence rather than corpus recomputation.
+
 ## Scope of an edit
 
 | Changed input | Required follow-through |

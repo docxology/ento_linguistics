@@ -1,0 +1,9 @@
+# Static numeric literals in the authored edition. Computed quantities
+# are resolved separately from the retained variable and network reports.
+claims:
+  - {claim_id: cace-clarity-normalizer, value: 3.32, artifact_path: src/analysis/cace_scoring.py}
+  - {claim_id: bhl-ocr-rate-denominator, value: 10000, artifact_path: src/pipeline/bhl_analysis.py}
+  - {claim_id: network-null-central-percent, value: 95, artifact_path: research/network_robustness/study.py}
+  - {claim_id: signed-algebraic-literal, value: -1, artifact_path: docs/manuscript/03_methods.md}
+  - {claim_id: native-graphical-abstract-max-height, value: 0.65, artifact_path: docs/manuscript/01_abstract.md}
+  - {claim_id: native-plot-max-height, value: 0.78, artifact_path: docs/manuscript/04a_corpus_and_networks.md}

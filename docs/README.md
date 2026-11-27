@@ -10,12 +10,15 @@ Read the [v1.3.1 paper](../Ento_Linguistics_manuscript.pdf) ([release](https://g
 | [Analysis workflow](guides/workflow.md) | Reproduce stored corpus analyses, use recovery checkpoints, and render the paper |
 | [Validation](guides/validation.md) | Test software behavior, inspect source custody, and verify figures/PDFs |
 | [Development](guides/development.md) | Change methods safely and select relevant regression controls |
+| [Portable PDF and HTML](guides/template-render.md) | Rebuild the complete paper from retained evidence with the pinned Template |
+| [Agent integration](guides/agent-integration.md) | Run a small local terminology example |
 | [Manuscript authoring](guides/authoring.md) | Edit sections, variables, citations, equations, and figures |
 
 ## Reference: understand the system
 
 | Reference | Covers |
 | --- | --- |
+| [Maintenance backlog](reference/maintenance-backlog.md) | Tracked follow-up work and verification probes |
 | [Architecture](reference/architecture.md) | Entry points, package responsibilities, and artifact flow |
 | [Data lineage](reference/data-lineage.md) | Stored sources, exported results, figures, and manuscript bindings |
 | [Reproducibility and interpretation](reference/reproducibility.md) | Computational definitions, sampling, custody, and research limits |

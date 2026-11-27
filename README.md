@@ -10,7 +10,7 @@
 
 How do terms such as *queen*, *worker*, *caste*, and *colony* organize descriptions of ant biology? Ento-Linguistics provides a six-domain framework and a reproducible, descriptive analysis of scientific terminology across modern abstracts, full texts, historical OCR, and preprints.
 
-[Read the v1.3.1 paper](Ento_Linguistics_manuscript.pdf) · [Paper release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.1) · [DOI 10.5281/zenodo.23287623](https://doi.org/10.5281/zenodo.23287623) · [Documentation](docs/README.md) · [Reproduce the analyses](docs/guides/workflow.md)
+[Read the v1.3.1 paper](Ento_Linguistics_manuscript.pdf) · [Paper release](https://github.com/docxology/ento_linguistics/releases/tag/v1.3.1) · [DOI 10.5281/zenodo.23287623](https://doi.org/10.5281/zenodo.23287623) · [Documentation](docs/README.md) · [Reproduce the analyses](docs/guides/workflow.md) · [Build PDF and HTML from retained results](docs/guides/template-render.md)
 
 Daniel Ari Friedman and Tucker Cahill Chambers
 
