@@ -28,6 +28,40 @@ EQUATION = re.compile(
 )
 
 
+# Keep cross-references in display captions. Give these figures an independent
+# description because the registry supplies plain text to the accessible writers.
+FIGURE_ALT = {
+    "fig:terminology_network": (
+        "Term co-occurrence network with node area scaled by frequency and color "
+        "by primary domain. A companion bar chart ranks the ten strongest term "
+        "pairs by shared document count."
+    ),
+    "fig:domain_overlap": (
+        "Heatmap of vocabulary overlap across domains. Each cell gives shared terms "
+        "as a percentage of the smaller vocabulary, with 100 percent on the diagonal."
+    ),
+    "fig:domain_patterns_grid": (
+        "Panels compare the shares of single words, multi-word phrases, compounds "
+        "with hyphens or underscores, and terms containing digits across domain vocabularies."
+    ),
+    "fig:concept_hierarchy": (
+        "Six concept categories are ranked by summed vocabulary overlap in the left "
+        "panel. The right panel plots that score against each category's term count."
+    ),
+}
+
+
+def portable_figure_record(filename: str, label: str, caption: str, digest: str) -> dict:
+    """Keep the authored caption and figure digest beside the plain-text description."""
+    return {
+        "filename": filename,
+        "label": label,
+        "caption": caption,
+        "alt_text": FIGURE_ALT.get(label, caption),
+        "metadata": {"sha256": digest},
+    }
+
+
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -105,13 +139,7 @@ def prepare() -> None:
             digest = load_json(path.parent / "receipt.json")["outputs"][path.name]
         verify_hash(path, digest)
         figures[path.name] = path
-        portable_registry[label] = {
-            "filename": path.name,
-            "label": label,
-            "caption": caption,
-            "alt_text": re.sub(r"Eq\.~\\ref\{[^}]+\}", "see the weighting equation", caption),
-            "metadata": {"sha256": digest},
-        }
+        portable_registry[label] = portable_figure_record(path.name, label, caption, digest)
         return f"![{caption}](../figures/{path.name}){{#{label} width=85%}}"
 
     for path in sorted(SOURCE.glob("*.md")):
