@@ -134,6 +134,8 @@ def prepare() -> None:
         text = re.sub(r"\\ref\{tab:([^}]+)\}", r"[@tbl:\1]", text)
         text = re.sub(r"\\ref\{fig:([^}]+)\}", r"[@fig:\1]", text)
         text = re.sub(r"Eq\.~\\ref\{eq:([^}]+)\}", r"[@eq:\1]", text)
+        # Keep existing prose prefixes and range punctuation around bare numbers.
+        text = re.sub(r"\\ref\{eq:([^}]+)\}", r"[-@eq:\1]", text)
         text = re.sub(r"\\ref\{sec:([^}]+)\}", r"[\1](#sec:\1)", text)
         sections[path.name] = text
 
