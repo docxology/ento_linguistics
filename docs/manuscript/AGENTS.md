@@ -9,6 +9,6 @@ Keep numbered section paths stable. The standalone renderer selects the paper se
 - Distinguish observed terminology co-occurrence from predefined concept categories, occupancy entropy from validated word senses, and heuristic CACE/framing from human judgments.
 - Describe theoretical extensions as proposals unless the pipeline actually fits or measures them.
 - Cite verified primary bibliographic metadata through references.bib and existing citation keys.
-- Keep publication metadata in config.yaml and styling in preamble.tex.
+- Keep publication metadata in config.yaml and styling in render/preamble.tex.
 
 After paper content changes, validate the matching analysis receipt, render with --strict-templates, inspect final toolchain diagnostics and PDF pages, and compare displayed values with exports. Editing this guidance or README alone does not change the paper.

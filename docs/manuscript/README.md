@@ -21,7 +21,7 @@ The renderer orders main sections, supplements, glossary, then bibliography. REA
 
 ## Build and edit
 
-Follow [manuscript authoring](../guides/authoring.md) for variables, captions, equations, and citations. The active configuration is [config.yaml](config.yaml); [references.bib](references.bib) and [preamble.tex](preamble.tex) provide bibliography and styling.
+Follow [manuscript authoring](../guides/authoring.md) for variables, captions, equations, and citations. The active configuration is [config.yaml](config.yaml); [references.bib](references.bib) and [preamble.tex](render/preamble.tex) provide bibliography and styling.
 
 From the repository root, after valid core and network-reading generation:
 
@@ -32,3 +32,7 @@ uv run python scripts/_render_pdf_override.py --strict-templates
 The output is output/pdf/ento_linguistics_combined.pdf. The renderer validates the analysis receipt before resolving placeholders and requires successful toolchain execution. Inspect the final PDF before replacing the published top-level copy.
 
 [Data lineage](../reference/data-lineage.md) traces values to exports. [Reproducibility](../reference/reproducibility.md) distinguishes measured proxies, bounded analyses, proposed theory, and unperformed human validation. [Verification and publication](../reference/verification.md) identifies the published revision.
+
+The [portable build guide](../guides/template-render.md) renders the same
+canonical sections and supplements to PDF and HTML with the pinned
+Template. It uses retained results and figures from the reviewed edition.

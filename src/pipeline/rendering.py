@@ -652,7 +652,7 @@ def build_pdf(strict_templates: bool = False) -> None:
         str(tex_file),
         "--from=markdown+citations+raw_tex",
         "--standalone",
-        "--include-in-header=" + str(manuscript_dir / "preamble.tex"),
+        "--include-in-header=" + str(manuscript_dir / "render" / "preamble.tex"),
         "--natbib",
         "--number-sections",
         "--toc",

@@ -39,6 +39,8 @@ The renderer validates the content receipt, resolves numerical placeholders, and
 
 Output: [output/pdf/ento_linguistics_combined.pdf](../../output/pdf/ento_linguistics_combined.pdf). Inspect the final TeX log and rasterized pages using the [validation guide](validation.md).
 
+For a build using retained results and figures, use the [pinned Template PDF and HTML guide](template-render.md).
+
 The top-level published PDF is a separate copy. Update it only after validating the new build; publishing to GitHub or Zenodo is a separate action.
 
 ## Full runs and development bounds

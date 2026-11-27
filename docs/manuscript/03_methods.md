@@ -63,7 +63,7 @@ Welch tests, Benjamini--Hochberg adjustments, small-sample corrected standardize
 The conceptual map assigns terms to six predefined categories. Its {{CORPUS_RELATIONSHIP_COUNT}} links summarize vocabulary overlap:
 
 \begin{equation}\label{eq:overlap_coefficient}
-w_{AB}=\frac{|A\cap B|}{\min(|A|,|B|)}.
+w_{AB}=\frac{|A\cap B|}{\min(\lvert A\rvert,\lvert B\rvert)}.
 \end{equation}
 
 The terminology graph counts actual documents containing each pair among the hundred most frequent domain-assigned terms, breaking frequency ties lexically. Whole-word matching is case-insensitive; repeated mentions within a document count once. Shared labels never create an observed edge. Document co-occurrence does not establish a semantic or causal relationship. The separate overlap heatmap summarizes classifier assignments. A fixed-margin Curveball randomization of the binary document--term incidence matrix supplies a conditional reference for the projected edge count and mean local clustering (Supplemental Section \ref{sec:fixed_margin}).
@@ -89,7 +89,7 @@ Four heuristic dimensions define CACE:
 \end{equation}
 
 \begin{equation}\label{eq:cace_evolvability}
-\mathrm{Evolvability}(t)=\tfrac12\min(1,|D(t)|/3)+\tfrac12\min(1,|S_t|/3).
+\mathrm{Evolvability}(t)=\tfrac12\min(1,|D(t)|/3)+\tfrac12\min(1,\lvert S_t\rvert/3).
 \end{equation}
 
 The implemented Clarity normalization constant is 3.32, approximately $\log_2 10$; it is a design choice rather than the five-cluster ceiling. Here $\mathcal A$ is the configured anthropomorphic vocabulary, $\mathbf x_i$ the TF-IDF vector of the $i$-th of $n$ short extraction contexts, $D(t)$ the domain assignments, and $S_t$ scale-marker categories found in contexts. The aggregate is their arithmetic mean. Domain CACE aggregates and their figure use the same up-to-fifty-term sample, ordered by decreasing frequency and lexical tie-break, and at most ten short extraction contexts per term. Computed entropy enters Clarity where available. Default zero entropy for unavailable estimates and Consistency of 0.5 for fewer than two contexts are conventions, not evidence of clarity or consistency. Weights and thresholds are design choices; no completed coefficient sensitivity study, inter-rater reliability measurement, or independent predictive validation is claimed.
